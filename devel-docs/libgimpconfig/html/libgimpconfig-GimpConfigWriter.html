@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpConfigWriter</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Config Library Reference Manual">
 <link rel="up" href="libgimpconfig.html" title="Part I. GIMP Config Library">
 <link rel="prev" href="libgimpconfig-GimpConfig-utils.html" title="GimpConfig-utils">
@@ -99,8 +99,11 @@ Creates a new <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConf
 possible race conditions. The temporary file is then moved to
 <em class="parameter"><code>filename</code></em> when the writer is closed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
@@ -130,8 +133,11 @@ possible race conditions. The temporary file is then moved to
 <div class="refsect2">
 <a name="gimp-config-writer-new-fd"></a><h3>gimp_config_writer_new_fd ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter"><span class="returnvalue">GimpConfigWriter</span></a> *  gimp_config_writer_new_fd           (<em class="parameter"><code><span class="type">gint</span> fd</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a new <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter"><span class="type">GimpConfigWriter</span></a> or <code class="literal">NULL</code> in case of an error</td>
@@ -143,8 +149,11 @@ possible race conditions. The temporary file is then moved to
 <div class="refsect2">
 <a name="gimp-config-writer-new-string"></a><h3>gimp_config_writer_new_string ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter"><span class="returnvalue">GimpConfigWriter</span></a> *  gimp_config_writer_new_string       (<em class="parameter"><code><span class="type">GString</span> *string</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a new <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter"><span class="type">GimpConfigWriter</span></a> or <code class="literal">NULL</code> in case of an error</td>
@@ -162,8 +171,11 @@ This function writes the opening parenthese followed by <em class="parameter"><c
 It also increases the indentation level and sets a mark that
 can be used by <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-revert" title="gimp_config_writer_revert ()"><code class="function">gimp_config_writer_revert()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>writer</code></em> :</span></p></td>
@@ -192,8 +204,11 @@ system-wide installed gimprc that documents the default settings.
 Since comments have to start at the beginning of a line, this
 funtion will insert a newline if necessary.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>writer</code></em> :</span></p></td>
@@ -219,8 +234,11 @@ funtion will insert a newline if necessary.
 Appends a space followed by <em class="parameter"><code>string</code></em> to the <em class="parameter"><code>writer</code></em>. Note that string
 must not contain any special characters that might need to be escaped.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>writer</code></em> :</span></p></td>
@@ -248,8 +266,11 @@ must not contain any special characters that might need to be escaped.
 <p>
 A printf-like function for <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter"><span class="type">GimpConfigWriter</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>writer</code></em> :</span></p></td>
@@ -278,8 +299,11 @@ A printf-like function for <a class="link" href="libgimpconfig-GimpConfigWriter.
 Writes an identifier to <em class="parameter"><code>writer</code></em>. The <em class="parameter"><code>string</code></em> is *not* quoted and special
 characters are *not* escaped.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>writer</code></em> :</span></p></td>
@@ -303,8 +327,11 @@ characters are *not* escaped.
 Writes a string value to <em class="parameter"><code>writer</code></em>. The <em class="parameter"><code>string</code></em> is quoted and special
 characters are escaped.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>writer</code></em> :</span></p></td>
@@ -325,8 +352,11 @@ characters are escaped.
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_config_writer_data             (<em class="parameter"><code><a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter"><span class="type">GimpConfigWriter</span></a> *writer</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> length</code></em>,
                                                          <em class="parameter"><code>const <span class="type">guint8</span> *data</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>writer</code></em> :</span></p></td>
 <td>a <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter"><span class="type">GimpConfigWriter</span></a>
@@ -345,8 +375,11 @@ Appends the <em class="parameter"><code>comment</code></em> to <em class="parame
 format it as a comment. Note that this function does not handle non-ASCII
 characters.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>writer</code></em> :</span></p></td>
@@ -377,8 +410,11 @@ Reverts all changes to <em class="parameter"><code>writer</code></em> that were 
 to <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-open" title="gimp_config_writer_open ()"><code class="function">gimp_config_writer_open()</code></a>. This can only work if you didn't call
 <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-close" title="gimp_config_writer_close ()"><code class="function">gimp_config_writer_close()</code></a> yet.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>writer</code></em> :</span></p></td>
 <td>a <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter"><span class="type">GimpConfigWriter</span></a>
@@ -394,8 +430,11 @@ to <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-
 <p>
 Closes an element opened with <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-open" title="gimp_config_writer_open ()"><code class="function">gimp_config_writer_open()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>writer</code></em> :</span></p></td>
 <td>a <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter"><span class="type">GimpConfigWriter</span></a>
@@ -416,8 +455,11 @@ It closes all open elements, appends an optional comment and
 releases all resources allocated by <em class="parameter"><code>writer</code></em>. You must not access
 the <em class="parameter"><code>writer</code></em> afterwards.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>writer</code></em> :</span></p></td>

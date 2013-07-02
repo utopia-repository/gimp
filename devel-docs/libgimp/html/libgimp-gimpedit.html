@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpedit</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpdrawabletransform.html" title="gimpdrawabletransform">
@@ -109,8 +109,11 @@ internal GIMP edit buffer. This procedure will fail if the selected
 area lies completely outside the bounds of the current drawable and
 there is nothing to copy from.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -140,8 +143,11 @@ edit buffer. This procedure will fail if the selected area lies
 completely outside the bounds of the current drawable and there is
 nothing to copy from.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -169,8 +175,11 @@ GIMP edit buffer. It can subsequently be retrieved using the
 projection's contents will be stored in the internal GIMP edit
 buffer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -209,8 +218,11 @@ The resulting floating selection will already be attached to the
 specified drawable, and a subsequent call to floating_sel_attach is
 not needed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -240,8 +252,11 @@ new image. The GIMP edit buffer will be empty unless a call was
 previously made to either <a class="link" href="libgimp-gimpedit.html#gimp-edit-cut" title="gimp_edit_cut ()"><code class="function">gimp_edit_cut()</code></a> or <a class="link" href="libgimp-gimpedit.html#gimp-edit-copy" title="gimp_edit_copy ()"><code class="function">gimp_edit_copy()</code></a>. This
 procedure returns the new image or -1 if the edit buffer was empty.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The new image.</td>
@@ -263,8 +278,11 @@ the cut buffer into a named buffer that will stay available for
 later pasting, regardless of any intermediate copy or cut
 operations.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -296,8 +314,11 @@ the copied buffer into a named buffer that will stay available for
 later pasting, regardless of any intermediate copy or cut
 operations.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -329,8 +350,11 @@ stores the copied buffer into a named buffer that will stay
 available for later pasting, regardless of any intermediate copy or
 cut operations.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -361,8 +385,11 @@ Paste named buffer to the specified drawable.
 This procedure works like <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste" title="gimp_edit_paste ()"><code class="function">gimp_edit_paste()</code></a> but pastes a named
 buffer instead of the global buffer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -395,8 +422,11 @@ Paste named buffer to a new image.
 This procedure works like <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste-as-new" title="gimp_edit_paste_as_new ()"><code class="function">gimp_edit_paste_as_new()</code></a> but pastes a
 named buffer instead of the global buffer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer_name</code></em> :</span></p></td>
@@ -424,8 +454,11 @@ drawable does not have an alpha channel, cleared pixels will be set
 to the background color. This procedure only affects regions within
 a selection if there is a selection active.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -455,8 +488,11 @@ affects regions within a selection if there is a selection active.
 If you want to fill the whole drawable, regardless of the selection,
 use <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-fill" title="gimp_drawable_fill ()"><code class="function">gimp_drawable_fill()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -502,8 +538,11 @@ all visible layers. In the case of merged sampling, the x and y
 coordinates are relative to the image's origin; otherwise, they are
 relative to the drawable's origin.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -573,8 +612,11 @@ blend mode, and the gradient type. It creates the specified variety
 of blend using the starting and ending coordinates as defined for
 each gradient type.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -660,8 +702,11 @@ selection boundary with the active brush and foreground color. The
 paint is applied to the specified drawable regardless of the active
 selection.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -686,8 +731,11 @@ Stroke the specified vectors object
 This procedure strokes the specified vectors object, painting along
 the path with the active brush and foreground color.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpModuleDB</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Module Library Reference Manual">
 <link rel="up" href="libgimpmodule.html" title="Part I. GIMP Module Library">
 <link rel="prev" href="GimpModule.html" title="GimpModule">
@@ -90,8 +90,11 @@ Keeps a list of <a class="link" href="GimpModule.html" title="GimpModule"><span 
 Creates a new <a class="link" href="GimpModuleDB.html" title="GimpModuleDB"><span class="type">GimpModuleDB</span></a> instance. The <em class="parameter"><code>verbose</code></em> parameter will be
 passed to the created <a class="link" href="GimpModule.html" title="GimpModule"><span class="type">GimpModule</span></a> instances using <a class="link" href="GimpModule.html#gimp-module-new" title="gimp_module_new ()"><code class="function">gimp_module_new()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>verbose</code></em> :</span></p></td>
@@ -113,8 +116,11 @@ passed to the created <a class="link" href="GimpModule.html" title="GimpModule">
 Sets the <em class="parameter"><code>load_inhibit</code></em> flag for all <a class="link" href="GimpModule.html" title="GimpModule"><span class="type">GimpModule</span></a>'s which are kept
 by <em class="parameter"><code>db</code></em> (using <a class="link" href="GimpModule.html#gimp-module-set-load-inhibit" title="gimp_module_set_load_inhibit ()"><code class="function">gimp_module_set_load_inhibit()</code></a>).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>db</code></em> :</span></p></td>
@@ -136,8 +142,11 @@ filenames to exclude from auto-loading.</td>
 Return the <span class="type">G_SEARCHPATH_SEPARATOR</span> selimited list of module filenames
 which are excluded from auto-loading.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>db</code></em> :</span></p></td>
@@ -160,8 +169,11 @@ Scans the directories contained in <em class="parameter"><code>module_path</code
 <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpdatafiles.html#gimp-datafiles-read-directories"><code class="function">gimp_datafiles_read_directories()</code></a> and creates a <a class="link" href="GimpModule.html" title="GimpModule"><span class="type">GimpModule</span></a>
 instance for every loadable module contained in the directories.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>db</code></em> :</span></p></td>
@@ -189,8 +201,11 @@ Note that the <a class="link" href="GimpModule.html" title="GimpModule"><span cl
 list and not freed as this is not possible with <span class="type">GTypeModule</span>
 instances which actually implement types.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>db</code></em> :</span></p></td>
@@ -214,8 +229,11 @@ to load modules from.</td>
                                                         <span class="type">gpointer</span>      user_data)         : <code class="literal">Run First</code></pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gimpmoduledb</code></em> :</span></p></td>
@@ -236,8 +254,11 @@ to load modules from.</td>
                                                         <span class="type">gpointer</span>      user_data)         : <code class="literal">Run First</code></pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gimpmoduledb</code></em> :</span></p></td>
@@ -258,8 +279,11 @@ to load modules from.</td>
                                                         <span class="type">gpointer</span>      user_data)         : <code class="literal">Run First</code></pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gimpmoduledb</code></em> :</span></p></td>

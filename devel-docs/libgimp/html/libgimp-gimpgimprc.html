@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpgimprc</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpcontext.html" title="gimpcontext">
@@ -74,8 +74,11 @@ the format: (&lt;token&gt; &lt;value&gt;). The value must be a
 string. Entries not corresponding to this format will cause warnings
 to be issued on gimprc parsing and will not be queryable.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>token</code></em> :</span></p></td>
@@ -103,8 +106,11 @@ GIMP. Plug-ins that need configuration information can use this
 function to store it, and <a class="link" href="libgimp-gimpgimprc.html#gimp-gimprc-query" title="gimp_gimprc_query ()"><code class="function">gimp_gimprc_query()</code></a> to retrieve it. This
 will accept _only_ string values in UTF-8 encoding.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>token</code></em> :</span></p></td>
@@ -128,8 +134,11 @@ will accept _only_ string values in UTF-8 encoding.
 <p>
 Retrieve a copy of the current color management configuration.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>A copy of the core's <a href="/local/head/share/gtk-doc/html/libgimpconfig/GimpColorConfig.html"><span class="type">GimpColorConfig</span></a>. You should unref
@@ -148,8 +157,11 @@ Get the default image comment as specified in the Preferences.
 <p>
 Returns a copy of the default image comment.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>Default image comment.</td>
@@ -166,8 +178,11 @@ Get the default unit (taken from the user's locale).
 <p>
 Returns the default unit's integer ID.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>Default unit.</td>
@@ -185,8 +200,11 @@ Get the list of modules which should not be loaded.
 <p>
 Returns a copy of the list of modules which should not be loaded.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The list of modules.</td>
@@ -207,8 +225,11 @@ taken from the Preferences (or the windowing system if this is set
 in the Preferences) and there's no guarantee for the value to be
 reasonable.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>xres</code></em> :</span></p></td>
@@ -235,8 +256,11 @@ Get the directory of the current GUI theme.
 <p>
 Returns a copy of the current GUI theme dir.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The GUI theme dir.</td>

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpplugin</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpmessage.html" title="gimpmessage">
@@ -78,8 +78,11 @@ location, you may specify an absolute path to another location. This
 procedure can only be called in the query function of a plug-in and
 it has to be called before any procedure is installed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>domain_name</code></em> :</span></p></td>
@@ -111,8 +114,11 @@ root directory where the plug-in help is installed. For each
 supported language there should be a file called 'gimp-help.xml'
 that maps the help IDs to the actual help files.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>domain_name</code></em> :</span></p></td>
@@ -150,8 +156,11 @@ Register an additional menu path for a plug-in procedure.
 This procedure installs an additional menu entry for the given
 procedure.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>procedure_name</code></em> :</span></p></td>
@@ -183,8 +192,11 @@ procedure. The menu-name should be the untranslated menu label. GIMP
 will look up the translation in the textdomain registered for the
 plug-in.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>menu_path</code></em> :</span></p></td>
@@ -219,8 +231,11 @@ calling <a class="link" href="libgimp-Gimp.html#gimp-get-pdb-error" title="gimp_
 its procedure calls fails. It can do this by displaying the error
 message or by forwarding it in its own return values.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>handler</code></em> :</span></p></td>
@@ -246,8 +261,11 @@ This procedure retrieves the currently active error handler for
 procedure calls made by the calling plug-in. See
 <a class="link" href="libgimp-gimpplugin.html#gimp-plugin-set-pdb-error-handler" title="gimp_plugin_set_pdb_error_handler ()"><code class="function">gimp_plugin_set_pdb_error_handler()</code></a> for details.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>Who is responsible for handling procedure call errors.</td>

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpHelpUI</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities">
 <link rel="prev" href="libgimpwidgets-GimpCairoUtils.html" title="GimpCairo-utils">
@@ -85,13 +85,16 @@ All these dialog constructors functions call <a class="link" href="libgimpwidget
 </p>
 <p>
 In most cases it will be ok to use <a class="link" href="libgimpwidgets-GimpHelpUI.html#gimp-standard-help-func" title="gimp_standard_help_func ()"><code class="function">gimp_standard_help_func()</code></a> which
-does nothing but passing the <em class="parameter"><code>help_id</code></em> string to <a href="/local/head/share/gtk-doc/html/app/app-Gimp-gui.html#gimp-help"><code class="function">gimp_help()</code></a>. If
+does nothing but passing the <em class="parameter"><code>help_id</code></em> string to <a href="/local/head/share/gtk-doc/html/libgimp/libgimp-gimphelp.html#gimp-help"><code class="function">gimp_help()</code></a>. If
 your plug-in needs some more sophisticated help handling you can
-provide your own <em class="parameter"><code>help_func</code></em> which has to call <a href="/local/head/share/gtk-doc/html/app/app-Gimp-gui.html#gimp-help"><code class="function">gimp_help()</code></a> to
+provide your own <em class="parameter"><code>help_func</code></em> which has to call <a href="/local/head/share/gtk-doc/html/libgimp/libgimp-gimphelp.html#gimp-help"><code class="function">gimp_help()</code></a> to
 actually display the help.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>help_id</code></em> :</span></p></td>
@@ -149,10 +152,13 @@ all plug-in dialogs.
                                                          <em class="parameter"><code><span class="type">gpointer</span> help_data</code></em>);</pre>
 <p>
 This is the standard GIMP help function which does nothing but calling
-<a href="/local/head/share/gtk-doc/html/app/app-Gimp-gui.html#gimp-help"><code class="function">gimp_help()</code></a>. It is the right function to use in almost all cases.
+<a href="/local/head/share/gtk-doc/html/libgimp/libgimp-gimphelp.html#gimp-help"><code class="function">gimp_help()</code></a>. It is the right function to use in almost all cases.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>help_id</code></em> :</span></p></td>
@@ -177,8 +183,11 @@ Note that this function is automatically called by all libgimp dialog
 constructors. You only have to call it for windows/dialogs you created
 "manually".
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>widget</code></em> :</span></p></td>
@@ -216,8 +225,11 @@ This function can be called with <span class="type">NULL</span> for <em class="p
 if you want to set a help link for a widget which shouldn't have
 a visible tooltip.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>widget</code></em> :</span></p></td>
@@ -245,8 +257,11 @@ Just like <a class="link" href="libgimpwidgets-GimpHelpUI.html#gimp-help-set-hel
 is marked up with
 Pango text markup language.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>widget</code></em> :</span></p></td>
@@ -282,8 +297,11 @@ be displayed. Otherwise the help system will ascend the widget hierarchy
 until it finds an attached <em class="parameter"><code>help_id</code></em> string (which should be the
 case at least for every window/dialog).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>widget</code></em> :</span></p></td>
 <td>Any <span class="type">GtkWidget</span> on the screen.</td>

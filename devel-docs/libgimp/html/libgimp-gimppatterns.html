@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimppatterns</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-data.html" title="Data Objects">
 <link rel="prev" href="libgimp-gimppattern.html" title="gimppattern">
@@ -69,8 +69,11 @@ Refresh current patterns. This function always succeeds.
 This procedure retrieves all patterns currently in the user's
 pattern path and updates all pattern dialogs accordingly.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>TRUE on success.</td>
@@ -90,8 +93,11 @@ This procedure returns a complete listing of available GIMP
 patterns. Each name returned can be used as input to the
 <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-pattern" title="gimp_context_set_pattern ()"><code class="function">gimp_context_set_pattern()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>filter</code></em> :</span></p></td>
@@ -117,8 +123,11 @@ patterns. Each name returned can be used as input to the
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_patterns_get_pattern</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-pattern" title="gimp_context_get_pattern ()"><code class="function">gimp_context_get_pattern()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
@@ -146,8 +155,11 @@ patterns. Each name returned can be used as input to the
 <p>
 This procedure is deprecated! Use <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-pattern" title="gimp_context_set_pattern ()"><code class="function">gimp_context_set_pattern()</code></a> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
@@ -173,8 +185,11 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpcontext.html
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_patterns_get_pattern_data</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimppattern.html#gimp-pattern-get-pixels" title="gimp_pattern_get_pixels ()"><code class="function">gimp_pattern_get_pixels()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>

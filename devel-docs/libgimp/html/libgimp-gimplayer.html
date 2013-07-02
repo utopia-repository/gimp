@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimplayer</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpitemtransform.html" title="gimpitemtransform">
@@ -146,8 +146,11 @@ automatic. Add the new layer with the <a class="link" href="libgimp-gimpimage.ht
 command. Other attributes such as layer mask modes, and offsets
 should be set with explicit procedure calls.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -199,8 +202,11 @@ this is not automatic. Add the new layer with the
 <a class="link" href="libgimp-gimpimage.html#gimp-image-insert-layer" title="gimp_image_insert_layer ()"><code class="function">gimp_image_insert_layer()</code></a> command. Other attributes such as layer
 mask modes, and offsets should be set with explicit procedure calls.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -233,8 +239,11 @@ image, as this is not automatic. Add the new layer with the
 <a class="link" href="libgimp-gimpimage.html#gimp-image-insert-layer" title="gimp_image_insert_layer ()"><code class="function">gimp_image_insert_layer()</code></a> command. Other attributes such as layer
 mask modes, and offsets should be set with explicit procedure calls.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -279,8 +288,11 @@ If you pass <em class="parameter"><code>progress_end</code></em> &gt; <em class=
 <a class="link" href="libgimp-gimpprogress.html#gimp-progress-update" title="gimp_progress_update ()"><code class="function">gimp_progress_update()</code></a> will be called for. You have to call
 <a class="link" href="libgimp-gimpprogress.html#gimp-progress-init" title="gimp_progress_init ()"><code class="function">gimp_progress_init()</code></a> beforehand then.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -339,8 +351,11 @@ If you pass <em class="parameter"><code>progress_end</code></em> &gt; <em class=
 <a class="link" href="libgimp-gimpprogress.html#gimp-progress-update" title="gimp_progress_update ()"><code class="function">gimp_progress_update()</code></a> will be called for. You have to call
 <a class="link" href="libgimp-gimpprogress.html#gimp-progress-init" title="gimp_progress_init ()"><code class="function">gimp_progress_init()</code></a> beforehand then.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -383,8 +398,11 @@ mode and opacity should be set with explicit procedure calls. Add
 the new layer group (which is a kind of layer) with the
 <a class="link" href="libgimp-gimpimage.html#gimp-image-insert-layer" title="gimp_image_insert_layer ()"><code class="function">gimp_image_insert_layer()</code></a> command.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -410,8 +428,11 @@ This procedure copies the specified layer and returns the copy. The
 newly copied layer is for use within the original layer's image. It
 should not be subsequently added to any other image.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -442,8 +463,11 @@ image origin. This operation only works if the layer has been added
 to an image. The interpolation method used can be set with
 <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-interpolation" title="gimp_context_set_interpolation ()"><code class="function">gimp_context_set_interpolation()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -480,8 +504,11 @@ to an image. The interpolation method used can be set with
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_layer_scale_full</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimplayer.html#gimp-layer-scale" title="gimp_layer_scale ()"><code class="function">gimp_layer_scale()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -528,8 +555,11 @@ are equal to the supplied parameters. Offsets are also provided
 which describe the position of the previous layer's content. This
 operation only works if the layer has been added to an image.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -569,8 +599,11 @@ Resize a layer to the image size.
 This procedure resizes the layer so that it's new width and height
 are equal to the width and height of its image container.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -600,8 +633,11 @@ been added to an image. All additional layers contained in the image
 which have the linked flag set to TRUE w ill also be translated by
 the specified offsets.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -636,8 +672,11 @@ makes it possible to clear and erase to transparency, instead of the
 background color. This transforms layers of type RGB to RGBA, GRAY
 to GRAYA, and INDEXED to INDEXEDA.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -663,8 +702,11 @@ This procedure removes the alpha channel from a layer, blending all
 color. This transforms layers of type RGBA to RGB, GRAYA to GRAY,
 and INDEXEDA to INDEXED.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -692,8 +734,11 @@ This procedure sets the offsets for the specified layer. The offsets
 are relative to the image origin and can be any values. This
 operation is valid only on layers which have been added to an image.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -734,8 +779,11 @@ current selection or a grayscale copy of the layer. The layer mask
 still needs to be added to the layer. This can be done with a call
 to <a class="link" href="libgimp-gimplayer.html#gimp-layer-add-mask" title="gimp_layer_add_mask ()"><code class="function">gimp_layer_add_mask()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -763,8 +811,11 @@ Get the specified mask's layer.
 This procedure returns the specified mask's layer , or -1 if none
 exists.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>mask_ID</code></em> :</span></p></td>
@@ -789,8 +840,11 @@ Get the specified layer's mask if it exists.
 This procedure returns the specified layer's mask, or -1 if none
 exists.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -820,8 +874,11 @@ the same dimensions as the layer. The layer must have been created
 for use with the specified image and the mask must have been created
 with the procedure 'gimp-layer-create-mask'.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -850,8 +907,11 @@ Remove the specified layer mask from the layer.
 This procedure removes the specified layer mask from the layer. If
 the mask doesn't exist, an error is returned.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -879,8 +939,11 @@ Get the lock alpha channel setting of the specified layer.
 This procedure returns the specified layer's lock alpha channel
 setting.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -905,8 +968,11 @@ Set the lock alpha channel setting of the specified layer.
 This procedure sets the specified layer's lock alpha channel
 setting.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -934,8 +1000,11 @@ setting.
 <p>
 This procedure is deprecated! Use <a class="link" href="libgimp-gimplayer.html#gimp-layer-get-lock-alpha" title="gimp_layer_get_lock_alpha ()"><code class="function">gimp_layer_get_lock_alpha()</code></a> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -960,8 +1029,11 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimplayer.html#g
 <p>
 This procedure is deprecated! Use <a class="link" href="libgimp-gimplayer.html#gimp-layer-set-lock-alpha" title="gimp_layer_set_lock_alpha ()"><code class="function">gimp_layer_set_lock_alpha()</code></a> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -990,8 +1062,11 @@ This procedure returns the specified layer's apply mask setting. If
 the value is TRUE, then the layer mask for this layer is currently
 being composited with the layer's alpha channel.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -1018,8 +1093,11 @@ controls whether the layer's mask is currently affecting the alpha
 channel. If there is no layer mask, this function will return an
 error.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -1049,8 +1127,11 @@ controls whether the layer or its mask is visible. TRUE indicates
 that the mask should be visible. If the layer has no mask, then this
 function returns an error.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -1077,8 +1158,11 @@ controls whether the layer or its mask is visible. TRUE indicates
 that the mask should be visible. If there is no layer mask, this
 function will return an error.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -1107,8 +1191,11 @@ This procedure returns the specified layer's edit mask setting. If
 the value is TRUE, then the layer mask for this layer is currently
 active, and not the layer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -1135,8 +1222,11 @@ controls whether the layer or it's mask is currently active for
 editing. If the specified layer has no layer mask, then this
 procedure will return an error.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -1163,8 +1253,11 @@ Get the opacity of the specified layer.
 <p>
 This procedure returns the specified layer's opacity.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -1188,8 +1281,11 @@ Set the opacity of the specified layer.
 <p>
 This procedure sets the specified layer's opacity.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -1216,8 +1312,11 @@ Get the combination mode of the specified layer.
 <p>
 This procedure returns the specified layer's combination mode.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -1241,8 +1340,11 @@ Set the combination mode of the specified layer.
 <p>
 This procedure sets the specified layer's combination mode.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -1271,8 +1373,11 @@ This procedure returns whether the layer is a floating selection.
 Floating selections are special cases of layers which are attached
 to a specific drawable.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>

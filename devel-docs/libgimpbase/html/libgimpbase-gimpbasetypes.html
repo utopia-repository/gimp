@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpbasetypes</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Base Library Reference Manual">
 <link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimpbaseenums.html" title="gimpbaseenums">
@@ -75,8 +75,11 @@ GType.
 This structure is used to register translatable descriptions and
 help texts for enum values. See <a class="link" href="libgimpbase-gimpbasetypes.html#gimp-enum-set-value-descriptions" title="gimp_enum_set_value_descriptions ()"><code class="function">gimp_enum_set_value_descriptions()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><span class="type">gint</span> <em class="structfield"><code><a name="GimpEnumDesc.value"></a>value</code></em>;</span></p></td>
@@ -106,8 +109,11 @@ help texts for enum values. See <a class="link" href="libgimpbase-gimpbasetypes.
 This structure is used to register translatable descriptions and
 help texts for flag values. See <a class="link" href="libgimpbase-gimpbasetypes.html#gimp-flags-set-value-descriptions" title="gimp_flags_set_value_descriptions ()"><code class="function">gimp_flags_set_value_descriptions()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><span class="type">guint</span> <em class="structfield"><code><a name="GimpFlagsDesc.value"></a>value</code></em>;</span></p></td>
@@ -135,8 +141,11 @@ domain identifier to a <span class="type">GType</span>. The only purpose of this
 to use it when registering a <span class="type">G_TYPE_ENUM</span> with translatable value
 names.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
@@ -162,8 +171,11 @@ previously set using <a class="link" href="libgimpbase-gimpbasetypes.html#gimp-t
 not need to use this function directly, use <a class="link" href="libgimpbase-gimputils.html#gimp-enum-get-value" title="gimp_enum_get_value ()"><code class="function">gimp_enum_get_value()</code></a>
 or <a class="link" href="libgimpbase-gimputils.html#gimp-enum-value-get-desc" title="gimp_enum_value_get_desc ()"><code class="function">gimp_enum_value_get_desc()</code></a> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
@@ -189,8 +201,11 @@ This function attaches a constant string as a translation context
 to a <span class="type">GType</span>. The only purpose of this function is to use it when
 registering a <span class="type">G_TYPE_ENUM</span> with translatable value names.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
@@ -216,8 +231,11 @@ using <a class="link" href="libgimpbase-gimpbasetypes.html#gimp-type-set-transla
 use this function directly, use <a class="link" href="libgimpbase-gimputils.html#gimp-enum-get-value" title="gimp_enum_get_value ()"><code class="function">gimp_enum_get_value()</code></a> or
 <a class="link" href="libgimpbase-gimputils.html#gimp-enum-value-get-desc" title="gimp_enum_value_get_desc ()"><code class="function">gimp_enum_value_get_desc()</code></a> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
@@ -242,8 +260,11 @@ or <code class="literal">NULL</code> if no context was set</td>
 Sets the array of human readable and translatable descriptions
 and help texts for enum values.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enum_type</code></em> :</span></p></td>
@@ -267,8 +288,11 @@ and help texts for enum values.
 Retreives the array of human readable and translatable descriptions
 and help texts for enum values.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enum_type</code></em> :</span></p></td>
@@ -292,8 +316,11 @@ and help texts for enum values.
 Retreives the array of human readable and translatable descriptions
 and help texts for flags values.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags_type</code></em> :</span></p></td>
@@ -318,8 +345,11 @@ and help texts for flags values.
 Sets the array of human readable and translatable descriptions
 and help texts for flags values.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags_type</code></em> :</span></p></td>

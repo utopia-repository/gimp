@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpprogress</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpproceduraldb.html" title="gimpproceduraldb">
@@ -115,8 +115,11 @@ Initializes the progress bar for the current plug-in.
 Initializes the progress bar for the current plug-in. It is only
 valid to call this procedure from a plug-in.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>message</code></em> :</span></p></td>
@@ -141,8 +144,11 @@ Initializes the progress bar for the current plug-in.
 Initializes the progress bar for the current plug-in. It is only
 valid to call this procedure from a plug-in.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
@@ -169,8 +175,11 @@ valid to call this procedure from a plug-in.
 <p>
 Updates the progress bar for the current plug-in.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>percentage</code></em> :</span></p></td>
@@ -197,8 +206,11 @@ to call this procedure from a plug-in. Use this function instead of
 made. This usually causes the the progress bar to enter \"activity
 mode\", where a block bounces back and forth.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>TRUE on success.</td>
@@ -218,8 +230,11 @@ This function allows to change the text in the progress bar for the
 current plug-in. Unlike <a class="link" href="libgimp-gimpprogress.html#gimp-progress-init" title="gimp_progress_init ()"><code class="function">gimp_progress_init()</code></a> it does not change the
 displayed value.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>message</code></em> :</span></p></td>
@@ -246,8 +261,11 @@ This function allows to change the text in the progress bar for the
 current plug-in. Unlike <a class="link" href="libgimp-gimpprogress.html#gimp-progress-init" title="gimp_progress_init ()"><code class="function">gimp_progress_init()</code></a> it does not change the
 displayed value.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
@@ -279,8 +297,11 @@ Ends the progress display for the current plug-in. Most plug-ins
 don't need to call this, they just exit when the work is done. It is
 only valid to call this procedure from a plug-in.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>TRUE on success.</td>
@@ -300,8 +321,11 @@ progress is displayed in.
 This function returns the native window ID of the toplevel window
 this plug-in\'s progress is displayed in.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The progress bar's toplevel window.</td>
@@ -362,8 +386,11 @@ this plug-in\'s progress is displayed in.
 <a name="gimp-progress-install-vtable"></a><h3>gimp_progress_install_vtable ()</h3>
 <pre class="programlisting">const <span class="returnvalue">gchar</span> *       gimp_progress_install_vtable        (<em class="parameter"><code>const <a class="link" href="libgimp-gimpprogress.html#GimpProgressVtable" title="struct GimpProgressVtable"><span class="type">GimpProgressVtable</span></a> *vtable</code></em>,
                                                          <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vtable</code></em> :</span></p></td>
@@ -399,8 +426,11 @@ negative values. This is triggered by calls to <a class="link" href="libgimp-gim
 The callback should then implement a progress indicating business,
 e.g. by calling <code class="function">gtk_progress_bar_pulse()</code>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>start_callback</code></em> :</span></p></td>
@@ -438,8 +468,11 @@ e.g. by calling <code class="function">gtk_progress_bar_pulse()</code>.
 Uninstalls a temporary progress procedure that was installed using
 <a class="link" href="libgimp-gimpprogress.html#gimp-progress-install" title="gimp_progress_install ()"><code class="function">gimp_progress_install()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>progress_callback</code></em> :</span></p></td>
@@ -463,8 +496,11 @@ Cancels a running progress.
 <p>
 This function cancels the currently running progress.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>progress_callback</code></em> :</span></p></td>

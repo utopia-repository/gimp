@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpselection</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpregioniterator.html" title="gimpregioniterator">
@@ -103,8 +103,11 @@ selection. The selection ends at the upper left corner of this
 pixel. This means the width of the selection can be calculated as
 (x2 - x1), its height as (y2 - y1).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -148,8 +151,11 @@ Select all of the image.
 This procedure sets the selection mask to completely encompass the
 image. Every pixel in the selection channel is set to 255.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -173,8 +179,11 @@ Deselect the entire image.
 This procedure deselects the entire image. Every pixel in the
 selection channel is set to 0.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -198,8 +207,11 @@ selection channel is set to 0.
 <p>
 This procedure is deprecated! Use <a class="link" href="libgimp-gimpselection.html#gimp-selection-none" title="gimp_selection_none ()"><code class="function">gimp_selection_none()</code></a> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -223,8 +235,11 @@ Determine whether the selection is empty.
 This procedure returns TRUE if the selection for the specified image
 is empty.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -255,8 +270,11 @@ drawable and the resulting data is made into a new layer which is
 instantiated as a floating selection. The offsets allow initial
 positioning of the new floating selection.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -289,8 +307,11 @@ positioning of the new floating selection.
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_selection_load</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpimageselect.html#gimp-image-select-item" title="gimp_image_select_item ()"><code class="function">gimp_image_select_item()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>channel_ID</code></em> :</span></p></td>
@@ -315,8 +336,11 @@ This procedure copies the selection mask and stores the content in a
 new channel. The new channel is automatically inserted into the
 image's list of channels.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -342,8 +366,11 @@ Find the value of the selection at the specified coordinates.
 This procedure returns the value of the selection at the specified
 coordinates. If the coordinates lie out of bounds, 0 is returned.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -376,8 +403,11 @@ Grow the image's selection
 This procedure grows the selection. Growing involves expanding the
 boundary in all directions by the specified pixel amount.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -407,8 +437,11 @@ This procedure shrinks the selection. Shrinking invovles trimming
 the existing selection boundary on all sides by the specified number
 of pixels.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -436,8 +469,11 @@ Invert the selection mask.
 This procedure inverts the selection mask. For every pixel in the
 selection channel, its new value is calculated as (255 - old-value).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -462,8 +498,11 @@ Feather the image's selection
 This procedure feathers the selection. Feathering is implemented
 using a gaussian blur.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -493,8 +532,11 @@ selection channel, if the value is &gt; 127, the new pixel is
 assigned a value of 255. This removes any \"anti-aliasing\" that
 might exist in the selection mask's boundary.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -520,8 +562,11 @@ This procedure borders the selection. Bordering creates a new
 selection which is defined along the boundary of the previous
 selection at every point within the specified radius.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -554,8 +599,11 @@ beyond the bounds of the image are set to empty. Valid regions of
 the selection which are translated beyond the bounds of the image
 because of this call are lost.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -584,8 +632,11 @@ because of this call are lost.
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_selection_layer_alpha</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpimageselect.html#gimp-image-select-item" title="gimp_image_select_item ()"><code class="function">gimp_image_select_item()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -607,8 +658,11 @@ because of this call are lost.
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_selection_combine</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpimageselect.html#gimp-image-select-item" title="gimp_image_select_item ()"><code class="function">gimp_image_select_item()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>channel_ID</code></em> :</span></p></td>

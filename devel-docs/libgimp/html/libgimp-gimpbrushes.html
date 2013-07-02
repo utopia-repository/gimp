@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpbrushes</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-data.html" title="Data Objects">
 <link rel="prev" href="libgimp-gimpbrush.html" title="gimpbrush">
@@ -78,8 +78,11 @@ Refresh current brushes. This function always succeeds.
 This procedure retrieves all brushes currently in the user's brush
 path and updates the brush dialogs accordingly.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>TRUE on success.</td>
@@ -99,8 +102,11 @@ This procedure returns a complete listing of available GIMP brushes.
 Each name returned can be used as input to the
 <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-brush" title="gimp_context_set_brush ()"><code class="function">gimp_context_set_brush()</code></a> procedure.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>filter</code></em> :</span></p></td>
@@ -127,8 +133,11 @@ Each name returned can be used as input to the
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_brushes_get_brush</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-brush" title="gimp_context_get_brush ()"><code class="function">gimp_context_get_brush()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
@@ -160,8 +169,11 @@ Each name returned can be used as input to the
 <p>
 This procedure is deprecated! Use <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-brush" title="gimp_context_set_brush ()"><code class="function">gimp_context_set_brush()</code></a> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
@@ -185,8 +197,11 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpcontext.html
 <p>
 This procedure is deprecated! Use <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-opacity" title="gimp_context_get_opacity ()"><code class="function">gimp_context_get_opacity()</code></a> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The brush opacity.</td>
@@ -204,8 +219,11 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpcontext.html
 <p>
 This procedure is deprecated! Use <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-opacity" title="gimp_context_set_opacity ()"><code class="function">gimp_context_set_opacity()</code></a> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>opacity</code></em> :</span></p></td>
@@ -229,8 +247,11 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpcontext.html
 <p>
 This procedure is deprecated! Use <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-paint-mode" title="gimp_context_get_paint_mode ()"><code class="function">gimp_context_get_paint_mode()</code></a> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The paint mode.</td>
@@ -248,8 +269,11 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpcontext.html
 <p>
 This procedure is deprecated! Use <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-paint-mode" title="gimp_context_set_paint_mode ()"><code class="function">gimp_context_set_paint_mode()</code></a> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>paint_mode</code></em> :</span></p></td>
@@ -270,8 +294,11 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpcontext.html
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_brushes_get_spacing</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-spacing" title="gimp_brush_get_spacing ()"><code class="function">gimp_brush_get_spacing()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The brush spacing.</td>
@@ -286,8 +313,11 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpcontext.html
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_brushes_set_spacing</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpbrush.html#gimp-brush-set-spacing" title="gimp_brush_set_spacing ()"><code class="function">gimp_brush_set_spacing()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>spacing</code></em> :</span></p></td>
@@ -315,8 +345,11 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpcontext.html
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_brushes_get_brush_data</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-pixels" title="gimp_brush_get_pixels ()"><code class="function">gimp_brush_get_pixels()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>

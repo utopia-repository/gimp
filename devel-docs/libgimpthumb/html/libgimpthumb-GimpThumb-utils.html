@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpThumb-utils</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Thumbnail Library Reference Manual">
 <link rel="up" href="libgimpthumb.html" title="Part I. GIMP Thumbnail Library">
 <link rel="prev" href="GimpThumbnail.html" title="GimpThumbnail">
@@ -93,8 +93,11 @@ defined in the spec. If you wish to use libgimpthumb to store
 application-specific thumbnails, you can specify a different base
 directory here.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>creator</code></em> :</span></p></td>
@@ -133,8 +136,11 @@ there are any).
 If a thumbnail is found, it's size is written to the variable
 pointer to by <em class="parameter"><code>size</code></em> and the file location is returned.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>uri</code></em> :</span></p></td>
@@ -165,8 +171,11 @@ This is a convenience and portability wrapper around <code class="function">stat
 checks if the given <em class="parameter"><code>filename</code></em> exists and returns modification time
 and file size in 64bit integer values.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
@@ -201,8 +210,11 @@ the file doesn't exist.</td>
 Creates the name of the thumbnail file of the specified <em class="parameter"><code>size</code></em> that
 belongs to an image file located at the given <em class="parameter"><code>uri</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>uri</code></em> :</span></p></td>
@@ -237,8 +249,11 @@ You shouldn't have to call this function directly since
 <a class="link" href="GimpThumbnail.html#gimp-thumbnail-save-thumb" title="gimp_thumbnail_save_thumb ()"><code class="function">gimp_thumbnail_save_thumb()</code></a> and <a class="link" href="GimpThumbnail.html#gimp-thumbnail-save-failure" title="gimp_thumbnail_save_failure ()"><code class="function">gimp_thumbnail_save_failure()</code></a> will
 do this for you.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
@@ -266,8 +281,11 @@ Retrieve the name of the thumbnail folder for a specific size. The
 returned pointer will become invalid if <a class="link" href="libgimpthumb-GimpThumb-utils.html#gimp-thumb-init" title="gimp_thumb_init ()"><code class="function">gimp_thumb_init()</code></a> is used
 again. It must not be changed or freed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
@@ -288,8 +306,11 @@ again. It must not be changed or freed.
 Deletes all thumbnails for the image file specified by <em class="parameter"><code>uri</code></em> from the
 user's thumbnail repository.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>uri</code></em> :</span></p></td>
 <td>an escaped URI</td>
@@ -307,8 +328,11 @@ Creates the name of a local thumbnail file of the specified <em class="parameter
 that belongs to an image file located at the given <em class="parameter"><code>uri</code></em>. Local
 thumbnails have been introduced with version 0.7 of the spec.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>uri</code></em> :</span></p></td>
@@ -344,8 +368,11 @@ create it if necessary.
 You shouldn't have to call this function directly since
 <a class="link" href="GimpThumbnail.html#gimp-thumbnail-save-thumb-local" title="gimp_thumbnail_save_thumb_local ()"><code class="function">gimp_thumbnail_save_thumb_local()</code></a> will do this for you.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dirname</code></em> :</span></p></td>
@@ -379,8 +406,11 @@ Retrieve the name of the local thumbnail folder for a specific
 size.  Unlike <a class="link" href="libgimpthumb-GimpThumb-utils.html#gimp-thumb-get-thumb-dir" title="gimp_thumb_get_thumb_dir ()"><code class="function">gimp_thumb_get_thumb_dir()</code></a> the returned string is not
 constant and should be free'd when it is not any longer needed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dirname</code></em> :</span></p></td>
@@ -406,8 +436,11 @@ constant and should be free'd when it is not any longer needed.
 Deletes all thumbnails for the image file specified by <em class="parameter"><code>uri</code></em> from
 the local thumbnail repository.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>uri</code></em> :</span></p></td>
 <td>an escaped URI</td>

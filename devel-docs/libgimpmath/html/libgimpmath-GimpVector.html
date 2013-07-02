@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpVector</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Math Library Reference Manual">
 <link rel="up" href="libgimpmath.html" title="Part I. GIMP Math Library">
 <link rel="prev" href="libgimpmath-GimpMatrix.html" title="GimpMatrix">
@@ -165,8 +165,11 @@ Utilities to set up and manipulate vectors.
 <p>
 A two dimensional vector.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpVector2.x"></a>x</code></em>;</span></p></td>
@@ -189,8 +192,11 @@ A two dimensional vector.
 <p>
 A three dimensional vector.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpVector3.x"></a>x</code></em>;</span></p></td>
@@ -217,8 +223,11 @@ A three dimensional vector.
 <p>
 A four dimensional vector.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpVector4.x"></a>x</code></em>;</span></p></td>
@@ -247,8 +256,11 @@ A four dimensional vector.
 <p>
 Creates a <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="struct GimpVector2"><span class="type">GimpVector2</span></a> of coordinates <em class="parameter"><code>x</code></em> and <em class="parameter"><code>y</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
@@ -274,8 +286,11 @@ Creates a <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="
 <p>
 Sets the X and Y coordinates of <em class="parameter"><code>vector</code></em> to <em class="parameter"><code>x</code></em> and <em class="parameter"><code>y</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -299,8 +314,11 @@ Sets the X and Y coordinates of <em class="parameter"><code>vector</code></em> t
 <p>
 Computes the length of a 2D vector.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -321,8 +339,11 @@ Computes the length of a 2D vector.
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-length" title="gimp_vector2_length ()"><code class="function">gimp_vector2_length()</code></a> but the
 vector is passed by value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -344,8 +365,11 @@ vector is passed by value rather than by reference.
 Multiplies each component of the <em class="parameter"><code>vector</code></em> by <em class="parameter"><code>factor</code></em>. Note that this
 is equivalent to multiplying the vectors length by <em class="parameter"><code>factor</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -367,8 +391,11 @@ is equivalent to multiplying the vectors length by <em class="parameter"><code>f
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-mul" title="gimp_vector2_mul ()"><code class="function">gimp_vector2_mul()</code></a> but the vector is
 passed by value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -392,8 +419,11 @@ passed by value rather than by reference.
 <p>
 Compute a normalized perpendicular vector to <em class="parameter"><code>vector</code></em>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -415,8 +445,11 @@ Compute a normalized perpendicular vector to <em class="parameter"><code>vector<
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-normal" title="gimp_vector2_normal ()"><code class="function">gimp_vector2_normal()</code></a> but the vector
 is passed by value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -438,8 +471,11 @@ is passed by value rather than by reference.
 Normalizes the <em class="parameter"><code>vector</code></em> so the length of the <em class="parameter"><code>vector</code></em> is 1.0. The nul
 vector will not be changed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
 <td>a pointer to a <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="struct GimpVector2"><span class="type">GimpVector2</span></a>.</td>
@@ -454,8 +490,11 @@ vector will not be changed.
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-normalize" title="gimp_vector2_normalize ()"><code class="function">gimp_vector2_normalize()</code></a> but the
 vector is passed by value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -476,8 +515,11 @@ direction but with a length of 1.0.</td>
 <p>
 Negates the <em class="parameter"><code>vector</code></em> (i.e. negate all its coordinates).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
 <td>a pointer to a <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="struct GimpVector2"><span class="type">GimpVector2</span></a>.</td>
@@ -492,8 +534,11 @@ Negates the <em class="parameter"><code>vector</code></em> (i.e. negate all its 
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-neg" title="gimp_vector2_neg ()"><code class="function">gimp_vector2_neg()</code></a> but the vector
 is passed by value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -516,8 +561,11 @@ is passed by value rather than by reference.
 Computes the sum of two 2D vectors. The resulting <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="struct GimpVector2"><span class="type">GimpVector2</span></a> is
 stored in <em class="parameter"><code>result</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>result</code></em> :</span></p></td>
@@ -543,8 +591,11 @@ stored in <em class="parameter"><code>result</code></em>.
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-add" title="gimp_vector2_add ()"><code class="function">gimp_vector2_add()</code></a> but the vectors
 are passed by value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector1</code></em> :</span></p></td>
@@ -571,8 +622,11 @@ are passed by value rather than by reference.
 Computes the difference of two 2D vectors (<em class="parameter"><code>vector1</code></em> minus <em class="parameter"><code>vector2</code></em>).
 The resulting <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="struct GimpVector2"><span class="type">GimpVector2</span></a> is stored in <em class="parameter"><code>result</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>result</code></em> :</span></p></td>
@@ -598,8 +652,11 @@ The resulting <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" tit
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-sub" title="gimp_vector2_sub ()"><code class="function">gimp_vector2_sub()</code></a> but the vectors
 are passed by value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector1</code></em> :</span></p></td>
@@ -625,8 +682,11 @@ are passed by value rather than by reference.
 Computes the inner (dot) product of two 2D vectors.
 This product is zero if and only if the two vectors are orthognal.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector1</code></em> :</span></p></td>
@@ -652,8 +712,11 @@ This product is zero if and only if the two vectors are orthognal.
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-inner-product" title="gimp_vector2_inner_product ()"><code class="function">gimp_vector2_inner_product()</code></a> but the
 vectors are passed by value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector1</code></em> :</span></p></td>
@@ -685,8 +748,11 @@ vector.
 Note that in 2D, this function is useful to test if two vectors are
 parallel or not, or to compute the area spawned by two vectors.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector1</code></em> :</span></p></td>
@@ -712,8 +778,11 @@ parallel or not, or to compute the area spawned by two vectors.
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-cross-product" title="gimp_vector2_cross_product ()"><code class="function">gimp_vector2_cross_product()</code></a> but the
 vectors are passed by value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector1</code></em> :</span></p></td>
@@ -738,8 +807,11 @@ vectors are passed by value rather than by reference.
 <p>
 Rotates the <em class="parameter"><code>vector</code></em> counterclockwise by <em class="parameter"><code>alpha</code></em> radians.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -761,8 +833,11 @@ Rotates the <em class="parameter"><code>vector</code></em> counterclockwise by <
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-rotate" title="gimp_vector2_rotate ()"><code class="function">gimp_vector2_rotate()</code></a> but the vector
 is passed by value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -789,8 +864,11 @@ radians.</td>
 <p>
 Creates a <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="struct GimpVector3"><span class="type">GimpVector3</span></a> of coordinate <em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em> and <em class="parameter"><code>z</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
@@ -821,8 +899,11 @@ Creates a <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="
 <p>
 Sets the X, Y and Z coordinates of <em class="parameter"><code>vector</code></em> to <em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em> and <em class="parameter"><code>z</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -850,8 +931,11 @@ Sets the X, Y and Z coordinates of <em class="parameter"><code>vector</code></em
 <p>
 Computes the length of a 3D vector.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -872,8 +956,11 @@ Computes the length of a 3D vector.
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-length" title="gimp_vector3_length ()"><code class="function">gimp_vector3_length()</code></a> but the vector
 is passed by value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -895,8 +982,11 @@ is passed by value rather than by reference.
 Multiplies each component of the <em class="parameter"><code>vector</code></em> by <em class="parameter"><code>factor</code></em>. Note that
 this is equivalent to multiplying the vectors length by <em class="parameter"><code>factor</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -918,8 +1008,11 @@ this is equivalent to multiplying the vectors length by <em class="parameter"><c
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-mul" title="gimp_vector3_mul ()"><code class="function">gimp_vector3_mul()</code></a> but the vector is
 passed by value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -944,8 +1037,11 @@ passed by value rather than by reference.
 Normalizes the <em class="parameter"><code>vector</code></em> so the length of the <em class="parameter"><code>vector</code></em> is 1.0. The nul
 vector will not be changed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
 <td>a pointer to a <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="struct GimpVector3"><span class="type">GimpVector3</span></a>.</td>
@@ -960,8 +1056,11 @@ vector will not be changed.
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-normalize" title="gimp_vector3_normalize ()"><code class="function">gimp_vector3_normalize()</code></a> but the
 vector is passed by value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -982,8 +1081,11 @@ direction but with a length of 1.0.</td>
 <p>
 Negates the <em class="parameter"><code>vector</code></em> (i.e. negate all its coordinates).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
 <td>a pointer to a <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="struct GimpVector3"><span class="type">GimpVector3</span></a>.</td>
@@ -998,8 +1100,11 @@ Negates the <em class="parameter"><code>vector</code></em> (i.e. negate all its 
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-neg" title="gimp_vector3_neg ()"><code class="function">gimp_vector3_neg()</code></a> but the vector
 is passed by value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -1022,8 +1127,11 @@ is passed by value rather than by reference.
 Computes the sum of two 3D vectors. The resulting <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="struct GimpVector3"><span class="type">GimpVector3</span></a> is
 stored in <em class="parameter"><code>result</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>result</code></em> :</span></p></td>
@@ -1049,8 +1157,11 @@ stored in <em class="parameter"><code>result</code></em>.
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-add" title="gimp_vector3_add ()"><code class="function">gimp_vector3_add()</code></a> but the vectors
 are passed by value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector1</code></em> :</span></p></td>
@@ -1077,8 +1188,11 @@ are passed by value rather than by reference.
 Computes the difference of two 3D vectors (<em class="parameter"><code>vector1</code></em> minus <em class="parameter"><code>vector2</code></em>).
 The resulting <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="struct GimpVector3"><span class="type">GimpVector3</span></a> is stored in <em class="parameter"><code>result</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>result</code></em> :</span></p></td>
@@ -1104,8 +1218,11 @@ The resulting <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" tit
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-sub" title="gimp_vector3_sub ()"><code class="function">gimp_vector3_sub()</code></a> but the vectors
 are passed by value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector1</code></em> :</span></p></td>
@@ -1131,8 +1248,11 @@ are passed by value rather than by reference.
 Computes the inner (dot) product of two 3D vectors. This product
 is zero if and only if the two vectors are orthognal.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector1</code></em> :</span></p></td>
@@ -1158,8 +1278,11 @@ is zero if and only if the two vectors are orthognal.
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-inner-product" title="gimp_vector3_inner_product ()"><code class="function">gimp_vector3_inner_product()</code></a> but the
 vectors are passed by value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector1</code></em> :</span></p></td>
@@ -1191,8 +1314,11 @@ vector.
 This function can be used to compute the normal of the plane
 defined by <em class="parameter"><code>vector1</code></em> and <em class="parameter"><code>vector2</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector1</code></em> :</span></p></td>
@@ -1218,8 +1344,11 @@ defined by <em class="parameter"><code>vector1</code></em> and <em class="parame
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-cross-product" title="gimp_vector3_cross_product ()"><code class="function">gimp_vector3_cross_product()</code></a> but the
 vectors are passed by value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector1</code></em> :</span></p></td>
@@ -1253,8 +1382,11 @@ expect a vector to be rotated around X, and then around Y, you will
 have to call this function twice. Also, it is often wise to call
 this function with only one of <em class="parameter"><code>alpha</code></em>, <em class="parameter"><code>beta</code></em> and <em class="parameter"><code>gamma</code></em> non-zero.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -1286,8 +1418,11 @@ this function with only one of <em class="parameter"><code>alpha</code></em>, <e
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-rotate" title="gimp_vector3_rotate ()"><code class="function">gimp_vector3_rotate()</code></a> but the vectors
 are passed by value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
@@ -1333,8 +1468,11 @@ In other words, this computes the projection of the point (<em class="parameter"
 to the plane z = <em class="parameter"><code>p-&gt;z</code></em> (parallel to XY), from the <em class="parameter"><code>vp</code></em> point of view
 through the screen (<em class="parameter"><code>sx</code></em>, <em class="parameter"><code>sy</code></em>)-&gt;(<em class="parameter"><code>sx</code></em> + <em class="parameter"><code>w</code></em>, <em class="parameter"><code>sy</code></em> + <em class="parameter"><code>h</code></em>)
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sx</code></em> :</span></p></td>
@@ -1387,8 +1525,11 @@ This function is identical to <a class="link" href="libgimpmath-GimpVector.html#
 position of the <em class="parameter"><code>observer</code></em> and the resulting point <em class="parameter"><code>p</code></em> are passed by
 value rather than by reference.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sx</code></em> :</span></p></td>
@@ -1449,8 +1590,11 @@ observer is passed in vp.
 <p>
 This is basically the opposite of <a class="link" href="libgimpmath-GimpVector.html#gimp-vector-2d-to-3d" title="gimp_vector_2d_to_3d ()"><code class="function">gimp_vector_2d_to_3d()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sx</code></em> :</span></p></td>

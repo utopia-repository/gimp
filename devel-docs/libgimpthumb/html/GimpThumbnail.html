@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpThumbnail</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Thumbnail Library Reference Manual">
 <link rel="up" href="libgimpthumb.html" title="Part I. GIMP Thumbnail Library">
 <link rel="prev" href="libgimpthumb.html" title="Part I. GIMP Thumbnail Library">
@@ -121,8 +121,11 @@ using object properties.
 <p>
 Creates a new <a class="link" href="GimpThumbnail.html" title="GimpThumbnail"><span class="type">GimpThumbnail</span></a> object.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a newly allocated GimpThumbnail object</td>
@@ -140,8 +143,11 @@ Sets the location of the image file associated with the <span class="type">thumb
 <p>
 All informations stored in the <a class="link" href="GimpThumbnail.html" title="GimpThumbnail"><span class="type">GimpThumbnail</span></a> are reset.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>thumbnail</code></em> :</span></p></td>
@@ -163,8 +169,11 @@ All informations stored in the <a class="link" href="GimpThumbnail.html" title="
 <p>
 Sets the location of the image file associated with the <span class="type">thumbnail</span>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>thumbnail</code></em> :</span></p></td>
@@ -203,8 +212,11 @@ thumbnail file.
 This will only work with thumbnails from the global thumbnail
 directory that contain a valid Thumb::URI tag.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>thumbnail</code></em> :</span></p></td>
@@ -234,8 +246,11 @@ directory that contain a valid Thumb::URI tag.
 Checks the image file associated with the <em class="parameter"><code>thumbnail</code></em> and updates
 information such as state, filesize and modification time.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>thumbnail</code></em> :</span></p></td>
@@ -264,8 +279,11 @@ If you want to check the thumbnail, either attempt to load it using
 <a class="link" href="GimpThumbnail.html#gimp-thumbnail-load-thumb" title="gimp_thumbnail_load_thumb ()"><code class="function">gimp_thumbnail_load_thumb()</code></a>, or, if you don't need the resulting
 thumbnail pixbuf, use <a class="link" href="GimpThumbnail.html#gimp-thumbnail-check-thumb" title="gimp_thumbnail_check_thumb ()"><code class="function">gimp_thumbnail_check_thumb()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>thumbnail</code></em> :</span></p></td>
@@ -292,8 +310,11 @@ Checks if a thumbnail file for the <em class="parameter"><code>thumbnail</code><
 verifies it is valid and uptodate for the image file asosciated
 with the <em class="parameter"><code>thumbnail</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>thumbnail</code></em> :</span></p></td>
@@ -332,8 +353,11 @@ pixbuf may also represent an outdated preview of the image file.
 In order to verify if the preview is uptodate, you should check the
 "thumb_state" property after calling this function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>thumbnail</code></em> :</span></p></td>
@@ -377,8 +401,11 @@ using the <em class="parameter"><code>thumbnail</code></em> object properties.
 The image format type and the number of layers can optionally be
 set in order to be stored with the preview image.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>thumbnail</code></em> :</span></p></td>
@@ -421,8 +448,11 @@ with version 0.7 of the spec.
 Please see also <a class="link" href="GimpThumbnail.html#gimp-thumbnail-save-thumb" title="gimp_thumbnail_save_thumb ()"><code class="function">gimp_thumbnail_save_thumb()</code></a>. The notes made there
 apply here as well.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>thumbnail</code></em> :</span></p></td>
@@ -462,8 +492,11 @@ Saves a failure thumbnail for the image associated with
 to create a preview for the image file failed. It should be used to
 prevent the software from further attempts to create this thumbnail.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>thumbnail</code></em> :</span></p></td>
@@ -494,8 +527,11 @@ prevent the software from further attempts to create this thumbnail.
 Removes a failure thumbnail if one exists. This function should be
 used after a thumbnail has been successfully created.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>thumbnail</code></em> :</span></p></td>
 <td>a <a class="link" href="GimpThumbnail.html" title="GimpThumbnail"><span class="type">GimpThumbnail</span></a> object</td>
@@ -515,8 +551,11 @@ function should be used after a thumbnail has been successfully
 updated. See the spec for a more detailed description on when to
 delete thumbnails.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>thumbnail</code></em> :</span></p></td>
@@ -545,8 +584,11 @@ the same image file.
 The application should not attempt to create the thumbnail if a
 valid failure thumbnail exists.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>thumbnail</code></em> :</span></p></td>

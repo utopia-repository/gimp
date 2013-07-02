@@ -33,6 +33,7 @@ static const gchar * const authors[] =
   "Marco Ciampa",
   "Winston Chang",
   "Lars-Peter Clausen",
+  "Sven Claussner",
   "Kevin Cozens",
   "Alexia Death",
   "Nicholas Doyle",
@@ -128,6 +129,7 @@ static const gchar * const artists[] =
 static const gchar * const documenters[] =
 {
   "Marco Ciampa",
+  "Sven Claussner",
   "Ulf-D. Ehlert",
   "Róman Joost",
   "Alexandre Prokoudine",

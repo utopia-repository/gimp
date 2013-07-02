@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpColorSpace</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Color Library Reference Manual">
 <link rel="up" href="libgimpcolor.html" title="Part I. GIMP Color Library">
 <link rel="prev" href="libgimpcolor-GimpCMYK.html" title="GimpCMYK">
@@ -111,8 +111,11 @@ between different color spaces.
 Does a conversion from RGB to HSV (Hue, Saturation,
 Value) colorspace.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
@@ -134,8 +137,11 @@ Value) colorspace.
 Convert an RGB color value to a HSL (Hue, Saturation, Lightness)
 color value.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
@@ -161,8 +167,11 @@ The amount of black pullout how can be controlled via the <em class="parameter">
 parameter. A <em class="parameter"><code>pullout</code></em> value of 0 makes this a conversion to CMY.
 A value of 1 causes the maximum amount of black to be pulled out.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
@@ -188,8 +197,11 @@ pulled out</td>
 <p>
 Converts a color value from HSV to RGB colorspace
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hsv</code></em> :</span></p></td>
@@ -210,8 +222,11 @@ Converts a color value from HSV to RGB colorspace
 <p>
 Convert a HSL color value to an RGB color value.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hsl</code></em> :</span></p></td>
@@ -233,8 +248,11 @@ Convert a HSL color value to an RGB color value.
 Does a simple transformation from the CMYK colorspace to the RGB
 colorspace, without taking color profiles into account.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cmyk</code></em> :</span></p></td>
@@ -264,8 +282,11 @@ RGB are each on [0, 1]. Whiteness and Blackness are returned in the
 range [0, 1] and H is returned in the range [0, 6]. If W == 1 - B, H is
 undefined.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
@@ -297,8 +318,11 @@ undefined.
 H is defined in the range [0, 6] or UNDEFINED, B and W are both in the
 range [0, 1]. The returned RGB values are all in the range [0, 1].
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hue</code></em> :</span></p></td>
@@ -335,8 +359,11 @@ The function changes the arguments to point to the HSV value
 corresponding, with the returned values in the following
 ranges: H [0, 359], S [0, 255], V [0, 255].
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
@@ -367,8 +394,11 @@ following ranges:  H [0, 360], S [0, 255], V [0, 255].
 The function changes the arguments to point to the RGB value
 corresponding, with the returned values all in the range [0, 255].
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hue</code></em> :</span></p></td>
@@ -400,8 +430,11 @@ The function changes the arguments to point to the corresponding HLS
 value with the values pointed to in the following ranges:  H [0, 360],
 L [0, 255], S [0, 255].
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
@@ -432,8 +465,11 @@ The amount of black pullout how can be controlled via the <em class="parameter">
 parameter. A <em class="parameter"><code>pullout</code></em> value of 0 makes this a conversion to CMY.
 A value of 100 causes the maximum amount of black to be pulled out.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
@@ -466,8 +502,11 @@ the black value (0-255)</td>
 Does a naive conversion from CMYK to RGB colorspace. A simple
 formula that doesn't take any color-profiles into account is used.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cyan</code></em> :</span></p></td>
@@ -498,8 +537,11 @@ formula that doesn't take any color-profiles into account is used.
 Calculates the lightness value of an RGB triplet with the formula
 L = (max(R, G, B) + min (R, G, B)) / 2
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
@@ -534,8 +576,11 @@ following ranges:  H [0, 360], L [0, 255], S [0, 255].
 The function changes the arguments to point to the RGB value
 corresponding, with the returned values all in the range [0, 255].
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hue</code></em> :</span></p></td>
@@ -559,8 +604,11 @@ corresponding, with the returned values all in the range [0, 255].
                                                          <em class="parameter"><code><span class="type">gdouble</span> *hue</code></em>,
                                                          <em class="parameter"><code><span class="type">gdouble</span> *saturation</code></em>,
                                                          <em class="parameter"><code><span class="type">gdouble</span> *value</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
@@ -589,8 +637,11 @@ rgb[2] is blue (0..255)</td>
                                                          <em class="parameter"><code><span class="type">gdouble</span> hue</code></em>,
                                                          <em class="parameter"><code><span class="type">gdouble</span> saturation</code></em>,
                                                          <em class="parameter"><code><span class="type">gdouble</span> value</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>

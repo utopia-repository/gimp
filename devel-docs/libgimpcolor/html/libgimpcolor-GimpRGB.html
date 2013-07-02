@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpRGB</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Color Library Reference Manual">
 <link rel="up" href="libgimpcolor.html" title="Part I. GIMP Color Library">
 <link rel="prev" href="libgimpcolor.html" title="Part I. GIMP Color Library">
@@ -156,8 +156,11 @@ Definitions and Functions relating to RGB colors.
 Used to keep RGB and RGBA colors. All components are in a range of
 [0.0..1.0].
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpRGB.r"></a>r</code></em>;</span></p></td>
@@ -203,8 +206,11 @@ alpha component unchanged. The color values should be between 0.0
 and 1.0 but there is no check to enforce this and the values are
 set exactly as they are passed in.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
@@ -233,8 +239,11 @@ set exactly as they are passed in.
 <p>
 Sets the alpha component of <em class="parameter"><code>rgb</code></em> and leaves the RGB components unchanged.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
@@ -258,8 +267,11 @@ Sets the alpha component of <em class="parameter"><code>rgb</code></em> and leav
 Sets the red, green and blue components of <em class="parameter"><code>rgb</code></em> from 8bit values
 (0 to 255) and leaves the alpha component unchanged.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
@@ -303,8 +315,11 @@ color keywords</a>.
 <p>
 This function does not touch the alpha component of <em class="parameter"><code>rgb</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
@@ -341,8 +356,11 @@ notation (optionally prefixed with a '#').
 <p>
 This function does not touch the alpha component of <em class="parameter"><code>rgb</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
@@ -383,8 +401,11 @@ or a hexadecimal notation as parsed by <a class="link" href="libgimpcolor-GimpRG
 <p>
 This function does not touch the alpha component of <em class="parameter"><code>rgb</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
@@ -422,8 +443,11 @@ The returned strings are const and must not be freed. Only the two
 arrays are allocated dynamically. You must call <code class="function">g_free()</code> on the
 <em class="parameter"><code>names</code></em> and <em class="parameter"><code>colors</code></em> arrays when they are not any longer needed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>names</code></em> :</span></p></td>
@@ -507,8 +531,11 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 <div class="refsect2">
 <a name="gimp-rgb-luminance"></a><h3>gimp_rgb_luminance ()</h3>
 <pre class="programlisting"><span class="returnvalue">gdouble</span>             gimp_rgb_luminance                  (<em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="struct GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
@@ -526,8 +553,11 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 <div class="refsect2">
 <a name="gimp-rgb-luminance-uchar"></a><h3>gimp_rgb_luminance_uchar ()</h3>
 <pre class="programlisting"><span class="returnvalue">guchar</span>              gimp_rgb_luminance_uchar            (<em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="struct GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
@@ -552,8 +582,11 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 <p>
 This function is deprecated! Use <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-luminance" title="gimp_rgb_luminance ()"><code class="function">gimp_rgb_luminance()</code></a> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
@@ -577,8 +610,11 @@ This function is deprecated! Use <a class="link" href="libgimpcolor-GimpRGB.html
 <p>
 This function is deprecated! Use <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-luminance-uchar" title="gimp_rgb_luminance_uchar ()"><code class="function">gimp_rgb_luminance_uchar()</code></a> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
@@ -613,8 +649,11 @@ Sets the red, green, blue and alpha components of <em class="parameter"><code>rg
 should be between 0.0 and 1.0 but there is no check to enforce this
 and the values are set exactly as they are passed in.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgba</code></em> :</span></p></td>
@@ -651,8 +690,11 @@ and the values are set exactly as they are passed in.
 Sets the red, green, blue and alpha components of <em class="parameter"><code>rgb</code></em> from 8bit
 values (0 to 255).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgba</code></em> :</span></p></td>
@@ -703,8 +745,11 @@ or <code class="code">rgba(100%,0%,0%,1000%)</code>).
 It doesn't handle the hexadecimal notation or color names because
 they leave the alpha channel unspecified.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgba</code></em> :</span></p></td>
@@ -867,8 +912,11 @@ set, <code class="literal">FALSE</code> otherwise</td>
 Creates a param spec to hold an <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="struct GimpRGB"><span class="type">GimpRGB</span></a> value.
 See <code class="function">g_param_spec_internal()</code> for more information.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
@@ -908,8 +956,11 @@ See <code class="function">g_param_spec_internal()</code> for more information.
 <div class="refsect2">
 <a name="gimp-param-spec-rgb-has-alpha"></a><h3>gimp_param_spec_rgb_has_alpha ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_param_spec_rgb_has_alpha       (<em class="parameter"><code><span class="type">GParamSpec</span> *pspec</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pspec</code></em> :</span></p></td>

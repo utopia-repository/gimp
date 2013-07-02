@@ -80,6 +80,7 @@ Depends: libgimp2.0 (>= ${source:Upstream-Version}),
          gimp-data (>= ${source:Upstream-Version}),
          gimp-data (<= ${source:Upstream-Version}-z),
          python-gtk2 (>= 2.8.0),
+         libgdk-pixbuf2.0-0 (>= 2.24.1),
          ${shlibs:Depends},
          ${python:Depends},
          ${misc:Depends}

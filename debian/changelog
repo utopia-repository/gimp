@@ -2,6 +2,7 @@ gimp (2.8.6-1) unstable; urgency=low
 
   * Imported Upstream version 2.8.6
     - Fixes some single window closing behavior (Closes: #686345)
+  * Tighten dependency on gdk-pixbuf (Closes: #712616)
 
  -- Ari Pollak <ari@debian.org>  Mon, 01 Jul 2013 20:28:12 -0400
 

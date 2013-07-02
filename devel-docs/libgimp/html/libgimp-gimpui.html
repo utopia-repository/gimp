@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpui</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part II. GIMP User Interface Library">
 <link rel="prev" href="libgimpui-hierarchy.html" title="Object Hierarchy">
@@ -73,8 +73,11 @@ theme and setting up the help system as chosen in the GIMP
 preferences. Any plug-in that provides a user interface should call
 this function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>prog_name</code></em> :</span></p></td>
@@ -103,12 +106,15 @@ with <code class="function">gdk_window_set_transient_for()</code>.
 You shouldn't have to call this function directly. Use
 <a class="link" href="libgimp-gimpui.html#gimp-window-set-transient-for-display" title="gimp_window_set_transient_for_display ()"><code class="function">gimp_window_set_transient_for_display()</code></a> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gdisp_ID</code></em> :</span></p></td>
-<td>a <a href="/local/head/share/gtk-doc/html/app/GimpDisplay.html"><span class="type">GimpDisplay</span></a> ID.</td>
+<td>a <span class="type">GimpDisplay</span> ID.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -133,8 +139,11 @@ as explained with <code class="function">gdk_window_set_transient_for()</code>.
 You shouldn't have to call this function directly. Use
 <a class="link" href="libgimp-gimpui.html#gimp-window-set-transient" title="gimp_window_set_transient ()"><code class="function">gimp_window_set_transient()</code></a> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>A reference to a <span class="type">GdkWindow</span> or <code class="literal">NULL</code>. You should
@@ -153,8 +162,11 @@ Indicates to the window manager that <em class="parameter"><code>window</code></
 associated with the GIMP window that the plug-in has been
 started from. See also <a class="link" href="libgimp-gimpui.html#gimp-window-set-transient-for-display" title="gimp_window_set_transient_for_display ()"><code class="function">gimp_window_set_transient_for_display()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>window</code></em> :</span></p></td>
 <td>the <span class="type">GtkWindow</span> that should become transient</td>
@@ -177,8 +189,11 @@ display ID.  See <code class="function">gdk_window_set_transient_for()</code> fo
 Most of the time you will want to use the convenience function
 <a class="link" href="libgimp-gimpui.html#gimp-window-set-transient" title="gimp_window_set_transient ()"><code class="function">gimp_window_set_transient()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>window</code></em> :</span></p></td>

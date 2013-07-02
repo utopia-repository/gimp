@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpMatrix</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Math Library Reference Manual">
 <link rel="up" href="libgimpmath.html" title="Part I. GIMP Math Library">
 <link rel="prev" href="libgimpmath-GimpMath.html" title="GimpMath">
@@ -126,8 +126,11 @@ element for row r and column c of the matrix is coeff[r][c].
 <p>
 A two by two matrix.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpMatrix2.coeff"></a>coeff</code></em>[2][2];</span></p></td>
 <td>the coefficients</td>
@@ -144,8 +147,11 @@ A two by two matrix.
 <p>
 A three by three matrix.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpMatrix3.coeff"></a>coeff</code></em>[3][3];</span></p></td>
 <td>the coefficients</td>
@@ -162,8 +168,11 @@ A three by three matrix.
 <p>
 A four by four matrix.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpMatrix4.coeff"></a>coeff</code></em>[4][4];</span></p></td>
 <td>the coefficients</td>
@@ -177,8 +186,11 @@ A four by four matrix.
 <p>
 Sets the matrix to the identity matrix.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
 <td>A matrix.</td>
@@ -193,8 +205,11 @@ Sets the matrix to the identity matrix.
 <p>
 Multiplies two matrices and puts the result into the second one.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix1</code></em> :</span></p></td>
@@ -214,8 +229,11 @@ Multiplies two matrices and puts the result into the second one.
 <p>
 Sets the matrix to the identity matrix.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
 <td>A matrix.</td>
@@ -230,8 +248,11 @@ Sets the matrix to the identity matrix.
 <p>
 Multiplies two matrices and puts the result into the second one.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix1</code></em> :</span></p></td>
@@ -253,8 +274,11 @@ Multiplies two matrices and puts the result into the second one.
 <p>
 Translates the matrix by x and y.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
@@ -280,8 +304,11 @@ Translates the matrix by x and y.
 <p>
 Scales the matrix by x and y
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
@@ -306,8 +333,11 @@ Scales the matrix by x and y
 <p>
 Rotates the matrix by theta degrees.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
@@ -328,8 +358,11 @@ Rotates the matrix by theta degrees.
 <p>
 Shears the matrix in the X direction.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
@@ -350,8 +383,11 @@ Shears the matrix in the X direction.
 <p>
 Shears the matrix in the Y direction.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
@@ -384,8 +420,11 @@ illustrated below:
  ( b d f )
  ( 0 0 1 )
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
@@ -429,8 +468,11 @@ illustrated below:
 <p>
 Transforms a point in 2D as specified by the transformation matrix.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
@@ -462,8 +504,11 @@ Transforms a point in 2D as specified by the transformation matrix.
 <p>
 Calculates the determinant of the given matrix.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
@@ -483,8 +528,11 @@ Calculates the determinant of the given matrix.
 <p>
 Inverts the given matrix.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
 <td>The matrix that is to be inverted.</td>
@@ -498,8 +546,11 @@ Inverts the given matrix.
 <p>
 Checks if the given matrix is the identity matrix.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
@@ -520,8 +571,11 @@ Checks if the given matrix is the identity matrix.
 <p>
 Checks if the given matrix is diagonal.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
@@ -542,8 +596,11 @@ Checks if the given matrix is diagonal.
 <p>
 Checks if the given matrix defines an affine transformation.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
@@ -567,8 +624,11 @@ Checks if the given matrix defines an affine transformation.
 Checks if we'll need to interpolate when applying this matrix as
 a transformation.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
@@ -577,8 +637,7 @@ a transformation.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<code class="literal">TRUE</code> if all entries of the upper left 2x2 matrix are
-either 0 or 1, <code class="literal">FALSE</code> otherwise</td>
+<code class="literal">TRUE</code> if the matrix is simple, <code class="literal">FALSE</code> otherwise</td>
 </tr>
 </tbody>
 </table></div>
@@ -627,8 +686,11 @@ either 0 or 1, <code class="literal">FALSE</code> otherwise</td>
 Creates a param spec to hold a <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix2" title="struct GimpMatrix2"><span class="type">GimpMatrix2</span></a> value.
 See <code class="function">g_param_spec_internal()</code> for more information.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
@@ -703,8 +765,11 @@ See <code class="function">g_param_spec_internal()</code> for more information.
 Creates a param spec to hold a <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="struct GimpMatrix3"><span class="type">GimpMatrix3</span></a> value.
 See <code class="function">g_param_spec_internal()</code> for more information.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>

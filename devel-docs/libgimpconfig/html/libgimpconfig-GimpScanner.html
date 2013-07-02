@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpScanner</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Config Library Reference Manual">
 <link rel="up" href="libgimpconfig.html" title="Part I. GIMP Config Library">
 <link rel="prev" href="libgimpconfig-GimpConfigWriter.html" title="GimpConfigWriter">
@@ -93,8 +93,11 @@ A wrapper around <span class="type">GScanner</span> with some convenience API.
 <div class="refsect2">
 <a name="gimp-scanner-destroy"></a><h3>gimp_scanner_destroy ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_scanner_destroy                (<em class="parameter"><code><span class="type">GScanner</span> *scanner</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>scanner</code></em> :</span></p></td>
 <td>A <span class="type">GScanner</span> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
@@ -109,8 +112,11 @@ A wrapper around <span class="type">GScanner</span> with some convenience API.
 <a name="gimp-scanner-parse-token"></a><h3>gimp_scanner_parse_token ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_scanner_parse_token            (<em class="parameter"><code><span class="type">GScanner</span> *scanner</code></em>,
                                                          <em class="parameter"><code><span class="type">GTokenType</span> token</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>scanner</code></em> :</span></p></td>
@@ -136,8 +142,11 @@ A wrapper around <span class="type">GScanner</span> with some convenience API.
 <a name="gimp-scanner-parse-identifier"></a><h3>gimp_scanner_parse_identifier ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_scanner_parse_identifier       (<em class="parameter"><code><span class="type">GScanner</span> *scanner</code></em>,
                                                          <em class="parameter"><code>const <span class="type">gchar</span> *identifier</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>scanner</code></em> :</span></p></td>
@@ -163,8 +172,11 @@ A wrapper around <span class="type">GScanner</span> with some convenience API.
 <a name="gimp-scanner-parse-string"></a><h3>gimp_scanner_parse_string ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_scanner_parse_string           (<em class="parameter"><code><span class="type">GScanner</span> *scanner</code></em>,
                                                          <em class="parameter"><code><span class="type">gchar</span> **dest</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>scanner</code></em> :</span></p></td>
@@ -191,8 +203,11 @@ A wrapper around <span class="type">GScanner</span> with some convenience API.
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_scanner_parse_string_no_validate
                                                         (<em class="parameter"><code><span class="type">GScanner</span> *scanner</code></em>,
                                                          <em class="parameter"><code><span class="type">gchar</span> **dest</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>scanner</code></em> :</span></p></td>
@@ -219,8 +234,11 @@ A wrapper around <span class="type">GScanner</span> with some convenience API.
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_scanner_parse_data             (<em class="parameter"><code><span class="type">GScanner</span> *scanner</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> length</code></em>,
                                                          <em class="parameter"><code><span class="type">guint8</span> **dest</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>scanner</code></em> :</span></p></td>
@@ -250,8 +268,11 @@ A wrapper around <span class="type">GScanner</span> with some convenience API.
 <a name="gimp-scanner-parse-int"></a><h3>gimp_scanner_parse_int ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_scanner_parse_int              (<em class="parameter"><code><span class="type">GScanner</span> *scanner</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> *dest</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>scanner</code></em> :</span></p></td>
@@ -277,8 +298,11 @@ A wrapper around <span class="type">GScanner</span> with some convenience API.
 <a name="gimp-scanner-parse-float"></a><h3>gimp_scanner_parse_float ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_scanner_parse_float            (<em class="parameter"><code><span class="type">GScanner</span> *scanner</code></em>,
                                                          <em class="parameter"><code><span class="type">gdouble</span> *dest</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>scanner</code></em> :</span></p></td>
@@ -304,8 +328,11 @@ A wrapper around <span class="type">GScanner</span> with some convenience API.
 <a name="gimp-scanner-parse-boolean"></a><h3>gimp_scanner_parse_boolean ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_scanner_parse_boolean          (<em class="parameter"><code><span class="type">GScanner</span> *scanner</code></em>,
                                                          <em class="parameter"><code><span class="type">gboolean</span> *dest</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>scanner</code></em> :</span></p></td>
@@ -331,8 +358,11 @@ A wrapper around <span class="type">GScanner</span> with some convenience API.
 <a name="gimp-scanner-parse-color"></a><h3>gimp_scanner_parse_color ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_scanner_parse_color            (<em class="parameter"><code><span class="type">GScanner</span> *scanner</code></em>,
                                                          <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *dest</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>scanner</code></em> :</span></p></td>
@@ -358,8 +388,11 @@ A wrapper around <span class="type">GScanner</span> with some convenience API.
 <a name="gimp-scanner-parse-matrix2"></a><h3>gimp_scanner_parse_matrix2 ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_scanner_parse_matrix2          (<em class="parameter"><code><span class="type">GScanner</span> *scanner</code></em>,
                                                          <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"><span class="type">GimpMatrix2</span></a> *dest</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>scanner</code></em> :</span></p></td>

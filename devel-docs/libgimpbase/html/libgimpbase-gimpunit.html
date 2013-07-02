@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpunit</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Base Library Reference Manual">
 <link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimpsignal.html" title="gimpsignal">
@@ -117,8 +117,11 @@ creating user-defined units.
 <p>
 Returns the number of units which are known to the <a class="link" href="libgimpbase-gimpunit.html#GimpUnit" title="enum GimpUnit"><span class="type">GimpUnit</span></a> system.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The number of defined units.</td>
@@ -135,8 +138,11 @@ Returns the number of <a class="link" href="libgimpbase-gimpunit.html#GimpUnit" 
 (UNIT_INCH, UNIT_MM, UNIT_POINT, UNIT_PICA and the two "pseudo unit"
  UNIT_PIXEL).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The number of built-in units.</td>
@@ -161,8 +167,11 @@ Note that a new unit is always created with it's deletion flag
 set to <code class="literal">TRUE</code>. You will have to set it to <code class="literal">FALSE</code> with
 <a class="link" href="libgimpbase-gimpunit.html#gimp-unit-set-deletion-flag" title="gimp_unit_set_deletion_flag ()"><code class="function">gimp_unit_set_deletion_flag()</code></a> to make the unit definition persistent.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>identifier</code></em> :</span></p></td>
@@ -203,8 +212,11 @@ set to <code class="literal">TRUE</code>. You will have to set it to <code class
 <div class="refsect2">
 <a name="gimp-unit-get-deletion-flag"></a><h3>gimp_unit_get_deletion_flag ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_unit_get_deletion_flag         (<em class="parameter"><code><a class="link" href="libgimpbase-gimpunit.html#GimpUnit" title="enum GimpUnit"><span class="type">GimpUnit</span></a> unit</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>unit</code></em> :</span></p></td>
@@ -231,8 +243,11 @@ Sets a <a class="link" href="libgimpbase-gimpunit.html#GimpUnit" title="enum Gim
 Trying to change the <em class="parameter"><code>deletion_flag</code></em> of a built-in unit will be silently
 ignored.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>unit</code></em> :</span></p></td>
@@ -258,8 +273,11 @@ distance_in_units == (<em class="parameter"><code>factor</code></em> * distance_
 <p>
 Returns 0 for <em class="parameter"><code>unit</code></em> == GIMP_UNIT_PIXEL.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>unit</code></em> :</span></p></td>
@@ -283,8 +301,11 @@ approximately the same accuracy as an inch input field with two digits.
 <p>
 Returns 0 for <em class="parameter"><code>unit</code></em> == GIMP_UNIT_PIXEL.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>unit</code></em> :</span></p></td>
@@ -304,8 +325,11 @@ Returns 0 for <em class="parameter"><code>unit</code></em> == GIMP_UNIT_PIXEL.
 <p>
 This is an unstranslated string and must not be changed or freed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>unit</code></em> :</span></p></td>
@@ -328,8 +352,11 @@ This is e.g. "''" for UNIT_INCH.
 <p>
 NOTE: This string must not be changed or freed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>unit</code></em> :</span></p></td>
@@ -353,8 +380,11 @@ of the unit.
 <p>
 NOTE: This string must not be changed or freed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>unit</code></em> :</span></p></td>
@@ -378,8 +408,11 @@ of the unit's name.
 <p>
 NOTE: This string must not be changed or freed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>unit</code></em> :</span></p></td>
@@ -403,8 +436,11 @@ of the unit's name.
 <p>
 NOTE: This string must not be changed or freed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>unit</code></em> :</span></p></td>
@@ -461,8 +497,11 @@ The <em class="parameter"><code>format</code></em> string supports the following
 </table></div>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
@@ -491,8 +530,11 @@ replaced with the resp. strings for <em class="parameter"><code>unit</code></em>
 <p>
 Converts a <em class="parameter"><code>value</code></em> specified in pixels to <em class="parameter"><code>unit</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pixels</code></em> :</span></p></td>
@@ -524,8 +566,11 @@ Converts a <em class="parameter"><code>value</code></em> specified in pixels to 
 <p>
 Converts a <em class="parameter"><code>value</code></em> specified in <em class="parameter"><code>unit</code></em> to pixels.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
@@ -558,8 +603,11 @@ Converts a <em class="parameter"><code>value</code></em> specified in <em class=
 <p>
 Converts a <em class="parameter"><code>value</code></em> specified in <em class="parameter"><code>unit</code></em> to points.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
@@ -622,8 +670,11 @@ Converts a <em class="parameter"><code>value</code></em> specified in <em class=
 Creates a param spec to hold a units param.
 See <code class="function">g_param_spec_internal()</code> for more information.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>

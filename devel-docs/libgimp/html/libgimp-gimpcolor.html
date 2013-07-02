@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpcolor</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpchannel.html" title="gimpchannel">
@@ -116,8 +116,11 @@ This procedures allows the brightness and contrast of the specified
 drawable to be modified. Both 'brightness' and 'contrast' parameters
 are defined between -127 and 127.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -165,8 +168,11 @@ the low output level and no final intensity will be higher than the
 high output level. This tool is only valid on RGB color and
 grayscale images. It will not operate on indexed drawables.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -211,8 +217,11 @@ grayscale images. It will not operate on indexed drawables.
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_levels_auto</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpcolor.html#gimp-levels-stretch" title="gimp_levels_stretch ()"><code class="function">gimp_levels_stretch()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -239,8 +248,11 @@ equivalent to clicking the \"Auto\" button in the Levels tool. This
 procedure is only valid on RGB color and grayscale images. It will
 not operate on indexed drawables.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -265,8 +277,11 @@ Posterize the specified drawable.
 This procedures reduces the number of shades allows in each
 intensity channel to the specified 'levels' parameter.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -294,8 +309,11 @@ Desaturate the contents of the specified drawable.
 This procedure desaturates the contents of the specified drawable.
 This procedure only works on drawables of type RGB color.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -322,8 +340,11 @@ This procedure desaturates the contents of the specified drawable,
 with the specified formula. This procedure only works on drawables
 of type RGB color.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -359,8 +380,11 @@ selection bounds, or the entire image based on the histogram of the
 selected area. If there is no selection, the entire image is
 adjusted based on the histogram for the entire image.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -390,8 +414,11 @@ intensity channel is inverted independently. The inverted intensity
 is given as inten' = (255 - inten). Indexed color drawables are not
 valid for this operation.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -423,8 +450,11 @@ of control points which describe a Catmull Rom spline which yields
 the final intensity curve. Use the <a class="link" href="libgimp-gimpcolor.html#gimp-curves-explicit" title="gimp_curves_explicit ()"><code class="function">gimp_curves_explicit()</code></a> function
 to explicitly modify intensity levels.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -468,8 +498,11 @@ each pixel value in the drawable will be modified. Use the
 <a class="link" href="libgimp-gimpcolor.html#gimp-curves-spline" title="gimp_curves_spline ()"><code class="function">gimp_curves_spline()</code></a> function to modify intensity levels with
 Catmull Rom splines.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -516,8 +549,11 @@ shadows, mid-tones, and highlights in an image to be affected
 differently. The 'preserve-lum' parameter, if TRUE, ensures that the
 luminosity of each pixel remains fixed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -566,8 +602,11 @@ Desaturates the drawable, then tints it with the specified color.
 This tool is only valid on RGB color images. It will not operate on
 grayscale or indexed drawables.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -625,8 +664,11 @@ values and by the current selection mask. That is, pixels that lie
 outside an active selection mask will not be counted. Similarly,
 pixels with transparent alpha values will not be counted.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -691,8 +733,11 @@ This procedures allows the hue, lightness, and saturation in the
 specified drawable to be modified. The 'hue-range' parameter
 provides the capability to limit range of affected hues.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -736,8 +781,11 @@ All pixels between the values of 'low_threshold' and
 'high_threshold' are replaced with white, and all other pixels with
 black.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>

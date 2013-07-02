@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpfileops</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpedit.html" title="gimpedit">
@@ -89,8 +89,11 @@ Generates a unique filename.
 Generates a unique filename using the temp path supplied in the
 user's gimprc.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>extension</code></em> :</span></p></td>
@@ -121,8 +124,11 @@ directory path. The reason for this is that if the user types
 http://www.xcf/~gimp/ he wants to fetch a URL, and the full pathname
 will not look like a URL.\"
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>run_mode</code></em> :</span></p></td>
@@ -158,8 +164,11 @@ specified image as a layer for an existing image. The returned layer
 needs to be added to the existing image with
 <a class="link" href="libgimp-gimpimage.html#gimp-image-insert-layer" title="gimp_image_insert_layer ()"><code class="function">gimp_image_insert_layer()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>run_mode</code></em> :</span></p></td>
@@ -197,8 +206,11 @@ specified image as layers for an existing image. The returned layers
 needs to be added to the existing image with
 <a class="link" href="libgimp-gimpimage.html#gimp-image-insert-layer" title="gimp_image_insert_layer ()"><code class="function">gimp_image_insert_layer()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>run_mode</code></em> :</span></p></td>
@@ -243,8 +255,11 @@ actually typed before prepending a directory path. The reason for
 this is that if the user types http://www.xcf/~gimp/ she wants to
 fetch a URL, and the full pathname will not look like a URL.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>run_mode</code></em> :</span></p></td>
@@ -289,8 +304,11 @@ you have to save the image under this name first, otherwise this
 procedure will fail. This procedure may become useful if you want to
 explicitely save a thumbnail with a file.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -321,8 +339,11 @@ Registers a file load handler procedure.
 Registers a procedural database procedure to be called to load files
 of a particular file format using magic file information.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>procedure_name</code></em> :</span></p></td>
@@ -360,8 +381,11 @@ Registers a file load handler procedure.
 Registers a procedural database procedure to be called to load files
 of a particular file format.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>procedure_name</code></em> :</span></p></td>
@@ -395,8 +419,11 @@ Registers a file save handler procedure.
 Registers a procedural database procedure to be called to save files
 in a particular file format.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>procedure_name</code></em> :</span></p></td>
@@ -430,8 +457,11 @@ Registers a MIME type for a file handler procedure. This allows GIMP
 to determine the MIME type of the file opened or saved using this
 procedure.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>procedure_name</code></em> :</span></p></td>
@@ -465,8 +495,11 @@ procedure that allows GIMP to load a thumbnail preview of the image.
 This procedure is then associated with the standard load procedure
 using this function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>load_proc</code></em> :</span></p></td>

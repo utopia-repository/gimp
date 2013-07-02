@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpConfig-iface</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Config Library Reference Manual">
 <link rel="up" href="libgimpconfig.html" title="Part I. GIMP Config Library">
 <link rel="prev" href="libgimpconfig-hierarchy.html" title="Object Hierarchy">
@@ -133,8 +133,11 @@ High-level API for libgimpconfig.
 <p>
 Serialize the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig"><span class="type">GimpConfig</span></a> object.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
@@ -172,8 +175,11 @@ by <em class="parameter"><code>filename</code></em>. If a file with that name al
 overwritten. Basically this function opens <em class="parameter"><code>filename</code></em> for you and
 calls the serialize function of the <em class="parameter"><code>config</code></em>'s <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
@@ -218,8 +224,11 @@ calls the serialize function of the <em class="parameter"><code>config</code></e
 Serializes the object properties of <em class="parameter"><code>config</code></em> to the given file
 descriptor.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
@@ -250,8 +259,11 @@ descriptor.
 <p>
 Serializes the object properties of <em class="parameter"><code>config</code></em> to a string.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
@@ -279,8 +291,11 @@ Serializes the object properties of <em class="parameter"><code>config</code></e
 <p>
 Deserialize the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig"><span class="type">GimpConfig</span></a> object.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
@@ -320,8 +335,11 @@ from it and configures <em class="parameter"><code>config</code></em> accordingl
 creates a properly configured <span class="type">GScanner</span> for you and calls the
 deserialize function of the <em class="parameter"><code>config</code></em>'s <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
@@ -361,8 +379,11 @@ Configures <em class="parameter"><code>config</code></em> from <em class="parame
 properly configured <span class="type">GScanner</span> for you and calls the deserialize
 function of the <em class="parameter"><code>config</code></em>'s <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
@@ -399,8 +420,11 @@ function of the <em class="parameter"><code>config</code></em>'s <a class="link"
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_config_deserialize_return      (<em class="parameter"><code><span class="type">GScanner</span> *scanner</code></em>,
                                                          <em class="parameter"><code><span class="type">GTokenType</span> expected_token</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> nest_level</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>scanner</code></em> :</span></p></td>
@@ -429,8 +453,11 @@ properties. The default implementation of the <a class="link" href="libgimpconfi
 only works for objects that are completely defined by their
 properties.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
@@ -455,8 +482,11 @@ Compares the two objects. The default implementation of the
 works for objects that are completely defined by their
 properties.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
@@ -484,8 +514,11 @@ Resets the object to its default state. The default implementation of the
 <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a> only works for objects that are completely defined by
 their properties.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
 <td>a <span class="type">GObject</span> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.</td>
@@ -507,8 +540,11 @@ that have all <em class="parameter"><code>flags</code></em> set. Differing value
 <p>
 Properties marked as "construct-only" are not touched.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>

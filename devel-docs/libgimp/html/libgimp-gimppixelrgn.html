@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimppixelrgn</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimppixelfetcher.html" title="gimppixelfetcher">
@@ -143,7 +143,7 @@ The <em class="parameter"><code>dirty</code></em> and <em class="parameter"><cod
 </p>
 <p>
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p><em class="parameter"><code>dirty</code></em> = FALSE, <em class="parameter"><code>shadow</code></em> = FALSE: the region will be used to read
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><em class="parameter"><code>dirty</code></em> = FALSE, <em class="parameter"><code>shadow</code></em> = FALSE: the region will be used to read
                                    the actual drawable datas.  This
                                    is useful for save plug-ins or for
                                    filters.</p></li></ul></div>
@@ -151,7 +151,7 @@ The <em class="parameter"><code>dirty</code></em> and <em class="parameter"><cod
 </p>
 <p>
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p><em class="parameter"><code>dirty</code></em> = FALSE, <em class="parameter"><code>shadow</code></em> = TRUE:  the region will be used to read the
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><em class="parameter"><code>dirty</code></em> = FALSE, <em class="parameter"><code>shadow</code></em> = TRUE:  the region will be used to read the
                                    shadow tiles.  This is used in
                                    some filter plug-ins which operate
                                    in two passes such as gaussian
@@ -164,7 +164,7 @@ The <em class="parameter"><code>dirty</code></em> and <em class="parameter"><cod
 </p>
 <p>
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p><em class="parameter"><code>dirty</code></em> = TRUE, <em class="parameter"><code>shadow</code></em> = TRUE:   the region will be used to write to
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><em class="parameter"><code>dirty</code></em> = TRUE, <em class="parameter"><code>shadow</code></em> = TRUE:   the region will be used to write to
                                    the shadow tiles. It is common
                                    practice to write to the shadow
                                    tiles and then use
@@ -176,15 +176,18 @@ The <em class="parameter"><code>dirty</code></em> and <em class="parameter"><cod
 </p>
 <p>
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p><em class="parameter"><code>dirty</code></em> = TRUE, <em class="parameter"><code>shadow</code></em> = FALSE:  the region will be used to directly
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><em class="parameter"><code>dirty</code></em> = TRUE, <em class="parameter"><code>shadow</code></em> = FALSE:  the region will be used to directly
                                    change the drawable content. Don't
                                    do this, since this could prevent
                                    the Undo-System from working as
                                    expected.</p></li></ul></div>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pr</code></em> :</span></p></td>
@@ -236,8 +239,11 @@ shadow tiles or the real <em class="parameter"><code>drawable</code></em> tiles.
 <p>
 Change the position and size of a previously initialized pixel region.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pr</code></em> :</span></p></td>
@@ -278,8 +284,11 @@ in the region <em class="parameter"><code>pr</code></em>. <em class="parameter">
 indexed with alpha or grayscale with alpha drawable, 3 <span class="type">guchar</span> for
 rgb drawable and 4 <span class="type">guchar</span> for rgb with alpha drawable.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pr</code></em> :</span></p></td>
@@ -314,8 +323,11 @@ Get several pixels of a region in a row. This function fills the buffer
 <em class="parameter"><code>buf</code></em> with the values of the pixels from (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>) to (<em class="parameter"><code>x</code></em>+<em class="parameter"><code>width</code></em>-1, <em class="parameter"><code>y</code></em>).
 <em class="parameter"><code>buf</code></em> should be large enough to hold all these values.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pr</code></em> :</span></p></td>
@@ -354,8 +366,11 @@ Get several pixels of a region's column. This function fills the buffer
 <em class="parameter"><code>buf</code></em> with the values of the pixels from (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>) to (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>+<em class="parameter"><code>height</code></em>-1).
 <em class="parameter"><code>buf</code></em> should be large enough to hold all these values.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pr</code></em> :</span></p></td>
@@ -396,8 +411,11 @@ Get all the pixel values from the rectangle defined by <em class="parameter"><co
 from (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>) to (<em class="parameter"><code>x</code></em>+<em class="parameter"><code>width</code></em>-1, <em class="parameter"><code>y</code></em>+<em class="parameter"><code>height</code></em>-1).
 <em class="parameter"><code>buf</code></em> should be large enough to hold all these values (<em class="parameter"><code>width</code></em>*<em class="parameter"><code>height</code></em>*bpp).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pr</code></em> :</span></p></td>
@@ -437,8 +455,11 @@ from (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</
 <p>
 Set the pixel at (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>) to the values from <em class="parameter"><code>buf</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pr</code></em> :</span></p></td>
@@ -472,8 +493,11 @@ Set several pixels of a region in a row. This function draws the pixels
 from (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>) to (<em class="parameter"><code>x</code></em>+<em class="parameter"><code>width</code></em>-1, <em class="parameter"><code>y</code></em>) using the values of the buffer <em class="parameter"><code>buf</code></em>.
 <em class="parameter"><code>buf</code></em> should be large enough to hold all these values.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pr</code></em> :</span></p></td>
@@ -512,8 +536,11 @@ Set several pixels of a region's column. This function draws the pixels
 from (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>) to (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>+<em class="parameter"><code>height</code></em>-1) using the values from the buffer <em class="parameter"><code>buf</code></em>.
 <em class="parameter"><code>buf</code></em> should be large enough to hold all these values.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pr</code></em> :</span></p></td>
@@ -554,8 +581,11 @@ Set all the pixel of the rectangle defined by <em class="parameter"><code>x</cod
 (<em class="parameter"><code>x</code></em>+<em class="parameter"><code>width</code></em>-1, <em class="parameter"><code>y</code></em>+<em class="parameter"><code>height</code></em>-1), using the pixel values from the buffer <em class="parameter"><code>buf</code></em>.
 <em class="parameter"><code>buf</code></em> should be large enough to hold all these values (<em class="parameter"><code>width</code></em>*<em class="parameter"><code>height</code></em>*bpp).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pr</code></em> :</span></p></td>
@@ -593,8 +623,11 @@ Set all the pixel of the rectangle defined by <em class="parameter"><code>x</cod
 <p>
 This is the varargs version of <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgns-register2" title="gimp_pixel_rgns_register2 ()"><span class="type">gimp_pixel_rgns_register2</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>nrgns</code></em> :</span></p></td>
@@ -631,8 +664,11 @@ they are resized to the first subsets.
 <p>
 This function has to be used together with gimp_pixel_rgns_process in a loop.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>nrgns</code></em> :</span></p></td>
@@ -657,8 +693,11 @@ This function has to be used together with gimp_pixel_rgns_process in a loop.
 This function update the regions registered previously with one of the
 <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgns-register" title="gimp_pixel_rgns_register ()"><span class="type">gimp_pixel_rgns_register</span></a>* functions to their next tile.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pri_ptr</code></em> :</span></p></td>

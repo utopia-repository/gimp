@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpModule</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Module Library Reference Manual">
 <link rel="up" href="libgimpmodule.html" title="Part I. GIMP Module Library">
 <link rel="prev" href="libgimpmodule.html" title="Part I. GIMP Module Library">
@@ -140,8 +140,11 @@ arbitrary <span class="type">GType</span> implementations loaded from disk.
 <p>
 This structure contains information about a loadable module.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><span class="type">guint32</span> <em class="structfield"><code><a name="GimpModuleInfo.abi-version"></a>abi_version</code></em>;</span></p></td>
@@ -183,8 +186,11 @@ This structure contains information about a loadable module.
 <p>
 The possible states a <a class="link" href="GimpModule.html" title="GimpModule"><span class="type">GimpModule</span></a> can be in.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GIMP-MODULE-STATE-ERROR:CAPS"></a><span class="term"><code class="literal">GIMP_MODULE_STATE_ERROR</code></span></p></td>
@@ -227,8 +233,11 @@ module doesn't need to keep these values around (however in most
 cases the module will just return a pointer to a constant
 structure).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>module</code></em> :</span></p></td>
@@ -254,8 +263,11 @@ implement.  In the module, the function must be called
 When this function is called, the module should register all the types
 it implements with the passed <em class="parameter"><code>module</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>module</code></em> :</span></p></td>
@@ -331,8 +343,11 @@ are compiled against.
 <p>
 Creates a new <a class="link" href="GimpModule.html" title="GimpModule"><span class="type">GimpModule</span></a> instance.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
@@ -361,8 +376,11 @@ Creates a new <a class="link" href="GimpModule.html" title="GimpModule"><span cl
 Emits the "modified" signal. Call it whenever you have modified the module
 manually (which you shouldn't do).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>module</code></em> :</span></p></td>
 <td>A <a class="link" href="GimpModule.html" title="GimpModule"><span class="type">GimpModule</span></a>.</td>
@@ -378,8 +396,11 @@ Queries the module without actually registering any of the types it
 may implement. After successful query, the <em class="parameter"><code>info</code></em> field of the
 <a class="link" href="GimpModule.html" title="GimpModule"><span class="type">GimpModule</span></a> struct will be available for further inspection.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>module</code></em> :</span></p></td>
@@ -401,8 +422,11 @@ may implement. After successful query, the <em class="parameter"><code>info</cod
 <p>
 Sets the <em class="parameter"><code>load_inhibit</code></em> property if the module. Emits "modified".
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>module</code></em> :</span></p></td>
@@ -423,8 +447,11 @@ Sets the <em class="parameter"><code>load_inhibit</code></em> property if the mo
 Returns the translated textual representation of a <a class="link" href="GimpModule.html#GimpModuleState" title="enum GimpModuleState"><span class="type">GimpModuleState</span></a>.
 The returned string must not be freed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>state</code></em> :</span></p></td>
@@ -450,8 +477,11 @@ The returned string must not be freed.
 <p>
 This function is deprecated! Use <code class="function">g_type_module_register_enum()</code> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>module</code></em> :</span></p></td>
@@ -485,8 +515,11 @@ This function is deprecated! Use <code class="function">g_type_module_register_e
 <p>
 Creates a newly allocated <a class="link" href="GimpModule.html#GimpModuleInfo" title="GimpModuleInfo"><span class="type">GimpModuleInfo</span></a> struct.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>abi_version</code></em> :</span></p></td>
@@ -526,8 +559,11 @@ Creates a newly allocated <a class="link" href="GimpModule.html#GimpModuleInfo" 
 <p>
 Copies a <a class="link" href="GimpModule.html#GimpModuleInfo" title="GimpModuleInfo"><span class="type">GimpModuleInfo</span></a> struct.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -547,8 +583,11 @@ Copies a <a class="link" href="GimpModule.html#GimpModuleInfo" title="GimpModule
 <p>
 Frees the passed <a class="link" href="GimpModule.html#GimpModuleInfo" title="GimpModuleInfo"><span class="type">GimpModuleInfo</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
 <td>The <a class="link" href="GimpModule.html#GimpModuleInfo" title="GimpModuleInfo"><span class="type">GimpModuleInfo</span></a> struct to free</td>
@@ -562,8 +601,11 @@ Frees the passed <a class="link" href="GimpModule.html#GimpModuleInfo" title="Gi
 <p>
 This function is never called directly. Use <a class="link" href="GimpModule.html#GIMP-MODULE-ERROR:CAPS" title="GIMP_MODULE_ERROR"><code class="function">GIMP_MODULE_ERROR()</code></a> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>the <span class="type">GQuark</span> that defines the GIMP module error domain.</td>
@@ -580,8 +622,11 @@ This function is never called directly. Use <a class="link" href="GimpModule.htm
                                                         <span class="type">gpointer</span>    user_data)       : <code class="literal">Run First</code></pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gimpmodule</code></em> :</span></p></td>

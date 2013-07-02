@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimputils</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Base Library Reference Manual">
 <link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimpunit.html" title="gimpunit">
@@ -103,8 +103,11 @@ Otherwise, the portion of <em class="parameter"><code>str</code></em> that is UT
 with "(invalid UTF-8 string)" is returned. If not even the start
 of <em class="parameter"><code>str</code></em> is valid UTF-8, only "(invalid UTF-8 string)" is returned.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>str</code></em> :</span></p></td>
@@ -147,8 +150,11 @@ The only purpose of this function is to provide an easy way to pass
 a filename in the filesystem encoding to a function that expects an
 UTF-8 encoded filename.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
@@ -172,8 +178,11 @@ Creates a (possibly trimmed) copy of <em class="parameter"><code>str</code></em>
 exceeds <em class="parameter"><code>max_chars</code></em> characters or on the first newline. The fact
 that the string was trimmed is indicated by appending an ellipsis.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>str</code></em> :</span></p></td>
@@ -202,8 +211,11 @@ to two adjacent underlines. This comes in handy when needing to display
 strings with underlines (like filenames) in a place that would convert
 them to mnemonics.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>str</code></em> :</span></p></td>
@@ -233,8 +245,11 @@ character in brackets (like "File (_F)"). This function recognizes
 this construct and removes the whole bracket construction to get
 rid of the mnemonic (see bug 157561).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>str</code></em> :</span></p></td>
@@ -260,8 +275,11 @@ Canonical identifiers are e.g. expected by the PDB for procedure
 and parameter names. Every character of the input string that is
 not either '-', 'a-z', 'A-Z' or '0-9' will be replaced by a '-'.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>identifier</code></em> :</span></p></td>
@@ -285,8 +303,11 @@ when no longer needed.</td>
 <p>
 Retrieves <a class="link" href="libgimpbase-gimpbasetypes.html#GimpEnumDesc" title="struct GimpEnumDesc"><span class="type">GimpEnumDesc</span></a> associated with the given value, or <code class="literal">NULL</code>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enum_class</code></em> :</span></p></td>
@@ -321,8 +342,11 @@ If the value exists in that enum, its name, nick and its translated
 description and help are returned (if <em class="parameter"><code>value_name</code></em>, <em class="parameter"><code>value_nick</code></em>,
 <em class="parameter"><code>value_desc</code></em> and <em class="parameter"><code>value_help</code></em> are not <code class="literal">NULL</code>).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enum_type</code></em> :</span></p></td>
@@ -366,8 +390,11 @@ description and help are returned (if <em class="parameter"><code>value_name</co
 <p>
 Retrieves the translated description for a given <em class="parameter"><code>enum_value</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enum_class</code></em> :</span></p></td>
@@ -395,8 +422,11 @@ Retrieves the translated description for a given <em class="parameter"><code>enu
 <p>
 Retrieves the translated help for a given <em class="parameter"><code>enum_value</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enum_class</code></em> :</span></p></td>
@@ -424,8 +454,11 @@ Retrieves the translated help for a given <em class="parameter"><code>enum_value
 <p>
 Retrieves the first <a class="link" href="libgimpbase-gimpbasetypes.html#GimpFlagsDesc" title="struct GimpFlagsDesc"><span class="type">GimpFlagsDesc</span></a> that matches the given value, or <code class="literal">NULL</code>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags_class</code></em> :</span></p></td>
@@ -460,8 +493,11 @@ If the value exists in that flags, its name, nick and its
 translated description and help are returned (if <em class="parameter"><code>value_name</code></em>,
 <em class="parameter"><code>value_nick</code></em>, <em class="parameter"><code>value_desc</code></em> and <em class="parameter"><code>value_help</code></em> are not <code class="literal">NULL</code>).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags_type</code></em> :</span></p></td>
@@ -505,8 +541,11 @@ translated description and help are returned (if <em class="parameter"><code>val
 <p>
 Retrieves the translated description for a given <em class="parameter"><code>flags_value</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags_class</code></em> :</span></p></td>
@@ -534,8 +573,11 @@ Retrieves the translated description for a given <em class="parameter"><code>fla
 <p>
 Retrieves the translated help for a given <em class="parameter"><code>flags_value</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags_class</code></em> :</span></p></td>

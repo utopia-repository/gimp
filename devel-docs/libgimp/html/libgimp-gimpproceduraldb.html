@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpproceduraldb</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpplugin.html" title="gimpplugin">
@@ -97,8 +97,11 @@ Generates a unique temporary PDB name.
 This procedure generates a temporary PDB entry name that is
 guaranteed to be unique.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>A unique temporary name for a temporary PDB entry.</td>
@@ -118,8 +121,11 @@ This procedure returns any data which may have been associated with
 the specified identifier. The data is copied into the given memory
 location.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>identifier</code></em> :</span></p></td>
@@ -151,8 +157,11 @@ This procedure associates the supplied data with the provided
 identifier. The data may be subsequently retrieved by a call to
 'procedural-db-get-data'.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>identifier</code></em> :</span></p></td>
@@ -185,8 +194,11 @@ This procedure dumps the contents of the procedural database to the
 specified file. The file will contain all of the information
 provided for each registered procedure.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
@@ -229,8 +241,11 @@ corresponding to those matching the query. If no matching entries
 are found, then the returned string is NULL and the number of
 entries is 0.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
@@ -286,8 +301,11 @@ Checks if the specified procedure exists in the procedural database
 This procedure checks if the specified procedure is registered in
 the procedural database.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>procedure_name</code></em> :</span></p></td>
@@ -326,8 +344,11 @@ procedure type, number of input, and number of return values are
 returned. Additionally this function returns specific information
 about each input argument and return value.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>procedure</code></em> :</span></p></td>
@@ -396,8 +417,11 @@ procedure's argument.
 This procedure returns information on the specified procedure's
 argument. The argument type, name, and a description are retrieved.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>procedure_name</code></em> :</span></p></td>
@@ -443,8 +467,11 @@ This procedure returns information on the specified procedure's
 return value. The return value type, name, and a description are
 retrieved.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>procedure_name</code></em> :</span></p></td>
@@ -485,8 +512,11 @@ This procedure returns the size of any data which may have been
 associated with the specified identifier. If no data has been
 associated with the identifier, an error is returned.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>identifier</code></em> :</span></p></td>

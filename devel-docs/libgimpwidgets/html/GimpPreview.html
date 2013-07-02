@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpPreview</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="GimpPreviewArea.html" title="GimpPreviewArea">
@@ -140,8 +140,11 @@ preview.
 <div class="refsect2">
 <a name="gimp-preview-get-update"></a><h3>gimp_preview_get_update ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_preview_get_update             (<em class="parameter"><code><a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> *preview</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>preview</code></em> :</span></p></td>
@@ -163,8 +166,11 @@ preview.
 <p>
 Sets the state of the "Preview" check button.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>preview</code></em> :</span></p></td>
@@ -193,8 +199,11 @@ Sets the lower and upper limits for the previewed area. The
 difference between the upper and lower value is used to set the
 maximum size of the <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> used in the <em class="parameter"><code>preview</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>preview</code></em> :</span></p></td>
@@ -226,8 +235,11 @@ maximum size of the <a class="link" href="GimpPreviewArea.html" title="GimpPrevi
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_preview_get_size               (<em class="parameter"><code><a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> *preview</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> *width</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> *height</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>preview</code></em> :</span></p></td>
@@ -251,8 +263,11 @@ maximum size of the <a class="link" href="GimpPreviewArea.html" title="GimpPrevi
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_preview_get_position           (<em class="parameter"><code><a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> *preview</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> *x</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> *y</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>preview</code></em> :</span></p></td>
@@ -281,8 +296,11 @@ maximum size of the <a class="link" href="GimpPreviewArea.html" title="GimpPrevi
 <p>
 Transforms from image to widget coordinates.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>preview</code></em> :</span></p></td>
@@ -319,8 +337,11 @@ Transforms from image to widget coordinates.
 <p>
 Transforms from widget to image coordinates.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>preview</code></em> :</span></p></td>
@@ -356,8 +377,11 @@ that is being used in the <em class="parameter"><code>preview</code></em>. Somet
 For example if you want to receive mouse events from the area. In
 such cases, use <a class="link" href="GimpPreview.html#gimp-preview-get-area" title="gimp_preview_get_area ()"><code class="function">gimp_preview_get_area()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>preview</code></em> :</span></p></td>
@@ -384,8 +408,11 @@ the derived class implementing this method.
 <a href="/local/head/share/gtk-doc/html/libgimp/GimpDrawablePreview.html"><span class="type">GimpDrawablePreview</span></a> implements <a class="link" href="GimpPreview.html#gimp-preview-draw" title="gimp_preview_draw ()"><code class="function">gimp_preview_draw()</code></a> by drawing the
 original, unmodified drawable to the <em class="parameter"><code>preview</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>preview</code></em> :</span></p></td>
 <td>a <a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> widget</td>
@@ -404,8 +431,11 @@ Calls the GimpPreview::draw_buffer method. GimpPreview itself
 doesn't implement this method so the behaviour is determined by the
 derived class implementing this method.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>preview</code></em> :</span></p></td>
@@ -440,8 +470,11 @@ During the emission of the signal a busy cursor is set on the
 toplevel window containing the <em class="parameter"><code>preview</code></em> and on the preview area
 itself.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>preview</code></em> :</span></p></td>
 <td>a <a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> widget</td>
@@ -459,8 +492,11 @@ Sets the default mouse cursor for the preview.  Note that this will
 be overriden by a <code class="literal">GDK_FLEUR</code> if the preview has scrollbars, or by a
 <code class="literal">GDK_WATCH</code> when the preview is invalidated.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>preview</code></em> :</span></p></td>
@@ -484,8 +520,11 @@ Gives access to the <span class="type">GtkHBox</span> at the bottom of the previ
 contains the update toggle. Derived widgets can use this function
 if they need to add controls to this area.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>preview</code></em> :</span></p></td>
@@ -527,8 +566,11 @@ if they need to add controls to this area.
                                                         <span class="type">gpointer</span>     user_data)        : <code class="literal">Run First</code></pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gimppreview</code></em> :</span></p></td>

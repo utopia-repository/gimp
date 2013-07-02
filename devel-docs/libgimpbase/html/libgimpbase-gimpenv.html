@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpenv</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Base Library Reference Manual">
 <link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimpdatafiles.html" title="gimpdatafiles">
@@ -72,8 +72,11 @@ You don't need to care about this function. It is being called for
 you automatically (by means of the <a href="/local/head/share/gtk-doc/html/libgimp/libgimp-Gimp.html#MAIN:CAPS"><code class="function">MAIN()</code></a> macro that every plug-in
 runs). Calling it again will cause a fatal error.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>plug_in</code></em> :</span></p></td>
 <td>must be <code class="literal">TRUE</code> if this function is called from a plug-in</td>
@@ -107,8 +110,11 @@ freed. The returned string is in the encoding used for filenames by
 GLib, which isn't necessarily UTF-8. (On Windows it always is
 UTF-8.)
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The user-specific GIMP settings directory.</td>
@@ -132,8 +138,11 @@ freed. The returned string is in the encoding used for filenames by
 GLib, which isn't necessarily UTF-8. (On Windows it always is
 UTF-8.)
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The top directory for GIMP data.</td>
@@ -160,8 +169,11 @@ function is in the system codepage, never in UTF-8. It can thus be
 passed directly to the <code class="function">bindtextdomain()</code> function from libintl which
 does not handle UTF-8.)
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The top directory for GIMP locale files.</td>
@@ -185,8 +197,11 @@ freed. The returned string is in the encoding used for filenames by
 GLib, which isn't necessarily UTF-8. (On Windows it always is
 UTF-8.)
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The top directory for GIMP plug_ins and modules.</td>
@@ -210,8 +225,11 @@ freed. The returned string is in the encoding used for filenames by
 GLib, which isn't necessarily UTF-8. (On Windows it always is
 UTF-8.).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The top directory for GIMP config files.</td>
@@ -229,8 +247,11 @@ UTF-8.).
 <p>
 This procedure is deprecated! Use <code class="function">g_get_user_special_dir()</code> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
@@ -258,8 +279,11 @@ with <code class="function">g_free()</code> after use. The returned string is in
 used for filenames by GLib, which isn't necessarily
 UTF-8. (On Windows it always is UTF-8.)
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>basename</code></em> :</span></p></td>
@@ -285,8 +309,11 @@ freed. The returned string is in the encoding used for filenames by
 GLib, which isn't necessarily UTF-8. (On Windows it always is
 UTF-8.)
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The name of GIMP's application-specific gtkrc file.</td>
@@ -300,8 +327,11 @@ UTF-8.)
                                                          <em class="parameter"><code><span class="type">gint</span> max_paths</code></em>,
                                                          <em class="parameter"><code><span class="type">gboolean</span> check</code></em>,
                                                          <em class="parameter"><code><span class="type">GList</span> **check_failed</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
@@ -332,8 +362,11 @@ check failed.</td>
 <div class="refsect2">
 <a name="gimp-path-to-str"></a><h3>gimp_path_to_str ()</h3>
 <pre class="programlisting"><span class="returnvalue">gchar</span> *             gimp_path_to_str                    (<em class="parameter"><code><span class="type">GList</span> *path</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
@@ -354,8 +387,11 @@ check failed.</td>
 This function frees the memory allocated for the list and the strings
 it contains.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
 <td>A list of directories as returned by <a class="link" href="libgimpbase-gimpenv.html#gimp-path-parse" title="gimp_path_parse ()"><code class="function">gimp_path_parse()</code></a>.</td>
@@ -369,8 +405,11 @@ it contains.
 <p>
 Note that you have to <code class="function">g_free()</code> the returned string.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>

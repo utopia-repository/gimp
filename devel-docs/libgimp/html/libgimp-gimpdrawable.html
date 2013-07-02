@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpdrawable</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpdisplay.html" title="gimpdisplay">
@@ -196,8 +196,11 @@ When a plug-in has finished working with a drawable, before exiting
 it should call <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-detach" title="gimp_drawable_detach ()"><code class="function">gimp_drawable_detach()</code></a> to make sure that all tile data is
 transferred back to the core.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -221,8 +224,11 @@ list of the <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title=
 then frees all associated memory. You must not access the
 <em class="parameter"><code>drawable</code></em> after having called <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-detach" title="gimp_drawable_detach ()"><code class="function">gimp_drawable_detach()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>drawable</code></em> :</span></p></td>
 <td>The <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable"><span class="type">GimpDrawable</span></a> to detach from the core</td>
@@ -240,8 +246,11 @@ plug-in acts on a drawable, and then needs to read the results of its
 actions.  Data transferred back from the core will not generally be valid
 unless <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-flush" title="gimp_drawable_flush ()"><code class="function">gimp_drawable_flush()</code></a> has been called beforehand.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>drawable</code></em> :</span></p></td>
 <td>The <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable"><span class="type">GimpDrawable</span></a> whose tile data is to be transferred
@@ -257,8 +266,11 @@ to the core.</td>
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_delete</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpitem.html#gimp-item-delete" title="gimp_item_delete ()"><code class="function">gimp_item_delete()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -279,8 +291,11 @@ to the core.</td>
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_is_valid</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpitem.html#gimp-item-is-valid" title="gimp_item_is_valid ()"><code class="function">gimp_item_is_valid()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -302,8 +317,11 @@ to the core.</td>
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_get_name</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpitem.html#gimp-item-get-name" title="gimp_item_get_name ()"><code class="function">gimp_item_get_name()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -325,8 +343,11 @@ to the core.</td>
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_set_name</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpitem.html#gimp-item-set-name" title="gimp_item_set_name ()"><code class="function">gimp_item_set_name()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -351,8 +372,11 @@ to the core.</td>
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_get_visible</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpitem.html#gimp-item-get-visible" title="gimp_item_get_visible ()"><code class="function">gimp_item_get_visible()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -374,8 +398,11 @@ to the core.</td>
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_set_visible</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpitem.html#gimp-item-set-visible" title="gimp_item_set_visible ()"><code class="function">gimp_item_set_visible()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -400,8 +427,11 @@ to the core.</td>
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_get_linked</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpitem.html#gimp-item-get-linked" title="gimp_item_get_linked ()"><code class="function">gimp_item_get_linked()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -423,8 +453,11 @@ to the core.</td>
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_set_linked</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpitem.html#gimp-item-set-linked" title="gimp_item_set_linked ()"><code class="function">gimp_item_set_linked()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -449,8 +482,11 @@ to the core.</td>
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_get_tattoo</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpitem.html#gimp-item-get-tattoo" title="gimp_item_get_tattoo ()"><code class="function">gimp_item_get_tattoo()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -472,8 +508,11 @@ to the core.</td>
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_set_tattoo</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpitem.html#gimp-item-set-tattoo" title="gimp_item_set_tattoo ()"><code class="function">gimp_item_set_tattoo()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -505,8 +544,11 @@ This procedure gets the pixel value at the specified coordinates.
 The 'num_channels' argument must always be equal to the
 bytes-per-pixel value for the specified drawable.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -549,8 +591,11 @@ bytes-per-pixel value for the specified drawable. Note that this
 function is not undoable, you should use it only on drawables you
 just created yourself.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -647,8 +692,11 @@ This procedure combines the contents of the drawable's shadow buffer
 parameter specifies whether to add an undo step for the operation.
 Requesting no undo is useful for such applications as 'auto-apply'.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -678,8 +726,11 @@ memory has been allocated, it will be freed automatically when the
 drawable is removed from the image, or when the plug-in procedure
 which allocated it returns.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -714,8 +765,11 @@ it fills regardless of a selection. Its main purpose is to fill a
 newly created drawable before adding it to the image. This operation
 cannot be undone.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -749,8 +803,11 @@ y) coordinate pair is relative to the drawable's origin, not to the
 image origin. Therefore, the entire drawable can be updated using
 (0, 0, width, height).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -805,8 +862,11 @@ region being empty or not, it always returns whether the selection
 is non_empty. See <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-mask-intersect" title="gimp_drawable_mask_intersect ()"><code class="function">gimp_drawable_mask_intersect()</code></a> for a boolean
 return value which is more useful in most cases.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -854,8 +914,11 @@ intersection's bounds are returned as x, y, width, height. If there
 is no selection this function returns TRUE and the returned bounds
 are the extents of the whole drawable.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -893,8 +956,11 @@ are the extents of the whole drawable.
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_get_image</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpitem.html#gimp-item-get-image" title="gimp_item_get_image ()"><code class="function">gimp_item_get_image()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -916,8 +982,11 @@ are the extents of the whole drawable.
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_set_image</code> is deprecated and should not be used in newly-written code. There is no replacement for this procedure.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -946,8 +1015,11 @@ This procedure returns whether the specified drawable has an alpha
 channel. This can only be true for layers, and the associated type
 will be one of: { RGBA , GRAYA, INDEXEDA }.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -973,8 +1045,11 @@ channel. If the type is currently Gray, for instance, the returned
 type would be GrayA. If the drawable already has an alpha channel,
 the drawable's type is simply returned.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -997,8 +1072,11 @@ Returns the drawable's type.
 <p>
 This procedure returns the drawable's type.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -1022,8 +1100,11 @@ Returns whether the drawable is an RGB type.
 This procedure returns TRUE if the specified drawable is of type {
 RGB, RGBA }.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -1047,8 +1128,11 @@ Returns whether the drawable is a grayscale type.
 This procedure returns TRUE if the specified drawable is of type {
 Gray, GrayA }.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -1072,8 +1156,11 @@ Returns whether the drawable is an indexed type.
 This procedure returns TRUE if the specified drawable is of type {
 Indexed, IndexedA }.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -1097,8 +1184,11 @@ Returns the bytes per pixel.
 This procedure returns the number of bytes per pixel (or the number
 of channels) for the specified drawable.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -1121,8 +1211,11 @@ Returns the width of the drawable.
 <p>
 This procedure returns the specified drawable's width in pixels.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -1145,8 +1238,11 @@ Returns the height of the drawable.
 <p>
 This procedure returns the specified drawable's height in pixels.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -1173,8 +1269,11 @@ This procedure returns the specified drawable's offsets. This only
 makes sense if the drawable is a layer since channels are anchored.
 The offsets of a channel will be returned as 0.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -1203,8 +1302,11 @@ The offsets of a channel will be returned as 0.
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_is_channel</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpitem.html#gimp-item-is-channel" title="gimp_item_is_channel ()"><code class="function">gimp_item_is_channel()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -1225,8 +1327,11 @@ The offsets of a channel will be returned as 0.
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_is_layer</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpitem.html#gimp-item-is-layer" title="gimp_item_is_layer ()"><code class="function">gimp_item_is_layer()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -1247,8 +1352,11 @@ The offsets of a channel will be returned as 0.
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_is_layer_mask</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpitem.html#gimp-item-is-layer-mask" title="gimp_item_is_layer_mask ()"><code class="function">gimp_item_is_layer_mask()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -1269,8 +1377,11 @@ The offsets of a channel will be returned as 0.
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_is_text_layer</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpitem.html#gimp-item-is-text-layer" title="gimp_item_is_text_layer ()"><code class="function">gimp_item_is_text_layer()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -1304,8 +1415,11 @@ are wrapped around. Alternatively, the undefined regions of the
 drawable can be filled with transparency or the background color, as
 specified by the 'fill-type' parameter.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -1347,8 +1461,11 @@ Extract the foreground of a drawable using a given trimap.
 Image Segmentation by Uniform Color Clustering, see
 http://www.inf.fu-berlin.de/inst/pubs/tr-b-05-07.pdf
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -1379,8 +1496,11 @@ http://www.inf.fu-berlin.de/inst/pubs/tr-b-05-07.pdf
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_parasite_find</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpitem.html#gimp-item-get-parasite" title="gimp_item_get_parasite ()"><code class="function">gimp_item_get_parasite()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -1407,8 +1527,11 @@ http://www.inf.fu-berlin.de/inst/pubs/tr-b-05-07.pdf
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_parasite_list</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpitem.html#gimp-item-get-parasite-list" title="gimp_item_get_parasite_list ()"><code class="function">gimp_item_get_parasite_list()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -1438,8 +1561,11 @@ http://www.inf.fu-berlin.de/inst/pubs/tr-b-05-07.pdf
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_parasite_attach</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpitem.html#gimp-item-attach-parasite" title="gimp_item_attach_parasite ()"><code class="function">gimp_item_attach_parasite()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -1465,8 +1591,11 @@ http://www.inf.fu-berlin.de/inst/pubs/tr-b-05-07.pdf
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_parasite_detach</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpitem.html#gimp-item-detach-parasite" title="gimp_item_detach_parasite ()"><code class="function">gimp_item_detach_parasite()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
@@ -1499,8 +1628,11 @@ http://www.inf.fu-berlin.de/inst/pubs/tr-b-05-07.pdf
 Convenience function that creates a parasite and attaches it
 to GIMP.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>

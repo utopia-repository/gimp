@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpSizeEntry</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="GimpScrolledPreview.html" title="GimpScrolledPreview">
@@ -190,8 +190,11 @@ value mapped to pixels per real-world-unit.
 <p>
 Update policies for <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GIMP-SIZE-ENTRY-UPDATE-NONE:CAPS"></a><span class="term"><code class="literal">GIMP_SIZE_ENTRY_UPDATE_NONE</code></span></p></td>
@@ -260,8 +263,11 @@ an empty border of one cell width on each side plus an empty column left
 of the <a class="link" href="GimpUnitComboBox.html" title="GimpUnitComboBox"><span class="type">GimpUnitComboBox</span></a> to allow the caller to add labels or a
 <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>number_of_fields</code></em> :</span></p></td>
@@ -326,8 +332,11 @@ as <code class="literal">TRUE</code> in <a class="link" href="GimpSizeEntry.html
 <span class="type">GtkSpinButton</span> to hold the reference value. If <em class="parameter"><code>show_refval</code></em> was <code class="literal">FALSE</code>,
 <em class="parameter"><code>refval_spinbutton</code></em> will be ignored.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gse</code></em> :</span></p></td>
@@ -355,8 +364,11 @@ as <code class="literal">TRUE</code> in <a class="link" href="GimpSizeEntry.html
 <p>
 Attaches a <span class="type">GtkLabel</span> to the <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> (which is a <span class="type">GtkTable</span>).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gse</code></em> :</span></p></td>
@@ -403,8 +415,11 @@ The <em class="parameter"><code>resolution</code></em> passed will be clamped to
 This function does nothing if the <a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy" title="enum GimpSizeEntryUpdatePolicy"><span class="type">GimpSizeEntryUpdatePolicy</span></a> specified in
 <a class="link" href="GimpSizeEntry.html#gimp-size-entry-new" title="gimp_size_entry_new ()"><code class="function">gimp_size_entry_new()</code></a> doesn't equal to <a class="link" href="GimpSizeEntry.html#GIMP-SIZE-ENTRY-UPDATE-SIZE:CAPS"><span class="type">GIMP_SIZE_ENTRY_UPDATE_SIZE</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gse</code></em> :</span></p></td>
@@ -447,8 +462,11 @@ the <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class=
 This function does nothing if the <a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy" title="enum GimpSizeEntryUpdatePolicy"><span class="type">GimpSizeEntryUpdatePolicy</span></a> specified in
 <a class="link" href="GimpSizeEntry.html#gimp-size-entry-new" title="gimp_size_entry_new ()"><code class="function">gimp_size_entry_new()</code></a> doesn't equal to GIMP_SIZE_ENTRY_UPDATE_SIZE.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gse</code></em> :</span></p></td>
@@ -492,8 +510,11 @@ NOTE: In most cases you won't be interested in this function because the
       Whatever you do, don't mix these calls. A size entry should either
       be clamped by the value or the reference value.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gse</code></em> :</span></p></td>
@@ -532,8 +553,11 @@ NOTE: In most cases you won't be interested in this value because the
       <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>'s purpose is to shield the programmer from unit
       calculations. Use <a class="link" href="GimpSizeEntry.html#gimp-size-entry-get-refval" title="gimp_size_entry_get_refval ()"><code class="function">gimp_size_entry_get_refval()</code></a> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gse</code></em> :</span></p></td>
@@ -569,8 +593,11 @@ NOTE: In most cases you won't be interested in this value because the
       <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>'s purpose is to shield the programmer from unit
       calculations. Use <a class="link" href="GimpSizeEntry.html#gimp-size-entry-set-refval" title="gimp_size_entry_set_refval ()"><code class="function">gimp_size_entry_set_refval()</code></a> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gse</code></em> :</span></p></td>
@@ -603,8 +630,11 @@ field # <em class="parameter"><code>field</code></em> of the <a class="link" hre
 The current reference value of the <em class="parameter"><code>field</code></em> will be clamped to fit in the
 <em class="parameter"><code>field</code></em>'s new boundaries.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gse</code></em> :</span></p></td>
@@ -641,8 +671,11 @@ If you don't specify this value explicitly, the reference value's number
 of digits will equal to 0 for <a class="link" href="GimpSizeEntry.html#GIMP-SIZE-ENTRY-UPDATE-SIZE:CAPS"><span class="type">GIMP_SIZE_ENTRY_UPDATE_SIZE</span></a> and to 2 for
 <a class="link" href="GimpSizeEntry.html#GIMP-SIZE-ENTRY-UPDATE-RESOLUTION:CAPS"><span class="type">GIMP_SIZE_ENTRY_UPDATE_RESOLUTION</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gse</code></em> :</span></p></td>
@@ -673,8 +706,11 @@ The reference value is either a distance in pixels or a resolution
 in dpi, depending on which <a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy" title="enum GimpSizeEntryUpdatePolicy"><span class="type">GimpSizeEntryUpdatePolicy</span></a> you chose in
 <a class="link" href="GimpSizeEntry.html#gimp-size-entry-new" title="gimp_size_entry_new ()"><code class="function">gimp_size_entry_new()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gse</code></em> :</span></p></td>
@@ -705,8 +741,11 @@ The <em class="parameter"><code>refval</code></em> passed is either a distance i
 depending on which <a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy" title="enum GimpSizeEntryUpdatePolicy"><span class="type">GimpSizeEntryUpdatePolicy</span></a> you chose in
 <a class="link" href="GimpSizeEntry.html#gimp-size-entry-new" title="gimp_size_entry_new ()"><code class="function">gimp_size_entry_new()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gse</code></em> :</span></p></td>
@@ -731,8 +770,11 @@ depending on which <a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdateP
 Returns the <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> the user has selected in the <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>'s
 <a class="link" href="GimpUnitComboBox.html" title="GimpUnitComboBox"><span class="type">GimpUnitComboBox</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gse</code></em> :</span></p></td>
@@ -756,8 +798,11 @@ stay the same but the value in units or pixels per unit will change
 according to which <a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy" title="enum GimpSizeEntryUpdatePolicy"><span class="type">GimpSizeEntryUpdatePolicy</span></a> you chose in
 <a class="link" href="GimpSizeEntry.html#gimp-size-entry-new" title="gimp_size_entry_new ()"><code class="function">gimp_size_entry_new()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gse</code></em> :</span></p></td>
@@ -779,8 +824,11 @@ according to which <a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdateP
 This function allows you set up a <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> so that sub-pixel
 sizes can be entered.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gse</code></em> :</span></p></td>
@@ -803,8 +851,11 @@ sizes can be entered.
 Controls whether a unit menu is shown in the size entry.  If
 <em class="parameter"><code>show</code></em> is <span class="type">TRUE</span>, the menu is shown; otherwise it is hidden.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gse</code></em> :</span></p></td>
@@ -827,8 +878,11 @@ Controls whether a unit menu is shown in the size entry.  If
 This function is rather ugly and just a workaround for the fact that
 it's impossible to implement <code class="function">gtk_widget_grab_focus()</code> for a <span class="type">GtkTable</span>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>gse</code></em> :</span></p></td>
 <td>The sizeentry you want to grab the keyboard focus.</td>
@@ -845,8 +899,11 @@ it's impossible to implement <code class="function">gtk_widget_grab_focus()</cod
 Iterates over all entries in the <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> and calls
 <code class="function">gtk_entry_set_activates_default()</code> on them.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gse</code></em> :</span></p></td>
@@ -872,8 +929,11 @@ You shouldn't fiddle with the internals of a <a class="link" href="GimpSizeEntry
 if you want to set tooltips using <a class="link" href="libgimpwidgets-GimpHelpUI.html#gimp-help-set-help-data" title="gimp_help_set_help_data ()"><code class="function">gimp_help_set_help_data()</code></a> you
 can use this function to get a pointer to the spinbuttons.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gse</code></em> :</span></p></td>
@@ -900,8 +960,11 @@ can use this function to get a pointer to the spinbuttons.
                                                         <span class="type">gpointer</span>       user_data)          : <code class="literal">Run First</code></pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gimpsizeentry</code></em> :</span></p></td>
@@ -921,8 +984,11 @@ can use this function to get a pointer to the spinbuttons.
                                                         <span class="type">gpointer</span>       user_data)          : <code class="literal">Run First</code></pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gimpsizeentry</code></em> :</span></p></td>
@@ -942,8 +1008,11 @@ can use this function to get a pointer to the spinbuttons.
                                                         <span class="type">gpointer</span>       user_data)          : <code class="literal">Run First</code></pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gimpsizeentry</code></em> :</span></p></td>

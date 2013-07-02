@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpDialog</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox">
@@ -134,8 +134,11 @@ into a <em class="parameter"><code>va_list</code></em> variable and passes every
 For a description of the format of the <em class="parameter"><code>va_list</code></em> describing the
 action_area buttons see <code class="function">gtk_dialog_new_with_buttons()</code>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>title</code></em> :</span></p></td>
@@ -193,8 +196,11 @@ Creates a new <em class="parameter"><code>GimpDialog</code></em> widget. If a Gt
 For a description of the format of the <em class="parameter"><code>va_list</code></em> describing the
 action_area buttons see <code class="function">gtk_dialog_new_with_buttons()</code>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>title</code></em> :</span></p></td>
@@ -244,8 +250,11 @@ This function is essentially the same as <code class="function">gtk_dialog_add_b
 except it ensures there is only one help button and automatically
 sets the RESPONSE_OK widget as the default response.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dialog</code></em> :</span></p></td>
@@ -275,8 +284,11 @@ sets the RESPONSE_OK widget as the default response.
 This function is essentially the same as <code class="function">gtk_dialog_add_buttons()</code>
 except it calls <a class="link" href="GimpDialog.html#gimp-dialog-add-button" title="gimp_dialog_add_button ()"><code class="function">gimp_dialog_add_button()</code></a> instead of <code class="function">gtk_dialog_add_button()</code>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dialog</code></em> :</span></p></td>
@@ -298,8 +310,11 @@ except it calls <a class="link" href="GimpDialog.html#gimp-dialog-add-button" ti
 This function is essentially the same as <a class="link" href="GimpDialog.html#gimp-dialog-add-buttons" title="gimp_dialog_add_buttons ()"><code class="function">gimp_dialog_add_buttons()</code></a>
 except it takes a va_list instead of '...'
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dialog</code></em> :</span></p></td>
@@ -320,8 +335,11 @@ except it takes a va_list instead of '...'
 This function does exactly the same as <code class="function">gtk_dialog_run()</code> except it
 does not make the dialog modal while the <span class="type">GMainLoop</span> is running.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dialog</code></em> :</span></p></td>
@@ -342,8 +360,11 @@ does not make the dialog modal while the <span class="type">GMainLoop</span> is 
 <p>
 This function is for internal use only.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>show</code></em> :</span></p></td>
 <td>whether a help button should be added when creating a GimpDialog</td>

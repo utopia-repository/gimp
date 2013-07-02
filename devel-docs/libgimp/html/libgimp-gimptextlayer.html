@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimptextlayer</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpselection.html" title="gimpselection">
@@ -121,8 +121,11 @@ gimp_text_layer_set_*() procedures. The new layer still needs to be
 added to the image, as this is not automatic. Add the new layer
 using <a class="link" href="libgimp-gimpimage.html#gimp-image-insert-layer" title="gimp_image_insert_layer ()"><code class="function">gimp_image_insert_layer()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -162,8 +165,11 @@ Get the text from a text layer as string.
 <p>
 This procedure returns the text from a text layer as a string.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -188,8 +194,11 @@ Set the text of a text layer.
 <p>
 This procedure changes the text of a text layer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -221,8 +230,11 @@ http://www.pango.org/ for more information about Pango and its
 markup. Note: Setting the markup of a text layer using Pango's
 markup is not supported for now.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -246,8 +258,11 @@ Get the font from a text layer as string.
 <p>
 This procedure returns the name of the font from a text layer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -272,8 +287,11 @@ Set the font of a text layer.
 <p>
 This procedure modifies the font used in the specified text layer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -304,8 +322,11 @@ This procedure returns the size of the font which is used in a text
 layer. You will receive the size as a float 'font-size' in 'unit'
 units.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -336,8 +357,11 @@ Set the font size.
 This procedure changes the font size of a text layer. The size of
 your font will be a double 'font-size' of 'unit' units.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -368,8 +392,11 @@ your font will be a double 'font-size' of 'unit' units.
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_text_layer_get_hinting</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimptextlayer.html#gimp-text-layer-get-hint-style" title="gimp_text_layer_get_hint_style ()"><code class="function">gimp_text_layer_get_hint_style()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -396,8 +423,11 @@ your font will be a double 'font-size' of 'unit' units.
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_text_layer_set_hinting</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimptextlayer.html#gimp-text-layer-set-hint-style" title="gimp_text_layer_set_hint_style ()"><code class="function">gimp_text_layer_set_hint_style()</code></a> instead.</p>
 </div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -430,8 +460,11 @@ Check if antialiasing is used in the text layer.
 This procedure checks if antialiasing is enabled in the specified
 text layer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -457,8 +490,11 @@ Enable/disable anti-aliasing in a text layer.
 This procedure enables or disables anti-aliasing of the text in a
 text layer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -487,8 +523,11 @@ Check if kerning is used in the text layer.
 This procedure checks if kerning is enabled in the specified text
 layer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -513,8 +552,11 @@ Enable/disable kerning in a text layer.
 <p>
 This procedure enables or disables kerning in a text layer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -543,8 +585,11 @@ Get the language used in the text layer.
 This procedure returns the language string which is set for the text
 in the text layer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -570,8 +615,11 @@ Set the language of the text layer.
 This procedure sets the language of the text in text layer. For some
 scripts the language has an influence of how the text is rendered.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -600,8 +648,11 @@ Get the base direction used for rendering the text layer.
 This procedure returns the base direction used for rendering the
 text in the text layer
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -627,8 +678,11 @@ Set the base direction in the text layer.
 This procedure sets the base direction used in applying the Unicode
 bidirectional algorithm when rendering the text.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -657,8 +711,11 @@ Get the text justification information of the text layer.
 This procedure returns the alignment of the lines in the text layer
 relative to each other.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -684,8 +741,11 @@ Set the justification of the text in a text layer.
 This procedure sets the alignment of the lines in the text layer
 relative to each other.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -714,8 +774,11 @@ Get the color of the text in a text layer.
 <p>
 This procedure returns the color of the text in a text layer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -744,8 +807,11 @@ Set the color of the text in the text layer.
 <p>
 This procedure sets the text color in the text layer 'layer'.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -774,8 +840,11 @@ Get the line indentation of text layer.
 This procedure returns the indentation of the first line in a text
 layer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -801,8 +870,11 @@ Set the indentation of the first line in a text layer.
 This procedure sets the indentation of the first line in the text
 layer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -831,8 +903,11 @@ Get the spacing between lines of text.
 This procedure returns the line-spacing between lines of text in a
 text layer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -858,8 +933,11 @@ Adjust the line spacing in a text layer.
 This procedure sets the additional spacing used between lines a text
 layer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -888,8 +966,11 @@ Get the letter spacing used in a text layer.
 This procedure returns the additional spacing between the single
 glyps in a text layer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -915,8 +996,11 @@ Adjust the letter spacing in a text layer.
 This procedure sets the additional spacing between the single glyphs
 in a text layer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -946,8 +1030,11 @@ This procedure provides information about the hinting that is being
 used in a text layer. Hinting can be optimized for fidelity or
 contrast or it can be turned entirely off.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -974,8 +1061,11 @@ This procedure sets the hint style for font outlines in a text
 layer. This controls whether to fit font outlines to the pixel grid,
 and if so, whether to optimize for fidelity or contrast.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
@@ -1007,8 +1097,11 @@ This procedure changes the width and height of a text layer while
 keeping it as a text layer and not converting it to a bitmap like
 <a class="link" href="libgimp-gimplayer.html#gimp-layer-resize" title="gimp_layer_resize ()"><code class="function">gimp_layer_resize()</code></a> would do.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>

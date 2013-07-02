@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpbrushselectbutton</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="prev" href="GimpSelectButton.html" title="GimpSelectButton">
@@ -121,11 +121,14 @@ A button that pops up a brush selection dialog.
                                                          <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects"><span class="type">GimpLayerModeEffects</span></a> paint_mode</code></em>);</pre>
 <p>
 Creates a new <span class="type">GtkWidget</span> that completely controls the selection of
-a <a href="/local/head/share/gtk-doc/html/app/GimpBrush.html"><span class="type">GimpBrush</span></a>.  This widget is suitable for placement in a table in
+a <span class="type">GimpBrush</span>.  This widget is suitable for placement in a table in
 a plug-in dialog.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>title</code></em> :</span></p></td>
@@ -166,8 +169,11 @@ title.</td>
 <p>
 Retrieves the properties of currently selected brush.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>button</code></em> :</span></p></td>
@@ -206,8 +212,11 @@ Retrieves the properties of currently selected brush.
 Sets the current brush and other values for the brush select
 button.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>button</code></em> :</span></p></td>
@@ -298,8 +307,11 @@ The title to be used for the brush selection popup dialog.
 <p>
 The ::brush-set signal is emitted when the user selects a brush.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>widget</code></em> :</span></p></td>

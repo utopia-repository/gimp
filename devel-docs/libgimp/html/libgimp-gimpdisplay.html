@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpdisplay</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpconvert.html" title="gimpconvert">
@@ -67,8 +67,11 @@ transparently by GIMP. The newly created display is returned and can
 be subsequently destroyed with a call to <a class="link" href="libgimp-gimpdisplay.html#gimp-display-delete" title="gimp_display_delete ()"><code class="function">gimp_display_delete()</code></a>. This
 procedure only makes sense for use with the GIMP UI.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
@@ -95,8 +98,11 @@ deleted also. Note that the display is closed no matter if the image
 is dirty or not. Better save the image before calling this
 procedure.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>display_ID</code></em> :</span></p></td>
@@ -120,8 +126,11 @@ Returns TRUE if the display is valid.
 This procedure checks if the given display ID is valid and refers to
 an existing display.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>display_ID</code></em> :</span></p></td>
@@ -149,8 +158,11 @@ handle is an Xlib XID. A value of 0 is returned for an invalid
 display or if this function is unimplemented for the windowing
 system that is being used.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>display_ID</code></em> :</span></p></td>
@@ -177,8 +189,11 @@ success status. Its purpose is to flush all pending updates of image
 manipulations to the user interface. It should be called whenever
 appropriate.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>TRUE on success.</td>
@@ -199,8 +214,11 @@ new_image. If the old_image has no display or new_image already has
 a display the reconnect is not performed and the procedure returns
 without success. You should rarely need to use this function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>old_image_ID</code></em> :</span></p></td>

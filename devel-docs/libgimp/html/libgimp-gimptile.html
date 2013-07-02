@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimptile</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimptexttool.html" title="gimptexttool">
@@ -110,8 +110,11 @@ Sets the size of the tile cache on the plug-in side. The tile cache
 is used to reduce the number of tiles exchanged between the GIMP core
 and the plug-in. See also <a class="link" href="libgimp-gimptile.html#gimp-tile-cache-ntiles" title="gimp_tile_cache_ntiles ()"><code class="function">gimp_tile_cache_ntiles()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>kilobytes</code></em> :</span></p></td>
 <td>new cache size in kilobytes</td>
@@ -134,8 +137,11 @@ row-by-row, it should set the tile cache large enough to hold the
 number of tiles per row. Double this size if your plug-in uses
 shadow tiles.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>ntiles</code></em> :</span></p></td>
 <td>number of tiles that should fit into the cache</td>

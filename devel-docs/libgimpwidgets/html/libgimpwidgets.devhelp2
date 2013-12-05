@@ -852,5 +852,6 @@
     <keyword type="constant" name="GIMP_COLOR_SELECTOR_ALPHA" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-ALPHA:CAPS"/>
     <keyword type="constant" name="GIMP_CONTROLLER_EVENT_TRIGGER" link="GimpController.html#GIMP-CONTROLLER-EVENT-TRIGGER:CAPS"/>
     <keyword type="constant" name="GIMP_CONTROLLER_EVENT_VALUE" link="GimpController.html#GIMP-CONTROLLER-EVENT-VALUE:CAPS"/>
+    <keyword type="constant" name="GIMP_WIDGETS_PARSE_ERROR" link="libgimpwidgets-GimpWidgets.html#GIMP-WIDGETS-PARSE-ERROR:CAPS"/>
   </functions>
 </book>

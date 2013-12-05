@@ -4,6 +4,9 @@
 <ANCHOR id="libgimpcolor-GimpRGB.details" href="libgimpcolor/libgimpcolor-GimpRGB.html#libgimpcolor-GimpRGB.details">
 <ANCHOR id="GimpRGB" href="libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB">
 <ANCHOR id="GimpRGBCompositeMode" href="libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGBCompositeMode">
+<ANCHOR id="GIMP-RGB-COMPOSITE-NONE:CAPS" href="libgimpcolor/libgimpcolor-GimpRGB.html#GIMP-RGB-COMPOSITE-NONE:CAPS">
+<ANCHOR id="GIMP-RGB-COMPOSITE-NORMAL:CAPS" href="libgimpcolor/libgimpcolor-GimpRGB.html#GIMP-RGB-COMPOSITE-NORMAL:CAPS">
+<ANCHOR id="GIMP-RGB-COMPOSITE-BEHIND:CAPS" href="libgimpcolor/libgimpcolor-GimpRGB.html#GIMP-RGB-COMPOSITE-BEHIND:CAPS">
 <ANCHOR id="gimp-rgb-set" href="libgimpcolor/libgimpcolor-GimpRGB.html#gimp-rgb-set">
 <ANCHOR id="gimp-rgb-set-alpha" href="libgimpcolor/libgimpcolor-GimpRGB.html#gimp-rgb-set-alpha">
 <ANCHOR id="gimp-rgb-set-uchar" href="libgimpcolor/libgimpcolor-GimpRGB.html#gimp-rgb-set-uchar">

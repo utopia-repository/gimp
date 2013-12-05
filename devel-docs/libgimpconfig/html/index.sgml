@@ -79,6 +79,10 @@
 <ANCHOR id="libgimpconfig-GimpConfig-path.details" href="libgimpconfig/libgimpconfig-GimpConfig-path.html#libgimpconfig-GimpConfig-path.details">
 <ANCHOR id="GimpConfigPath" href="libgimpconfig/libgimpconfig-GimpConfig-path.html#GimpConfigPath">
 <ANCHOR id="GimpConfigPathType" href="libgimpconfig/libgimpconfig-GimpConfig-path.html#GimpConfigPathType">
+<ANCHOR id="GIMP-CONFIG-PATH-FILE:CAPS" href="libgimpconfig/libgimpconfig-GimpConfig-path.html#GIMP-CONFIG-PATH-FILE:CAPS">
+<ANCHOR id="GIMP-CONFIG-PATH-FILE-LIST:CAPS" href="libgimpconfig/libgimpconfig-GimpConfig-path.html#GIMP-CONFIG-PATH-FILE-LIST:CAPS">
+<ANCHOR id="GIMP-CONFIG-PATH-DIR:CAPS" href="libgimpconfig/libgimpconfig-GimpConfig-path.html#GIMP-CONFIG-PATH-DIR:CAPS">
+<ANCHOR id="GIMP-CONFIG-PATH-DIR-LIST:CAPS" href="libgimpconfig/libgimpconfig-GimpConfig-path.html#GIMP-CONFIG-PATH-DIR-LIST:CAPS">
 <ANCHOR id="gimp-param-spec-config-path" href="libgimpconfig/libgimpconfig-GimpConfig-path.html#gimp-param-spec-config-path">
 <ANCHOR id="gimp-param-spec-config-path-type" href="libgimpconfig/libgimpconfig-GimpConfig-path.html#gimp-param-spec-config-path-type">
 <ANCHOR id="gimp-config-path-expand" href="libgimpconfig/libgimpconfig-GimpConfig-path.html#gimp-config-path-expand">
@@ -141,7 +145,14 @@
 <ANCHOR id="GimpColorConfig.details" href="libgimpconfig/GimpColorConfig.html#GimpColorConfig.details">
 <ANCHOR id="GimpColorConfig-struct" href="libgimpconfig/GimpColorConfig.html#GimpColorConfig-struct">
 <ANCHOR id="GimpColorManagementMode" href="libgimpconfig/GimpColorConfig.html#GimpColorManagementMode">
+<ANCHOR id="GIMP-COLOR-MANAGEMENT-OFF:CAPS" href="libgimpconfig/GimpColorConfig.html#GIMP-COLOR-MANAGEMENT-OFF:CAPS">
+<ANCHOR id="GIMP-COLOR-MANAGEMENT-DISPLAY:CAPS" href="libgimpconfig/GimpColorConfig.html#GIMP-COLOR-MANAGEMENT-DISPLAY:CAPS">
+<ANCHOR id="GIMP-COLOR-MANAGEMENT-SOFTPROOF:CAPS" href="libgimpconfig/GimpColorConfig.html#GIMP-COLOR-MANAGEMENT-SOFTPROOF:CAPS">
 <ANCHOR id="GimpColorRenderingIntent" href="libgimpconfig/GimpColorConfig.html#GimpColorRenderingIntent">
+<ANCHOR id="GIMP-COLOR-RENDERING-INTENT-PERCEPTUAL:CAPS" href="libgimpconfig/GimpColorConfig.html#GIMP-COLOR-RENDERING-INTENT-PERCEPTUAL:CAPS">
+<ANCHOR id="GIMP-COLOR-RENDERING-INTENT-RELATIVE-COLORIMETRIC:CAPS" href="libgimpconfig/GimpColorConfig.html#GIMP-COLOR-RENDERING-INTENT-RELATIVE-COLORIMETRIC:CAPS">
+<ANCHOR id="GIMP-COLOR-RENDERING-INTENT-SATURATION:CAPS" href="libgimpconfig/GimpColorConfig.html#GIMP-COLOR-RENDERING-INTENT-SATURATION:CAPS">
+<ANCHOR id="GIMP-COLOR-RENDERING-INTENT-ABSOLUTE-COLORIMETRIC:CAPS" href="libgimpconfig/GimpColorConfig.html#GIMP-COLOR-RENDERING-INTENT-ABSOLUTE-COLORIMETRIC:CAPS">
 <ANCHOR id="GimpColorConfig.property-details" href="libgimpconfig/GimpColorConfig.html#GimpColorConfig.property-details">
 <ANCHOR id="GimpColorConfig--cmyk-profile" href="libgimpconfig/GimpColorConfig.html#GimpColorConfig--cmyk-profile">
 <ANCHOR id="GimpColorConfig--display-module" href="libgimpconfig/GimpColorConfig.html#GimpColorConfig--display-module">

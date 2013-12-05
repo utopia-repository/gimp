@@ -294,6 +294,9 @@ gimp_container_tree_view_constructed (GObject *object)
                     G_CALLBACK (gimp_container_tree_view_selection_changed),
                     tree_view);
 
+  g_signal_connect (tree_view->view, "drag-failed",
+                    G_CALLBACK (gimp_container_tree_view_drag_failed),
+                    tree_view);
   g_signal_connect (tree_view->view, "drag-leave",
                     G_CALLBACK (gimp_container_tree_view_drag_leave),
                     tree_view);
@@ -440,6 +443,14 @@ gimp_container_tree_view_new (GimpContainer *container,
     gimp_container_view_set_context (view, context);
 
   return GTK_WIDGET (tree_view);
+}
+
+GtkCellRenderer *
+gimp_container_tree_view_get_name_cell (GimpContainerTreeView *tree_view)
+{
+  g_return_val_if_fail (GIMP_IS_CONTAINER_TREE_VIEW (tree_view), NULL);
+
+  return tree_view->priv->name_cell;
 }
 
 void

@@ -16,6 +16,7 @@
 <ANCHOR id="GimpModuleRegisterFunc" href="libgimpmodule/GimpModule.html#GimpModuleRegisterFunc">
 <ANCHOR id="GIMP-MODULE-ERROR:CAPS" href="libgimpmodule/GimpModule.html#GIMP-MODULE-ERROR:CAPS">
 <ANCHOR id="GimpModuleError" href="libgimpmodule/GimpModule.html#GimpModuleError">
+<ANCHOR id="GIMP-MODULE-FAILED:CAPS" href="libgimpmodule/GimpModule.html#GIMP-MODULE-FAILED:CAPS">
 <ANCHOR id="GIMP-MODULE-ABI-VERSION:CAPS" href="libgimpmodule/GimpModule.html#GIMP-MODULE-ABI-VERSION:CAPS">
 <ANCHOR id="GIMP-MODULE-PARAM-SERIALIZE:CAPS" href="libgimpmodule/GimpModule.html#GIMP-MODULE-PARAM-SERIALIZE:CAPS">
 <ANCHOR id="gimp-module-new" href="libgimpmodule/GimpModule.html#gimp-module-new">

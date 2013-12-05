@@ -1,18 +1,2275 @@
+commit 9bb7eb05451b344160ea3062ce3f877ecbe9c1b7
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu Nov 28 19:33:16 2013 +0100
+
+    configure.ac: bump version to 2.8.10
+
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 19025ea50823028a3a6eaa91f702156e8d94af7e
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu Nov 28 19:21:37 2013 +0100
+
+    Add test-driver to the toplevel .gitignore
+
+ .gitignore | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit e8755c60a9b6d185212d053bc8d63f907d87f959
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu Nov 28 19:08:55 2013 +0100
+
+    NEWS: some updates
+
+ NEWS | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+commit 50bfbd94a3c4aa4e55293c75a091afc88b2f9f20
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu Nov 28 19:08:26 2013 +0100
+
+    desktop: add gimp.appdata.xml to .gitignore
+
+ desktop/.gitignore | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit fc7fce4bc9ee80a822a607ad88baaa81053bcbe5
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Thu Nov 28 17:43:14 2013 +0100
+
+    initialize length to appease cppcheck
+
+    The code was technically correct previously: It wrote the
+    uninitialized
+    length only as a placeholder to overwrite it later on. Yet it's better
+    to not confuse tools (or people) analysing the code. Besides that
+    having
+    0 for the length in the file while the payload is being written
+    may aid
+    debugging e.g. crashes in that code later on.
+
+    (cherry picked from commit 2e6af22686cba732a10dce3a066349083a4f1498)
+
+ app/xcf/xcf-save.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 779264f237be1464f80343d3121ccea32cc97051
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sat Aug 4 03:20:36 2012 +0200
+
+    Bug 676270 - cppcheck report
+
+    Fix a couple of harmless stuff pointed out in the report, and one
+    real bug: gimp_plug_in_close() was killing each process 10 times
+    on windows.
+
+    (cherry picked from commit 47c987b09e21b460e3d7f5c9e706ffaef4f198a3)
+
+    Conflicts:
+	app/actions/image-actions.c
+
+ app/display/gimpmotionbuffer.c | 4 ++--
+ app/plug-in/gimpplugin.c	| 2 +-
+ app/tools/gimpmovetool.c	| 7 +++----
+ app/xcf/xcf-save.c		| 5 +++--
+ 4 files changed, 9 insertions(+), 9 deletions(-)
+
+commit a8bc5b3418407dbc4677b8a9f7855f6ef695101d
+Author: SimaMoto,RyōTa <rsimamoto@src.gnome.org>
+Date:	Thu Nov 28 23:50:51 2013 +0900
+
+    l10n: Update Japanese translation
+
+ po-plug-ins/ja.po | 1558
+ ++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 829 insertions(+), 729 deletions(-)
+
+commit 39b841ccb1c357bfc773a7e4280081eab14ee265
+Author: Daniel Sabo <DanielSabo@gmail.com>
+Date:	Thu Nov 28 04:37:15 2013 -0800
+
+    NEWS: update for 2.8.10
+
+ NEWS | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
+
+commit dd68c83032a6ae5304322ed370794eb2b8749c25
+Author: Christian Kirbach <christian.kirbach@gmail.com>
+Date:	Sat Nov 23 17:23:53 2013 +0100
+
+    Updated German translation
+
+ po/de.po | 412
+ ++++++++++++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 264 insertions(+), 148 deletions(-)
+
+commit b6f7826f30a7e4b69cf6b9c990056488b922978f
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Fri Nov 22 20:47:16 2013 +0100
+
+    Bug 715018 - Developer documentation on VBRs incorrect
+
+    Fix the order of fields, and improve some other parts.
+
+    (cherry picked from commit a7e9016f11cc91eb1c71c68354f3747fc2e5a8b1)
+
+ devel-docs/vbr.txt | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+commit 34cef1f37255d1d23a72d8c63a1ba72b0a7d2721
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Thu Nov 21 23:00:44 2013 +0100
+
+    Bug 678043 - Single Window Mode does not remember hide docks option
+
+    If docks are hidden and single-window-mode is active, emit
+    "notify::hide-docks" manually on gimp->config in session_restore() so
+    GimpImageWindow syncs its state at the right time.
+
+    (cherry picked from commit 07e6dc12707a0b6aa46f776fb71491cc4c767962)
+
+ app/gui/session.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+commit a1e2439a1e994e7c7f76c73d2636aab97fb6ae16
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:	Thu Nov 21 01:09:35 2013 +0100
+
+    Updated Polish translation
+
+ po/pl.po | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
+
+commit 5121a5f6aa229ba3f3da778f34665690acaa4374
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Wed Nov 20 23:17:40 2013 +0100
+
+    Bug 704896 - pop ups are annoying when opening multiple files...
+
+    ...from the command line on some platforms/window managers
+
+    file_open_from_command_line(): display the progress in the active
+    display if there is no empty display. This way the progress appears in
+    the display that was opened from the previous command line argument.
+
+    (cherry picked from commit 4fb7fc918ab6f42c31894ffca5f5f80b756d5609)
+
+ app/file/file-open.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+commit 43238a343c2b48d4fe0670139b3ca78b2cf756eb
+Author: Daniel Mustieles <daniel.mustieles@gmail.com>
+Date:	Wed Nov 20 18:15:35 2013 +0100
+
+    Updated Spanish translation
+
+ po/es.po | 306
+ +++++++++++++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 202 insertions(+), 104 deletions(-)
+
+commit 97dcb9dc088883afaeaf3425ffd2ecfa3928850b
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Tue Nov 19 21:39:13 2013 +0100
+
+    pdb: fix gimp_layer_new_from_drawable() PDB wrapper
+
+    We must always call gimp_item_convert() even if the source drawable is
+    in the same image, or we might end up with a layer of wrong pixel
+    format. This was probably broken for years.
+
+    (cherry picked from commit 29d95f4c39463ba644a7a4795c352b06fde529cb)
+
+ app/pdb/layer-cmds.c	    | 5 +----
+ tools/pdbgen/pdb/layer.pdb | 5 +----
+ 2 files changed, 2 insertions(+), 8 deletions(-)
+
+commit b361d18d277e90287620e6ffbbedb1b8cc217d7a
+Author: Marco Ciampa <ciampix@libero.it>
+Date:	Mon Nov 18 18:35:05 2013 +0100
+
+    Updated italian translation.
+
+ po/it.po | 148
+ ++++++++++++++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 114 insertions(+), 34 deletions(-)
+
+commit 43f7961c1798efa067f9a33aacea94ba96bf4ad6
+Author: Clayton Walker <clayton.m.walker@gmail.com>
+Date:	Sun Nov 17 17:37:17 2013 -0700
+
+    osx: Update build files, prep for 2.8.8 dmg
+
+ build/osx/gimp-2.8-python.bundle |  39 +++++++++-----
+ build/osx/gimp.modules		  | 110
+ ++++++++++++++++++++++++++++++---------
+ build/osx/launcher-2.8-python.sh |  45 +++++++++++-----
+ 3 files changed, 145 insertions(+), 49 deletions(-)
+
+commit 3097b94e614841150c6790c1932f85b51a261812
+Author: Jehan <jehan@girinstud.io>
+Date:	Mon Nov 18 09:44:10 2013 +1300
+
+    file-export* labels renamed.
+
+    Follows updated save+export specification.
+    Partial implementation of commit 4b14ed2. The full commit also renames
+    the actions for consistency.
+
+ app/actions/file-actions.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 95465563914b9827254dac4ae26f85b86c9c444a
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:	Sun Nov 17 19:14:39 2013 +0100
+
+    Updated Polish translation
+
+ po/pl.po | 68
+ ++++++++++++++++++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 58 insertions(+), 10 deletions(-)
+
+commit 1fa53c46708c9ceab34c3b97361f99ca7a5cb531
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Nov 17 01:22:52 2013 +0100
+
+    app: gimp_brush_load_brush(): add special error for possible old files
+
+    The obsolete .gbp format had a 3-byte pattern following a 1-byte
+    brush, when embedded in a brush pipe, the current code tries to load
+    that pattern as a brush, and encounters the '3' in the header. Detect
+    that and suggest to re-save the file because the plug-in still loads
+    the legacy format.
+
+    (cherry picked from commit 83bd1c86faa293b1c6456147395be18ade24f748)
+
+ app/core/gimpbrush-load.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+commit ad29d7e7405c34e2c0e3ad66c323cef0ec215890
+Author: Jernej Simončič <jernej|s-cccp@eternallybored.org>
+Date:	Sun Nov 17 00:18:12 2013 +0100
+
+    Windows manifest: mark as Windows 8-compatible (only affects theme
+    display in
+    high contrast)
+
+ build/windows/gimp.manifest | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 86f31151492fbd256abc5b4cd5b028cd33385a33
+Author: Clayton Walker <clayton.m.walker@gmail.com>
+Date:	Sat Nov 16 15:33:56 2013 -0700
+
+    configure.ac: Remove -Wformat-non-litearl (removed in master)
+
+ configure.ac | 3 ---
+ 1 file changed, 3 deletions(-)
+
+commit b191b2f83f0200c079b701fee8cc1cd888437d40
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sat Nov 16 22:59:36 2013 +0100
+
+    app: add $(GTK_MAC_INTEGRATION_LIBS) to LDADD
+
+ app/Makefile.am | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
+
+commit abd16f9b1e3e6bd9260f83241f5ff3035d64b090
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sat Nov 16 22:53:16 2013 +0100
+
+    libgimpwidets: don't pick transparent colors in
+    gimp_pick_button_pick()
+
+    Full opacity in gimp_rgba_set_uchar() is 255, not 1.0.
+
+    (cherry picked from commit f489ef2c5a77edb49e3062381cc207aa1698dedd)
+
+ libgimpwidgets/gimppickbutton.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit b4fe880e58f3b371c47b900dc46af07618cac386
+Author: Michael Henning <drawoc@darkrefraction.com>
+Date:	Sat Nov 16 10:23:34 2013 -0500
+
+    desktop: Install the appdata file and also make it translatable.
+
+    (cherry picked from commit fe3b80d617646e4995626babe36fd3ced83d4671)
+
+ desktop/Makefile.am	     | 12 +++++++-----
+ desktop/gimp.appdata.xml    | 38 --------------------------------------
+ desktop/gimp.appdata.xml.in | 38 ++++++++++++++++++++++++++++++++++++++
+ po/POTFILES.in		     |	1 +
+ 4 files changed, 46 insertions(+), 43 deletions(-)
+
+commit 2958f48e6294b6f823a6879f63e0f9a9f825832b
+Author: SimaMoto,RyōTa <rsimamoto@src.gnome.org>
+Date:	Sat Nov 16 18:09:31 2013 +0900
+
+    l10n: Update Japanese translation
+
+ po/ja.po | 859
+ +++++++++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 479 insertions(+), 380 deletions(-)
+
+commit 492f9be1457c81c03999beb03ec5e71d204ccf53
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sat Nov 16 09:38:29 2013 +0100
+
+    app: don't ignore the return value of gimp_rectangle_intersect()
+
+    In gimp_drawable_resize(), don't blindly copy the width and height
+    returned by gimp_rectangle_intersect(), we have to check if the
+    function actually returned TRUE.
+
+    (cherry picked from commit 2b7f38f47362a5cb3d21b1bc26778f8abbd181fa)
+
+ app/core/gimpdrawable.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
+
+commit c7bb77c45d51964e1eec7420b4b2ca1e9667cfb9
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sat Nov 16 08:51:25 2013 +0100
+
+    Bug 711476 - Problems using animated GIH brushes
+
+    Show the error message from gimp_brush_load_brush() instead of
+    a generic "File is corrupt". Doesn't fix anything.
+
+    (cherry picked from commit 3e711fec092d88a2cd69f335b461d1e3a3a5f368)
+
+ app/core/gimpbrushpipe-load.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+commit fab68c6b9b488d9be47247586207584662143842
+Author: Clayton Walker <clayton.m.walker@gmail.com>
+Date:	Fri Nov 15 19:16:05 2013 -0700
+
+    build-osx: Update modules
+
+ build/osx/gimp.modules | 286
+ ++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 202 insertions(+), 84 deletions(-)
+
+commit de4fceea6c4d06cf837479cdc02deb4a576e8dc0
+Author: Jernej Simončič <jernej|s-cccp@eternallybored.org>
+Date:	Mon Nov 11 18:59:19 2013 +0100
+
+    Installer: set PYTHONPATH environment variable on 32-bit installs, too
+
+ build/windows/installer/gimp3264.iss | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+commit 03509683cbac28fbb4ac1de5034025482df0d577
+Author: Martin Husemann <martin@netbsd.org>
+Date:	Sun Nov 10 22:17:38 2013 +0100
+
+    Bug 711795 - execinfo.h functions need -lexecinfo on NetBSD
+
+    Allow building on NetBSD -current where execinfo.h is present but
+    backtrace() and backtrace_symbols() are in -lexecinfo.
+
+    (cherry picked from commit 4ac3967a5dbb5eb70d9f6496c1c91b838fbed7ad)
+
+ configure.ac | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit fef663774e90bbf5edc47a1f85ad14fcc45f80f1
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Nov 10 20:51:37 2013 +0100
+
+    configure: check for gtk-mac-intregration only if GTK+ is built
+    for quartz
+
+    (cherry picked from commit cfa074628f24211d681b18d96be8eef7d217fcd9)
+
+ configure.ac | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit c21e7b581c898692b6721468b0568d705280ad1e
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Nov 10 18:58:23 2013 +0100
+
+    configure: run check for gtk-mac-integration only on OSX
+
+ configure.ac | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+commit 2d548c71df2e62bd345e02f50e5a3c1b08a1cf1e
+Author: Daniel Sabo <DanielSabo@gmail.com>
+Date:	Sat Nov 9 21:00:55 2013 +0100
+
+    app: Port to gtk-mac-integration
+
+    Replace deprecated Carbon APIs with Cocoa.
+
+    Includes code by:
+    Simone Karin Lehmann
+    Michael Natterer
+    Daniel Sabo
+
+    (cherry picked from commit e56344294c90e1ba97de5c134b50c4c522f0808f)
+
+ app/Makefile.am	|   4 +-
+ app/gui/Makefile.am	|  24 +-
+ app/gui/gui-unique.c	| 175 +++++----
+ app/gui/gui.c		|  82 ++--
+ app/gui/ige-mac-menu.c | 988
+ -------------------------------------------------
+ app/gui/ige-mac-menu.h |  43 ---
+ configure.ac		|   9 +
+ 7 files changed, 176 insertions(+), 1149 deletions(-)
+
+commit cf988e7d76b4e59c6ebc808a389315cf102faaee
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Nov 10 00:18:48 2013 +0100
+
+    plug-ins: pass the format's name again in calls to gimp_export_image()
+
+    and clean up the formatting of the call and the lines around it. Now
+    we can check the various (disabled) export options for regressions
+    again by changing a single line in gimp_export_image().
+
+    (cherry picked from commit 03df8c6af4ec4e5d547e9fff46d0710b3c262c58)
+
+ plug-ins/common/file-aa.c	  | 10 ++++++----
+ plug-ins/common/file-cel.c	  | 11 ++++++-----
+ plug-ins/common/file-csource.c   |  6 +++---
+ plug-ins/common/file-dicom.c	  |  4 ++--
+ plug-ins/common/file-gbr.c	  |  8 +++++---
+ plug-ins/common/file-gif-save.c  |  2 +-
+ plug-ins/common/file-gih.c	  |  4 +++-
+ plug-ins/common/file-header.c	  |  8 +++++---
+ plug-ins/common/file-mng.c	  | 17 +++++++++--------
+ plug-ins/common/file-pat.c	  |  6 ++++--
+ plug-ins/common/file-pcx.c	  |  9 +++++----
+ plug-ins/common/file-pix.c	  |  8 +++++---
+ plug-ins/common/file-png.c	  | 11 ++++++-----
+ plug-ins/common/file-pnm.c	  |  8 ++++----
+ plug-ins/common/file-ps.c	  | 11 +++++++----
+ plug-ins/common/file-psp.c	  |  4 +++-
+ plug-ins/common/file-sunras.c	  | 10 ++++++----
+ plug-ins/common/file-tga.c	  | 11 ++++++-----
+ plug-ins/common/file-tiff-save.c | 12 +++++++-----
+ plug-ins/common/file-xbm.c	  |  3 ++-
+ plug-ins/common/file-xmc.c	  | 12 +++++++-----
+ plug-ins/common/file-xpm.c	  | 11 ++++++-----
+ plug-ins/common/file-xwd.c	  | 10 ++++++----
+ plug-ins/file-bmp/bmp.c	  | 16 ++++++++++------
+ plug-ins/file-fits/fits.c	  | 30 ++++++++++++++++--------------
+ plug-ins/file-fli/fli-gimp.c	  |  4 +++-
+ plug-ins/file-jpeg/jpeg.c	  |  8 +++++---
+ plug-ins/file-psd/psd-save.c	  |  3 ++-
+ plug-ins/file-psd/psd.c	  |  4 +++-
+ plug-ins/file-sgi/sgi.c	  | 10 ++++++----
+ 30 files changed, 159 insertions(+), 112 deletions(-)
+
+commit cdb0b5816e13843c811abf35635ff4b334f78b14
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Nov 10 01:54:45 2013 +0100
+
+    Bug 705457 - Export doesn't handle a single top-level layer group
+
+    Add special export code for single top-level layers groups, other
+    cases should be mostly (not perfectly) handled by the export code
+    for layered images. Also, show the legacy export dialog when the
+    envorinment variable GIMP_INTERACTIVE_EXPORT is set, so export
+    changes can actually be tested and verified again.
+
+    (cherry picked from commit 8c79a070bb28416752d76c4f8505119871819bfb)
+
+ libgimp/gimpexport.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
+
+commit adacb2a2a877de7bbbdb68edb6ca8727a7254f5d
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Nov 10 00:02:11 2013 +0100
+
+    app: add an "interactive" boolean inside gimp_export_image()
+
+    instead of using "format_name", which is confusing, and file plug-ins
+    will soon pass their format name again.
+
+    (cherry picked from commit 206df0026654c7d2a1eff317a02e86e317e6ae80)
+
+ libgimp/gimpexport.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+commit 4563dbcde753705c81b5f6fe63e845e0491f4b39
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:	Sat Nov 9 20:04:28 2013 +0100
+
+    Updated Polish translation
+
+ po/pl.po | 60
+ +++++++++++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 41 insertions(+), 19 deletions(-)
+
+commit e0fa66f6e7a606d0b67584c79f99f23e6fde4990
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Fri Nov 8 23:26:34 2013 +0100
+
+    app: add the same <Primary>D shortcut in the image close dialog
+
+    and change the button label to "_Discard Changes" so it's the same as
+    in quit.
+
+    (cherry picked from commit 9057b63c1b5390289ef097166de28eaea26b9660)
+
+ app/display/gimpdisplayshell-close.c | 79
+ ++++++++++++++++++++++++++++++------
+ 1 file changed, 67 insertions(+), 12 deletions(-)
+
+commit 627caeb620eee6801d33bdc84a7b79d8c10ba018
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Fri Nov 8 23:17:22 2013 +0100
+
+    app: always use <Primary>D for the shortcut in the quit dialog
+
+    (do not take it from the button's mnemonic)
+
+    (cherry picked from commit 25c4acbd157e183dd8135b9d40fdd3140198cd95)
+
+ app/dialogs/quit-dialog.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+commit d8fe4a16499e678171d837809908a33cf25df227
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Fri Nov 8 22:46:10 2013 +0100
+
+    app: make quitting by keyboard shortcuts easier
+
+    This mitigates the pain of having to confirm quitting when images have
+    only be exported but not saved: Introduce a <Primary>D shortcut in the
+    quit dialog and tell about it using a hint label at the bottom, so
+    quitting with dirty images is now a matter of pressing <Primary>Q
+    <Primary>D which is much easier to memorize than <Primary>Q
+    <Mnemonic>D.
+
+    (cherry picked from commit ca3440aa1e9e7748713552a2a0103ae7decdb1d1)
+
+ app/dialogs/quit-dialog.c | 259
+ ++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 180 insertions(+), 79 deletions(-)
+
+commit f937dbe63a713ab7161c5d95d5eeeee203eb442b
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:	Fri Nov 8 23:03:34 2013 +0100
+
+    Updated Polish translation
+
+ po/pl.po | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
+
+commit e803f1930ff26d5d2bb0716d8937b3ef53d6b235
+Author: Nils Philippsen <nils@redhat.com>
+Date:	Fri Nov 8 14:02:03 2013 +0100
+
+    file-bmp: don't close foreign FD in ReadImage()
+
+    (cherry picked from commit 4664c1f479e7768d08ed5198bed2251e6aa0464c)
+
+ plug-ins/file-bmp/bmp-read.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 49b05ce3e70726ab7464db863fb281480f072d90
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Thu Nov 7 19:12:07 2013 +0100
+
+    app: show file:// uris as filename in the close and quit dialogs
+
+    and make the quit dialog's "Exported to foo" string easier to
+    translate by constructing the markup in a separate step.
+
+    (cherry picked from commit beb184e3953bc77553c6fb0c723792ac919ba1a9)
+
+ app/dialogs/quit-dialog.c	      | 21 +++++++++++++++------
+ app/display/gimpdisplayshell-close.c | 17 +++++++++++------
+ 2 files changed, 26 insertions(+), 12 deletions(-)
+
+commit 4a7bf96e5394c0599757db991a05ddf1fe7f00be
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Thu Nov 7 12:49:03 2013 +0100
+
+    app: make the "exported to foo" string in the quit dialog nicer
+
+    (cherry picked from commit 936780676bcf66c8fe89c511f36173bb43f270e4)
+
+ app/dialogs/quit-dialog.c | 29 ++++++++++++++++++++---------
+ 1 file changed, 20 insertions(+), 9 deletions(-)
+
+commit a28fcb239255f83fffb1b4541db86e451f5ba74f
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Thu Nov 7 11:35:48 2013 +0100
+
+    app: in the quit dialog, mention if the image has been exported
+
+    Install a cell_data_func for the dirty image list's text renderer abd
+    construct the label manually, using the same string and logic as in
+    the close dialog.
+
+    (cherry picked from commit 9fe3da2bf242be83f2799f71281e27a4dc146baf)
+
+ app/dialogs/quit-dialog.c | 82
+ +++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 72 insertions(+), 10 deletions(-)
+
+commit 67eb73093679c49692e738620a70ddfc18f0f7bc
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Thu Nov 7 11:32:23 2013 +0100
+
+    app: add new accessor gimp_container_tree_view_get_name_cell()
+
+    (cherry picked from commit 78ad0327da4b85e5d6d2807b670f06abe47824fd)
+
+ app/widgets/gimpcontainertreeview.c | 8 ++++++++
+ app/widgets/gimpcontainertreeview.h | 4 ++++
+ 2 files changed, 12 insertions(+)
+
+commit dc8bb4eecf43eadae1bc562def7569e59d6515b7
+Author: Nils Philippsen <nils@redhat.com>
+Date:	Thu Nov 7 12:28:28 2013 +0100
+
+    app: don't ignore return value
+
+    ...of gtk_widget_translate_coordinates()
+
+    (cherry picked from commit 391de600f1bd76aa21a3ec1ea4d349ef04cc160b)
+
+ app/widgets/gimpdeviceinfo-coords.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+commit 6abd0f2438dd3b025b1224ab6a473615c17f3418
+Author: Nils Philippsen <nils@redhat.com>
+Date:	Thu Nov 7 12:18:25 2013 +0100
+
+    file-jpeg: fix operator precedence errors
+
+    (cf. commit a9376443d7a2530f4481be18ee96a0322dc01ae5)
+
+ plug-ins/file-jpeg/jpeg-load.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+commit 8082363e9c887b9f31e43b7fc947e1867f9c087b
+Author: Nils Philippsen <nils@redhat.com>
+Date:	Thu Nov 7 12:12:55 2013 +0100
+
+    gimpcolorwheel: comment out ineffectual code
+
+    (cherry picked from commit 1bb379c3f5ffbaada8942e71d1c333b9fcf5580a)
+
+ modules/gimpcolorwheel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 5c2f97f9f274bc20eef4ffd55c28156c39254343
+Author: Nils Philippsen <nils@redhat.com>
+Date:	Thu Nov 7 11:58:24 2013 +0100
+
+    file-bmp: don't leak file pointer when erroring out
+
+    (cherry picked from commit 6467fbf65dd046ee71e210b664099234e03390b9)
+
+ plug-ins/file-bmp/bmp-read.c | 47
+ +++++++++++++++++++++++---------------------
+ 1 file changed, 25 insertions(+), 22 deletions(-)
+
+commit d291de0949c13eb2195158f6fbf41da2afe46cb9
+Author: Nils Philippsen <nils@redhat.com>
+Date:	Thu Nov 7 11:43:38 2013 +0100
+
+    color-selector-cmyk-lcms: avoid freeing uninitialized pointer
+
+    (cherry picked from commit c028580ae08ccf6408910ee6cf83d54308367f36)
+
+    Conflicts:
+	modules/color-selector-cmyk.c
+
+ modules/color-selector-cmyk-lcms.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 92a0387adc5a0e78501f6151b1d52c4c96f684a8
+Author: Nils Philippsen <nils@redhat.com>
+Date:	Thu Nov 7 11:33:19 2013 +0100
+
+    lcms: avoid dereferencing null pointers
+
+    (cherry picked from commit d0f7e713bb4478f2da3a688abf89adfdc2a935ee)
+
+ plug-ins/common/lcms.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+
+commit dc6ccc17495bcabbd96d4c18616cb4b57bd07ea6
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Mon Nov 4 23:17:41 2013 +0100
+
+    Bug 709857 - Lcms plugin crashes if RGB profile does not exist
+
+    Always check the return value of
+    lcms_load_profile(config->rgb_profile)
+    and use the builtin sRGB profile if it returns NULL.
+
+    (cherry picked from commit 961d03d795e1ab32923f31e7f979f601403cdf41)
+
+ plug-ins/common/lcms.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+commit 6ee719557b725e6312991fb395cf53e20df351f9
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Nov 3 19:21:36 2013 +0100
+
+    configure: post-release version bump to 2.8.9
+
+ configure.ac | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit ae90381387126db0ea9c99f1f1144222080458c1
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Nov 3 19:13:46 2013 +0100
+
+    Bump version to 2.8.8 and commit regenerated files
+
+ configure.ac	  | 6 +++---
+ docs/gimprc.5.in | 2 +-
+ etc/gimprc	  | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
+
+commit 76dd14f0a5f64fa53cc68328f8cb2be4ea980a1c
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Nov 3 17:58:47 2013 +0100
+
+    NEWS: update for 2.8.8
+
+ NEWS | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
+
+commit ec5a879001ff06fcd53c540f26650796efded4fb
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Nov 3 16:04:58 2013 +0100
+
+    Bug 705797 - Empty right panel cannot be completely closed
+
+    Reduce the minimum width of the "You can drop foo here" label to one
+    pixel, so it can be hidden as completely as possible while keeping the
+    label visible.
+
+    (cherry picked from commit fbfaa960e1265a0093a07f1cf6e218c1013c4b47)
+
+ app/widgets/gimppanedbox.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit be45e402183886dc1a8d345486de5301b8b8d32d
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Nov 3 15:21:22 2013 +0100
+
+    Bug 711329 - Artifacts on crop tool's passepartout when set to
+    "allow growing"
+
+    Calculate GimpCanvasPassepartout's extents using a cairo_region_xor()
+    of the crop rectangle and the image extents, instead of a
+    cairo_region_subtract(). This fixes the artifacts and has the nice
+    side effect that the passepartout now colors both the parts of the
+    image that will be removed *and* the parts of the image that will be
+    newly added.
+
+    (cherry picked from commit 61c2ef40f711f0e452bd8baa67813c454e5a7658)
+
+ app/display/gimpcanvaspassepartout.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 0273d0d88ae4ce76193b08311009c13e013bfc1f
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Tue Oct 29 19:34:38 2013 +0100
+
+    Bug 710974 - Convert to Color profile fails on images with layer
+    groups
+
+    Handle layer groups recursively, and don't convert the group layer
+    itself.
+
+    (cherry picked from commit 424129cc60cc21bdea27785fbce6d2ed0908a936)
+
+ plug-ins/common/lcms.c | 47
+ +++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 41 insertions(+), 6 deletions(-)
+
+commit 7e0a8eaca7a427e31f93f0286c3f32844f1ce6d2
+Author: Martin Srebotnjak <miles@filmsi.net>
+Date:	Tue Oct 29 19:19:14 2013 +0100
+
+    Updated Slovenian translation
+
+ po/sl.po | 44 ++++++++++++++++++++++++++------------------
+ 1 file changed, 26 insertions(+), 18 deletions(-)
+
+commit e5356b5ca11bf0c29406dfef656af924a936880d
+Author: Enrico Nicoletto <enriconlto@src.gnome.org>
+Date:	Mon Oct 28 21:00:03 2013 -0200
+
+    Revert "Updated Brazilian Portuguese translation"
+
+    This reverts commit 29814899c3aa757227f86187524126c267ae329c.
+
+ po-libgimp/pt_BR.po | 529
+ ++++++++++++++++++++++++----------------------------
+ 1 file changed, 247 insertions(+), 282 deletions(-)
+
+commit 29814899c3aa757227f86187524126c267ae329c
+Author: Enrico Nicoletto <liverig@gmail.com>
+Date:	Mon Oct 28 20:59:23 2013 -0200
+
+    Updated Brazilian Portuguese translation
+
+ po-libgimp/pt_BR.po | 529
+ ++++++++++++++++++++++++++++------------------------
+ 1 file changed, 282 insertions(+), 247 deletions(-)
+
+commit 5ed30dceb9bdd974ea3430ebcd4fa33ad0949500
+Author: Marco Ciampa <ciampix@libero.it>
+Date:	Fri Oct 25 17:38:25 2013 +0200
+
+    Updated italian translation.
+
+ po/it.po | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
+
+commit d22ab649ff6c2ea790fd75ce3a05319076b970c1
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:	Thu Oct 24 18:44:52 2013 +0200
+
+    Updated Polish translation
+
+ po/pl.po | 38 +++++++++++++++++++++++++++-----------
+ 1 file changed, 27 insertions(+), 11 deletions(-)
+
+commit 373ef0b5262c995911f3d9ec34d1dd640b1c7390
+Author: Jehan <jehan@girinstud.io>
+Date:	Fri Oct 11 20:36:26 2013 +1300
+
+    Bug 709878 - test-session-* skipped when xvfb-run is unavailable.
+
+    Also add a GIMP_EXIT_TEST_SKIPPED #define, to return the SKIP
+    exit value
+    documented by automake.
+    (cherry picked from commit 6ee77e5635ced9a9b48959199eca888104f020e6)
+
+ app/tests.h						  | 10 ++++++++++
+ app/tests/test-session-2-6-compatibility.c		  | 11 +++++++++++
+ app/tests/test-session-2-8-compatibility-multi-window.c  | 12
+ ++++++++++++
+ app/tests/test-session-2-8-compatibility-single-window.c | 11 +++++++++++
+ configure.ac						  |  1 +
+ 5 files changed, 45 insertions(+)
+
+commit 7c0b46a2f45b14267113226b318765f4c0c5d975
+Author: Jehan <jehan@girinstud.io>
+Date:	Fri Oct 25 00:33:11 2013 +1300
+
+    po: add app/text/gimptextlayout.c to POTFILES.in
+    (cherry picked from commit 1ea2e7f5888ca51d4725009a6dc9238375e9ccf9)
+
+ po/POTFILES.in | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit c79e7f5e8755e66696b98628eb9b555e24c7a4eb
+Author: Jehan <jehan@girinstud.io>
+Date:	Sat Aug 31 03:16:44 2013 +1200
+
+    Bug 662787 - Segfaults when trying to set a large text size
+
+    If a font size is too big for cairo or pango to deal with, nicely back
+    up from rendering and alert the user via an error dialog.
+    (cherry picked from commit 2aabbbd9c733a9078d08b15bedef6e9adae1031f)
+
+ app/text/gimptext-vectors.c |	9 ++++++++-
+ app/text/gimptextlayer.c    | 24 ++++++++++++++++++++++--
+ app/text/gimptextlayout.c   | 41
+ ++++++++++++++++++++++++++++++++++++-----
+ app/text/gimptextlayout.h   |	3 ++-
+ app/tools/gimptexttool.c    |	8 +++++++-
+ 5 files changed, 75 insertions(+), 10 deletions(-)
+
+commit a06b36fb35c36479412310a4a0d4ee2682b79ab9
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Tue Oct 22 20:35:11 2013 +0200
+
+    plug-ins: use image/jp2 for JPEG 2000, procedures can only have
+    one mime-type
+
+    (cherry picked from commit 30a389866a801b3d072b73c64fda9a07adf6e6f4)
+
+ plug-ins/common/file-jp2-load.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit d12eb70baeea14680fc671165d6389511279955d
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Oct 20 18:22:47 2013 +0200
+
+    app: treat an empty ("" not NULL) plug-in proc_install->menu_path
+    as NULL
+
+    gimp_plug_in_handle_proc_install(): don't set the new procedure's menu
+    path nor its menu label if proc_install->menu_path is "", so we don't
+    run into action and menu creating confusion later. Do it here and not
+    later so the "" string never enters the system.
+
+    (cherry picked from commit 6e3495ff6969c2c35458292c7ff76fa72913b851)
+
+ app/plug-in/gimpplugin-message.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 1c44eae8c81902e53b62e1704dbbda07533f4545
+Author: Jehan <jehan@girinstud.io>
+Date:	Tue Oct 8 00:17:56 2013 +1300
+
+    Bug 675554 - fix overriden language environment variables on Windows.
+
+    If any of the locale environment variables used for UI language is set
+    (LANGUAGE, LC_ALL, LC_MESSAGES and LANG), do not let Windows'
+    default UI
+    language override these.
+    Language set in GIMP preferences still have higher priority.
+    (cherry picked from commit fe481275e2e42a937618366d18cd6aa03bec3b59)
+
+ app/language.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+commit 4fbe228da91dea54431d8ce58515f1e6c73b55e9
+Author: Daniel Sabo <DanielSabo@gmail.com>
+Date:	Fri Oct 11 14:23:01 2013 -0700
+
+    Update authors.xml
+
+    Add myself, Michael Henning, Jehan, and Téo Mazars
+
+ AUTHORS     | 4 ++++
+ authors.xml | 4 ++++
+ 2 files changed, 8 insertions(+)
+
+commit b8f05cdb5565c9bbf1d4836ed342315fde0c8f44
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Fri Oct 11 22:52:38 2013 +0200
+
+    libgimpwidgets: return an opaque color from gimp_pick_button_pick()'s
+    OSX code
+
+    and fiddle with whitespace a bit.
+
+    (cherry picked from commit 5466caa0646ad8da028d189088ed3b21f48ecc3f)
+
+ libgimpwidgets/gimppickbutton.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+commit e2f93a777930916cb9487fd7048c62738f6ea2c8
+Author: Daniel Sabo <DanielSabo@gmail.com>
+Date:	Mon May 28 07:36:36 2012 -0700
+
+    Use the Quartz core graphics API to implement gimp_pick_button_pick
+    when building with GDK Quartz.
+
+    Signed-off-by: Clayton Walker <clayton.m.walker@gmail.com>
+
+ libgimpwidgets/gimppickbutton.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+commit faa233666adf5b907a30712ccd476048ecbc5ba9
+Author: Clayton Walker <clayton.m.walker@gmail.com>
+Date:	Fri Oct 11 12:38:16 2013 -0600
+
+    Organize OSX build files
+
+ build/osx/README		  | 104 ++++++++++----------
+ build/osx/custom/fonts.conf	  | 155 ++++++++++++++++++++++++++++++
+ build/osx/custom/gimp.desktop	  | 202
+ +++++++++++++++++++++++++++++++++++++++
+ build/osx/custom/gimprc	  |   1 +
+ build/osx/custom/gtkrc		  |  14 +++
+ build/osx/custom/mimeinfo.cache  |  32 +++++++
+ build/osx/custom/open.desktop	  |   7 ++
+ build/osx/custom/session.conf	  |  64 +++++++++++++
+ build/osx/fonts.conf		  | 155 ------------------------------
+ build/osx/gimp-2.8-python.bundle |  21 +++-
+ build/osx/gimprc		  |   1 -
+ build/osx/gtkrc		  |   0
+ 12 files changed, 546 insertions(+), 210 deletions(-)
+
+commit 71ba846f8e858df8bc38925ab8d8c8b2f9ef0306
+Author: Clayton Walker <clayton.m.walker@gmail.com>
+Date:	Fri Oct 11 09:23:00 2013 -0600
+
+    Update osx build scripts.
+
+    Enable dbus, gvfs, and python for all 2.8.x series builds. Update
+    libs.
+
+ build/osx/gimp-2.8-python.bundle |  172 ++++++
+ build/osx/gimp-2.8.bundle	  |  187 -------
+ build/osx/gimp.modules		  |  672 ++++++++++++++---------
+ build/osx/gimprc		  |    4 +-
+ build/osx/info-2.8-python.plist  | 1093
+ ++++++++++++++++++++++++++++++++++++++
+ build/osx/info-2.8.3.plist	  | 1093
+ --------------------------------------
+ build/osx/info-2.8.4.plist	  | 1093
+ --------------------------------------
+ build/osx/jhbuildrc-gimp	  |   12 +-
+ build/osx/launcher-2.8-python.sh |  211 ++++++++
+ build/osx/launcher-2.8.sh	  |   81 ---
+ 10 files changed, 1901 insertions(+), 2717 deletions(-)
+
+commit 0bc0078dec2eaec43a5f52fa5bff4db312303935
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:	Fri Oct 11 15:28:16 2013 +0200
+
+    Revert "Fix syntaxis in user-visible messages"
+
+    This reverts commit 48e4cb708e99bd17b5f5cf7e511141c65131bb82.
+
+    Please avoid changing strings on the stable branch unless it's
+    *absolutely*
+    necessary. Fixing typos on master is enough.
+
+ app/actions/windows-actions.c | 2 +-
+ app/widgets/gimpdockwindow.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 95b2375ce18a6d5722f582b09e212b89bc0452f7
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:	Fri Oct 11 15:25:32 2013 +0200
+
+    Revert "Fix syntaxis in a user-visible message"
+
+    This reverts commit eb3a62c43e012c2914987e1bd3a33c32833d275c.
+
+    Please avoid changing strings on the stable branch unless it's
+    *absolutely*
+    necessary. Fixing typos on master is enough.
+
+ app/actions/windows-actions.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 5fb359ae82061bb948c8882483c3a215cdfaad46
+Author: Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
+Date:	Fri Oct 11 10:35:51 2013 +0400
+
+    Updated Russian translation
+
+ po-libgimp/ru.po  |   18 +-
+ po-plug-ins/ru.po | 2050 +++++++++++++++++++++++-----------------------
+ po/ru.po	   | 2319
+ +++++++++++++++++++++++++++++------------------------
+ 3 files changed, 2283 insertions(+), 2104 deletions(-)
+
+commit 48e4cb708e99bd17b5f5cf7e511141c65131bb82
+Author: Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
+Date:	Fri Oct 11 06:33:44 2013 +0400
+
+    Fix syntaxis in user-visible messages
+
+    Phrases starting with "When enabled" should have a comma.
+
+ app/actions/windows-actions.c | 2 +-
+ app/widgets/gimpdockwindow.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit eb3a62c43e012c2914987e1bd3a33c32833d275c
+Author: Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
+Date:	Fri Oct 11 06:22:35 2013 +0400
+
+    Fix syntaxis in a user-visible message
+
+    "When enabled GIMP is in a single-window mode" was missing a comma.
+
+ app/actions/windows-actions.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit fe5623c75734ff0bc7a5148413ae4ee589f00f4c
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sat Oct 5 00:14:14 2013 +0200
+
+    Bug 703065 - Jpeg file size preview error is back
+
+    Use GIO to get the file size.
+
+    (cherry picked from commit 1f21a28770a548423467d93d85ac514c39e97884)
+
+ plug-ins/file-jpeg/jpeg-save.c | 47
+ +++++++++++++++++++++++++++++++-----------
+ 1 file changed, 35 insertions(+), 12 deletions(-)
+
+commit a10b60e314bc1c6a7a2248666d7a0fe2dcf11eda
+Author: Jehan <jehan@girinstud.io>
+Date:	Mon Sep 30 05:23:23 2013 +1300
+
+    Bug 681709 - GimpContainer continuously scrolls on dnd failure
+    on Windows.
+
+    The scroll timeout is looping forever if the drag ends by a failure
+    event. For instance when hitting the Esc button during scrolling.
+    (cherry picked from commit 3e082b356c77d8560fc79f29c77cf7ac17bb745e)
+
+ app/widgets/gimpcontainertreeview-dnd.c | 15 +++++++++++++++
+ app/widgets/gimpcontainertreeview-dnd.h |  4 ++++
+ app/widgets/gimpcontainertreeview.c	 |  3 +++
+ 3 files changed, 22 insertions(+)
+
+commit 100ce42c1e2cca9bdeaf1aa6f6bdf039aa030053
+Author: Nils Philippsen <nils@redhat.com>
+Date:	Tue Oct 1 12:16:43 2013 +0200
+
+    configure: use test in a portable way
+
+    (based on commit c13e73271b77ffc298815e7fee8b22d0750c689e)
+
+ configure.ac | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+commit e69d287be1f0d23193b9088b6c8f86bb311fd8ea
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sat Sep 28 17:22:57 2013 +0200
+
+    Bug 708594 - Alignment Tool Icon not visible on dark background
+
+    Add whiteish borders around the align icon arrows.
+
+    (cherry picked from commit c1095cb406a4bc4bd1b328e4d7ab0fb71f7139d4)
+
+ themes/Default/images/tools/stock-tool-align-16.png | Bin 387 ->
+ 304 bytes
+ themes/Default/images/tools/stock-tool-align-22.png | Bin 435 ->
+ 380 bytes
+ themes/Default/images/tools/stock-tool-align-22.xcf | Bin 1579 ->
+ 1901 bytes
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit f37db5bc34cd3d6c2ae97208645eb2d619fb32d1
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Mon Sep 23 15:25:47 2013 +0200
+
+    desktop: indentation and formatting for gimp.appdata.xml
+
+    (cherry picked from commit 9fc03fb8adfbc329907394429a2ccb55201a92bc)
+
+ desktop/gimp.appdata.xml | 67
+ +++++++++++++++++++++++++-----------------------
+ 1 file changed, 35 insertions(+), 32 deletions(-)
+
+commit d2e00b8bd3688879153f330ed55ac5deafa8f8f6
+Author: Marco Ciampa <ciampix@libero.it>
+Date:	Mon Sep 23 11:03:12 2013 +0200
+
+    Updated italian translation.
+
+ po/it.po | 117
+ +++++++++++++++++++++++++++++++++++++--------------------------
+ 1 file changed, 69 insertions(+), 48 deletions(-)
+
+commit 372284094f66138d2427b021c619dca64d59e89e
+Author: Téo Mazars <teo.mazars@ensimag.fr>
+Date:	Sun Sep 22 16:26:10 2013 +0200
+
+    Bug 677275 - Mosaic Filter produces ugly artifacts
+
+    Fix this by using a real point-segment distance.
+    Some artifacts remains though, they must come from somewhere else.
+
+    (cherry picked from commit 4caa5a113fe49e57a3861d3dab666da1dd38f2e5)
+
+ plug-ins/common/mosaic.c | 50
+ +++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 45 insertions(+), 5 deletions(-)
+
+commit 1bc91326ce30178f7cce9656993859c70318d8a2
+Author: Balázs Úr <urbalazs@src.gnome.org>
+Date:	Sun Sep 22 10:29:14 2013 +0200
+
+    Updated Hungarian translation
+
+ po-plug-ins/hu.po | 1090
+ ++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 612 insertions(+), 478 deletions(-)
+
+commit 23281bc3f06087673f60924ac9cd737522052ad4
+Author: Balázs Úr <urbalazs@src.gnome.org>
+Date:	Sun Sep 22 10:21:19 2013 +0200
+
+    Updated Hungarian translation
+
+ po/hu.po | 281
+ ++++++++++++++++++++++++++++++++++++---------------------------
+ 1 file changed, 161 insertions(+), 120 deletions(-)
+
+commit 9c0f515f284ce93e2abf43d39425afba58a17645
+Author: Jehan <jehan@girinstud.io>
+Date:	Sat Sep 21 21:51:38 2013 +1200
+
+    Bug 708521 - Getting rid of cage_complete property on GimpCageTool,
+    redundant with tool_state.
+    (cherry picked from commit ac0ac60ca90c12c3f9cc1768ad16b8e1d0904f61)
+
+ app/tools/gimpcagetool.c | 151
+ ++++++++++++++++++-----------------------------
+ app/tools/gimpcagetool.h |   1 -
+ 2 files changed, 56 insertions(+), 96 deletions(-)
+
+commit 42de6e065c153e866196e04b21116f881250b910
+Author: Jehan <jehan@girinstud.io>
+Date:	Sat Sep 21 21:07:29 2013 +1200
+
+    Bug 708519 - Fix using Backspace to delete a closed cage tool's
+    points.
+    (cherry picked from commit 2294b8da26d2c306944c6609e7a1c94e4ec9d77d)
+
+ app/tools/gimpcagetool.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+commit 08c7d90823737a19ec31fb655f2ad3893f78924c
+Author: Jehan <jehan@girinstud.io>
+Date:	Sat Sep 21 20:43:11 2013 +1200
+
+    Bug 708517: Assertion on cage tool commit with ENTER + fix cage
+    completion with ENTER.
+
+    The key press handler must return TRUE on successfully processing
+    the key,
+    otherwise the handler ends up being run several times.
+    (cherry picked from commit 5e331e1d252fc5b855ed333a9d74da436930640f)
+
+ app/tools/gimpcagetool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 91738c3b93f456a420334380bd0864a48e8dd0d3
+Author: Michael Henning <drawoc@darkrefraction.com>
+Date:	Fri Sep 20 19:05:18 2013 -0400
+
+    plug-ins: Use the standardized value for deflate compression in
+    tiff-save.
+
+    Ironically, the standardized value is called
+    COMPRESSION_ADOBE_DEFLATE,
+    while the vendor-specific value is called COMPRESSION_DEFLATE.
+
+    (cherry picked from commit 4bc51691e52e5813bb10b3e6e4b1e18cdeab5b6d)
+
+ plug-ins/common/file-tiff-save.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
+
+commit ebef7983e8fbfab2d6c0bec266ae09e2f91e8a54
+Author: Sven Claussner <sclaussner@src.gnome.org>
+Date:	Fri Sep 20 20:56:19 2013 +0200
+
+    Add licence comments to AppData file.
+
+    Explain the meaning of the licence tag and
+    the GPL compatibility of the used CC0 licence.
+
+ desktop/gimp.appdata.xml | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+commit dc9fdc5528fbf9f58f0a94ffb0cde6b0586b918f
+Author: Timo Jyrinki <timo@debian.org>
+Date:	Fri Sep 20 21:35:38 2013 +0300
+
+    Updated Finnish libgimp translation by Juhani Numminen
+
+ po-libgimp/fi.po | 273
+ +++++++++++++++----------------------------------------
+ 1 file changed, 71 insertions(+), 202 deletions(-)
+
+commit 09861b85017fa9a19c1a5eb1cabd314a072cee9b
+Author: Enrico Nicoletto <liverig@gmail.com>
+Date:	Fri Sep 20 14:44:12 2013 -0300
+
+    Updated Brazilian Portuguese translation
+
+ po/pt_BR.po | 77
+ +++++++++++++++++++++++++++++++++++++------------------------
+ 1 file changed, 47 insertions(+), 30 deletions(-)
+
+commit a90e9ec5e7fbe5ae08ff0ddd4c8c11c8a01d8e13
+Author: Jehan <jehan@girinstud.io>
+Date:	Fri Sep 20 01:54:02 2013 +1200
+
+    app: disallow a theoretical infinite loop if we run out of ids.
+
+    In practice, that's likely impossible to ever happen. This was just
+    itching my perfectionist self, who enjoys flawless design.
+    (cherry picked from commit 951393b34e6a33f862c91d38e5ca387d7c76b158)
+
+ app/core/gimpidtable.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+commit dfaa321027e81e7e0be10ace1e2cc84de22f0630
+Author: Nils Philippsen <nils@redhat.com>
+Date:	Thu Sep 19 17:38:46 2013 +0200
+
+    lcms: pretty code even better if syntactically correct
+
+    Thanks to Jehan for spotting this.
+
+ modules/display-filter-lcms.c	| 2 +-
+ modules/display-filter-proof.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit edfba8edfdf3e3bb6983a2123eb9a1b13f700add
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Tue Sep 25 20:56:54 2012 +0200
+
+    app: don't crash when a color profile has no information
+
+    (cherry picked from commit 9d42df5fa2d2ce598c5896cb0f023a5db65c7f2a)
+
+ app/widgets/gimpprofilechooserdialog.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit b2c6bd76145d3c38a01dbd16a5fe587e2f8efbbd
+Author: Nils Philippsen <nils@redhat.com>
+Date:	Tue Sep 17 16:43:11 2013 +0200
+
+    Backport lcms 2.x support from master, making it optional.
+
+    In order to retain support for lcms 1.x, this merges the
+    lcms2-specific
+    code as a configurable alternative.
+
+    The user can specify which version to use by specifying
+    "--with-lcms=lcms1" or "--with-lcms=lcms2" when running configure. If
+    no
+    version is specified explicitly, version 1.x will be preferred if both
+    versions are available. This ensures that GIMP is built with the same
+    lcms version as an older version, if the same configure switches are
+    used and the same libraries are available.
+
+    This builds on the following commits from the master branch:
+
+	commit c59ab4d817730430b4b037de07abd28281f1dcf7
+	Author:     Massimo Valentini <mvalentini@src.gnome.org>
+	AuthorDate: Tue Sep 4 17:53:06 2012 +0200
+
+	    lcms: oversight
+
+	commit 8bbfc9e5cf4728b9cafc4edf32ab52c32375f9b7
+	Author:     Michael Natterer <mitch@gimp.org>
+	AuthorDate: Mon Sep 3 20:03:53 2012 +0200
+
+	    Bug 675558 - switch from lcms-1 to lcms-2
+
+	    Applied modified patch from Hartmut Kuhse which ports
+	    to lcms-2.
+
+ configure.ac			    |  49 ++++++++++++++---
+ modules/color-selector-cmyk-lcms.c |  64 +++++++++++++++++++++-
+ modules/display-filter-lcms.c	    | 107
+ ++++++++++++++++++++++++++++++++++++-
+ modules/display-filter-proof.c     |  45 +++++++++++++++-
+ plug-ins/common/lcms.c		    |  96
+ ++++++++++++++++++++++++++++++---
+ plug-ins/file-jpeg/jpeg-load.c     |  19 ++++++-
+ 6 files changed, 360 insertions(+), 20 deletions(-)
+
+commit c9c927603bd431d67697e263679440ac1e18c956
+Author: Nils Philippsen <nils@redhat.com>
+Date:	Wed Sep 18 13:46:13 2013 +0200
+
+    include missing header
+
+ modules/display-filter-lcms.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 803c2d2b32e6282c389660613f8fa9922a142cac
+Author: Dimitris Spingos <dmtrs32@gmail.com>
+Date:	Wed Sep 18 07:22:05 2013 +0300
+
+    Updated Greek translation
+
+ po/el.po | 115
+ ++++++++++++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 70 insertions(+), 45 deletions(-)
+
+commit cee54bd992a10790e7ae52c04a26ff27826f5e38
+Author: Aurimas Černius <aurisc4@gmail.com>
+Date:	Fri Sep 13 22:28:47 2013 +0300
+
+    Updated Lithuanian plug-ins translation
+
+ po-plug-ins/lt.po | 504
+ ++++++++++++++++++++----------------------------------
+ 1 file changed, 184 insertions(+), 320 deletions(-)
+
+commit 42b40d1e4813cd8db08c26c402c6ed90a81c18da
+Author: Aurimas Černius <aurisc4@gmail.com>
+Date:	Fri Sep 13 22:26:53 2013 +0300
+
+    Updated Lithuanian translation
+
+ po/lt.po | 287
+ +++++++++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 159 insertions(+), 128 deletions(-)
+
+commit bf1b779b254e25dae17ab2a2167623eecaf793f8
+Author: A S Alam <apreet.alam@gmail.com>
+Date:	Fri Sep 13 11:06:05 2013 -0500
+
+    update Punjabi Translaiton
+
+ po/pa.po | 883
+ +++++++++++++++++++++++++++++++--------------------------------
+ 1 file changed, 430 insertions(+), 453 deletions(-)
+
+commit a14ce157f33837a70a2dcb166a0c69d0dffa7376
+Author: Matej Urbančič <mateju@svn.gnome.org>
+Date:	Tue Sep 10 21:19:37 2013 +0200
+
+    Updated Slovenian translation
+
+ po/sl.po | 2140
+ +++++++++++++++++++++++++++++++++++---------------------------
+ 1 file changed, 1213 insertions(+), 927 deletions(-)
+
+commit 3c76d330196bfc2aac1a3f8c09be0876bec09433
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Tue Sep 10 12:06:55 2013 +0200
+
+    tools: make sure clang is not considered to be visual studio
+
+    just because it starts with "cl". Spotted by Joerg Sonnenberger.
+
+    (cherry picked from commit ac808b8b6b25596f28b81f9a30738d2cb31ce4a4)
+
+ tools/gimptool.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit c8a7be593bbd27632f655bc61e76f021d04bd5f1
+Author: Sven Claussner <sclaussner@src.gnome.org>
+Date:	Fri Sep 6 15:36:42 2013 +0200
+
+    German UI translation: fix some inconsistencies
+
+    Fix typos in Vectors, Gradients, Dynamics, Buffers,
+    Document History, Error console dialogs.
+    Use 'Zeichendynamik' consistently as translation of
+    'Dynamics'. Make plural forms clearer.
+
+ po/de.po | 77
+ ++++++++++++++++++++++++++++++++--------------------------------
+ 1 file changed, 39 insertions(+), 38 deletions(-)
+
+commit 31601b3a6b6fc1fd87da9f705fa771f7d4764fa7
+Author: Richard Hughes <richard@hughsie.com>
+Date:	Thu Sep 5 15:46:07 2013 +0100
+
+    Add an AppData file for GIMP
+
+    (cherry picked from commit 5e37536d77310673dac9a720cef761c9372049f0)
+
+ desktop/Makefile.am	  |  3 +++
+ desktop/gimp.appdata.xml | 28 ++++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
+
+commit 0f8496d873d05dabdd1f6430b0faa75245f8de88
+Author: Jehan <jehan@girinstud.io>
+Date:	Thu Sep 5 23:35:27 2013 +1200
+
+    Bug 707255 - Open preferences when quitting causes assertion failure
+
+    When removing the container of a GimpContainerView,
+    gimp_container_view_remove_container() must be the last call. It was
+    causing a `GIMP_IS_CONTAINER (container)' failure in subsequent
+    gimp_container_get_children_type().
+    For good practice, unsetting a container works now the exact reversed
+    order as the setting of a container.
+    (cherry picked from commit 338e0ddf8d1c128e3873d6e9ad9a52577b48b1dd)
+
+ app/widgets/gimpcontainerview.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 175852a407871afdc50e71c2f1f2923a67d89f78
+Author: Jehan <jehan@girinstud.io>
+Date:	Thu Sep 5 22:10:24 2013 +1200
+
+    Bug 707255 - Open preferences when quitting causes assertion failure.
+
+    Wrong order of destruction functions were causing critical warnings on
+    g_signal_handlers_disconnect_by_func() calls.
+    Also g_object_ref/unref() the container because the tree handler might
+    hold the last ref to the container, once it's disconnected the
+    container
+    could be gone.
+    (cherry picked from commit 04a3c65aa1f68c99538d86c97649ec4884822030)
+
+ app/widgets/gimpcontainerview.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+commit 742da269ee8a03661ed4dd2db31891f9c073af4e
+Merge: aa5c186 e1564c4
+Author: Sven Claussner <sclaussner@src.gnome.org>
+Date:	Tue Sep 3 19:34:02 2013 +0200
+
+    Remove dead item gimptoolpresets.xml in app-docs.sgml
+
+    This item caused builds with --enable-gtk-doc-app to
+    fail because of a typo and it was also misplaced in
+    app-core-containers.
+
+commit aa5c186a3dc211fd8c17c55f915edc12a4f658df
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Tue Sep 3 16:00:09 2013 +0200
+
+    Bug 707354 - Bump Map offsets only go to 1000 regardless of image size
+
+    Allow ranges from -10000 to 10000, still arbitrary but more
+    real-world. The scales still go -1000 to 1000, but the spinbuttons
+    allow for the full range.
+
+    (cherry picked from commit af0cfacfb3fdd4308dc28167a8be74e5141fc1eb)
+
+ plug-ins/common/bump-map.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit e1564c44a8f20fb704e29e317f167cf95fe1dc9f
+Author: Sven Claussner <sclaussner@src.gnome.org>
+Date:	Mon Sep 2 22:28:30 2013 +0200
+
+    Remove dead item gimptoolpresets.xml in app-docs.sgml
+
+    This item caused builds with --enable-gtk-doc-app to
+    fail because of a typo and it was also misplaced in
+    app-core-containers.
+
+ devel-docs/app/app-docs.sgml | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 3049999de9ef10eeaaa4b8fc687faa17bc74cd46
+Author: Inaki Larranaga Murgoitio <dooteo@zundan.com>
+Date:	Wed Aug 28 21:14:13 2013 +0200
+
+    Updated Basque language
+
+ po-libgimp/eu.po | 101
+ ++++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 55 insertions(+), 46 deletions(-)
+
+commit 356e8a3ff26ce8ef8147ac7aa519227d5abc6115
+Author: Inaki Larranaga Murgoitio <dooteo@zundan.com>
+Date:	Wed Aug 28 21:13:15 2013 +0200
+
+    Updated Basque language
+
+ po-tags/eu.po | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+commit f6a59f2669103268d89bafb022dcb0f2a8fe066d
+Author: Inaki Larranaga Murgoitio <dooteo@zundan.com>
+Date:	Wed Aug 28 21:12:16 2013 +0200
+
+    Updated Basque language
+
+ po-tips/eu.po | 430
+ +++++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 215 insertions(+), 215 deletions(-)
+
+commit d7a7ae051c6b84d3b6028e682336afa89076cd88
+Author: Inaki Larranaga Murgoitio <dooteo@zundan.com>
+Date:	Wed Aug 28 21:10:55 2013 +0200
+
+    Updated Basque language
+
+ po-plug-ins/eu.po | 2944
+ ++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 1674 insertions(+), 1270 deletions(-)
+
+commit c7b81f1f8ac8f65bfffb0cd974c868f2a8a0c051
+Author: Inaki Larranaga Murgoitio <dooteo@zundan.com>
+Date:	Wed Aug 28 21:01:32 2013 +0200
+
+    Updated Basque language
+
+ po/eu.po | 2475
+ +++++++++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 1311 insertions(+), 1164 deletions(-)
+
+commit 94db7d46d030e6e8075e106c6118e10acdd1c994
+Author: Daniel Mustieles <daniel.mustieles@gmail.com>
+Date:	Tue Aug 27 19:42:16 2013 +0200
+
+    Updated Spanish translation
+
+ po/es.po | 192
+ ++++++++++++++++++++++++++++++++++++---------------------------
+ 1 file changed, 110 insertions(+), 82 deletions(-)
+
+commit 4d468af5cb15b1c4e3d7c81a383f67a6c46edfe5
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:	Sat Aug 24 02:19:54 2013 +0200
+
+    Updated Polish translation
+
+ po/pl.po | 77
+ +++++++++++++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 47 insertions(+), 30 deletions(-)
+
+commit d93fd0a84e70d20e953a42cc8a0c338140d7e858
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Fri Aug 23 20:35:24 2013 +0200
+
+    Bug 706221 - File/Save (As) dialog: add a link to the Export dialog...
+
+    ...for Non-XCF files.
+
+    When the entered extension in save or export is on the other group,
+    add a link to the warning dialog which allows to jump directly to the
+    export or save dialog, with the same filename pre-entered.
+
+    (cherry picked from commit b56145626e1e83ed9e1ffea161fa66aadb9fea24)
+
+ app/actions/file-commands.c	| 146 ++++++++++++++++++++++-------
+ app/dialogs/file-save-dialog.c | 205
+ +++++++++++++++++++++++++++++++++--------
+ app/dialogs/file-save-dialog.h |   3 +
+ 3 files changed, 280 insertions(+), 74 deletions(-)
+
+commit ded05240e2f1111ead34151fa13e7411b94346d7
+Author: Enrico Nicoletto <enriconlto@src.gnome.org>
+Date:	Fri Aug 23 16:02:22 2013 -0300
+
+    Revert "Updated Brazilian Portuguese translation"
+
+    po-libgimp will be placed in the correct branch!
+
+    This reverts commit d6f50ab1df895aa61dd6a8c0c7c58384f9c4ea7d.
+
+ po-libgimp/pt_BR.po | 488
+ ++++++++++++++++++++++++++--------------------------
+ 1 file changed, 247 insertions(+), 241 deletions(-)
+
+commit d6f50ab1df895aa61dd6a8c0c7c58384f9c4ea7d
+Author: Enrico Nicoletto <liverig@gmail.com>
+Date:	Fri Aug 23 15:58:09 2013 -0300
+
+    Updated Brazilian Portuguese translation
+
+ po-libgimp/pt_BR.po | 488
+ ++++++++++++++++++++++++++--------------------------
+ 1 file changed, 241 insertions(+), 247 deletions(-)
+
+commit 4758321f35bc024eb448209cb575966e33c110fb
+Author: Enrico Nicoletto <liverig@gmail.com>
+Date:	Wed Aug 14 12:34:21 2013 -0300
+
+    Updated Brazilian Portuguese translation
+
+ po/pt_BR.po | 53 ++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 28 insertions(+), 25 deletions(-)
+
+commit 0d57efb47fd8481a67343c4c9ee118c569ae7709
+Author: Daniel Mustieles <daniel.mustieles@gmail.com>
+Date:	Wed Aug 14 14:10:37 2013 +0200
+
+    Updated Spanish translation
+
+ po/es.po | 36 +++++++++++++++++++-----------------
+ 1 file changed, 19 insertions(+), 17 deletions(-)
+
+commit b7e676d5f737fadbd034dfc34ba8b5a557a77079
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:	Sun Aug 11 01:06:40 2013 +0200
+
+    Updated Polish translation
+
+ po/pl.po | 34 +++++++++++++++++++---------------
+ 1 file changed, 19 insertions(+), 15 deletions(-)
+
+commit 1ecc25a260aac95344c984e4014e429812cafec3
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Fri Aug 9 21:31:55 2013 +0200
+
+    app: return a GError when flattening the image failed
+
+    (cherry picked from commit c32c1208b09c3383435fd038a3bd21932d663a47)
+
+ app/actions/image-commands.c | 13 ++++++++++++-
+ app/core/gimpimage-merge.c   | 12 +++++++++---
+ app/core/gimpimage-merge.h   |  3 ++-
+ app/pdb/image-cmds.c	      |  2 +-
+ tools/pdbgen/pdb/image.pdb   |  2 +-
+ 5 files changed, 25 insertions(+), 7 deletions(-)
+
+commit d3763fe8b2b0715226ee179b15667c9eb866dbb1
+Author: Simon Budig <simon@budig.de>
+Date:	Fri Aug 9 21:32:42 2013 +0200
+
+    app: fix crash when flattening an image with no visible layers
+
+    (cherry picked from commit 514f22f53d61fd9e8105c495745503a63efdd8b0)
+
+ app/core/gimpimage-merge.c | 44
+ +++++++++++++++++++++++++-------------------
+ 1 file changed, 25 insertions(+), 19 deletions(-)
+
+commit ed6a87b3df2c29081767b93e3327741877aa82c0
+Author: Marco Ciampa <ciampix@libero.it>
+Date:	Thu Aug 8 16:00:15 2013 +0200
+
+    Updated italian translation.
+
+ po/it.po | 90
+ ++++++++++++++++++++++++++++++++++------------------------------
+ 1 file changed, 48 insertions(+), 42 deletions(-)
+
+commit 89cea63de41c110dfa1b80867babc92e5f7c2c13
+Author: Enrico Nicoletto <liverig@gmail.com>
+Date:	Tue Aug 6 09:45:08 2013 -0300
+
+    Updated partial Brazilian Portuguese translation
+
+ po/pt_BR.po | 134
+ +++++++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 70 insertions(+), 64 deletions(-)
+
+commit 5874a6dbc79c9ef5a96df9fbf6db757d81f5b554
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Aug 4 16:51:31 2013 +0200
+
+    app: port mtime code in gimp_data_save() to GIO
+
+    because it gets its stat() calls right.
+
+    (cherry picked from commit e72cf05ccba15c30dace0deeda5921b02245822a)
+
+ app/core/gimpdata.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+commit d59a31867ab9cde8eff81ad5f68968ba08b4f07c
+Author: Téo Mazars <teo.mazars@ensimag.fr>
+Date:	Sat Apr 13 17:16:56 2013 +0200
+
+    Bug 674391 - Indexed colours not exported when save a .bmp
+
+    It's about importing in fact.
+
+    Parse BITMAPV4HEADER / BITMAPV5HEADER and use GIMP's BMP
+    implementation instead of using gdk_pixbuf.
+
+    Also, remove an old hack about 32bits bmp v3 + alpha. The alpha
+    channel is already ignored in that case.
+
+    (cherry picked from commit 56f065321ce42f907879dfa4a76e57de18b058eb)
+
+ plug-ins/file-bmp/bmp-read.c | 199
+ ++++++++++++++++++++-----------------------
+ 1 file changed, 91 insertions(+), 108 deletions(-)
+
+commit 4fb7a436bca3e11abfda8bc23818af0f09714b9d
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Fri Aug 2 16:50:00 2013 +0200
+
+    Bug 704980 - uclibc - base-utils.c: execinfo.h: No such file or
+    directory
+
+    Apply patch from Amadeusz Slawinski that checks for execinfo.h and
+    builds the code that needs it conditionally.
+
+ app/base/base-utils.c | 4 ++--
+ configure.ac	       | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 02a1e57442793d58167dc08b683665e987c905b3
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Jul 28 02:50:33 2013 +0200
+
+    Bug 704896 - pop ups are annoying when opening multiple files from...
+
+    the command line on some platforms/window managers
+
+    Don't let the progress windows steal the focus, and always center
+    them.
+
+    (cherry picked from commit 013c9d337b27f7846321fb7a374a3a17879d6f14)
+
+ app/widgets/gimpprogressdialog.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 58931c135d7b349f865520e19481f386917d66bc
+Author: Martin Srebotnjak <miles@filmsi.net>
+Date:	Fri Jul 26 21:20:14 2013 +0200
+
+    Updated Slovenian translation
+
+ po/sl.po | 130
+ ++++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 67 insertions(+), 63 deletions(-)
+
+commit 5b995df2ea3d8d526271875ec36684dee43375f3
+Author: Dimitris Spingos <dmtrs32@gmail.com>
+Date:	Tue Jul 23 17:25:17 2013 +0300
+
+    Updated Greek translation
+
+ po/el.po | 95
+ +++++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 49 insertions(+), 46 deletions(-)
+
+commit c1d9d0c1298623c161c125743cc3565a3a546b8f
+Author: Daniel Mustieles <daniel.mustieles@gmail.com>
+Date:	Mon Jul 22 13:45:43 2013 +0200
+
+    Updated Spanish translation
+
+ po/es.po | 109
+ ++++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 56 insertions(+), 53 deletions(-)
+
+commit ba7e75bd58303c79b50e417f417d933a1d2b2bf5
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:	Tue Jul 16 18:35:29 2013 +0200
+
+    Bug 679083: proper docs for plug-in-autocrop-layer without string
+    changes
+
+    Based on patch dedb0250194d3760c6b89d91d4f739dbd7ed8aaf by Jehan
+    <jehan@girinstud.io>.
+
+ plug-ins/common/crop-auto.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+commit 5069b788fb2bcadcb05f393ba8a3bec174dcc6f5
+Author: Jehan <jehan@girinstud.io>
+Date:	Tue Jul 16 09:24:09 2013 +0900
+
+    Revert "Bug 679083: proper documentation for plug-in-autocrop-layer"
+
+    This reverts commit dedb0250194d3760c6b89d91d4f739dbd7ed8aaf.
+    I did not know there was a policy not to change translatable strings
+    in stable.
+    Sorry!
+
+ plug-ins/common/crop-auto.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+commit 2e991eb4e01a3b2fe18eaa5a85d6a5e248ed12c1
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:	Mon Jul 15 22:36:22 2013 +0200
+
+    Updated Polish translation
+
+ po/pl.po | 103
+ +++++++++++++++++++++++++++++++++------------------------------
+ 1 file changed, 54 insertions(+), 49 deletions(-)
+
+commit 653c4e98df693dbe093d703c93d10582d51b4c9f
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Mon Jul 15 01:22:14 2013 +0200
+
+    Bug 679195 - Foreground Select Tool Mask Inverted
+
+    render_image_alpha(): invert the mask so it masks what is *not* the
+    foreground object.
+
+ app/display/gimpdisplayshell-render.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 60bf4e367d0357df8eef5dc034f997167aee4d69
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Mon Jul 15 00:41:43 2013 +0200
+
+    Bug 700193 - undoing paint tools doesn't update last_coords properly
+
+    paint_core->start_coords is in fact the last stroke's endpoint and
+    only used for storing it in GimpPaintCoreUndo, so the last endpoint
+    can be resotred for straight-line painting after an undo. Make the
+    code actually doing that.
+
+    (cherry picked from commit d1795ac2047de73b7a7d4c9fd2666a8b0b4bd12b)
+
+ app/paint/gimppaintcore-stroke.c | 13 +++++--------
+ app/paint/gimppaintcore.c	  |  4 +++-
+ app/paint/gimppaintcore.h	  |  2 +-
+ app/tools/gimppainttool.c	  | 15 ++++++++-------
+ 4 files changed, 17 insertions(+), 17 deletions(-)
+
+commit cb2b4b6751d6621ad3d40ceadbd6514603cce892
+Author: Seong-ho Cho <darkcircle.0426@gmail.com>
+Date:	Mon Jul 15 06:50:11 2013 +0900
+
+    Updated Korean translation
+
+ po/ko.po | 398
+ +++++++++++++++++++++++++++++++++------------------------------
+ 1 file changed, 210 insertions(+), 188 deletions(-)
+
+commit a1cd4144dffb3f183249b2af17efed6ad11aa6ad
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Jul 14 22:25:44 2013 +0200
+
+    Bug 704118 - crash on invalid number of PLTE entries
+
+    Make sure an indexed image always has a colormap. This was the case
+    before, except one could set a NULL colormap via the PDB.
+
+    Add gimp_image_unset_colormap(), and make gimp_image_set_colormap()
+    never set the colormap to NULL, even if NULL is passed. Change the
+    only places where actual unsetting makes sense to use unset().
+
+    Make some GUI places deal gracefully with palettes/colormaps with zero
+    entries.
+
+    (cherry picked from commit 37372555e5820f7f0c3a98ce9975ef66c2d8422c)
+
+ app/actions/colormap-actions.c |  2 +-
+ app/core/gimpimage-colormap.c	| 36 ++++++++++++++++++++++++++++--------
+ app/core/gimpimage-colormap.h	|  2 ++
+ app/core/gimpimage-convert.c	|  2 +-
+ app/core/gimpimageundo.c	|  9 ++++++---
+ app/widgets/gimppaletteview.c	|  2 +-
+ 6 files changed, 39 insertions(+), 14 deletions(-)
+
+commit 616e8f2d82ffcf40eaec8034770447e754dbda80
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Jul 14 13:46:00 2013 +0200
+
+    Bug 703692 - Unable to Resize Large Left Dock Area
+
+    Merge all color-selector-wheel changes from master, which turns the
+    thing into a properly reqizable widget and fixes the issues with left
+    dock resizability.
+
+ modules/Makefile.am		|    2 +-
+ modules/color-selector-wheel.c |   52 +-
+ modules/gimpcolorwheel.c	| 1484
+ ++++++++++++++++++++++++++++++++++++++++
+ modules/gimpcolorwheel.h	|   97 +++
+ 4 files changed, 1595 insertions(+), 40 deletions(-)
+
+commit 3632680049fae535696caffb9d273c1419e99896
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Jul 14 13:27:57 2013 +0200
+
+    Bug 703692 - Unable to Resize Large Left Dock Area
+
+    Small fix for the last commit: set a silly small initial size request
+    on the wrap_box so it doesn't initially request too much and breaks
+    dock layout deserialization.
+
+    (cherry picked from commit a2334b0b1592d0ea7cc8b37fec1e21b6a863a212)
+
+ app/widgets/gimpcontainergridview.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+commit 38ab5f9d64b6e6dadf9468b6bae9b10f07456317
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sat Jul 13 18:50:55 2013 +0200
+
+    Bug 703692 - Unable to Resize Large Left Dock Area
+
+    gimp_container_grid_view_viewport_resized(): set the wrap_box'
+    required width to just one cell_width, not cell_width * columns. This
+    way it can shrink also when attached to a toolbox dock. It remains
+    unclear why it could nicely shrink in all other dock columns.
+
+    (cherry picked from commit 6a5e37b68d4a3c136c9a67c86d238f90b8e07263)
+
+ app/widgets/gimpcontainergridview.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+commit b283facb890ded45c404749165deeb7413b35ab0
+Author: Jehan <jehan@girinstud.io>
+Date:	Mon Jul 8 22:21:03 2013 +0900
+
+    Bug 703787 - Crash during switch from multi to single window mode
+
+    Shells can now travel from one window to another. Canvas position code
+    should therefore not keep track of the image window for a specific
+    shell
+    but must use whatever is the current window for this shell (even
+    though
+    it may be a different one before and after the size-allocate).
+    This also partly fixes some positioning issue during mode switch.
+    (cherry picked from commit 7e513faa50a1b45f2b216a721c0dce938d0dd52a)
+
+ app/display/gimpimagewindow.c | 41
+ ++++++++++++++++++++---------------------
+ 1 file changed, 20 insertions(+), 21 deletions(-)
+
+commit 26fb257a191885068b7a478a63009a092aff62f4
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Fri Jul 12 15:18:38 2013 +0200
+
+    Bug 703113 - Plug-ins are queried on every launch
+
+    Port gimp_datafiles_read_directories() to GIO which seems to get
+    its stat() calls right on all platforms.
+
+    (cherry picked from commit 767a5a321708c4ca19bbf1e103a3988fcc404cc5)
+
+ libgimpbase/Makefile.am     |	4 +--
+ libgimpbase/gimpdatafiles.c | 65
+ +++++++++++++++++++++++++++------------------
+ 2 files changed, 41 insertions(+), 28 deletions(-)
+
+commit f7fe056e1968c151795be40aa04807b5f06ccedf
+Author: Jehan <jehan@girinstud.io>
+Date:	Mon Jul 8 21:19:01 2013 +0900
+
+    app - call to keep the active shell in single window mode switch
+    out of loop.
+
+    Small fix from commit 2697b29. This previous commit was working
+    well, but
+    implied calling this method as many time as there are opened shells,
+    whereas once is enough.
+    (cherry picked from commit 8ef5fca0622447b7f36afd17e93248c754216572)
+
+ app/gui/gimpuiconfigurer.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit cc836e7c845b2e4035382cc2cc73064bced55dc5
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:	Tue Jul 9 19:41:52 2013 +0200
+
+    Bug 703806: GIMP crashes when scaling an image
+
+    during an image rescale, while spinning the main-loop,
+    layer-groups preview generation used to start before their
+    layers were fully rescaled, so it tried to access tiles that
+    were not yet there
+    (cherry picked from commit 3cc923d5a50287b2a7ab77dce381aabab3e37418)
+
+ app/core/gimpimage-scale.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+commit 588012f48c5c211fd4c535282dd444d2719f2328
+Author: Daniel Mustieles <daniel.mustieles@gmail.com>
+Date:	Mon Jul 8 14:03:43 2013 +0200
+
+    Updated Spanish translation
+
+ po-plug-ins/es.po | 106
+ ++++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 63 insertions(+), 43 deletions(-)
+
+commit 0c4e7686e856a78bc10e7f9bab148c9c1c45e867
+Author: Jehan <jehan@girinstud.io>
+Date:	Sun Jul 7 13:47:37 2013 +0900
+
+    Bug 703736: when switching from multi to single window mode, tab
+    order is lost.
+    (cherry picked from commit 112fa537305b6913d7c804ba06cf6fae506f4e6a)
+
+ app/display/gimpimagewindow.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 893c73cea48f8788b02567c1f9b995173195eee3
+Author: Jehan <jehan@girinstud.io>
+Date:	Sun Jul 7 23:10:33 2013 +0900
+
+    Bug 703738: when switching between multi and single window mode,
+    keep the same active shell.
+    (cherry picked from commit 2697b29963165c3c347bab87f0ab974364c336ab)
+
+ app/gui/gimpuiconfigurer.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
+
+commit 42e370e20822b248b86fe2012663109aaa7f7808
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:	Fri Jul 5 18:13:46 2013 +0200
+
+    app: don't pass NULL to g_object_add_weak_pointer
+
+    opening many images from the command line used to print:
+
+    (gimp-2.9:): GLib-GObject-CRITICAL **: g_object_add_weak_pointer:
+    assertion 'G_IS_OBJECT (object)' failed
+
+    because only the first finds the empty display
+    (cherry picked from commit 8a7d5c9d165514f4ee9afdc30cffd6c130aa7588)
+
+ app/file/file-open.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 80d11a46a84460ee9ada53266064b0210148fa3c
+Author: Jehan <jehan@girinstud.io>
+Date:	Thu Jul 4 22:11:47 2013 +0900
+
+    Bug 672100: gimptool returns wrong system plugin dir if libdir has
+    been customized.
+
+    On UNIX platforms, use the actual libdir value, which has been set
+    at compile time.
+    (cherry picked from commit 97d14ebda3d5790b92f8bfa2a4b3291ccb9289e6)
+
+ tools/gimptool.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+commit dedb0250194d3760c6b89d91d4f739dbd7ed8aaf
+Author: Jehan <jehan@girinstud.io>
+Date:	Fri Jul 5 23:58:48 2013 +0900
+
+    Bug 679083: proper documentation for plug-in-autocrop-layer
+
+    The current documentation have users think the argument layer is going
+    to be cropped, whereas it actually only serves as a base for
+    determining
+    cropping extents. The active layer is the one to be cropped.
+    Slightly more complete documentation explaining this.
+
+ plug-ins/common/crop-auto.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+commit 4e664a011d5b5142c65dd813ee3cb4a324e97ac6
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:	Thu Jul 4 21:36:40 2013 +0200
+
+    Bug 629941 - GIMP doesn't exit properly when quitting while loading
+    images
+
+    GIMP's "exit" signal was emitted before the handler was connected.
+
+    Don't start loading command line images or batch processing before
+    app_exit_after_callback() is connected. Make sure we don't use
+    dangling main loop pointers or try to stop a non-running main loop.
+
+    (cherry picked from commit 09682d62ae675125e91d537c3ccbdd4571a0b28e)
+
+ app/app.c | 53 ++++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 32 insertions(+), 21 deletions(-)
+
+commit dea99e516b6c796e423da579ea387997a13d4e13
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:	Thu Jul 4 21:05:25 2013 +0200
+
+    app: file_open_from_command_line(): don't access a dangling display
+    pointer
+
+    Happens if GIMP is quit while the image is being loaded.
+
+    (cherry picked from commit 6c62eb2238d2167ebe20ee02ad32ef733db475b1)
+
+ app/file/file-open.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+commit 92e9de96ae5e8a8b1ba917db35aaa281c333c058
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Wed Jul 3 09:26:03 2013 +0200
+
+    app: view_close_cmd_callback(): don't forbid to close images without
+    layers
+
+    Also no need to check for shell != NULL.
+
+ app/actions/view-commands.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+commit 16e548c12fe90c88751d1cb835887be99215b773
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Mon Jul 1 19:05:14 2013 +0200
+
+    libgimpthumb: add GIO_LIBS also to libgimpthumb_2_0_la_LIBADD
+
+ libgimpthumb/Makefile.am | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+commit 2654d0d4997c8864284aac1835a5d84a08f7ad1f
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sat Jun 29 18:14:12 2013 +0200
+
+    libgimpthumb: use GIO_CFLAGS/LIBS not GLIB_CFLAGS/LIBS
+
+ libgimpthumb/Makefile.am | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 4d2316cb3e0395a57821c461135b2e3e3788408d
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Fri Jun 28 22:44:19 2013 +0200
+
+    Bug 683152 - Preview thumbnails in file open dialog causes error
+    in 2.8.2
+
+    Port gimp_thumb_file_test() to GIO which seems to get its stat()
+    calls right on all platforms.
+
+    (cherry picked from commit bb755960620ad648a264a99b5edb67357c513e04)
+
+ libgimpthumb/gimpthumb-utils.c | 67
+ +++++++++++++++++++++++++++++-------------
+ 1 file changed, 46 insertions(+), 21 deletions(-)
+
+commit 3a9f5a354ba006df90a20cd1f4ebbe35a6e38f7d
+Author: Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
+Date:	Fri Jun 28 12:29:38 2013 +0400
+
+    Updates and fixes to Russian translation
+
+ po-script-fu/ru.po | 232
+ ++++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 169 insertions(+), 63 deletions(-)
+
+commit 24223d6663a706b5bca472feda657fb2e58a528a
+Author: Sven Claussner <sclaussner@src.gnome.org>
+Date:	Fri Jun 28 09:17:57 2013 +0200
+
+    Bug 703218 - Typo in German translation
+
+    In Edit/Preferences/Tool Options, mouseover text
+    over 'Set layer or path as active':
+    replace 'Eben' by 'Ebene'
+
+ po/de.po | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+commit 3ce15deed94df58ddb4b1e4c9d7f3f713812447f
+Author: Michael Henning <drawoc@darkrefraction.com>
+Date:	Wed Jun 26 11:40:01 2013 -0400
+
+    autogen.sh: also look for automake 1.14
+
+    (cherry picked from commit 9a6b42a4fd26b4f394e0b8f5ac58127a76c98c58)
+
+ autogen.sh | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit bd91caf778602774d6b90fb574fca336c7e03af6
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Tue Jun 25 19:08:12 2013 +0200
+
+    app: port GimpImagePropView's file size querying to GIO
+
+ app/widgets/gimpimagepropview.c | 29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
+
+commit 16b1ff9a09398b2617c6b018ec2e1579157bf2b7
+Author: Jernej Simončič <jernej|s-cccp@eternallybored.org>
+Date:	Mon Jun 24 11:11:24 2013 +0200
+
+    Installer: add libharfbuzz-0.dll to the list of required 32-bit
+    libraries
+
+ build/windows/installer/32on64.list | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 8937d9eb2864ca0d7335b3c6e2463eda86c3969c
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sat Jun 22 00:12:59 2013 +0200
+
+    configure: post-release version bump to 2.8.7
+
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
 commit 82888aaa4b1e65ae23ec0ee591ebed4685df55e8
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Fri Jun 21 23:22:49 2013 +0200
+Date:	Fri Jun 21 23:22:49 2013 +0200
 
     Bump version to 2.8.6 and commit regenerated files
 
- NEWS             | 2 +-
- configure.ac     | 4 ++--
+ NEWS		  | 2 +-
+ configure.ac	  | 4 ++--
  docs/gimprc.5.in | 2 +-
- etc/gimprc       | 2 +-
+ etc/gimprc	  | 2 +-
  4 files changed, 5 insertions(+), 5 deletions(-)
 
 commit 20e4a9c2c35f9bac011f9eb55318719759231267
 Author: Téo Mazars <teo.mazars@ensimag.fr>
-Date:   Fri Jun 21 22:27:47 2013 +0200
+Date:	Fri Jun 21 22:27:47 2013 +0200
 
     NEWS: add api introduction and fix typo
 
@@ -21,7 +2278,7 @@ Date:   Fri Jun 21 22:27:47 2013 +0200
 
 commit f7cbd9de654cd4e94d0b83315482dab2c67b1b82
 Author: Téo Mazars <teo.mazars@ensimag.fr>
-Date:   Fri Jun 21 20:09:18 2013 +0200
+Date:	Fri Jun 21 20:09:18 2013 +0200
 
     Bug 701410 - Small artifacts appear when performing a selection
 
@@ -33,7 +2290,7 @@ Date:   Fri Jun 21 20:09:18 2013 +0200
 
 commit 32c9903a58f67e1eed3cd392e59999826cbd03e2
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Fri Jun 21 12:44:38 2013 +0200
+Date:	Fri Jun 21 12:44:38 2013 +0200
 
     NEWS: updates
 
@@ -42,20 +2299,20 @@ Date:   Fri Jun 21 12:44:38 2013 +0200
 
 commit dd9f57f8de34397bf1dddd9f7e274e5af3150053
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Fri Jun 21 12:43:29 2013 +0200
+Date:	Fri Jun 21 12:43:29 2013 +0200
 
     Bug 701335 - Gimp crashing on creating huge clipboard brush
 
     Change the maximum size of clipboard patterns and brushes to
     1024x1024.
 
- app/core/gimpbrushclipboard.c   | 4 ++--
+ app/core/gimpbrushclipboard.c	 | 4 ++--
  app/core/gimppatternclipboard.c | 4 ++--
  2 files changed, 4 insertions(+), 4 deletions(-)
 
 commit ef649f48275dcb1850c2d0c0a60e33b244a8eb42
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Tue Jun 18 19:05:54 2013 +0200
+Date:	Tue Jun 18 19:05:54 2013 +0200
 
     Bug 701803 - Cage Transform raises segmentation fault...
 
@@ -71,28 +2328,28 @@ Date:   Tue Jun 18 19:05:54 2013 +0200
 
 commit 731ee3218cbdd3e25303df0ae7e855035f64619b
 Author: Marco Ciampa <ciampix@libero.it>
-Date:   Fri Jun 7 22:28:27 2013 +0200
+Date:	Fri Jun 7 22:28:27 2013 +0200
 
     Updated italian translation
 
  po-plug-ins/it.po | 470
  ++++++++++++++++++++++++++++--------------------------
- po/it.po          | 219 +++++++++++++------------
+ po/it.po	   | 219 +++++++++++++------------
  2 files changed, 357 insertions(+), 332 deletions(-)
 
 commit bb5f7d6525358a494870888ff7047ecf48e96a5b
 Author: Stanislav Petrek <stanislav.petrek@gmail.com>
-Date:   Wed Jun 5 21:27:40 2013 +0200
+Date:	Wed Jun 5 21:27:40 2013 +0200
 
     Updated slovak translation
 
  po-tags/LINGUAS |  2 ++
- po-tags/sk.po   | 31 +++++++++++++++++++++++++++++++
+ po-tags/sk.po	 | 31 +++++++++++++++++++++++++++++++
  2 files changed, 33 insertions(+)
 
 commit 8b7ad24892309ad8dac1c48f7b876ba0a3755cbf
 Author: Dimitris Spingos <dmtrs32@gmail.com>
-Date:   Wed Jun 5 15:15:39 2013 +0300
+Date:	Wed Jun 5 15:15:39 2013 +0300
 
     Updated Greek translation
 
@@ -102,7 +2359,7 @@ Date:   Wed Jun 5 15:15:39 2013 +0300
 
 commit 4b957cf404e0b9f636befd8cba4726d341852be2
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Tue Jun 4 16:48:41 2013 +0200
+Date:	Tue Jun 4 16:48:41 2013 +0200
 
     Bug 701594 - gimp-image-select-item does not recognize path
     transformations
@@ -117,7 +2374,7 @@ Date:   Tue Jun 4 16:48:41 2013 +0200
 
 commit bc411d97c926e0824c5a77ef96416cb6365f1684
 Author: Massimo Valentini <mvalentini@src.gnome.org>
-Date:   Sat Jun 1 17:30:43 2013 +0200
+Date:	Sat Jun 1 17:30:43 2013 +0200
 
     Bug 701120: Opening fuzzed .pnm-file causes stack buffer overflow
 
@@ -130,7 +2387,7 @@ Date:   Sat Jun 1 17:30:43 2013 +0200
 
 commit ba98aedcb1f03b7307e22b20487d5cc9e7665f54
 Author: Massimo Valentini <mvalentini@src.gnome.org>
-Date:   Sat Jun 1 17:07:24 2013 +0200
+Date:	Sat Jun 1 17:07:24 2013 +0200
 
     Bug 680290: -90 degree rotation distortion of layer
 
@@ -142,13 +2399,13 @@ Date:   Sat Jun 1 17:07:24 2013 +0200
     consistent with INTERPOLATION_NONE
 
  app/core/gimp-transform-region.c |  9 +++++++--
- libgimpmath/gimpmatrix.c         | 38
+ libgimpmath/gimpmatrix.c	  | 38
  ++++++++++++++++++++++----------------
  2 files changed, 29 insertions(+), 18 deletions(-)
 
 commit dd8aeeec92a64390a8ece059c62368821a172bfe
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Wed May 29 22:23:38 2013 +0200
+Date:	Wed May 29 22:23:38 2013 +0200
 
     Bug 700215 - Gradient name changes do not persist across sessions...
 
@@ -164,7 +2421,7 @@ Date:   Wed May 29 22:23:38 2013 +0200
 
 commit 27dd1c167bb3c71d9b8a338f26cc78fa96e2c442
 Author: Daniel Mustieles <daniel.mustieles@gmail.com>
-Date:   Mon May 27 16:46:41 2013 +0200
+Date:	Mon May 27 16:46:41 2013 +0200
 
     Updated Spanish translation
 
@@ -174,7 +2431,7 @@ Date:   Mon May 27 16:46:41 2013 +0200
 
 commit 45644a44bad32c4294d57cc33a41ab68d9b005bf
 Author: Piotr Drąg <piotrdrag@gmail.com>
-Date:   Sat May 25 18:29:47 2013 +0200
+Date:	Sat May 25 18:29:47 2013 +0200
 
     Updated Polish translation
 
@@ -183,7 +2440,7 @@ Date:   Sat May 25 18:29:47 2013 +0200
 
 commit aa16efe4c96d6e39be8fea4ee6443067b90cae9b
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Sat May 25 16:11:15 2013 +0200
+Date:	Sat May 25 16:11:15 2013 +0200
 
     Bug 578695 - gimptool-2.0 does not respect $DESTDIR
 
@@ -195,7 +2452,7 @@ Date:   Sat May 25 16:11:15 2013 +0200
 
 commit a57ad1a9971ec544c7f934513252a7bb921f47f4
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Sat May 25 11:21:15 2013 +0200
+Date:	Sat May 25 11:21:15 2013 +0200
 
     Bug 700707 - Missing time data in tool-options/*.settings files
 
@@ -208,7 +2465,7 @@ Date:   Sat May 25 11:21:15 2013 +0200
 
 commit c947260d2db0d761668dd7b16f195f9ed3d458c6
 Author: Jehan <jehan@girinstud.io>
-Date:   Wed Dec 12 15:14:42 2012 +0900
+Date:	Wed Dec 12 15:14:42 2012 +0900
 
     actions: dock-close had a default shortcut colliding with view-close.
 
@@ -224,7 +2481,7 @@ Date:   Wed Dec 12 15:14:42 2012 +0900
 
 commit 6cda75205a1c1d444efbe1e43ad85f68565f7912
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Fri Dec 14 09:54:17 2012 +0100
+Date:	Fri Dec 14 09:54:17 2012 +0100
 
     app: add the "view" action group to all docks
 
@@ -236,7 +2493,7 @@ Date:   Fri Dec 14 09:54:17 2012 +0100
 
 commit ae8749a9a7cfcdf294873bada2c0e664ec0914b5
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Wed Dec 12 23:26:46 2012 +0100
+Date:	Wed Dec 12 23:26:46 2012 +0100
 
     app: can't call view_actions_setup() from file_actions_setup()
 
@@ -249,7 +2506,7 @@ Date:   Wed Dec 12 23:26:46 2012 +0100
 
 commit 1380b0696cbae20cbe04742da6ab3926a67674cb
 Author: Jehan <jehan@girinstud.io>
-Date:   Wed Dec 12 16:05:39 2012 +0900
+Date:	Wed Dec 12 16:05:39 2012 +0900
 
     actions: forgot an include which was triggering an "implicit
     declaration" warning.
@@ -260,7 +2517,7 @@ Date:   Wed Dec 12 16:05:39 2012 +0900
 
 commit 22d4cd02fc6b56e342d4645921575b7f3f462a90
 Author: Jehan <jehan@girinstud.io>
-Date:   Mon Nov 26 00:18:00 2012 +0900
+Date:	Mon Nov 26 00:18:00 2012 +0900
 
     Bug 685559 - view-close action modified to close only an image view.
 
@@ -270,15 +2527,15 @@ Date:   Mon Nov 26 00:18:00 2012 +0900
     Additionally all other view actions are available on dock focus.
     (cherry picked from commit 2ad8634c06814219728bb10fbe59a63afc42fdea)
 
- app/actions/file-actions.c  |  3 +++
- app/actions/view-actions.c  |  6 +++---
+ app/actions/file-actions.c  |	3 +++
+ app/actions/view-actions.c  |	6 +++---
  app/actions/view-commands.c | 20 ++++++++++++++++++++
- app/actions/view-commands.h |  2 ++
+ app/actions/view-commands.h |	2 ++
  4 files changed, 28 insertions(+), 3 deletions(-)
 
 commit 5207a4fcd8fbc97287ba3292965d5e9c81718670
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Fri May 24 09:23:52 2013 +0200
+Date:	Fri May 24 09:23:52 2013 +0200
 
     Bug 700675 - Missing menu locations for registration and other menu...
 
@@ -293,7 +2550,7 @@ Date:   Fri May 24 09:23:52 2013 +0200
 
 commit b47f4eb777133a706ffb24b8b6726bffe5d9eeca
 Author: Dov Grobgeld <dov.grobgeld@gmail.com>
-Date:   Sun May 19 23:53:33 2013 +0300
+Date:	Sun May 19 23:53:33 2013 +0300
 
     Updated dicom plugin to solve problems with import into external
     programs (e.g. OsiriX)
@@ -303,7 +2560,7 @@ Date:   Sun May 19 23:53:33 2013 +0300
 
 commit 40726a341d00e4874b1ae24c842a7584a4a087ee
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Sun May 19 21:42:50 2013 +0200
+Date:	Sun May 19 21:42:50 2013 +0200
 
     Bug 700653 - Duplicate "(time ...)" values in
     gimp-curves-tool.settings
@@ -315,13 +2572,13 @@ Date:   Sun May 19 21:42:50 2013 +0200
     property doesn't end up in the config file once per channel.
     (cherry picked from commit 6781439fdc058754a0477dd1fc7b1d654fb90bf7)
 
- app/gegl/gimpcurvesconfig.c |  9 ++++++++-
+ app/gegl/gimpcurvesconfig.c |	9 ++++++++-
  app/gegl/gimplevelsconfig.c | 13 ++++++++++++-
  2 files changed, 20 insertions(+), 2 deletions(-)
 
 commit 7ee3235bd03e7109d9ae4f856efb0e1f2683ef6c
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Fri May 17 14:41:11 2013 +0200
+Date:	Fri May 17 14:41:11 2013 +0200
 
     Bug 688537 - Toolbox occasionally has spaces or tool names after
     the icons
@@ -335,7 +2592,7 @@ Date:   Fri May 17 14:41:11 2013 +0200
 
 commit 7b42013baef4a24a6242f9fa1be4f84daff0833b
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Tue May 14 02:00:20 2013 +0200
+Date:	Tue May 14 02:00:20 2013 +0200
 
     Bug 695687 - GimpSpinScale's label is unreadable on dark themes
 
@@ -349,7 +2606,7 @@ Date:   Tue May 14 02:00:20 2013 +0200
 
 commit ecb06953ef22e4532b9a449d9d0694452fc3bba9
 Author: Michael Henning <drawoc@darkrefraction.com>
-Date:   Sun May 12 19:36:27 2013 -0400
+Date:	Sun May 12 19:36:27 2013 -0400
 
     tests: fix running make check with both parallel make and xvfb
 
@@ -362,7 +2619,7 @@ Date:   Sun May 12 19:36:27 2013 -0400
 
 commit eb28d90866c8f1dd2955d4b3fd0c0815da1e7f96
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Mon May 13 00:00:57 2013 +0200
+Date:	Mon May 13 00:00:57 2013 +0200
 
     app: change serialization of the right docks width in SWM (again)
 
@@ -373,15 +2630,15 @@ Date:   Mon May 13 00:00:57 2013 +0200
     the deserialization code which might fix bug #700147.
     (cherry picked from commit a078ca3f5fb2a43191dd2d4de22aefc493edf1ba)
 
- app/display/gimpimagewindow.c                      | 78
+ app/display/gimpimagewindow.c			    | 78
  +++++++++++++---------
- app/tests/gimpdir/sessionrc-2-8-single-window      |  2 +-
+ app/tests/gimpdir/sessionrc-2-8-single-window	    |  2 +-
  app/tests/gimpdir/sessionrc-expected-single-window |  2 +-
  3 files changed, 47 insertions(+), 35 deletions(-)
 
 commit a98b6581e6c2add3d6cb895d7b71d581c236b361
 Author: Jehan <jehan@girinstud.io>
-Date:   Mon Apr 29 07:03:20 2013 +0900
+Date:	Mon Apr 29 07:03:20 2013 +0900
 
     Bug 699185 - when moving the pointer fast out of guide scope, do
     not keep it highlighted.
@@ -402,7 +2659,7 @@ Date:   Mon Apr 29 07:03:20 2013 +0900
 
 commit 714c232eee4d966f782d8e882cb5645a8feed0f4
 Author: Jehan <jehan@girinstud.io>
-Date:   Sat May 11 09:04:33 2013 +0900
+Date:	Sat May 11 09:04:33 2013 +0900
 
     Bug 664584: WM DELETE event in single window mode is synonym to
     file-quit.
@@ -420,7 +2677,7 @@ Date:   Sat May 11 09:04:33 2013 +0900
 
 commit 7205a25112982ad361795006cccd9022b75e2d6a
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Sat May 11 20:44:04 2013 +0200
+Date:	Sat May 11 20:44:04 2013 +0200
 
     app: fix include in test-core, re-closes bug 622054
 
@@ -429,7 +2686,7 @@ Date:   Sat May 11 20:44:04 2013 +0200
 
 commit 9625dd92b413b15b146d294434a4d574fcac6b1e
 Author: Sven Claussner <sclaussner@src.gnome.org>
-Date:   Thu May 9 02:35:34 2013 +0200
+Date:	Thu May 9 02:35:34 2013 +0200
 
     Bug 699886 - Missing <Dynamics> menu location for script/plugin
 

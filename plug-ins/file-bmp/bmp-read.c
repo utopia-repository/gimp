@@ -55,6 +55,58 @@ static gint32 ReadImage (FILE                  *fd,
                          GError               **error);
 
 
+static void
+setMasksDefault (gushort biBitCnt, Bitmap_Channel *masks)
+{
+  switch (biBitCnt)
+    {
+    case 32:
+      masks[0].mask     = 0x00ff0000;
+      masks[0].shiftin  = 16;
+      masks[0].max_value= (gfloat)255.0;
+      masks[1].mask     = 0x0000ff00;
+      masks[1].shiftin  = 8;
+      masks[1].max_value= (gfloat)255.0;
+      masks[2].mask     = 0x000000ff;
+      masks[2].shiftin  = 0;
+      masks[2].max_value= (gfloat)255.0;
+      masks[3].mask     = 0x00000000;
+      masks[3].shiftin  = 0;
+      masks[3].max_value= (gfloat)0.0;
+      break;
+    case 24:
+      masks[0].mask     = 0xff0000;
+      masks[0].shiftin  = 16;
+      masks[0].max_value= (gfloat)255.0;
+      masks[1].mask     = 0x00ff00;
+      masks[1].shiftin  = 8;
+      masks[1].max_value= (gfloat)255.0;
+      masks[2].mask     = 0x0000ff;
+      masks[2].shiftin  = 0;
+      masks[2].max_value= (gfloat)255.0;
+      masks[3].mask     = 0x0;
+      masks[3].shiftin  = 0;
+      masks[3].max_value= (gfloat)0.0;
+      break;
+    case 16:
+      masks[0].mask     = 0x7c00;
+      masks[0].shiftin  = 10;
+      masks[0].max_value= (gfloat)31.0;
+      masks[1].mask     = 0x03e0;
+      masks[1].shiftin  = 5;
+      masks[1].max_value= (gfloat)31.0;
+      masks[2].mask     = 0x001f;
+      masks[2].shiftin  = 0;
+      masks[2].max_value= (gfloat)31.0;
+      masks[3].mask     = 0x0;
+      masks[3].shiftin  = 0;
+      masks[3].max_value= (gfloat)0.0;
+      break;
+    default:
+      break;
+    }
+}
+
 static gint32
 ToL (const guchar *puffer)
 {
@@ -137,11 +189,11 @@ ReadBMP (const gchar  *name,
          GError      **error)
 {
   FILE     *fd;
-  guchar    buffer[64];
+  guchar    buffer[124];
   gint      ColormapSize, rowbytes, Maps;
   gboolean  Grey = FALSE;
   guchar    ColorMap[256][3];
-  gint32    image_ID;
+  gint32    image_ID = -1;
   gchar     magick[2];
   Bitmap_Channel masks[4];
 
@@ -153,7 +205,7 @@ ReadBMP (const gchar  *name,
       g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
                    _("Could not open '%s' for reading: %s"),
                    gimp_filename_to_utf8 (filename), g_strerror (errno));
-      return -1;
+      goto out;
     }
 
   gimp_progress_init_printf (_("Opening '%s'"),
@@ -169,8 +221,7 @@ ReadBMP (const gchar  *name,
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                    _("'%s' is not a valid BMP file"),
                    gimp_filename_to_utf8 (filename));
-      fclose (fd);
-      return -1;
+      goto out;
     }
 
   while (!strncmp (magick, "BA", 2))
@@ -180,14 +231,14 @@ ReadBMP (const gchar  *name,
           g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                        _("'%s' is not a valid BMP file"),
                        gimp_filename_to_utf8 (filename));
-          return -1;
+          goto out;
         }
       if (!ReadOK (fd, magick, 2))
         {
           g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                        _("'%s' is not a valid BMP file"),
                        gimp_filename_to_utf8 (filename));
-          return -1;
+          goto out;
         }
     }
 
@@ -196,7 +247,7 @@ ReadBMP (const gchar  *name,
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                    _("'%s' is not a valid BMP file"),
                    gimp_filename_to_utf8 (filename));
-      return -1;
+      goto out;
     }
 
   /* bring them to the right byteorder. Not too nice, but it should work */
@@ -211,7 +262,7 @@ ReadBMP (const gchar  *name,
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                    _("'%s' is not a valid BMP file"),
                    gimp_filename_to_utf8 (filename));
-      return -1;
+      goto out;
     }
 
   Bitmap_File_Head.biSize    = ToL (&buffer[0x00]);
@@ -225,7 +276,7 @@ ReadBMP (const gchar  *name,
           g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                        _("Error reading BMP file header from '%s'"),
                        gimp_filename_to_utf8 (filename));
-          return -1;
+          goto out;
         }
 
       Bitmap_Head.biWidth   = ToS (&buffer[0x00]);       /* 12 */
@@ -252,12 +303,12 @@ ReadBMP (const gchar  *name,
           g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                        _("Error reading BMP file header from '%s'"),
                        gimp_filename_to_utf8 (filename));
-          return -1;
+          goto out;
         }
 
       Bitmap_Head.biWidth   = ToL (&buffer[0x00]);      /* 12 */
       Bitmap_Head.biHeight  = ToL (&buffer[0x04]);      /* 16 */
-      Bitmap_Head.biPlanes  = ToS (&buffer[0x08]);       /* 1A */
+      Bitmap_Head.biPlanes  = ToS (&buffer[0x08]);      /* 1A */
       Bitmap_Head.biBitCnt  = ToS (&buffer[0x0A]);      /* 1C */
       Bitmap_Head.biCompr   = ToL (&buffer[0x0C]);      /* 1E */
       Bitmap_Head.biSizeIm  = ToL (&buffer[0x10]);      /* 22 */
@@ -280,7 +331,7 @@ ReadBMP (const gchar  *name,
               g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                            _("Error reading BMP file header from '%s'"),
                            gimp_filename_to_utf8 (filename));
-              return -1;
+              goto out;
             }
 
           Bitmap_Head.masks[0] = ToL(&buffer[0x00]);
@@ -290,55 +341,9 @@ ReadBMP (const gchar  *name,
         }
       else if (Bitmap_Head.biCompr == BI_RGB)
         {
-          switch (Bitmap_Head.biBitCnt)
-            {
-            case 32:
-              masks[0].mask     = 0x00ff0000;
-              masks[0].shiftin  = 16;
-              masks[0].max_value= (gfloat)255.0;
-              masks[1].mask     = 0x0000ff00;
-              masks[1].shiftin  = 8;
-              masks[1].max_value= (gfloat)255.0;
-              masks[2].mask     = 0x000000ff;
-              masks[2].shiftin  = 0;
-              masks[2].max_value= (gfloat)255.0;
-              masks[3].mask     = 0x00000000;
-              masks[3].shiftin  = 0;
-              masks[3].max_value= (gfloat)0.0;
-              break;
-            case 24:
-              masks[0].mask     = 0xff0000;
-              masks[0].shiftin  = 16;
-              masks[0].max_value= (gfloat)255.0;
-              masks[1].mask     = 0x00ff00;
-              masks[1].shiftin  = 8;
-              masks[1].max_value= (gfloat)255.0;
-              masks[2].mask     = 0x0000ff;
-              masks[2].shiftin  = 0;
-              masks[2].max_value= (gfloat)255.0;
-              masks[3].mask     = 0x0;
-              masks[3].shiftin  = 0;
-              masks[3].max_value= (gfloat)0.0;
-              break;
-            case 16:
-              masks[0].mask     = 0x7c00;
-              masks[0].shiftin  = 10;
-              masks[0].max_value= (gfloat)31.0;
-              masks[1].mask     = 0x03e0;
-              masks[1].shiftin  = 5;
-              masks[1].max_value= (gfloat)31.0;
-              masks[2].mask     = 0x001f;
-              masks[2].shiftin  = 0;
-              masks[2].max_value= (gfloat)31.0;
-              masks[3].mask     = 0x0;
-              masks[3].shiftin  = 0;
-              masks[3].max_value= (gfloat)0.0;
-              break;
-            default:
-              break;
-            }
+          setMasksDefault (Bitmap_Head.biBitCnt, masks);
         }
-      else
+      else if ((Bitmap_Head.biCompr != BI_RLE4) && (Bitmap_Head.biCompr != BI_RLE8))
         {
           /* BI_ALPHABITFIELDS, etc. */
           g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
@@ -355,7 +360,7 @@ ReadBMP (const gchar  *name,
           g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                        _("Error reading BMP file header from '%s'"),
                        gimp_filename_to_utf8 (filename));
-          return -1;
+          goto out;
         }
 
       Bitmap_Head.biWidth   =ToL (&buffer[0x00]);       /* 12 */
@@ -376,37 +381,50 @@ ReadBMP (const gchar  *name,
       Maps = 4;
       ReadChannelMasks (&Bitmap_Head.masks[0], masks, 4);
     }
-  else
+  else if (Bitmap_File_Head.biSize == 108 || Bitmap_File_Head.biSize == 124)
+    /* BMP Version 4 or 5 */
     {
-      GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file(filename, NULL);
-
-      if (pixbuf)
-        {
-          gint32 layer_ID;
-
-          image_ID = gimp_image_new (gdk_pixbuf_get_width (pixbuf),
-                                     gdk_pixbuf_get_height (pixbuf),
-                                     GIMP_RGB);
-
-          layer_ID = gimp_layer_new_from_pixbuf (image_ID, _("Background"),
-                                                 pixbuf,
-                                                 100.,
-                                                 GIMP_NORMAL_MODE, 0, 0);
-          g_object_unref (pixbuf);
-
-          gimp_image_set_filename (image_ID, filename);
-          gimp_image_insert_layer (image_ID, layer_ID, -1, -1);
-
-          return image_ID;
-        }
-      else
+      if (!ReadOK (fd, buffer, Bitmap_File_Head.biSize - 4))
         {
 
           g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                        _("Error reading BMP file header from '%s'"),
                        gimp_filename_to_utf8 (filename));
-          return -1;
+          goto out;
         }
+
+      Bitmap_Head.biWidth   = ToL (&buffer[0x00]);
+      Bitmap_Head.biHeight  = ToL (&buffer[0x04]);
+      Bitmap_Head.biPlanes  = ToS (&buffer[0x08]);
+      Bitmap_Head.biBitCnt  = ToS (&buffer[0x0A]);
+      Bitmap_Head.biCompr   = ToL (&buffer[0x0C]);
+      Bitmap_Head.biSizeIm  = ToL (&buffer[0x10]);
+      Bitmap_Head.biXPels   = ToL (&buffer[0x14]);
+      Bitmap_Head.biYPels   = ToL (&buffer[0x18]);
+      Bitmap_Head.biClrUsed = ToL (&buffer[0x1C]);
+      Bitmap_Head.biClrImp  = ToL (&buffer[0x20]);
+      Bitmap_Head.masks[0]  = ToL (&buffer[0x24]);
+      Bitmap_Head.masks[1]  = ToL (&buffer[0x28]);
+      Bitmap_Head.masks[2]  = ToL (&buffer[0x2C]);
+      Bitmap_Head.masks[3]  = ToL (&buffer[0x30]);
+
+      Maps = 4;
+
+      if (Bitmap_Head.biCompr == BI_BITFIELDS)
+        {
+          ReadChannelMasks (&Bitmap_Head.masks[0], masks, 4);
+        }
+      else if (Bitmap_Head.biCompr == BI_RGB)
+        {
+          setMasksDefault (Bitmap_Head.biBitCnt, masks);
+        }
+    }
+  else
+    {
+      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                   _("Error reading BMP file header from '%s'"),
+                   gimp_filename_to_utf8 (filename));
+      goto out;
     }
 
   /* Valid bit depth is 1, 4, 8, 16, 24, 32 */
@@ -426,7 +444,7 @@ ReadBMP (const gchar  *name,
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                    _("'%s' is not a valid BMP file"),
                    gimp_filename_to_utf8 (filename));
-      return -1;
+      goto out;
     }
 
   /* There should be some colors used! */
@@ -447,7 +465,7 @@ ReadBMP (const gchar  *name,
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                    _("'%s' is not a valid BMP file"),
                    gimp_filename_to_utf8 (filename));
-      return -1;
+      goto out;
     }
 
   /* biHeight may be negative, but G_MININT32 is dangerous because:
@@ -458,7 +476,7 @@ ReadBMP (const gchar  *name,
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                    _("'%s' is not a valid BMP file"),
                    gimp_filename_to_utf8 (filename));
-      return -1;
+      goto out;
     }
 
   if (Bitmap_Head.biPlanes != 1)
@@ -466,7 +484,7 @@ ReadBMP (const gchar  *name,
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                    _("'%s' is not a valid BMP file"),
                    gimp_filename_to_utf8 (filename));
-      return -1;
+      goto out;
     }
 
   if (Bitmap_Head.biClrUsed > 256)
@@ -474,7 +492,7 @@ ReadBMP (const gchar  *name,
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                    _("'%s' is not a valid BMP file"),
                    gimp_filename_to_utf8 (filename));
-      return -1;
+      goto out;
     }
 
   /* protect against integer overflows caused by malicious BMPs */
@@ -486,7 +504,7 @@ ReadBMP (const gchar  *name,
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                    _("'%s' is not a valid BMP file"),
                    gimp_filename_to_utf8 (filename));
-      return -1;
+      goto out;
     }
 
   /* Windows and OS/2 declare filler so that rows are a multiple of
@@ -514,7 +532,7 @@ ReadBMP (const gchar  *name,
 #endif
       /* Get the Colormap */
       if (!ReadColorMap (fd, ColorMap, ColormapSize, Maps, &Grey))
-        return -1;
+        goto out;
     }
 
   fseek (fd, Bitmap_File_Head.bfOffs, SEEK_SET);
@@ -533,7 +551,7 @@ ReadBMP (const gchar  *name,
                         error);
 
   if (image_ID < 0)
-    return -1;
+    goto out;
 
   if (Bitmap_Head.biXPels > 0 && Bitmap_Head.biYPels > 0)
     {
@@ -554,6 +572,10 @@ ReadBMP (const gchar  *name,
 
   if (Bitmap_Head.biHeight < 0)
     gimp_image_flip (image_ID, GIMP_ORIENTATION_VERTICAL);
+
+out:
+  if (fd)
+    fclose (fd);
 
   return image_ID;
 }
@@ -698,42 +720,6 @@ ReadImage (FILE                  *fd,
             if ((cur_progress % 5) == 0)
               gimp_progress_update ((gdouble) cur_progress /
                                     (gdouble) max_progress);
-          }
-
-        if (channels == 4)
-          {
-            gboolean  has_alpha = FALSE;
-
-            /* at least one pixel should have nonzero alpha */
-            for (ypos = 0; ypos < height; ypos++)
-              {
-                temp = dest + (ypos * rowstride);
-                for (xpos = 0; xpos < width; xpos++)
-                  {
-                    if (temp[3])
-                      {
-                        has_alpha = TRUE;
-                        break;
-                      }
-                    temp += 4;
-                  }
-                if (has_alpha)
-                  break;
-              }
-
-            /* workaround unwanted behaviour when all alpha pixels are zero */
-            if (!has_alpha)
-              {
-                for (ypos = 0; ypos < height; ypos++)
-                  {
-                    temp = dest + (ypos * rowstride);
-                    for (xpos = 0; xpos < width; xpos++)
-                      {
-                        temp[3] = 255;
-                        temp += 4;
-                      }
-                  }
-              }
           }
       }
       break;
@@ -934,7 +920,6 @@ ReadImage (FILE                  *fd,
       break;
     }
 
-  fclose (fd);
   if (bpp <= 8)
     for (i = 0, j = 0; i < ncols; i++)
       {

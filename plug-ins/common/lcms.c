@@ -24,7 +24,12 @@
 
 #include <glib.h>  /* lcms.h uses the "inline" keyword */
 
+#ifdef HAVE_LCMS1
 #include <lcms.h>
+typedef DWORD cmsUInt32Number;
+#else
+#include <lcms2.h>
+#endif
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -119,6 +124,12 @@ static gboolean     lcms_image_apply_profile     (gint32           image,
                                                   GimpColorRenderingIntent intent,
                                                   gboolean          bpc);
 static void         lcms_image_transform_rgb     (gint32           image,
+                                                  cmsHPROFILE      src_profile,
+                                                  cmsHPROFILE      dest_profile,
+                                                  GimpColorRenderingIntent intent,
+                                                  gboolean          bpc);
+static void         lcms_layers_transform_rgb    (gint            *layers,
+                                                  gint             num_layers,
                                                   cmsHPROFILE      src_profile,
                                                   cmsHPROFILE      dest_profile,
                                                   GimpColorRenderingIntent intent,
@@ -352,10 +363,12 @@ run (const gchar      *name,
     goto done;
 
   if (proc != PROC_FILE_INFO)
-    config = gimp_get_color_configuration ();
-
-  if (config)
-    intent = config->display_intent;
+    {
+      config = gimp_get_color_configuration ();
+      /* Later code relies on config != NULL if proc != PROC_FILE_INFO */
+      g_return_if_fail (config != NULL);
+      intent = config->display_intent;
+    }
   else
     intent = GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL;
 
@@ -428,7 +441,9 @@ run (const gchar      *name,
         }
     }
 
+#ifdef HAVE_LCMS1
   cmsErrorAction (LCMS_ERROR_SHOW);
+#endif
 
   switch (proc)
     {
@@ -459,7 +474,9 @@ run (const gchar      *name,
         gchar *desc = NULL;
         gchar *info = NULL;
 
+#ifdef HAVE_LCMS1
         cmsErrorAction (LCMS_ERROR_IGNORE);
+#endif
 
         if (proc == PROC_INFO)
           status = lcms_icc_info (config, image, &name, &desc, &info);
@@ -496,25 +513,92 @@ run (const gchar      *name,
 static gchar *
 lcms_icc_profile_get_name (cmsHPROFILE profile)
 {
+#ifdef HAVE_LCMS1
   return gimp_any_to_utf8 (cmsTakeProductName (profile), -1, NULL);
+#else
+  cmsUInt32Number  descSize;
+  gchar           *descData;
+  gchar           *name = NULL;
+
+  descSize = cmsGetProfileInfoASCII (profile, cmsInfoModel,
+                                     "en", "US", NULL, 0);
+  if (descSize > 0)
+    {
+      descData = g_new (gchar, descSize + 1);
+      descSize = cmsGetProfileInfoASCII (profile, cmsInfoModel,
+                                         "en", "US", descData, descSize);
+      if (descSize > 0)
+        name = gimp_any_to_utf8 (descData, -1, NULL);
+
+      g_free (descData);
+    }
+
+  return name;
+#endif
 }
 
 static gchar *
 lcms_icc_profile_get_desc (cmsHPROFILE profile)
 {
+#ifdef HAVE_LCMS1
   return gimp_any_to_utf8 (cmsTakeProductDesc (profile), -1, NULL);
+#else
+  cmsUInt32Number  descSize;
+  gchar           *descData;
+  gchar           *desc = NULL;
+
+  descSize = cmsGetProfileInfoASCII (profile, cmsInfoDescription,
+                                     "en", "US", NULL, 0);
+  if (descSize > 0)
+    {
+      descData = g_new (gchar, descSize + 1);
+      descSize = cmsGetProfileInfoASCII (profile, cmsInfoDescription,
+                                         "en", "US", descData, descSize);
+      if (descSize > 0)
+        desc = gimp_any_to_utf8 (descData, -1, NULL);
+
+      g_free (descData);
+    }
+
+  return desc;
+#endif
 }
 
 static gchar *
 lcms_icc_profile_get_info (cmsHPROFILE profile)
 {
+#ifdef HAVE_LCMS1
   return gimp_any_to_utf8 (cmsTakeProductInfo (profile), -1, NULL);
+#else
+  cmsUInt32Number  descSize;
+  gchar           *descData;
+  gchar           *info = NULL;
+
+  descSize = cmsGetProfileInfoASCII (profile, cmsInfoModel,
+                                     "en", "US", NULL, 0);
+  if (descSize > 0)
+    {
+      descData = g_new (gchar, descSize + 1);
+      descSize = cmsGetProfileInfoASCII (profile, cmsInfoModel,
+                                         "en", "US", descData, descSize);
+      if (descSize > 0)
+        info = gimp_any_to_utf8 (descData, -1, NULL);
+
+      g_free (descData);
+    }
+
+  return info;
+#endif
 }
 
 static gboolean
 lcms_icc_profile_is_rgb (cmsHPROFILE profile)
 {
+#ifdef HAVE_LCMS1
   return (cmsGetColorSpace (profile) == icSigRgbData);
+#else
+  return (cmsGetColorSpace (profile) == cmsSigRgbData);
+#endif
 }
 
 static GimpPDBStatusType
@@ -737,9 +821,15 @@ lcms_calculate_checksum (const gchar *data,
     {
       GChecksum *md5 = g_checksum_new (G_CHECKSUM_MD5);
 
+#ifdef HAVE_LCMS1
       g_checksum_update (md5,
                          (const guchar *) data + sizeof (icHeader),
                          len - sizeof (icHeader));
+#else
+      g_checksum_update (md5,
+                         (const guchar *) data + sizeof (cmsICCHeader),
+                         len - sizeof (cmsICCHeader));
+#endif
 
       len = 16;
       g_checksum_get_digest (md5, digest, &len);
@@ -934,18 +1024,49 @@ lcms_image_transform_rgb (gint32                    image,
                           GimpColorRenderingIntent  intent,
                           gboolean                  bpc)
 {
-  cmsHTRANSFORM  transform   = NULL;
-  DWORD          last_format = 0;
-  gint          *layers;
-  gint           num_layers;
-  gint           i;
+  gint *layers;
+  gint  num_layers;
 
   layers = gimp_image_get_layers (image, &num_layers);
 
+  lcms_layers_transform_rgb (layers, num_layers,
+                             src_profile, dest_profile,
+                             intent, bpc);
+
+  g_free (layers);
+}
+
+static void
+lcms_layers_transform_rgb (gint                     *layers,
+                           gint                      num_layers,
+                           cmsHPROFILE               src_profile,
+                           cmsHPROFILE               dest_profile,
+                           GimpColorRenderingIntent  intent,
+                           gboolean                  bpc)
+{
+  cmsHTRANSFORM    transform   = NULL;
+  cmsUInt32Number  last_format = 0;
+  gint             i;
+
   for (i = 0; i < num_layers; i++)
     {
-      GimpDrawable *drawable = gimp_drawable_get (layers[i]);
-      DWORD         format;
+      GimpDrawable    *drawable = gimp_drawable_get (layers[i]);
+      cmsUInt32Number  format;
+      gint            *children;
+      gint             num_children;
+
+      children = gimp_item_get_children (layers[i], &num_children);
+
+      if (children)
+        {
+          lcms_layers_transform_rgb (children, num_children,
+                                     src_profile, dest_profile,
+                                     intent, bpc);
+
+          g_free (children);
+
+          continue;
+        }
 
       switch (drawable->bpp)
         {
@@ -991,8 +1112,6 @@ lcms_image_transform_rgb (gint32                    image,
 
   if (transform)
     cmsDeleteTransform(transform);
-
-  g_free (layers);
 }
 
 static void
@@ -1269,7 +1388,10 @@ lcms_icc_apply_dialog (gint32       image,
 
   run = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK);
 
-  *dont_ask = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (toggle));
+  if (dont_ask)
+    {
+      *dont_ask = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (toggle));
+    }
 
   gtk_widget_destroy (dialog);
 
@@ -1376,7 +1498,7 @@ lcms_icc_combo_box_new (GimpColorConfig *config,
   gchar       *history;
   gchar       *label;
   gchar       *name;
-  cmsHPROFILE  profile;
+  cmsHPROFILE  profile = NULL;
 
   dialog = lcms_icc_file_chooser_dialog_new ();
   history = gimp_personal_rc_file ("profilerc");
@@ -1391,7 +1513,8 @@ lcms_icc_combo_box_new (GimpColorConfig *config,
 
   if (config->rgb_profile)
     profile = lcms_load_profile (config->rgb_profile, NULL);
-  else
+
+  if (! profile)
     profile = cmsCreate_sRGBProfile ();
 
   name = lcms_icc_profile_get_desc (profile);

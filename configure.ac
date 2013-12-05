@@ -8,16 +8,16 @@ AC_PREREQ(2.54)
 
 m4_define([gimp_major_version], [2])
 m4_define([gimp_minor_version], [8])
-m4_define([gimp_micro_version], [6])
+m4_define([gimp_micro_version], [10])
 m4_define([gimp_real_version],
           [gimp_major_version.gimp_minor_version.gimp_micro_version])
 m4_define([gimp_version], [gimp_real_version])
-m4_define([gimp_interface_age], [6])
+m4_define([gimp_interface_age], [10])
 m4_define([gimp_binary_age],
           [m4_eval(100 * gimp_minor_version + gimp_micro_version)])
 
 # For overriding the version string. Comment out if not needed.
-# m4_define([gimp_version], [2.8.1])
+# m4_define([gimp_version], [2.8.9])
 
 # This is the X.Y used in -lgimp-X.Y
 m4_define([gimp_api_version], [2.0])
@@ -61,8 +61,10 @@ m4_define([libcurl_required_version], [7.15.1])
 m4_define([dbus_glib_required_version], [0.70])
 m4_define([libgudev_required_version], [167])
 m4_define([exif_required_version], [0.6.15])
-m4_define([lcms_required_version], [1.16])
+m4_define([lcms1_required_version], [1.16])
+m4_define([lcms2_required_version], [2.2])
 m4_define([libpng_required_version], [1.2.37])
+m4_define([gtk_mac_integration_required_version], [1.0.1])
 
 
 AC_INIT([GIMP], [gimp_version],
@@ -358,9 +360,6 @@ CFLAGS="$CFLAGS $extra_warnings"
 GIMP_DETECT_CFLAGS(extra_warnings, '-Wformat-security')
 CFLAGS="$CFLAGS $extra_warnings"
 
-GIMP_DETECT_CFLAGS(extra_warnings, '-Wformat-non-literal')
-CFLAGS="$CFLAGS $extra_warnings"
-
 GIMP_DETECT_CFLAGS(extra_warnings, '-fno-common')
 CFLAGS="$CFLAGS $extra_warnings"
 
@@ -416,7 +415,8 @@ AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
 AC_HEADER_TIME
 
-AC_CHECK_HEADERS(sys/param.h sys/time.h sys/times.h sys/wait.h unistd.h)
+AC_CHECK_HEADERS(execinfo.h sys/param.h sys/time.h sys/times.h sys/wait.h unistd.h)
+AC_CHECK_FUNCS(backtrace, , AC_CHECK_LIB(execinfo, backtrace))
 
 AC_TYPE_PID_T
 AC_FUNC_VPRINTF
@@ -1539,19 +1539,51 @@ AC_SUBST(JP2_LIBS)
 # Check for lcms
 ################
 
-AC_ARG_WITH(lcms, [  --without-lcms          build without lcms support])
+AC_ARG_WITH(lcms, [  --with-lcms             build with lcms support (check, lcms1, lcms2)],
+  [],
+  [with_lcms=check])
 
 have_lcms="no (lcms support disabled)"
 if test "x$with_lcms" != xno; then
-  have_lcms=yes
-  PKG_CHECK_MODULES(LCMS, lcms >= lcms_required_version,
-    AC_DEFINE(HAVE_LCMS, 1, [Define to 1 if lcms is available])
-    LCMS='lcms$(EXEEXT)',
-    have_lcms="no (lcms not found or unusable)")
+  if test "x$with_lcms" = x1 || \
+      test "x$with_lcms" = xlcms1 || \
+      test "x$with_lcms" = xcheck; then
+    PKG_CHECK_MODULES(LCMS1, lcms >= lcms1_required_version,
+      [have_lcms="yes (lcms1)"
+       AC_DEFINE(HAVE_LCMS, 1, [Define to 1 if lcms is available])
+       AC_DEFINE(HAVE_LCMS1, 1, [Define to 1 if lcms1 is available])
+       LCMS_CFLAGS="$LCMS1_CFLAGS"
+       LCMS_LIBS="$LCMS1_LIBS"
+       LCMS='lcms$(EXEEXT)'],
+      [have_lcms="no (lcms1 not found)"])
+  fi
+
+  if test "x$have_lcms" != "xyes (lcms1)"; then
+    if test "x$with_lcms" = x2 || \
+        test "x$with_lcms" = xlcms2 || \
+        test "x$with_lcms" = xcheck; then
+      PKG_CHECK_MODULES(LCMS2, lcms2 >= lcms2_required_version,
+        [have_lcms="yes (lcms2)"
+         AC_DEFINE(HAVE_LCMS, 1, [Define to 1 if lcms is available])
+         AC_DEFINE(HAVE_LCMS2, 1, [Define to 1 if lcms2 is available])
+         LCMS_CFLAGS="$LCMS2_CFLAGS"
+         LCMS_LIBS="$LCMS2_LIBS"
+         LCMS='lcms$(EXEEXT)'],
+        [if test "x$with_lcms" = xcheck; then
+           have_lcms="no (lcms not found)"
+         else
+           have_lcms="no (lcms2 not found)"
+         fi])
+    fi
+  fi
 fi
 
+AC_SUBST(LCMS_CFLAGS)
+AC_SUBST(LCMS_LIBS)
 AC_SUBST(LCMS)
-AM_CONDITIONAL(HAVE_LCMS, test "x$have_lcms" = xyes)
+AM_CONDITIONAL(HAVE_LCMS,
+               [test "x$have_lcms" = "xyes (lcms1)" || \
+                test "x$have_lcms" = "xyes (lcms2)"])
 
 
 ######################
@@ -1859,6 +1891,16 @@ esac
 AM_CONDITIONAL(PLATFORM_OSX, test "x$platform_osx" = xyes)
 
 
+###############################
+# Check for GTK Mac Integration
+###############################
+
+if test "x$platform_osx" != xno &&
+   test "x`$PKG_CONFIG --variable=target gtk+-2.0`" == "xquartz"; then
+  PKG_CHECK_MODULES(GTK_MAC_INTEGRATION, gtk-mac-integration >= gtk_mac_integration_required_version)
+fi
+
+
 ####################################
 # Check for Mac OS X TWAIN framework
 ####################################
@@ -1920,11 +1962,12 @@ if test "x$with_xvfb_run" != "xno"; then
   AC_PATH_PROG(XVFB_RUN, xvfb-run, no)
   if test "x$XVFB_RUN" != "xno"; then
     have_xvfb_run="yes"
+    AC_DEFINE(HAVE_XVFB_RUN, 1, [Define to 1 if xvfb-run is available])
   else
     have_xvfb_run="no (not found)"
   fi
 fi
-AM_CONDITIONAL(HAVE_XVFB_RUN, test "x$have_xvfb_run" == "xyes")
+AM_CONDITIONAL(HAVE_XVFB_RUN, test "x$have_xvfb_run" = "xyes")
 
 
 ######################################

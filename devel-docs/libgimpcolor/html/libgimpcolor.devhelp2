@@ -121,5 +121,8 @@
     <keyword type="macro" name="GIMP_CAIRO_RGB24_GET_PIXEL()" link="libgimpcolor-GimpCairoColor.html#GIMP-CAIRO-RGB24-GET-PIXEL:CAPS" since="GIMP 2.8"/>
     <keyword type="macro" name="GIMP_CAIRO_ARGB32_SET_PIXEL()" link="libgimpcolor-GimpCairoColor.html#GIMP-CAIRO-ARGB32-SET-PIXEL:CAPS" since="GIMP 2.6"/>
     <keyword type="macro" name="GIMP_CAIRO_ARGB32_GET_PIXEL()" link="libgimpcolor-GimpCairoColor.html#GIMP-CAIRO-ARGB32-GET-PIXEL:CAPS" since="GIMP 2.8"/>
+    <keyword type="constant" name="GIMP_RGB_COMPOSITE_NONE" link="libgimpcolor-GimpRGB.html#GIMP-RGB-COMPOSITE-NONE:CAPS"/>
+    <keyword type="constant" name="GIMP_RGB_COMPOSITE_NORMAL" link="libgimpcolor-GimpRGB.html#GIMP-RGB-COMPOSITE-NORMAL:CAPS"/>
+    <keyword type="constant" name="GIMP_RGB_COMPOSITE_BEHIND" link="libgimpcolor-GimpRGB.html#GIMP-RGB-COMPOSITE-BEHIND:CAPS"/>
   </functions>
 </book>

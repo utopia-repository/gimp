@@ -8,7 +8,7 @@
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="next" href="libgimp-gimpenums.html" title="gimpenums">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -440,25 +440,25 @@ possible here, so you could say "RGB*" instead of "RGB, RGBA" or
 run, use the empty string.
 </p>
 <p>
-<em class="parameter"><code>type</code></em> must be one of <code class="literal">GIMP_PLUGIN</code> or <code class="literal">GIMP_EXTENSION</code>. Note that
+<em class="parameter"><code>type</code></em> must be one of <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GIMP-PLUGIN:CAPS"><code class="literal">GIMP_PLUGIN</code></a> or <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GIMP-EXTENSION:CAPS"><code class="literal">GIMP_EXTENSION</code></a>. Note that
 temporary procedures must be installed using
 <a class="link" href="libgimp-Gimp.html#gimp-install-temp-proc" title="gimp_install_temp_proc ()"><code class="function">gimp_install_temp_proc()</code></a>.
 </p>
 <p>
-NOTE: Unlike the GIMP 1.2 API, <code class="literal">GIMP_EXTENSION</code> no longer means
+NOTE: Unlike the GIMP 1.2 API, <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GIMP-EXTENSION:CAPS"><code class="literal">GIMP_EXTENSION</code></a> no longer means
 that the procedure's menu prefix is &lt;Toolbox&gt;, but that
 it will install temporary procedures. Therefore, the GIMP core
-will wait until the <code class="literal">GIMP_EXTENSION</code> procedure has called
+will wait until the <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GIMP-EXTENSION:CAPS"><code class="literal">GIMP_EXTENSION</code></a> procedure has called
 <a class="link" href="libgimp-Gimp.html#gimp-extension-ack" title="gimp_extension_ack ()"><code class="function">gimp_extension_ack()</code></a>, which means that the procedure has done
 its initialization, installed its temporary procedures and is
 ready to run.
 </p>
 <p>
-<span class="emphasis"><em>Not calling <a class="link" href="libgimp-Gimp.html#gimp-extension-ack" title="gimp_extension_ack ()"><code class="function">gimp_extension_ack()</code></a> from a <code class="literal">GIMP_EXTENSION</code>
+<span class="emphasis"><em>Not calling <a class="link" href="libgimp-Gimp.html#gimp-extension-ack" title="gimp_extension_ack ()"><code class="function">gimp_extension_ack()</code></a> from a <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GIMP-EXTENSION:CAPS"><code class="literal">GIMP_EXTENSION</code></a>
 procedure will cause the GIMP core to lock up.</em></span>
 </p>
 <p>
-Additionally, a <code class="literal">GIMP_EXTENSION</code> procedure with no parameters
+Additionally, a <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GIMP-EXTENSION:CAPS"><code class="literal">GIMP_EXTENSION</code></a> procedure with no parameters
 (<em class="parameter"><code>n_params</code></em> == 0 and <em class="parameter"><code>params</code></em> == <span class="type">NULL</span>) is an "automatic" extension
 that will be automatically started on each GIMP startup.
 </p>
@@ -553,7 +553,7 @@ one of your plug-in's "real" procedures is running.
 See <a class="link" href="libgimp-Gimp.html#gimp-install-procedure" title="gimp_install_procedure ()"><code class="function">gimp_install_procedure()</code></a> for most details.
 </p>
 <p>
-<em class="parameter"><code>type</code></em> <span class="emphasis"><em>must</em></span> be <code class="literal">GIMP_TEMPORARY</code> or the function
+<em class="parameter"><code>type</code></em> <span class="emphasis"><em>must</em></span> be <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GIMP-TEMPORARY:CAPS"><code class="literal">GIMP_TEMPORARY</code></a> or the function
 will fail.
 </p>
 <p>
@@ -665,7 +665,7 @@ This function calls a GIMP procedure and returns its return values.
 </p>
 <p>
 The procedure's parameters are given by a va_list in the format
-(type, value, type, value) and must be terminated by <code class="literal">GIMP_PDB_END</code>.
+(type, value, type, value) and must be terminated by <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GIMP-PDB-END:CAPS"><code class="literal">GIMP_PDB_END</code></a>.
 </p>
 <p>
 This function converts the va_list of parameters into an array and
@@ -1240,7 +1240,7 @@ a GUI and is hanging around in a <span class="type">GMainLoop</span>, it must ca
 <a class="link" href="libgimp-Gimp.html#gimp-extension-enable" title="gimp_extension_enable ()"><code class="function">gimp_extension_enable()</code></a>.
 </p>
 <p>
-Note that the plug-in does not need to be a <span class="type">GIMP_EXTENSION</span> to
+Note that the plug-in does not need to be a <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GIMP-EXTENSION:CAPS"><span class="type">GIMP_EXTENSION</span></a> to
 register temporary procedures.
 </p>
 <p>
@@ -1257,7 +1257,7 @@ initialized and is ready to run.
 </p>
 <p>
 This function <span class="emphasis"><em>must</em></span> be called from every
-procedure that was registered as <span class="type">GIMP_EXTENSION</span>.
+procedure that was registered as <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GIMP-EXTENSION:CAPS"><span class="type">GIMP_EXTENSION</span></a>.
 </p>
 <p>
 Subsequently, extensions can process temporary procedure run
@@ -1567,6 +1567,6 @@ See Also: <a class="link" href="libgimp-Gimp.html#gimp-attach-parasite" title="g
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

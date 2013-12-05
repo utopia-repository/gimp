@@ -252,11 +252,13 @@ run (const gchar      *name,
         case GIMP_RUN_INTERACTIVE:
         case GIMP_RUN_WITH_LAST_VALS:
           gimp_ui_init (PLUG_IN_BINARY, FALSE);
-          export = gimp_export_image (&image, &drawable, NULL,
-                                      (GIMP_EXPORT_CAN_HANDLE_RGB |
-                                       GIMP_EXPORT_CAN_HANDLE_GRAY |
-                                       GIMP_EXPORT_CAN_HANDLE_INDEXED |
-                                       GIMP_EXPORT_CAN_HANDLE_ALPHA ));
+
+          export = gimp_export_image (&image, &drawable, "TIFF",
+                                      GIMP_EXPORT_CAN_HANDLE_RGB     |
+                                      GIMP_EXPORT_CAN_HANDLE_GRAY    |
+                                      GIMP_EXPORT_CAN_HANDLE_INDEXED |
+                                      GIMP_EXPORT_CAN_HANDLE_ALPHA);
+
           if (export == GIMP_EXPORT_CANCEL)
             {
               values[0].data.d_status = GIMP_PDB_CANCEL;
@@ -303,13 +305,13 @@ run (const gchar      *name,
             {
               switch (param[5].data.d_int32)
                 {
-                case 0: tsvals.compression = COMPRESSION_NONE;      break;
-                case 1: tsvals.compression = COMPRESSION_LZW;       break;
-                case 2: tsvals.compression = COMPRESSION_PACKBITS;  break;
-                case 3: tsvals.compression = COMPRESSION_DEFLATE;   break;
-                case 4: tsvals.compression = COMPRESSION_JPEG;      break;
-                case 5: tsvals.compression = COMPRESSION_CCITTFAX3; break;
-                case 6: tsvals.compression = COMPRESSION_CCITTFAX4; break;
+                case 0: tsvals.compression = COMPRESSION_NONE;          break;
+                case 1: tsvals.compression = COMPRESSION_LZW;           break;
+                case 2: tsvals.compression = COMPRESSION_PACKBITS;      break;
+                case 3: tsvals.compression = COMPRESSION_ADOBE_DEFLATE; break;
+                case 4: tsvals.compression = COMPRESSION_JPEG;          break;
+                case 5: tsvals.compression = COMPRESSION_CCITTFAX3;     break;
+                case 6: tsvals.compression = COMPRESSION_CCITTFAX4;     break;
                 default: status = GIMP_PDB_CALLING_ERROR; break;
                 }
 
@@ -829,7 +831,7 @@ save_image (const gchar  *filename,
   TIFFSetField (tif, TIFFTAG_ORIENTATION, ORIENTATION_TOPLEFT);
   TIFFSetField (tif, TIFFTAG_COMPRESSION, compression);
 
-  if ((compression == COMPRESSION_LZW || compression == COMPRESSION_DEFLATE)
+  if ((compression == COMPRESSION_LZW || compression == COMPRESSION_ADOBE_DEFLATE)
       && (predictor != 0))
     {
       TIFFSetField (tif, TIFFTAG_PREDICTOR, predictor);
@@ -1092,11 +1094,11 @@ save_dialog (gboolean has_alpha,
                                     G_CALLBACK (gimp_radio_button_update),
                                     &tsvals.compression, tsvals.compression,
 
-                                    _("_None"),      COMPRESSION_NONE,     NULL,
-                                    _("_LZW"),       COMPRESSION_LZW,      NULL,
-                                    _("_Pack Bits"), COMPRESSION_PACKBITS, NULL,
-                                    _("_Deflate"),   COMPRESSION_DEFLATE,  NULL,
-                                    _("_JPEG"),      COMPRESSION_JPEG,     NULL,
+                                    _("_None"),      COMPRESSION_NONE,          NULL,
+                                    _("_LZW"),       COMPRESSION_LZW,           NULL,
+                                    _("_Pack Bits"), COMPRESSION_PACKBITS,      NULL,
+                                    _("_Deflate"),   COMPRESSION_ADOBE_DEFLATE, NULL,
+                                    _("_JPEG"),      COMPRESSION_JPEG,          NULL,
                                     _("CCITT Group _3 fax"), COMPRESSION_CCITTFAX3, &g3,
                                     _("CCITT Group _4 fax"), COMPRESSION_CCITTFAX4, &g4,
 

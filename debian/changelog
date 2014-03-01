@@ -1,12 +1,16 @@
-gimp (2.8.10-1) UNRELEASED; urgency=high
+gimp (2.8.10-1) unstable; urgency=high
 
-  * FIXME: 2.8.11 fixes CVEs, not 2.8.10
   * Imported Upstream version 2.8.10
-    - Fixes xwd security vulnerabilities CVE-2013-1913 and CVE-2013-1978
-      (Closes: #731305)
   * Build-depend on libtiff-dev instead of libtiff4-dev (Closes: #736006)
 
- -- Ari Pollak <ari@debian.org>  Wed, 04 Dec 2013 20:46:57 -0500
+  [ Hideki Yamane ]
+  * debian/patches
+    - add adjust_freetype_header.patch to fix FTBFS
+    - add CVE-2013-1913_and_gimp_CVE-2013-1978.patch to fix xwd security
+      vulnerabilities CVE-2013-1913 and CVE-2013-1978
+      (Closes: #731305)
+
+ -- Hideki Yamane <henrich@debian.org>  Sat, 01 Mar 2014 22:35:16 +0900
 
 gimp (2.8.6-1) unstable; urgency=low
 

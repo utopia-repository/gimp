@@ -1,11 +1,11 @@
-gimp (2.8.10-1) unstable; urgency=high
+gimp (2.8.10-0.1) unstable; urgency=high
 
   * Imported Upstream version 2.8.10
   * Build-depend on libtiff-dev instead of libtiff4-dev (Closes: #736006)
 
   [ Hideki Yamane ]
   * debian/patches
-    - add adjust_freetype_header.patch to fix FTBFS
+    - add adjust_freetype_header.patch to fix FTBFS (Closes: #732010)
     - add CVE-2013-1913_and_gimp_CVE-2013-1978.patch to fix xwd security
       vulnerabilities CVE-2013-1913 and CVE-2013-1978
       (Closes: #731305)

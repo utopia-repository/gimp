@@ -1,3 +1,11 @@
+gimp (2.8.10-1) unstable; urgency=low
+
+  * Upgrade to lcms2 (Closes: #743596)
+  * Remove helpbrowser plugin; gimp will fall back to an external web
+    browser if present (Closes: #639761)
+
+ -- Ari Pollak <ari@debian.org>  Tue, 15 Apr 2014 12:55:30 -0400
+
 gimp (2.8.10-0.1) unstable; urgency=high
 
   * Imported Upstream version 2.8.10

@@ -1,6 +1,6 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: gimp
-Source: ftp://ftp.gimp.org/pub/gimp/
+Source: http://download.gimp.org/pub/gimp/
 
 Files: *
 Copyright: 1995 Spencer Kimball

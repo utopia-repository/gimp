@@ -7,6 +7,7 @@ Standards-Version: 3.9.3
 Build-Depends: debhelper (>= 8),
                cdbs (>= 0.4.97),
                autotools-dev,
+               dh-autoreconf,
                gettext,
                gnome-pkg-tools,
                gtk-doc-tools (>= 1.0),
@@ -55,7 +56,6 @@ Build-Depends: debhelper (>= 8),
                python-dev (>= 2.6.6-3),
                python-gtk2-dev (>= 2.10.4),
                xsltproc
-#Build-Conflicts: libgimp2.0
 Vcs-Git: git://anonscm.debian.org/collab-maint/gimp.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/gimp.git
 Homepage: http://www.gimp.org/

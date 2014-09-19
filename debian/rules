@@ -21,7 +21,7 @@ DEB_CONFIGURE_EXTRA_FLAGS := --disable-static \
 			--enable-python \
 			PYTHON=/usr/bin/`pyversions -d` \
 			--enable-default-binary \
-			--enable-gtk-doc
+			--enable-gtk-doc \
 			--with-lcms=lcms2 \
 			--without-webkit
 DEB_BUILDDIR := $(DEB_SRCDIR)/builddir

@@ -1,3 +1,9 @@
+gimp (2.8.10-3) unstable; urgency=low
+
+  * Fix missing backslash in debian/rules (Closes: #743596)
+
+ -- Ari Pollak <ari@debian.org>  Thu, 18 Sep 2014 21:32:46 -0400
+
 gimp (2.8.10-2) unstable; urgency=low
 
   * Always build with lcms2 even if lcms1 is present (Closes: #743596)

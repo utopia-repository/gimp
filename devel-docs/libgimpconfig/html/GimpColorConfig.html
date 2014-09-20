@@ -2,36 +2,29 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GimpColorConfig</title>
+<title>GIMP Config Library Reference Manual: GimpColorConfig</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Config Library Reference Manual">
 <link rel="up" href="libgimpconfig.html" title="Part I. GIMP Config Library">
 <link rel="prev" href="libgimpconfig-GimpScanner.html" title="GimpScanner">
 <link rel="next" href="libgimpconfig-index.html" title="Index">
-<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
-<td><a accesskey="p" href="libgimpconfig-GimpScanner.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="libgimpconfig.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GIMP Config Library Reference Manual</th>
-<td><a accesskey="n" href="libgimpconfig-index.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts">
-<a href="#GimpColorConfig.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#GimpColorConfig.description" class="shortcut">Description</a>
-                   | 
-                  <a href="#GimpColorConfig.object-hierarchy" class="shortcut">Object Hierarchy</a>
-                   | 
-                  <a href="#GimpColorConfig.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
-                   | 
-                  <a href="#GimpColorConfig.properties" class="shortcut">Properties</a>
-</td></tr>
-</table>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#GimpColorConfig.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#GimpColorConfig.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_interfaces">  <span class="dim">|</span> 
+                  <a href="#GimpColorConfig.implemented-interfaces" class="shortcut">Implemented Interfaces</a></span><span id="nav_properties">  <span class="dim">|</span> 
+                  <a href="#GimpColorConfig.properties" class="shortcut">Properties</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="libgimpconfig.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="libgimpconfig-GimpScanner.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="libgimpconfig-index.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
 <div class="refentry">
 <a name="GimpColorConfig"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
@@ -39,20 +32,104 @@
 <h2><span class="refentrytitle"><a name="GimpColorConfig.top_of_page"></a>GimpColorConfig</span></h2>
 <p>GimpColorConfig — Color management settings.</p>
 </td>
-<td valign="top" align="right"></td>
+<td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
-<a name="GimpColorConfig.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">                    <a class="link" href="GimpColorConfig.html#GimpColorConfig-struct" title="GimpColorConfig">GimpColorConfig</a>;
-enum                <a class="link" href="GimpColorConfig.html#GimpColorManagementMode" title="enum GimpColorManagementMode">GimpColorManagementMode</a>;
-enum                <a class="link" href="GimpColorConfig.html#GimpColorRenderingIntent" title="enum GimpColorRenderingIntent">GimpColorRenderingIntent</a>;
-</pre>
+<div class="refsect1">
+<a name="GimpColorConfig.properties"></a><h2>Properties</h2>
+<div class="informaltable"><table border="0">
+<colgroup>
+<col width="150px" class="properties_type">
+<col width="300px" class="properties_name">
+<col width="200px" class="properties_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="property_type"><a class="link" href="libgimpconfig-GimpConfig-path.html#GimpConfigPath" title="GimpConfigPath"><span class="type">GimpConfigPath</span></a></td>
+<td class="property_name"><a class="link" href="GimpColorConfig.html#GimpColorConfig--cmyk-profile" title="The “cmyk-profile” property">cmyk-profile</a></td>
+<td class="property_flags">Read / Write / Construct</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">gchar</span> *</td>
+<td class="property_name"><a class="link" href="GimpColorConfig.html#GimpColorConfig--display-module" title="The “display-module” property">display-module</a></td>
+<td class="property_flags">Read / Write / Construct</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="libgimpconfig-GimpConfig-path.html#GimpConfigPath" title="GimpConfigPath"><span class="type">GimpConfigPath</span></a></td>
+<td class="property_name"><a class="link" href="GimpColorConfig.html#GimpColorConfig--display-profile" title="The “display-profile” property">display-profile</a></td>
+<td class="property_flags">Read / Write / Construct</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="GimpColorConfig.html#GimpColorConfig--display-profile-from-gdk" title="The “display-profile-from-gdk” property">display-profile-from-gdk</a></td>
+<td class="property_flags">Read / Write / Construct</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="GimpColorConfig.html#GimpColorRenderingIntent" title="enum GimpColorRenderingIntent"><span class="type">GimpColorRenderingIntent</span></a></td>
+<td class="property_name"><a class="link" href="GimpColorConfig.html#GimpColorConfig--display-rendering-intent" title="The “display-rendering-intent” property">display-rendering-intent</a></td>
+<td class="property_flags">Read / Write / Construct</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="GimpColorConfig.html#GimpColorManagementMode" title="enum GimpColorManagementMode"><span class="type">GimpColorManagementMode</span></a></td>
+<td class="property_name"><a class="link" href="GimpColorConfig.html#GimpColorConfig--mode" title="The “mode” property">mode</a></td>
+<td class="property_flags">Read / Write / Construct</td>
+</tr>
+<tr>
+<td class="property_type">
+<a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *</td>
+<td class="property_name"><a class="link" href="GimpColorConfig.html#GimpColorConfig--out-of-gamut-color" title="The “out-of-gamut-color” property">out-of-gamut-color</a></td>
+<td class="property_flags">Read / Write / Construct</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="libgimpconfig-GimpConfig-path.html#GimpConfigPath" title="GimpConfigPath"><span class="type">GimpConfigPath</span></a></td>
+<td class="property_name"><a class="link" href="GimpColorConfig.html#GimpColorConfig--printer-profile" title="The “printer-profile” property">printer-profile</a></td>
+<td class="property_flags">Read / Write / Construct</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="libgimpconfig-GimpConfig-path.html#GimpConfigPath" title="GimpConfigPath"><span class="type">GimpConfigPath</span></a></td>
+<td class="property_name"><a class="link" href="GimpColorConfig.html#GimpColorConfig--rgb-profile" title="The “rgb-profile” property">rgb-profile</a></td>
+<td class="property_flags">Read / Write / Construct</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="GimpColorConfig.html#GimpColorConfig--simulation-gamut-check" title="The “simulation-gamut-check” property">simulation-gamut-check</a></td>
+<td class="property_flags">Read / Write / Construct</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="GimpColorConfig.html#GimpColorRenderingIntent" title="enum GimpColorRenderingIntent"><span class="type">GimpColorRenderingIntent</span></a></td>
+<td class="property_name"><a class="link" href="GimpColorConfig.html#GimpColorConfig--simulation-rendering-intent" title="The “simulation-rendering-intent” property">simulation-rendering-intent</a></td>
+<td class="property_flags">Read / Write / Construct</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="GimpColorConfig.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="GimpColorConfig.html#GimpColorConfig-struct" title="GimpColorConfig">GimpColorConfig</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="GimpColorConfig.html#GimpColorManagementMode" title="enum GimpColorManagementMode">GimpColorManagementMode</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="GimpColorConfig.html#GimpColorRenderingIntent" title="enum GimpColorRenderingIntent">GimpColorRenderingIntent</a></td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <div class="refsect1">
 <a name="GimpColorConfig.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="synopsis">
-  GObject
-   +----GimpColorConfig
+<pre class="screen">    GObject
+    <span class="lineart">╰──</span> GimpColorConfig
 </pre>
 </div>
 <div class="refsect1">
@@ -62,29 +139,14 @@ GimpColorConfig implements
  <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface">GimpConfigInterface</a>.</p>
 </div>
 <div class="refsect1">
-<a name="GimpColorConfig.properties"></a><h2>Properties</h2>
-<pre class="synopsis">
-  "<a class="link" href="GimpColorConfig.html#GimpColorConfig--cmyk-profile" title='The "cmyk-profile" property'>cmyk-profile</a>"             <a class="link" href="libgimpconfig-GimpConfig-path.html#GimpConfigPath" title="GimpConfigPath"><span class="type">GimpConfigPath</span></a>        : Read / Write / Construct
-  "<a class="link" href="GimpColorConfig.html#GimpColorConfig--display-module" title='The "display-module" property'>display-module</a>"           <span class="type">gchar</span>*                : Read / Write / Construct
-  "<a class="link" href="GimpColorConfig.html#GimpColorConfig--display-profile" title='The "display-profile" property'>display-profile</a>"          <a class="link" href="libgimpconfig-GimpConfig-path.html#GimpConfigPath" title="GimpConfigPath"><span class="type">GimpConfigPath</span></a>        : Read / Write / Construct
-  "<a class="link" href="GimpColorConfig.html#GimpColorConfig--display-profile-from-gdk" title='The "display-profile-from-gdk" property'>display-profile-from-gdk</a>" <span class="type">gboolean</span>              : Read / Write / Construct
-  "<a class="link" href="GimpColorConfig.html#GimpColorConfig--display-rendering-intent" title='The "display-rendering-intent" property'>display-rendering-intent</a>" <a class="link" href="GimpColorConfig.html#GimpColorRenderingIntent" title="enum GimpColorRenderingIntent"><span class="type">GimpColorRenderingIntent</span></a>  : Read / Write / Construct
-  "<a class="link" href="GimpColorConfig.html#GimpColorConfig--mode" title='The "mode" property'>mode</a>"                     <a class="link" href="GimpColorConfig.html#GimpColorManagementMode" title="enum GimpColorManagementMode"><span class="type">GimpColorManagementMode</span></a>  : Read / Write / Construct
-  "<a class="link" href="GimpColorConfig.html#GimpColorConfig--out-of-gamut-color" title='The "out-of-gamut-color" property'>out-of-gamut-color</a>"       <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a>*              : Read / Write / Construct
-  "<a class="link" href="GimpColorConfig.html#GimpColorConfig--printer-profile" title='The "printer-profile" property'>printer-profile</a>"          <a class="link" href="libgimpconfig-GimpConfig-path.html#GimpConfigPath" title="GimpConfigPath"><span class="type">GimpConfigPath</span></a>        : Read / Write / Construct
-  "<a class="link" href="GimpColorConfig.html#GimpColorConfig--rgb-profile" title='The "rgb-profile" property'>rgb-profile</a>"              <a class="link" href="libgimpconfig-GimpConfig-path.html#GimpConfigPath" title="GimpConfigPath"><span class="type">GimpConfigPath</span></a>        : Read / Write / Construct
-  "<a class="link" href="GimpColorConfig.html#GimpColorConfig--simulation-gamut-check" title='The "simulation-gamut-check" property'>simulation-gamut-check</a>"   <span class="type">gboolean</span>              : Read / Write / Construct
-  "<a class="link" href="GimpColorConfig.html#GimpColorConfig--simulation-rendering-intent" title='The "simulation-rendering-intent" property'>simulation-rendering-intent</a>" <a class="link" href="GimpColorConfig.html#GimpColorRenderingIntent" title="enum GimpColorRenderingIntent"><span class="type">GimpColorRenderingIntent</span></a>  : Read / Write / Construct
-</pre>
-</div>
-<div class="refsect1">
 <a name="GimpColorConfig.description"></a><h2>Description</h2>
-<p>
-Color management settings.
-</p>
+<p>Color management settings.</p>
 </div>
 <div class="refsect1">
-<a name="GimpColorConfig.details"></a><h2>Details</h2>
+<a name="GimpColorConfig.functions_details"></a><h2>Functions</h2>
+</div>
+<div class="refsect1">
+<a name="GimpColorConfig.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
 <a name="GimpColorConfig-struct"></a><h3>GimpColorConfig</h3>
 <pre class="programlisting">typedef struct {
@@ -109,161 +171,167 @@ Color management settings.
 <hr>
 <div class="refsect2">
 <a name="GimpColorManagementMode"></a><h3>enum GimpColorManagementMode</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_COLOR_MANAGEMENT_OFF,       /*&lt; desc="No color management"   &gt;*/
-  GIMP_COLOR_MANAGEMENT_DISPLAY,   /*&lt; desc="Color managed display" &gt;*/
-  GIMP_COLOR_MANAGEMENT_SOFTPROOF  /*&lt; desc="Print simulation"      &gt;*/
-} GimpColorManagementMode;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.12.9.3.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-COLOR-MANAGEMENT-OFF:CAPS"></a><span class="term"><code class="literal">GIMP_COLOR_MANAGEMENT_OFF</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-COLOR-MANAGEMENT-OFF:CAPS"></a>GIMP_COLOR_MANAGEMENT_OFF</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-COLOR-MANAGEMENT-DISPLAY:CAPS"></a><span class="term"><code class="literal">GIMP_COLOR_MANAGEMENT_DISPLAY</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-COLOR-MANAGEMENT-DISPLAY:CAPS"></a>GIMP_COLOR_MANAGEMENT_DISPLAY</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-COLOR-MANAGEMENT-SOFTPROOF:CAPS"></a><span class="term"><code class="literal">GIMP_COLOR_MANAGEMENT_SOFTPROOF</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-COLOR-MANAGEMENT-SOFTPROOF:CAPS"></a>GIMP_COLOR_MANAGEMENT_SOFTPROOF</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
 <a name="GimpColorRenderingIntent"></a><h3>enum GimpColorRenderingIntent</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL,            /*&lt; desc="Perceptual"            &gt;*/
-  GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC, /*&lt; desc="Relative colorimetric" &gt;*/
-  GIMP_COLOR_RENDERING_INTENT_SATURATION,            /*&lt; desc="Saturation"            &gt;*/
-  GIMP_COLOR_RENDERING_INTENT_ABSOLUTE_COLORIMETRIC  /*&lt; desc="Absolute colorimetric" &gt;*/
-} GimpColorRenderingIntent;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.12.9.4.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-COLOR-RENDERING-INTENT-PERCEPTUAL:CAPS"></a><span class="term"><code class="literal">GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-COLOR-RENDERING-INTENT-PERCEPTUAL:CAPS"></a>GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-COLOR-RENDERING-INTENT-RELATIVE-COLORIMETRIC:CAPS"></a><span class="term"><code class="literal">GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-COLOR-RENDERING-INTENT-RELATIVE-COLORIMETRIC:CAPS"></a>GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-COLOR-RENDERING-INTENT-SATURATION:CAPS"></a><span class="term"><code class="literal">GIMP_COLOR_RENDERING_INTENT_SATURATION</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-COLOR-RENDERING-INTENT-SATURATION:CAPS"></a>GIMP_COLOR_RENDERING_INTENT_SATURATION</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-COLOR-RENDERING-INTENT-ABSOLUTE-COLORIMETRIC:CAPS"></a><span class="term"><code class="literal">GIMP_COLOR_RENDERING_INTENT_ABSOLUTE_COLORIMETRIC</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-COLOR-RENDERING-INTENT-ABSOLUTE-COLORIMETRIC:CAPS"></a>GIMP_COLOR_RENDERING_INTENT_ABSOLUTE_COLORIMETRIC</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 </div>
 <div class="refsect1">
 <a name="GimpColorConfig.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
-<a name="GimpColorConfig--cmyk-profile"></a><h3>The <code class="literal">"cmyk-profile"</code> property</h3>
-<pre class="programlisting">  "cmyk-profile"             <a class="link" href="libgimpconfig-GimpConfig-path.html#GimpConfigPath" title="GimpConfigPath"><span class="type">GimpConfigPath</span></a>        : Read / Write / Construct</pre>
+<a name="GimpColorConfig--cmyk-profile"></a><h3>The <code class="literal">“cmyk-profile”</code> property</h3>
+<pre class="programlisting">  “cmyk-profile”             <a class="link" href="libgimpconfig-GimpConfig-path.html#GimpConfigPath" title="GimpConfigPath"><span class="type">GimpConfigPath</span></a></pre>
 <p>The CMYK color profile used to convert between RGB and CMYK.</p>
+<p>Flags: Read / Write / Construct</p>
 <p>Default value: NULL</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="GimpColorConfig--display-module"></a><h3>The <code class="literal">"display-module"</code> property</h3>
-<pre class="programlisting">  "display-module"           <span class="type">gchar</span>*                : Read / Write / Construct</pre>
+<a name="GimpColorConfig--display-module"></a><h3>The <code class="literal">“display-module”</code> property</h3>
+<pre class="programlisting">  “display-module”           <span class="type">gchar</span> *</pre>
 <p></p>
+<p>Flags: Read / Write / Construct</p>
 <p>Default value: "CdisplayLcms"</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="GimpColorConfig--display-profile"></a><h3>The <code class="literal">"display-profile"</code> property</h3>
-<pre class="programlisting">  "display-profile"          <a class="link" href="libgimpconfig-GimpConfig-path.html#GimpConfigPath" title="GimpConfigPath"><span class="type">GimpConfigPath</span></a>        : Read / Write / Construct</pre>
+<a name="GimpColorConfig--display-profile"></a><h3>The <code class="literal">“display-profile”</code> property</h3>
+<pre class="programlisting">  “display-profile”          <a class="link" href="libgimpconfig-GimpConfig-path.html#GimpConfigPath" title="GimpConfigPath"><span class="type">GimpConfigPath</span></a></pre>
 <p>The color profile of your (primary) monitor.</p>
+<p>Flags: Read / Write / Construct</p>
 <p>Default value: NULL</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="GimpColorConfig--display-profile-from-gdk"></a><h3>The <code class="literal">"display-profile-from-gdk"</code> property</h3>
-<pre class="programlisting">  "display-profile-from-gdk" <span class="type">gboolean</span>              : Read / Write / Construct</pre>
+<a name="GimpColorConfig--display-profile-from-gdk"></a><h3>The <code class="literal">“display-profile-from-gdk”</code> property</h3>
+<pre class="programlisting">  “display-profile-from-gdk” <span class="type">gboolean</span></pre>
 <p>When enabled, GIMP will try to use the display color profile from the windowing system.  The configured monitor profile is then only used as a fallback.</p>
+<p>Flags: Read / Write / Construct</p>
 <p>Default value: FALSE</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="GimpColorConfig--display-rendering-intent"></a><h3>The <code class="literal">"display-rendering-intent"</code> property</h3>
-<pre class="programlisting">  "display-rendering-intent" <a class="link" href="GimpColorConfig.html#GimpColorRenderingIntent" title="enum GimpColorRenderingIntent"><span class="type">GimpColorRenderingIntent</span></a>  : Read / Write / Construct</pre>
+<a name="GimpColorConfig--display-rendering-intent"></a><h3>The <code class="literal">“display-rendering-intent”</code> property</h3>
+<pre class="programlisting">  “display-rendering-intent” <a class="link" href="GimpColorConfig.html#GimpColorRenderingIntent" title="enum GimpColorRenderingIntent"><span class="type">GimpColorRenderingIntent</span></a></pre>
 <p>Sets how colors are mapped for your display.</p>
+<p>Flags: Read / Write / Construct</p>
 <p>Default value: GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="GimpColorConfig--mode"></a><h3>The <code class="literal">"mode"</code> property</h3>
-<pre class="programlisting">  "mode"                     <a class="link" href="GimpColorConfig.html#GimpColorManagementMode" title="enum GimpColorManagementMode"><span class="type">GimpColorManagementMode</span></a>  : Read / Write / Construct</pre>
+<a name="GimpColorConfig--mode"></a><h3>The <code class="literal">“mode”</code> property</h3>
+<pre class="programlisting">  “mode”                     <a class="link" href="GimpColorConfig.html#GimpColorManagementMode" title="enum GimpColorManagementMode"><span class="type">GimpColorManagementMode</span></a></pre>
 <p>Mode of operation for color management.</p>
+<p>Flags: Read / Write / Construct</p>
 <p>Default value: GIMP_COLOR_MANAGEMENT_DISPLAY</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="GimpColorConfig--out-of-gamut-color"></a><h3>The <code class="literal">"out-of-gamut-color"</code> property</h3>
-<pre class="programlisting">  "out-of-gamut-color"       <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a>*              : Read / Write / Construct</pre>
+<a name="GimpColorConfig--out-of-gamut-color"></a><h3>The <code class="literal">“out-of-gamut-color”</code> property</h3>
+<pre class="programlisting">  “out-of-gamut-color”       <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *</pre>
 <p>The color to use for marking colors which are out of gamut.</p>
+<p>Flags: Read / Write / Construct</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="GimpColorConfig--printer-profile"></a><h3>The <code class="literal">"printer-profile"</code> property</h3>
-<pre class="programlisting">  "printer-profile"          <a class="link" href="libgimpconfig-GimpConfig-path.html#GimpConfigPath" title="GimpConfigPath"><span class="type">GimpConfigPath</span></a>        : Read / Write / Construct</pre>
+<a name="GimpColorConfig--printer-profile"></a><h3>The <code class="literal">“printer-profile”</code> property</h3>
+<pre class="programlisting">  “printer-profile”          <a class="link" href="libgimpconfig-GimpConfig-path.html#GimpConfigPath" title="GimpConfigPath"><span class="type">GimpConfigPath</span></a></pre>
 <p>The color profile used for simulating a printed version (softproof).</p>
+<p>Flags: Read / Write / Construct</p>
 <p>Default value: NULL</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="GimpColorConfig--rgb-profile"></a><h3>The <code class="literal">"rgb-profile"</code> property</h3>
-<pre class="programlisting">  "rgb-profile"              <a class="link" href="libgimpconfig-GimpConfig-path.html#GimpConfigPath" title="GimpConfigPath"><span class="type">GimpConfigPath</span></a>        : Read / Write / Construct</pre>
+<a name="GimpColorConfig--rgb-profile"></a><h3>The <code class="literal">“rgb-profile”</code> property</h3>
+<pre class="programlisting">  “rgb-profile”              <a class="link" href="libgimpconfig-GimpConfig-path.html#GimpConfigPath" title="GimpConfigPath"><span class="type">GimpConfigPath</span></a></pre>
 <p>The default RGB working space color profile.</p>
+<p>Flags: Read / Write / Construct</p>
 <p>Default value: NULL</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="GimpColorConfig--simulation-gamut-check"></a><h3>The <code class="literal">"simulation-gamut-check"</code> property</h3>
-<pre class="programlisting">  "simulation-gamut-check"   <span class="type">gboolean</span>              : Read / Write / Construct</pre>
+<a name="GimpColorConfig--simulation-gamut-check"></a><h3>The <code class="literal">“simulation-gamut-check”</code> property</h3>
+<pre class="programlisting">  “simulation-gamut-check”   <span class="type">gboolean</span></pre>
 <p>When enabled, the print simulation will mark colors which can not be represented in the target color space.</p>
+<p>Flags: Read / Write / Construct</p>
 <p>Default value: FALSE</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="GimpColorConfig--simulation-rendering-intent"></a><h3>The <code class="literal">"simulation-rendering-intent"</code> property</h3>
-<pre class="programlisting">  "simulation-rendering-intent" <a class="link" href="GimpColorConfig.html#GimpColorRenderingIntent" title="enum GimpColorRenderingIntent"><span class="type">GimpColorRenderingIntent</span></a>  : Read / Write / Construct</pre>
+<a name="GimpColorConfig--simulation-rendering-intent"></a><h3>The <code class="literal">“simulation-rendering-intent”</code> property</h3>
+<pre class="programlisting">  “simulation-rendering-intent” <a class="link" href="GimpColorConfig.html#GimpColorRenderingIntent" title="enum GimpColorRenderingIntent"><span class="type">GimpColorRenderingIntent</span></a></pre>
 <p>Sets how colors are converted from RGB working space to the print simulation device.</p>
+<p>Flags: Read / Write / Construct</p>
 <p>Default value: GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.19</div>
+          Generated by GTK-Doc V1.21</div>
 </body>
 </html>

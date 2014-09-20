@@ -24,6 +24,7 @@
 #include "core-types.h"
 
 #include "gimp.h"
+#include "gimpgrid.h"
 #include "gimpguide.h"
 #include "gimpimage.h"
 #include "gimpimage-grid.h"
@@ -100,10 +101,8 @@ gimp_image_snap_x (GimpImage *image,
       gdouble   xoffset;
       gdouble   i;
 
-      g_object_get (grid,
-                    "xspacing", &xspacing,
-                    "xoffset",  &xoffset,
-                    NULL);
+      gimp_grid_get_spacing (grid, &xspacing, NULL);
+      gimp_grid_get_offset  (grid, &xoffset,  NULL);
 
       /* the snap-to-grid part could probably be rewritten */
       while (xoffset > xspacing)
@@ -187,10 +186,8 @@ gimp_image_snap_y (GimpImage *image,
       gdouble    yoffset;
       gdouble    i;
 
-      g_object_get (grid,
-                    "yspacing", &yspacing,
-                    "yoffset",  &yoffset,
-                    NULL);
+      gimp_grid_get_spacing (grid, NULL, &yspacing);
+      gimp_grid_get_offset  (grid, NULL, &yoffset);
 
       while (yoffset > yspacing)
         yoffset -= yspacing;
@@ -295,12 +292,8 @@ gimp_image_snap_point (GimpImage *image,
       gdouble   xoffset, yoffset;
       gdouble   i;
 
-      g_object_get (grid,
-                    "xspacing", &xspacing,
-                    "yspacing", &yspacing,
-                    "xoffset",  &xoffset,
-                    "yoffset",  &yoffset,
-                    NULL);
+      gimp_grid_get_spacing (grid, &xspacing, &yspacing);
+      gimp_grid_get_offset  (grid, &xoffset,  &yoffset);
 
       while (xoffset > xspacing)
         xoffset -= xspacing;
@@ -660,6 +653,34 @@ gimp_image_snap_rectangle (GimpImage *image,
                   *ty1 = RINT (y1 + (nearest.y - y2));
                   snapped = TRUE;
                 }
+            }
+
+          /*  center  */
+
+          coords1.x = x_center;
+          coords1.y = y_center;
+
+          if (gimp_stroke_nearest_point_get (stroke, &coords1, 1.0,
+                                             &nearest,
+                                             NULL, NULL, NULL) >= 0)
+            {
+              if (gimp_image_snap_distance (x_center, nearest.x,
+                                            epsilon_x,
+                                            &mindist_x, &nx))
+                {
+                  mindist_x = ABS (nx - x_center);
+                  *tx1 = RINT (x1 + (nx - x_center));
+                  snapped = TRUE;
+                }
+
+              if (gimp_image_snap_distance (y_center, nearest.y,
+                                            epsilon_y,
+                                            &mindist_y, &ny))
+                {
+                  mindist_y = ABS (ny - y_center);
+                  *ty1 = RINT (y1 + (ny - y_center));
+                  snapped = TRUE;
+               }
             }
         }
     }

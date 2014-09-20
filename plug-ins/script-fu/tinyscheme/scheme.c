@@ -2132,7 +2132,7 @@ static void atom2str(scheme *sc, pointer l, int f, char **pp, int *plen) {
                /* R5RS says there must be a '.' (unless 'e'?) */
                f = strcspn(p, ".e");
                if (p[f] == 0) {
-                    p[f] = '.'; // not found, so add '.0' at the end
+                    p[f] = '.'; /* not found, so add '.0' at the end */
                     p[f+1] = '0';
                     p[f+2] = 0;
                }
@@ -2177,7 +2177,7 @@ static void atom2str(scheme *sc, pointer l, int f, char **pp, int *plen) {
                       snprintf(p,STRBUFFSIZE,"#\\x%x",c); break;
                     }
 #endif
-                    snprintf(p,STRBUFFSIZE,"#\\x%c",c); break;
+                    snprintf(p,STRBUFFSIZE,"#\\%c",c); break;
                }
           }
      } else if (is_symbol(l)) {

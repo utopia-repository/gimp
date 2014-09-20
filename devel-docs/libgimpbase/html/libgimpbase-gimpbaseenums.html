@@ -2,30 +2,26 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>gimpbaseenums</title>
+<title>GIMP Base Library Reference Manual: gimpbaseenums</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Base Library Reference Manual">
 <link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="prev" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="next" href="libgimpbase-gimpbasetypes.html" title="gimpbasetypes">
-<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
-<td><a accesskey="p" href="libgimpbase.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="libgimpbase.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GIMP Base Library Reference Manual</th>
-<td><a accesskey="n" href="libgimpbase-gimpbasetypes.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts">
-<a href="#libgimpbase-gimpbaseenums.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimpbase-gimpbaseenums.description" class="shortcut">Description</a>
-</td></tr>
-</table>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#libgimpbase-gimpbaseenums.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="libgimpbase.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="libgimpbase.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="libgimpbase-gimpbasetypes.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
 <div class="refentry">
 <a name="libgimpbase-gimpbaseenums"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
@@ -33,1633 +29,1620 @@
 <h2><span class="refentrytitle"><a name="libgimpbase-gimpbaseenums.top_of_page"></a>gimpbaseenums</span></h2>
 <p>gimpbaseenums — Basic GIMP enumeration data types.</p>
 </td>
-<td valign="top" align="right"></td>
+<td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
-<a name="libgimpbase-gimpbaseenums.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpAddMaskType" title="enum GimpAddMaskType">GimpAddMaskType</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpBlendMode" title="enum GimpBlendMode">GimpBlendMode</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpBucketFillMode" title="enum GimpBucketFillMode">GimpBucketFillMode</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpChannelOps" title="enum GimpChannelOps">GimpChannelOps</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpChannelType" title="enum GimpChannelType">GimpChannelType</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpCheckSize" title="enum GimpCheckSize">GimpCheckSize</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpCheckType" title="enum GimpCheckType">GimpCheckType</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpCloneType" title="enum GimpCloneType">GimpCloneType</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpDesaturateMode" title="enum GimpDesaturateMode">GimpDesaturateMode</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpDodgeBurnType" title="enum GimpDodgeBurnType">GimpDodgeBurnType</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpForegroundExtractMode" title="enum GimpForegroundExtractMode">GimpForegroundExtractMode</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpGradientType" title="enum GimpGradientType">GimpGradientType</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpGridStyle" title="enum GimpGridStyle">GimpGridStyle</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpIconType" title="enum GimpIconType">GimpIconType</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpImageBaseType" title="enum GimpImageBaseType">GimpImageBaseType</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpImageType" title="enum GimpImageType">GimpImageType</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpInterpolationType" title="enum GimpInterpolationType">GimpInterpolationType</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpMessageHandlerType" title="enum GimpMessageHandlerType">GimpMessageHandlerType</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpPaintApplicationMode" title="enum GimpPaintApplicationMode">GimpPaintApplicationMode</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpPDBArgType" title="enum GimpPDBArgType">GimpPDBArgType</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpPDBErrorHandler" title="enum GimpPDBErrorHandler">GimpPDBErrorHandler</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpPDBProcType" title="enum GimpPDBProcType">GimpPDBProcType</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpPDBStatusType" title="enum GimpPDBStatusType">GimpPDBStatusType</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpProgressCommand" title="enum GimpProgressCommand">GimpProgressCommand</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpRepeatMode" title="enum GimpRepeatMode">GimpRepeatMode</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpRunMode" title="enum GimpRunMode">GimpRunMode</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpSizeType" title="enum GimpSizeType">GimpSizeType</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpStackTraceMode" title="enum GimpStackTraceMode">GimpStackTraceMode</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpTextDirection" title="enum GimpTextDirection">GimpTextDirection</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpTextHintStyle" title="enum GimpTextHintStyle">GimpTextHintStyle</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpTextJustification" title="enum GimpTextJustification">GimpTextJustification</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpTransferMode" title="enum GimpTransferMode">GimpTransferMode</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpTransformDirection" title="enum GimpTransformDirection">GimpTransformDirection</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpTransformResize" title="enum GimpTransformResize">GimpTransformResize</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpUserDirectory" title="enum GimpUserDirectory">GimpUserDirectory</a>;
-enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpVectorsStrokeType" title="enum GimpVectorsStrokeType">GimpVectorsStrokeType</a>;
-</pre>
-</div>
 <div class="refsect1">
-<a name="libgimpbase-gimpbaseenums.description"></a><h2>Description</h2>
-<p>
-Basic GIMP enumeration data types.
-</p>
-</div>
-<div class="refsect1">
-<a name="libgimpbase-gimpbaseenums.details"></a><h2>Details</h2>
-<div class="refsect2">
-<a name="GimpAddMaskType"></a><h3>enum GimpAddMaskType</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_ADD_WHITE_MASK,          /*&lt; desc="_White (full opacity)"           &gt;*/
-  GIMP_ADD_BLACK_MASK,          /*&lt; desc="_Black (full transparency)"      &gt;*/
-  GIMP_ADD_ALPHA_MASK,          /*&lt; desc="Layer's _alpha channel"          &gt;*/
-  GIMP_ADD_ALPHA_TRANSFER_MASK, /*&lt; desc="_Transfer layer's alpha channel" &gt;*/
-  GIMP_ADD_SELECTION_MASK,      /*&lt; desc="_Selection"                      &gt;*/
-  GIMP_ADD_COPY_MASK,           /*&lt; desc="_Grayscale copy of layer"        &gt;*/
-  GIMP_ADD_CHANNEL_MASK         /*&lt; desc="C_hannel"                        &gt;*/
-} GimpAddMaskType;
-</pre>
-<p>
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="libgimpbase-gimpbaseenums.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="name">
+<col class="description">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-ADD-WHITE-MASK:CAPS"></a><span class="term"><code class="literal">GIMP_ADD_WHITE_MASK</code></span></p></td>
-<td>
-</td>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpAddMaskType" title="enum GimpAddMaskType">GimpAddMaskType</a></td>
 </tr>
 <tr>
-<td><p><a name="GIMP-ADD-BLACK-MASK:CAPS"></a><span class="term"><code class="literal">GIMP_ADD_BLACK_MASK</code></span></p></td>
-<td>
-</td>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpBlendMode" title="enum GimpBlendMode">GimpBlendMode</a></td>
 </tr>
 <tr>
-<td><p><a name="GIMP-ADD-ALPHA-MASK:CAPS"></a><span class="term"><code class="literal">GIMP_ADD_ALPHA_MASK</code></span></p></td>
-<td>
-</td>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpBucketFillMode" title="enum GimpBucketFillMode">GimpBucketFillMode</a></td>
 </tr>
 <tr>
-<td><p><a name="GIMP-ADD-ALPHA-TRANSFER-MASK:CAPS"></a><span class="term"><code class="literal">GIMP_ADD_ALPHA_TRANSFER_MASK</code></span></p></td>
-<td>
-</td>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpChannelOps" title="enum GimpChannelOps">GimpChannelOps</a></td>
 </tr>
 <tr>
-<td><p><a name="GIMP-ADD-SELECTION-MASK:CAPS"></a><span class="term"><code class="literal">GIMP_ADD_SELECTION_MASK</code></span></p></td>
-<td>
-</td>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpChannelType" title="enum GimpChannelType">GimpChannelType</a></td>
 </tr>
 <tr>
-<td><p><a name="GIMP-ADD-COPY-MASK:CAPS"></a><span class="term"><code class="literal">GIMP_ADD_COPY_MASK</code></span></p></td>
-<td>
-</td>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpCheckSize" title="enum GimpCheckSize">GimpCheckSize</a></td>
 </tr>
 <tr>
-<td><p><a name="GIMP-ADD-CHANNEL-MASK:CAPS"></a><span class="term"><code class="literal">GIMP_ADD_CHANNEL_MASK</code></span></p></td>
-<td>
-</td>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpCheckType" title="enum GimpCheckType">GimpCheckType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpCloneType" title="enum GimpCloneType">GimpCloneType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpDesaturateMode" title="enum GimpDesaturateMode">GimpDesaturateMode</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpDodgeBurnType" title="enum GimpDodgeBurnType">GimpDodgeBurnType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpForegroundExtractMode" title="enum GimpForegroundExtractMode">GimpForegroundExtractMode</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpGradientType" title="enum GimpGradientType">GimpGradientType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpGridStyle" title="enum GimpGridStyle">GimpGridStyle</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpIconType" title="enum GimpIconType">GimpIconType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpImageBaseType" title="enum GimpImageBaseType">GimpImageBaseType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpImageType" title="enum GimpImageType">GimpImageType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpInterpolationType" title="enum GimpInterpolationType">GimpInterpolationType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpMessageHandlerType" title="enum GimpMessageHandlerType">GimpMessageHandlerType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpPaintApplicationMode" title="enum GimpPaintApplicationMode">GimpPaintApplicationMode</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpPDBArgType" title="enum GimpPDBArgType">GimpPDBArgType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpPDBErrorHandler" title="enum GimpPDBErrorHandler">GimpPDBErrorHandler</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpPDBProcType" title="enum GimpPDBProcType">GimpPDBProcType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpPDBStatusType" title="enum GimpPDBStatusType">GimpPDBStatusType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpProgressCommand" title="enum GimpProgressCommand">GimpProgressCommand</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpRepeatMode" title="enum GimpRepeatMode">GimpRepeatMode</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpRunMode" title="enum GimpRunMode">GimpRunMode</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpSizeType" title="enum GimpSizeType">GimpSizeType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpStackTraceMode" title="enum GimpStackTraceMode">GimpStackTraceMode</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpTextDirection" title="enum GimpTextDirection">GimpTextDirection</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpTextHintStyle" title="enum GimpTextHintStyle">GimpTextHintStyle</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpTextJustification" title="enum GimpTextJustification">GimpTextJustification</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpTransferMode" title="enum GimpTransferMode">GimpTransferMode</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpTransformDirection" title="enum GimpTransformDirection">GimpTransformDirection</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpTransformResize" title="enum GimpTransformResize">GimpTransformResize</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpUserDirectory" title="enum GimpUserDirectory">GimpUserDirectory</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="libgimpbase-gimpbaseenums.html#GimpVectorsStrokeType" title="enum GimpVectorsStrokeType">GimpVectorsStrokeType</a></td>
 </tr>
 </tbody>
 </table></div>
+</div>
+<div class="refsect1">
+<a name="libgimpbase-gimpbaseenums.description"></a><h2>Description</h2>
+<p>Basic GIMP enumeration data types.</p>
+</div>
+<div class="refsect1">
+<a name="libgimpbase-gimpbaseenums.functions_details"></a><h2>Functions</h2>
+</div>
+<div class="refsect1">
+<a name="libgimpbase-gimpbaseenums.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="GimpAddMaskType"></a><h3>enum GimpAddMaskType</h3>
+<p>
+</p>
+<div class="refsect3">
+<a name="id-1.2.2.6.2.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GIMP-ADD-WHITE-MASK:CAPS"></a>GIMP_ADD_WHITE_MASK</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GIMP-ADD-BLACK-MASK:CAPS"></a>GIMP_ADD_BLACK_MASK</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GIMP-ADD-ALPHA-MASK:CAPS"></a>GIMP_ADD_ALPHA_MASK</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GIMP-ADD-ALPHA-TRANSFER-MASK:CAPS"></a>GIMP_ADD_ALPHA_TRANSFER_MASK</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GIMP-ADD-SELECTION-MASK:CAPS"></a>GIMP_ADD_SELECTION_MASK</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GIMP-ADD-COPY-MASK:CAPS"></a>GIMP_ADD_COPY_MASK</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GIMP-ADD-CHANNEL-MASK:CAPS"></a>GIMP_ADD_CHANNEL_MASK</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpBlendMode"></a><h3>enum GimpBlendMode</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_FG_BG_RGB_MODE,         /*&lt; desc="FG to BG (RGB)"    &gt;*/
-  GIMP_FG_BG_HSV_MODE,         /*&lt; desc="FG to BG (HSV)"    &gt;*/
-  GIMP_FG_TRANSPARENT_MODE,    /*&lt; desc="FG to transparent" &gt;*/
-  GIMP_CUSTOM_MODE             /*&lt; desc="Custom gradient"   &gt;*/
-} GimpBlendMode;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.3.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-FG-BG-RGB-MODE:CAPS"></a><span class="term"><code class="literal">GIMP_FG_BG_RGB_MODE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-FG-BG-RGB-MODE:CAPS"></a>GIMP_FG_BG_RGB_MODE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-FG-BG-HSV-MODE:CAPS"></a><span class="term"><code class="literal">GIMP_FG_BG_HSV_MODE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-FG-BG-HSV-MODE:CAPS"></a>GIMP_FG_BG_HSV_MODE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-FG-TRANSPARENT-MODE:CAPS"></a><span class="term"><code class="literal">GIMP_FG_TRANSPARENT_MODE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-FG-TRANSPARENT-MODE:CAPS"></a>GIMP_FG_TRANSPARENT_MODE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-CUSTOM-MODE:CAPS"></a><span class="term"><code class="literal">GIMP_CUSTOM_MODE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-CUSTOM-MODE:CAPS"></a>GIMP_CUSTOM_MODE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpBucketFillMode"></a><h3>enum GimpBucketFillMode</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_FG_BUCKET_FILL,      /*&lt; desc="FG color fill" &gt;*/
-  GIMP_BG_BUCKET_FILL,      /*&lt; desc="BG color fill" &gt;*/
-  GIMP_PATTERN_BUCKET_FILL  /*&lt; desc="Pattern fill"  &gt;*/
-} GimpBucketFillMode;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.4.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-FG-BUCKET-FILL:CAPS"></a><span class="term"><code class="literal">GIMP_FG_BUCKET_FILL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-FG-BUCKET-FILL:CAPS"></a>GIMP_FG_BUCKET_FILL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-BG-BUCKET-FILL:CAPS"></a><span class="term"><code class="literal">GIMP_BG_BUCKET_FILL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-BG-BUCKET-FILL:CAPS"></a>GIMP_BG_BUCKET_FILL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PATTERN-BUCKET-FILL:CAPS"></a><span class="term"><code class="literal">GIMP_PATTERN_BUCKET_FILL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PATTERN-BUCKET-FILL:CAPS"></a>GIMP_PATTERN_BUCKET_FILL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpChannelOps"></a><h3>enum GimpChannelOps</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_CHANNEL_OP_ADD,       /*&lt; desc="Add to the current selection"         &gt;*/
-  GIMP_CHANNEL_OP_SUBTRACT,  /*&lt; desc="Subtract from the current selection"  &gt;*/
-  GIMP_CHANNEL_OP_REPLACE,   /*&lt; desc="Replace the current selection"        &gt;*/
-  GIMP_CHANNEL_OP_INTERSECT  /*&lt; desc="Intersect with the current selection" &gt;*/
-} GimpChannelOps;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.5.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-CHANNEL-OP-ADD:CAPS"></a><span class="term"><code class="literal">GIMP_CHANNEL_OP_ADD</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-CHANNEL-OP-ADD:CAPS"></a>GIMP_CHANNEL_OP_ADD</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-CHANNEL-OP-SUBTRACT:CAPS"></a><span class="term"><code class="literal">GIMP_CHANNEL_OP_SUBTRACT</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-CHANNEL-OP-SUBTRACT:CAPS"></a>GIMP_CHANNEL_OP_SUBTRACT</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-CHANNEL-OP-REPLACE:CAPS"></a><span class="term"><code class="literal">GIMP_CHANNEL_OP_REPLACE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-CHANNEL-OP-REPLACE:CAPS"></a>GIMP_CHANNEL_OP_REPLACE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-CHANNEL-OP-INTERSECT:CAPS"></a><span class="term"><code class="literal">GIMP_CHANNEL_OP_INTERSECT</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-CHANNEL-OP-INTERSECT:CAPS"></a>GIMP_CHANNEL_OP_INTERSECT</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpChannelType"></a><h3>enum GimpChannelType</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_RED_CHANNEL,      /*&lt; desc="Red"     &gt;*/
-  GIMP_GREEN_CHANNEL,    /*&lt; desc="Green"   &gt;*/
-  GIMP_BLUE_CHANNEL,     /*&lt; desc="Blue"    &gt;*/
-  GIMP_GRAY_CHANNEL,     /*&lt; desc="Gray"    &gt;*/
-  GIMP_INDEXED_CHANNEL,  /*&lt; desc="Indexed" &gt;*/
-  GIMP_ALPHA_CHANNEL     /*&lt; desc="Alpha"   &gt;*/
-} GimpChannelType;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.6.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-RED-CHANNEL:CAPS"></a><span class="term"><code class="literal">GIMP_RED_CHANNEL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-RED-CHANNEL:CAPS"></a>GIMP_RED_CHANNEL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-GREEN-CHANNEL:CAPS"></a><span class="term"><code class="literal">GIMP_GREEN_CHANNEL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GREEN-CHANNEL:CAPS"></a>GIMP_GREEN_CHANNEL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-BLUE-CHANNEL:CAPS"></a><span class="term"><code class="literal">GIMP_BLUE_CHANNEL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-BLUE-CHANNEL:CAPS"></a>GIMP_BLUE_CHANNEL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-GRAY-CHANNEL:CAPS"></a><span class="term"><code class="literal">GIMP_GRAY_CHANNEL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRAY-CHANNEL:CAPS"></a>GIMP_GRAY_CHANNEL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-INDEXED-CHANNEL:CAPS"></a><span class="term"><code class="literal">GIMP_INDEXED_CHANNEL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-INDEXED-CHANNEL:CAPS"></a>GIMP_INDEXED_CHANNEL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-ALPHA-CHANNEL:CAPS"></a><span class="term"><code class="literal">GIMP_ALPHA_CHANNEL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-ALPHA-CHANNEL:CAPS"></a>GIMP_ALPHA_CHANNEL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpCheckSize"></a><h3>enum GimpCheckSize</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_CHECK_SIZE_SMALL_CHECKS  = 0,  /*&lt; desc="Small"  &gt;*/
-  GIMP_CHECK_SIZE_MEDIUM_CHECKS = 1,  /*&lt; desc="Medium" &gt;*/
-  GIMP_CHECK_SIZE_LARGE_CHECKS  = 2   /*&lt; desc="Large"  &gt;*/
-} GimpCheckSize;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.7.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-CHECK-SIZE-SMALL-CHECKS:CAPS"></a><span class="term"><code class="literal">GIMP_CHECK_SIZE_SMALL_CHECKS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-CHECK-SIZE-SMALL-CHECKS:CAPS"></a>GIMP_CHECK_SIZE_SMALL_CHECKS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-CHECK-SIZE-MEDIUM-CHECKS:CAPS"></a><span class="term"><code class="literal">GIMP_CHECK_SIZE_MEDIUM_CHECKS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-CHECK-SIZE-MEDIUM-CHECKS:CAPS"></a>GIMP_CHECK_SIZE_MEDIUM_CHECKS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-CHECK-SIZE-LARGE-CHECKS:CAPS"></a><span class="term"><code class="literal">GIMP_CHECK_SIZE_LARGE_CHECKS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-CHECK-SIZE-LARGE-CHECKS:CAPS"></a>GIMP_CHECK_SIZE_LARGE_CHECKS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpCheckType"></a><h3>enum GimpCheckType</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_CHECK_TYPE_LIGHT_CHECKS = 0,  /*&lt; desc="Light checks"    &gt;*/
-  GIMP_CHECK_TYPE_GRAY_CHECKS  = 1,  /*&lt; desc="Mid-tone checks" &gt;*/
-  GIMP_CHECK_TYPE_DARK_CHECKS  = 2,  /*&lt; desc="Dark checks"     &gt;*/
-  GIMP_CHECK_TYPE_WHITE_ONLY   = 3,  /*&lt; desc="White only"      &gt;*/
-  GIMP_CHECK_TYPE_GRAY_ONLY    = 4,  /*&lt; desc="Gray only"       &gt;*/
-  GIMP_CHECK_TYPE_BLACK_ONLY   = 5   /*&lt; desc="Black only"      &gt;*/
-} GimpCheckType;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.8.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-CHECK-TYPE-LIGHT-CHECKS:CAPS"></a><span class="term"><code class="literal">GIMP_CHECK_TYPE_LIGHT_CHECKS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-CHECK-TYPE-LIGHT-CHECKS:CAPS"></a>GIMP_CHECK_TYPE_LIGHT_CHECKS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-CHECK-TYPE-GRAY-CHECKS:CAPS"></a><span class="term"><code class="literal">GIMP_CHECK_TYPE_GRAY_CHECKS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-CHECK-TYPE-GRAY-CHECKS:CAPS"></a>GIMP_CHECK_TYPE_GRAY_CHECKS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-CHECK-TYPE-DARK-CHECKS:CAPS"></a><span class="term"><code class="literal">GIMP_CHECK_TYPE_DARK_CHECKS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-CHECK-TYPE-DARK-CHECKS:CAPS"></a>GIMP_CHECK_TYPE_DARK_CHECKS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-CHECK-TYPE-WHITE-ONLY:CAPS"></a><span class="term"><code class="literal">GIMP_CHECK_TYPE_WHITE_ONLY</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-CHECK-TYPE-WHITE-ONLY:CAPS"></a>GIMP_CHECK_TYPE_WHITE_ONLY</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-CHECK-TYPE-GRAY-ONLY:CAPS"></a><span class="term"><code class="literal">GIMP_CHECK_TYPE_GRAY_ONLY</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-CHECK-TYPE-GRAY-ONLY:CAPS"></a>GIMP_CHECK_TYPE_GRAY_ONLY</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-CHECK-TYPE-BLACK-ONLY:CAPS"></a><span class="term"><code class="literal">GIMP_CHECK_TYPE_BLACK_ONLY</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-CHECK-TYPE-BLACK-ONLY:CAPS"></a>GIMP_CHECK_TYPE_BLACK_ONLY</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpCloneType"></a><h3>enum GimpCloneType</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_IMAGE_CLONE,   /*&lt; desc="Image"   &gt;*/
-  GIMP_PATTERN_CLONE  /*&lt; desc="Pattern" &gt;*/
-} GimpCloneType;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.9.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-IMAGE-CLONE:CAPS"></a><span class="term"><code class="literal">GIMP_IMAGE_CLONE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-IMAGE-CLONE:CAPS"></a>GIMP_IMAGE_CLONE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PATTERN-CLONE:CAPS"></a><span class="term"><code class="literal">GIMP_PATTERN_CLONE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PATTERN-CLONE:CAPS"></a>GIMP_PATTERN_CLONE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpDesaturateMode"></a><h3>enum GimpDesaturateMode</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_DESATURATE_LIGHTNESS,   /*&lt; desc="Lightness"  &gt;*/
-  GIMP_DESATURATE_LUMINOSITY,  /*&lt; desc="Luminosity" &gt;*/
-  GIMP_DESATURATE_AVERAGE      /*&lt; desc="Average"    &gt;*/
-} GimpDesaturateMode;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.10.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-DESATURATE-LIGHTNESS:CAPS"></a><span class="term"><code class="literal">GIMP_DESATURATE_LIGHTNESS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-DESATURATE-LIGHTNESS:CAPS"></a>GIMP_DESATURATE_LIGHTNESS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-DESATURATE-LUMINOSITY:CAPS"></a><span class="term"><code class="literal">GIMP_DESATURATE_LUMINOSITY</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-DESATURATE-LUMINOSITY:CAPS"></a>GIMP_DESATURATE_LUMINOSITY</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-DESATURATE-AVERAGE:CAPS"></a><span class="term"><code class="literal">GIMP_DESATURATE_AVERAGE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-DESATURATE-AVERAGE:CAPS"></a>GIMP_DESATURATE_AVERAGE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpDodgeBurnType"></a><h3>enum GimpDodgeBurnType</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_DODGE,  /*&lt; desc="Dodge" &gt;*/
-  GIMP_BURN    /*&lt; desc="Burn"  &gt;*/
-} GimpDodgeBurnType;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.11.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-DODGE:CAPS"></a><span class="term"><code class="literal">GIMP_DODGE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-DODGE:CAPS"></a>GIMP_DODGE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-BURN:CAPS"></a><span class="term"><code class="literal">GIMP_BURN</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-BURN:CAPS"></a>GIMP_BURN</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpForegroundExtractMode"></a><h3>enum GimpForegroundExtractMode</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_FOREGROUND_EXTRACT_SIOX
-} GimpForegroundExtractMode;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.12.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody><tr>
-<td><p><a name="GIMP-FOREGROUND-EXTRACT-SIOX:CAPS"></a><span class="term"><code class="literal">GIMP_FOREGROUND_EXTRACT_SIOX</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-FOREGROUND-EXTRACT-SIOX:CAPS"></a>GIMP_FOREGROUND_EXTRACT_SIOX</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr></tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpGradientType"></a><h3>enum GimpGradientType</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_GRADIENT_LINEAR,                /*&lt; desc="Linear"            &gt;*/
-  GIMP_GRADIENT_BILINEAR,              /*&lt; desc="Bi-linear"         &gt;*/
-  GIMP_GRADIENT_RADIAL,                /*&lt; desc="Radial"            &gt;*/
-  GIMP_GRADIENT_SQUARE,                /*&lt; desc="Square"            &gt;*/
-  GIMP_GRADIENT_CONICAL_SYMMETRIC,     /*&lt; desc="Conical (sym)"     &gt;*/
-  GIMP_GRADIENT_CONICAL_ASYMMETRIC,    /*&lt; desc="Conical (asym)"    &gt;*/
-  GIMP_GRADIENT_SHAPEBURST_ANGULAR,    /*&lt; desc="Shaped (angular)"  &gt;*/
-  GIMP_GRADIENT_SHAPEBURST_SPHERICAL,  /*&lt; desc="Shaped (spherical)"&gt;*/
-  GIMP_GRADIENT_SHAPEBURST_DIMPLED,    /*&lt; desc="Shaped (dimpled)"  &gt;*/
-  GIMP_GRADIENT_SPIRAL_CLOCKWISE,      /*&lt; desc="Spiral (cw)"       &gt;*/
-  GIMP_GRADIENT_SPIRAL_ANTICLOCKWISE   /*&lt; desc="Spiral (ccw)"      &gt;*/
-} GimpGradientType;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.13.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-GRADIENT-LINEAR:CAPS"></a><span class="term"><code class="literal">GIMP_GRADIENT_LINEAR</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRADIENT-LINEAR:CAPS"></a>GIMP_GRADIENT_LINEAR</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-GRADIENT-BILINEAR:CAPS"></a><span class="term"><code class="literal">GIMP_GRADIENT_BILINEAR</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRADIENT-BILINEAR:CAPS"></a>GIMP_GRADIENT_BILINEAR</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-GRADIENT-RADIAL:CAPS"></a><span class="term"><code class="literal">GIMP_GRADIENT_RADIAL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRADIENT-RADIAL:CAPS"></a>GIMP_GRADIENT_RADIAL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-GRADIENT-SQUARE:CAPS"></a><span class="term"><code class="literal">GIMP_GRADIENT_SQUARE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRADIENT-SQUARE:CAPS"></a>GIMP_GRADIENT_SQUARE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-GRADIENT-CONICAL-SYMMETRIC:CAPS"></a><span class="term"><code class="literal">GIMP_GRADIENT_CONICAL_SYMMETRIC</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRADIENT-CONICAL-SYMMETRIC:CAPS"></a>GIMP_GRADIENT_CONICAL_SYMMETRIC</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-GRADIENT-CONICAL-ASYMMETRIC:CAPS"></a><span class="term"><code class="literal">GIMP_GRADIENT_CONICAL_ASYMMETRIC</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRADIENT-CONICAL-ASYMMETRIC:CAPS"></a>GIMP_GRADIENT_CONICAL_ASYMMETRIC</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-GRADIENT-SHAPEBURST-ANGULAR:CAPS"></a><span class="term"><code class="literal">GIMP_GRADIENT_SHAPEBURST_ANGULAR</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRADIENT-SHAPEBURST-ANGULAR:CAPS"></a>GIMP_GRADIENT_SHAPEBURST_ANGULAR</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-GRADIENT-SHAPEBURST-SPHERICAL:CAPS"></a><span class="term"><code class="literal">GIMP_GRADIENT_SHAPEBURST_SPHERICAL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRADIENT-SHAPEBURST-SPHERICAL:CAPS"></a>GIMP_GRADIENT_SHAPEBURST_SPHERICAL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-GRADIENT-SHAPEBURST-DIMPLED:CAPS"></a><span class="term"><code class="literal">GIMP_GRADIENT_SHAPEBURST_DIMPLED</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRADIENT-SHAPEBURST-DIMPLED:CAPS"></a>GIMP_GRADIENT_SHAPEBURST_DIMPLED</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-GRADIENT-SPIRAL-CLOCKWISE:CAPS"></a><span class="term"><code class="literal">GIMP_GRADIENT_SPIRAL_CLOCKWISE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRADIENT-SPIRAL-CLOCKWISE:CAPS"></a>GIMP_GRADIENT_SPIRAL_CLOCKWISE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-GRADIENT-SPIRAL-ANTICLOCKWISE:CAPS"></a><span class="term"><code class="literal">GIMP_GRADIENT_SPIRAL_ANTICLOCKWISE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRADIENT-SPIRAL-ANTICLOCKWISE:CAPS"></a>GIMP_GRADIENT_SPIRAL_ANTICLOCKWISE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpGridStyle"></a><h3>enum GimpGridStyle</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_GRID_DOTS,           /*&lt; desc="Intersections (dots)"       &gt;*/
-  GIMP_GRID_INTERSECTIONS,  /*&lt; desc="Intersections (crosshairs)" &gt;*/
-  GIMP_GRID_ON_OFF_DASH,    /*&lt; desc="Dashed"                     &gt;*/
-  GIMP_GRID_DOUBLE_DASH,    /*&lt; desc="Double dashed"              &gt;*/
-  GIMP_GRID_SOLID           /*&lt; desc="Solid"                      &gt;*/
-} GimpGridStyle;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.14.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-GRID-DOTS:CAPS"></a><span class="term"><code class="literal">GIMP_GRID_DOTS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRID-DOTS:CAPS"></a>GIMP_GRID_DOTS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-GRID-INTERSECTIONS:CAPS"></a><span class="term"><code class="literal">GIMP_GRID_INTERSECTIONS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRID-INTERSECTIONS:CAPS"></a>GIMP_GRID_INTERSECTIONS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-GRID-ON-OFF-DASH:CAPS"></a><span class="term"><code class="literal">GIMP_GRID_ON_OFF_DASH</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRID-ON-OFF-DASH:CAPS"></a>GIMP_GRID_ON_OFF_DASH</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-GRID-DOUBLE-DASH:CAPS"></a><span class="term"><code class="literal">GIMP_GRID_DOUBLE_DASH</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRID-DOUBLE-DASH:CAPS"></a>GIMP_GRID_DOUBLE_DASH</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-GRID-SOLID:CAPS"></a><span class="term"><code class="literal">GIMP_GRID_SOLID</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRID-SOLID:CAPS"></a>GIMP_GRID_SOLID</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpIconType"></a><h3>enum GimpIconType</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_ICON_TYPE_STOCK_ID,      /*&lt; desc="Stock ID"      &gt;*/
-  GIMP_ICON_TYPE_INLINE_PIXBUF, /*&lt; desc="Inline pixbuf" &gt;*/
-  GIMP_ICON_TYPE_IMAGE_FILE     /*&lt; desc="Image file"    &gt;*/
-} GimpIconType;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.15.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-ICON-TYPE-STOCK-ID:CAPS"></a><span class="term"><code class="literal">GIMP_ICON_TYPE_STOCK_ID</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-ICON-TYPE-STOCK-ID:CAPS"></a>GIMP_ICON_TYPE_STOCK_ID</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-ICON-TYPE-INLINE-PIXBUF:CAPS"></a><span class="term"><code class="literal">GIMP_ICON_TYPE_INLINE_PIXBUF</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-ICON-TYPE-INLINE-PIXBUF:CAPS"></a>GIMP_ICON_TYPE_INLINE_PIXBUF</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-ICON-TYPE-IMAGE-FILE:CAPS"></a><span class="term"><code class="literal">GIMP_ICON_TYPE_IMAGE_FILE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-ICON-TYPE-IMAGE-FILE:CAPS"></a>GIMP_ICON_TYPE_IMAGE_FILE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpImageBaseType"></a><h3>enum GimpImageBaseType</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_RGB,     /*&lt; desc="RGB color"     &gt;*/
-  GIMP_GRAY,    /*&lt; desc="Grayscale"     &gt;*/
-  GIMP_INDEXED  /*&lt; desc="Indexed color" &gt;*/
-} GimpImageBaseType;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.16.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-RGB:CAPS"></a><span class="term"><code class="literal">GIMP_RGB</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-RGB:CAPS"></a>GIMP_RGB</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-GRAY:CAPS"></a><span class="term"><code class="literal">GIMP_GRAY</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRAY:CAPS"></a>GIMP_GRAY</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-INDEXED:CAPS"></a><span class="term"><code class="literal">GIMP_INDEXED</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-INDEXED:CAPS"></a>GIMP_INDEXED</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpImageType"></a><h3>enum GimpImageType</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_RGB_IMAGE,      /*&lt; desc="RGB"             &gt;*/
-  GIMP_RGBA_IMAGE,     /*&lt; desc="RGB-alpha"       &gt;*/
-  GIMP_GRAY_IMAGE,     /*&lt; desc="Grayscale"       &gt;*/
-  GIMP_GRAYA_IMAGE,    /*&lt; desc="Grayscale-alpha" &gt;*/
-  GIMP_INDEXED_IMAGE,  /*&lt; desc="Indexed"         &gt;*/
-  GIMP_INDEXEDA_IMAGE  /*&lt; desc="Indexed-alpha"   &gt;*/
-} GimpImageType;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.17.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-RGB-IMAGE:CAPS"></a><span class="term"><code class="literal">GIMP_RGB_IMAGE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-RGB-IMAGE:CAPS"></a>GIMP_RGB_IMAGE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-RGBA-IMAGE:CAPS"></a><span class="term"><code class="literal">GIMP_RGBA_IMAGE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-RGBA-IMAGE:CAPS"></a>GIMP_RGBA_IMAGE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-GRAY-IMAGE:CAPS"></a><span class="term"><code class="literal">GIMP_GRAY_IMAGE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRAY-IMAGE:CAPS"></a>GIMP_GRAY_IMAGE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-GRAYA-IMAGE:CAPS"></a><span class="term"><code class="literal">GIMP_GRAYA_IMAGE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-GRAYA-IMAGE:CAPS"></a>GIMP_GRAYA_IMAGE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-INDEXED-IMAGE:CAPS"></a><span class="term"><code class="literal">GIMP_INDEXED_IMAGE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-INDEXED-IMAGE:CAPS"></a>GIMP_INDEXED_IMAGE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-INDEXEDA-IMAGE:CAPS"></a><span class="term"><code class="literal">GIMP_INDEXEDA_IMAGE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-INDEXEDA-IMAGE:CAPS"></a>GIMP_INDEXEDA_IMAGE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpInterpolationType"></a><h3>enum GimpInterpolationType</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_INTERPOLATION_NONE,   /*&lt; desc="None"            &gt;*/
-  GIMP_INTERPOLATION_LINEAR, /*&lt; desc="Linear"          &gt;*/
-  GIMP_INTERPOLATION_CUBIC,  /*&lt; desc="Cubic"           &gt;*/
-  GIMP_INTERPOLATION_LANCZOS /*&lt; desc="Sinc (Lanczos3)" &gt;*/
-} GimpInterpolationType;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.18.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-INTERPOLATION-NONE:CAPS"></a><span class="term"><code class="literal">GIMP_INTERPOLATION_NONE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-INTERPOLATION-NONE:CAPS"></a>GIMP_INTERPOLATION_NONE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-INTERPOLATION-LINEAR:CAPS"></a><span class="term"><code class="literal">GIMP_INTERPOLATION_LINEAR</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-INTERPOLATION-LINEAR:CAPS"></a>GIMP_INTERPOLATION_LINEAR</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-INTERPOLATION-CUBIC:CAPS"></a><span class="term"><code class="literal">GIMP_INTERPOLATION_CUBIC</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-INTERPOLATION-CUBIC:CAPS"></a>GIMP_INTERPOLATION_CUBIC</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-INTERPOLATION-LANCZOS:CAPS"></a><span class="term"><code class="literal">GIMP_INTERPOLATION_LANCZOS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-INTERPOLATION-LANCZOS:CAPS"></a>GIMP_INTERPOLATION_LANCZOS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpMessageHandlerType"></a><h3>enum GimpMessageHandlerType</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_MESSAGE_BOX,
-  GIMP_CONSOLE,
-  GIMP_ERROR_CONSOLE
-} GimpMessageHandlerType;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.19.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-MESSAGE-BOX:CAPS"></a><span class="term"><code class="literal">GIMP_MESSAGE_BOX</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-MESSAGE-BOX:CAPS"></a>GIMP_MESSAGE_BOX</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-CONSOLE:CAPS"></a><span class="term"><code class="literal">GIMP_CONSOLE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-CONSOLE:CAPS"></a>GIMP_CONSOLE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-ERROR-CONSOLE:CAPS"></a><span class="term"><code class="literal">GIMP_ERROR_CONSOLE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-ERROR-CONSOLE:CAPS"></a>GIMP_ERROR_CONSOLE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpPaintApplicationMode"></a><h3>enum GimpPaintApplicationMode</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_PAINT_CONSTANT,    /*&lt; desc="Constant"    &gt;*/
-  GIMP_PAINT_INCREMENTAL  /*&lt; desc="Incremental" &gt;*/
-} GimpPaintApplicationMode;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.20.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-PAINT-CONSTANT:CAPS"></a><span class="term"><code class="literal">GIMP_PAINT_CONSTANT</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PAINT-CONSTANT:CAPS"></a>GIMP_PAINT_CONSTANT</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PAINT-INCREMENTAL:CAPS"></a><span class="term"><code class="literal">GIMP_PAINT_INCREMENTAL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PAINT-INCREMENTAL:CAPS"></a>GIMP_PAINT_INCREMENTAL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpPDBArgType"></a><h3>enum GimpPDBArgType</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_PDB_INT32,
-  GIMP_PDB_INT16,
-  GIMP_PDB_INT8,
-  GIMP_PDB_FLOAT,
-  GIMP_PDB_STRING,
-  GIMP_PDB_INT32ARRAY,
-  GIMP_PDB_INT16ARRAY,
-  GIMP_PDB_INT8ARRAY,
-  GIMP_PDB_FLOATARRAY,
-  GIMP_PDB_STRINGARRAY,
-  GIMP_PDB_COLOR,
-  GIMP_PDB_ITEM,
-  GIMP_PDB_DISPLAY,
-  GIMP_PDB_IMAGE,
-  GIMP_PDB_LAYER,
-  GIMP_PDB_CHANNEL,
-  GIMP_PDB_DRAWABLE,
-  GIMP_PDB_SELECTION,
-  GIMP_PDB_COLORARRAY,
-  GIMP_PDB_VECTORS,
-  GIMP_PDB_PARASITE,
-  GIMP_PDB_STATUS,
-  GIMP_PDB_END,
-
-  /*  the following aliases are deprecated  */
-  GIMP_PDB_PATH     = GIMP_PDB_VECTORS,     /*&lt; skip &gt;*/
-  GIMP_PDB_BOUNDARY = GIMP_PDB_COLORARRAY,  /*&lt; skip &gt;*/
-  GIMP_PDB_REGION   = GIMP_PDB_ITEM         /*&lt; skip &gt;*/
-} GimpPDBArgType;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.21.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-PDB-INT32:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_INT32</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-INT32:CAPS"></a>GIMP_PDB_INT32</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-INT16:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_INT16</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-INT16:CAPS"></a>GIMP_PDB_INT16</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-INT8:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_INT8</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-INT8:CAPS"></a>GIMP_PDB_INT8</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-FLOAT:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_FLOAT</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-FLOAT:CAPS"></a>GIMP_PDB_FLOAT</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-STRING:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_STRING</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-STRING:CAPS"></a>GIMP_PDB_STRING</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-INT32ARRAY:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_INT32ARRAY</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-INT32ARRAY:CAPS"></a>GIMP_PDB_INT32ARRAY</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-INT16ARRAY:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_INT16ARRAY</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-INT16ARRAY:CAPS"></a>GIMP_PDB_INT16ARRAY</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-INT8ARRAY:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_INT8ARRAY</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-INT8ARRAY:CAPS"></a>GIMP_PDB_INT8ARRAY</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-FLOATARRAY:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_FLOATARRAY</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-FLOATARRAY:CAPS"></a>GIMP_PDB_FLOATARRAY</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-STRINGARRAY:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_STRINGARRAY</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-STRINGARRAY:CAPS"></a>GIMP_PDB_STRINGARRAY</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-COLOR:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_COLOR</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-COLOR:CAPS"></a>GIMP_PDB_COLOR</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-ITEM:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_ITEM</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-ITEM:CAPS"></a>GIMP_PDB_ITEM</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-DISPLAY:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_DISPLAY</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-DISPLAY:CAPS"></a>GIMP_PDB_DISPLAY</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-IMAGE:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_IMAGE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-IMAGE:CAPS"></a>GIMP_PDB_IMAGE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-LAYER:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_LAYER</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-LAYER:CAPS"></a>GIMP_PDB_LAYER</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-CHANNEL:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_CHANNEL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-CHANNEL:CAPS"></a>GIMP_PDB_CHANNEL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-DRAWABLE:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_DRAWABLE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-DRAWABLE:CAPS"></a>GIMP_PDB_DRAWABLE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-SELECTION:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_SELECTION</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-SELECTION:CAPS"></a>GIMP_PDB_SELECTION</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-COLORARRAY:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_COLORARRAY</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-COLORARRAY:CAPS"></a>GIMP_PDB_COLORARRAY</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-VECTORS:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_VECTORS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-VECTORS:CAPS"></a>GIMP_PDB_VECTORS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-PARASITE:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_PARASITE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-PARASITE:CAPS"></a>GIMP_PDB_PARASITE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-STATUS:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_STATUS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-STATUS:CAPS"></a>GIMP_PDB_STATUS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-END:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_END</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-END:CAPS"></a>GIMP_PDB_END</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-PATH:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_PATH</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-PATH:CAPS"></a>GIMP_PDB_PATH</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-BOUNDARY:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_BOUNDARY</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-BOUNDARY:CAPS"></a>GIMP_PDB_BOUNDARY</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-REGION:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_REGION</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-REGION:CAPS"></a>GIMP_PDB_REGION</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpPDBErrorHandler"></a><h3>enum GimpPDBErrorHandler</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_PDB_ERROR_HANDLER_INTERNAL,
-  GIMP_PDB_ERROR_HANDLER_PLUGIN
-} GimpPDBErrorHandler;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.22.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-PDB-ERROR-HANDLER-INTERNAL:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_ERROR_HANDLER_INTERNAL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-ERROR-HANDLER-INTERNAL:CAPS"></a>GIMP_PDB_ERROR_HANDLER_INTERNAL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-ERROR-HANDLER-PLUGIN:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_ERROR_HANDLER_PLUGIN</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-ERROR-HANDLER-PLUGIN:CAPS"></a>GIMP_PDB_ERROR_HANDLER_PLUGIN</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpPDBProcType"></a><h3>enum GimpPDBProcType</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_INTERNAL,   /*&lt; desc="Internal GIMP procedure" &gt;*/
-  GIMP_PLUGIN,     /*&lt; desc="GIMP Plug-In" &gt;*/
-  GIMP_EXTENSION,  /*&lt; desc="GIMP Extension" &gt;*/
-  GIMP_TEMPORARY   /*&lt; desc="Temporary Procedure" &gt;*/
-} GimpPDBProcType;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.23.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-INTERNAL:CAPS"></a><span class="term"><code class="literal">GIMP_INTERNAL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-INTERNAL:CAPS"></a>GIMP_INTERNAL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PLUGIN:CAPS"></a><span class="term"><code class="literal">GIMP_PLUGIN</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PLUGIN:CAPS"></a>GIMP_PLUGIN</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-EXTENSION:CAPS"></a><span class="term"><code class="literal">GIMP_EXTENSION</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-EXTENSION:CAPS"></a>GIMP_EXTENSION</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-TEMPORARY:CAPS"></a><span class="term"><code class="literal">GIMP_TEMPORARY</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-TEMPORARY:CAPS"></a>GIMP_TEMPORARY</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpPDBStatusType"></a><h3>enum GimpPDBStatusType</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_PDB_EXECUTION_ERROR,
-  GIMP_PDB_CALLING_ERROR,
-  GIMP_PDB_PASS_THROUGH,
-  GIMP_PDB_SUCCESS,
-  GIMP_PDB_CANCEL
-} GimpPDBStatusType;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.24.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-PDB-EXECUTION-ERROR:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_EXECUTION_ERROR</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-EXECUTION-ERROR:CAPS"></a>GIMP_PDB_EXECUTION_ERROR</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-CALLING-ERROR:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_CALLING_ERROR</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-CALLING-ERROR:CAPS"></a>GIMP_PDB_CALLING_ERROR</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-PASS-THROUGH:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_PASS_THROUGH</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-PASS-THROUGH:CAPS"></a>GIMP_PDB_PASS_THROUGH</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-SUCCESS:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_SUCCESS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-SUCCESS:CAPS"></a>GIMP_PDB_SUCCESS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PDB-CANCEL:CAPS"></a><span class="term"><code class="literal">GIMP_PDB_CANCEL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PDB-CANCEL:CAPS"></a>GIMP_PDB_CANCEL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpProgressCommand"></a><h3>enum GimpProgressCommand</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_PROGRESS_COMMAND_START,
-  GIMP_PROGRESS_COMMAND_END,
-  GIMP_PROGRESS_COMMAND_SET_TEXT,
-  GIMP_PROGRESS_COMMAND_SET_VALUE,
-  GIMP_PROGRESS_COMMAND_PULSE,
-  GIMP_PROGRESS_COMMAND_GET_WINDOW
-} GimpProgressCommand;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.25.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-PROGRESS-COMMAND-START:CAPS"></a><span class="term"><code class="literal">GIMP_PROGRESS_COMMAND_START</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PROGRESS-COMMAND-START:CAPS"></a>GIMP_PROGRESS_COMMAND_START</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PROGRESS-COMMAND-END:CAPS"></a><span class="term"><code class="literal">GIMP_PROGRESS_COMMAND_END</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PROGRESS-COMMAND-END:CAPS"></a>GIMP_PROGRESS_COMMAND_END</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PROGRESS-COMMAND-SET-TEXT:CAPS"></a><span class="term"><code class="literal">GIMP_PROGRESS_COMMAND_SET_TEXT</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PROGRESS-COMMAND-SET-TEXT:CAPS"></a>GIMP_PROGRESS_COMMAND_SET_TEXT</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PROGRESS-COMMAND-SET-VALUE:CAPS"></a><span class="term"><code class="literal">GIMP_PROGRESS_COMMAND_SET_VALUE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PROGRESS-COMMAND-SET-VALUE:CAPS"></a>GIMP_PROGRESS_COMMAND_SET_VALUE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PROGRESS-COMMAND-PULSE:CAPS"></a><span class="term"><code class="literal">GIMP_PROGRESS_COMMAND_PULSE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PROGRESS-COMMAND-PULSE:CAPS"></a>GIMP_PROGRESS_COMMAND_PULSE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-PROGRESS-COMMAND-GET-WINDOW:CAPS"></a><span class="term"><code class="literal">GIMP_PROGRESS_COMMAND_GET_WINDOW</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PROGRESS-COMMAND-GET-WINDOW:CAPS"></a>GIMP_PROGRESS_COMMAND_GET_WINDOW</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpRepeatMode"></a><h3>enum GimpRepeatMode</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_REPEAT_NONE,       /*&lt; desc="None"            &gt;*/
-  GIMP_REPEAT_SAWTOOTH,   /*&lt; desc="Sawtooth wave"   &gt;*/
-  GIMP_REPEAT_TRIANGULAR  /*&lt; desc="Triangular wave" &gt;*/
-} GimpRepeatMode;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.26.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-REPEAT-NONE:CAPS"></a><span class="term"><code class="literal">GIMP_REPEAT_NONE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-REPEAT-NONE:CAPS"></a>GIMP_REPEAT_NONE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-REPEAT-SAWTOOTH:CAPS"></a><span class="term"><code class="literal">GIMP_REPEAT_SAWTOOTH</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-REPEAT-SAWTOOTH:CAPS"></a>GIMP_REPEAT_SAWTOOTH</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-REPEAT-TRIANGULAR:CAPS"></a><span class="term"><code class="literal">GIMP_REPEAT_TRIANGULAR</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-REPEAT-TRIANGULAR:CAPS"></a>GIMP_REPEAT_TRIANGULAR</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpRunMode"></a><h3>enum GimpRunMode</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_RUN_INTERACTIVE,     /*&lt; desc="Run interactively"         &gt;*/
-  GIMP_RUN_NONINTERACTIVE,  /*&lt; desc="Run non-interactively"     &gt;*/
-  GIMP_RUN_WITH_LAST_VALS   /*&lt; desc="Run with last used values" &gt;*/
-} GimpRunMode;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.27.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-RUN-INTERACTIVE:CAPS"></a><span class="term"><code class="literal">GIMP_RUN_INTERACTIVE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-RUN-INTERACTIVE:CAPS"></a>GIMP_RUN_INTERACTIVE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-RUN-NONINTERACTIVE:CAPS"></a><span class="term"><code class="literal">GIMP_RUN_NONINTERACTIVE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-RUN-NONINTERACTIVE:CAPS"></a>GIMP_RUN_NONINTERACTIVE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-RUN-WITH-LAST-VALS:CAPS"></a><span class="term"><code class="literal">GIMP_RUN_WITH_LAST_VALS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-RUN-WITH-LAST-VALS:CAPS"></a>GIMP_RUN_WITH_LAST_VALS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpSizeType"></a><h3>enum GimpSizeType</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_PIXELS,  /*&lt; desc="Pixels" &gt;*/
-  GIMP_POINTS   /*&lt; desc="Points" &gt;*/
-} GimpSizeType;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.28.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-PIXELS:CAPS"></a><span class="term"><code class="literal">GIMP_PIXELS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-PIXELS:CAPS"></a>GIMP_PIXELS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-POINTS:CAPS"></a><span class="term"><code class="literal">GIMP_POINTS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-POINTS:CAPS"></a>GIMP_POINTS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpStackTraceMode"></a><h3>enum GimpStackTraceMode</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_STACK_TRACE_NEVER,
-  GIMP_STACK_TRACE_QUERY,
-  GIMP_STACK_TRACE_ALWAYS
-} GimpStackTraceMode;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.29.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-STACK-TRACE-NEVER:CAPS"></a><span class="term"><code class="literal">GIMP_STACK_TRACE_NEVER</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-STACK-TRACE-NEVER:CAPS"></a>GIMP_STACK_TRACE_NEVER</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-STACK-TRACE-QUERY:CAPS"></a><span class="term"><code class="literal">GIMP_STACK_TRACE_QUERY</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-STACK-TRACE-QUERY:CAPS"></a>GIMP_STACK_TRACE_QUERY</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-STACK-TRACE-ALWAYS:CAPS"></a><span class="term"><code class="literal">GIMP_STACK_TRACE_ALWAYS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-STACK-TRACE-ALWAYS:CAPS"></a>GIMP_STACK_TRACE_ALWAYS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpTextDirection"></a><h3>enum GimpTextDirection</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_TEXT_DIRECTION_LTR,   /*&lt; desc="From left to right" &gt;*/
-  GIMP_TEXT_DIRECTION_RTL    /*&lt; desc="From right to left" &gt;*/
-} GimpTextDirection;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.30.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-TEXT-DIRECTION-LTR:CAPS"></a><span class="term"><code class="literal">GIMP_TEXT_DIRECTION_LTR</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-TEXT-DIRECTION-LTR:CAPS"></a>GIMP_TEXT_DIRECTION_LTR</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-TEXT-DIRECTION-RTL:CAPS"></a><span class="term"><code class="literal">GIMP_TEXT_DIRECTION_RTL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-TEXT-DIRECTION-RTL:CAPS"></a>GIMP_TEXT_DIRECTION_RTL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpTextHintStyle"></a><h3>enum GimpTextHintStyle</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_TEXT_HINT_STYLE_NONE,     /*&lt; desc="None"   &gt;*/
-  GIMP_TEXT_HINT_STYLE_SLIGHT,   /*&lt; desc="Slight" &gt;*/
-  GIMP_TEXT_HINT_STYLE_MEDIUM,   /*&lt; desc="Medium" &gt;*/
-  GIMP_TEXT_HINT_STYLE_FULL      /*&lt; desc="Full"   &gt;*/
-} GimpTextHintStyle;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.31.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-TEXT-HINT-STYLE-NONE:CAPS"></a><span class="term"><code class="literal">GIMP_TEXT_HINT_STYLE_NONE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-TEXT-HINT-STYLE-NONE:CAPS"></a>GIMP_TEXT_HINT_STYLE_NONE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-TEXT-HINT-STYLE-SLIGHT:CAPS"></a><span class="term"><code class="literal">GIMP_TEXT_HINT_STYLE_SLIGHT</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-TEXT-HINT-STYLE-SLIGHT:CAPS"></a>GIMP_TEXT_HINT_STYLE_SLIGHT</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-TEXT-HINT-STYLE-MEDIUM:CAPS"></a><span class="term"><code class="literal">GIMP_TEXT_HINT_STYLE_MEDIUM</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-TEXT-HINT-STYLE-MEDIUM:CAPS"></a>GIMP_TEXT_HINT_STYLE_MEDIUM</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-TEXT-HINT-STYLE-FULL:CAPS"></a><span class="term"><code class="literal">GIMP_TEXT_HINT_STYLE_FULL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-TEXT-HINT-STYLE-FULL:CAPS"></a>GIMP_TEXT_HINT_STYLE_FULL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpTextJustification"></a><h3>enum GimpTextJustification</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_TEXT_JUSTIFY_LEFT,    /*&lt; desc="Left justified"  &gt;*/
-  GIMP_TEXT_JUSTIFY_RIGHT,   /*&lt; desc="Right justified" &gt;*/
-  GIMP_TEXT_JUSTIFY_CENTER,  /*&lt; desc="Centered"        &gt;*/
-  GIMP_TEXT_JUSTIFY_FILL     /*&lt; desc="Filled"          &gt;*/
-} GimpTextJustification;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.32.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-TEXT-JUSTIFY-LEFT:CAPS"></a><span class="term"><code class="literal">GIMP_TEXT_JUSTIFY_LEFT</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-TEXT-JUSTIFY-LEFT:CAPS"></a>GIMP_TEXT_JUSTIFY_LEFT</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-TEXT-JUSTIFY-RIGHT:CAPS"></a><span class="term"><code class="literal">GIMP_TEXT_JUSTIFY_RIGHT</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-TEXT-JUSTIFY-RIGHT:CAPS"></a>GIMP_TEXT_JUSTIFY_RIGHT</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-TEXT-JUSTIFY-CENTER:CAPS"></a><span class="term"><code class="literal">GIMP_TEXT_JUSTIFY_CENTER</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-TEXT-JUSTIFY-CENTER:CAPS"></a>GIMP_TEXT_JUSTIFY_CENTER</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-TEXT-JUSTIFY-FILL:CAPS"></a><span class="term"><code class="literal">GIMP_TEXT_JUSTIFY_FILL</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-TEXT-JUSTIFY-FILL:CAPS"></a>GIMP_TEXT_JUSTIFY_FILL</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpTransferMode"></a><h3>enum GimpTransferMode</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_SHADOWS,     /*&lt; desc="Shadows"    &gt;*/
-  GIMP_MIDTONES,    /*&lt; desc="Midtones"   &gt;*/
-  GIMP_HIGHLIGHTS   /*&lt; desc="Highlights" &gt;*/
-} GimpTransferMode;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.33.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-SHADOWS:CAPS"></a><span class="term"><code class="literal">GIMP_SHADOWS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-SHADOWS:CAPS"></a>GIMP_SHADOWS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-MIDTONES:CAPS"></a><span class="term"><code class="literal">GIMP_MIDTONES</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-MIDTONES:CAPS"></a>GIMP_MIDTONES</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-HIGHLIGHTS:CAPS"></a><span class="term"><code class="literal">GIMP_HIGHLIGHTS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-HIGHLIGHTS:CAPS"></a>GIMP_HIGHLIGHTS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpTransformDirection"></a><h3>enum GimpTransformDirection</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_TRANSFORM_FORWARD,   /*&lt; desc="Normal (Forward)" &gt;*/
-  GIMP_TRANSFORM_BACKWARD   /*&lt; desc="Corrective (Backward)" &gt;*/
-} GimpTransformDirection;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.34.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-TRANSFORM-FORWARD:CAPS"></a><span class="term"><code class="literal">GIMP_TRANSFORM_FORWARD</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-TRANSFORM-FORWARD:CAPS"></a>GIMP_TRANSFORM_FORWARD</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-TRANSFORM-BACKWARD:CAPS"></a><span class="term"><code class="literal">GIMP_TRANSFORM_BACKWARD</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-TRANSFORM-BACKWARD:CAPS"></a>GIMP_TRANSFORM_BACKWARD</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpTransformResize"></a><h3>enum GimpTransformResize</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_TRANSFORM_RESIZE_ADJUST           = 0, /*&lt; desc="Adjust" &gt;*/
-  GIMP_TRANSFORM_RESIZE_CLIP             = 1, /*&lt; desc="Clip" &gt;*/
-  GIMP_TRANSFORM_RESIZE_CROP,                 /*&lt; desc="Crop to result" &gt;*/
-  GIMP_TRANSFORM_RESIZE_CROP_WITH_ASPECT      /*&lt; desc="Crop with aspect" &gt;*/
-} GimpTransformResize;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.35.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-TRANSFORM-RESIZE-ADJUST:CAPS"></a><span class="term"><code class="literal">GIMP_TRANSFORM_RESIZE_ADJUST</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-TRANSFORM-RESIZE-ADJUST:CAPS"></a>GIMP_TRANSFORM_RESIZE_ADJUST</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-TRANSFORM-RESIZE-CLIP:CAPS"></a><span class="term"><code class="literal">GIMP_TRANSFORM_RESIZE_CLIP</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-TRANSFORM-RESIZE-CLIP:CAPS"></a>GIMP_TRANSFORM_RESIZE_CLIP</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-TRANSFORM-RESIZE-CROP:CAPS"></a><span class="term"><code class="literal">GIMP_TRANSFORM_RESIZE_CROP</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-TRANSFORM-RESIZE-CROP:CAPS"></a>GIMP_TRANSFORM_RESIZE_CROP</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-TRANSFORM-RESIZE-CROP-WITH-ASPECT:CAPS"></a><span class="term"><code class="literal">GIMP_TRANSFORM_RESIZE_CROP_WITH_ASPECT</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-TRANSFORM-RESIZE-CROP-WITH-ASPECT:CAPS"></a>GIMP_TRANSFORM_RESIZE_CROP_WITH_ASPECT</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpUserDirectory"></a><h3>enum GimpUserDirectory</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_USER_DIRECTORY_DESKTOP,
-  GIMP_USER_DIRECTORY_DOCUMENTS,
-  GIMP_USER_DIRECTORY_DOWNLOAD,
-  GIMP_USER_DIRECTORY_MUSIC,
-  GIMP_USER_DIRECTORY_PICTURES,
-  GIMP_USER_DIRECTORY_PUBLIC_SHARE,
-  GIMP_USER_DIRECTORY_TEMPLATES,
-  GIMP_USER_DIRECTORY_VIDEOS
-} GimpUserDirectory;
-</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Warning</h3>
-<p><code class="literal">GimpUserDirectory</code> is deprecated and should not be used in newly-written code.</p>
-</div>
+<div class="warning"><p><code class="literal">GimpUserDirectory</code> is deprecated and should not be used in newly-written code.</p></div>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.36.5"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-USER-DIRECTORY-DESKTOP:CAPS"></a><span class="term"><code class="literal">GIMP_USER_DIRECTORY_DESKTOP</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-USER-DIRECTORY-DESKTOP:CAPS"></a>GIMP_USER_DIRECTORY_DESKTOP</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-USER-DIRECTORY-DOCUMENTS:CAPS"></a><span class="term"><code class="literal">GIMP_USER_DIRECTORY_DOCUMENTS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-USER-DIRECTORY-DOCUMENTS:CAPS"></a>GIMP_USER_DIRECTORY_DOCUMENTS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-USER-DIRECTORY-DOWNLOAD:CAPS"></a><span class="term"><code class="literal">GIMP_USER_DIRECTORY_DOWNLOAD</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-USER-DIRECTORY-DOWNLOAD:CAPS"></a>GIMP_USER_DIRECTORY_DOWNLOAD</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-USER-DIRECTORY-MUSIC:CAPS"></a><span class="term"><code class="literal">GIMP_USER_DIRECTORY_MUSIC</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-USER-DIRECTORY-MUSIC:CAPS"></a>GIMP_USER_DIRECTORY_MUSIC</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-USER-DIRECTORY-PICTURES:CAPS"></a><span class="term"><code class="literal">GIMP_USER_DIRECTORY_PICTURES</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-USER-DIRECTORY-PICTURES:CAPS"></a>GIMP_USER_DIRECTORY_PICTURES</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-USER-DIRECTORY-PUBLIC-SHARE:CAPS"></a><span class="term"><code class="literal">GIMP_USER_DIRECTORY_PUBLIC_SHARE</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-USER-DIRECTORY-PUBLIC-SHARE:CAPS"></a>GIMP_USER_DIRECTORY_PUBLIC_SHARE</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-USER-DIRECTORY-TEMPLATES:CAPS"></a><span class="term"><code class="literal">GIMP_USER_DIRECTORY_TEMPLATES</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-USER-DIRECTORY-TEMPLATES:CAPS"></a>GIMP_USER_DIRECTORY_TEMPLATES</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-USER-DIRECTORY-VIDEOS:CAPS"></a><span class="term"><code class="literal">GIMP_USER_DIRECTORY_VIDEOS</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-USER-DIRECTORY-VIDEOS:CAPS"></a>GIMP_USER_DIRECTORY_VIDEOS</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
 <a name="GimpVectorsStrokeType"></a><h3>enum GimpVectorsStrokeType</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_VECTORS_STROKE_TYPE_BEZIER
-} GimpVectorsStrokeType;
-</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.2.6.37.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody><tr>
-<td><p><a name="GIMP-VECTORS-STROKE-TYPE-BEZIER:CAPS"></a><span class="term"><code class="literal">GIMP_VECTORS_STROKE_TYPE_BEZIER</code></span></p></td>
-<td>
-</td>
+<td class="enum_member_name"><p><a name="GIMP-VECTORS-STROKE-TYPE-BEZIER:CAPS"></a>GIMP_VECTORS_STROKE_TYPE_BEZIER</p></td>
+<td class="enum_member_description"> </td>
+<td class="enum_member_annotations"> </td>
 </tr></tbody>
 </table></div>
+</div>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.19</div>
+          Generated by GTK-Doc V1.21</div>
 </body>
 </html>

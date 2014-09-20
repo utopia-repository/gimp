@@ -2,38 +2,30 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GimpColorArea</title>
+<title>GIMP Widgets Library Reference Manual: GimpColorArea</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="GimpChainButton.html" title="GimpChainButton">
 <link rel="next" href="GimpColorButton.html" title="GimpColorButton">
-<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
-<td><a accesskey="p" href="GimpChainButton.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
-<td><a accesskey="n" href="GimpColorButton.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts">
-<a href="#GimpColorArea.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#GimpColorArea.description" class="shortcut">Description</a>
-                   | 
-                  <a href="#GimpColorArea.object-hierarchy" class="shortcut">Object Hierarchy</a>
-                   | 
-                  <a href="#GimpColorArea.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
-                   | 
-                  <a href="#GimpColorArea.properties" class="shortcut">Properties</a>
-                   | 
-                  <a href="#GimpColorArea.signals" class="shortcut">Signals</a>
-</td></tr>
-</table>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#GimpColorArea.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#GimpColorArea.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_interfaces">  <span class="dim">|</span> 
+                  <a href="#GimpColorArea.implemented-interfaces" class="shortcut">Implemented Interfaces</a></span><span id="nav_properties">  <span class="dim">|</span> 
+                  <a href="#GimpColorArea.properties" class="shortcut">Properties</a></span><span id="nav_signals">  <span class="dim">|</span> 
+                  <a href="#GimpColorArea.signals" class="shortcut">Signals</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="GimpChainButton.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="GimpColorButton.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
 <div class="refentry">
 <a name="GimpColorArea"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
@@ -42,35 +34,142 @@
 <p>GimpColorArea — Displays a <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> color, optionally with
                     alpha-channel.</p>
 </td>
-<td valign="top" align="right"><img src="gimp-color-area.png"></td>
+<td class="gallery_image" valign="top" align="right"><img src="gimp-color-area.png"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
-<a name="GimpColorArea.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">                    <a class="link" href="GimpColorArea.html#GimpColorArea-struct" title="GimpColorArea">GimpColorArea</a>;
-enum                <a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType">GimpColorAreaType</a>;
-<span class="returnvalue">GtkWidget</span> *         <a class="link" href="GimpColorArea.html#gimp-color-area-new" title="gimp_color_area_new ()">gimp_color_area_new</a>                 (<em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a> type</code></em>,
-                                                         <em class="parameter"><code><span class="type">GdkModifierType</span> drag_mask</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="GimpColorArea.html#gimp-color-area-set-color" title="gimp_color_area_set_color ()">gimp_color_area_set_color</a>           (<em class="parameter"><code><a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="GimpColorArea.html#gimp-color-area-get-color" title="gimp_color_area_get_color ()">gimp_color_area_get_color</a>           (<em class="parameter"><code><a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="GimpColorArea.html#gimp-color-area-has-alpha" title="gimp_color_area_has_alpha ()">gimp_color_area_has_alpha</a>           (<em class="parameter"><code><a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> *area</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="GimpColorArea.html#gimp-color-area-set-type" title="gimp_color_area_set_type ()">gimp_color_area_set_type</a>            (<em class="parameter"><code><a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a> type</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="GimpColorArea.html#gimp-color-area-set-draw-border" title="gimp_color_area_set_draw_border ()">gimp_color_area_set_draw_border</a>     (<em class="parameter"><code><a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><span class="type">gboolean</span> draw_border</code></em>);
-</pre>
+<div class="refsect1">
+<a name="GimpColorArea.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<span class="returnvalue">GtkWidget</span> *
+</td>
+<td class="function_name">
+<a class="link" href="GimpColorArea.html#gimp-color-area-new" title="gimp_color_area_new ()">gimp_color_area_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GimpColorArea.html#gimp-color-area-set-color" title="gimp_color_area_set_color ()">gimp_color_area_set_color</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GimpColorArea.html#gimp-color-area-get-color" title="gimp_color_area_get_color ()">gimp_color_area_get_color</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="GimpColorArea.html#gimp-color-area-has-alpha" title="gimp_color_area_has_alpha ()">gimp_color_area_has_alpha</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GimpColorArea.html#gimp-color-area-set-type" title="gimp_color_area_set_type ()">gimp_color_area_set_type</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GimpColorArea.html#gimp-color-area-set-draw-border" title="gimp_color_area_set_draw_border ()">gimp_color_area_set_draw_border</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="GimpColorArea.properties"></a><h2>Properties</h2>
+<div class="informaltable"><table border="0">
+<colgroup>
+<col width="150px" class="properties_type">
+<col width="300px" class="properties_name">
+<col width="200px" class="properties_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="property_type">
+<a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *</td>
+<td class="property_name"><a class="link" href="GimpColorArea.html#GimpColorArea--color" title="The “color” property">color</a></td>
+<td class="property_flags">Read / Write / Construct</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">GdkModifierType</span></td>
+<td class="property_name"><a class="link" href="GimpColorArea.html#GimpColorArea--drag-mask" title="The “drag-mask” property">drag-mask</a></td>
+<td class="property_flags">Write / Construct Only</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="GimpColorArea.html#GimpColorArea--draw-border" title="The “draw-border” property">draw-border</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a></td>
+<td class="property_name"><a class="link" href="GimpColorArea.html#GimpColorArea--type" title="The “type” property">type</a></td>
+<td class="property_flags">Read / Write / Construct</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="GimpColorArea.signals"></a><h2>Signals</h2>
+<div class="informaltable"><table border="0">
+<colgroup>
+<col width="150px" class="signals_return">
+<col width="300px" class="signals_name">
+<col width="200px" class="signals_flags">
+</colgroup>
+<tbody><tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="GimpColorArea.html#GimpColorArea-color-changed" title="The “color-changed” signal">color-changed</a></td>
+<td class="signal_flags">Run First</td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="GimpColorArea.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="GimpColorArea.html#GimpColorArea-struct" title="GimpColorArea">GimpColorArea</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType">GimpColorAreaType</a></td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <div class="refsect1">
 <a name="GimpColorArea.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="synopsis">
-  GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkWidget
-                     +----GtkDrawingArea
-                           +----GimpColorArea
+<pre class="screen">    GObject
+    <span class="lineart">╰──</span> GInitiallyUnowned
+        <span class="lineart">╰──</span> GtkObject
+            <span class="lineart">╰──</span> GtkWidget
+                <span class="lineart">╰──</span> GtkDrawingArea
+                    <span class="lineart">╰──</span> GimpColorArea
 </pre>
 </div>
 <div class="refsect1">
@@ -80,28 +179,216 @@ GimpColorArea implements
  AtkImplementorIface and  GtkBuildable.</p>
 </div>
 <div class="refsect1">
-<a name="GimpColorArea.properties"></a><h2>Properties</h2>
-<pre class="synopsis">
-  "<a class="link" href="GimpColorArea.html#GimpColorArea--color" title='The "color" property'>color</a>"                    <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a>*              : Read / Write / Construct
-  "<a class="link" href="GimpColorArea.html#GimpColorArea--drag-mask" title='The "drag-mask" property'>drag-mask</a>"                <span class="type">GdkModifierType</span>       : Write / Construct Only
-  "<a class="link" href="GimpColorArea.html#GimpColorArea--draw-border" title='The "draw-border" property'>draw-border</a>"              <span class="type">gboolean</span>              : Read / Write
-  "<a class="link" href="GimpColorArea.html#GimpColorArea--type" title='The "type" property'>type</a>"                     <a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a>     : Read / Write / Construct
-</pre>
-</div>
-<div class="refsect1">
-<a name="GimpColorArea.signals"></a><h2>Signals</h2>
-<pre class="synopsis">
-  "<a class="link" href="GimpColorArea.html#GimpColorArea-color-changed" title='The "color-changed" signal'>color-changed</a>"                                  : <code class="literal">Run First</code>
-</pre>
-</div>
-<div class="refsect1">
 <a name="GimpColorArea.description"></a><h2>Description</h2>
-<p>
-Displays a <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> color, optionally with alpha-channel.
-</p>
+<p>Displays a <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> color, optionally with alpha-channel.</p>
 </div>
 <div class="refsect1">
-<a name="GimpColorArea.details"></a><h2>Details</h2>
+<a name="GimpColorArea.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="gimp-color-area-new"></a><h3>gimp_color_area_new ()</h3>
+<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *
+gimp_color_area_new (<em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>,
+                     <em class="parameter"><code><a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a> type</code></em>,
+                     <em class="parameter"><code><span class="type">GdkModifierType</span> drag_mask</code></em>);</pre>
+<p>Creates a new <a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> widget.</p>
+<p>This returns a preview area showing the color. It handles color
+DND. If the color changes, the "color_changed" signal is emitted.</p>
+<div class="refsect3">
+<a name="id-1.2.7.10.2.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>color</p></td>
+<td class="parameter_description"><p>A pointer to a <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>type</p></td>
+<td class="parameter_description"><p>The type of color area to create.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>drag_mask</p></td>
+<td class="parameter_description"><p>The event_mask that should trigger drags.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.7.10.2.7"></a><h4>Returns</h4>
+<p> Pointer to the new <a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> widget.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-color-area-set-color"></a><h3>gimp_color_area_set_color ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gimp_color_area_set_color (<em class="parameter"><code><a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> *area</code></em>,
+                           <em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
+<p>Sets <em class="parameter"><code>area</code></em>
+ to a different <em class="parameter"><code>color</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.2.7.10.3.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>area</p></td>
+<td class="parameter_description"><p>Pointer to a <a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>color</p></td>
+<td class="parameter_description"><p>Pointer to a <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct that defines the new color.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-color-area-get-color"></a><h3>gimp_color_area_get_color ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gimp_color_area_get_color (<em class="parameter"><code><a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> *area</code></em>,
+                           <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
+<p>Retrieves the current color of the <em class="parameter"><code>area</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.2.7.10.4.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>area</p></td>
+<td class="parameter_description"><p>Pointer to a <a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>color</p></td>
+<td class="parameter_description"><p>Pointer to a <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct that is used to return the color.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-color-area-has-alpha"></a><h3>gimp_color_area_has_alpha ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+gimp_color_area_has_alpha (<em class="parameter"><code><a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> *area</code></em>);</pre>
+<p>Checks whether the <em class="parameter"><code>area</code></em>
+ shows transparency information. This is determined
+via the <em class="parameter"><code>area</code></em>
+'s <a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a>.</p>
+<div class="refsect3">
+<a name="id-1.2.7.10.5.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>area</p></td>
+<td class="parameter_description"><p>Pointer to a <a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.7.10.5.6"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> if <em class="parameter"><code>area</code></em>
+shows transparency information, <code class="literal">FALSE</code> otherwise.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-color-area-set-type"></a><h3>gimp_color_area_set_type ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gimp_color_area_set_type (<em class="parameter"><code><a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> *area</code></em>,
+                          <em class="parameter"><code><a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a> type</code></em>);</pre>
+<p>Allows to change the type of <em class="parameter"><code>area</code></em>
+. The <a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a> determines
+whether the widget shows transparency information and chooses the size of
+the checkerboard used to do that.</p>
+<div class="refsect3">
+<a name="id-1.2.7.10.6.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>area</p></td>
+<td class="parameter_description"><p>Pointer to a <a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>type</p></td>
+<td class="parameter_description"><p>A <a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-color-area-set-draw-border"></a><h3>gimp_color_area_set_draw_border ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gimp_color_area_set_draw_border (<em class="parameter"><code><a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> *area</code></em>,
+                                 <em class="parameter"><code><span class="type">gboolean</span> draw_border</code></em>);</pre>
+<p>The <em class="parameter"><code>area</code></em>
+ can draw a thin border in the foreground color around
+itself.  This function allows to toggle this behaviour on and
+off. The default is not draw a border.</p>
+<div class="refsect3">
+<a name="id-1.2.7.10.7.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>area</p></td>
+<td class="parameter_description"><p>Pointer to a <a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>draw_border</p></td>
+<td class="parameter_description"><p>whether to draw a border or not</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="GimpColorArea.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
 <a name="GimpColorArea-struct"></a><h3>GimpColorArea</h3>
 <pre class="programlisting">typedef struct _GimpColorArea GimpColorArea;</pre>
@@ -111,241 +398,73 @@ Displays a <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-Gim
 <hr>
 <div class="refsect2">
 <a name="GimpColorAreaType"></a><h3>enum GimpColorAreaType</h3>
-<pre class="programlisting">typedef enum {
-  GIMP_COLOR_AREA_FLAT = 0,
-  GIMP_COLOR_AREA_SMALL_CHECKS,
-  GIMP_COLOR_AREA_LARGE_CHECKS
-} GimpColorAreaType;
-</pre>
-<p>
-The types of transparency display for <a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a>.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<p>The types of transparency display for <a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a>.</p>
+<div class="refsect3">
+<a name="id-1.2.7.11.3.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="GIMP-COLOR-AREA-FLAT:CAPS"></a><span class="term"><code class="literal">GIMP_COLOR_AREA_FLAT</code></span></p></td>
-<td>don't display transparency
+<td class="enum_member_name"><p><a name="GIMP-COLOR-AREA-FLAT:CAPS"></a>GIMP_COLOR_AREA_FLAT</p></td>
+<td class="enum_member_description">
+<p>don't display transparency</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-COLOR-AREA-SMALL-CHECKS:CAPS"></a><span class="term"><code class="literal">GIMP_COLOR_AREA_SMALL_CHECKS</code></span></p></td>
-<td>display transparency using small checks
+<td class="enum_member_name"><p><a name="GIMP-COLOR-AREA-SMALL-CHECKS:CAPS"></a>GIMP_COLOR_AREA_SMALL_CHECKS</p></td>
+<td class="enum_member_description">
+<p>display transparency using small checks</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="GIMP-COLOR-AREA-LARGE-CHECKS:CAPS"></a><span class="term"><code class="literal">GIMP_COLOR_AREA_LARGE_CHECKS</code></span></p></td>
-<td>display transparency using large checks
+<td class="enum_member_name"><p><a name="GIMP-COLOR-AREA-LARGE-CHECKS:CAPS"></a>GIMP_COLOR_AREA_LARGE_CHECKS</p></td>
+<td class="enum_member_description">
+<p>display transparency using large checks</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
-<hr>
-<div class="refsect2">
-<a name="gimp-color-area-new"></a><h3>gimp_color_area_new ()</h3>
-<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *         gimp_color_area_new                 (<em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a> type</code></em>,
-                                                         <em class="parameter"><code><span class="type">GdkModifierType</span> drag_mask</code></em>);</pre>
-<p>
-Creates a new <a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> widget.
-</p>
-<p>
-This returns a preview area showing the color. It handles color
-DND. If the color changes, the "color_changed" signal is emitted.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
-<td>A pointer to a <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
-<td>The type of color area to create.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>drag_mask</code></em> :</span></p></td>
-<td>The event_mask that should trigger drags.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>Pointer to the new <a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> widget.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gimp-color-area-set-color"></a><h3>gimp_color_area_set_color ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                gimp_color_area_set_color           (<em class="parameter"><code><a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
-<p>
-Sets <em class="parameter"><code>area</code></em> to a different <em class="parameter"><code>color</code></em>.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>area</code></em> :</span></p></td>
-<td>Pointer to a <a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
-<td>Pointer to a <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct that defines the new color.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gimp-color-area-get-color"></a><h3>gimp_color_area_get_color ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                gimp_color_area_get_color           (<em class="parameter"><code><a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
-<p>
-Retrieves the current color of the <em class="parameter"><code>area</code></em>.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>area</code></em> :</span></p></td>
-<td>Pointer to a <a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
-<td>Pointer to a <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct that is used to return the color.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gimp-color-area-has-alpha"></a><h3>gimp_color_area_has_alpha ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_color_area_has_alpha           (<em class="parameter"><code><a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> *area</code></em>);</pre>
-<p>
-Checks whether the <em class="parameter"><code>area</code></em> shows transparency information. This is determined
-via the <em class="parameter"><code>area</code></em>'s <a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a>.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>area</code></em> :</span></p></td>
-<td>Pointer to a <a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-<code class="literal">TRUE</code> if <em class="parameter"><code>area</code></em> shows transparency information, <code class="literal">FALSE</code> otherwise.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gimp-color-area-set-type"></a><h3>gimp_color_area_set_type ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                gimp_color_area_set_type            (<em class="parameter"><code><a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a> type</code></em>);</pre>
-<p>
-Allows to change the type of <em class="parameter"><code>area</code></em>. The <a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a> determines
-whether the widget shows transparency information and chooses the size of
-the checkerboard used to do that.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>area</code></em> :</span></p></td>
-<td>Pointer to a <a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
-<td>A <a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a>.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gimp-color-area-set-draw-border"></a><h3>gimp_color_area_set_draw_border ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                gimp_color_area_set_draw_border     (<em class="parameter"><code><a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><span class="type">gboolean</span> draw_border</code></em>);</pre>
-<p>
-The <em class="parameter"><code>area</code></em> can draw a thin border in the foreground color around
-itself.  This function allows to toggle this behaviour on and
-off. The default is not draw a border.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>area</code></em> :</span></p></td>
-<td>Pointer to a <a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>draw_border</code></em> :</span></p></td>
-<td>whether to draw a border or not</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 </div>
 <div class="refsect1">
 <a name="GimpColorArea.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
-<a name="GimpColorArea--color"></a><h3>The <code class="literal">"color"</code> property</h3>
-<pre class="programlisting">  "color"                    <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a>*              : Read / Write / Construct</pre>
-<p>
-The color displayed in the color area.
-</p>
+<a name="GimpColorArea--color"></a><h3>The <code class="literal">“color”</code> property</h3>
+<pre class="programlisting">  “color”                    <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *</pre>
+<p>The color displayed in the color area.</p>
+<p>Flags: Read / Write / Construct</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="GimpColorArea--drag-mask"></a><h3>The <code class="literal">"drag-mask"</code> property</h3>
-<pre class="programlisting">  "drag-mask"                <span class="type">GdkModifierType</span>       : Write / Construct Only</pre>
+<a name="GimpColorArea--drag-mask"></a><h3>The <code class="literal">“drag-mask”</code> property</h3>
+<pre class="programlisting">  “drag-mask”                <span class="type">GdkModifierType</span></pre>
 <p></p>
+<p>Flags: Write / Construct Only</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="GimpColorArea--draw-border"></a><h3>The <code class="literal">"draw-border"</code> property</h3>
-<pre class="programlisting">  "draw-border"              <span class="type">gboolean</span>              : Read / Write</pre>
-<p>
-Whether to draw a thin border in the foreground color around the area.
-</p>
+<a name="GimpColorArea--draw-border"></a><h3>The <code class="literal">“draw-border”</code> property</h3>
+<pre class="programlisting">  “draw-border”              <span class="type">gboolean</span></pre>
+<p>Whether to draw a thin border in the foreground color around the area.</p>
+<p>Flags: Read / Write</p>
 <p>Default value: FALSE</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="GimpColorArea--type"></a><h3>The <code class="literal">"type"</code> property</h3>
-<pre class="programlisting">  "type"                     <a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a>     : Read / Write / Construct</pre>
-<p>
-The type of the color area.
-</p>
+<a name="GimpColorArea--type"></a><h3>The <code class="literal">“type”</code> property</h3>
+<pre class="programlisting">  “type”                     <a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a></pre>
+<p>The type of the color area.</p>
+<p>Flags: Read / Write / Construct</p>
 <p>Default value: GIMP_COLOR_AREA_FLAT</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
@@ -353,32 +472,40 @@ The type of the color area.
 <div class="refsect1">
 <a name="GimpColorArea.signal-details"></a><h2>Signal Details</h2>
 <div class="refsect2">
-<a name="GimpColorArea-color-changed"></a><h3>The <code class="literal">"color-changed"</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> *gimpcolorarea,
-                                                        <span class="type">gpointer</span>       user_data)          : <code class="literal">Run First</code></pre>
+<a name="GimpColorArea-color-changed"></a><h3>The <code class="literal">“color-changed”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> *gimpcolorarea,
+               <span class="type">gpointer</span>       user_data)</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0" class="variablelist">
+<div class="refsect3">
+<a name="id-1.2.7.13.2.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>gimpcolorarea</code></em> :</span></p></td>
-<td>the object which received the signal.</td>
+<td class="parameter_name"><p>gimpcolorarea</p></td>
+<td class="parameter_description"><p>the object which received the signal.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
-<td>user data set when the signal handler was connected.</td>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
+<p>Flags: Run First</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.19</div>
+          Generated by GTK-Doc V1.21</div>
 </body>
 </html>

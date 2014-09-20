@@ -2,30 +2,26 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GimpConfig-params</title>
+<title>GIMP Config Library Reference Manual: GimpConfig-params</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Config Library Reference Manual">
 <link rel="up" href="libgimpconfig.html" title="Part I. GIMP Config Library">
 <link rel="prev" href="libgimpconfig-GimpConfigError.html" title="GimpConfig-error">
 <link rel="next" href="libgimpconfig-GimpConfig-path.html" title="GimpConfig-path">
-<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
-<td><a accesskey="p" href="libgimpconfig-GimpConfigError.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="libgimpconfig.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GIMP Config Library Reference Manual</th>
-<td><a accesskey="n" href="libgimpconfig-GimpConfig-path.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts">
-<a href="#libgimpconfig-GimpConfig-params.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimpconfig-GimpConfig-params.description" class="shortcut">Description</a>
-</td></tr>
-</table>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#libgimpconfig-GimpConfig-params.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="libgimpconfig.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="libgimpconfig-GimpConfigError.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="libgimpconfig-GimpConfig-path.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
 <div class="refentry">
 <a name="libgimpconfig-GimpConfig-params"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
@@ -33,129 +29,143 @@
 <h2><span class="refentrytitle"><a name="libgimpconfig-GimpConfig-params.top_of_page"></a>GimpConfig-params</span></h2>
 <p>GimpConfig-params — Macros and defines to install config properties.</p>
 </td>
-<td valign="top" align="right"></td>
+<td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
-<a name="libgimpconfig-GimpConfig-params.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-SERIALIZE:CAPS" title="GIMP_CONFIG_PARAM_SERIALIZE">GIMP_CONFIG_PARAM_SERIALIZE</a>
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-AGGREGATE:CAPS" title="GIMP_CONFIG_PARAM_AGGREGATE">GIMP_CONFIG_PARAM_AGGREGATE</a>
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-RESTART:CAPS" title="GIMP_CONFIG_PARAM_RESTART">GIMP_CONFIG_PARAM_RESTART</a>
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-CONFIRM:CAPS" title="GIMP_CONFIG_PARAM_CONFIRM">GIMP_CONFIG_PARAM_CONFIRM</a>
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-DEFAULTS:CAPS" title="GIMP_CONFIG_PARAM_DEFAULTS">GIMP_CONFIG_PARAM_DEFAULTS</a>
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-IGNORE:CAPS" title="GIMP_CONFIG_PARAM_IGNORE">GIMP_CONFIG_PARAM_IGNORE</a>
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-FLAGS:CAPS" title="GIMP_CONFIG_PARAM_FLAGS">GIMP_CONFIG_PARAM_FLAGS</a>
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-BOOLEAN:CAPS" title="GIMP_CONFIG_INSTALL_PROP_BOOLEAN()">GIMP_CONFIG_INSTALL_PROP_BOOLEAN</a>    (class,
-                                                         id,
-                                                         name,
-                                                         blurb,
-                                                         default,
-                                                         flags)
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-BOXED:CAPS" title="GIMP_CONFIG_INSTALL_PROP_BOXED()">GIMP_CONFIG_INSTALL_PROP_BOXED</a>      (class,
-                                                         id,
-                                                         name,
-                                                         blurb,
-                                                         boxed_type,
-                                                         flags)
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-RGB:CAPS" title="GIMP_CONFIG_INSTALL_PROP_RGB()">GIMP_CONFIG_INSTALL_PROP_RGB</a>        (class,
-                                                         id,
-                                                         name,
-                                                         blurb,
-                                                         has_alpha,
-                                                         default,
-                                                         flags)
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-DOUBLE:CAPS" title="GIMP_CONFIG_INSTALL_PROP_DOUBLE()">GIMP_CONFIG_INSTALL_PROP_DOUBLE</a>     (class,
-                                                         id,
-                                                         name,
-                                                         blurb,
-                                                         min,
-                                                         max,
-                                                         default,
-                                                         flags)
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-RESOLUTION:CAPS" title="GIMP_CONFIG_INSTALL_PROP_RESOLUTION()">GIMP_CONFIG_INSTALL_PROP_RESOLUTION</a> (class,
-                                                         id,
-                                                         name,
-                                                         blurb,
-                                                         default,
-                                                         flags)
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-ENUM:CAPS" title="GIMP_CONFIG_INSTALL_PROP_ENUM()">GIMP_CONFIG_INSTALL_PROP_ENUM</a>       (class,
-                                                         id,
-                                                         name,
-                                                         blurb,
-                                                         enum_type,
-                                                         default,
-                                                         flags)
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-INT:CAPS" title="GIMP_CONFIG_INSTALL_PROP_INT()">GIMP_CONFIG_INSTALL_PROP_INT</a>        (class,
-                                                         id,
-                                                         name,
-                                                         blurb,
-                                                         min,
-                                                         max,
-                                                         default,
-                                                         flags)
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-MATRIX2:CAPS" title="GIMP_CONFIG_INSTALL_PROP_MATRIX2()">GIMP_CONFIG_INSTALL_PROP_MATRIX2</a>    (class,
-                                                         id,
-                                                         name,
-                                                         blurb,
-                                                         default,
-                                                         flags)
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-MEMSIZE:CAPS" title="GIMP_CONFIG_INSTALL_PROP_MEMSIZE()">GIMP_CONFIG_INSTALL_PROP_MEMSIZE</a>    (class,
-                                                         id,
-                                                         name,
-                                                         blurb,
-                                                         min,
-                                                         max,
-                                                         default,
-                                                         flags)
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-PATH:CAPS" title="GIMP_CONFIG_INSTALL_PROP_PATH()">GIMP_CONFIG_INSTALL_PROP_PATH</a>       (class,
-                                                         id,
-                                                         name,
-                                                         blurb,
-                                                         path_type,
-                                                         default,
-                                                         flags)
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-STRING:CAPS" title="GIMP_CONFIG_INSTALL_PROP_STRING()">GIMP_CONFIG_INSTALL_PROP_STRING</a>     (class,
-                                                         id,
-                                                         name,
-                                                         blurb,
-                                                         default,
-                                                         flags)
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-UINT:CAPS" title="GIMP_CONFIG_INSTALL_PROP_UINT()">GIMP_CONFIG_INSTALL_PROP_UINT</a>       (class,
-                                                         id,
-                                                         name,
-                                                         blurb,
-                                                         min,
-                                                         max,
-                                                         default,
-                                                         flags)
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-UNIT:CAPS" title="GIMP_CONFIG_INSTALL_PROP_UNIT()">GIMP_CONFIG_INSTALL_PROP_UNIT</a>       (class,
-                                                         id,
-                                                         name,
-                                                         blurb,
-                                                         pixels,
-                                                         percent,
-                                                         default,
-                                                         flags)
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-OBJECT:CAPS" title="GIMP_CONFIG_INSTALL_PROP_OBJECT()">GIMP_CONFIG_INSTALL_PROP_OBJECT</a>     (class,
-                                                         id,
-                                                         name,
-                                                         blurb,
-                                                         object_type,
-                                                         flags)
-#define             <a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-POINTER:CAPS" title="GIMP_CONFIG_INSTALL_PROP_POINTER()">GIMP_CONFIG_INSTALL_PROP_POINTER</a>    (class,
-                                                         id,
-                                                         name,
-                                                         blurb,
-                                                         flags)
-</pre>
+<div class="refsect1">
+<a name="libgimpconfig-GimpConfig-params.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-SERIALIZE:CAPS" title="GIMP_CONFIG_PARAM_SERIALIZE">GIMP_CONFIG_PARAM_SERIALIZE</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-AGGREGATE:CAPS" title="GIMP_CONFIG_PARAM_AGGREGATE">GIMP_CONFIG_PARAM_AGGREGATE</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-RESTART:CAPS" title="GIMP_CONFIG_PARAM_RESTART">GIMP_CONFIG_PARAM_RESTART</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-CONFIRM:CAPS" title="GIMP_CONFIG_PARAM_CONFIRM">GIMP_CONFIG_PARAM_CONFIRM</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-DEFAULTS:CAPS" title="GIMP_CONFIG_PARAM_DEFAULTS">GIMP_CONFIG_PARAM_DEFAULTS</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-IGNORE:CAPS" title="GIMP_CONFIG_PARAM_IGNORE">GIMP_CONFIG_PARAM_IGNORE</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-FLAGS:CAPS" title="GIMP_CONFIG_PARAM_FLAGS">GIMP_CONFIG_PARAM_FLAGS</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-BOOLEAN:CAPS" title="GIMP_CONFIG_INSTALL_PROP_BOOLEAN()">GIMP_CONFIG_INSTALL_PROP_BOOLEAN</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-BOXED:CAPS" title="GIMP_CONFIG_INSTALL_PROP_BOXED()">GIMP_CONFIG_INSTALL_PROP_BOXED</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-RGB:CAPS" title="GIMP_CONFIG_INSTALL_PROP_RGB()">GIMP_CONFIG_INSTALL_PROP_RGB</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-DOUBLE:CAPS" title="GIMP_CONFIG_INSTALL_PROP_DOUBLE()">GIMP_CONFIG_INSTALL_PROP_DOUBLE</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-RESOLUTION:CAPS" title="GIMP_CONFIG_INSTALL_PROP_RESOLUTION()">GIMP_CONFIG_INSTALL_PROP_RESOLUTION</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-ENUM:CAPS" title="GIMP_CONFIG_INSTALL_PROP_ENUM()">GIMP_CONFIG_INSTALL_PROP_ENUM</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-INT:CAPS" title="GIMP_CONFIG_INSTALL_PROP_INT()">GIMP_CONFIG_INSTALL_PROP_INT</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-MATRIX2:CAPS" title="GIMP_CONFIG_INSTALL_PROP_MATRIX2()">GIMP_CONFIG_INSTALL_PROP_MATRIX2</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-MEMSIZE:CAPS" title="GIMP_CONFIG_INSTALL_PROP_MEMSIZE()">GIMP_CONFIG_INSTALL_PROP_MEMSIZE</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-PATH:CAPS" title="GIMP_CONFIG_INSTALL_PROP_PATH()">GIMP_CONFIG_INSTALL_PROP_PATH</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-STRING:CAPS" title="GIMP_CONFIG_INSTALL_PROP_STRING()">GIMP_CONFIG_INSTALL_PROP_STRING</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-UINT:CAPS" title="GIMP_CONFIG_INSTALL_PROP_UINT()">GIMP_CONFIG_INSTALL_PROP_UINT</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-UNIT:CAPS" title="GIMP_CONFIG_INSTALL_PROP_UNIT()">GIMP_CONFIG_INSTALL_PROP_UNIT</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-OBJECT:CAPS" title="GIMP_CONFIG_INSTALL_PROP_OBJECT()">GIMP_CONFIG_INSTALL_PROP_OBJECT</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-POINTER:CAPS" title="GIMP_CONFIG_INSTALL_PROP_POINTER()">GIMP_CONFIG_INSTALL_PROP_POINTER</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <div class="refsect1">
 <a name="libgimpconfig-GimpConfig-params.description"></a><h2>Description</h2>
-<p>
-Macros and defines to install config properties.
-</p>
+<p>Macros and defines to install config properties.</p>
 </div>
 <div class="refsect1">
-<a name="libgimpconfig-GimpConfig-params.details"></a><h2>Details</h2>
+<a name="libgimpconfig-GimpConfig-params.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="GIMP-CONFIG-PARAM-SERIALIZE:CAPS"></a><h3>GIMP_CONFIG_PARAM_SERIALIZE</h3>
 <pre class="programlisting">#define GIMP_CONFIG_PARAM_SERIALIZE    (1 &lt;&lt; (0 + G_PARAM_USER_SHIFT))
@@ -316,9 +326,12 @@ Macros and defines to install config properties.
 </p>
 </div>
 </div>
+<div class="refsect1">
+<a name="libgimpconfig-GimpConfig-params.other_details"></a><h2>Types and Values</h2>
+</div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.19</div>
+          Generated by GTK-Doc V1.21</div>
 </body>
 </html>

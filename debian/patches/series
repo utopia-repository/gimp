@@ -1,4 +1,2 @@
 disable-internal-help-browser
 01_hurd_ftbfs.patch
-adjust_freetype_header.patch
-CVE-2013-1913_and_CVE-2013-1978.patch

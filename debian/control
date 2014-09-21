@@ -3,7 +3,7 @@ Priority: optional
 Section: graphics
 Maintainer: Ari Pollak <ari@debian.org>
 Uploaders: Jordi Mallach <jordi@debian.org>
-Standards-Version: 3.9.3
+Standards-Version: 3.9.6
 Build-Depends: debhelper (>= 8),
                cdbs (>= 0.4.97),
                autotools-dev,

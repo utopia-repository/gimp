@@ -1,10 +1,10 @@
-gimp (2.8.14-1~1.gbp993ecc) UNRELEASED; urgency=medium
-
-  ** SNAPSHOT build @993ecccfd6cf2a8d740962bae75b532357cb6499 **
+gimp (2.8.14-1) unstable; urgency=medium
 
   * Imported Upstream version 2.8.14
+    * Fixes segfault when removing tag from palette (Closes: #736625)
+  * Bump standards version to 3.9.6
 
- -- Ari Pollak <ari@debian.org>  Sat, 20 Sep 2014 13:17:29 -0400
+ -- Ari Pollak <ari@debian.org>  Sat, 20 Sep 2014 21:10:52 -0400
 
 gimp (2.8.10-3) unstable; urgency=low
 

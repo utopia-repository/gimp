@@ -1,4 +1,4 @@
-gimp (2.8.14-1.1) UNRELEASED; urgency=medium
+gimp (2.8.14-1.1) experimental; urgency=medium
 
   * Non-maintainer upload.
 
@@ -8,7 +8,7 @@ gimp (2.8.14-1.1) UNRELEASED; urgency=medium
   [ Matteo F. Vescovi ]
   * debian/: fix build-dependency against GEGL 0.3.0 (Closes: #790421)
 
- -- Matteo F. Vescovi <mfv@debian.org>  Mon, 28 Sep 2015 14:21:31 +0200
+ -- Matteo F. Vescovi <mfv@debian.org>  Mon, 28 Sep 2015 14:22:59 +0200
 
 gimp (2.8.14-1) unstable; urgency=medium
 

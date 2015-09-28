@@ -1,3 +1,15 @@
+gimp (2.8.14-1.1) UNRELEASED; urgency=medium
+
+  * Non-maintainer upload.
+
+  [ Ari Pollak ]
+  * Install appstream appdata (Closes: #785661)
+
+  [ Matteo F. Vescovi ]
+  * debian/: fix build-dependency against GEGL 0.3.0 (Closes: #790421)
+
+ -- Matteo F. Vescovi <mfv@debian.org>  Mon, 28 Sep 2015 14:21:31 +0200
+
 gimp (2.8.14-1) unstable; urgency=medium
 
   * Imported Upstream version 2.8.14

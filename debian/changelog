@@ -1,3 +1,10 @@
+gimp (2.8.14-1.2) UNRELEASED; urgency=medium
+
+  * Non-maintainer upload.
+  * Upload to unstable.
+
+ -- Matteo F. Vescovi <mfv@debian.org>  Mon, 05 Oct 2015 17:25:38 +0200
+
 gimp (2.8.14-1.1) experimental; urgency=medium
 
   * Non-maintainer upload.

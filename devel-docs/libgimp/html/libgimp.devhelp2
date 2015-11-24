@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
 <book xmlns="http://www.devhelp.net/book" title="GIMP Library Reference Manual" link="index.html" author="" name="libgimp" version="2" language="c">
   <chapters>
     <sub name="GIMP Library" link="libgimp.html">
@@ -61,10 +60,10 @@
       </sub>
       <sub name="Controlling the Core's Selection Dialogs" link="libgimp-selectors.html">
         <sub name="GimpSelectButton" link="GimpSelectButton.html"/>
-        <sub name="gimpbrushselectbutton" link="GimpBrushSelectButton.html"/>
+        <sub name="GimpBrushSelectButton" link="GimpBrushSelectButton.html"/>
         <sub name="GimpFontSelectButton" link="GimpFontSelectButton.html"/>
         <sub name="GimpGradientSelectButton" link="GimpGradientSelectButton.html"/>
-        <sub name="GimpPaletteSelect" link="GimpPaletteSelectButton.html"/>
+        <sub name="GimpPaletteSelectButton" link="GimpPaletteSelectButton.html"/>
         <sub name="GimpPatternSelectButton" link="GimpPatternSelectButton.html"/>
         <sub name="gimpbrushselect" link="libgimp-gimpbrushselect.html"/>
         <sub name="gimpfontselect" link="libgimp-gimpfontselect.html"/>
@@ -152,7 +151,7 @@
     <keyword type="struct" name="GimpPlugInInfo" link="libgimp-Gimp.html#GimpPlugInInfo"/>
     <keyword type="struct" name="GimpParamDef" link="libgimp-Gimp.html#GimpParamDef"/>
     <keyword type="struct" name="GimpParamRegion" link="libgimp-Gimp.html#GimpParamRegion"/>
-    <keyword type="union" name="union GimpParamData" link="libgimp-Gimp.html#GimpParamData"/>
+    <keyword type="union" name="GimpParamData" link="libgimp-Gimp.html#GimpParamData"/>
     <keyword type="struct" name="GimpParam" link="libgimp-Gimp.html#GimpParam"/>
     <keyword type="function" name="gimp_enums_init ()" link="libgimp-gimpenums.html#gimp-enums-init" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_enums_get_type_names ()" link="libgimp-gimpenums.html#gimp-enums-get-type-names" since="GIMP 2.2"/>
@@ -1075,5 +1074,116 @@
     <keyword type="signal" name="The “row-activated” signal" link="GimpProcBrowserDialog.html#GimpProcBrowserDialog-row-activated"/>
     <keyword type="signal" name="The “selection-changed” signal" link="GimpProcBrowserDialog.html#GimpProcBrowserDialog-selection-changed"/>
     <keyword type="function" name="gimp_proc_view_new ()" link="libgimp-GimpProcView.html#gimp-proc-view-new" since="GIMP 2.4"/>
+    <keyword type="constant" name="GIMP_BRUSH_HARD" link="libgimp-gimpenums.html#GIMP-BRUSH-HARD:CAPS"/>
+    <keyword type="constant" name="GIMP_BRUSH_SOFT" link="libgimp-gimpenums.html#GIMP-BRUSH-SOFT:CAPS"/>
+    <keyword type="constant" name="GIMP_BRUSH_GENERATED_CIRCLE" link="libgimp-gimpenums.html#GIMP-BRUSH-GENERATED-CIRCLE:CAPS"/>
+    <keyword type="constant" name="GIMP_BRUSH_GENERATED_SQUARE" link="libgimp-gimpenums.html#GIMP-BRUSH-GENERATED-SQUARE:CAPS"/>
+    <keyword type="constant" name="GIMP_BRUSH_GENERATED_DIAMOND" link="libgimp-gimpenums.html#GIMP-BRUSH-GENERATED-DIAMOND:CAPS"/>
+    <keyword type="constant" name="GIMP_NO_DITHER" link="libgimp-gimpenums.html#GIMP-NO-DITHER:CAPS"/>
+    <keyword type="constant" name="GIMP_FS_DITHER" link="libgimp-gimpenums.html#GIMP-FS-DITHER:CAPS"/>
+    <keyword type="constant" name="GIMP_FSLOWBLEED_DITHER" link="libgimp-gimpenums.html#GIMP-FSLOWBLEED-DITHER:CAPS"/>
+    <keyword type="constant" name="GIMP_FIXED_DITHER" link="libgimp-gimpenums.html#GIMP-FIXED-DITHER:CAPS"/>
+    <keyword type="constant" name="GIMP_MAKE_PALETTE" link="libgimp-gimpenums.html#GIMP-MAKE-PALETTE:CAPS"/>
+    <keyword type="constant" name="GIMP_REUSE_PALETTE" link="libgimp-gimpenums.html#GIMP-REUSE-PALETTE:CAPS"/>
+    <keyword type="constant" name="GIMP_WEB_PALETTE" link="libgimp-gimpenums.html#GIMP-WEB-PALETTE:CAPS"/>
+    <keyword type="constant" name="GIMP_MONO_PALETTE" link="libgimp-gimpenums.html#GIMP-MONO-PALETTE:CAPS"/>
+    <keyword type="constant" name="GIMP_CUSTOM_PALETTE" link="libgimp-gimpenums.html#GIMP-CUSTOM-PALETTE:CAPS"/>
+    <keyword type="constant" name="GIMP_NORMAL_CONVOL" link="libgimp-gimpenums.html#GIMP-NORMAL-CONVOL:CAPS"/>
+    <keyword type="constant" name="GIMP_ABSOLUTE_CONVOL" link="libgimp-gimpenums.html#GIMP-ABSOLUTE-CONVOL:CAPS"/>
+    <keyword type="constant" name="GIMP_NEGATIVE_CONVOL" link="libgimp-gimpenums.html#GIMP-NEGATIVE-CONVOL:CAPS"/>
+    <keyword type="constant" name="GIMP_BLUR_CONVOLVE" link="libgimp-gimpenums.html#GIMP-BLUR-CONVOLVE:CAPS"/>
+    <keyword type="constant" name="GIMP_SHARPEN_CONVOLVE" link="libgimp-gimpenums.html#GIMP-SHARPEN-CONVOLVE:CAPS"/>
+    <keyword type="constant" name="GIMP_FOREGROUND_FILL" link="libgimp-gimpenums.html#GIMP-FOREGROUND-FILL:CAPS"/>
+    <keyword type="constant" name="GIMP_BACKGROUND_FILL" link="libgimp-gimpenums.html#GIMP-BACKGROUND-FILL:CAPS"/>
+    <keyword type="constant" name="GIMP_WHITE_FILL" link="libgimp-gimpenums.html#GIMP-WHITE-FILL:CAPS"/>
+    <keyword type="constant" name="GIMP_TRANSPARENT_FILL" link="libgimp-gimpenums.html#GIMP-TRANSPARENT-FILL:CAPS"/>
+    <keyword type="constant" name="GIMP_PATTERN_FILL" link="libgimp-gimpenums.html#GIMP-PATTERN-FILL:CAPS"/>
+    <keyword type="constant" name="GIMP_GRADIENT_SEGMENT_RGB" link="libgimp-gimpenums.html#GIMP-GRADIENT-SEGMENT-RGB:CAPS"/>
+    <keyword type="constant" name="GIMP_GRADIENT_SEGMENT_HSV_CCW" link="libgimp-gimpenums.html#GIMP-GRADIENT-SEGMENT-HSV-CCW:CAPS"/>
+    <keyword type="constant" name="GIMP_GRADIENT_SEGMENT_HSV_CW" link="libgimp-gimpenums.html#GIMP-GRADIENT-SEGMENT-HSV-CW:CAPS"/>
+    <keyword type="constant" name="GIMP_GRADIENT_SEGMENT_LINEAR" link="libgimp-gimpenums.html#GIMP-GRADIENT-SEGMENT-LINEAR:CAPS"/>
+    <keyword type="constant" name="GIMP_GRADIENT_SEGMENT_CURVED" link="libgimp-gimpenums.html#GIMP-GRADIENT-SEGMENT-CURVED:CAPS"/>
+    <keyword type="constant" name="GIMP_GRADIENT_SEGMENT_SINE" link="libgimp-gimpenums.html#GIMP-GRADIENT-SEGMENT-SINE:CAPS"/>
+    <keyword type="constant" name="GIMP_GRADIENT_SEGMENT_SPHERE_INCREASING" link="libgimp-gimpenums.html#GIMP-GRADIENT-SEGMENT-SPHERE-INCREASING:CAPS"/>
+    <keyword type="constant" name="GIMP_GRADIENT_SEGMENT_SPHERE_DECREASING" link="libgimp-gimpenums.html#GIMP-GRADIENT-SEGMENT-SPHERE-DECREASING:CAPS"/>
+    <keyword type="constant" name="GIMP_HISTOGRAM_VALUE" link="libgimp-gimpenums.html#GIMP-HISTOGRAM-VALUE:CAPS"/>
+    <keyword type="constant" name="GIMP_HISTOGRAM_RED" link="libgimp-gimpenums.html#GIMP-HISTOGRAM-RED:CAPS"/>
+    <keyword type="constant" name="GIMP_HISTOGRAM_GREEN" link="libgimp-gimpenums.html#GIMP-HISTOGRAM-GREEN:CAPS"/>
+    <keyword type="constant" name="GIMP_HISTOGRAM_BLUE" link="libgimp-gimpenums.html#GIMP-HISTOGRAM-BLUE:CAPS"/>
+    <keyword type="constant" name="GIMP_HISTOGRAM_ALPHA" link="libgimp-gimpenums.html#GIMP-HISTOGRAM-ALPHA:CAPS"/>
+    <keyword type="constant" name="GIMP_ALL_HUES" link="libgimp-gimpenums.html#GIMP-ALL-HUES:CAPS"/>
+    <keyword type="constant" name="GIMP_RED_HUES" link="libgimp-gimpenums.html#GIMP-RED-HUES:CAPS"/>
+    <keyword type="constant" name="GIMP_YELLOW_HUES" link="libgimp-gimpenums.html#GIMP-YELLOW-HUES:CAPS"/>
+    <keyword type="constant" name="GIMP_GREEN_HUES" link="libgimp-gimpenums.html#GIMP-GREEN-HUES:CAPS"/>
+    <keyword type="constant" name="GIMP_CYAN_HUES" link="libgimp-gimpenums.html#GIMP-CYAN-HUES:CAPS"/>
+    <keyword type="constant" name="GIMP_BLUE_HUES" link="libgimp-gimpenums.html#GIMP-BLUE-HUES:CAPS"/>
+    <keyword type="constant" name="GIMP_MAGENTA_HUES" link="libgimp-gimpenums.html#GIMP-MAGENTA-HUES:CAPS"/>
+    <keyword type="constant" name="GIMP_INK_BLOB_TYPE_CIRCLE" link="libgimp-gimpenums.html#GIMP-INK-BLOB-TYPE-CIRCLE:CAPS"/>
+    <keyword type="constant" name="GIMP_INK_BLOB_TYPE_SQUARE" link="libgimp-gimpenums.html#GIMP-INK-BLOB-TYPE-SQUARE:CAPS"/>
+    <keyword type="constant" name="GIMP_INK_BLOB_TYPE_DIAMOND" link="libgimp-gimpenums.html#GIMP-INK-BLOB-TYPE-DIAMOND:CAPS"/>
+    <keyword type="constant" name="GIMP_NORMAL_MODE" link="libgimp-gimpenums.html#GIMP-NORMAL-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_DISSOLVE_MODE" link="libgimp-gimpenums.html#GIMP-DISSOLVE-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_BEHIND_MODE" link="libgimp-gimpenums.html#GIMP-BEHIND-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_MULTIPLY_MODE" link="libgimp-gimpenums.html#GIMP-MULTIPLY-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_SCREEN_MODE" link="libgimp-gimpenums.html#GIMP-SCREEN-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_OVERLAY_MODE" link="libgimp-gimpenums.html#GIMP-OVERLAY-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_DIFFERENCE_MODE" link="libgimp-gimpenums.html#GIMP-DIFFERENCE-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_ADDITION_MODE" link="libgimp-gimpenums.html#GIMP-ADDITION-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_SUBTRACT_MODE" link="libgimp-gimpenums.html#GIMP-SUBTRACT-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_DARKEN_ONLY_MODE" link="libgimp-gimpenums.html#GIMP-DARKEN-ONLY-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_LIGHTEN_ONLY_MODE" link="libgimp-gimpenums.html#GIMP-LIGHTEN-ONLY-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_HUE_MODE" link="libgimp-gimpenums.html#GIMP-HUE-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_SATURATION_MODE" link="libgimp-gimpenums.html#GIMP-SATURATION-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_MODE" link="libgimp-gimpenums.html#GIMP-COLOR-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_VALUE_MODE" link="libgimp-gimpenums.html#GIMP-VALUE-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_DIVIDE_MODE" link="libgimp-gimpenums.html#GIMP-DIVIDE-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_DODGE_MODE" link="libgimp-gimpenums.html#GIMP-DODGE-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_BURN_MODE" link="libgimp-gimpenums.html#GIMP-BURN-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_HARDLIGHT_MODE" link="libgimp-gimpenums.html#GIMP-HARDLIGHT-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_SOFTLIGHT_MODE" link="libgimp-gimpenums.html#GIMP-SOFTLIGHT-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_GRAIN_EXTRACT_MODE" link="libgimp-gimpenums.html#GIMP-GRAIN-EXTRACT-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_GRAIN_MERGE_MODE" link="libgimp-gimpenums.html#GIMP-GRAIN-MERGE-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_ERASE_MODE" link="libgimp-gimpenums.html#GIMP-COLOR-ERASE-MODE:CAPS"/>
+    <keyword type="constant" name="GIMP_MASK_APPLY" link="libgimp-gimpenums.html#GIMP-MASK-APPLY:CAPS"/>
+    <keyword type="constant" name="GIMP_MASK_DISCARD" link="libgimp-gimpenums.html#GIMP-MASK-DISCARD:CAPS"/>
+    <keyword type="constant" name="GIMP_EXPAND_AS_NECESSARY" link="libgimp-gimpenums.html#GIMP-EXPAND-AS-NECESSARY:CAPS"/>
+    <keyword type="constant" name="GIMP_CLIP_TO_IMAGE" link="libgimp-gimpenums.html#GIMP-CLIP-TO-IMAGE:CAPS"/>
+    <keyword type="constant" name="GIMP_CLIP_TO_BOTTOM_LAYER" link="libgimp-gimpenums.html#GIMP-CLIP-TO-BOTTOM-LAYER:CAPS"/>
+    <keyword type="constant" name="GIMP_FLATTEN_IMAGE" link="libgimp-gimpenums.html#GIMP-FLATTEN-IMAGE:CAPS"/>
+    <keyword type="constant" name="GIMP_OFFSET_BACKGROUND" link="libgimp-gimpenums.html#GIMP-OFFSET-BACKGROUND:CAPS"/>
+    <keyword type="constant" name="GIMP_OFFSET_TRANSPARENT" link="libgimp-gimpenums.html#GIMP-OFFSET-TRANSPARENT:CAPS"/>
+    <keyword type="constant" name="GIMP_ORIENTATION_HORIZONTAL" link="libgimp-gimpenums.html#GIMP-ORIENTATION-HORIZONTAL:CAPS"/>
+    <keyword type="constant" name="GIMP_ORIENTATION_VERTICAL" link="libgimp-gimpenums.html#GIMP-ORIENTATION-VERTICAL:CAPS"/>
+    <keyword type="constant" name="GIMP_ORIENTATION_UNKNOWN" link="libgimp-gimpenums.html#GIMP-ORIENTATION-UNKNOWN:CAPS"/>
+    <keyword type="constant" name="GIMP_ROTATE_90" link="libgimp-gimpenums.html#GIMP-ROTATE-90:CAPS"/>
+    <keyword type="constant" name="GIMP_ROTATE_180" link="libgimp-gimpenums.html#GIMP-ROTATE-180:CAPS"/>
+    <keyword type="constant" name="GIMP_ROTATE_270" link="libgimp-gimpenums.html#GIMP-ROTATE-270:CAPS"/>
+    <keyword type="constant" name="GIMP_SELECT_CRITERION_COMPOSITE" link="libgimp-gimpenums.html#GIMP-SELECT-CRITERION-COMPOSITE:CAPS"/>
+    <keyword type="constant" name="GIMP_SELECT_CRITERION_R" link="libgimp-gimpenums.html#GIMP-SELECT-CRITERION-R:CAPS"/>
+    <keyword type="constant" name="GIMP_SELECT_CRITERION_G" link="libgimp-gimpenums.html#GIMP-SELECT-CRITERION-G:CAPS"/>
+    <keyword type="constant" name="GIMP_SELECT_CRITERION_B" link="libgimp-gimpenums.html#GIMP-SELECT-CRITERION-B:CAPS"/>
+    <keyword type="constant" name="GIMP_SELECT_CRITERION_H" link="libgimp-gimpenums.html#GIMP-SELECT-CRITERION-H:CAPS"/>
+    <keyword type="constant" name="GIMP_SELECT_CRITERION_S" link="libgimp-gimpenums.html#GIMP-SELECT-CRITERION-S:CAPS"/>
+    <keyword type="constant" name="GIMP_SELECT_CRITERION_V" link="libgimp-gimpenums.html#GIMP-SELECT-CRITERION-V:CAPS"/>
+    <keyword type="constant" name="GIMP_PIXBUF_KEEP_ALPHA" link="libgimp-gimppixbuf.html#GIMP-PIXBUF-KEEP-ALPHA:CAPS"/>
+    <keyword type="constant" name="GIMP_PIXBUF_SMALL_CHECKS" link="libgimp-gimppixbuf.html#GIMP-PIXBUF-SMALL-CHECKS:CAPS"/>
+    <keyword type="constant" name="GIMP_PIXBUF_LARGE_CHECKS" link="libgimp-gimppixbuf.html#GIMP-PIXBUF-LARGE-CHECKS:CAPS"/>
+    <keyword type="constant" name="GIMP_PIXEL_FETCHER_EDGE_NONE" link="libgimp-gimppixelfetcher.html#GIMP-PIXEL-FETCHER-EDGE-NONE:CAPS"/>
+    <keyword type="constant" name="GIMP_PIXEL_FETCHER_EDGE_WRAP" link="libgimp-gimppixelfetcher.html#GIMP-PIXEL-FETCHER-EDGE-WRAP:CAPS"/>
+    <keyword type="constant" name="GIMP_PIXEL_FETCHER_EDGE_SMEAR" link="libgimp-gimppixelfetcher.html#GIMP-PIXEL-FETCHER-EDGE-SMEAR:CAPS"/>
+    <keyword type="constant" name="GIMP_PIXEL_FETCHER_EDGE_BLACK" link="libgimp-gimppixelfetcher.html#GIMP-PIXEL-FETCHER-EDGE-BLACK:CAPS"/>
+    <keyword type="constant" name="GIMP_PIXEL_FETCHER_EDGE_BACKGROUND" link="libgimp-gimppixelfetcher.html#GIMP-PIXEL-FETCHER-EDGE-BACKGROUND:CAPS"/>
+    <keyword type="constant" name="GIMP_EXPORT_CAN_HANDLE_RGB" link="libgimp-gimpexport.html#GIMP-EXPORT-CAN-HANDLE-RGB:CAPS"/>
+    <keyword type="constant" name="GIMP_EXPORT_CAN_HANDLE_GRAY" link="libgimp-gimpexport.html#GIMP-EXPORT-CAN-HANDLE-GRAY:CAPS"/>
+    <keyword type="constant" name="GIMP_EXPORT_CAN_HANDLE_INDEXED" link="libgimp-gimpexport.html#GIMP-EXPORT-CAN-HANDLE-INDEXED:CAPS"/>
+    <keyword type="constant" name="GIMP_EXPORT_CAN_HANDLE_BITMAP" link="libgimp-gimpexport.html#GIMP-EXPORT-CAN-HANDLE-BITMAP:CAPS"/>
+    <keyword type="constant" name="GIMP_EXPORT_CAN_HANDLE_ALPHA" link="libgimp-gimpexport.html#GIMP-EXPORT-CAN-HANDLE-ALPHA:CAPS"/>
+    <keyword type="constant" name="GIMP_EXPORT_CAN_HANDLE_LAYERS" link="libgimp-gimpexport.html#GIMP-EXPORT-CAN-HANDLE-LAYERS:CAPS"/>
+    <keyword type="constant" name="GIMP_EXPORT_CAN_HANDLE_LAYERS_AS_ANIMATION" link="libgimp-gimpexport.html#GIMP-EXPORT-CAN-HANDLE-LAYERS-AS-ANIMATION:CAPS"/>
+    <keyword type="constant" name="GIMP_EXPORT_CAN_HANDLE_LAYER_MASKS" link="libgimp-gimpexport.html#GIMP-EXPORT-CAN-HANDLE-LAYER-MASKS:CAPS"/>
+    <keyword type="constant" name="GIMP_EXPORT_NEEDS_ALPHA" link="libgimp-gimpexport.html#GIMP-EXPORT-NEEDS-ALPHA:CAPS"/>
+    <keyword type="constant" name="GIMP_EXPORT_CANCEL" link="libgimp-gimpexport.html#GIMP-EXPORT-CANCEL:CAPS"/>
+    <keyword type="constant" name="GIMP_EXPORT_IGNORE" link="libgimp-gimpexport.html#GIMP-EXPORT-IGNORE:CAPS"/>
+    <keyword type="constant" name="GIMP_EXPORT_EXPORT" link="libgimp-gimpexport.html#GIMP-EXPORT-EXPORT:CAPS"/>
   </functions>
 </book>

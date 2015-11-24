@@ -43,6 +43,10 @@
 <ANCHOR id="GimpChainButton.other_details" href="libgimpwidgets/GimpChainButton.html#GimpChainButton.other_details">
 <ANCHOR id="GimpChainButton-struct" href="libgimpwidgets/GimpChainButton.html#GimpChainButton-struct">
 <ANCHOR id="GimpChainPosition" href="libgimpwidgets/GimpChainButton.html#GimpChainPosition">
+<ANCHOR id="GIMP-CHAIN-TOP:CAPS" href="libgimpwidgets/GimpChainButton.html#GIMP-CHAIN-TOP:CAPS">
+<ANCHOR id="GIMP-CHAIN-LEFT:CAPS" href="libgimpwidgets/GimpChainButton.html#GIMP-CHAIN-LEFT:CAPS">
+<ANCHOR id="GIMP-CHAIN-BOTTOM:CAPS" href="libgimpwidgets/GimpChainButton.html#GIMP-CHAIN-BOTTOM:CAPS">
+<ANCHOR id="GIMP-CHAIN-RIGHT:CAPS" href="libgimpwidgets/GimpChainButton.html#GIMP-CHAIN-RIGHT:CAPS">
 <ANCHOR id="GimpChainButton.property-details" href="libgimpwidgets/GimpChainButton.html#GimpChainButton.property-details">
 <ANCHOR id="GimpChainButton--position" href="libgimpwidgets/GimpChainButton.html#GimpChainButton--position">
 <ANCHOR id="GimpChainButton.signal-details" href="libgimpwidgets/GimpChainButton.html#GimpChainButton.signal-details">
@@ -66,6 +70,9 @@
 <ANCHOR id="GimpColorArea.other_details" href="libgimpwidgets/GimpColorArea.html#GimpColorArea.other_details">
 <ANCHOR id="GimpColorArea-struct" href="libgimpwidgets/GimpColorArea.html#GimpColorArea-struct">
 <ANCHOR id="GimpColorAreaType" href="libgimpwidgets/GimpColorArea.html#GimpColorAreaType">
+<ANCHOR id="GIMP-COLOR-AREA-FLAT:CAPS" href="libgimpwidgets/GimpColorArea.html#GIMP-COLOR-AREA-FLAT:CAPS">
+<ANCHOR id="GIMP-COLOR-AREA-SMALL-CHECKS:CAPS" href="libgimpwidgets/GimpColorArea.html#GIMP-COLOR-AREA-SMALL-CHECKS:CAPS">
+<ANCHOR id="GIMP-COLOR-AREA-LARGE-CHECKS:CAPS" href="libgimpwidgets/GimpColorArea.html#GIMP-COLOR-AREA-LARGE-CHECKS:CAPS">
 <ANCHOR id="GimpColorArea.property-details" href="libgimpwidgets/GimpColorArea.html#GimpColorArea.property-details">
 <ANCHOR id="GimpColorArea--color" href="libgimpwidgets/GimpColorArea.html#GimpColorArea--color">
 <ANCHOR id="GimpColorArea--drag-mask" href="libgimpwidgets/GimpColorArea.html#GimpColorArea--drag-mask">
@@ -327,6 +334,12 @@
 <ANCHOR id="GimpIntStore.other_details" href="libgimpwidgets/GimpIntStore.html#GimpIntStore.other_details">
 <ANCHOR id="GimpIntStore-struct" href="libgimpwidgets/GimpIntStore.html#GimpIntStore-struct">
 <ANCHOR id="GimpIntStoreColumns" href="libgimpwidgets/GimpIntStore.html#GimpIntStoreColumns">
+<ANCHOR id="GIMP-INT-STORE-VALUE:CAPS" href="libgimpwidgets/GimpIntStore.html#GIMP-INT-STORE-VALUE:CAPS">
+<ANCHOR id="GIMP-INT-STORE-LABEL:CAPS" href="libgimpwidgets/GimpIntStore.html#GIMP-INT-STORE-LABEL:CAPS">
+<ANCHOR id="GIMP-INT-STORE-STOCK-ID:CAPS" href="libgimpwidgets/GimpIntStore.html#GIMP-INT-STORE-STOCK-ID:CAPS">
+<ANCHOR id="GIMP-INT-STORE-PIXBUF:CAPS" href="libgimpwidgets/GimpIntStore.html#GIMP-INT-STORE-PIXBUF:CAPS">
+<ANCHOR id="GIMP-INT-STORE-USER-DATA:CAPS" href="libgimpwidgets/GimpIntStore.html#GIMP-INT-STORE-USER-DATA:CAPS">
+<ANCHOR id="GIMP-INT-STORE-NUM-COLUMNS:CAPS" href="libgimpwidgets/GimpIntStore.html#GIMP-INT-STORE-NUM-COLUMNS:CAPS">
 <ANCHOR id="GimpIntStore.property-details" href="libgimpwidgets/GimpIntStore.html#GimpIntStore.property-details">
 <ANCHOR id="GimpIntStore--user-data-type" href="libgimpwidgets/GimpIntStore.html#GimpIntStore--user-data-type">
 <ANCHOR id="GimpMemsizeEntry" href="libgimpwidgets/GimpMemsizeEntry.html">
@@ -369,6 +382,9 @@
 <ANCHOR id="GimpNumberPairEntry.other_details" href="libgimpwidgets/GimpNumberPairEntry.html#GimpNumberPairEntry.other_details">
 <ANCHOR id="GimpNumberPairEntry-struct" href="libgimpwidgets/GimpNumberPairEntry.html#GimpNumberPairEntry-struct">
 <ANCHOR id="GimpAspectType" href="libgimpwidgets/GimpNumberPairEntry.html#GimpAspectType">
+<ANCHOR id="GIMP-ASPECT-SQUARE:CAPS" href="libgimpwidgets/GimpNumberPairEntry.html#GIMP-ASPECT-SQUARE:CAPS">
+<ANCHOR id="GIMP-ASPECT-PORTRAIT:CAPS" href="libgimpwidgets/GimpNumberPairEntry.html#GIMP-ASPECT-PORTRAIT:CAPS">
+<ANCHOR id="GIMP-ASPECT-LANDSCAPE:CAPS" href="libgimpwidgets/GimpNumberPairEntry.html#GIMP-ASPECT-LANDSCAPE:CAPS">
 <ANCHOR id="GimpNumberPairEntry.property-details" href="libgimpwidgets/GimpNumberPairEntry.html#GimpNumberPairEntry.property-details">
 <ANCHOR id="GimpNumberPairEntry--allow-simplification" href="libgimpwidgets/GimpNumberPairEntry.html#GimpNumberPairEntry--allow-simplification">
 <ANCHOR id="GimpNumberPairEntry--aspect" href="libgimpwidgets/GimpNumberPairEntry.html#GimpNumberPairEntry--aspect">
@@ -430,6 +446,8 @@
 <ANCHOR id="GimpPageSelector.other_details" href="libgimpwidgets/GimpPageSelector.html#GimpPageSelector.other_details">
 <ANCHOR id="GimpPageSelector-struct" href="libgimpwidgets/GimpPageSelector.html#GimpPageSelector-struct">
 <ANCHOR id="GimpPageSelectorTarget" href="libgimpwidgets/GimpPageSelector.html#GimpPageSelectorTarget">
+<ANCHOR id="GIMP-PAGE-SELECTOR-TARGET-LAYERS:CAPS" href="libgimpwidgets/GimpPageSelector.html#GIMP-PAGE-SELECTOR-TARGET-LAYERS:CAPS">
+<ANCHOR id="GIMP-PAGE-SELECTOR-TARGET-IMAGES:CAPS" href="libgimpwidgets/GimpPageSelector.html#GIMP-PAGE-SELECTOR-TARGET-IMAGES:CAPS">
 <ANCHOR id="GimpPageSelector.property-details" href="libgimpwidgets/GimpPageSelector.html#GimpPageSelector.property-details">
 <ANCHOR id="GimpPageSelector--n-pages" href="libgimpwidgets/GimpPageSelector.html#GimpPageSelector--n-pages">
 <ANCHOR id="GimpPageSelector--target" href="libgimpwidgets/GimpPageSelector.html#GimpPageSelector--target">
@@ -596,6 +614,9 @@
 <ANCHOR id="GimpSizeEntry-struct" href="libgimpwidgets/GimpSizeEntry.html#GimpSizeEntry-struct">
 <ANCHOR id="GimpSizeEntryField" href="libgimpwidgets/GimpSizeEntry.html#GimpSizeEntryField">
 <ANCHOR id="GimpSizeEntryUpdatePolicy" href="libgimpwidgets/GimpSizeEntry.html#GimpSizeEntryUpdatePolicy">
+<ANCHOR id="GIMP-SIZE-ENTRY-UPDATE-NONE:CAPS" href="libgimpwidgets/GimpSizeEntry.html#GIMP-SIZE-ENTRY-UPDATE-NONE:CAPS">
+<ANCHOR id="GIMP-SIZE-ENTRY-UPDATE-SIZE:CAPS" href="libgimpwidgets/GimpSizeEntry.html#GIMP-SIZE-ENTRY-UPDATE-SIZE:CAPS">
+<ANCHOR id="GIMP-SIZE-ENTRY-UPDATE-RESOLUTION:CAPS" href="libgimpwidgets/GimpSizeEntry.html#GIMP-SIZE-ENTRY-UPDATE-RESOLUTION:CAPS">
 <ANCHOR id="GimpSizeEntry.signal-details" href="libgimpwidgets/GimpSizeEntry.html#GimpSizeEntry.signal-details">
 <ANCHOR id="GimpSizeEntry-refval-changed" href="libgimpwidgets/GimpSizeEntry.html#GimpSizeEntry-refval-changed">
 <ANCHOR id="GimpSizeEntry-unit-changed" href="libgimpwidgets/GimpSizeEntry.html#GimpSizeEntry-unit-changed">
@@ -682,6 +703,13 @@
 <ANCHOR id="GimpZoomModel.other_details" href="libgimpwidgets/GimpZoomModel.html#GimpZoomModel.other_details">
 <ANCHOR id="GimpZoomModel-struct" href="libgimpwidgets/GimpZoomModel.html#GimpZoomModel-struct">
 <ANCHOR id="GimpZoomType" href="libgimpwidgets/GimpZoomModel.html#GimpZoomType">
+<ANCHOR id="GIMP-ZOOM-IN:CAPS" href="libgimpwidgets/GimpZoomModel.html#GIMP-ZOOM-IN:CAPS">
+<ANCHOR id="GIMP-ZOOM-OUT:CAPS" href="libgimpwidgets/GimpZoomModel.html#GIMP-ZOOM-OUT:CAPS">
+<ANCHOR id="GIMP-ZOOM-IN-MORE:CAPS" href="libgimpwidgets/GimpZoomModel.html#GIMP-ZOOM-IN-MORE:CAPS">
+<ANCHOR id="GIMP-ZOOM-OUT-MORE:CAPS" href="libgimpwidgets/GimpZoomModel.html#GIMP-ZOOM-OUT-MORE:CAPS">
+<ANCHOR id="GIMP-ZOOM-IN-MAX:CAPS" href="libgimpwidgets/GimpZoomModel.html#GIMP-ZOOM-IN-MAX:CAPS">
+<ANCHOR id="GIMP-ZOOM-OUT-MAX:CAPS" href="libgimpwidgets/GimpZoomModel.html#GIMP-ZOOM-OUT-MAX:CAPS">
+<ANCHOR id="GIMP-ZOOM-TO:CAPS" href="libgimpwidgets/GimpZoomModel.html#GIMP-ZOOM-TO:CAPS">
 <ANCHOR id="GimpZoomModel.property-details" href="libgimpwidgets/GimpZoomModel.html#GimpZoomModel.property-details">
 <ANCHOR id="GimpZoomModel--fraction" href="libgimpwidgets/GimpZoomModel.html#GimpZoomModel--fraction">
 <ANCHOR id="GimpZoomModel--maximum" href="libgimpwidgets/GimpZoomModel.html#GimpZoomModel--maximum">
@@ -751,7 +779,6 @@
 <ANCHOR id="GimpColorDisplay--enabled" href="libgimpwidgets/GimpColorDisplay.html#GimpColorDisplay--enabled">
 <ANCHOR id="GimpColorDisplay.signal-details" href="libgimpwidgets/GimpColorDisplay.html#GimpColorDisplay.signal-details">
 <ANCHOR id="GimpColorDisplay-changed" href="libgimpwidgets/GimpColorDisplay.html#GimpColorDisplay-changed">
-<ANCHOR id="GimpColorDisplay.see-also" href="libgimpwidgets/GimpColorDisplay.html#GimpColorDisplay.see-also">
 <ANCHOR id="GimpColorDisplayStack" href="libgimpwidgets/GimpColorDisplayStack.html">
 <ANCHOR id="GimpColorDisplayStack.functions" href="libgimpwidgets/GimpColorDisplayStack.html#GimpColorDisplayStack.functions">
 <ANCHOR id="GimpColorDisplayStack.signals" href="libgimpwidgets/GimpColorDisplayStack.html#GimpColorDisplayStack.signals">
@@ -775,7 +802,6 @@
 <ANCHOR id="GimpColorDisplayStack-changed" href="libgimpwidgets/GimpColorDisplayStack.html#GimpColorDisplayStack-changed">
 <ANCHOR id="GimpColorDisplayStack-removed" href="libgimpwidgets/GimpColorDisplayStack.html#GimpColorDisplayStack-removed">
 <ANCHOR id="GimpColorDisplayStack-reordered" href="libgimpwidgets/GimpColorDisplayStack.html#GimpColorDisplayStack-reordered">
-<ANCHOR id="GimpColorDisplayStack.see-also" href="libgimpwidgets/GimpColorDisplayStack.html#GimpColorDisplayStack.see-also">
 <ANCHOR id="GimpColorSelector" href="libgimpwidgets/GimpColorSelector.html">
 <ANCHOR id="GimpColorSelector.functions" href="libgimpwidgets/GimpColorSelector.html#GimpColorSelector.functions">
 <ANCHOR id="GimpColorSelector.signals" href="libgimpwidgets/GimpColorSelector.html#GimpColorSelector.signals">
@@ -798,10 +824,16 @@
 <ANCHOR id="GIMP-COLOR-SELECTOR-SIZE:CAPS" href="libgimpwidgets/GimpColorSelector.html#GIMP-COLOR-SELECTOR-SIZE:CAPS">
 <ANCHOR id="GIMP-COLOR-SELECTOR-BAR-SIZE:CAPS" href="libgimpwidgets/GimpColorSelector.html#GIMP-COLOR-SELECTOR-BAR-SIZE:CAPS">
 <ANCHOR id="GimpColorSelectorChannel" href="libgimpwidgets/GimpColorSelector.html#GimpColorSelectorChannel">
+<ANCHOR id="GIMP-COLOR-SELECTOR-HUE:CAPS" href="libgimpwidgets/GimpColorSelector.html#GIMP-COLOR-SELECTOR-HUE:CAPS">
+<ANCHOR id="GIMP-COLOR-SELECTOR-SATURATION:CAPS" href="libgimpwidgets/GimpColorSelector.html#GIMP-COLOR-SELECTOR-SATURATION:CAPS">
+<ANCHOR id="GIMP-COLOR-SELECTOR-VALUE:CAPS" href="libgimpwidgets/GimpColorSelector.html#GIMP-COLOR-SELECTOR-VALUE:CAPS">
+<ANCHOR id="GIMP-COLOR-SELECTOR-RED:CAPS" href="libgimpwidgets/GimpColorSelector.html#GIMP-COLOR-SELECTOR-RED:CAPS">
+<ANCHOR id="GIMP-COLOR-SELECTOR-GREEN:CAPS" href="libgimpwidgets/GimpColorSelector.html#GIMP-COLOR-SELECTOR-GREEN:CAPS">
+<ANCHOR id="GIMP-COLOR-SELECTOR-BLUE:CAPS" href="libgimpwidgets/GimpColorSelector.html#GIMP-COLOR-SELECTOR-BLUE:CAPS">
+<ANCHOR id="GIMP-COLOR-SELECTOR-ALPHA:CAPS" href="libgimpwidgets/GimpColorSelector.html#GIMP-COLOR-SELECTOR-ALPHA:CAPS">
 <ANCHOR id="GimpColorSelector.signal-details" href="libgimpwidgets/GimpColorSelector.html#GimpColorSelector.signal-details">
 <ANCHOR id="GimpColorSelector-channel-changed" href="libgimpwidgets/GimpColorSelector.html#GimpColorSelector-channel-changed">
 <ANCHOR id="GimpColorSelector-color-changed" href="libgimpwidgets/GimpColorSelector.html#GimpColorSelector-color-changed">
-<ANCHOR id="GimpColorSelector.see-also" href="libgimpwidgets/GimpColorSelector.html#GimpColorSelector.see-also">
 <ANCHOR id="GimpColorNotebook" href="libgimpwidgets/GimpColorNotebook.html">
 <ANCHOR id="GimpColorNotebook.functions" href="libgimpwidgets/GimpColorNotebook.html#GimpColorNotebook.functions">
 <ANCHOR id="GimpColorNotebook.style-properties" href="libgimpwidgets/GimpColorNotebook.html#GimpColorNotebook.style-properties">
@@ -848,6 +880,8 @@
 <ANCHOR id="gimp-controller-event" href="libgimpwidgets/GimpController.html#gimp-controller-event">
 <ANCHOR id="GimpController.other_details" href="libgimpwidgets/GimpController.html#GimpController.other_details">
 <ANCHOR id="GimpControllerEventType" href="libgimpwidgets/GimpController.html#GimpControllerEventType">
+<ANCHOR id="GIMP-CONTROLLER-EVENT-TRIGGER:CAPS" href="libgimpwidgets/GimpController.html#GIMP-CONTROLLER-EVENT-TRIGGER:CAPS">
+<ANCHOR id="GIMP-CONTROLLER-EVENT-VALUE:CAPS" href="libgimpwidgets/GimpController.html#GIMP-CONTROLLER-EVENT-VALUE:CAPS">
 <ANCHOR id="GimpControllerEventAny" href="libgimpwidgets/GimpController.html#GimpControllerEventAny">
 <ANCHOR id="GimpControllerEventTrigger" href="libgimpwidgets/GimpController.html#GimpControllerEventTrigger">
 <ANCHOR id="GimpControllerEventValue" href="libgimpwidgets/GimpController.html#GimpControllerEventValue">
@@ -1197,6 +1231,7 @@
 <ANCHOR id="gimp-widgets-error-quark" href="libgimpwidgets/libgimpwidgets-GimpWidgets.html#gimp-widgets-error-quark">
 <ANCHOR id="libgimpwidgets-GimpWidgets.other_details" href="libgimpwidgets/libgimpwidgets-GimpWidgets.html#libgimpwidgets-GimpWidgets.other_details">
 <ANCHOR id="GimpWidgetsError" href="libgimpwidgets/libgimpwidgets-GimpWidgets.html#GimpWidgetsError">
+<ANCHOR id="GIMP-WIDGETS-PARSE-ERROR:CAPS" href="libgimpwidgets/libgimpwidgets-GimpWidgets.html#GIMP-WIDGETS-PARSE-ERROR:CAPS">
 <ANCHOR id="libgimpwidgets-GimpOldWidgets" href="libgimpwidgets/libgimpwidgets-GimpOldWidgets.html">
 <ANCHOR id="libgimpwidgets-GimpOldWidgets.functions" href="libgimpwidgets/libgimpwidgets-GimpOldWidgets.html#libgimpwidgets-GimpOldWidgets.functions">
 <ANCHOR id="libgimpwidgets-GimpOldWidgets.description" href="libgimpwidgets/libgimpwidgets-GimpOldWidgets.html#libgimpwidgets-GimpOldWidgets.description">
@@ -1215,7 +1250,6 @@
 <ANCHOR id="gimp-pixmap-button-new" href="libgimpwidgets/libgimpwidgets-GimpOldWidgets.html#gimp-pixmap-button-new">
 <ANCHOR id="gimp-unit-menu-update" href="libgimpwidgets/libgimpwidgets-GimpOldWidgets.html#gimp-unit-menu-update">
 <ANCHOR id="libgimpwidgets-GimpOldWidgets.other_details" href="libgimpwidgets/libgimpwidgets-GimpOldWidgets.html#libgimpwidgets-GimpOldWidgets.other_details">
-<ANCHOR id="libgimpwidgets-GimpOldWidgets.see-also" href="libgimpwidgets/libgimpwidgets-GimpOldWidgets.html#libgimpwidgets-GimpOldWidgets.see-also">
 <ANCHOR id="GimpPixmap" href="libgimpwidgets/GimpPixmap.html">
 <ANCHOR id="GimpPixmap.functions" href="libgimpwidgets/GimpPixmap.html#GimpPixmap.functions">
 <ANCHOR id="GimpPixmap.other" href="libgimpwidgets/GimpPixmap.html#GimpPixmap.other">

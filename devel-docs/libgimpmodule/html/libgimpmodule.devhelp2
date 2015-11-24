@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
 <book xmlns="http://www.devhelp.net/book" title="GIMP Module Library Reference Manual" link="index.html" author="" name="libgimpmodule" version="2" language="c">
   <chapters>
     <sub name="GIMP Module Library" link="libgimpmodule.html">
@@ -43,5 +42,10 @@
     <keyword type="signal" name="The “add” signal" link="GimpModuleDB.html#GimpModuleDB-add"/>
     <keyword type="signal" name="The “module-modified” signal" link="GimpModuleDB.html#GimpModuleDB-module-modified"/>
     <keyword type="signal" name="The “remove” signal" link="GimpModuleDB.html#GimpModuleDB-remove"/>
+    <keyword type="constant" name="GIMP_MODULE_STATE_ERROR" link="GimpModule.html#GIMP-MODULE-STATE-ERROR:CAPS"/>
+    <keyword type="constant" name="GIMP_MODULE_STATE_LOADED" link="GimpModule.html#GIMP-MODULE-STATE-LOADED:CAPS"/>
+    <keyword type="constant" name="GIMP_MODULE_STATE_LOAD_FAILED" link="GimpModule.html#GIMP-MODULE-STATE-LOAD-FAILED:CAPS"/>
+    <keyword type="constant" name="GIMP_MODULE_STATE_NOT_LOADED" link="GimpModule.html#GIMP-MODULE-STATE-NOT-LOADED:CAPS"/>
+    <keyword type="constant" name="GIMP_MODULE_FAILED" link="GimpModule.html#GIMP-MODULE-FAILED:CAPS"/>
   </functions>
 </book>

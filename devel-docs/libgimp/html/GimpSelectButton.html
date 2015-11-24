@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GIMP Library Reference Manual: GimpSelectButton</title>
+<title>GimpSelectButton: GIMP Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="prev" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="next" href="GimpBrushSelectButton.html" title="gimpbrushselectbutton">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<link rel="next" href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -29,7 +29,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="GimpSelectButton.top_of_page"></a>GimpSelectButton</span></h2>
-<p>GimpSelectButton — The base class of the data select buttons.</p>
+<p>GimpSelectButton</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -65,17 +65,17 @@
 </div>
 <div class="refsect1">
 <a name="GimpSelectButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
-    <span class="lineart">╰──</span> GInitiallyUnowned
-        <span class="lineart">╰──</span> GtkObject
-            <span class="lineart">╰──</span> GtkWidget
-                <span class="lineart">╰──</span> GtkContainer
-                    <span class="lineart">╰──</span> GtkBox
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+        <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkObject.html">GtkObject</a>
+            <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkWidget.html">GtkWidget</a>
+                <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkContainer.html">GtkContainer</a>
+                    <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkBox.html">GtkBox</a>
                         <span class="lineart">╰──</span> GimpSelectButton
-                            <span class="lineart">├──</span> <a class="link" href="GimpBrushSelectButton.html" title="gimpbrushselectbutton">GimpBrushSelectButton</a>
+                            <span class="lineart">├──</span> <a class="link" href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">GimpBrushSelectButton</a>
                             <span class="lineart">├──</span> <a class="link" href="GimpFontSelectButton.html" title="GimpFontSelectButton">GimpFontSelectButton</a>
                             <span class="lineart">├──</span> <a class="link" href="GimpGradientSelectButton.html" title="GimpGradientSelectButton">GimpGradientSelectButton</a>
-                            <span class="lineart">├──</span> <a class="link" href="GimpPaletteSelectButton.html" title="GimpPaletteSelect">GimpPaletteSelectButton</a>
+                            <span class="lineart">├──</span> <a class="link" href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a>
                             <span class="lineart">╰──</span> <a class="link" href="GimpPatternSelectButton.html" title="GimpPatternSelectButton">GimpPatternSelectButton</a>
 </pre>
 </div>
@@ -83,12 +83,10 @@
 <a name="GimpSelectButton.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpSelectButton implements
- AtkImplementorIface,  GtkBuildable and  GtkOrientable.</p>
+ AtkImplementorIface,  <a href="http://library.gnome.org/devel/gtk3/GtkBuildable.html">GtkBuildable</a> and  <a href="http://library.gnome.org/devel/gtk3/gtk2-Orientable.html#GtkOrientable">GtkOrientable</a>.</p>
 </div>
 <div class="refsect1">
 <a name="GimpSelectButton.description"></a><h2>Description</h2>
-<p>The base class of the brush, pattern, gradient, palette and font
-select buttons.</p>
 </div>
 <div class="refsect1">
 <a name="GimpSelectButton.functions_details"></a><h2>Functions</h2>
@@ -96,24 +94,7 @@ select buttons.</p>
 <a name="gimp-select-button-close-popup"></a><h3>gimp_select_button_close_popup ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_select_button_close_popup (<em class="parameter"><code><a class="link" href="GimpSelectButton.html" title="GimpSelectButton"><span class="type">GimpSelectButton</span></a> *button</code></em>);</pre>
-<p>Closes the popup window associated with <em class="parameter"><code>button</code></em>
-.</p>
-<div class="refsect3">
-<a name="id-1.2.6.2.8.2.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>button</p></td>
-<td class="parameter_description"><p>A <a class="link" href="GimpSelectButton.html" title="GimpSelectButton"><span class="type">GimpSelectButton</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<p class="since">Since GIMP 2.4</p>
+<p class="since">Since: GIMP 2.4</p>
 </div>
 </div>
 <div class="refsect1">
@@ -121,13 +102,10 @@ gimp_select_button_close_popup (<em class="parameter"><code><a class="link" href
 <div class="refsect2">
 <a name="GimpSelectButton-struct"></a><h3>GimpSelectButton</h3>
 <pre class="programlisting">typedef struct _GimpSelectButton GimpSelectButton;</pre>
-<p>
-</p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

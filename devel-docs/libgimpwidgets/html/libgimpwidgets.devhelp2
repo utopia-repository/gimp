@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
 <book xmlns="http://www.devhelp.net/book" title="GIMP Widgets Library Reference Manual" link="index.html" author="" name="libgimpwidgets" version="2" language="c">
   <chapters>
     <sub name="GIMP Widgets" link="libgimpwidgets-widgets.html">
@@ -815,5 +814,43 @@
     <keyword type="function" name="gimp_unit_menu_set_pixel_digits ()" link="GimpUnitMenu.html#gimp-unit-menu-set-pixel-digits" deprecated=""/>
     <keyword type="struct" name="GimpUnitMenu" link="GimpUnitMenu.html#GimpUnitMenu-struct"/>
     <keyword type="signal" name="The “unit-changed” signal" link="GimpUnitMenu.html#GimpUnitMenu-unit-changed"/>
+    <keyword type="constant" name="GIMP_CHAIN_TOP" link="GimpChainButton.html#GIMP-CHAIN-TOP:CAPS"/>
+    <keyword type="constant" name="GIMP_CHAIN_LEFT" link="GimpChainButton.html#GIMP-CHAIN-LEFT:CAPS"/>
+    <keyword type="constant" name="GIMP_CHAIN_BOTTOM" link="GimpChainButton.html#GIMP-CHAIN-BOTTOM:CAPS"/>
+    <keyword type="constant" name="GIMP_CHAIN_RIGHT" link="GimpChainButton.html#GIMP-CHAIN-RIGHT:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_AREA_FLAT" link="GimpColorArea.html#GIMP-COLOR-AREA-FLAT:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_AREA_SMALL_CHECKS" link="GimpColorArea.html#GIMP-COLOR-AREA-SMALL-CHECKS:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_AREA_LARGE_CHECKS" link="GimpColorArea.html#GIMP-COLOR-AREA-LARGE-CHECKS:CAPS"/>
+    <keyword type="constant" name="GIMP_INT_STORE_VALUE" link="GimpIntStore.html#GIMP-INT-STORE-VALUE:CAPS"/>
+    <keyword type="constant" name="GIMP_INT_STORE_LABEL" link="GimpIntStore.html#GIMP-INT-STORE-LABEL:CAPS"/>
+    <keyword type="constant" name="GIMP_INT_STORE_STOCK_ID" link="GimpIntStore.html#GIMP-INT-STORE-STOCK-ID:CAPS"/>
+    <keyword type="constant" name="GIMP_INT_STORE_PIXBUF" link="GimpIntStore.html#GIMP-INT-STORE-PIXBUF:CAPS"/>
+    <keyword type="constant" name="GIMP_INT_STORE_USER_DATA" link="GimpIntStore.html#GIMP-INT-STORE-USER-DATA:CAPS"/>
+    <keyword type="constant" name="GIMP_INT_STORE_NUM_COLUMNS" link="GimpIntStore.html#GIMP-INT-STORE-NUM-COLUMNS:CAPS"/>
+    <keyword type="constant" name="GIMP_ASPECT_SQUARE" link="GimpNumberPairEntry.html#GIMP-ASPECT-SQUARE:CAPS"/>
+    <keyword type="constant" name="GIMP_ASPECT_PORTRAIT" link="GimpNumberPairEntry.html#GIMP-ASPECT-PORTRAIT:CAPS"/>
+    <keyword type="constant" name="GIMP_ASPECT_LANDSCAPE" link="GimpNumberPairEntry.html#GIMP-ASPECT-LANDSCAPE:CAPS"/>
+    <keyword type="constant" name="GIMP_PAGE_SELECTOR_TARGET_LAYERS" link="GimpPageSelector.html#GIMP-PAGE-SELECTOR-TARGET-LAYERS:CAPS"/>
+    <keyword type="constant" name="GIMP_PAGE_SELECTOR_TARGET_IMAGES" link="GimpPageSelector.html#GIMP-PAGE-SELECTOR-TARGET-IMAGES:CAPS"/>
+    <keyword type="constant" name="GIMP_SIZE_ENTRY_UPDATE_NONE" link="GimpSizeEntry.html#GIMP-SIZE-ENTRY-UPDATE-NONE:CAPS"/>
+    <keyword type="constant" name="GIMP_SIZE_ENTRY_UPDATE_SIZE" link="GimpSizeEntry.html#GIMP-SIZE-ENTRY-UPDATE-SIZE:CAPS"/>
+    <keyword type="constant" name="GIMP_SIZE_ENTRY_UPDATE_RESOLUTION" link="GimpSizeEntry.html#GIMP-SIZE-ENTRY-UPDATE-RESOLUTION:CAPS"/>
+    <keyword type="constant" name="GIMP_ZOOM_IN" link="GimpZoomModel.html#GIMP-ZOOM-IN:CAPS"/>
+    <keyword type="constant" name="GIMP_ZOOM_OUT" link="GimpZoomModel.html#GIMP-ZOOM-OUT:CAPS"/>
+    <keyword type="constant" name="GIMP_ZOOM_IN_MORE" link="GimpZoomModel.html#GIMP-ZOOM-IN-MORE:CAPS"/>
+    <keyword type="constant" name="GIMP_ZOOM_OUT_MORE" link="GimpZoomModel.html#GIMP-ZOOM-OUT-MORE:CAPS"/>
+    <keyword type="constant" name="GIMP_ZOOM_IN_MAX" link="GimpZoomModel.html#GIMP-ZOOM-IN-MAX:CAPS"/>
+    <keyword type="constant" name="GIMP_ZOOM_OUT_MAX" link="GimpZoomModel.html#GIMP-ZOOM-OUT-MAX:CAPS"/>
+    <keyword type="constant" name="GIMP_ZOOM_TO" link="GimpZoomModel.html#GIMP-ZOOM-TO:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_SELECTOR_HUE" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-HUE:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_SELECTOR_SATURATION" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-SATURATION:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_SELECTOR_VALUE" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-VALUE:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_SELECTOR_RED" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-RED:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_SELECTOR_GREEN" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-GREEN:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_SELECTOR_BLUE" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-BLUE:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_SELECTOR_ALPHA" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-ALPHA:CAPS"/>
+    <keyword type="constant" name="GIMP_CONTROLLER_EVENT_TRIGGER" link="GimpController.html#GIMP-CONTROLLER-EVENT-TRIGGER:CAPS"/>
+    <keyword type="constant" name="GIMP_CONTROLLER_EVENT_VALUE" link="GimpController.html#GIMP-CONTROLLER-EVENT-VALUE:CAPS"/>
+    <keyword type="constant" name="GIMP_WIDGETS_PARSE_ERROR" link="libgimpwidgets-GimpWidgets.html#GIMP-WIDGETS-PARSE-ERROR:CAPS"/>
   </functions>
 </book>

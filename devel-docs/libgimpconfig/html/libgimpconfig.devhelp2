@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
 <book xmlns="http://www.devhelp.net/book" title="GIMP Config Library Reference Manual" link="index.html" author="" name="libgimpconfig" version="2" language="c">
   <chapters>
     <sub name="GIMP Config Library" link="libgimpconfig.html">
@@ -125,5 +124,21 @@
     <keyword type="property" name="The “rgb-profile” property" link="GimpColorConfig.html#GimpColorConfig--rgb-profile"/>
     <keyword type="property" name="The “simulation-gamut-check” property" link="GimpColorConfig.html#GimpColorConfig--simulation-gamut-check"/>
     <keyword type="property" name="The “simulation-rendering-intent” property" link="GimpColorConfig.html#GimpColorConfig--simulation-rendering-intent"/>
+    <keyword type="constant" name="GIMP_CONFIG_ERROR_OPEN" link="libgimpconfig-GimpConfigError.html#GIMP-CONFIG-ERROR-OPEN:CAPS"/>
+    <keyword type="constant" name="GIMP_CONFIG_ERROR_OPEN_ENOENT" link="libgimpconfig-GimpConfigError.html#GIMP-CONFIG-ERROR-OPEN-ENOENT:CAPS"/>
+    <keyword type="constant" name="GIMP_CONFIG_ERROR_WRITE" link="libgimpconfig-GimpConfigError.html#GIMP-CONFIG-ERROR-WRITE:CAPS"/>
+    <keyword type="constant" name="GIMP_CONFIG_ERROR_PARSE" link="libgimpconfig-GimpConfigError.html#GIMP-CONFIG-ERROR-PARSE:CAPS"/>
+    <keyword type="constant" name="GIMP_CONFIG_ERROR_VERSION" link="libgimpconfig-GimpConfigError.html#GIMP-CONFIG-ERROR-VERSION:CAPS"/>
+    <keyword type="constant" name="GIMP_CONFIG_PATH_FILE" link="libgimpconfig-GimpConfig-path.html#GIMP-CONFIG-PATH-FILE:CAPS"/>
+    <keyword type="constant" name="GIMP_CONFIG_PATH_FILE_LIST" link="libgimpconfig-GimpConfig-path.html#GIMP-CONFIG-PATH-FILE-LIST:CAPS"/>
+    <keyword type="constant" name="GIMP_CONFIG_PATH_DIR" link="libgimpconfig-GimpConfig-path.html#GIMP-CONFIG-PATH-DIR:CAPS"/>
+    <keyword type="constant" name="GIMP_CONFIG_PATH_DIR_LIST" link="libgimpconfig-GimpConfig-path.html#GIMP-CONFIG-PATH-DIR-LIST:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_MANAGEMENT_OFF" link="GimpColorConfig.html#GIMP-COLOR-MANAGEMENT-OFF:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_MANAGEMENT_DISPLAY" link="GimpColorConfig.html#GIMP-COLOR-MANAGEMENT-DISPLAY:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_MANAGEMENT_SOFTPROOF" link="GimpColorConfig.html#GIMP-COLOR-MANAGEMENT-SOFTPROOF:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL" link="GimpColorConfig.html#GIMP-COLOR-RENDERING-INTENT-PERCEPTUAL:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC" link="GimpColorConfig.html#GIMP-COLOR-RENDERING-INTENT-RELATIVE-COLORIMETRIC:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_RENDERING_INTENT_SATURATION" link="GimpColorConfig.html#GIMP-COLOR-RENDERING-INTENT-SATURATION:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_RENDERING_INTENT_ABSOLUTE_COLORIMETRIC" link="GimpColorConfig.html#GIMP-COLOR-RENDERING-INTENT-ABSOLUTE-COLORIMETRIC:CAPS"/>
   </functions>
 </book>

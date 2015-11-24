@@ -75,9 +75,9 @@ dbus_glib_marshal_gimp_BOOLEAN__STRING_POINTER_POINTER (GClosure     *closure,
                                                                     gpointer     arg_2,
                                                                     gpointer     arg_3,
                                                                     gpointer     data2);
-  register GMarshalFunc_BOOLEAN__STRING_POINTER_POINTER callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__STRING_POINTER_POINTER callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -122,9 +122,9 @@ dbus_glib_marshal_gimp_BOOLEAN__POINTER (GClosure     *closure,
   typedef gboolean (*GMarshalFunc_BOOLEAN__POINTER) (gpointer     data1,
                                                      gpointer     arg_1,
                                                      gpointer     data2);
-  register GMarshalFunc_BOOLEAN__POINTER callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__POINTER callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);

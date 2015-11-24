@@ -62,9 +62,9 @@ gimp_marshal_BOOLEAN__BOOLEAN (GClosure     *closure,
   typedef gboolean (*GMarshalFunc_BOOLEAN__BOOLEAN) (gpointer     data1,
                                                      gboolean     arg_1,
                                                      gpointer     data2);
-  register GMarshalFunc_BOOLEAN__BOOLEAN callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__BOOLEAN callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -102,9 +102,9 @@ gimp_marshal_BOOLEAN__ENUM_INT (GClosure     *closure,
                                                       gint         arg_1,
                                                       gint         arg_2,
                                                       gpointer     data2);
-  register GMarshalFunc_BOOLEAN__ENUM_INT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__ENUM_INT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -143,9 +143,9 @@ gimp_marshal_BOOLEAN__OBJECT_POINTER (GClosure     *closure,
                                                             gpointer     arg_1,
                                                             gpointer     arg_2,
                                                             gpointer     data2);
-  register GMarshalFunc_BOOLEAN__OBJECT_POINTER callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__OBJECT_POINTER callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -185,9 +185,9 @@ gimp_marshal_BOOLEAN__OBJECT_POINTER_STRING (GClosure     *closure,
                                                                    gpointer     arg_2,
                                                                    gpointer     arg_3,
                                                                    gpointer     data2);
-  register GMarshalFunc_BOOLEAN__OBJECT_POINTER_STRING callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__OBJECT_POINTER_STRING callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -226,9 +226,9 @@ gimp_marshal_BOOLEAN__STRING (GClosure     *closure,
   typedef gboolean (*GMarshalFunc_BOOLEAN__STRING) (gpointer     data1,
                                                     gpointer     arg_1,
                                                     gpointer     data2);
-  register GMarshalFunc_BOOLEAN__STRING callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__STRING callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -266,9 +266,9 @@ gimp_marshal_BOOLEAN__STRING_FLAGS (GClosure     *closure,
                                                           gpointer     arg_1,
                                                           guint        arg_2,
                                                           gpointer     data2);
-  register GMarshalFunc_BOOLEAN__STRING_FLAGS callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__STRING_FLAGS callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -312,9 +312,9 @@ gimp_marshal_VOID__BOOLEAN_INT_INT_INT_INT (GClosure     *closure,
                                                               gint         arg_4,
                                                               gint         arg_5,
                                                               gpointer     data2);
-  register GMarshalFunc_VOID__BOOLEAN_INT_INT_INT_INT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__BOOLEAN_INT_INT_INT_INT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 6);
 
@@ -354,9 +354,9 @@ gimp_marshal_VOID__BOXED_ENUM (GClosure     *closure,
                                                  gpointer     arg_1,
                                                  gint         arg_2,
                                                  gpointer     data2);
-  register GMarshalFunc_VOID__BOXED_ENUM callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__BOXED_ENUM callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -393,9 +393,9 @@ gimp_marshal_VOID__DOUBLE_DOUBLE (GClosure     *closure,
                                                     gdouble      arg_1,
                                                     gdouble      arg_2,
                                                     gpointer     data2);
-  register GMarshalFunc_VOID__DOUBLE_DOUBLE callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__DOUBLE_DOUBLE callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -432,9 +432,9 @@ gimp_marshal_VOID__DOUBLE_DOUBLE_DOUBLE_DOUBLE (GClosure     *closure,
                                                                   gdouble      arg_3,
                                                                   gdouble      arg_4,
                                                                   gpointer     data2);
-  register GMarshalFunc_VOID__DOUBLE_DOUBLE_DOUBLE_DOUBLE callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__DOUBLE_DOUBLE_DOUBLE_DOUBLE callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 5);
 
@@ -475,9 +475,9 @@ gimp_marshal_VOID__ENUM_ENUM_BOXED_INT (GClosure     *closure,
                                                           gpointer     arg_3,
                                                           gint         arg_4,
                                                           gpointer     data2);
-  register GMarshalFunc_VOID__ENUM_ENUM_BOXED_INT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__ENUM_ENUM_BOXED_INT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 5);
 
@@ -514,9 +514,9 @@ gimp_marshal_VOID__ENUM_INT (GClosure     *closure,
                                                gint         arg_1,
                                                gint         arg_2,
                                                gpointer     data2);
-  register GMarshalFunc_VOID__ENUM_INT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__ENUM_INT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -552,9 +552,9 @@ gimp_marshal_VOID__ENUM_INT_BOOLEAN (GClosure     *closure,
                                                        gint         arg_2,
                                                        gboolean     arg_3,
                                                        gpointer     data2);
-  register GMarshalFunc_VOID__ENUM_INT_BOOLEAN callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__ENUM_INT_BOOLEAN callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 4);
 
@@ -590,9 +590,9 @@ gimp_marshal_VOID__ENUM_OBJECT (GClosure     *closure,
                                                   gint         arg_1,
                                                   gpointer     arg_2,
                                                   gpointer     data2);
-  register GMarshalFunc_VOID__ENUM_OBJECT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__ENUM_OBJECT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -627,9 +627,9 @@ gimp_marshal_VOID__ENUM_POINTER (GClosure     *closure,
                                                    gint         arg_1,
                                                    gpointer     arg_2,
                                                    gpointer     data2);
-  register GMarshalFunc_VOID__ENUM_POINTER callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__ENUM_POINTER callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -668,9 +668,9 @@ gimp_marshal_VOID__INT_INT (GClosure     *closure,
                                               gint         arg_1,
                                               gint         arg_2,
                                               gpointer     data2);
-  register GMarshalFunc_VOID__INT_INT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__INT_INT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -707,9 +707,9 @@ gimp_marshal_VOID__INT_INT_INT_INT (GClosure     *closure,
                                                       gint         arg_3,
                                                       gint         arg_4,
                                                       gpointer     data2);
-  register GMarshalFunc_VOID__INT_INT_INT_INT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__INT_INT_INT_INT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 5);
 
@@ -748,9 +748,9 @@ gimp_marshal_VOID__OBJECT_BOOLEAN (GClosure     *closure,
                                                      gpointer     arg_1,
                                                      gboolean     arg_2,
                                                      gpointer     data2);
-  register GMarshalFunc_VOID__OBJECT_BOOLEAN callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__OBJECT_BOOLEAN callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -785,9 +785,9 @@ gimp_marshal_VOID__OBJECT_INT (GClosure     *closure,
                                                  gpointer     arg_1,
                                                  gint         arg_2,
                                                  gpointer     data2);
-  register GMarshalFunc_VOID__OBJECT_INT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__OBJECT_INT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -822,9 +822,9 @@ gimp_marshal_VOID__OBJECT_OBJECT (GClosure     *closure,
                                                     gpointer     arg_1,
                                                     gpointer     arg_2,
                                                     gpointer     data2);
-  register GMarshalFunc_VOID__OBJECT_OBJECT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__OBJECT_OBJECT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -859,9 +859,9 @@ gimp_marshal_VOID__OBJECT_POINTER (GClosure     *closure,
                                                      gpointer     arg_1,
                                                      gpointer     arg_2,
                                                      gpointer     data2);
-  register GMarshalFunc_VOID__OBJECT_POINTER callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__OBJECT_POINTER callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -898,9 +898,9 @@ gimp_marshal_VOID__POINTER_BOXED (GClosure     *closure,
                                                     gpointer     arg_1,
                                                     gpointer     arg_2,
                                                     gpointer     data2);
-  register GMarshalFunc_VOID__POINTER_BOXED callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__POINTER_BOXED callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -935,9 +935,9 @@ gimp_marshal_VOID__POINTER_ENUM (GClosure     *closure,
                                                    gpointer     arg_1,
                                                    gint         arg_2,
                                                    gpointer     data2);
-  register GMarshalFunc_VOID__POINTER_ENUM callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__POINTER_ENUM callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -973,9 +973,9 @@ gimp_marshal_VOID__POINTER_FLAGS_BOOLEAN (GClosure     *closure,
                                                             guint        arg_2,
                                                             gboolean     arg_3,
                                                             gpointer     data2);
-  register GMarshalFunc_VOID__POINTER_FLAGS_BOOLEAN callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__POINTER_FLAGS_BOOLEAN callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 4);
 
@@ -1012,9 +1012,9 @@ gimp_marshal_VOID__POINTER_UINT_FLAGS (GClosure     *closure,
                                                          guint        arg_2,
                                                          guint        arg_3,
                                                          gpointer     data2);
-  register GMarshalFunc_VOID__POINTER_UINT_FLAGS callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__POINTER_UINT_FLAGS callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 4);
 
@@ -1054,9 +1054,9 @@ gimp_marshal_VOID__STRING_BOOLEAN_UINT_FLAGS (GClosure     *closure,
                                                                 guint        arg_3,
                                                                 guint        arg_4,
                                                                 gpointer     data2);
-  register GMarshalFunc_VOID__STRING_BOOLEAN_UINT_FLAGS callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__STRING_BOOLEAN_UINT_FLAGS callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 5);
 
@@ -1093,9 +1093,9 @@ gimp_marshal_VOID__STRING_FLAGS (GClosure     *closure,
                                                    gpointer     arg_1,
                                                    guint        arg_2,
                                                    gpointer     data2);
-  register GMarshalFunc_VOID__STRING_FLAGS callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__STRING_FLAGS callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -1131,9 +1131,9 @@ gimp_marshal_VOID__STRING_STRING_STRING (GClosure     *closure,
                                                            gpointer     arg_2,
                                                            gpointer     arg_3,
                                                            gpointer     data2);
-  register GMarshalFunc_VOID__STRING_STRING_STRING callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__STRING_STRING_STRING callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 4);
 

@@ -65,9 +65,9 @@ _gimp_widgets_marshal_VOID__INT_INT (GClosure     *closure,
                                               gint         arg_1,
                                               gint         arg_2,
                                               gpointer     data2);
-  register GMarshalFunc_VOID__INT_INT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__INT_INT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -104,9 +104,9 @@ _gimp_widgets_marshal_VOID__OBJECT_INT (GClosure     *closure,
                                                  gpointer     arg_1,
                                                  gint         arg_2,
                                                  gpointer     data2);
-  register GMarshalFunc_VOID__OBJECT_INT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__OBJECT_INT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -141,9 +141,9 @@ _gimp_widgets_marshal_VOID__POINTER_POINTER (GClosure     *closure,
                                                       gpointer     arg_1,
                                                       gpointer     arg_2,
                                                       gpointer     data2);
-  register GMarshalFunc_VOID__POINTER_POINTER callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__POINTER_POINTER callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -178,9 +178,9 @@ _gimp_widgets_marshal_VOID__STRING_FLAGS (GClosure     *closure,
                                                    gpointer     arg_1,
                                                    guint        arg_2,
                                                    gpointer     data2);
-  register GMarshalFunc_VOID__STRING_FLAGS callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__STRING_FLAGS callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -215,9 +215,9 @@ _gimp_widgets_marshal_VOID__STRING_INT (GClosure     *closure,
                                                  gpointer     arg_1,
                                                  gint         arg_2,
                                                  gpointer     data2);
-  register GMarshalFunc_VOID__STRING_INT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__STRING_INT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -252,9 +252,9 @@ _gimp_widgets_marshal_VOID__DOUBLE_DOUBLE (GClosure     *closure,
                                                     gdouble      arg_1,
                                                     gdouble      arg_2,
                                                     gpointer     data2);
-  register GMarshalFunc_VOID__DOUBLE_DOUBLE callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__DOUBLE_DOUBLE callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -288,9 +288,9 @@ _gimp_widgets_marshal_BOOLEAN__POINTER (GClosure     *closure,
   typedef gboolean (*GMarshalFunc_BOOLEAN__POINTER) (gpointer     data1,
                                                      gpointer     arg_1,
                                                      gpointer     data2);
-  register GMarshalFunc_BOOLEAN__POINTER callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__POINTER callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);

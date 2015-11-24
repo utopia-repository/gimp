@@ -7,6 +7,44 @@ This is the stable branch of GIMP. No new features are being added
 here, just bug-fixes.
 
 
+Overview of Changes from GIMP 2.8.14 to GIMP 2.8.16
+===================================================
+
+
+Core:
+
+ - Seek much less when writing XCF
+ - Don't seek past the end of the file when writing XCF
+ - Windows: call SetDLLDirectory() for less DLL hell
+ - Fix velocity parameter on .GIH brushes
+ - Fix brokenness while transforming certain sets of linked layers
+
+
+GUI:
+
+ - Always show image tabs in single window mode
+ - Fix switching of dock tabs by DND hovering
+ - Don't make the scroll area for tags too small
+ - Fixed a crash in the save dialog
+ - Fix issue where ruler updates made things very slow on Windows
+
+
+Plug-ins:
+
+ - Fix several issues in the BMP plug-in
+ - Make Gfig work with the new brush size behavior again
+ - Fix font export in the PDF plug-in
+ - Support layer groups in OpenRaster files
+ - Fix loading of PSD files with layer groups
+
+
+General:
+
+ - OSX build system fixes
+ - Bug fixes
+ - Translation updates
+
+
 Overview of Changes from GIMP 2.8.12 to GIMP 2.8.14
 ===================================================
 

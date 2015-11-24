@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GIMP Widgets Library Reference Manual: GimpPreview</title>
+<title>GimpPreview: GIMP Widgets Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="GimpPreviewArea.html" title="GimpPreviewArea">
 <link rel="next" href="GimpRuler.html" title="GimpRuler">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -32,8 +32,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="GimpPreview.top_of_page"></a>GimpPreview</span></h2>
-<p>GimpPreview — A widget providing a <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> plus
-                    framework to update the preview.</p>
+<p>GimpPreview</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -47,7 +46,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="GimpPreview.html#gimp-preview-get-update" title="gimp_preview_get_update ()">gimp_preview_get_update</a> <span class="c_punctuation">()</span>
@@ -103,7 +102,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GtkWidget</span> *
+<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="GimpPreview.html#gimp-preview-get-area" title="gimp_preview_get_area ()">gimp_preview_get_area</a> <span class="c_punctuation">()</span>
@@ -143,7 +142,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GtkWidget</span> *
+<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="GimpPreview.html#gimp-preview-get-controls" title="gimp_preview_get_controls ()">gimp_preview_get_controls</a> <span class="c_punctuation">()</span>
@@ -161,7 +160,7 @@
 <col width="200px" class="properties_flags">
 </colgroup>
 <tbody><tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
 <td class="property_name"><a class="link" href="GimpPreview.html#GimpPreview--update" title="The “update” property">update</a></td>
 <td class="property_flags">Read / Write / Construct</td>
 </tr></tbody>
@@ -176,7 +175,7 @@
 <col width="200px" class="style_properties_flags">
 </colgroup>
 <tbody><tr>
-<td class="property_type"><span class="type">gint</span></td>
+<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a></td>
 <td class="property_name"><a class="link" href="GimpPreview.html#GimpPreview--s-size" title="The “size” style property">size</a></td>
 <td class="property_flags">Read</td>
 </tr></tbody>
@@ -193,7 +192,7 @@
 <tbody><tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="GimpPreview.html#GimpPreview-invalidated" title="The “invalidated” signal">invalidated</a></td>
-<td class="signal_flags">Run First</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></td>
 </tr></tbody>
 </table></div>
 </div>
@@ -212,12 +211,12 @@
 </div>
 <div class="refsect1">
 <a name="GimpPreview.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
-    <span class="lineart">╰──</span> GInitiallyUnowned
-        <span class="lineart">╰──</span> GtkObject
-            <span class="lineart">╰──</span> GtkWidget
-                <span class="lineart">╰──</span> GtkContainer
-                    <span class="lineart">╰──</span> GtkBox
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+        <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkObject.html">GtkObject</a>
+            <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkWidget.html">GtkWidget</a>
+                <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkContainer.html">GtkContainer</a>
+                    <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkBox.html">GtkBox</a>
                         <span class="lineart">╰──</span> GimpPreview
                             <span class="lineart">╰──</span> <a class="link" href="GimpScrolledPreview.html" title="GimpScrolledPreview">GimpScrolledPreview</a>
 </pre>
@@ -226,489 +225,122 @@
 <a name="GimpPreview.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpPreview implements
- AtkImplementorIface,  GtkBuildable and  GtkOrientable.</p>
+ AtkImplementorIface,  <a href="http://library.gnome.org/devel/gtk3/GtkBuildable.html">GtkBuildable</a> and  <a href="http://library.gnome.org/devel/gtk3/gtk2-Orientable.html#GtkOrientable">GtkOrientable</a>.</p>
 </div>
 <div class="refsect1">
 <a name="GimpPreview.description"></a><h2>Description</h2>
-<p>A widget providing a <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> plus framework to update the
-preview.</p>
 </div>
 <div class="refsect1">
 <a name="GimpPreview.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="gimp-preview-get-update"></a><h3>gimp_preview_get_update ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gimp_preview_get_update (<em class="parameter"><code><a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> *preview</code></em>);</pre>
-<div class="refsect3">
-<a name="id-1.2.30.11.2.4"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>preview</p></td>
-<td class="parameter_description"><p>a <a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> widget</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.30.11.2.5"></a><h4>Returns</h4>
-<p> the state of the "Preview" check button.</p>
-<p></p>
-</div>
-<p class="since">Since GIMP 2.2</p>
+<p class="since">Since: GIMP 2.2</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-preview-set-update"></a><h3>gimp_preview_set_update ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_preview_set_update (<em class="parameter"><code><a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> *preview</code></em>,
-                         <em class="parameter"><code><span class="type">gboolean</span> update</code></em>);</pre>
-<p>Sets the state of the "Preview" check button.</p>
-<div class="refsect3">
-<a name="id-1.2.30.11.3.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>preview</p></td>
-<td class="parameter_description"><p>a <a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> widget</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>update</p></td>
-<td class="parameter_description"><p><code class="literal">TRUE</code> if the preview should invalidate itself when being
-scrolled or when <a class="link" href="GimpPreview.html#gimp-preview-invalidate" title="gimp_preview_invalidate ()"><code class="function">gimp_preview_invalidate()</code></a> is being called</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p class="since">Since GIMP 2.2</p>
+                         <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> update</code></em>);</pre>
+<p class="since">Since: GIMP 2.2</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-preview-set-bounds"></a><h3>gimp_preview_set_bounds ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_preview_set_bounds (<em class="parameter"><code><a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> *preview</code></em>,
-                         <em class="parameter"><code><span class="type">gint</span> xmin</code></em>,
-                         <em class="parameter"><code><span class="type">gint</span> ymin</code></em>,
-                         <em class="parameter"><code><span class="type">gint</span> xmax</code></em>,
-                         <em class="parameter"><code><span class="type">gint</span> ymax</code></em>);</pre>
-<p>Sets the lower and upper limits for the previewed area. The
-difference between the upper and lower value is used to set the
-maximum size of the <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> used in the <em class="parameter"><code>preview</code></em>
-.</p>
-<div class="refsect3">
-<a name="id-1.2.30.11.4.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>preview</p></td>
-<td class="parameter_description"><p>a <a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> widget</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>xmin</p></td>
-<td class="parameter_description"><p>the minimum X value</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>ymin</p></td>
-<td class="parameter_description"><p>the minimum Y value</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>xmax</p></td>
-<td class="parameter_description"><p>the maximum X value</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>ymax</p></td>
-<td class="parameter_description"><p>the maximum Y value</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p class="since">Since GIMP 2.2</p>
+                         <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> xmin</code></em>,
+                         <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> ymin</code></em>,
+                         <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> xmax</code></em>,
+                         <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> ymax</code></em>);</pre>
+<p class="since">Since: GIMP 2.2</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-preview-get-size"></a><h3>gimp_preview_get_size ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_preview_get_size (<em class="parameter"><code><a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> *preview</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> *width</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> *height</code></em>);</pre>
-<div class="refsect3">
-<a name="id-1.2.30.11.5.4"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>preview</p></td>
-<td class="parameter_description"><p>a <a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> widget</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>width</p></td>
-<td class="parameter_description"><p>return location for the preview area width</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>height</p></td>
-<td class="parameter_description"><p>return location for the preview area height</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p class="since">Since GIMP 2.2</p>
+                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *width</code></em>,
+                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *height</code></em>);</pre>
+<p class="since">Since: GIMP 2.2</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-preview-get-position"></a><h3>gimp_preview_get_position ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_preview_get_position (<em class="parameter"><code><a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> *preview</code></em>,
-                           <em class="parameter"><code><span class="type">gint</span> *x</code></em>,
-                           <em class="parameter"><code><span class="type">gint</span> *y</code></em>);</pre>
-<div class="refsect3">
-<a name="id-1.2.30.11.6.4"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>preview</p></td>
-<td class="parameter_description"><p>a <a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> widget</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>x</p></td>
-<td class="parameter_description"><p>return location for the horizontal offset</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>y</p></td>
-<td class="parameter_description"><p>return location for the vertical offset</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p class="since">Since GIMP 2.2</p>
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *x</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *y</code></em>);</pre>
+<p class="since">Since: GIMP 2.2</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-preview-transform"></a><h3>gimp_preview_transform ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_preview_transform (<em class="parameter"><code><a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> *preview</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> src_x</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> src_y</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> *dest_x</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> *dest_y</code></em>);</pre>
-<p>Transforms from image to widget coordinates.</p>
-<div class="refsect3">
-<a name="id-1.2.30.11.7.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>preview</p></td>
-<td class="parameter_description"><p>a <a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> widget</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>src_x</p></td>
-<td class="parameter_description"><p>horizontal position on the previewed image</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>src_y</p></td>
-<td class="parameter_description"><p>vertical position on the previewed image</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>dest_x</p></td>
-<td class="parameter_description"><p>returns the transformed horizontal position</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>dest_y</p></td>
-<td class="parameter_description"><p>returns the transformed vertical position</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p class="since">Since GIMP 2.4</p>
+                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> src_x</code></em>,
+                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> src_y</code></em>,
+                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *dest_x</code></em>,
+                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *dest_y</code></em>);</pre>
+<p class="since">Since: GIMP 2.4</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-preview-untransform"></a><h3>gimp_preview_untransform ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_preview_untransform (<em class="parameter"><code><a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> *preview</code></em>,
-                          <em class="parameter"><code><span class="type">gint</span> src_x</code></em>,
-                          <em class="parameter"><code><span class="type">gint</span> src_y</code></em>,
-                          <em class="parameter"><code><span class="type">gint</span> *dest_x</code></em>,
-                          <em class="parameter"><code><span class="type">gint</span> *dest_y</code></em>);</pre>
-<p>Transforms from widget to image coordinates.</p>
-<div class="refsect3">
-<a name="id-1.2.30.11.8.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>preview</p></td>
-<td class="parameter_description"><p>a <a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> widget</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>src_x</p></td>
-<td class="parameter_description"><p>horizontal position relative to the preview area's origin</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>src_y</p></td>
-<td class="parameter_description"><p>vertical position relative to  preview area's origin</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>dest_x</p></td>
-<td class="parameter_description"><p>returns the untransformed horizontal position</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>dest_y</p></td>
-<td class="parameter_description"><p>returns the untransformed vertical position</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p class="since">Since GIMP 2.4</p>
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> src_x</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> src_y</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *dest_x</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *dest_y</code></em>);</pre>
+<p class="since">Since: GIMP 2.4</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-preview-get-area"></a><h3>gimp_preview_get_area ()</h3>
-<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 gimp_preview_get_area (<em class="parameter"><code><a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> *preview</code></em>);</pre>
-<p>In most cases, you shouldn't need to access the <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a>
-that is being used in the <em class="parameter"><code>preview</code></em>
-. Sometimes however, you need to.
-For example if you want to receive mouse events from the area. In
-such cases, use <a class="link" href="GimpPreview.html#gimp-preview-get-area" title="gimp_preview_get_area ()"><code class="function">gimp_preview_get_area()</code></a>.</p>
-<div class="refsect3">
-<a name="id-1.2.30.11.9.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>preview</p></td>
-<td class="parameter_description"><p>a <a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> widget</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.30.11.9.6"></a><h4>Returns</h4>
-<p> a pointer to the <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> used in the <em class="parameter"><code>preview</code></em>
-.</p>
-<p></p>
-</div>
-<p class="since">Since GIMP 2.4</p>
+<p class="since">Since: GIMP 2.4</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-preview-draw"></a><h3>gimp_preview_draw ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_preview_draw (<em class="parameter"><code><a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> *preview</code></em>);</pre>
-<p>Calls the GimpPreview::draw method. GimpPreview itself doesn't
-implement a default draw method so the behaviour is determined by
-the derived class implementing this method.</p>
-<p><a href="/local/head/share/gtk-doc/html/libgimp/GimpDrawablePreview.html"><span class="type">GimpDrawablePreview</span></a> implements <a class="link" href="GimpPreview.html#gimp-preview-draw" title="gimp_preview_draw ()"><code class="function">gimp_preview_draw()</code></a> by drawing the
-original, unmodified drawable to the <em class="parameter"><code>preview</code></em>
-.</p>
-<div class="refsect3">
-<a name="id-1.2.30.11.10.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>preview</p></td>
-<td class="parameter_description"><p>a <a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> widget</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<p class="since">Since GIMP 2.2</p>
+<p class="since">Since: GIMP 2.2</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-preview-draw-buffer"></a><h3>gimp_preview_draw_buffer ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_preview_draw_buffer (<em class="parameter"><code><a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> *preview</code></em>,
-                          <em class="parameter"><code>const <span class="type">guchar</span> *buffer</code></em>,
-                          <em class="parameter"><code><span class="type">gint</span> rowstride</code></em>);</pre>
-<p>Calls the GimpPreview::draw_buffer method. GimpPreview itself
-doesn't implement this method so the behaviour is determined by the
-derived class implementing this method.</p>
-<div class="refsect3">
-<a name="id-1.2.30.11.11.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>preview</p></td>
-<td class="parameter_description"><p>a <a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> widget</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>buffer</p></td>
-<td class="parameter_description"><p>a pixel buffer the size of the preview</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>rowstride</p></td>
-<td class="parameter_description"><p>the <em class="parameter"><code>buffer</code></em>
-'s rowstride</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p class="since">Since GIMP 2.2</p>
+                          <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buffer</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride</code></em>);</pre>
+<p class="since">Since: GIMP 2.2</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-preview-invalidate"></a><h3>gimp_preview_invalidate ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_preview_invalidate (<em class="parameter"><code><a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> *preview</code></em>);</pre>
-<p>This function starts or renews a short low-priority timeout. When
-the timeout expires, the GimpPreview::invalidated signal is emitted
-which will usually cause the <em class="parameter"><code>preview</code></em>
- to be updated.</p>
-<p>This function does nothing unless the "Preview" button is checked.</p>
-<p>During the emission of the signal a busy cursor is set on the
-toplevel window containing the <em class="parameter"><code>preview</code></em>
- and on the preview area
-itself.</p>
-<div class="refsect3">
-<a name="id-1.2.30.11.12.7"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>preview</p></td>
-<td class="parameter_description"><p>a <a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> widget</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<p class="since">Since GIMP 2.2</p>
+<p class="since">Since: GIMP 2.2</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-preview-set-default-cursor"></a><h3>gimp_preview_set_default_cursor ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_preview_set_default_cursor (<em class="parameter"><code><a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> *preview</code></em>,
-                                 <em class="parameter"><code><span class="type">GdkCursor</span> *cursor</code></em>);</pre>
-<p>Sets the default mouse cursor for the preview.  Note that this will
-be overriden by a <code class="literal">GDK_FLEUR</code> if the preview has scrollbars, or by a
-<code class="literal">GDK_WATCH</code> when the preview is invalidated.</p>
-<div class="refsect3">
-<a name="id-1.2.30.11.13.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>preview</p></td>
-<td class="parameter_description"><p>a <a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> widget</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>cursor</p></td>
-<td class="parameter_description"><p>a <span class="type">GdkCursor</span> or <code class="literal">NULL</code></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p class="since">Since GIMP 2.2</p>
+                                 <em class="parameter"><code><a href="http://library.gnome.org/devel/gdk3/gdk2-Cursors.html#GdkCursor"><span class="type">GdkCursor</span></a> *cursor</code></em>);</pre>
+<p class="since">Since: GIMP 2.2</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-preview-get-controls"></a><h3>gimp_preview_get_controls ()</h3>
-<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 gimp_preview_get_controls (<em class="parameter"><code><a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> *preview</code></em>);</pre>
-<p>Gives access to the <span class="type">GtkHBox</span> at the bottom of the preview that
-contains the update toggle. Derived widgets can use this function
-if they need to add controls to this area.</p>
-<div class="refsect3">
-<a name="id-1.2.30.11.14.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>preview</p></td>
-<td class="parameter_description"><p>a <a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> widget</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.30.11.14.6"></a><h4>Returns</h4>
-<p> the <span class="type">GtkHBox</span> at the bottom of the preview.</p>
-<p></p>
-</div>
-<p class="since">Since GIMP 2.4</p>
+<p class="since">Since: GIMP 2.4</p>
 </div>
 </div>
 <div class="refsect1">
@@ -716,16 +348,13 @@ if they need to add controls to this area.</p>
 <div class="refsect2">
 <a name="GimpPreview-struct"></a><h3>GimpPreview</h3>
 <pre class="programlisting">typedef struct _GimpPreview GimpPreview;</pre>
-<p>
-</p>
 </div>
 </div>
 <div class="refsect1">
 <a name="GimpPreview.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="GimpPreview--update"></a><h3>The <code class="literal">“update”</code> property</h3>
-<pre class="programlisting">  “update”                   <span class="type">gboolean</span></pre>
-<p></p>
+<pre class="programlisting">  “update”                   <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
 <p>Flags: Read / Write / Construct</p>
 <p>Default value: TRUE</p>
 </div>
@@ -734,8 +363,7 @@ if they need to add controls to this area.</p>
 <a name="GimpPreview.style-property-details"></a><h2>Style Property Details</h2>
 <div class="refsect2">
 <a name="GimpPreview--s-size"></a><h3>The <code class="literal">“size”</code> style property</h3>
-<pre class="programlisting">  “size”                     <span class="type">gint</span></pre>
-<p></p>
+<pre class="programlisting">  “size”                     <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a></pre>
 <p>Flags: Read</p>
 <p>Allowed values: [1,1024]</p>
 <p>Default value: 200</p>
@@ -747,37 +375,12 @@ if they need to add controls to this area.</p>
 <a name="GimpPreview-invalidated"></a><h3>The <code class="literal">“invalidated”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> *gimppreview,
-               <span class="type">gpointer</span>     user_data)</pre>
-<p>
-</p>
-<div class="refsect3">
-<a name="id-1.2.30.15.2.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>gimppreview</p></td>
-<td class="parameter_description"><p>the object which received the signal.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>user_data</p></td>
-<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p>Flags: Run First</p>
+               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>     user_data)</pre>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

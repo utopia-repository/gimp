@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GIMP Widgets Library Reference Manual: GimpPathEditor</title>
+<title>GimpPathEditor: GIMP Widgets Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="GimpPageSelector.html" title="GimpPageSelector">
 <link rel="next" href="GimpPickButton.html" title="GimpPickButton">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -44,7 +44,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GtkWidget</span> *
+<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="GimpPathEditor.html#gimp-path-editor-new" title="gimp_path_editor_new ()">gimp_path_editor_new</a> <span class="c_punctuation">()</span>
@@ -52,7 +52,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gchar</span> *
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="GimpPathEditor.html#gimp-path-editor-get-path" title="gimp_path_editor_get_path ()">gimp_path_editor_get_path</a> <span class="c_punctuation">()</span>
@@ -68,7 +68,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gchar</span> *
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="GimpPathEditor.html#gimp-path-editor-get-writable-path" title="gimp_path_editor_get_writable_path ()">gimp_path_editor_get_writable_path</a> <span class="c_punctuation">()</span>
@@ -84,7 +84,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="GimpPathEditor.html#gimp-path-editor-get-dir-writable" title="gimp_path_editor_get_dir_writable ()">gimp_path_editor_get_dir_writable</a> <span class="c_punctuation">()</span>
@@ -113,12 +113,12 @@
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="GimpPathEditor.html#GimpPathEditor-path-changed" title="The “path-changed” signal">path-changed</a></td>
-<td class="signal_flags">Run First</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="GimpPathEditor.html#GimpPathEditor-writable-changed" title="The “writable-changed” signal">writable-changed</a></td>
-<td class="signal_flags">Run First</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></td>
 </tr>
 </tbody>
 </table></div>
@@ -138,12 +138,12 @@
 </div>
 <div class="refsect1">
 <a name="GimpPathEditor.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
-    <span class="lineart">╰──</span> GInitiallyUnowned
-        <span class="lineart">╰──</span> GtkObject
-            <span class="lineart">╰──</span> GtkWidget
-                <span class="lineart">╰──</span> GtkContainer
-                    <span class="lineart">╰──</span> GtkBox
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+        <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkObject.html">GtkObject</a>
+            <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkWidget.html">GtkWidget</a>
+                <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkContainer.html">GtkContainer</a>
+                    <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkBox.html">GtkBox</a>
                         <span class="lineart">╰──</span> GimpPathEditor
 </pre>
 </div>
@@ -151,7 +151,7 @@
 <a name="GimpPathEditor.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpPathEditor implements
- AtkImplementorIface,  GtkBuildable and  GtkOrientable.</p>
+ AtkImplementorIface,  <a href="http://library.gnome.org/devel/gtk3/GtkBuildable.html">GtkBuildable</a> and  <a href="http://library.gnome.org/devel/gtk3/gtk2-Orientable.html#GtkOrientable">GtkOrientable</a>.</p>
 </div>
 <div class="refsect1">
 <a name="GimpPathEditor.description"></a><h2>Description</h2>
@@ -169,12 +169,12 @@ the search path, the "path_changed" signal will be emitted.</p>
 <a name="GimpPathEditor.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="gimp-path-editor-new"></a><h3>gimp_path_editor_new ()</h3>
-<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *
-gimp_path_editor_new (<em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>,
-                      <em class="parameter"><code>const <span class="type">gchar</span> *path</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
+gimp_path_editor_new (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                      <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *path</code></em>);</pre>
 <p>Creates a new <a class="link" href="GimpPathEditor.html" title="GimpPathEditor"><span class="type">GimpPathEditor</span></a> widget.</p>
 <p>The elements of the initial search path must be separated with the
-<span class="type">G_SEARCHPATH_SEPARATOR</span> character.</p>
+<a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#G-SEARCHPATH-SEPARATOR:CAPS"><span class="type">G_SEARCHPATH_SEPARATOR</span></a> character.</p>
 <div class="refsect3">
 <a name="id-1.2.27.9.2.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -186,7 +186,7 @@ gimp_path_editor_new (<em class="parameter"><code>const <span class="type">gchar
 <tbody>
 <tr>
 <td class="parameter_name"><p>title</p></td>
-<td class="parameter_description"><p>The title of the <span class="type">GtkFileChooser</span> dialog which can be popped up.</p></td>
+<td class="parameter_description"><p>The title of the <a href="http://library.gnome.org/devel/gtk3/GtkFileChooser.html"><span class="type">GtkFileChooser</span></a> dialog which can be popped up.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -200,17 +200,16 @@ gimp_path_editor_new (<em class="parameter"><code>const <span class="type">gchar
 <div class="refsect3">
 <a name="id-1.2.27.9.2.7"></a><h4>Returns</h4>
 <p> A pointer to the new <a class="link" href="GimpPathEditor.html" title="GimpPathEditor"><span class="type">GimpPathEditor</span></a> widget.</p>
-<p></p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-path-editor-get-path"></a><h3>gimp_path_editor_get_path ()</h3>
-<pre class="programlisting"><span class="returnvalue">gchar</span> *
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 gimp_path_editor_get_path (<em class="parameter"><code><a class="link" href="GimpPathEditor.html" title="GimpPathEditor"><span class="type">GimpPathEditor</span></a> *editor</code></em>);</pre>
 <p>The elements of the returned search path string are separated with the
-<span class="type">G_SEARCHPATH_SEPARATOR</span> character.</p>
-<p>Note that you have to <code class="function">g_free()</code> the returned string.</p>
+<a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#G-SEARCHPATH-SEPARATOR:CAPS"><span class="type">G_SEARCHPATH_SEPARATOR</span></a> character.</p>
+<p>Note that you have to <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> the returned string.</p>
 <div class="refsect3">
 <a name="id-1.2.27.9.3.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -229,7 +228,6 @@ gimp_path_editor_get_path (<em class="parameter"><code><a class="link" href="Gim
 <div class="refsect3">
 <a name="id-1.2.27.9.3.7"></a><h4>Returns</h4>
 <p> The search path the user has selected in the path editor.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -237,9 +235,9 @@ gimp_path_editor_get_path (<em class="parameter"><code><a class="link" href="Gim
 <a name="gimp-path-editor-set-path"></a><h3>gimp_path_editor_set_path ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_path_editor_set_path (<em class="parameter"><code><a class="link" href="GimpPathEditor.html" title="GimpPathEditor"><span class="type">GimpPathEditor</span></a> *editor</code></em>,
-                           <em class="parameter"><code>const <span class="type">gchar</span> *path</code></em>);</pre>
+                           <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *path</code></em>);</pre>
 <p>The elements of the initial search path must be separated with the
-<span class="type">G_SEARCHPATH_SEPARATOR</span> character.</p>
+<a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#G-SEARCHPATH-SEPARATOR:CAPS"><span class="type">G_SEARCHPATH_SEPARATOR</span></a> character.</p>
 <div class="refsect3">
 <a name="id-1.2.27.9.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -266,46 +264,30 @@ gimp_path_editor_set_path (<em class="parameter"><code><a class="link" href="Gim
 <hr>
 <div class="refsect2">
 <a name="gimp-path-editor-get-writable-path"></a><h3>gimp_path_editor_get_writable_path ()</h3>
-<pre class="programlisting"><span class="returnvalue">gchar</span> *
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 gimp_path_editor_get_writable_path (<em class="parameter"><code><a class="link" href="GimpPathEditor.html" title="GimpPathEditor"><span class="type">GimpPathEditor</span></a> *editor</code></em>);</pre>
-<p>
-</p>
-<div class="refsect3">
-<a name="id-1.2.27.9.5.5"></a><h4>Returns</h4>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-path-editor-set-writable-path"></a><h3>gimp_path_editor_set_writable_path ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_path_editor_set_writable_path (<em class="parameter"><code><a class="link" href="GimpPathEditor.html" title="GimpPathEditor"><span class="type">GimpPathEditor</span></a> *editor</code></em>,
-                                    <em class="parameter"><code>const <span class="type">gchar</span> *path</code></em>);</pre>
-<p>
-</p>
+                                    <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *path</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-path-editor-get-dir-writable"></a><h3>gimp_path_editor_get_dir_writable ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gimp_path_editor_get_dir_writable (<em class="parameter"><code><a class="link" href="GimpPathEditor.html" title="GimpPathEditor"><span class="type">GimpPathEditor</span></a> *editor</code></em>,
-                                   <em class="parameter"><code>const <span class="type">gchar</span> *directory</code></em>);</pre>
-<p>
-</p>
-<div class="refsect3">
-<a name="id-1.2.27.9.7.5"></a><h4>Returns</h4>
-<p></p>
-</div>
+                                   <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *directory</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-path-editor-set-dir-writable"></a><h3>gimp_path_editor_set_dir_writable ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_path_editor_set_dir_writable (<em class="parameter"><code><a class="link" href="GimpPathEditor.html" title="GimpPathEditor"><span class="type">GimpPathEditor</span></a> *editor</code></em>,
-                                   <em class="parameter"><code>const <span class="type">gchar</span> *directory</code></em>,
-                                   <em class="parameter"><code><span class="type">gboolean</span> writable</code></em>);</pre>
-<p>
-</p>
+                                   <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *directory</code></em>,
+                                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> writable</code></em>);</pre>
 </div>
 </div>
 <div class="refsect1">
@@ -313,8 +295,6 @@ gimp_path_editor_set_dir_writable (<em class="parameter"><code><a class="link" h
 <div class="refsect2">
 <a name="GimpPathEditor-struct"></a><h3>GimpPathEditor</h3>
 <pre class="programlisting">typedef struct _GimpPathEditor GimpPathEditor;</pre>
-<p>
-</p>
 </div>
 </div>
 <div class="refsect1">
@@ -323,7 +303,7 @@ gimp_path_editor_set_dir_writable (<em class="parameter"><code><a class="link" h
 <a name="GimpPathEditor-path-changed"></a><h3>The <code class="literal">“path-changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="GimpPathEditor.html" title="GimpPathEditor"><span class="type">GimpPathEditor</span></a> *arg0,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>        user_data)</pre>
 <p>This signal is emitted whenever the user adds, deletes, modifies
 or reorders an element of the search path.</p>
 <div class="refsect3">
@@ -341,14 +321,14 @@ or reorders an element of the search path.</p>
 </tr></tbody>
 </table></div>
 </div>
-<p>Flags: Run First</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpPathEditor-writable-changed"></a><h3>The <code class="literal">“writable-changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="GimpPathEditor.html" title="GimpPathEditor"><span class="type">GimpPathEditor</span></a> *arg0,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>        user_data)</pre>
 <p>This signal is emitted whenever the "writable" column of a directory
 is changed, either by the user clicking on it or by calling
 <a class="link" href="GimpPathEditor.html#gimp-path-editor-set-dir-writable" title="gimp_path_editor_set_dir_writable ()"><code class="function">gimp_path_editor_set_dir_writable()</code></a>.</p>
@@ -367,16 +347,15 @@ is changed, either by the user clicking on it or by calling
 </tr></tbody>
 </table></div>
 </div>
-<p>Flags: Run First</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></p>
 </div>
 </div>
 <div class="refsect1">
 <a name="GimpPathEditor.see-also"></a><h2>See Also</h2>
-<p><a class="link" href="GimpFileEntry.html" title="GimpFileEntry"><span class="type">GimpFileEntry</span></a>, <span class="type">G_SEARCHPATH_SEPARATOR</span></p>
+<p><a class="link" href="GimpFileEntry.html" title="GimpFileEntry"><span class="type">GimpFileEntry</span></a>, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#G-SEARCHPATH-SEPARATOR:CAPS"><span class="type">G_SEARCHPATH_SEPARATOR</span></a></p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

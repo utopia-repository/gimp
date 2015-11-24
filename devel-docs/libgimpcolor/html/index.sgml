@@ -50,6 +50,9 @@
 <ANCHOR id="libgimpcolor-GimpRGB.other_details" href="libgimpcolor/libgimpcolor-GimpRGB.html#libgimpcolor-GimpRGB.other_details">
 <ANCHOR id="GimpRGB" href="libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB">
 <ANCHOR id="GimpRGBCompositeMode" href="libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGBCompositeMode">
+<ANCHOR id="GIMP-RGB-COMPOSITE-NONE:CAPS" href="libgimpcolor/libgimpcolor-GimpRGB.html#GIMP-RGB-COMPOSITE-NONE:CAPS">
+<ANCHOR id="GIMP-RGB-COMPOSITE-NORMAL:CAPS" href="libgimpcolor/libgimpcolor-GimpRGB.html#GIMP-RGB-COMPOSITE-NORMAL:CAPS">
+<ANCHOR id="GIMP-RGB-COMPOSITE-BEHIND:CAPS" href="libgimpcolor/libgimpcolor-GimpRGB.html#GIMP-RGB-COMPOSITE-BEHIND:CAPS">
 <ANCHOR id="libgimpcolor-GimpHSV" href="libgimpcolor/libgimpcolor-GimpHSV.html">
 <ANCHOR id="libgimpcolor-GimpHSV.functions" href="libgimpcolor/libgimpcolor-GimpHSV.html#libgimpcolor-GimpHSV.functions">
 <ANCHOR id="libgimpcolor-GimpHSV.other" href="libgimpcolor/libgimpcolor-GimpHSV.html#libgimpcolor-GimpHSV.other">

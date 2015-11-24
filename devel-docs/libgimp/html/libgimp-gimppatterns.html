@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GIMP Library Reference Manual: gimppatterns</title>
+<title>gimppatterns: GIMP Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-data.html" title="Data Objects">
 <link rel="prev" href="libgimp-gimppattern.html" title="gimppattern">
 <link rel="next" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -27,7 +27,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="libgimp-gimppatterns.top_of_page"></a>gimppatterns</span></h2>
-<p>gimppatterns — Functions relating to patterns.</p>
+<p>gimppatterns</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -41,7 +41,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimppatterns.html#gimp-patterns-refresh" title="gimp_patterns_refresh ()">gimp_patterns_refresh</a> <span class="c_punctuation">()</span>
@@ -49,7 +49,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gchar</span> **
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimppatterns.html#gimp-patterns-get-list" title="gimp_patterns_get_list ()">gimp_patterns_get_list</a> <span class="c_punctuation">()</span>
@@ -57,7 +57,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gchar</span> *
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimppatterns.html#gimp-patterns-get-pattern" title="gimp_patterns_get_pattern ()">gimp_patterns_get_pattern</a> <span class="c_punctuation">()</span>
@@ -65,7 +65,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimppatterns.html#gimp-patterns-set-pattern" title="gimp_patterns_set_pattern ()">gimp_patterns_set_pattern</a> <span class="c_punctuation">()</span>
@@ -73,7 +73,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gchar</span> *
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimppatterns.html#gimp-patterns-get-pattern-data" title="gimp_patterns_get_pattern_data ()">gimp_patterns_get_pattern_data</a> <span class="c_punctuation">()</span>
@@ -84,187 +84,52 @@
 </div>
 <div class="refsect1">
 <a name="libgimp-gimppatterns.description"></a><h2>Description</h2>
-<p>Functions relating to patterns.</p>
 </div>
 <div class="refsect1">
 <a name="libgimp-gimppatterns.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="gimp-patterns-refresh"></a><h3>gimp_patterns_refresh ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gimp_patterns_refresh (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>Refresh current patterns. This function always succeeds.</p>
-<p>This procedure retrieves all patterns currently in the user's
-pattern path and updates all pattern dialogs accordingly.</p>
-<div class="refsect3">
-<a name="id-1.2.5.11.5.2.6"></a><h4>Returns</h4>
-<p> TRUE on success.</p>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-patterns-get-list"></a><h3>gimp_patterns_get_list ()</h3>
-<pre class="programlisting"><span class="returnvalue">gchar</span> **
-gimp_patterns_get_list (<em class="parameter"><code>const <span class="type">gchar</span> *filter</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> *num_patterns</code></em>);</pre>
-<p>Retrieve a complete listing of the available patterns.</p>
-<p>This procedure returns a complete listing of available GIMP
-patterns. Each name returned can be used as input to the
-<a class="link" href="libgimp-gimpcontext.html#gimp-context-set-pattern" title="gimp_context_set_pattern ()"><code class="function">gimp_context_set_pattern()</code></a>.</p>
-<div class="refsect3">
-<a name="id-1.2.5.11.5.3.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>filter</p></td>
-<td class="parameter_description"><p>An optional regular expression used to filter the list.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>num_patterns</p></td>
-<td class="parameter_description"><p>The number of patterns in the pattern list.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.5.11.5.3.7"></a><h4>Returns</h4>
-<p> The list of pattern names.</p>
-<p></p>
-</div>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **
+gimp_patterns_get_list (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *filter</code></em>,
+                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *num_patterns</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-patterns-get-pattern"></a><h3>gimp_patterns_get_pattern ()</h3>
-<pre class="programlisting"><span class="returnvalue">gchar</span> *
-gimp_patterns_get_pattern (<em class="parameter"><code><span class="type">gint</span> *width</code></em>,
-                           <em class="parameter"><code><span class="type">gint</span> *height</code></em>);</pre>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+gimp_patterns_get_pattern (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *width</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *height</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">gimp_patterns_get_pattern</code> is deprecated and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-pattern" title="gimp_context_get_pattern ()"><code class="function">gimp_context_get_pattern()</code></a> instead.</p>
-</div>
-<div class="refsect3">
-<a name="id-1.2.5.11.5.4.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>width</p></td>
-<td class="parameter_description"><p>The pattern width.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>height</p></td>
-<td class="parameter_description"><p>The pattern height.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.5.11.5.4.6"></a><h4>Returns</h4>
-<p> The pattern name.</p>
-<p></p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-patterns-set-pattern"></a><h3>gimp_patterns_set_pattern ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
-gimp_patterns_set_pattern (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_patterns_set_pattern (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>);</pre>
 <div class="warning"><p><code class="literal">gimp_patterns_set_pattern</code> is deprecated and should not be used in newly-written code.</p></div>
-<p>This procedure is deprecated! Use <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-pattern" title="gimp_context_set_pattern ()"><code class="function">gimp_context_set_pattern()</code></a> instead.</p>
-<div class="refsect3">
-<a name="id-1.2.5.11.5.5.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>name</p></td>
-<td class="parameter_description"><p>The pattern name.</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.5.11.5.5.7"></a><h4>Returns</h4>
-<p> TRUE on success.</p>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-patterns-get-pattern-data"></a><h3>gimp_patterns_get_pattern_data ()</h3>
-<pre class="programlisting"><span class="returnvalue">gchar</span> *
-gimp_patterns_get_pattern_data (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> *width</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> *height</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> *mask_bpp</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> *length</code></em>,
-                                <em class="parameter"><code><span class="type">guint8</span> **mask_data</code></em>);</pre>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+gimp_patterns_get_pattern_data (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *width</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *height</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *mask_bpp</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *length</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> **mask_data</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">gimp_patterns_get_pattern_data</code> is deprecated and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="libgimp-gimppattern.html#gimp-pattern-get-pixels" title="gimp_pattern_get_pixels ()"><code class="function">gimp_pattern_get_pixels()</code></a> instead.</p>
-</div>
-<div class="refsect3">
-<a name="id-1.2.5.11.5.6.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>name</p></td>
-<td class="parameter_description"><p>The pattern name (\"\" means currently active pattern).</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>width</p></td>
-<td class="parameter_description"><p>The pattern width.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>height</p></td>
-<td class="parameter_description"><p>The pattern height.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>mask_bpp</p></td>
-<td class="parameter_description"><p>Pattern bytes per pixel.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>length</p></td>
-<td class="parameter_description"><p>Length of pattern mask data.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>mask_data</p></td>
-<td class="parameter_description"><p>The pattern mask data.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.5.11.5.6.6"></a><h4>Returns</h4>
-<p> The pattern name.</p>
-<p></p>
 </div>
 </div>
 </div>
@@ -273,7 +138,6 @@ gimp_patterns_get_pattern_data (<em class="parameter"><code>const <span class="t
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GIMP Library Reference Manual: GimpPaletteSelect</title>
+<title>GimpPaletteSelectButton: GIMP Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="prev" href="GimpGradientSelectButton.html" title="GimpGradientSelectButton">
 <link rel="next" href="GimpPatternSelectButton.html" title="GimpPatternSelectButton">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -30,8 +30,8 @@
 <a name="GimpPaletteSelectButton"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle"><a name="GimpPaletteSelectButton.top_of_page"></a>GimpPaletteSelect</span></h2>
-<p>GimpPaletteSelect — A button which pops up a palette select dialog.</p>
+<h2><span class="refentrytitle"><a name="GimpPaletteSelectButton.top_of_page"></a>GimpPaletteSelectButton</span></h2>
+<p>GimpPaletteSelectButton</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -45,14 +45,14 @@
 <tbody>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GtkWidget</span> *
+<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="GimpPaletteSelectButton.html#gimp-palette-select-button-new" title="gimp_palette_select_button_new ()">gimp_palette_select_button_new</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="GimpPaletteSelectButton.html#gimp-palette-select-button-get-palette" title="gimp_palette_select_button_get_palette ()">gimp_palette_select_button_get_palette</a> <span class="c_punctuation">()</span>
@@ -80,13 +80,13 @@
 <tbody>
 <tr>
 <td class="property_type">
-<span class="type">gchar</span> *</td>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
 <td class="property_name"><a class="link" href="GimpPaletteSelectButton.html#GimpPaletteSelectButton--palette-name" title="The “palette-name” property">palette-name</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
 <td class="property_type">
-<span class="type">gchar</span> *</td>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
 <td class="property_name"><a class="link" href="GimpPaletteSelectButton.html#GimpPaletteSelectButton--title" title="The “title” property">title</a></td>
 <td class="property_flags">Read / Write / Construct Only</td>
 </tr>
@@ -104,7 +104,7 @@
 <tbody><tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="GimpPaletteSelectButton.html#GimpPaletteSelectButton-palette-set" title="The “palette-set” signal">palette-set</a></td>
-<td class="signal_flags">Run First</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></td>
 </tr></tbody>
 </table></div>
 </div>
@@ -123,12 +123,12 @@
 </div>
 <div class="refsect1">
 <a name="GimpPaletteSelectButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
-    <span class="lineart">╰──</span> GInitiallyUnowned
-        <span class="lineart">╰──</span> GtkObject
-            <span class="lineart">╰──</span> GtkWidget
-                <span class="lineart">╰──</span> GtkContainer
-                    <span class="lineart">╰──</span> GtkBox
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+        <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkObject.html">GtkObject</a>
+            <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkWidget.html">GtkWidget</a>
+                <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkContainer.html">GtkContainer</a>
+                    <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkBox.html">GtkBox</a>
                         <span class="lineart">╰──</span> <a class="link" href="GimpSelectButton.html" title="GimpSelectButton">GimpSelectButton</a>
                             <span class="lineart">╰──</span> GimpPaletteSelectButton
 </pre>
@@ -137,111 +137,36 @@
 <a name="GimpPaletteSelectButton.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpPaletteSelectButton implements
- AtkImplementorIface,  GtkBuildable and  GtkOrientable.</p>
+ AtkImplementorIface,  <a href="http://library.gnome.org/devel/gtk3/GtkBuildable.html">GtkBuildable</a> and  <a href="http://library.gnome.org/devel/gtk3/gtk2-Orientable.html#GtkOrientable">GtkOrientable</a>.</p>
 </div>
 <div class="refsect1">
 <a name="GimpPaletteSelectButton.description"></a><h2>Description</h2>
-<p>A button which pops up a palette select dialog.</p>
 </div>
 <div class="refsect1">
 <a name="GimpPaletteSelectButton.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="gimp-palette-select-button-new"></a><h3>gimp_palette_select_button_new ()</h3>
-<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *
-gimp_palette_select_button_new (<em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *palette_name</code></em>);</pre>
-<p>Creates a new <span class="type">GtkWidget</span> that completely controls the selection of
-a palette.  This widget is suitable for placement in a table in a
-plug-in dialog.</p>
-<div class="refsect3">
-<a name="id-1.2.6.6.10.2.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>title</p></td>
-<td class="parameter_description"><p>Title of the dialog to use or <code class="literal">NULL</code> to use the default title.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>palette_name</p></td>
-<td class="parameter_description"><p>Initial palette name.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.6.6.10.2.6"></a><h4>Returns</h4>
-<p> A <span class="type">GtkWidget</span> that you can use in your UI.</p>
-<p></p>
-</div>
-<p class="since">Since GIMP 2.4</p>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
+gimp_palette_select_button_new (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *palette_name</code></em>);</pre>
+<p class="since">Since: GIMP 2.4</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-palette-select-button-get-palette"></a><h3>gimp_palette_select_button_get_palette ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 gimp_palette_select_button_get_palette
-                               (<em class="parameter"><code><a class="link" href="GimpPaletteSelectButton.html" title="GimpPaletteSelect"><span class="type">GimpPaletteSelectButton</span></a> *button</code></em>);</pre>
-<p>Retrieves the name of currently selected palette.</p>
-<div class="refsect3">
-<a name="id-1.2.6.6.10.3.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>button</p></td>
-<td class="parameter_description"><p>A <a class="link" href="GimpPaletteSelectButton.html" title="GimpPaletteSelect"><span class="type">GimpPaletteSelectButton</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.6.6.10.3.6"></a><h4>Returns</h4>
-<p> an internal copy of the palette name which must not be freed.</p>
-<p></p>
-</div>
-<p class="since">Since GIMP 2.4</p>
+                               (<em class="parameter"><code><a class="link" href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton"><span class="type">GimpPaletteSelectButton</span></a> *button</code></em>);</pre>
+<p class="since">Since: GIMP 2.4</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-palette-select-button-set-palette"></a><h3>gimp_palette_select_button_set_palette ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_palette_select_button_set_palette
-                               (<em class="parameter"><code><a class="link" href="GimpPaletteSelectButton.html" title="GimpPaletteSelect"><span class="type">GimpPaletteSelectButton</span></a> *button</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *palette_name</code></em>);</pre>
-<p>Sets the current palette for the palette select button.</p>
-<div class="refsect3">
-<a name="id-1.2.6.6.10.4.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>button</p></td>
-<td class="parameter_description"><p>A <a class="link" href="GimpPaletteSelectButton.html" title="GimpPaletteSelect"><span class="type">GimpPaletteSelectButton</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>palette_name</p></td>
-<td class="parameter_description"><p>Palette name to set; <code class="literal">NULL</code> means no change.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p class="since">Since GIMP 2.4</p>
+                               (<em class="parameter"><code><a class="link" href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton"><span class="type">GimpPaletteSelectButton</span></a> *button</code></em>,
+                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *palette_name</code></em>);</pre>
+<p class="since">Since: GIMP 2.4</p>
 </div>
 </div>
 <div class="refsect1">
@@ -249,28 +174,26 @@ gimp_palette_select_button_set_palette
 <div class="refsect2">
 <a name="GimpPaletteSelectButton-struct"></a><h3>GimpPaletteSelectButton</h3>
 <pre class="programlisting">typedef struct _GimpPaletteSelectButton GimpPaletteSelectButton;</pre>
-<p>
-</p>
 </div>
 </div>
 <div class="refsect1">
 <a name="GimpPaletteSelectButton.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="GimpPaletteSelectButton--palette-name"></a><h3>The <code class="literal">“palette-name”</code> property</h3>
-<pre class="programlisting">  “palette-name”             <span class="type">gchar</span> *</pre>
+<pre class="programlisting">  “palette-name”             <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
 <p>The name of the currently selected palette.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: NULL</p>
-<p class="since">Since GIMP 2.4</p>
+<p class="since">Since: GIMP 2.4</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpPaletteSelectButton--title"></a><h3>The <code class="literal">“title”</code> property</h3>
-<pre class="programlisting">  “title”                    <span class="type">gchar</span> *</pre>
+<pre class="programlisting">  “title”                    <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
 <p>The title to be used for the palette selection popup dialog.</p>
 <p>Flags: Read / Write / Construct Only</p>
 <p>Default value: "Palette Selection"</p>
-<p class="since">Since GIMP 2.4</p>
+<p class="since">Since: GIMP 2.4</p>
 </div>
 </div>
 <div class="refsect1">
@@ -278,50 +201,16 @@ gimp_palette_select_button_set_palette
 <div class="refsect2">
 <a name="GimpPaletteSelectButton-palette-set"></a><h3>The <code class="literal">“palette-set”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-user_function (<a class="link" href="GimpPaletteSelectButton.html" title="GimpPaletteSelect"><span class="type">GimpPaletteSelectButton</span></a> *widget,
-               <span class="type">gchar</span>                   *palette_name,
-               <span class="type">gboolean</span>                 dialog_closing,
-               <span class="type">gpointer</span>                 user_data)</pre>
-<p>The ::palette-set signal is emitted when the user selects a palette.</p>
-<div class="refsect3">
-<a name="id-1.2.6.6.13.2.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>widget</p></td>
-<td class="parameter_description"><p>the object which received the signal.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>palette_name</p></td>
-<td class="parameter_description"><p>the name of the currently selected palette.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>dialog_closing</p></td>
-<td class="parameter_description"><p>whether the dialog was closed or not.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>user_data</p></td>
-<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p>Flags: Run First</p>
-<p class="since">Since GIMP 2.4</p>
+user_function (<a class="link" href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton"><span class="type">GimpPaletteSelectButton</span></a> *widget,
+               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>                   *palette_name,
+               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>                 dialog_closing,
+               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>                 user_data)</pre>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></p>
+<p class="since">Since: GIMP 2.4</p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

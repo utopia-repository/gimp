@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GIMP Color Library Reference Manual: GimpCMYK</title>
+<title>GimpCMYK: GIMP Color Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Color Library Reference Manual">
 <link rel="up" href="libgimpcolor.html" title="Part I. GIMP Color Library">
 <link rel="prev" href="libgimpcolor-GimpHSV.html" title="GimpHSV">
 <link rel="next" href="libgimpcolor-GimpColorSpace.html" title="GimpColorSpace">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -117,10 +117,10 @@
 <a name="gimp-cmyk-set"></a><h3>gimp_cmyk_set ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_cmyk_set (<em class="parameter"><code><a class="link" href="libgimpcolor-GimpCMYK.html#GimpCMYK" title="struct GimpCMYK"><span class="type">GimpCMYK</span></a> *cmyk</code></em>,
-               <em class="parameter"><code><span class="type">gdouble</span> cyan</code></em>,
-               <em class="parameter"><code><span class="type">gdouble</span> magenta</code></em>,
-               <em class="parameter"><code><span class="type">gdouble</span> yellow</code></em>,
-               <em class="parameter"><code><span class="type">gdouble</span> black</code></em>);</pre>
+               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> cyan</code></em>,
+               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> magenta</code></em>,
+               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> yellow</code></em>,
+               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> black</code></em>);</pre>
 <p>Very basic initialiser for the internal <a class="link" href="libgimpcolor-GimpCMYK.html#GimpCMYK" title="struct GimpCMYK"><span class="type">GimpCMYK</span></a> structure. Channel
 values are doubles in the range 0 to 1.</p>
 <div class="refsect3">
@@ -166,10 +166,10 @@ values are doubles in the range 0 to 1.</p>
 <a name="gimp-cmyk-set-uchar"></a><h3>gimp_cmyk_set_uchar ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_cmyk_set_uchar (<em class="parameter"><code><a class="link" href="libgimpcolor-GimpCMYK.html#GimpCMYK" title="struct GimpCMYK"><span class="type">GimpCMYK</span></a> *cmyk</code></em>,
-                     <em class="parameter"><code><span class="type">guchar</span> cyan</code></em>,
-                     <em class="parameter"><code><span class="type">guchar</span> magenta</code></em>,
-                     <em class="parameter"><code><span class="type">guchar</span> yellow</code></em>,
-                     <em class="parameter"><code><span class="type">guchar</span> black</code></em>);</pre>
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> cyan</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> magenta</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> yellow</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> black</code></em>);</pre>
 <p>The same as <a class="link" href="libgimpcolor-GimpCMYK.html#gimp-cmyk-set" title="gimp_cmyk_set ()"><code class="function">gimp_cmyk_set()</code></a>, except that channel values are
 unsigned chars in the range 0 to 255.</p>
 <div class="refsect3">
@@ -215,10 +215,10 @@ unsigned chars in the range 0 to 255.</p>
 <a name="gimp-cmyk-get-uchar"></a><h3>gimp_cmyk_get_uchar ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_cmyk_get_uchar (<em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpCMYK.html#GimpCMYK" title="struct GimpCMYK"><span class="type">GimpCMYK</span></a> *cmyk</code></em>,
-                     <em class="parameter"><code><span class="type">guchar</span> *cyan</code></em>,
-                     <em class="parameter"><code><span class="type">guchar</span> *magenta</code></em>,
-                     <em class="parameter"><code><span class="type">guchar</span> *yellow</code></em>,
-                     <em class="parameter"><code><span class="type">guchar</span> *black</code></em>);</pre>
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *cyan</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *magenta</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *yellow</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *black</code></em>);</pre>
 <p>Retrieve individual channel values from a <a class="link" href="libgimpcolor-GimpCMYK.html#GimpCMYK" title="struct GimpCMYK"><span class="type">GimpCMYK</span></a> structure. Channel
 values are pointers to unsigned chars in the range 0 to 255.</p>
 <div class="refsect3">
@@ -264,11 +264,11 @@ values are pointers to unsigned chars in the range 0 to 255.</p>
 <a name="gimp-cmyka-set"></a><h3>gimp_cmyka_set ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_cmyka_set (<em class="parameter"><code><a class="link" href="libgimpcolor-GimpCMYK.html#GimpCMYK" title="struct GimpCMYK"><span class="type">GimpCMYK</span></a> *cmyka</code></em>,
-                <em class="parameter"><code><span class="type">gdouble</span> cyan</code></em>,
-                <em class="parameter"><code><span class="type">gdouble</span> magenta</code></em>,
-                <em class="parameter"><code><span class="type">gdouble</span> yellow</code></em>,
-                <em class="parameter"><code><span class="type">gdouble</span> black</code></em>,
-                <em class="parameter"><code><span class="type">gdouble</span> alpha</code></em>);</pre>
+                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> cyan</code></em>,
+                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> magenta</code></em>,
+                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> yellow</code></em>,
+                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> black</code></em>,
+                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> alpha</code></em>);</pre>
 <p>Initialiser for the internal <a class="link" href="libgimpcolor-GimpCMYK.html#GimpCMYK" title="struct GimpCMYK"><span class="type">GimpCMYK</span></a> structure. Channel values are
 doubles in the range 0 to 1.</p>
 <div class="refsect3">
@@ -319,11 +319,11 @@ doubles in the range 0 to 1.</p>
 <a name="gimp-cmyka-set-uchar"></a><h3>gimp_cmyka_set_uchar ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_cmyka_set_uchar (<em class="parameter"><code><a class="link" href="libgimpcolor-GimpCMYK.html#GimpCMYK" title="struct GimpCMYK"><span class="type">GimpCMYK</span></a> *cmyka</code></em>,
-                      <em class="parameter"><code><span class="type">guchar</span> cyan</code></em>,
-                      <em class="parameter"><code><span class="type">guchar</span> magenta</code></em>,
-                      <em class="parameter"><code><span class="type">guchar</span> yellow</code></em>,
-                      <em class="parameter"><code><span class="type">guchar</span> black</code></em>,
-                      <em class="parameter"><code><span class="type">guchar</span> alpha</code></em>);</pre>
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> cyan</code></em>,
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> magenta</code></em>,
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> yellow</code></em>,
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> black</code></em>,
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> alpha</code></em>);</pre>
 <p>The same as <a class="link" href="libgimpcolor-GimpCMYK.html#gimp-cmyka-set" title="gimp_cmyka_set ()"><code class="function">gimp_cmyka_set()</code></a>, except that channel values are
 unsigned chars in the range 0 to 255.</p>
 <div class="refsect3">
@@ -374,11 +374,11 @@ unsigned chars in the range 0 to 255.</p>
 <a name="gimp-cmyka-get-uchar"></a><h3>gimp_cmyka_get_uchar ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_cmyka_get_uchar (<em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpCMYK.html#GimpCMYK" title="struct GimpCMYK"><span class="type">GimpCMYK</span></a> *cmyka</code></em>,
-                      <em class="parameter"><code><span class="type">guchar</span> *cyan</code></em>,
-                      <em class="parameter"><code><span class="type">guchar</span> *magenta</code></em>,
-                      <em class="parameter"><code><span class="type">guchar</span> *yellow</code></em>,
-                      <em class="parameter"><code><span class="type">guchar</span> *black</code></em>,
-                      <em class="parameter"><code><span class="type">guchar</span> *alpha</code></em>);</pre>
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *cyan</code></em>,
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *magenta</code></em>,
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *yellow</code></em>,
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *black</code></em>,
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *alpha</code></em>);</pre>
 <p>Retrieve individual channel values from a <a class="link" href="libgimpcolor-GimpCMYK.html#GimpCMYK" title="struct GimpCMYK"><span class="type">GimpCMYK</span></a> structure.
 Channel values are pointers to unsigned chars in the range 0 to 255.</p>
 <div class="refsect3">
@@ -429,8 +429,6 @@ Channel values are pointers to unsigned chars in the range 0 to 255.</p>
 <a name="GIMP-TYPE-CMYK:CAPS"></a><h3>GIMP_TYPE_CMYK</h3>
 <pre class="programlisting">#define GIMP_TYPE_CMYK       (gimp_cmyk_get_type ())
 </pre>
-<p>
-</p>
 </div>
 </div>
 <div class="refsect1">
@@ -455,27 +453,27 @@ going to CMYK and back can preserve alpha.</p>
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpCMYK.c"></a>c</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> <em class="structfield"><code><a name="GimpCMYK.c"></a>c</code></em>;</p></td>
 <td class="struct_member_description"><p>the cyan component</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpCMYK.m"></a>m</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> <em class="structfield"><code><a name="GimpCMYK.m"></a>m</code></em>;</p></td>
 <td class="struct_member_description"><p>the magenta component</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpCMYK.y"></a>y</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> <em class="structfield"><code><a name="GimpCMYK.y"></a>y</code></em>;</p></td>
 <td class="struct_member_description"><p>the yellow component</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpCMYK.k"></a>k</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> <em class="structfield"><code><a name="GimpCMYK.k"></a>k</code></em>;</p></td>
 <td class="struct_member_description"><p>the black component</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpCMYK.a"></a>a</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> <em class="structfield"><code><a name="GimpCMYK.a"></a>a</code></em>;</p></td>
 <td class="struct_member_description"><p>the alpha component</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -486,7 +484,6 @@ going to CMYK and back can preserve alpha.</p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

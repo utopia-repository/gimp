@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GIMP Config Library Reference Manual: GimpColorConfig</title>
+<title>GimpColorConfig: GIMP Config Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Config Library Reference Manual">
 <link rel="up" href="libgimpconfig.html" title="Part I. GIMP Config Library">
 <link rel="prev" href="libgimpconfig-GimpScanner.html" title="GimpScanner">
 <link rel="next" href="libgimpconfig-index.html" title="Index">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -50,7 +50,7 @@
 </tr>
 <tr>
 <td class="property_type">
-<span class="type">gchar</span> *</td>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
 <td class="property_name"><a class="link" href="GimpColorConfig.html#GimpColorConfig--display-module" title="The “display-module” property">display-module</a></td>
 <td class="property_flags">Read / Write / Construct</td>
 </tr>
@@ -60,7 +60,7 @@
 <td class="property_flags">Read / Write / Construct</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
 <td class="property_name"><a class="link" href="GimpColorConfig.html#GimpColorConfig--display-profile-from-gdk" title="The “display-profile-from-gdk” property">display-profile-from-gdk</a></td>
 <td class="property_flags">Read / Write / Construct</td>
 </tr>
@@ -76,7 +76,7 @@
 </tr>
 <tr>
 <td class="property_type">
-<a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *</td>
+<a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *</td>
 <td class="property_name"><a class="link" href="GimpColorConfig.html#GimpColorConfig--out-of-gamut-color" title="The “out-of-gamut-color” property">out-of-gamut-color</a></td>
 <td class="property_flags">Read / Write / Construct</td>
 </tr>
@@ -91,7 +91,7 @@
 <td class="property_flags">Read / Write / Construct</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
 <td class="property_name"><a class="link" href="GimpColorConfig.html#GimpColorConfig--simulation-gamut-check" title="The “simulation-gamut-check” property">simulation-gamut-check</a></td>
 <td class="property_flags">Read / Write / Construct</td>
 </tr>
@@ -128,7 +128,7 @@
 </div>
 <div class="refsect1">
 <a name="GimpColorConfig.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
     <span class="lineart">╰──</span> GimpColorConfig
 </pre>
 </div>
@@ -144,6 +144,7 @@ GimpColorConfig implements
 </div>
 <div class="refsect1">
 <a name="GimpColorConfig.functions_details"></a><h2>Functions</h2>
+<p></p>
 </div>
 <div class="refsect1">
 <a name="GimpColorConfig.other_details"></a><h2>Types and Values</h2>
@@ -165,16 +166,12 @@ GimpColorConfig implements
   GimpRGB                     out_of_gamut_color;
 } GimpColorConfig;
 </pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpColorManagementMode"></a><h3>enum GimpColorManagementMode</h3>
-<p>
-</p>
 <div class="refsect3">
-<a name="id-1.2.12.9.3.4"></a><h4>Members</h4>
+<a name="id-1.2.12.9.3.3"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -184,18 +181,18 @@ GimpColorConfig implements
 <tbody>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-COLOR-MANAGEMENT-OFF:CAPS"></a>GIMP_COLOR_MANAGEMENT_OFF</p></td>
-<td class="enum_member_description"> </td>
-<td class="enum_member_annotations"> </td>
+<td> </td>
+<td> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-COLOR-MANAGEMENT-DISPLAY:CAPS"></a>GIMP_COLOR_MANAGEMENT_DISPLAY</p></td>
-<td class="enum_member_description"> </td>
-<td class="enum_member_annotations"> </td>
+<td> </td>
+<td> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-COLOR-MANAGEMENT-SOFTPROOF:CAPS"></a>GIMP_COLOR_MANAGEMENT_SOFTPROOF</p></td>
-<td class="enum_member_description"> </td>
-<td class="enum_member_annotations"> </td>
+<td> </td>
+<td> </td>
 </tr>
 </tbody>
 </table></div>
@@ -204,10 +201,8 @@ GimpColorConfig implements
 <hr>
 <div class="refsect2">
 <a name="GimpColorRenderingIntent"></a><h3>enum GimpColorRenderingIntent</h3>
-<p>
-</p>
 <div class="refsect3">
-<a name="id-1.2.12.9.4.4"></a><h4>Members</h4>
+<a name="id-1.2.12.9.4.3"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -217,23 +212,23 @@ GimpColorConfig implements
 <tbody>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-COLOR-RENDERING-INTENT-PERCEPTUAL:CAPS"></a>GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL</p></td>
-<td class="enum_member_description"> </td>
-<td class="enum_member_annotations"> </td>
+<td> </td>
+<td> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-COLOR-RENDERING-INTENT-RELATIVE-COLORIMETRIC:CAPS"></a>GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC</p></td>
-<td class="enum_member_description"> </td>
-<td class="enum_member_annotations"> </td>
+<td> </td>
+<td> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-COLOR-RENDERING-INTENT-SATURATION:CAPS"></a>GIMP_COLOR_RENDERING_INTENT_SATURATION</p></td>
-<td class="enum_member_description"> </td>
-<td class="enum_member_annotations"> </td>
+<td> </td>
+<td> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-COLOR-RENDERING-INTENT-ABSOLUTE-COLORIMETRIC:CAPS"></a>GIMP_COLOR_RENDERING_INTENT_ABSOLUTE_COLORIMETRIC</p></td>
-<td class="enum_member_description"> </td>
-<td class="enum_member_annotations"> </td>
+<td> </td>
+<td> </td>
 </tr>
 </tbody>
 </table></div>
@@ -252,8 +247,7 @@ GimpColorConfig implements
 <hr>
 <div class="refsect2">
 <a name="GimpColorConfig--display-module"></a><h3>The <code class="literal">“display-module”</code> property</h3>
-<pre class="programlisting">  “display-module”           <span class="type">gchar</span> *</pre>
-<p></p>
+<pre class="programlisting">  “display-module”           <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
 <p>Flags: Read / Write / Construct</p>
 <p>Default value: "CdisplayLcms"</p>
 </div>
@@ -268,7 +262,7 @@ GimpColorConfig implements
 <hr>
 <div class="refsect2">
 <a name="GimpColorConfig--display-profile-from-gdk"></a><h3>The <code class="literal">“display-profile-from-gdk”</code> property</h3>
-<pre class="programlisting">  “display-profile-from-gdk” <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “display-profile-from-gdk” <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
 <p>When enabled, GIMP will try to use the display color profile from the windowing system.  The configured monitor profile is then only used as a fallback.</p>
 <p>Flags: Read / Write / Construct</p>
 <p>Default value: FALSE</p>
@@ -292,7 +286,7 @@ GimpColorConfig implements
 <hr>
 <div class="refsect2">
 <a name="GimpColorConfig--out-of-gamut-color"></a><h3>The <code class="literal">“out-of-gamut-color”</code> property</h3>
-<pre class="programlisting">  “out-of-gamut-color”       <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *</pre>
+<pre class="programlisting">  “out-of-gamut-color”       <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *</pre>
 <p>The color to use for marking colors which are out of gamut.</p>
 <p>Flags: Read / Write / Construct</p>
 </div>
@@ -315,7 +309,7 @@ GimpColorConfig implements
 <hr>
 <div class="refsect2">
 <a name="GimpColorConfig--simulation-gamut-check"></a><h3>The <code class="literal">“simulation-gamut-check”</code> property</h3>
-<pre class="programlisting">  “simulation-gamut-check”   <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “simulation-gamut-check”   <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
 <p>When enabled, the print simulation will mark colors which can not be represented in the target color space.</p>
 <p>Flags: Read / Write / Construct</p>
 <p>Default value: FALSE</p>
@@ -331,7 +325,6 @@ GimpColorConfig implements
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

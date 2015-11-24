@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GIMP Widgets Library Reference Manual: GimpColorButton</title>
+<title>GimpColorButton: GIMP Widgets Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="GimpColorArea.html" title="GimpColorArea">
 <link rel="next" href="GimpColorHexEntry.html" title="GimpColorHexEntry">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -45,7 +45,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GtkWidget</span> *
+<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="GimpColorButton.html#gimp-color-button-new" title="gimp_color_button_new ()">gimp_color_button_new</a> <span class="c_punctuation">()</span>
@@ -77,7 +77,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="GimpColorButton.html#gimp-color-button-get-update" title="gimp_color_button_get_update ()">gimp_color_button_get_update</a> <span class="c_punctuation">()</span>
@@ -85,7 +85,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="GimpColorButton.html#gimp-color-button-has-alpha" title="gimp_color_button_has_alpha ()">gimp_color_button_has_alpha</a> <span class="c_punctuation">()</span>
@@ -112,29 +112,29 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">gint</span></td>
+<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a></td>
 <td class="property_name"><a class="link" href="GimpColorButton.html#GimpColorButton--area-height" title="The “area-height” property">area-height</a></td>
 <td class="property_flags">Write / Construct</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gint</span></td>
+<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a></td>
 <td class="property_name"><a class="link" href="GimpColorButton.html#GimpColorButton--area-width" title="The “area-width” property">area-width</a></td>
 <td class="property_flags">Write / Construct</td>
 </tr>
 <tr>
 <td class="property_type">
-<a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *</td>
+<a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *</td>
 <td class="property_name"><a class="link" href="GimpColorButton.html#GimpColorButton--color" title="The “color” property">color</a></td>
 <td class="property_flags">Read / Write / Construct</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
 <td class="property_name"><a class="link" href="GimpColorButton.html#GimpColorButton--continuous-update" title="The “continuous-update” property">continuous-update</a></td>
 <td class="property_flags">Read / Write / Construct</td>
 </tr>
 <tr>
 <td class="property_type">
-<span class="type">gchar</span> *</td>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
 <td class="property_name"><a class="link" href="GimpColorButton.html#GimpColorButton--title" title="The “title” property">title</a></td>
 <td class="property_flags">Read / Write / Construct Only</td>
 </tr>
@@ -157,7 +157,7 @@
 <tbody><tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="GimpColorButton.html#GimpColorButton-color-changed" title="The “color-changed” signal">color-changed</a></td>
-<td class="signal_flags">Run First</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></td>
 </tr></tbody>
 </table></div>
 </div>
@@ -176,13 +176,13 @@
 </div>
 <div class="refsect1">
 <a name="GimpColorButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
-    <span class="lineart">╰──</span> GInitiallyUnowned
-        <span class="lineart">╰──</span> GtkObject
-            <span class="lineart">╰──</span> GtkWidget
-                <span class="lineart">╰──</span> GtkContainer
-                    <span class="lineart">╰──</span> GtkBin
-                        <span class="lineart">╰──</span> GtkButton
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+        <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkObject.html">GtkObject</a>
+            <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkWidget.html">GtkWidget</a>
+                <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkContainer.html">GtkContainer</a>
+                    <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkBin.html">GtkBin</a>
+                        <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkButton.html">GtkButton</a>
                             <span class="lineart">╰──</span> <a class="link" href="GimpButton.html" title="GimpButton">GimpButton</a>
                                 <span class="lineart">╰──</span> GimpColorButton
 </pre>
@@ -191,7 +191,7 @@
 <a name="GimpColorButton.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpColorButton implements
- AtkImplementorIface,  GtkBuildable and  GtkActivatable.</p>
+ AtkImplementorIface,  <a href="http://library.gnome.org/devel/gtk3/GtkBuildable.html">GtkBuildable</a> and  <a href="http://library.gnome.org/devel/gtk3/GtkActivatable.html">GtkActivatable</a>.</p>
 </div>
 <div class="refsect1">
 <a name="GimpColorButton.description"></a><h2>Description</h2>
@@ -206,11 +206,11 @@ user changes the color, the "color-changed" signal is emitted.</p>
 <a name="GimpColorButton.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="gimp-color-button-new"></a><h3>gimp_color_button_new ()</h3>
-<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *
-gimp_color_button_new (<em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> height</code></em>,
-                       <em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
+gimp_color_button_new (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
+                       <em class="parameter"><code>const <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>,
                        <em class="parameter"><code><a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a> type</code></em>);</pre>
 <p>Creates a new <a class="link" href="GimpColorButton.html" title="GimpColorButton"><span class="type">GimpColorButton</span></a> widget.</p>
 <p>This returns a button with a preview showing the color.
@@ -244,7 +244,7 @@ signal is emitted.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>color</p></td>
-<td class="parameter_description"><p>A pointer to a <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> color.</p></td>
+<td class="parameter_description"><p>A pointer to a <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> color.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -258,7 +258,6 @@ signal is emitted.</p>
 <div class="refsect3">
 <a name="id-1.2.8.10.2.7"></a><h4>Returns</h4>
 <p> Pointer to the new <a class="link" href="GimpColorButton.html" title="GimpColorButton"><span class="type">GimpColorButton</span></a> widget.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -266,7 +265,7 @@ signal is emitted.</p>
 <a name="gimp-color-button-set-color"></a><h3>gimp_color_button_set_color ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_color_button_set_color (<em class="parameter"><code><a class="link" href="GimpColorButton.html" title="GimpColorButton"><span class="type">GimpColorButton</span></a> *button</code></em>,
-                             <em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
+                             <em class="parameter"><code>const <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
 <p>Sets the <em class="parameter"><code>button</code></em>
  to the given <em class="parameter"><code>color</code></em>
 .</p>
@@ -286,7 +285,7 @@ gimp_color_button_set_color (<em class="parameter"><code><a class="link" href="G
 </tr>
 <tr>
 <td class="parameter_name"><p>color</p></td>
-<td class="parameter_description"><p>Pointer to the new <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> color.</p></td>
+<td class="parameter_description"><p>Pointer to the new <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> color.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -298,7 +297,7 @@ gimp_color_button_set_color (<em class="parameter"><code><a class="link" href="G
 <a name="gimp-color-button-get-color"></a><h3>gimp_color_button_get_color ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_color_button_get_color (<em class="parameter"><code><a class="link" href="GimpColorButton.html" title="GimpColorButton"><span class="type">GimpColorButton</span></a> *button</code></em>,
-                             <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
+                             <em class="parameter"><code><a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
 <p>Retrieves the currently set color from the <em class="parameter"><code>button</code></em>
 .</p>
 <div class="refsect3">
@@ -317,7 +316,7 @@ gimp_color_button_get_color (<em class="parameter"><code><a class="link" href="G
 </tr>
 <tr>
 <td class="parameter_name"><p>color</p></td>
-<td class="parameter_description"><p>Pointer to a <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct used to return the color.</p></td>
+<td class="parameter_description"><p>Pointer to a <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct used to return the color.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -329,8 +328,8 @@ gimp_color_button_get_color (<em class="parameter"><code><a class="link" href="G
 <a name="gimp-color-button-set-update"></a><h3>gimp_color_button_set_update ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_color_button_set_update (<em class="parameter"><code><a class="link" href="GimpColorButton.html" title="GimpColorButton"><span class="type">GimpColorButton</span></a> *button</code></em>,
-                              <em class="parameter"><code><span class="type">gboolean</span> continuous</code></em>);</pre>
-<p>When set to <span class="type">TRUE</span>, the <em class="parameter"><code>button</code></em>
+                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> continuous</code></em>);</pre>
+<p>When set to <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a>, the <em class="parameter"><code>button</code></em>
  will emit the "color-changed"
 continuously while the color is changed in the color selection
 dialog.</p>
@@ -361,7 +360,7 @@ property.</p></td>
 <hr>
 <div class="refsect2">
 <a name="gimp-color-button-get-update"></a><h3>gimp_color_button_get_update ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gimp_color_button_get_update (<em class="parameter"><code><a class="link" href="GimpColorButton.html" title="GimpColorButton"><span class="type">GimpColorButton</span></a> *button</code></em>);</pre>
 <p>Returns the color button's <em class="parameter"><code>continuous_update</code></em>
  property.</p>
@@ -384,13 +383,12 @@ gimp_color_button_get_update (<em class="parameter"><code><a class="link" href="
 <a name="id-1.2.8.10.6.6"></a><h4>Returns</h4>
 <p> the <em class="parameter"><code>continuous_update</code></em>
 property.</p>
-<p></p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-color-button-has-alpha"></a><h3>gimp_color_button_has_alpha ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gimp_color_button_has_alpha (<em class="parameter"><code><a class="link" href="GimpColorButton.html" title="GimpColorButton"><span class="type">GimpColorButton</span></a> *button</code></em>);</pre>
 <p>Checks whether the <em class="parameter"><code>buttons</code></em>
  shows transparency information.</p>
@@ -411,10 +409,9 @@ gimp_color_button_has_alpha (<em class="parameter"><code><a class="link" href="G
 </div>
 <div class="refsect3">
 <a name="id-1.2.8.10.7.6"></a><h4>Returns</h4>
-<p> <code class="literal">TRUE</code> if the <em class="parameter"><code>button</code></em>
-shows transparency information, <code class="literal">FALSE</code>
+<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <em class="parameter"><code>button</code></em>
+shows transparency information, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>
 otherwise.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -455,56 +452,54 @@ gimp_color_button_set_type (<em class="parameter"><code><a class="link" href="Gi
 <div class="refsect2">
 <a name="GimpColorButton-struct"></a><h3>GimpColorButton</h3>
 <pre class="programlisting">typedef struct _GimpColorButton GimpColorButton;</pre>
-<p>
-</p>
 </div>
 </div>
 <div class="refsect1">
 <a name="GimpColorButton.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="GimpColorButton--area-height"></a><h3>The <code class="literal">“area-height”</code> property</h3>
-<pre class="programlisting">  “area-height”              <span class="type">gint</span></pre>
+<pre class="programlisting">  “area-height”              <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a></pre>
 <p>The minimum height of the button's <a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a>.</p>
 <p>Flags: Write / Construct</p>
 <p>Allowed values: &gt;= 1</p>
 <p>Default value: 16</p>
-<p class="since">Since GIMP 2.8</p>
+<p class="since">Since: GIMP 2.8</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpColorButton--area-width"></a><h3>The <code class="literal">“area-width”</code> property</h3>
-<pre class="programlisting">  “area-width”               <span class="type">gint</span></pre>
+<pre class="programlisting">  “area-width”               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a></pre>
 <p>The minimum width of the button's <a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a>.</p>
 <p>Flags: Write / Construct</p>
 <p>Allowed values: &gt;= 1</p>
 <p>Default value: 16</p>
-<p class="since">Since GIMP 2.8</p>
+<p class="since">Since: GIMP 2.8</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpColorButton--color"></a><h3>The <code class="literal">“color”</code> property</h3>
-<pre class="programlisting">  “color”                    <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *</pre>
+<pre class="programlisting">  “color”                    <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *</pre>
 <p>The color displayed in the button's color area.</p>
 <p>Flags: Read / Write / Construct</p>
-<p class="since">Since GIMP 2.4</p>
+<p class="since">Since: GIMP 2.4</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpColorButton--continuous-update"></a><h3>The <code class="literal">“continuous-update”</code> property</h3>
-<pre class="programlisting">  “continuous-update”        <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “continuous-update”        <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
 <p>The update policy of the color button.</p>
 <p>Flags: Read / Write / Construct</p>
 <p>Default value: FALSE</p>
-<p class="since">Since GIMP 2.4</p>
+<p class="since">Since: GIMP 2.4</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpColorButton--title"></a><h3>The <code class="literal">“title”</code> property</h3>
-<pre class="programlisting">  “title”                    <span class="type">gchar</span> *</pre>
+<pre class="programlisting">  “title”                    <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
 <p>The title to be used for the color selection dialog.</p>
 <p>Flags: Read / Write / Construct Only</p>
 <p>Default value: NULL</p>
-<p class="since">Since GIMP 2.4</p>
+<p class="since">Since: GIMP 2.4</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -513,7 +508,7 @@ gimp_color_button_set_type (<em class="parameter"><code><a class="link" href="Gi
 <p>The type of the button's color area.</p>
 <p>Flags: Read / Write / Construct</p>
 <p>Default value: GIMP_COLOR_AREA_FLAT</p>
-<p class="since">Since GIMP 2.4</p>
+<p class="since">Since: GIMP 2.4</p>
 </div>
 </div>
 <div class="refsect1">
@@ -522,32 +517,8 @@ gimp_color_button_set_type (<em class="parameter"><code><a class="link" href="Gi
 <a name="GimpColorButton-color-changed"></a><h3>The <code class="literal">“color-changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="GimpColorButton.html" title="GimpColorButton"><span class="type">GimpColorButton</span></a> *gimpcolorbutton,
-               <span class="type">gpointer</span>         user_data)</pre>
-<p>
-</p>
-<div class="refsect3">
-<a name="id-1.2.8.13.2.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>gimpcolorbutton</p></td>
-<td class="parameter_description"><p>the object which received the signal.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>user_data</p></td>
-<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p>Flags: Run First</p>
+               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>         user_data)</pre>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></p>
 </div>
 </div>
 <div class="refsect1">
@@ -556,7 +527,6 @@ user_function (<a class="link" href="GimpColorButton.html" title="GimpColorButto
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

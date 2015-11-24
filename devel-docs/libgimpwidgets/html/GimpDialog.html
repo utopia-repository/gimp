@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GIMP Widgets Library Reference Manual: GimpDialog</title>
+<title>GimpDialog: GIMP Widgets Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="GimpColorProfileComboBox.html" title="GimpColorProfileComboBox">
 <link rel="next" href="GimpEnumStore.html" title="GimpEnumStore">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -30,7 +30,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="GimpDialog.top_of_page"></a>GimpDialog</span></h2>
-<p>GimpDialog — Constructors for <span class="type">GtkDialog</span>'s and action_areas as
+<p>GimpDialog — Constructors for <a href="http://library.gnome.org/devel/gtk3/GtkDialog.html"><span class="type">GtkDialog</span></a>'s and action_areas as
                     well as other dialog-related stuff.</p>
 </td>
 <td class="gallery_image" valign="top" align="right"><img src="gimp-dialog.png"></td>
@@ -45,7 +45,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GtkWidget</span> *
+<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="GimpDialog.html#gimp-dialog-new" title="gimp_dialog_new ()">gimp_dialog_new</a> <span class="c_punctuation">()</span>
@@ -53,7 +53,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GtkWidget</span> *
+<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="GimpDialog.html#gimp-dialog-new-valist" title="gimp_dialog_new_valist ()">gimp_dialog_new_valist</a> <span class="c_punctuation">()</span>
@@ -61,7 +61,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GtkWidget</span> *
+<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="GimpDialog.html#gimp-dialog-add-button" title="gimp_dialog_add_button ()">gimp_dialog_add_button</a> <span class="c_punctuation">()</span>
@@ -85,7 +85,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="GimpDialog.html#gimp-dialog-run" title="gimp_dialog_run ()">gimp_dialog_run</a> <span class="c_punctuation">()</span>
@@ -112,19 +112,19 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">gpointer</span></td>
+<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a></td>
 <td class="property_name"><a class="link" href="GimpDialog.html#GimpDialog--help-func" title="The “help-func” property">help-func</a></td>
 <td class="property_flags">Read / Write / Construct Only</td>
 </tr>
 <tr>
 <td class="property_type">
-<span class="type">gchar</span> *</td>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
 <td class="property_name"><a class="link" href="GimpDialog.html#GimpDialog--help-id" title="The “help-id” property">help-id</a></td>
 <td class="property_flags">Read / Write / Construct Only</td>
 </tr>
 <tr>
 <td class="property_type">
-<span class="type">GtkWidget</span> *</td>
+<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="type">GtkWidget</span></a> *</td>
 <td class="property_name"><a class="link" href="GimpDialog.html#GimpDialog--parent" title="The “parent” property">parent</a></td>
 <td class="property_flags">Write / Construct Only</td>
 </tr>
@@ -146,14 +146,14 @@
 </div>
 <div class="refsect1">
 <a name="GimpDialog.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
-    <span class="lineart">╰──</span> GInitiallyUnowned
-        <span class="lineart">╰──</span> GtkObject
-            <span class="lineart">╰──</span> GtkWidget
-                <span class="lineart">╰──</span> GtkContainer
-                    <span class="lineart">╰──</span> GtkBin
-                        <span class="lineart">╰──</span> GtkWindow
-                            <span class="lineart">╰──</span> GtkDialog
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+        <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkObject.html">GtkObject</a>
+            <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkWidget.html">GtkWidget</a>
+                <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkContainer.html">GtkContainer</a>
+                    <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkBin.html">GtkBin</a>
+                        <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkWindow.html">GtkWindow</a>
+                            <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkDialog.html">GtkDialog</a>
                                 <span class="lineart">╰──</span> GimpDialog
 </pre>
 </div>
@@ -161,24 +161,24 @@
 <a name="GimpDialog.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpDialog implements
- AtkImplementorIface and  GtkBuildable.</p>
+ AtkImplementorIface and  <a href="http://library.gnome.org/devel/gtk3/GtkBuildable.html">GtkBuildable</a>.</p>
 </div>
 <div class="refsect1">
 <a name="GimpDialog.description"></a><h2>Description</h2>
-<p>Constructors for <span class="type">GtkDialog</span>'s and action_areas as well as other
+<p>Constructors for <a href="http://library.gnome.org/devel/gtk3/GtkDialog.html"><span class="type">GtkDialog</span></a>'s and action_areas as well as other
 dialog-related stuff.</p>
 </div>
 <div class="refsect1">
 <a name="GimpDialog.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="gimp-dialog-new"></a><h3>gimp_dialog_new ()</h3>
-<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *
-gimp_dialog_new (<em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>,
-                 <em class="parameter"><code>const <span class="type">gchar</span> *role</code></em>,
-                 <em class="parameter"><code><span class="type">GtkWidget</span> *parent</code></em>,
-                 <em class="parameter"><code><span class="type">GtkDialogFlags</span> flags</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
+gimp_dialog_new (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                 <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *role</code></em>,
+                 <em class="parameter"><code><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="type">GtkWidget</span></a> *parent</code></em>,
+                 <em class="parameter"><code><a href="http://library.gnome.org/devel/gtk3/GtkDialog.html#GtkDialogFlags"><span class="type">GtkDialogFlags</span></a> flags</code></em>,
                  <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()"><span class="type">GimpHelpFunc</span></a> help_func</code></em>,
-                 <em class="parameter"><code>const <span class="type">gchar</span> *help_id</code></em>,
+                 <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>,
                  <em class="parameter"><code>...</code></em>);</pre>
 <p>Creates a new <em class="parameter"><code>GimpDialog</code></em>
  widget.</p>
@@ -187,7 +187,7 @@ into a <em class="parameter"><code>va_list</code></em>
  variable and passes everything to <a class="link" href="GimpDialog.html#gimp-dialog-new-valist" title="gimp_dialog_new_valist ()"><code class="function">gimp_dialog_new_valist()</code></a>.</p>
 <p>For a description of the format of the <em class="parameter"><code>va_list</code></em>
  describing the
-action_area buttons see <code class="function">gtk_dialog_new_with_buttons()</code>.</p>
+action_area buttons see <a href="http://library.gnome.org/devel/gtk3/GtkDialog.html#gtk-dialog-new-with-buttons"><code class="function">gtk_dialog_new_with_buttons()</code></a>.</p>
 <div class="refsect3">
 <a name="id-1.2.14.9.2.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -200,14 +200,14 @@ action_area buttons see <code class="function">gtk_dialog_new_with_buttons()</co
 <tr>
 <td class="parameter_name"><p>title</p></td>
 <td class="parameter_description"><p>The dialog's title which will be set with
-<code class="function">gtk_window_set_title()</code>.</p></td>
+<a href="http://library.gnome.org/devel/gtk3/GtkWindow.html#gtk-window-set-title"><code class="function">gtk_window_set_title()</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>role</p></td>
 <td class="parameter_description"><p>The dialog's <em class="parameter"><code>role</code></em>
 which will be set with
-<code class="function">gtk_window_set_role()</code>.</p></td>
+<a href="http://library.gnome.org/devel/gtk3/GtkWindow.html#gtk-window-set-role"><code class="function">gtk_window_set_role()</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -219,7 +219,7 @@ widget of this dialog.</p></td>
 <tr>
 <td class="parameter_name"><p>flags</p></td>
 <td class="parameter_description"><p>The <em class="parameter"><code>flags</code></em>
-(see the <span class="type">GtkDialog</span> documentation).</p></td>
+(see the <a href="http://library.gnome.org/devel/gtk3/GtkDialog.html"><span class="type">GtkDialog</span></a> documentation).</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -235,7 +235,7 @@ widget of this dialog.</p></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>...</p></td>
-<td class="parameter_description"><p>A <code class="literal">NULL</code>-terminated <em class="parameter"><code>va_list</code></em>
+<td class="parameter_description"><p>A <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>-terminated <em class="parameter"><code>va_list</code></em>
 destribing the
 action_area buttons.</p></td>
 <td class="parameter_annotations"> </td>
@@ -246,19 +246,18 @@ action_area buttons.</p></td>
 <div class="refsect3">
 <a name="id-1.2.14.9.2.8"></a><h4>Returns</h4>
 <p> A <a class="link" href="GimpDialog.html" title="GimpDialog"><span class="type">GimpDialog</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-dialog-new-valist"></a><h3>gimp_dialog_new_valist ()</h3>
-<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *
-gimp_dialog_new_valist (<em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>,
-                        <em class="parameter"><code>const <span class="type">gchar</span> *role</code></em>,
-                        <em class="parameter"><code><span class="type">GtkWidget</span> *parent</code></em>,
-                        <em class="parameter"><code><span class="type">GtkDialogFlags</span> flags</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
+gimp_dialog_new_valist (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                        <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *role</code></em>,
+                        <em class="parameter"><code><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="type">GtkWidget</span></a> *parent</code></em>,
+                        <em class="parameter"><code><a href="http://library.gnome.org/devel/gtk3/GtkDialog.html#GtkDialogFlags"><span class="type">GtkDialogFlags</span></a> flags</code></em>,
                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()"><span class="type">GimpHelpFunc</span></a> help_func</code></em>,
-                        <em class="parameter"><code>const <span class="type">gchar</span> *help_id</code></em>,
+                        <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>,
                         <em class="parameter"><code><span class="type">va_list</span> args</code></em>);</pre>
 <p>Creates a new <em class="parameter"><code>GimpDialog</code></em>
  widget. If a GtkWindow is specified as
@@ -266,7 +265,7 @@ gimp_dialog_new_valist (<em class="parameter"><code>const <span class="type">gch
  then the dialog will be made transient for this window.</p>
 <p>For a description of the format of the <em class="parameter"><code>va_list</code></em>
  describing the
-action_area buttons see <code class="function">gtk_dialog_new_with_buttons()</code>.</p>
+action_area buttons see <a href="http://library.gnome.org/devel/gtk3/GtkDialog.html#gtk-dialog-new-with-buttons"><code class="function">gtk_dialog_new_with_buttons()</code></a>.</p>
 <div class="refsect3">
 <a name="id-1.2.14.9.3.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -279,26 +278,26 @@ action_area buttons see <code class="function">gtk_dialog_new_with_buttons()</co
 <tr>
 <td class="parameter_name"><p>title</p></td>
 <td class="parameter_description"><p>The dialog's title which will be set with
-<code class="function">gtk_window_set_title()</code>.</p></td>
+<a href="http://library.gnome.org/devel/gtk3/GtkWindow.html#gtk-window-set-title"><code class="function">gtk_window_set_title()</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>role</p></td>
 <td class="parameter_description"><p>The dialog's <em class="parameter"><code>role</code></em>
 which will be set with
-<code class="function">gtk_window_set_role()</code>.</p></td>
+<a href="http://library.gnome.org/devel/gtk3/GtkWindow.html#gtk-window-set-role"><code class="function">gtk_window_set_role()</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>parent</p></td>
 <td class="parameter_description"><p>The <em class="parameter"><code>parent</code></em>
-widget of this dialog or <code class="literal">NULL</code>.</p></td>
+widget of this dialog or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>flags</p></td>
 <td class="parameter_description"><p>The <em class="parameter"><code>flags</code></em>
-(see the <span class="type">GtkDialog</span> documentation).</p></td>
+(see the <a href="http://library.gnome.org/devel/gtk3/GtkDialog.html"><span class="type">GtkDialog</span></a> documentation).</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -324,17 +323,16 @@ destribing the action_area buttons.</p></td>
 <div class="refsect3">
 <a name="id-1.2.14.9.3.7"></a><h4>Returns</h4>
 <p> A <a class="link" href="GimpDialog.html" title="GimpDialog"><span class="type">GimpDialog</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-dialog-add-button"></a><h3>gimp_dialog_add_button ()</h3>
-<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 gimp_dialog_add_button (<em class="parameter"><code><a class="link" href="GimpDialog.html" title="GimpDialog"><span class="type">GimpDialog</span></a> *dialog</code></em>,
-                        <em class="parameter"><code>const <span class="type">gchar</span> *button_text</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> response_id</code></em>);</pre>
-<p>This function is essentially the same as <code class="function">gtk_dialog_add_button()</code>
+                        <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *button_text</code></em>,
+                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> response_id</code></em>);</pre>
+<p>This function is essentially the same as <a href="http://library.gnome.org/devel/gtk3/GtkDialog.html#gtk-dialog-add-button"><code class="function">gtk_dialog_add_button()</code></a>
 except it ensures there is only one help button and automatically
 sets the RESPONSE_OK widget as the default response.</p>
 <div class="refsect3">
@@ -368,7 +366,6 @@ to add a button to.</p></td>
 <div class="refsect3">
 <a name="id-1.2.14.9.4.6"></a><h4>Returns</h4>
 <p> the button widget that was added.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -377,8 +374,8 @@ to add a button to.</p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_dialog_add_buttons (<em class="parameter"><code><a class="link" href="GimpDialog.html" title="GimpDialog"><span class="type">GimpDialog</span></a> *dialog</code></em>,
                          <em class="parameter"><code>...</code></em>);</pre>
-<p>This function is essentially the same as <code class="function">gtk_dialog_add_buttons()</code>
-except it calls <a class="link" href="GimpDialog.html#gimp-dialog-add-button" title="gimp_dialog_add_button ()"><code class="function">gimp_dialog_add_button()</code></a> instead of <code class="function">gtk_dialog_add_button()</code></p>
+<p>This function is essentially the same as <a href="http://library.gnome.org/devel/gtk3/GtkDialog.html#gtk-dialog-add-buttons"><code class="function">gtk_dialog_add_buttons()</code></a>
+except it calls <a class="link" href="GimpDialog.html#gimp-dialog-add-button" title="gimp_dialog_add_button ()"><code class="function">gimp_dialog_add_button()</code></a> instead of <a href="http://library.gnome.org/devel/gtk3/GtkDialog.html#gtk-dialog-add-button"><code class="function">gtk_dialog_add_button()</code></a></p>
 <div class="refsect3">
 <a name="id-1.2.14.9.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -438,10 +435,10 @@ to add buttons to.</p></td>
 <hr>
 <div class="refsect2">
 <a name="gimp-dialog-run"></a><h3>gimp_dialog_run ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
 gimp_dialog_run (<em class="parameter"><code><a class="link" href="GimpDialog.html" title="GimpDialog"><span class="type">GimpDialog</span></a> *dialog</code></em>);</pre>
-<p>This function does exactly the same as <code class="function">gtk_dialog_run()</code> except it
-does not make the dialog modal while the <span class="type">GMainLoop</span> is running.</p>
+<p>This function does exactly the same as <a href="http://library.gnome.org/devel/gtk3/GtkDialog.html#gtk-dialog-run"><code class="function">gtk_dialog_run()</code></a> except it
+does not make the dialog modal while the <a href="https://developer.gnome.org/glib/unstable/glib-The-Main-Event-Loop.html#GMainLoop"><span class="type">GMainLoop</span></a> is running.</p>
 <div class="refsect3">
 <a name="id-1.2.14.9.7.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -460,14 +457,13 @@ does not make the dialog modal while the <span class="type">GMainLoop</span> is 
 <div class="refsect3">
 <a name="id-1.2.14.9.7.6"></a><h4>Returns</h4>
 <p> response ID</p>
-<p></p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-dialogs-show-help-button"></a><h3>gimp_dialogs_show_help_button ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-gimp_dialogs_show_help_button (<em class="parameter"><code><span class="type">gboolean</span> show</code></em>);</pre>
+gimp_dialogs_show_help_button (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> show</code></em>);</pre>
 <p>This function is for internal use only.</p>
 <div class="refsect3">
 <a name="id-1.2.14.9.8.5"></a><h4>Parameters</h4>
@@ -484,7 +480,7 @@ gimp_dialogs_show_help_button (<em class="parameter"><code><span class="type">gb
 </tr></tbody>
 </table></div>
 </div>
-<p class="since">Since GIMP 2.2</p>
+<p class="since">Since: GIMP 2.2</p>
 </div>
 </div>
 <div class="refsect1">
@@ -492,40 +488,34 @@ gimp_dialogs_show_help_button (<em class="parameter"><code><span class="type">gb
 <div class="refsect2">
 <a name="GimpDialog-struct"></a><h3>GimpDialog</h3>
 <pre class="programlisting">typedef struct _GimpDialog GimpDialog;</pre>
-<p>
-</p>
 </div>
 </div>
 <div class="refsect1">
 <a name="GimpDialog.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="GimpDialog--help-func"></a><h3>The <code class="literal">“help-func”</code> property</h3>
-<pre class="programlisting">  “help-func”                <span class="type">gpointer</span></pre>
-<p></p>
+<pre class="programlisting">  “help-func”                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a></pre>
 <p>Flags: Read / Write / Construct Only</p>
-<p class="since">Since GIMP 2.2</p>
+<p class="since">Since: GIMP 2.2</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpDialog--help-id"></a><h3>The <code class="literal">“help-id”</code> property</h3>
-<pre class="programlisting">  “help-id”                  <span class="type">gchar</span> *</pre>
-<p></p>
+<pre class="programlisting">  “help-id”                  <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
 <p>Flags: Read / Write / Construct Only</p>
 <p>Default value: NULL</p>
-<p class="since">Since GIMP 2.2</p>
+<p class="since">Since: GIMP 2.2</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpDialog--parent"></a><h3>The <code class="literal">“parent”</code> property</h3>
-<pre class="programlisting">  “parent”                   <span class="type">GtkWidget</span> *</pre>
-<p></p>
+<pre class="programlisting">  “parent”                   <a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="type">GtkWidget</span></a> *</pre>
 <p>Flags: Write / Construct Only</p>
-<p class="since">Since GIMP 2.8</p>
+<p class="since">Since: GIMP 2.8</p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
 <book xmlns="http://www.devhelp.net/book" title="GIMP Thumbnail Library Reference Manual" link="index.html" author="" name="libgimpthumb" version="2" language="c">
   <chapters>
     <sub name="GIMP Thumbnail Library" link="libgimpthumb.html">
@@ -57,5 +56,24 @@
     <keyword type="macro" name="GIMP_THUMB_ERROR" link="libgimpthumb-GimpThumb-error.html#GIMP-THUMB-ERROR:CAPS"/>
     <keyword type="function" name="gimp_thumb_error_quark ()" link="libgimpthumb-GimpThumb-error.html#gimp-thumb-error-quark"/>
     <keyword type="enum" name="enum GimpThumbError" link="libgimpthumb-GimpThumb-error.html#GimpThumbError"/>
+    <keyword type="constant" name="GIMP_THUMB_FILE_TYPE_NONE" link="libgimpthumb-GimpThumb-enums.html#GIMP-THUMB-FILE-TYPE-NONE:CAPS"/>
+    <keyword type="constant" name="GIMP_THUMB_FILE_TYPE_REGULAR" link="libgimpthumb-GimpThumb-enums.html#GIMP-THUMB-FILE-TYPE-REGULAR:CAPS"/>
+    <keyword type="constant" name="GIMP_THUMB_FILE_TYPE_FOLDER" link="libgimpthumb-GimpThumb-enums.html#GIMP-THUMB-FILE-TYPE-FOLDER:CAPS"/>
+    <keyword type="constant" name="GIMP_THUMB_FILE_TYPE_SPECIAL" link="libgimpthumb-GimpThumb-enums.html#GIMP-THUMB-FILE-TYPE-SPECIAL:CAPS"/>
+    <keyword type="constant" name="GIMP_THUMB_SIZE_FAIL" link="libgimpthumb-GimpThumb-enums.html#GIMP-THUMB-SIZE-FAIL:CAPS"/>
+    <keyword type="constant" name="GIMP_THUMB_SIZE_NORMAL" link="libgimpthumb-GimpThumb-enums.html#GIMP-THUMB-SIZE-NORMAL:CAPS"/>
+    <keyword type="constant" name="GIMP_THUMB_SIZE_LARGE" link="libgimpthumb-GimpThumb-enums.html#GIMP-THUMB-SIZE-LARGE:CAPS"/>
+    <keyword type="constant" name="GIMP_THUMB_STATE_UNKNOWN" link="libgimpthumb-GimpThumb-enums.html#GIMP-THUMB-STATE-UNKNOWN:CAPS"/>
+    <keyword type="constant" name="GIMP_THUMB_STATE_REMOTE" link="libgimpthumb-GimpThumb-enums.html#GIMP-THUMB-STATE-REMOTE:CAPS"/>
+    <keyword type="constant" name="GIMP_THUMB_STATE_FOLDER" link="libgimpthumb-GimpThumb-enums.html#GIMP-THUMB-STATE-FOLDER:CAPS"/>
+    <keyword type="constant" name="GIMP_THUMB_STATE_SPECIAL" link="libgimpthumb-GimpThumb-enums.html#GIMP-THUMB-STATE-SPECIAL:CAPS"/>
+    <keyword type="constant" name="GIMP_THUMB_STATE_NOT_FOUND" link="libgimpthumb-GimpThumb-enums.html#GIMP-THUMB-STATE-NOT-FOUND:CAPS"/>
+    <keyword type="constant" name="GIMP_THUMB_STATE_EXISTS" link="libgimpthumb-GimpThumb-enums.html#GIMP-THUMB-STATE-EXISTS:CAPS"/>
+    <keyword type="constant" name="GIMP_THUMB_STATE_OLD" link="libgimpthumb-GimpThumb-enums.html#GIMP-THUMB-STATE-OLD:CAPS"/>
+    <keyword type="constant" name="GIMP_THUMB_STATE_FAILED" link="libgimpthumb-GimpThumb-enums.html#GIMP-THUMB-STATE-FAILED:CAPS"/>
+    <keyword type="constant" name="GIMP_THUMB_STATE_OK" link="libgimpthumb-GimpThumb-enums.html#GIMP-THUMB-STATE-OK:CAPS"/>
+    <keyword type="constant" name="GIMP_THUMB_ERROR_OPEN" link="libgimpthumb-GimpThumb-error.html#GIMP-THUMB-ERROR-OPEN:CAPS"/>
+    <keyword type="constant" name="GIMP_THUMB_ERROR_OPEN_ENOENT" link="libgimpthumb-GimpThumb-error.html#GIMP-THUMB-ERROR-OPEN-ENOENT:CAPS"/>
+    <keyword type="constant" name="GIMP_THUMB_ERROR_MKDIR" link="libgimpthumb-GimpThumb-error.html#GIMP-THUMB-ERROR-MKDIR:CAPS"/>
   </functions>
 </book>

@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GIMP Library Reference Manual: gimpmessage</title>
+<title>gimpmessage: GIMP Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimphelp.html" title="gimphelp">
 <link rel="next" href="libgimp-gimpplugin.html" title="gimpplugin">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -27,7 +27,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="libgimp-gimpmessage.top_of_page"></a>gimpmessage</span></h2>
-<p>gimpmessage — Display a dialog box with a message.</p>
+<p>gimpmessage</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -41,7 +41,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimpmessage.html#gimp-message" title="gimp_message ()">gimp_message</a> <span class="c_punctuation">()</span>
@@ -49,7 +49,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"><span class="returnvalue">GimpMessageHandlerType</span></a>
+<a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"><span class="returnvalue">GimpMessageHandlerType</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimpmessage.html#gimp-message-get-handler" title="gimp_message_get_handler ()">gimp_message_get_handler</a> <span class="c_punctuation">()</span>
@@ -57,7 +57,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimpmessage.html#gimp-message-set-handler" title="gimp_message_set_handler ()">gimp_message_set_handler</a> <span class="c_punctuation">()</span>
@@ -68,82 +68,25 @@
 </div>
 <div class="refsect1">
 <a name="libgimp-gimpmessage.description"></a><h2>Description</h2>
-<p>Display a dialog box with a message.</p>
 </div>
 <div class="refsect1">
 <a name="libgimp-gimpmessage.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="gimp-message"></a><h3>gimp_message ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
-gimp_message (<em class="parameter"><code>const <span class="type">gchar</span> *message</code></em>);</pre>
-<p>Displays a dialog box with a message.</p>
-<p>Displays a dialog box with a message. Useful for status or error
-reporting. The message must be in UTF-8 encoding.</p>
-<div class="refsect3">
-<a name="id-1.2.3.8.5.2.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>message</p></td>
-<td class="parameter_description"><p>Message to display in the dialog.</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.3.8.5.2.7"></a><h4>Returns</h4>
-<p> TRUE on success.</p>
-<p></p>
-</div>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_message (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *message</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-message-get-handler"></a><h3>gimp_message_get_handler ()</h3>
-<pre class="programlisting"><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"><span class="returnvalue">GimpMessageHandlerType</span></a>
+<pre class="programlisting"><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"><span class="returnvalue">GimpMessageHandlerType</span></a>
 gimp_message_get_handler (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>Returns the current state of where warning messages are displayed.</p>
-<p>This procedure returns the way g_message warnings are displayed.
-They can be shown in a dialog box or printed on the console where
-gimp was started.</p>
-<div class="refsect3">
-<a name="id-1.2.3.8.5.3.6"></a><h4>Returns</h4>
-<p> The current handler type.</p>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-message-set-handler"></a><h3>gimp_message_set_handler ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
-gimp_message_set_handler (<em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"><span class="type">GimpMessageHandlerType</span></a> handler</code></em>);</pre>
-<p>Controls where warning messages are displayed.</p>
-<p>This procedure controls how g_message warnings are displayed. They
-can be shown in a dialog box or printed on the console where gimp
-was started.</p>
-<div class="refsect3">
-<a name="id-1.2.3.8.5.4.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>handler</p></td>
-<td class="parameter_description"><p>The new handler type.</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.3.8.5.4.7"></a><h4>Returns</h4>
-<p> TRUE on success.</p>
-<p></p>
-</div>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_message_set_handler (<em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"><span class="type">GimpMessageHandlerType</span></a> handler</code></em>);</pre>
 </div>
 </div>
 <div class="refsect1">
@@ -151,7 +94,6 @@ was started.</p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

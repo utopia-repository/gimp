@@ -63,9 +63,9 @@ _gimpui_marshal_VOID__STRING_BOOLEAN (GClosure     *closure,
                                                      gpointer     arg_1,
                                                      gboolean     arg_2,
                                                      gpointer     data2);
-  register GMarshalFunc_VOID__STRING_BOOLEAN callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__STRING_BOOLEAN callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -102,9 +102,9 @@ _gimpui_marshal_VOID__STRING_INT_POINTER_BOOLEAN (GClosure     *closure,
                                                                  gpointer     arg_3,
                                                                  gboolean     arg_4,
                                                                  gpointer     data2);
-  register GMarshalFunc_VOID__STRING_INT_POINTER_BOOLEAN callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__STRING_INT_POINTER_BOOLEAN callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 5);
 
@@ -145,9 +145,9 @@ _gimpui_marshal_VOID__STRING_INT_INT_INT_POINTER_BOOLEAN (GClosure     *closure,
                                                                          gpointer     arg_5,
                                                                          gboolean     arg_6,
                                                                          gpointer     data2);
-  register GMarshalFunc_VOID__STRING_INT_INT_INT_POINTER_BOOLEAN callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__STRING_INT_INT_INT_POINTER_BOOLEAN callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 7);
 
@@ -192,9 +192,9 @@ _gimpui_marshal_VOID__STRING_DOUBLE_INT_INT_INT_INT_POINTER_BOOLEAN (GClosure   
                                                                                     gpointer     arg_7,
                                                                                     gboolean     arg_8,
                                                                                     gpointer     data2);
-  register GMarshalFunc_VOID__STRING_DOUBLE_INT_INT_INT_INT_POINTER_BOOLEAN callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__STRING_DOUBLE_INT_INT_INT_INT_POINTER_BOOLEAN callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 9);
 

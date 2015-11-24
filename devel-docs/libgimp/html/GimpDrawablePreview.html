@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GIMP Library Reference Manual: GimpDrawablePreview</title>
+<title>GimpDrawablePreview: GIMP Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part II. GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimpexport.html" title="gimpexport">
 <link rel="next" href="GimpAspectPreview.html" title="GimpAspectPreview">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -30,7 +30,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="GimpDrawablePreview.top_of_page"></a>GimpDrawablePreview</span></h2>
-<p>GimpDrawablePreview — A widget providing a preview of a <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable"><span class="type">GimpDrawable</span></a>.</p>
+<p>GimpDrawablePreview</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -44,7 +44,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GtkWidget</span> *
+<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="GimpDrawablePreview.html#gimp-drawable-preview-new" title="gimp_drawable_preview_new ()">gimp_drawable_preview_new</a> <span class="c_punctuation">()</span>
@@ -78,7 +78,7 @@
 <col width="200px" class="properties_flags">
 </colgroup>
 <tbody><tr>
-<td class="property_type"><span class="type">gpointer</span></td>
+<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a></td>
 <td class="property_name"><a class="link" href="GimpDrawablePreview.html#GimpDrawablePreview--drawable" title="The “drawable” property">drawable</a></td>
 <td class="property_flags">Read / Write / Construct Only</td>
 </tr></tbody>
@@ -99,14 +99,14 @@
 </div>
 <div class="refsect1">
 <a name="GimpDrawablePreview.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
-    <span class="lineart">╰──</span> GInitiallyUnowned
-        <span class="lineart">╰──</span> GtkObject
-            <span class="lineart">╰──</span> GtkWidget
-                <span class="lineart">╰──</span> GtkContainer
-                    <span class="lineart">╰──</span> GtkBox
-                        <span class="lineart">╰──</span> <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpPreview.html">GimpPreview</a>
-                            <span class="lineart">╰──</span> <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpScrolledPreview.html">GimpScrolledPreview</a>
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+        <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkObject.html">GtkObject</a>
+            <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkWidget.html">GtkWidget</a>
+                <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkContainer.html">GtkContainer</a>
+                    <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gtk3/GtkBox.html">GtkBox</a>
+                        <span class="lineart">╰──</span> <a href="../libgimpwidgets/GimpPreview.html">GimpPreview</a>
+                            <span class="lineart">╰──</span> <a href="../libgimpwidgets/GimpScrolledPreview.html">GimpScrolledPreview</a>
                                 <span class="lineart">╰──</span> GimpDrawablePreview
 </pre>
 </div>
@@ -114,82 +114,26 @@
 <a name="GimpDrawablePreview.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpDrawablePreview implements
- AtkImplementorIface,  GtkBuildable and  GtkOrientable.</p>
+ AtkImplementorIface,  <a href="http://library.gnome.org/devel/gtk3/GtkBuildable.html">GtkBuildable</a> and  <a href="http://library.gnome.org/devel/gtk3/gtk2-Orientable.html#GtkOrientable">GtkOrientable</a>.</p>
 </div>
 <div class="refsect1">
 <a name="GimpDrawablePreview.description"></a><h2>Description</h2>
-<p>A widget providing a preview of a <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable"><span class="type">GimpDrawable</span></a>.</p>
 </div>
 <div class="refsect1">
 <a name="GimpDrawablePreview.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="gimp-drawable-preview-new"></a><h3>gimp_drawable_preview_new ()</h3>
-<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 gimp_drawable_preview_new (<em class="parameter"><code><a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable"><span class="type">GimpDrawable</span></a> *drawable</code></em>,
-                           <em class="parameter"><code><span class="type">gboolean</span> *toggle</code></em>);</pre>
-<p>Creates a new <a class="link" href="GimpDrawablePreview.html" title="GimpDrawablePreview"><span class="type">GimpDrawablePreview</span></a> widget for <em class="parameter"><code>drawable</code></em>
-.</p>
-<p>In GIMP 2.2 the <em class="parameter"><code>toggle</code></em>
- parameter was provided to conviently access
-the state of the "Preview" check-button. This is not any longer
-necessary as the preview itself now stores this state, as well as
-the scroll offset.</p>
-<div class="refsect3">
-<a name="id-1.3.5.9.2.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>drawable</p></td>
-<td class="parameter_description"><p>a <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable"><span class="type">GimpDrawable</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>toggle</p></td>
-<td class="parameter_description"><p>unused</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.3.5.9.2.7"></a><h4>Returns</h4>
-<p> A pointer to the new <a class="link" href="GimpDrawablePreview.html" title="GimpDrawablePreview"><span class="type">GimpDrawablePreview</span></a> widget.</p>
-<p></p>
-</div>
-<p class="since">Since GIMP 2.2</p>
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> *toggle</code></em>);</pre>
+<p class="since">Since: GIMP 2.2</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-drawable-preview-get-drawable"></a><h3>gimp_drawable_preview_get_drawable ()</h3>
 <pre class="programlisting"><a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable"><span class="returnvalue">GimpDrawable</span></a> *
 gimp_drawable_preview_get_drawable (<em class="parameter"><code><a class="link" href="GimpDrawablePreview.html" title="GimpDrawablePreview"><span class="type">GimpDrawablePreview</span></a> *preview</code></em>);</pre>
-<div class="refsect3">
-<a name="id-1.3.5.9.3.4"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>preview</p></td>
-<td class="parameter_description"><p>a <a class="link" href="GimpDrawablePreview.html" title="GimpDrawablePreview"><span class="type">GimpDrawablePreview</span></a> widget</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.3.5.9.3.5"></a><h4>Returns</h4>
-<p> the <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable"><span class="type">GimpDrawable</span></a> that has been passed to
-<a class="link" href="GimpDrawablePreview.html#gimp-drawable-preview-new" title="gimp_drawable_preview_new ()"><code class="function">gimp_drawable_preview_new()</code></a>.</p>
-<p></p>
-</div>
-<p class="since">Since GIMP 2.2</p>
+<p class="since">Since: GIMP 2.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -197,29 +141,7 @@ gimp_drawable_preview_get_drawable (<em class="parameter"><code><a class="link" 
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_drawable_preview_draw_region (<em class="parameter"><code><a class="link" href="GimpDrawablePreview.html" title="GimpDrawablePreview"><span class="type">GimpDrawablePreview</span></a> *preview</code></em>,
                                    <em class="parameter"><code>const <a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn"><span class="type">GimpPixelRgn</span></a> *region</code></em>);</pre>
-<div class="refsect3">
-<a name="id-1.3.5.9.4.4"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>preview</p></td>
-<td class="parameter_description"><p>a <a class="link" href="GimpDrawablePreview.html" title="GimpDrawablePreview"><span class="type">GimpDrawablePreview</span></a> widget</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>region</p></td>
-<td class="parameter_description"><p>a <a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn"><span class="type">GimpPixelRgn</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p class="since">Since GIMP 2.2</p>
+<p class="since">Since: GIMP 2.2</p>
 </div>
 </div>
 <div class="refsect1">
@@ -227,23 +149,19 @@ gimp_drawable_preview_draw_region (<em class="parameter"><code><a class="link" h
 <div class="refsect2">
 <a name="GimpDrawablePreview-struct"></a><h3>GimpDrawablePreview</h3>
 <pre class="programlisting">typedef struct _GimpDrawablePreview GimpDrawablePreview;</pre>
-<p>
-</p>
 </div>
 </div>
 <div class="refsect1">
 <a name="GimpDrawablePreview.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="GimpDrawablePreview--drawable"></a><h3>The <code class="literal">“drawable”</code> property</h3>
-<pre class="programlisting">  “drawable”                 <span class="type">gpointer</span></pre>
-<p></p>
+<pre class="programlisting">  “drawable”                 <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a></pre>
 <p>Flags: Read / Write / Construct Only</p>
-<p class="since">Since GIMP 2.4</p>
+<p class="since">Since: GIMP 2.4</p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GIMP Widgets Library Reference Manual: GimpColorDisplayStack</title>
+<title>GimpColorDisplayStack: GIMP Widgets Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters">
 <link rel="prev" href="GimpColorDisplay.html" title="GimpColorDisplay">
 <link rel="next" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -29,7 +29,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="GimpColorDisplayStack.top_of_page"></a>GimpColorDisplayStack</span></h2>
-<p>GimpColorDisplayStack — A stack of color correction modules.</p>
+<p>GimpColorDisplayStack</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -128,22 +128,22 @@
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="GimpColorDisplayStack.html#GimpColorDisplayStack-added" title="The “added” signal">added</a></td>
-<td class="signal_flags">Run First</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="GimpColorDisplayStack.html#GimpColorDisplayStack-changed" title="The “changed” signal">changed</a></td>
-<td class="signal_flags">Run First</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="GimpColorDisplayStack.html#GimpColorDisplayStack-removed" title="The “removed” signal">removed</a></td>
-<td class="signal_flags">Run First</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="GimpColorDisplayStack.html#GimpColorDisplayStack-reordered" title="The “reordered” signal">reordered</a></td>
-<td class="signal_flags">Run First</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></td>
 </tr>
 </tbody>
 </table></div>
@@ -163,13 +163,12 @@
 </div>
 <div class="refsect1">
 <a name="GimpColorDisplayStack.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
     <span class="lineart">╰──</span> GimpColorDisplayStack
 </pre>
 </div>
 <div class="refsect1">
 <a name="GimpColorDisplayStack.description"></a><h2>Description</h2>
-<p>A stack of color correction modules.</p>
 </div>
 <div class="refsect1">
 <a name="GimpColorDisplayStack.functions_details"></a><h2>Functions</h2>
@@ -177,32 +176,18 @@
 <a name="gimp-color-display-stack-new"></a><h3>gimp_color_display_stack_new ()</h3>
 <pre class="programlisting"><a class="link" href="GimpColorDisplayStack.html" title="GimpColorDisplayStack"><span class="returnvalue">GimpColorDisplayStack</span></a> *
 gimp_color_display_stack_new (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>
-</p>
-<div class="refsect3">
-<a name="id-1.4.3.8.2.5"></a><h4>Returns</h4>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-color-display-stack-clone"></a><h3>gimp_color_display_stack_clone ()</h3>
 <pre class="programlisting"><a class="link" href="GimpColorDisplayStack.html" title="GimpColorDisplayStack"><span class="returnvalue">GimpColorDisplayStack</span></a> *
 gimp_color_display_stack_clone (<em class="parameter"><code><a class="link" href="GimpColorDisplayStack.html" title="GimpColorDisplayStack"><span class="type">GimpColorDisplayStack</span></a> *stack</code></em>);</pre>
-<p>
-</p>
-<div class="refsect3">
-<a name="id-1.4.3.8.3.5"></a><h4>Returns</h4>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-color-display-stack-changed"></a><h3>gimp_color_display_stack_changed ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_color_display_stack_changed (<em class="parameter"><code><a class="link" href="GimpColorDisplayStack.html" title="GimpColorDisplayStack"><span class="type">GimpColorDisplayStack</span></a> *stack</code></em>);</pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -210,8 +195,6 @@ gimp_color_display_stack_changed (<em class="parameter"><code><a class="link" hr
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_color_display_stack_add (<em class="parameter"><code><a class="link" href="GimpColorDisplayStack.html" title="GimpColorDisplayStack"><span class="type">GimpColorDisplayStack</span></a> *stack</code></em>,
                               <em class="parameter"><code><a class="link" href="GimpColorDisplay.html" title="GimpColorDisplay"><span class="type">GimpColorDisplay</span></a> *display</code></em>);</pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -219,8 +202,6 @@ gimp_color_display_stack_add (<em class="parameter"><code><a class="link" href="
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_color_display_stack_remove (<em class="parameter"><code><a class="link" href="GimpColorDisplayStack.html" title="GimpColorDisplayStack"><span class="type">GimpColorDisplayStack</span></a> *stack</code></em>,
                                  <em class="parameter"><code><a class="link" href="GimpColorDisplay.html" title="GimpColorDisplay"><span class="type">GimpColorDisplay</span></a> *display</code></em>);</pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -228,8 +209,6 @@ gimp_color_display_stack_remove (<em class="parameter"><code><a class="link" hre
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_color_display_stack_reorder_up (<em class="parameter"><code><a class="link" href="GimpColorDisplayStack.html" title="GimpColorDisplayStack"><span class="type">GimpColorDisplayStack</span></a> *stack</code></em>,
                                      <em class="parameter"><code><a class="link" href="GimpColorDisplay.html" title="GimpColorDisplay"><span class="type">GimpColorDisplay</span></a> *display</code></em>);</pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -237,66 +216,20 @@ gimp_color_display_stack_reorder_up (<em class="parameter"><code><a class="link"
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_color_display_stack_reorder_down (<em class="parameter"><code><a class="link" href="GimpColorDisplayStack.html" title="GimpColorDisplayStack"><span class="type">GimpColorDisplayStack</span></a> *stack</code></em>,
                                        <em class="parameter"><code><a class="link" href="GimpColorDisplay.html" title="GimpColorDisplay"><span class="type">GimpColorDisplay</span></a> *display</code></em>);</pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-color-display-stack-convert"></a><h3>gimp_color_display_stack_convert ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_color_display_stack_convert (<em class="parameter"><code><a class="link" href="GimpColorDisplayStack.html" title="GimpColorDisplayStack"><span class="type">GimpColorDisplayStack</span></a> *stack</code></em>,
-                                  <em class="parameter"><code><span class="type">guchar</span> *buf</code></em>,
-                                  <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                                  <em class="parameter"><code><span class="type">gint</span> height</code></em>,
-                                  <em class="parameter"><code><span class="type">gint</span> bpp</code></em>,
-                                  <em class="parameter"><code><span class="type">gint</span> bpl</code></em>);</pre>
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> bpp</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> bpl</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">gimp_color_display_stack_convert</code> is deprecated and should not be used in newly-written code.</p>
 <p>GIMP 2.8: Use <a class="link" href="GimpColorDisplayStack.html#gimp-color-display-stack-convert-surface" title="gimp_color_display_stack_convert_surface ()"><code class="function">gimp_color_display_stack_convert_surface()</code></a> instead.</p>
-</div>
-<p>Converts all pixels in <em class="parameter"><code>buf</code></em>
-.</p>
-<div class="refsect3">
-<a name="id-1.4.3.8.9.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>stack</p></td>
-<td class="parameter_description"><p>a <a class="link" href="GimpColorDisplayStack.html" title="GimpColorDisplayStack"><span class="type">GimpColorDisplayStack</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>buf</p></td>
-<td class="parameter_description"><p>the pixel buffer to convert</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>width</p></td>
-<td class="parameter_description"><p>the width of the buffer</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>height</p></td>
-<td class="parameter_description"><p>the height of the buffer</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>bpp</p></td>
-<td class="parameter_description"><p>the number of bytes per pixel</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>bpl</p></td>
-<td class="parameter_description"><p>the buffer's rowstride</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
 </div>
 </div>
 <hr>
@@ -306,31 +239,7 @@ gimp_color_display_stack_convert (<em class="parameter"><code><a class="link" hr
 gimp_color_display_stack_convert_surface
                                (<em class="parameter"><code><a class="link" href="GimpColorDisplayStack.html" title="GimpColorDisplayStack"><span class="type">GimpColorDisplayStack</span></a> *stack</code></em>,
                                 <em class="parameter"><code><span class="type">cairo_surface_t</span> *surface</code></em>);</pre>
-<p>Runs all the stack's filters on all pixels in <em class="parameter"><code>surface</code></em>
-.</p>
-<div class="refsect3">
-<a name="id-1.4.3.8.10.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>stack</p></td>
-<td class="parameter_description"><p>a <a class="link" href="GimpColorDisplayStack.html" title="GimpColorDisplayStack"><span class="type">GimpColorDisplayStack</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>surface</p></td>
-<td class="parameter_description"><p>a <span class="type">cairo_image_surface_t</span> of type ARGB32</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p class="since">Since GIMP 2.8</p>
+<p class="since">Since: GIMP 2.8</p>
 </div>
 </div>
 <div class="refsect1">
@@ -338,8 +247,6 @@ gimp_color_display_stack_convert_surface
 <div class="refsect2">
 <a name="GimpColorDisplayStack-struct"></a><h3>GimpColorDisplayStack</h3>
 <pre class="programlisting">typedef struct _GimpColorDisplayStack GimpColorDisplayStack;</pre>
-<p>
-</p>
 </div>
 </div>
 <div class="refsect1">
@@ -349,65 +256,17 @@ gimp_color_display_stack_convert_surface
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="GimpColorDisplayStack.html" title="GimpColorDisplayStack"><span class="type">GimpColorDisplayStack</span></a> *gimpcolordisplaystack,
                <a class="link" href="GimpColorDisplay.html" title="GimpColorDisplay"><span class="type">GimpColorDisplay</span></a>      *arg1,
-               <span class="type">gint</span>                   arg2,
-               <span class="type">gpointer</span>               user_data)</pre>
-<p>
-</p>
-<div class="refsect3">
-<a name="id-1.4.3.10.2.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>gimpcolordisplaystack</p></td>
-<td class="parameter_description"><p>the object which received the signal.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>user_data</p></td>
-<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p>Flags: Run First</p>
+               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                   arg2,
+               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)</pre>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpColorDisplayStack-changed"></a><h3>The <code class="literal">“changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="GimpColorDisplayStack.html" title="GimpColorDisplayStack"><span class="type">GimpColorDisplayStack</span></a> *gimpcolordisplaystack,
-               <span class="type">gpointer</span>               user_data)</pre>
-<p>
-</p>
-<div class="refsect3">
-<a name="id-1.4.3.10.3.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>gimpcolordisplaystack</p></td>
-<td class="parameter_description"><p>the object which received the signal.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>user_data</p></td>
-<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p>Flags: Run First</p>
+               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)</pre>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -415,32 +274,8 @@ user_function (<a class="link" href="GimpColorDisplayStack.html" title="GimpColo
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="GimpColorDisplayStack.html" title="GimpColorDisplayStack"><span class="type">GimpColorDisplayStack</span></a> *gimpcolordisplaystack,
                <a class="link" href="GimpColorDisplay.html" title="GimpColorDisplay"><span class="type">GimpColorDisplay</span></a>      *arg1,
-               <span class="type">gpointer</span>               user_data)</pre>
-<p>
-</p>
-<div class="refsect3">
-<a name="id-1.4.3.10.4.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>gimpcolordisplaystack</p></td>
-<td class="parameter_description"><p>the object which received the signal.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>user_data</p></td>
-<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p>Flags: Run First</p>
+               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)</pre>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -448,42 +283,13 @@ user_function (<a class="link" href="GimpColorDisplayStack.html" title="GimpColo
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="GimpColorDisplayStack.html" title="GimpColorDisplayStack"><span class="type">GimpColorDisplayStack</span></a> *gimpcolordisplaystack,
                <a class="link" href="GimpColorDisplay.html" title="GimpColorDisplay"><span class="type">GimpColorDisplay</span></a>      *arg1,
-               <span class="type">gint</span>                   arg2,
-               <span class="type">gpointer</span>               user_data)</pre>
-<p>
-</p>
-<div class="refsect3">
-<a name="id-1.4.3.10.5.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>gimpcolordisplaystack</p></td>
-<td class="parameter_description"><p>the object which received the signal.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>user_data</p></td>
-<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
+               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                   arg2,
+               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)</pre>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></p>
 </div>
-<p>Flags: Run First</p>
-</div>
-</div>
-<div class="refsect1">
-<a name="GimpColorDisplayStack.see-also"></a><h2>See Also</h2>
-<p><a class="link" href="GimpColorDisplay.html" title="GimpColorDisplay"><span class="type">GimpColorDisplay</span></a></p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

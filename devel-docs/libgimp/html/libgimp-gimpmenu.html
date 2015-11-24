@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GIMP Library Reference Manual: gimpmenu</title>
+<title>gimpmenu: GIMP Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part II. GIMP User Interface Library">
 <link rel="prev" href="GimpProgressBar.html" title="GimpProgressBar">
 <link rel="next" href="libgimp-gimpbrushmenu.html" title="gimpbrushmenu">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -27,8 +27,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="libgimp-gimpmenu.top_of_page"></a>gimpmenu</span></h2>
-<p>gimpmenu — Menus for selecting images, layers, channels
-                    and drawables.</p>
+<p>gimpmenu</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -42,7 +41,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <span class="c_punctuation">(</span><a class="link" href="libgimp-gimpmenu.html#GimpConstraintFunc" title="GimpConstraintFunc ()">*GimpConstraintFunc</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
@@ -58,7 +57,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GtkWidget</span> *
+<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimpmenu.html#gimp-image-menu-new" title="gimp_image_menu_new ()">gimp_image_menu_new</a> <span class="c_punctuation">()</span>
@@ -66,7 +65,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GtkWidget</span> *
+<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimpmenu.html#gimp-layer-menu-new" title="gimp_layer_menu_new ()">gimp_layer_menu_new</a> <span class="c_punctuation">()</span>
@@ -74,7 +73,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GtkWidget</span> *
+<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimpmenu.html#gimp-channel-menu-new" title="gimp_channel_menu_new ()">gimp_channel_menu_new</a> <span class="c_punctuation">()</span>
@@ -82,7 +81,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GtkWidget</span> *
+<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimpmenu.html#gimp-drawable-menu-new" title="gimp_drawable_menu_new ()">gimp_drawable_menu_new</a> <span class="c_punctuation">()</span>
@@ -93,232 +92,75 @@
 </div>
 <div class="refsect1">
 <a name="libgimp-gimpmenu.description"></a><h2>Description</h2>
-<p>Menus for selecting images, layers, channels and drawables.</p>
 </div>
 <div class="refsect1">
 <a name="libgimp-gimpmenu.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="GimpConstraintFunc"></a><h3>GimpConstraintFunc ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
-<span class="c_punctuation">(</span>*GimpConstraintFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><span class="type">gint32</span> image_id</code></em>,
-                       <em class="parameter"><code><span class="type">gint32</span> drawable_id</code></em>,
-                       <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<span class="c_punctuation">(</span>*GimpConstraintFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_id</code></em>,
+                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_id</code></em>,
+                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);</pre>
 <div class="warning"><p><code class="literal">GimpConstraintFunc</code> is deprecated and should not be used in newly-written code.</p></div>
-<p>
-</p>
-<div class="refsect3">
-<a name="id-1.3.11.5.2.6"></a><h4>Returns</h4>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpMenuCallback"></a><h3>GimpMenuCallback ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-<span class="c_punctuation">(</span>*GimpMenuCallback<span class="c_punctuation">)</span> (<em class="parameter"><code><span class="type">gint32</span> any_id</code></em>,
-                     <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+<span class="c_punctuation">(</span>*GimpMenuCallback<span class="c_punctuation">)</span> (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> any_id</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);</pre>
 <div class="warning"><p><code class="literal">GimpMenuCallback</code> is deprecated and should not be used in newly-written code.</p></div>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-image-menu-new"></a><h3>gimp_image_menu_new ()</h3>
-<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 gimp_image_menu_new (<em class="parameter"><code><a class="link" href="libgimp-gimpmenu.html#GimpConstraintFunc" title="GimpConstraintFunc ()"><span class="type">GimpConstraintFunc</span></a> constraint</code></em>,
                      <em class="parameter"><code><a class="link" href="libgimp-gimpmenu.html#GimpMenuCallback" title="GimpMenuCallback ()"><span class="type">GimpMenuCallback</span></a> callback</code></em>,
-                     <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
-                     <em class="parameter"><code><span class="type">gint32</span> active_image</code></em>);</pre>
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> active_image</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">gimp_image_menu_new</code> is deprecated and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="GimpImageComboBox.html#gimp-image-combo-box-new" title="gimp_image_combo_box_new ()"><code class="function">gimp_image_combo_box_new()</code></a> instead.</p>
-</div>
-<div class="refsect3">
-<a name="id-1.3.11.5.4.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>constraint</p></td>
-<td class="parameter_description"><p>a function to filter the menu contents</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>callback</p></td>
-<td class="parameter_description"><p>the callback to call when an image is selected</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the callback's user_data</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>active_image</p></td>
-<td class="parameter_description"><p>an image to preselect</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.3.11.5.4.6"></a><h4>Returns</h4>
-<p> the image menu.</p>
-<p></p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-menu-new"></a><h3>gimp_layer_menu_new ()</h3>
-<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 gimp_layer_menu_new (<em class="parameter"><code><a class="link" href="libgimp-gimpmenu.html#GimpConstraintFunc" title="GimpConstraintFunc ()"><span class="type">GimpConstraintFunc</span></a> constraint</code></em>,
                      <em class="parameter"><code><a class="link" href="libgimp-gimpmenu.html#GimpMenuCallback" title="GimpMenuCallback ()"><span class="type">GimpMenuCallback</span></a> callback</code></em>,
-                     <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
-                     <em class="parameter"><code><span class="type">gint32</span> active_layer</code></em>);</pre>
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> active_layer</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">gimp_layer_menu_new</code> is deprecated and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="libgimp-GimpItemComboBox.html#gimp-layer-combo-box-new" title="gimp_layer_combo_box_new ()"><code class="function">gimp_layer_combo_box_new()</code></a> instead.</p>
-</div>
-<div class="refsect3">
-<a name="id-1.3.11.5.5.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>constraint</p></td>
-<td class="parameter_description"><p>a function to filter the menu contents</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>callback</p></td>
-<td class="parameter_description"><p>the callback to call when a channel is selected</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the callback's user_data</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>active_layer</p></td>
-<td class="parameter_description"><p>a layer to preselect</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.3.11.5.5.6"></a><h4>Returns</h4>
-<p> the layer menu.</p>
-<p></p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-channel-menu-new"></a><h3>gimp_channel_menu_new ()</h3>
-<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 gimp_channel_menu_new (<em class="parameter"><code><a class="link" href="libgimp-gimpmenu.html#GimpConstraintFunc" title="GimpConstraintFunc ()"><span class="type">GimpConstraintFunc</span></a> constraint</code></em>,
                        <em class="parameter"><code><a class="link" href="libgimp-gimpmenu.html#GimpMenuCallback" title="GimpMenuCallback ()"><span class="type">GimpMenuCallback</span></a> callback</code></em>,
-                       <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
-                       <em class="parameter"><code><span class="type">gint32</span> active_channel</code></em>);</pre>
+                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>,
+                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> active_channel</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">gimp_channel_menu_new</code> is deprecated and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="libgimp-GimpItemComboBox.html#gimp-channel-combo-box-new" title="gimp_channel_combo_box_new ()"><code class="function">gimp_channel_combo_box_new()</code></a> instead.</p>
-</div>
-<div class="refsect3">
-<a name="id-1.3.11.5.6.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>constraint</p></td>
-<td class="parameter_description"><p>a function to filter the menu contents</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>callback</p></td>
-<td class="parameter_description"><p>the callback to call when a channel is selected</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the callback's user_data</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>active_channel</p></td>
-<td class="parameter_description"><p>a channel to preselect</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.3.11.5.6.6"></a><h4>Returns</h4>
-<p> the channel menu.</p>
-<p></p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-drawable-menu-new"></a><h3>gimp_drawable_menu_new ()</h3>
-<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *
 gimp_drawable_menu_new (<em class="parameter"><code><a class="link" href="libgimp-gimpmenu.html#GimpConstraintFunc" title="GimpConstraintFunc ()"><span class="type">GimpConstraintFunc</span></a> constraint</code></em>,
                         <em class="parameter"><code><a class="link" href="libgimp-gimpmenu.html#GimpMenuCallback" title="GimpMenuCallback ()"><span class="type">GimpMenuCallback</span></a> callback</code></em>,
-                        <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
-                        <em class="parameter"><code><span class="type">gint32</span> active_drawable</code></em>);</pre>
+                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>,
+                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> active_drawable</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">gimp_drawable_menu_new</code> is deprecated and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="libgimp-GimpItemComboBox.html#gimp-drawable-combo-box-new" title="gimp_drawable_combo_box_new ()"><code class="function">gimp_drawable_combo_box_new()</code></a> instead.</p>
-</div>
-<div class="refsect3">
-<a name="id-1.3.11.5.7.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>constraint</p></td>
-<td class="parameter_description"><p>a function to filter the menu contents</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>callback</p></td>
-<td class="parameter_description"><p>the callback to call when a channel is selected</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the callback's user_data</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>active_drawable</p></td>
-<td class="parameter_description"><p>a drawable to preselect</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.3.11.5.7.6"></a><h4>Returns</h4>
-<p> the drawable menu.</p>
-<p></p>
 </div>
 </div>
 </div>
@@ -327,7 +169,6 @@ gimp_drawable_menu_new (<em class="parameter"><code><a class="link" href="libgim
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

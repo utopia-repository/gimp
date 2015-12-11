@@ -1,3 +1,9 @@
+gimp (2.8.16-1) unstable; urgency=low
+
+  * Imported Upstream version 2.8.16
+
+ -- Ari Pollak <ari@debian.org>  Tue, 24 Nov 2015 14:19:08 -0500
+
 gimp (2.8.14-1.2) unstable; urgency=medium
 
   * Non-maintainer upload.

@@ -1,3 +1,9 @@
+gimp (2.8.16-2) unstable; urgency=medium
+
+  * Remove JPEG 2000 support due to jasper removal from Debian (Closes: #818216)
+
+ -- Ari Pollak <ari@debian.org>  Mon, 23 May 2016 20:05:27 -0400
+
 gimp (2.8.16-1) unstable; urgency=low
 
   * Imported Upstream version 2.8.16

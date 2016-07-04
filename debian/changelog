@@ -1,3 +1,12 @@
+gimp (2.8.16-2.1) UNRELEASED; urgency=medium
+
+  * Non-maintainer upload.
+  * debian/patches/: patchset updated
+    - fix_GEGL_FTBFS.patch added (Closes: #829427)
+      Thanks to Michael Natterer (upstream dev) for the hint.
+
+ -- Matteo F. Vescovi <mfv@debian.org>  Mon, 04 Jul 2016 14:25:00 +0200
+
 gimp (2.8.16-2) unstable; urgency=medium
 
   * Remove JPEG 2000 support due to jasper removal from Debian (Closes: #818216)

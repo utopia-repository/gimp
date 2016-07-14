@@ -49,15 +49,7 @@
     <keyword type="function" name="gimp_rgba_multiply ()" link="libgimpcolor-GimpRGB.html#gimp-rgba-multiply"/>
     <keyword type="function" name="gimp_rgba_distance ()" link="libgimpcolor-GimpRGB.html#gimp-rgba-distance"/>
     <keyword type="macro" name="GIMP_RGB_LUMINANCE()" link="libgimpcolor-GimpRGB.html#GIMP-RGB-LUMINANCE:CAPS"/>
-    <keyword type="macro" name="GIMP_RGB_LUMINANCE_RED" link="libgimpcolor-GimpRGB.html#GIMP-RGB-LUMINANCE-RED:CAPS"/>
-    <keyword type="macro" name="GIMP_RGB_LUMINANCE_GREEN" link="libgimpcolor-GimpRGB.html#GIMP-RGB-LUMINANCE-GREEN:CAPS"/>
-    <keyword type="macro" name="GIMP_RGB_LUMINANCE_BLUE" link="libgimpcolor-GimpRGB.html#GIMP-RGB-LUMINANCE-BLUE:CAPS"/>
     <keyword type="macro" name="GIMP_RGB_INTENSITY()" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY:CAPS" deprecated=""/>
-    <keyword type="macro" name="GIMP_RGB_INTENSITY_RED" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-RED:CAPS" deprecated=""/>
-    <keyword type="macro" name="GIMP_RGB_INTENSITY_GREEN" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-GREEN:CAPS" deprecated=""/>
-    <keyword type="macro" name="GIMP_RGB_INTENSITY_BLUE" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-BLUE:CAPS" deprecated=""/>
-    <keyword type="macro" name="GIMP_TYPE_RGB" link="libgimpcolor-GimpRGB.html#GIMP-TYPE-RGB:CAPS"/>
-    <keyword type="macro" name="GIMP_TYPE_PARAM_RGB" link="libgimpcolor-GimpRGB.html#GIMP-TYPE-PARAM-RGB:CAPS"/>
     <keyword type="function" name="gimp_param_spec_rgb ()" link="libgimpcolor-GimpRGB.html#gimp-param-spec-rgb" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_param_spec_rgb_has_alpha ()" link="libgimpcolor-GimpRGB.html#gimp-param-spec-rgb-has-alpha" since="GIMP 2.4"/>
     <keyword type="macro" name="GIMP_VALUE_HOLDS_RGB()" link="libgimpcolor-GimpRGB.html#GIMP-VALUE-HOLDS-RGB:CAPS"/>
@@ -65,22 +57,30 @@
     <keyword type="function" name="gimp_value_set_rgb ()" link="libgimpcolor-GimpRGB.html#gimp-value-set-rgb"/>
     <keyword type="struct" name="struct GimpRGB" link="libgimpcolor-GimpRGB.html#GimpRGB"/>
     <keyword type="enum" name="enum GimpRGBCompositeMode" link="libgimpcolor-GimpRGB.html#GimpRGBCompositeMode"/>
+    <keyword type="macro" name="GIMP_RGB_LUMINANCE_RED" link="libgimpcolor-GimpRGB.html#GIMP-RGB-LUMINANCE-RED:CAPS"/>
+    <keyword type="macro" name="GIMP_RGB_LUMINANCE_GREEN" link="libgimpcolor-GimpRGB.html#GIMP-RGB-LUMINANCE-GREEN:CAPS"/>
+    <keyword type="macro" name="GIMP_RGB_LUMINANCE_BLUE" link="libgimpcolor-GimpRGB.html#GIMP-RGB-LUMINANCE-BLUE:CAPS"/>
+    <keyword type="macro" name="GIMP_RGB_INTENSITY_RED" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-RED:CAPS" deprecated=""/>
+    <keyword type="macro" name="GIMP_RGB_INTENSITY_GREEN" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-GREEN:CAPS" deprecated=""/>
+    <keyword type="macro" name="GIMP_RGB_INTENSITY_BLUE" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-BLUE:CAPS" deprecated=""/>
+    <keyword type="macro" name="GIMP_TYPE_RGB" link="libgimpcolor-GimpRGB.html#GIMP-TYPE-RGB:CAPS"/>
+    <keyword type="macro" name="GIMP_TYPE_PARAM_RGB" link="libgimpcolor-GimpRGB.html#GIMP-TYPE-PARAM-RGB:CAPS"/>
     <keyword type="function" name="gimp_hsv_set ()" link="libgimpcolor-GimpHSV.html#gimp-hsv-set"/>
     <keyword type="function" name="gimp_hsv_clamp ()" link="libgimpcolor-GimpHSV.html#gimp-hsv-clamp"/>
     <keyword type="function" name="gimp_hsva_set ()" link="libgimpcolor-GimpHSV.html#gimp-hsva-set"/>
     <keyword type="function" name="gimp_hsl_set ()" link="libgimpcolor-GimpHSV.html#gimp-hsl-set" since="GIMP 2.8"/>
-    <keyword type="macro" name="GIMP_TYPE_HSV" link="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSV:CAPS"/>
-    <keyword type="macro" name="GIMP_TYPE_HSL" link="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSL:CAPS"/>
     <keyword type="struct" name="struct GimpHSV" link="libgimpcolor-GimpHSV.html#GimpHSV"/>
     <keyword type="struct" name="struct GimpHSL" link="libgimpcolor-GimpHSV.html#GimpHSL"/>
+    <keyword type="macro" name="GIMP_TYPE_HSV" link="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSV:CAPS"/>
+    <keyword type="macro" name="GIMP_TYPE_HSL" link="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSL:CAPS"/>
     <keyword type="function" name="gimp_cmyk_set ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyk-set"/>
     <keyword type="function" name="gimp_cmyk_set_uchar ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyk-set-uchar"/>
     <keyword type="function" name="gimp_cmyk_get_uchar ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyk-get-uchar"/>
     <keyword type="function" name="gimp_cmyka_set ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyka-set"/>
     <keyword type="function" name="gimp_cmyka_set_uchar ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyka-set-uchar"/>
     <keyword type="function" name="gimp_cmyka_get_uchar ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyka-get-uchar"/>
-    <keyword type="macro" name="GIMP_TYPE_CMYK" link="libgimpcolor-GimpCMYK.html#GIMP-TYPE-CMYK:CAPS"/>
     <keyword type="struct" name="struct GimpCMYK" link="libgimpcolor-GimpCMYK.html#GimpCMYK"/>
+    <keyword type="macro" name="GIMP_TYPE_CMYK" link="libgimpcolor-GimpCMYK.html#GIMP-TYPE-CMYK:CAPS"/>
     <keyword type="function" name="gimp_rgb_to_hsv ()" link="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsv"/>
     <keyword type="function" name="gimp_rgb_to_hsl ()" link="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsl"/>
     <keyword type="function" name="gimp_rgb_to_cmyk ()" link="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-cmyk"/>
@@ -123,5 +123,22 @@
     <keyword type="constant" name="GIMP_RGB_COMPOSITE_NONE" link="libgimpcolor-GimpRGB.html#GIMP-RGB-COMPOSITE-NONE:CAPS"/>
     <keyword type="constant" name="GIMP_RGB_COMPOSITE_NORMAL" link="libgimpcolor-GimpRGB.html#GIMP-RGB-COMPOSITE-NORMAL:CAPS"/>
     <keyword type="constant" name="GIMP_RGB_COMPOSITE_BEHIND" link="libgimpcolor-GimpRGB.html#GIMP-RGB-COMPOSITE-BEHIND:CAPS"/>
+    <keyword type="member" name="GimpRGB.r" link="libgimpcolor-GimpRGB.html#GimpRGB.r"/>
+    <keyword type="member" name="GimpRGB.g" link="libgimpcolor-GimpRGB.html#GimpRGB.g"/>
+    <keyword type="member" name="GimpRGB.b" link="libgimpcolor-GimpRGB.html#GimpRGB.b"/>
+    <keyword type="member" name="GimpRGB.a" link="libgimpcolor-GimpRGB.html#GimpRGB.a"/>
+    <keyword type="member" name="GimpHSV.h" link="libgimpcolor-GimpHSV.html#GimpHSV.h"/>
+    <keyword type="member" name="GimpHSV.s" link="libgimpcolor-GimpHSV.html#GimpHSV.s"/>
+    <keyword type="member" name="GimpHSV.v" link="libgimpcolor-GimpHSV.html#GimpHSV.v"/>
+    <keyword type="member" name="GimpHSV.a" link="libgimpcolor-GimpHSV.html#GimpHSV.a"/>
+    <keyword type="member" name="GimpHSL.h" link="libgimpcolor-GimpHSV.html#GimpHSL.h"/>
+    <keyword type="member" name="GimpHSL.s" link="libgimpcolor-GimpHSV.html#GimpHSL.s"/>
+    <keyword type="member" name="GimpHSL.l" link="libgimpcolor-GimpHSV.html#GimpHSL.l"/>
+    <keyword type="member" name="GimpHSL.a" link="libgimpcolor-GimpHSV.html#GimpHSL.a"/>
+    <keyword type="member" name="GimpCMYK.c" link="libgimpcolor-GimpCMYK.html#GimpCMYK.c"/>
+    <keyword type="member" name="GimpCMYK.m" link="libgimpcolor-GimpCMYK.html#GimpCMYK.m"/>
+    <keyword type="member" name="GimpCMYK.y" link="libgimpcolor-GimpCMYK.html#GimpCMYK.y"/>
+    <keyword type="member" name="GimpCMYK.k" link="libgimpcolor-GimpCMYK.html#GimpCMYK.k"/>
+    <keyword type="member" name="GimpCMYK.a" link="libgimpcolor-GimpCMYK.html#GimpCMYK.a"/>
   </functions>
 </book>

@@ -39,19 +39,19 @@
     <keyword type="function" name="gimp_matrix3_is_affine ()" link="libgimpmath-GimpMatrix.html#gimp-matrix3-is-affine" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_matrix3_is_simple ()" link="libgimpmath-GimpMatrix.html#gimp-matrix3-is-simple"/>
     <keyword type="function" name="gimp_matrix4_to_deg ()" link="libgimpmath-GimpMatrix.html#gimp-matrix4-to-deg"/>
-    <keyword type="macro" name="GIMP_TYPE_MATRIX2" link="libgimpmath-GimpMatrix.html#GIMP-TYPE-MATRIX2:CAPS"/>
-    <keyword type="macro" name="GIMP_TYPE_PARAM_MATRIX2" link="libgimpmath-GimpMatrix.html#GIMP-TYPE-PARAM-MATRIX2:CAPS"/>
     <keyword type="macro" name="GIMP_IS_PARAM_SPEC_MATRIX2()" link="libgimpmath-GimpMatrix.html#GIMP-IS-PARAM-SPEC-MATRIX2:CAPS"/>
     <keyword type="function" name="gimp_param_spec_matrix2 ()" link="libgimpmath-GimpMatrix.html#gimp-param-spec-matrix2" since="GIMP 2.4"/>
     <keyword type="macro" name="GIMP_VALUE_HOLDS_MATRIX2()" link="libgimpmath-GimpMatrix.html#GIMP-VALUE-HOLDS-MATRIX2:CAPS"/>
-    <keyword type="macro" name="GIMP_TYPE_MATRIX3" link="libgimpmath-GimpMatrix.html#GIMP-TYPE-MATRIX3:CAPS"/>
-    <keyword type="macro" name="GIMP_TYPE_PARAM_MATRIX3" link="libgimpmath-GimpMatrix.html#GIMP-TYPE-PARAM-MATRIX3:CAPS"/>
     <keyword type="macro" name="GIMP_IS_PARAM_SPEC_MATRIX3()" link="libgimpmath-GimpMatrix.html#GIMP-IS-PARAM-SPEC-MATRIX3:CAPS"/>
     <keyword type="function" name="gimp_param_spec_matrix3 ()" link="libgimpmath-GimpMatrix.html#gimp-param-spec-matrix3" since="GIMP 2.8"/>
     <keyword type="macro" name="GIMP_VALUE_HOLDS_MATRIX3()" link="libgimpmath-GimpMatrix.html#GIMP-VALUE-HOLDS-MATRIX3:CAPS"/>
     <keyword type="struct" name="struct GimpMatrix2" link="libgimpmath-GimpMatrix.html#GimpMatrix2"/>
     <keyword type="struct" name="struct GimpMatrix3" link="libgimpmath-GimpMatrix.html#GimpMatrix3"/>
     <keyword type="struct" name="struct GimpMatrix4" link="libgimpmath-GimpMatrix.html#GimpMatrix4"/>
+    <keyword type="macro" name="GIMP_TYPE_MATRIX2" link="libgimpmath-GimpMatrix.html#GIMP-TYPE-MATRIX2:CAPS"/>
+    <keyword type="macro" name="GIMP_TYPE_PARAM_MATRIX2" link="libgimpmath-GimpMatrix.html#GIMP-TYPE-PARAM-MATRIX2:CAPS"/>
+    <keyword type="macro" name="GIMP_TYPE_MATRIX3" link="libgimpmath-GimpMatrix.html#GIMP-TYPE-MATRIX3:CAPS"/>
+    <keyword type="macro" name="GIMP_TYPE_PARAM_MATRIX3" link="libgimpmath-GimpMatrix.html#GIMP-TYPE-PARAM-MATRIX3:CAPS"/>
     <keyword type="function" name="gimp_vector2_new ()" link="libgimpmath-GimpVector.html#gimp-vector2-new"/>
     <keyword type="function" name="gimp_vector2_set ()" link="libgimpmath-GimpVector.html#gimp-vector2-set"/>
     <keyword type="function" name="gimp_vector2_length ()" link="libgimpmath-GimpVector.html#gimp-vector2-length"/>
@@ -101,5 +101,17 @@
     <keyword type="struct" name="struct GimpVector3" link="libgimpmath-GimpVector.html#GimpVector3"/>
     <keyword type="struct" name="struct GimpVector4" link="libgimpmath-GimpVector.html#GimpVector4"/>
     <keyword type="function" name="gimp_md5_get_digest ()" link="libgimpmath-GimpMD5.html#gimp-md5-get-digest"/>
+    <keyword type="member" name="GimpMatrix2.coeff" link="libgimpmath-GimpMatrix.html#GimpMatrix2.coeff"/>
+    <keyword type="member" name="GimpMatrix3.coeff" link="libgimpmath-GimpMatrix.html#GimpMatrix3.coeff"/>
+    <keyword type="member" name="GimpMatrix4.coeff" link="libgimpmath-GimpMatrix.html#GimpMatrix4.coeff"/>
+    <keyword type="member" name="GimpVector2.x" link="libgimpmath-GimpVector.html#GimpVector2.x"/>
+    <keyword type="member" name="GimpVector2.y" link="libgimpmath-GimpVector.html#GimpVector2.y"/>
+    <keyword type="member" name="GimpVector3.x" link="libgimpmath-GimpVector.html#GimpVector3.x"/>
+    <keyword type="member" name="GimpVector3.y" link="libgimpmath-GimpVector.html#GimpVector3.y"/>
+    <keyword type="member" name="GimpVector3.z" link="libgimpmath-GimpVector.html#GimpVector3.z"/>
+    <keyword type="member" name="GimpVector4.x" link="libgimpmath-GimpVector.html#GimpVector4.x"/>
+    <keyword type="member" name="GimpVector4.y" link="libgimpmath-GimpVector.html#GimpVector4.y"/>
+    <keyword type="member" name="GimpVector4.z" link="libgimpmath-GimpVector.html#GimpVector4.z"/>
+    <keyword type="member" name="GimpVector4.w" link="libgimpmath-GimpVector.html#GimpVector4.w"/>
   </functions>
 </book>

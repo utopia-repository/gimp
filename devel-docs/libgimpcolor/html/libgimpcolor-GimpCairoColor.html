@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpCairoColor: GIMP Color Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="GIMP Color Library Reference Manual">
 <link rel="up" href="libgimpcolor.html" title="Part I. GIMP Color Library">
 <link rel="prev" href="libgimpcolor-GimpBilinear.html" title="GimpBilinear">
 <link rel="next" href="libgimpcolor-index.html" title="Index">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -33,7 +33,7 @@
 </tr></table></div>
 <div class="refsect1">
 <a name="libgimpcolor-GimpCairoColor.functions"></a><h2>Functions</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="functions_return">
 <col class="functions_name">
@@ -108,8 +108,8 @@ described by <em class="parameter"><code>color</code></em>
 .</p>
 <p>This function calls <code class="function">cairo_set_source_rgb()</code> for you.</p>
 <div class="refsect3">
-<a name="id-1.2.9.5.2.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="gimp-cairo-set-source-rgb.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -143,8 +143,8 @@ described by <em class="parameter"><code>color</code></em>
 .</p>
 <p>This function calls <code class="function">cairo_set_source_rgba()</code> for you.</p>
 <div class="refsect3">
-<a name="id-1.2.9.5.3.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="gimp-cairo-set-source-rgba.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -171,13 +171,13 @@ described by <em class="parameter"><code>color</code></em>
 <a name="gimp-cairo-checkerboard-create"></a><h3>gimp_cairo_checkerboard_create ()</h3>
 <pre class="programlisting"><span class="returnvalue">cairo_pattern_t</span> *
 gimp_cairo_checkerboard_create (<em class="parameter"><code><span class="type">cairo_t</span> *cr</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> size</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a> size</code></em>,
                                 <em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="struct GimpRGB"><span class="type">GimpRGB</span></a> *light</code></em>,
                                 <em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="struct GimpRGB"><span class="type">GimpRGB</span></a> *dark</code></em>);</pre>
 <p>Create a repeating checkerboard pattern.</p>
 <div class="refsect3">
-<a name="id-1.2.9.5.4.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="gimp-cairo-checkerboard-create.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -196,19 +196,19 @@ gimp_cairo_checkerboard_create (<em class="parameter"><code><span class="type">c
 </tr>
 <tr>
 <td class="parameter_name"><p>light</p></td>
-<td class="parameter_description"><p>light check color or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to use the default light gray</p></td>
+<td class="parameter_description"><p>light check color or <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to use the default light gray</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>dark</p></td>
-<td class="parameter_description"><p>dark check color or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to use the default dark gray</p></td>
+<td class="parameter_description"><p>dark check color or <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to use the default dark gray</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.5.4.6"></a><h4>Returns</h4>
+<a name="gimp-cairo-checkerboard-create.returns"></a><h4>Returns</h4>
 <p> a new Cairo pattern that can be used as a source on <em class="parameter"><code>cr</code></em>
 .</p>
 </div>
@@ -220,8 +220,8 @@ gimp_cairo_checkerboard_create (<em class="parameter"><code><span class="type">c
 <pre class="programlisting">#define             GIMP_CAIRO_RGB24_SET_PIXEL(d, r, g, b)</pre>
 <p>Sets a single pixel in an Cairo image surface in <code class="literal">CAIRO_FORMAT_RGB24</code>.</p>
 <div class="refsect3">
-<a name="id-1.2.9.5.5.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="GIMP-CAIRO-RGB24-SET-PIXEL.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -259,8 +259,8 @@ gimp_cairo_checkerboard_create (<em class="parameter"><code><span class="type">c
 <pre class="programlisting">#define             GIMP_CAIRO_RGB24_GET_PIXEL(s, r, g, b)</pre>
 <p>Gets a single pixel from a Cairo image surface in <code class="literal">CAIRO_FORMAT_RGB24</code>.</p>
 <div class="refsect3">
-<a name="id-1.2.9.5.6.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="GIMP-CAIRO-RGB24-GET-PIXEL.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -298,8 +298,8 @@ gimp_cairo_checkerboard_create (<em class="parameter"><code><span class="type">c
 <pre class="programlisting">#define             GIMP_CAIRO_ARGB32_SET_PIXEL(d, r, g, b, a)</pre>
 <p>Sets a single pixel in an Cairo image surface in <code class="literal">CAIRO_FORMAT_ARGB32</code>.</p>
 <div class="refsect3">
-<a name="id-1.2.9.5.7.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="GIMP-CAIRO-ARGB32-SET-PIXEL.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -342,8 +342,8 @@ gimp_cairo_checkerboard_create (<em class="parameter"><code><span class="type">c
 <pre class="programlisting">#define             GIMP_CAIRO_ARGB32_GET_PIXEL(s, r, g, b, a)</pre>
 <p>Gets a single pixel from a Cairo image surface in <code class="literal">CAIRO_FORMAT_ARGB32</code>.</p>
 <div class="refsect3">
-<a name="id-1.2.9.5.8.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="GIMP-CAIRO-ARGB32-GET-PIXEL.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -386,6 +386,6 @@ gimp_cairo_checkerboard_create (<em class="parameter"><code><span class="type">c
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

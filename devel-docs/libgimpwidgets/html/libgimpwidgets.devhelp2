@@ -493,7 +493,6 @@
     <keyword type="function" name="gimp_cairo_set_focus_line_pattern ()" link="libgimpwidgets-GimpCairoUtils.html#gimp-cairo-set-focus-line-pattern" since="GIMP 2.6"/>
     <keyword type="function" name="gimp_cairo_surface_create_from_pixbuf ()" link="libgimpwidgets-GimpCairoUtils.html#gimp-cairo-surface-create-from-pixbuf" since="GIMP 2.6"/>
     <keyword type="function" name="GimpHelpFunc ()" link="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc"/>
-    <keyword type="macro" name="GIMP_HELP_ID" link="libgimpwidgets-GimpHelpUI.html#GIMP-HELP-ID:CAPS" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_help_enable_tooltips ()" link="libgimpwidgets-GimpHelpUI.html#gimp-help-enable-tooltips"/>
     <keyword type="function" name="gimp_help_disable_tooltips ()" link="libgimpwidgets-GimpHelpUI.html#gimp-help-disable-tooltips"/>
     <keyword type="function" name="gimp_standard_help_func ()" link="libgimpwidgets-GimpHelpUI.html#gimp-standard-help-func"/>
@@ -501,6 +500,7 @@
     <keyword type="function" name="gimp_help_set_help_data ()" link="libgimpwidgets-GimpHelpUI.html#gimp-help-set-help-data"/>
     <keyword type="function" name="gimp_help_set_help_data_with_markup ()" link="libgimpwidgets-GimpHelpUI.html#gimp-help-set-help-data-with-markup" since="GIMP 2.6"/>
     <keyword type="function" name="gimp_context_help ()" link="libgimpwidgets-GimpHelpUI.html#gimp-context-help"/>
+    <keyword type="macro" name="GIMP_HELP_ID" link="libgimpwidgets-GimpHelpUI.html#GIMP-HELP-ID:CAPS" since="GIMP 2.2"/>
     <keyword type="function" name="GimpQueryStringCallback ()" link="libgimpwidgets-GimpQueryBox.html#GimpQueryStringCallback"/>
     <keyword type="function" name="GimpQueryIntCallback ()" link="libgimpwidgets-GimpQueryBox.html#GimpQueryIntCallback"/>
     <keyword type="function" name="GimpQueryDoubleCallback ()" link="libgimpwidgets-GimpQueryBox.html#GimpQueryDoubleCallback"/>
@@ -788,9 +788,9 @@
     <keyword type="function" name="gimp_double_adjustment_update ()" link="libgimpwidgets-GimpWidgets.html#gimp-double-adjustment-update"/>
     <keyword type="function" name="gimp_table_attach_aligned ()" link="libgimpwidgets-GimpWidgets.html#gimp-table-attach-aligned"/>
     <keyword type="function" name="gimp_label_set_attributes ()" link="libgimpwidgets-GimpWidgets.html#gimp-label-set-attributes" since="GIMP 2.2"/>
-    <keyword type="macro" name="GIMP_WIDGETS_ERROR" link="libgimpwidgets-GimpWidgets.html#GIMP-WIDGETS-ERROR:CAPS" since="GIMP 2.8"/>
     <keyword type="function" name="gimp_widgets_error_quark ()" link="libgimpwidgets-GimpWidgets.html#gimp-widgets-error-quark"/>
     <keyword type="enum" name="enum GimpWidgetsError" link="libgimpwidgets-GimpWidgets.html#GimpWidgetsError"/>
+    <keyword type="macro" name="GIMP_WIDGETS_ERROR" link="libgimpwidgets-GimpWidgets.html#GIMP-WIDGETS-ERROR:CAPS" since="GIMP 2.8"/>
     <keyword type="function" name="gimp_int_option_menu_new ()" link="libgimpwidgets-GimpOldWidgets.html#gimp-int-option-menu-new" deprecated=""/>
     <keyword type="function" name="gimp_int_option_menu_set_history ()" link="libgimpwidgets-GimpOldWidgets.html#gimp-int-option-menu-set-history" deprecated=""/>
     <keyword type="function" name="GimpIntOptionMenuSensitivityCallback ()" link="libgimpwidgets-GimpOldWidgets.html#GimpIntOptionMenuSensitivityCallback" deprecated=""/>

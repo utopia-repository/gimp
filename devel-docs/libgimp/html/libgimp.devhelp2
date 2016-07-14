@@ -1185,5 +1185,9 @@
     <keyword type="constant" name="GIMP_EXPORT_CANCEL" link="libgimp-gimpexport.html#GIMP-EXPORT-CANCEL:CAPS"/>
     <keyword type="constant" name="GIMP_EXPORT_IGNORE" link="libgimp-gimpexport.html#GIMP-EXPORT-IGNORE:CAPS"/>
     <keyword type="constant" name="GIMP_EXPORT_EXPORT" link="libgimp-gimpexport.html#GIMP-EXPORT-EXPORT:CAPS"/>
+    <keyword type="member" name="GimpPlugInInfo.init-proc" link="libgimp-Gimp.html#GimpPlugInInfo.init-proc"/>
+    <keyword type="member" name="GimpPlugInInfo.quit-proc" link="libgimp-Gimp.html#GimpPlugInInfo.quit-proc"/>
+    <keyword type="member" name="GimpPlugInInfo.query-proc" link="libgimp-Gimp.html#GimpPlugInInfo.query-proc"/>
+    <keyword type="member" name="GimpPlugInInfo.run-proc" link="libgimp-Gimp.html#GimpPlugInInfo.run-proc"/>
   </functions>
 </book>

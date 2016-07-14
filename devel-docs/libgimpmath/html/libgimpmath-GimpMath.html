@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpMath: GIMP Math Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="GIMP Math Library Reference Manual">
 <link rel="up" href="libgimpmath.html" title="Part I. GIMP Math Library">
 <link rel="prev" href="libgimpmath.html" title="Part I. GIMP Math Library">
 <link rel="next" href="libgimpmath-GimpMatrix.html" title="GimpMatrix">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -33,7 +33,7 @@
 </tr></table></div>
 <div class="refsect1">
 <a name="libgimpmath-GimpMath.functions"></a><h2>Functions</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="functions_return">
 <col class="functions_name">
@@ -100,8 +100,8 @@ the ones from &lt;math.h&gt; for enhanced portability.</p>
  to an integer value in floating
 point format. Use <a class="link" href="libgimpmath-GimpMath.html#RINT:CAPS" title="RINT()"><code class="function">RINT()</code></a> instead of <code class="function">rint()</code>.</p>
 <div class="refsect3">
-<a name="id-1.2.2.5.2.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="RINT.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -123,8 +123,8 @@ point format. Use <a class="link" href="libgimpmath-GimpMath.html#RINT:CAPS" tit
 <p>This macro rounds its positive argument <em class="parameter"><code>x</code></em>
  to the nearest integer.</p>
 <div class="refsect3">
-<a name="id-1.2.2.5.3.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="ROUND.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -146,8 +146,8 @@ point format. Use <a class="link" href="libgimpmath-GimpMath.html#RINT:CAPS" tit
 <p>This macro squares its argument <em class="parameter"><code>x</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.5.4.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="SQR.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -169,8 +169,8 @@ point format. Use <a class="link" href="libgimpmath-GimpMath.html#RINT:CAPS" tit
 <p>This macro limits it argument <em class="parameter"><code>a</code></em>
 , an (0-511) int, to 255.</p>
 <div class="refsect3">
-<a name="id-1.2.2.5.5.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="MAX255.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -193,8 +193,8 @@ point format. Use <a class="link" href="libgimpmath-GimpMath.html#RINT:CAPS" tit
 , an int32-range int, between 0
 and 255 inclusive.</p>
 <div class="refsect3">
-<a name="id-1.2.2.5.6.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="CLAMP0255.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -216,8 +216,8 @@ and 255 inclusive.</p>
 <p>This macro converts its argument <em class="parameter"><code>angle</code></em>
  from degree to radian.</p>
 <div class="refsect3">
-<a name="id-1.2.2.5.7.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="gimp-deg-to-rad.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -239,8 +239,8 @@ and 255 inclusive.</p>
 <p>This macro converts its argument <em class="parameter"><code>angle</code></em>
  from radian to degree.</p>
 <div class="refsect3">
-<a name="id-1.2.2.5.8.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="gimp-rad-to-deg.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -260,6 +260,6 @@ and 255 inclusive.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

@@ -53,9 +53,9 @@
     <keyword type="enum" name="enum GimpThumbFileType" link="libgimpthumb-GimpThumb-enums.html#GimpThumbFileType"/>
     <keyword type="enum" name="enum GimpThumbSize" link="libgimpthumb-GimpThumb-enums.html#GimpThumbSize"/>
     <keyword type="enum" name="enum GimpThumbState" link="libgimpthumb-GimpThumb-enums.html#GimpThumbState"/>
-    <keyword type="macro" name="GIMP_THUMB_ERROR" link="libgimpthumb-GimpThumb-error.html#GIMP-THUMB-ERROR:CAPS"/>
     <keyword type="function" name="gimp_thumb_error_quark ()" link="libgimpthumb-GimpThumb-error.html#gimp-thumb-error-quark"/>
     <keyword type="enum" name="enum GimpThumbError" link="libgimpthumb-GimpThumb-error.html#GimpThumbError"/>
+    <keyword type="macro" name="GIMP_THUMB_ERROR" link="libgimpthumb-GimpThumb-error.html#GIMP-THUMB-ERROR:CAPS"/>
     <keyword type="constant" name="GIMP_THUMB_FILE_TYPE_NONE" link="libgimpthumb-GimpThumb-enums.html#GIMP-THUMB-FILE-TYPE-NONE:CAPS"/>
     <keyword type="constant" name="GIMP_THUMB_FILE_TYPE_REGULAR" link="libgimpthumb-GimpThumb-enums.html#GIMP-THUMB-FILE-TYPE-REGULAR:CAPS"/>
     <keyword type="constant" name="GIMP_THUMB_FILE_TYPE_FOLDER" link="libgimpthumb-GimpThumb-enums.html#GIMP-THUMB-FILE-TYPE-FOLDER:CAPS"/>

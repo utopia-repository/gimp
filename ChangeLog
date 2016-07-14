@@ -1,6 +1,1355 @@
+commit cd2bbf745419be7e7984d9309688604107b3fa72
+Author: Michael Schumacher <schumaml@gmx.de>
+Date:   Wed Jul 13 01:16:10 2016 +0200
+
+    configure.ac: release 2.8.18
+
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 65fc08cebe4e57fb71dd9a1640f315598e07109a
+Author: Michael Schumacher <schumaml@gmx.de>
+Date:   Wed Jul 13 01:13:59 2016 +0200
+
+    NEWS: Add mention of fix for gimp-gradient-segment-range-move
+
+ NEWS | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 420606a0abb43f1c870c5174bb845d0c08ee3645
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:   Sun Jul 10 17:21:32 2016 +0200
+
+    Bug 768625: gimp-gradient-segment-range-move crashes...
+
+    ...GIMP invoked with end-segment < 0
+
+    correct a typo
+
+    (cherry picked from commit 23d5944ef8fa9585dae7210ca344eeb473601541)
+
+ app/core/gimpgradient.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit de7c791b60ae1b37bc40372726f469ad1f354d4f
+Author: Michael Schumacher <schumaml@gmx.de>
+Date:   Thu Jul 7 21:12:41 2016 +0200
+
+    NEWS: fix typos in 2.8.18 section
+
+ NEWS | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit a58d7c48be3a8b9d33fe3d1eaa00769791e4ff5d
+Author: Michael Schumacher <schumaml@gmx.de>
+Date:   Wed Jul 6 23:22:34 2016 +0200
+
+    NEWS: updated for 2.8.18
+
+ NEWS | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 49 insertions(+)
+
+commit 3e33f03e209b6da0da4886847b8e2721ff5a4ab5
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:   Sun Jul 3 18:26:37 2016 +0200
+
+    Bug 768273: Rapid sequence of commands causes crash
+
+    do not access progress object after destruction.
+
+    silence warnings like:
+
+    (gimp-2.8:1): GLib-GObject-WARNING **: gsignal.c:2635: instance
+    '0x17083f0' has no handler with id '56146'
+
+    (gimp-2.8:1): Gimp-Plug-In-CRITICAL **: plug_in_icc_profile_apply_rgb:
+    assertion 'progress == NULL || GIMP_IS_PROGRESS (progress)' failed
+
+    (cherry picked from commit a93cea0ef5bc810647689ae05ee2fc4760799a39)
+
+     Conflicts:
+	app/file/file-open.c
+
+ app/file/file-open.c		   |  6 ++++++
+ app/plug-in/gimpplugin-progress.c | 16 ++++++++++++----
+ 2 files changed, 18 insertions(+), 4 deletions(-)
+
+commit 9656e08547d661a600a5dcb7e03e0d18aa874ea6
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:	Fri Jun 24 12:39:01 2016 +0200
+
+    Bug 767476: Previously bolded font un-bolds on edit, cannot be undone
+
+    (cherry picked from commit aa8d29deacaa42acde0ba0562f9fe93025b6fdaa)
+
+     Conflicts:
+	app/widgets/gimptextbuffer-serialize.c
+
+ app/widgets/gimptextbuffer-serialize.c | 97
+ ++++------------------------------
+ app/widgets/gimptextbuffer.c		|  1 +
+ 2 files changed, 12 insertions(+), 86 deletions(-)
+
+commit e82aaa4b4ee0703c879e35ea9321fff6be3e9b6f
+Author: Shmuel H <shmuelgimp@gmail.com>
+Date:	Mon Jun 20 17:14:41 2016 +0300
+
+    Bug 767873 - (CVE-2016-4994) Multiple Use-After-Free when parsing...
+
+    ...XCF channel and layer properties
+
+    The properties PROP_ACTIVE_LAYER, PROP_FLOATING_SELECTION,
+    PROP_ACTIVE_CHANNEL saves the current object pointer the @info
+    structure. Others like PROP_SELECTION (for channel) and
+    PROP_GROUP_ITEM (for layer) will delete the current object and create
+    a new object, leaving the pointers in @info invalid (dangling).
+
+    Therefore, if a property from the first type will come before the
+    second, the result will be an UaF in the last lines of xcf_load_image
+    (when it actually using the pointers from @info).
+
+    I wasn't able to exploit this bug because that
+    g_object_instance->c_class gets cleared by the last g_object_unref and
+    GIMP_IS_{LAYER,CHANNEL} detects that and return FALSE.
+
+    (cherry picked from commit 6d804bf9ae77bc86a0a97f9b944a129844df9395)
+
+ app/xcf/xcf-load.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+
+commit 25dd2c33da360b84de69541b0ca7f69ad35b2372
+Author: Jehan <jehan@girinstud.io>
+Date:	Mon Jun 13 03:26:57 2016 +0200
+
+    Bug 763202 - Create $XDG_DATA_HOME if it doesn't exist.
+
+    This has shown a problem especially on non-Linux platforms since XDG
+    is more of a Linux standard.
+
+    (cherry picked from commit 8ac1e407c585510080173446220b328d3294019a)
+
+ libgimpbase/gimpenv.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+commit fc203cd20aa93d3c7d1be61f16e2449c0207c128
+Author: Anders Jonsson <anders.jonsson@norsjovallen.se>
+Date:	Sat Jun 11 08:55:40 2016 +0000
+
+    Updated Swedish translation
+
+ po/sv.po | 1929
+ ++++++++++++++++++++++++++++++++++++--------------------------
+ 1 file changed, 1130 insertions(+), 799 deletions(-)
+
+commit 0d85024da8c9ef541b56f5dae4b5000d3aa99057
+Author: Anders Jonsson <anders.jonsson@norsjovallen.se>
+Date:	Sat Jun 11 08:49:59 2016 +0000
+
+    Updated Swedish translation
+
+ po-plug-ins/sv.po | 63
+ ++++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 34 insertions(+), 29 deletions(-)
+
+commit 00ff2c27d90600cd1cc80ee7fa17133231b0ea24
+Author: Tiago Santos <tiagofsantos81@sapo.pt>
+Date:	Wed Jun 8 08:59:08 2016 +0000
+
+    Updated Portuguese translation
+
+ po-plug-ins/pt.po | 65
+ +++++++++++++++++++++++++++++--------------------------
+ 1 file changed, 34 insertions(+), 31 deletions(-)
+
+commit 17d8af966937c3ba939246d5512bdce2bbe36d1e
+Author: Dimitris Spingos (Δημήτρης Σπίγγος)
+<dmtrs32@gmail.com>
+Date:	Tue Jun 7 23:27:52 2016 +0300
+
+    Update Greek translation
+
+ po/el.po | 316
+ +++++++++++++++++++++++++++++++--------------------------------
+ 1 file changed, 156 insertions(+), 160 deletions(-)
+
+commit 6d5df7ea8fc32ec28a90a0dbfe53f93b07b66c27
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:	Sun Jun 5 19:26:40 2016 +0200
+
+    Updated Polish translation
+
+ po-plug-ins/pl.po | 69
+ +++++++++++++++++++++++++++++--------------------------
+ 1 file changed, 37 insertions(+), 32 deletions(-)
+
+commit 3efa22b65093b52e0d7901746d66b8adc82e1160
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:	Sun Jun 5 19:02:12 2016 +0200
+
+    Bug 766886: the save bar keeps saving even whit a full bar
+
+
+
+    based on ffd97c0eb8dab934e2b73d71051980ec28892483
+
+ plug-ins/file-compressor/file-compressor.c | 38
+ ++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+
+commit 6d454fdc85699983489265018433a56dd1130e1d
+Author: Pedro Gimeno <bugzilla.gnome@personal.formauri.es>
+Date:	Sun May 29 00:13:22 2016 +0200
+
+    Bug 738951 - (modulo n m) may fail for m >= 46342 (in 32-bit) or m >=
+    3037000501 (in 64-bit)
+
+ plug-ins/script-fu/tinyscheme/scheme.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 59fa1e0359970d71cea6bf99db05b43fd3f80935
+Author: Cédric Valmary <cvalmary@yahoo.fr>
+Date:	Fri May 27 19:58:01 2016 +0000
+
+    Updated Occitan translation
+
+ po-tips/oc.po | 173
+ +++++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 88 insertions(+), 85 deletions(-)
+
+commit 175dab2d7b7879af92cfc476eb3301bc0f460881
+Author: Cédric Valmary <cvalmary@yahoo.fr>
+Date:	Fri May 27 19:56:30 2016 +0000
+
+    Updated Occitan translation
+
+ po-plug-ins/oc.po | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
+
+commit 2ca211c7bbe09069c78ab53829895d0731682754
+Author: Cédric Valmary <cvalmary@yahoo.fr>
+Date:	Fri May 27 19:56:20 2016 +0000
+
+    Updated Occitan translation
+
+ po-libgimp/oc.po | 77
+ +++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 37 insertions(+), 40 deletions(-)
+
+commit a6fa36eb357085cf626a102c0712643e8b50dfa8
+Author: Cédric Valmary <cvalmary@yahoo.fr>
+Date:	Fri May 27 19:56:11 2016 +0000
+
+    Updated Occitan translation
+
+ po-python/oc.po | 265
+ +++++++++++++++++---------------------------------------
+ 1 file changed, 80 insertions(+), 185 deletions(-)
+
+commit 286a93b20f7765f16e6fe54793c7ac3db8be2eb0
+Author: Cédric Valmary <cvalmary@yahoo.fr>
+Date:	Fri May 27 19:55:26 2016 +0000
+
+    Updated Occitan translation
+
+ po-tags/oc.po | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit 323853032465ea128624c1795cbb5811796fe721
+Author: Cédric Valmary <cvalmary@yahoo.fr>
+Date:	Fri May 27 19:54:39 2016 +0000
+
+    Updated Occitan translation
+
+ po-script-fu/oc.po | 4188
+ ++++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 2576 insertions(+), 1612 deletions(-)
+
+commit 015acb41b8790cc77ab87410f93c2a1c38c0732a
+Author: Cédric Valmary <cvalmary@yahoo.fr>
+Date:	Fri May 27 19:50:28 2016 +0000
+
+    Updated Occitan translation
+
+ po/oc.po | 21664
+ ++++++++++++++++++++++++++++---------------------------------
+ 1 file changed, 10019 insertions(+), 11645 deletions(-)
+
+commit 8a74bad0b5c6c1213b5695c0aaec00fd4ee7f07d
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:	Fri May 27 14:53:40 2016 +0200
+
+    Bug 766424: gimp ignores deactivated layer masks when moving a
+    masked part
+
+    a back port of 3ea0e3f090e231a2c2593ddb609f5376858b66a4
+    and bb43a89ef885d5e46ef1194b40e86cc583dc2c58
+    from master.
+
+ app/core/gimplayer.c | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
+
+commit 8d4f4f021f0ca2eca6f48ffaead34e0b4e6c8b0d
+Author: Cédric Valmary <cvalmary@yahoo.fr>
+Date:	Thu May 26 20:51:00 2016 +0000
+
+    Updated Occitan translation
+
+ po-plug-ins/oc.po | 490
+ +++++++++++++++++++++++++-----------------------------
+ 1 file changed, 231 insertions(+), 259 deletions(-)
+
+commit d1f86ac181328743ac9e5fd3bb1192ac51e45746
+Author: Cédric Valmary <cvalmary@yahoo.fr>
+Date:	Thu May 26 20:41:24 2016 +0000
+
+    Updated Occitan translation
+
+ po/oc.po | 177
+ +++++++++++++++++++++++++++++++--------------------------------
+ 1 file changed, 88 insertions(+), 89 deletions(-)
+
+commit a418407bd5faeaf32d4371791a836e2b25e51dbe
+Author: Adrian Likins <alikins@redhat.com>
+Date:	Thu May 26 03:48:26 2016 +0200
+
+    Bug 749044 - Exporting as KISS - CELL (*.cel) results in error
+
+ plug-ins/common/file-cel.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+commit 9a40ae0befd88389e9977147b921ba7292da1b2a
+Author: Cédric Valmary <cvalmary@yahoo.fr>
+Date:	Wed May 25 20:09:37 2016 +0000
+
+    Updated Occitan translation
+
+ po/oc.po | 5117
+ ++++++++++++++++++++++++++++++--------------------------------
+ 1 file changed, 2461 insertions(+), 2656 deletions(-)
+
+commit cf9d327c09a61b1abf8ea0b6a9c0fe9a98ca1493
+Author: Simon Budig <simon@budig.de>
+Date:	Wed May 25 20:17:02 2016 +0200
+
+    script-fu: make regex matching return character indexes
+
+    Since tinyscheme uses utf-8 for strings match the behaviour for the
+    script-fu regex utilities as well. Fixes bug #764811
+
+    (cherry picked from commit bdae0de1aaa4657454787c2a33bc009bebf8531d)
+
+ plug-ins/script-fu/script-fu-regex.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+commit 5fae26020bbb8ccff778e15d2d0f27bb828e25d5
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun May 22 22:42:32 2016 +0200
+
+    Bug 766250 - Gamut warning color incorrect, behavior reversion
+
+    Need to multiply the guchar values by 256 for lcms2's
+    cmsSetAlarmCodes() because it expects 16 bit values.
+
+ modules/display-filter-lcms.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit c534a18d1575fc596b7a2c62d16a0fa5116f1c98
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun May 22 22:38:12 2016 +0200
+
+    Bug 766327 - gimptool-2.0 not quoting filenames/directories
+
+    Quote installation paths with g_shell_quote().
+
+    (cherry picked from commit c73104e3eabda539d626e1f2081341d9c03dcf77)
+
+ tools/gimptool.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
+
+commit 395f1ef953f64fea080aec06a6a9922c343ad876
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:	Wed May 11 18:31:06 2016 +0200
+
+    Updated Polish translation
+
+ po/pl.po | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+commit 35f9ee710d69f82f09e52f4b67cfbba9c46f1a73
+Author: Tiago Santos <tiagofsantos81@sapo.pt>
+Date:	Tue May 10 16:07:24 2016 +0000
+
+    Updated Portuguese translation
+
+ po-plug-ins/pt.po | 778
+ +++++++++++++++++++++++-------------------------------
+ 1 file changed, 334 insertions(+), 444 deletions(-)
+
+commit cfe42c9336b34f33f593858c0a00de7f573d16e8
+Author: Tiago Santos <tiagofsantos81@sapo.pt>
+Date:	Sun May 1 16:04:34 2016 +0000
+
+    Updated Portuguese translation
+
+ po/pt.po | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit b9c5cc44784d676d4891cd5edfd5a787c8707485
+Author: Tiago Santos <tiagofsantos81@sapo.pt>
+Date:	Sun May 1 16:00:16 2016 +0000
+
+    Updated Portuguese translation
+
+ po/pt.po | 773
+ +++++++++++++++++++++++++++++++++------------------------------
+ 1 file changed, 410 insertions(+), 363 deletions(-)
+
+commit 0692ffe19ea934ec6361ceda91850c3c13cafe1b
+Author: Marco Ciampa <ciampix@libero.it>
+Date:	Fri Apr 29 09:42:21 2016 +0200
+
+    Updated Italian translation
+
+ po-plug-ins/it.po | 353
+ ++++++++++++++++++++++++++++--------------------------
+ po/it.po	   | 194 ++++++++++++++----------------
+ 2 files changed, 273 insertions(+), 274 deletions(-)
+
+commit fee9dc252bee58e8fe79baecc7a4da703883cd8c
+Author: João S. O. Bueno <gwidion@gmail.com>
+Date:	Wed Apr 27 23:46:19 2016 -0300
+
+    Bug 765685: Disambiguates octal-escaped output in c-source image
+    output
+
+    Fixes the plug-in output to render decimal digit
+    characters as octal escaped, so they can't be acidentally
+    combined in preceding escaped sequences. (i.e. the sequence
+    of values '255, 49'  is now rendered as '\377\049' instead of
+     '\3771')
+
+    Thanks Steve Baker for noticing and reporting the issue.
+
+ plug-ins/common/file-csource.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 428d4346661396d07d9cd4f7a55144f52db24e83
+Author: Anders Jonsson <anders.jonsson@norsjovallen.se>
+Date:	Wed Apr 20 10:21:59 2016 +0000
+
+    Updated Swedish translation
+
+ po-plug-ins/sv.po | 245
+ +++++++++++++++++++++++++++---------------------------
+ 1 file changed, 122 insertions(+), 123 deletions(-)
+
+commit 5a74bb74123e2d82d0a71b4271ebd0e1ef01b644
+Author: Ell <ell_se@yahoo.com>
+Date:	Tue Apr 19 17:43:19 2016 +0200
+
+    app: clear cond and mutex after usage
+
+    (cherry picked from commit 76adffa943af68cdb23202e36cac910fe19d6be9)
+
+ app/text/gimp-fonts.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 763d87d7013cf496290baf8f0fc50eb20a1f74d3
+Author: Dimitris Spingos <dmtrs32@gmail.com>
+Date:	Mon Apr 18 12:04:12 2016 +0300
+
+    Updated Greek translation
+
+ po-plug-ins/el.po | 362
+ ++++++++++++++++++++++++++++--------------------------
+ 1 file changed, 185 insertions(+), 177 deletions(-)
+
+commit ad6729e0d67fc8eeb313c15dcb6c6be9e7276c3c
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:	Sun Apr 17 17:27:06 2016 +0100
+
+    Bug 449848 - Startup: initialize fontconfig in the background ...
+
+    ... to avoid long pause on start
+
+    On non-Linux operating systems the fontconfig cache is often not
+    initialized by default. The first time GIMP was launched, this led
+    to a non-responding application, confusing many users.
+
+    The initialization of fontconfig has now been moved to a separate
+    thread. The main thread will wait for this fontconfig thread to
+    complete, regularly pulsing the UI.
+
+    This patch was partly based on an earlier patch by Tor Lillqvist.
+
+    (cherry picked from commit 30b73125f87b19e3ae322b9fc5bacc9f0b8ef3c1)
+
+ app/core/gimp.c       |  2 +-
+ app/text/gimp-fonts.c | 78
+ +++++++++++++++++++++++++++++++++++++++++++++++----
+ app/text/gimp-fonts.h |  2 ++
+ 3 files changed, 75 insertions(+), 7 deletions(-)
+
+commit 5abf0bb35763fb3ebe56bd96298f852adb423e51
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:	Sun Apr 17 17:22:12 2016 +0100
+
+    Bug 719723 - Drag and drop of sRGB image crashes GIMP
+
+    In file-jpeg, move the HAVE_LIBEXIF define down to include the call
+    to the metadata plugin (pdb-in-metadata-decode-xmp). This is necessary
+    because the metadata plugin is only available if GIMP was configured
+    with HAVE_LIBEXIF.
+
+ plug-ins/file-jpeg/jpeg-load.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 21c2cef29cae177432711db2c7f227e551feaeef
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Apr 17 16:52:31 2016 +0100
+
+    app: enable a pulsing progress bar in the splash
+
+    Startup functions can now make the progress bar pulse in order
+    to report that something of unknown duration is in progress.
+
+    Call status_callback (NULL, NULL, same_percentage)
+
+    (cherry picked from commit d23135ef974cf70f3d172273b7c97e24392eda7c)
+
+ app/gui/splash.c | 92
+ +++++++++++++++++++++++++++++---------------------------
+ 1 file changed, 47 insertions(+), 45 deletions(-)
+
+commit 42895c8ed47af04fbf481d6fa7b16fed5311b821
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:	Sun Apr 17 14:23:28 2016 +0100
+
+    Fix a bunch of header guards
+
+    These were probably copy-n-paste errors. Credits go to clang's
+    -Wheader-guard option.
+
+ app/display/gimpcanvaspath.h	   | 4 ++--
+ app/plug-in/gimppluginprocframe.h | 2 +-
+ app/tools/gimptransformoptions.h  | 2 +-
+ app/widgets/gimpcontrollermouse.h | 2 +-
+ app/widgets/gimpcontrollerwheel.h | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
+
+commit 08c22c0dc0fb8ee0f2f03ece91c9e59a2c226ac7
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:	Sun Apr 17 00:32:27 2016 +0100
+
+    Bug 756178 - Crash on new layer creation in fullscreen mode
+
+    Disable "new-style" fullscreen mode on OS X, we need support in
+    GTK+ in order for this to work properly. The currently available
+    fullscreen option in View > Fullscreen works fine and we plan to
+    migrate to the "new-style" fullscreen support in the future.
+
+    (cherry picked from commit cdc7542d46a6d3c6b2c223d14f63e7d29d9571ec)
+
+ app/display/Makefile.am       |  7 ++++++-
+ app/display/gimpimagewindow.c | 35 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 41 insertions(+), 1 deletion(-)
+
+commit b1da106ba38a3deb18636fc3cbf305edb8f7bc50
+Author: Sven Claussner <scl@gimp.org>
+Date:	Sat Apr 16 06:09:04 2016 +0000
+
+    Make PDBGEN documentation clearer.
+
+    Tell the developer not to run pdbgen.pl manually, but make.
+    Describe the destdir environment variable.
+    Update the /lib directory to the current /libgimp directory.
+    Correct spelling.
+
+ tools/pdbgen/README		  | 30 ++++++++++++++++++++----------
+ tools/pdbgen/README_NEW_PDB_PROC |  2 +-
+ 2 files changed, 21 insertions(+), 11 deletions(-)
+
+commit c373981c4046889abb743cb068bc8cce5fb88f1b
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:	Fri Apr 15 23:25:08 2016 +0100
+
+    app: block edited signal in GimpDataFactory edited callback
+
+    This fixes a problem where in some cases the item next to the edited
+    item was changed inadvertently. This was caused by the fact that
+    the change of the label within the tree_name_edited callback triggered
+    a re-ordering of the items, which triggered a stop editing signal,
+    which
+    finally caused a re-entrance in the tree_name_edited callback. By this
+    time the item below "path_str" has changed, which caused the name of
+    another object to be edited.
+
+    (cherry picked from commit 2213f29677e1a3e1ccee7ca18e8accc288c83d18)
+
+ app/widgets/gimpdatafactoryview.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+commit e73eb9d9b7fec75819a3565e02942f42ba61ee13
+Author: Cédric Valmary <cvalmary@yahoo.fr>
+Date:	Fri Apr 15 12:40:49 2016 +0000
+
+    Updated Occitan translation
+
+ po-plug-ins/oc.po | 11387
+ +++++++++++++++++++++++++++-------------------------
+ 1 file changed, 5808 insertions(+), 5579 deletions(-)
+
+commit 696f747ac4fafcc72598a39cba4f41354a15857e
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sat Apr 9 18:08:52 2016 +0200
+
+    Bug 764822 - gimp man page references incorrect path to system-wide
+    gimprc
+
+    Use @gimpsysconfdir@ no just @sysconfdir@ when referring to files
+    in the systemwide GIMP config files.
+
+    (cherry picked from commit c074c5493cc2d6d91dfca3b06f5aa851c3baf524)
+
+ docs/gimp.1.in | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 24131b22cdc119b83ebb10c064c7402d0b29ac37
+Author: Jernej Simončič <jernej|s-cccp@eternallybored.org>
+Date:	Thu Apr 7 20:33:34 2016 +0200
+
+    Installer: increase LZMA dictionary size and fastbytes (decreases
+    installer size by 20%)
+
+ build/windows/installer/gimp3264.iss | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 02b77afa8cc1091926a22006df20f5039eb94975
+Author: Jernej Simončič <jernej|s-cccp@eternallybored.org>
+Date:	Thu Apr 7 20:32:58 2016 +0200
+
+    Installer: files not needed to be included any more
+
+ build/windows/installer/files.isi | 2 --
+ 1 file changed, 2 deletions(-)
+
+commit 1fa50c2452a1d9926b45603631f1308a64412317
+Author: Cédric Valmary <cvalmary@yahoo.fr>
+Date:	Fri Apr 1 10:01:50 2016 +0000
+
+    Updated Occitan translation
+
+ po-libgimp/oc.po | 1853
+ +++++++++++++++++++++---------------------------------
+ 1 file changed, 708 insertions(+), 1145 deletions(-)
+
+commit fd9554d6cdcb0f09592a30e568d19ea6a19c4424
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Thu Mar 31 22:15:37 2016 +0200
+
+    Bug 753175 - color picker locks down the GUI
+
+    Disable the color pickers buttons on OS X, they are unfixable in 2.8.
+
+ app/widgets/gimpcoloreditor.c	     | 6 ++++++
+ libgimpwidgets/gimpcolorselection.c | 6 ++++++
+ 2 files changed, 12 insertions(+)
+
+commit 7a363f71983cb88eb839532fd0ecef550cfb77e7
+Author: Mario Blättermann <mario.blaettermann@gmail.com>
+Date:	Mon Mar 28 17:02:27 2016 +0200
+
+    Updated German translation
+
+ po/de.po | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
+
+commit 5f562455f7f44448cdeb71321fcca6ede0315330
+Author: Mario Blättermann <mario.blaettermann@gmail.com>
+Date:	Mon Mar 28 16:56:36 2016 +0200
+
+    Updated German translation
+
+ po-plug-ins/de.po | 1884
+ ++++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 1277 insertions(+), 607 deletions(-)
+
+commit e19ec6e511886fa60c000b19465ec00bfdb9d32e
+Author: Rafael Fontenelle <rafaelff@gnome.org>
+Date:	Mon Mar 28 13:53:30 2016 +0000
+
+    Updated Brazilian Portuguese translation
+
+ po-plug-ins/pt_BR.po | 684
+ +++++++++++++++++++++++++++------------------------
+ 1 file changed, 357 insertions(+), 327 deletions(-)
+
+commit fdcb8312a5d8beda4405d2738a29de1664b8d795
+Author: Rafael Fontenelle <rafaelff@gnome.org>
+Date:	Mon Mar 28 13:33:19 2016 +0000
+
+    Updated Brazilian Portuguese translation
+
+ po/pt_BR.po | 1287
+ ++++++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 649 insertions(+), 638 deletions(-)
+
+commit 1ff1f40723a44820e72de160d3f53324cf9e3d33
+Author: Rafael Fontenelle <rafaelff@gnome.org>
+Date:	Mon Mar 28 13:14:33 2016 +0000
+
+    Updated Brazilian Portuguese translation
+
+ po-script-fu/pt_BR.po | 153
+ +++++++++++++++++++++++++-------------------------
+ 1 file changed, 78 insertions(+), 75 deletions(-)
+
+commit 4dbb1232a8221a31ca16b5c5c0a080fce15c3d4a
+Author: Jehan <jehan@girinstud.io>
+Date:	Mon Aug 11 23:01:12 2014 +0000
+
+    Do not use g_io_channel_unix_new() for the win32 platforms.
+
+    It is advised to use the more accurate g_io_channel_win32_new_fd() or
+    g_io_channel_win32_new_socket() because GLib can't differentiate
+    between
+    file descriptors and sockets on Windows, which outputs a warning when
+    there is ambiguity.
+
+    (cherry picked from commit b8aabcac5c06b393911ae7556d18e137f4781e6a)
+
+ app/config/gimpxmlparser.c | 4 ++++
+ app/plug-in/gimpplugin.c   | 7 ++++++-
+ libgimp/gimp.c		    | 5 +++++
+ 3 files changed, 15 insertions(+), 1 deletion(-)
+
+commit 6245aba8174008fd80a9cd347683301c146d2ad7
+Author: Balázs Úr <urbalazs@gmail.com>
+Date:	Fri Mar 25 23:46:26 2016 +0000
+
+    Updated Hungarian translation
+
+ po-plug-ins/hu.po | 304
+ +++++++++++++++++++++++++++---------------------------
+ 1 file changed, 153 insertions(+), 151 deletions(-)
+
+commit 1ccf19d30759bed777714eb72fa70b4b97dcef99
+Author: Balázs Úr <urbalazs@gmail.com>
+Date:	Fri Mar 25 23:41:58 2016 +0000
+
+    Updated Hungarian translation
+
+ po/hu.po | 293
+ +++++++++++++++++++++++++++++++--------------------------------
+ 1 file changed, 145 insertions(+), 148 deletions(-)
+
+commit 9be5e5c94b0b0d33bb480b2368135efad3398083
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:	Fri Mar 25 23:40:21 2016 +0100
+
+    Updated Polish translation
+
+ po-plug-ins/pl.po | 110
+ ++++++++++++++++++++++++++++--------------------------
+ po/pl.po	   |  69 ++++++++++++++++++----------------
+ 2 files changed, 95 insertions(+), 84 deletions(-)
+
+commit 396ab85118bbed5a987b6965a4f28629507147fc
+Author: Jehan <jehan@girinstud.io>
+Date:	Fri Feb 26 17:15:14 2016 +0100
+
+    Bug 762282 - Link ends with "/."
+
+    Add a comment for translators, which will be extracted by gettext,
+    ensuring that all translators are aware of the problem.
+
+    (cherry picked from commit 0e9453d5eec40e1c8f9ba7d96b43f779a40edf70)
+
+ app/about.h			| 5 +++++
+ plug-ins/help/gimphelpdomain.c | 6 ++++++
+ 2 files changed, 11 insertions(+)
+
+commit c795c16ddd91b6c6f26d5ea8aa7bc9221188cab5
+Author: Jehan <jehan@girinstud.io>
+Date:	Thu Feb 25 16:32:44 2016 +0100
+
+    Bug 762282 - Link ends with "/."
+
+    One can't say automatically if the dot is part of the URL (even though
+    usually not). Simpler is to not finish with a dot.
+
+    (cherry picked from commit 1159ec2d90b266026a12ae6659d4bf962843ef8a)
+
+ app/about.h			| 2 +-
+ plug-ins/help/gimphelpdomain.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit e3f3f5d2bd5e8a02e410d7b1bfdf5073581b9d8c
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Mon Mar 21 09:19:06 2016 +0100
+
+    app: fix calculation for action values which can wrap around
+
+    such as the brush angle action.
+
+    (cherry picked from commit c0fab2402a895d644e430a811ebe92ae87e27b9e)
+
+ app/actions/actions.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit f8b3fb2bb1a0dbc7312a20c992bfb9a2af88000a
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Mar 20 20:01:56 2016 +0100
+
+    Bug 763207 - Dilate / Erode Missing First Line
+
+    Apply patch from vasthusya@gmail.com which fixes the first line
+    of dilate/erode.
+
+ plug-ins/common/value-propagate.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+commit 9bcd34843853abb4fa449ab7575e95e819bbaf17
+Author: Martin Srebotnjak <miles@filmsi.net>
+Date:	Fri Mar 11 22:04:31 2016 +0100
+
+    Updated Slovenian translation
+
+ po-script-fu/sl.po | 65
+ ++++++++++++++++++++++++++++++------------------------
+ 1 file changed, 36 insertions(+), 29 deletions(-)
+
+commit 2549bc604bb07a75378d9f6bd1587668bb47b4af
+Author: Cédric Valmary <cvalmary@yahoo.fr>
+Date:	Tue Mar 8 13:46:32 2016 +0000
+
+    Updated Occitan translation
+
+ po/oc.po | 11212
+ +++++++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 6137 insertions(+), 5075 deletions(-)
+
+commit 2055e1de0baa32b4d3ac97b510c3edbef05e0c53
+Author: Anders Jonsson <anders.jonsson@norsjovallen.se>
+Date:	Mon Mar 7 21:52:01 2016 +0000
+
+    Updated Swedish translation
+
+ po-libgimp/sv.po | 332
+ +++++++++++++++++++++++++++++--------------------------
+ 1 file changed, 174 insertions(+), 158 deletions(-)
+
+commit 78ee2739653b25399b3c20b4344e3c08553c01b1
+Author: Ask Hjorth Larsen <asklarsen@gmail.com>
+Date:	Sun Mar 6 20:15:11 2016 +0000
+
+    Updated Danish translation
+
+ po-libgimp/da.po | 33 +++++++++++++++++----------------
+ 1 file changed, 17 insertions(+), 16 deletions(-)
+
+commit 04b37eabdcce22c1ade46fb6f0b81dba38cfaeaf
+Author: Ask Hjorth Larsen <asklarsen@gmail.com>
+Date:	Sun Mar 6 20:06:22 2016 +0000
+
+    Updated Danish translation
+
+ po-python/da.po | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+commit 5a24e295c5a962ae8b255cb88b7e1869be377215
+Author: Martin Srebotnjak <miles@filmsi.net>
+Date:	Sat Mar 5 20:53:07 2016 +0100
+
+    Updated Slovenian translation
+
+ po-script-fu/sl.po | 2731
+ +++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 2707 insertions(+), 24 deletions(-)
+
+commit 900669a7f4df71fc3705f6f968128c86028376c8
+Author: Ask Hjorth Larsen <asklarsen@gmail.com>
+Date:	Sat Mar 5 16:54:43 2016 +0000
+
+    Updated Danish translation
+
+ po/da.po | 183
+ ++++++++++++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 111 insertions(+), 72 deletions(-)
+
+commit 21a50c43cd66f1f9cedc18adc364b010dd9a9cba
+Author: Thomas Manni <thomas.manni@free.fr>
+Date:	Tue Mar 1 22:40:01 2016 +0100
+
+    Bug 724731 - Difference clouds - memory leak if UNDO performed
+
+    Create the clouds layer after calling gimp-image-undo-group-start
+
+    (cherry picked from commit a8a214ffcbb23649dad691bc84cdeb2c2baaf54a)
+
+ plug-ins/script-fu/scripts/difference-clouds.scm | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+commit 3b29a10c6fb89f87d9f3b79b722e78ccc688d993
+Author: Christian Kirbach <christian.kirbach@gmail.com>
+Date:	Mon Feb 22 22:59:45 2016 +0100
+
+    Update German translation
+
+ po/de.po | 523
+ ++++++++++++++++++++++++++++++---------------------------------
+ 1 file changed, 249 insertions(+), 274 deletions(-)
+
+commit 3c729611618a502127ea667a1c126cc7deb8d5cd
+Author: Jernej Simončič <jernej|s-cccp@eternallybored.org>
+Date:	Thu Feb 18 20:01:13 2016 +0100
+
+    Installer: automatically adjust width of Customize button when the
+    text doesn't fit
+
+ build/windows/installer/gimp3264.iss | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+commit b43604ea28f00d48e19edd33b9ec06a1f485529d
+Author: Jernej Simončič <jernej|s-cccp@eternallybored.org>
+Date:	Thu Feb 18 18:46:13 2016 +0100
+
+    Installer: add Danish translation by scootergrisen at gmail.com
+
+ build/windows/installer/lang/da.setup.isl | 113
+ ++++++++++++++++++++++++++++++
+ 1 file changed, 113 insertions(+)
+
+commit a5c21d6269092857cb7ef5bcac8e9755d4d4e675
+Author: Dušan Kazik <prescott66@gmail.com>
+Date:	Sat Feb 13 16:15:45 2016 +0000
+
+    Updated Slovak translation
+
+ po-script-fu/sk.po | 3221
+ +++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 2313 insertions(+), 908 deletions(-)
+
+commit c6a0e85d4c92f1881e25a9f2ef17e1e084fa2edb
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Fri Feb 12 00:36:11 2016 +0100
+
+    Bug 761573 - Problem with Raw Image Loader plugin
+
+    Use g_file_query_info() to get the file's size, stat() has some
+    windows 64 bit problem I've forgotten.
+
+    (cherry picked from commit 26ff8eb40dacb842b2b990b5add68142085b56aa)
+
+ plug-ins/common/file-raw.c | 28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
+
+commit 4bea7134fd11ceaffd759887eb5a820f493e9af5
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:	Wed Feb 10 17:14:00 2016 +0100
+
+    Bug 761330: Gimp Drop Shadow window always opens...
+
+    ...behind main window on windows
+
+    Windows requires that the process with the
+    foreground window explicitely allows long
+    lasting background processes showing their
+    windows as foreground/focused
+
+    (cherry picked from commit f44c77b4a21264d25e6a95d94e11db639c092d84)
+
+ app/plug-in/gimppluginmanager-call.c	  | 13 +++++++++++++
+ plug-ins/script-fu/script-fu-interface.c | 11 +++++++++++
+ 2 files changed, 24 insertions(+)
+
+commit 7b86a179830e499ab662aca703ce97ac4f4f0347
+Author: Ask Hjorth Larsen <asklarsen@gmail.com>
+Date:	Tue Feb 9 17:09:09 2016 +0000
+
+    Updated Danish translation
+
+ po-plug-ins/da.po | 8547
+ ++++++++++++++++++++---------------------------------
+ 1 file changed, 3203 insertions(+), 5344 deletions(-)
+
+commit 25ca13270f5c926cc92daffcf9fadf1054cf8505
+Author: Ask Hjorth Larsen <asklarsen@gmail.com>
+Date:	Tue Feb 9 13:57:01 2016 +0000
+
+    Updated Danish translation
+
+ po-tags/da.po | 32 ++++++++++++++++++++------------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
+
+commit 57b21e165d912fe017fe0fadba523ed3a38bb2fb
+Author: Ask Hjorth Larsen <asklarsen@gmail.com>
+Date:	Tue Feb 9 13:52:45 2016 +0000
+
+    Updated Danish translation
+
+ po-script-fu/da.po | 4120
+ ++++++++++++++++++++--------------------------------
+ 1 file changed, 1588 insertions(+), 2532 deletions(-)
+
+commit 8d2cc6083a1e1cec1538370a0a80d4af059f5d67
+Author: Ask Hjorth Larsen <asklarsen@gmail.com>
+Date:	Tue Feb 9 13:44:01 2016 +0000
+
+    Updated Danish translation
+
+ po-python/da.po | 57
+ +++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 29 insertions(+), 28 deletions(-)
+
+commit dafe93c41bfe25d493cdb6ba61853b5e1e9b481c
+Author: Ask Hjorth Larsen <asklarsen@gmail.com>
+Date:	Tue Feb 9 13:34:14 2016 +0000
+
+    Updated Danish translation
+
+ po-libgimp/da.po | 286
+ ++++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 154 insertions(+), 132 deletions(-)
+
+commit f7e8594c34f941fa5fbf24cf07b4d650be8b8037
+Author: Sveinn í Felli <sv1@fellsnet.is>
+Date:	Mon Feb 8 13:22:46 2016 +0000
+
+    Updated Icelandic translation
+
+ po/is.po | 103
+ +++++++++++++++++++++++++++++++--------------------------------
+ 1 file changed, 50 insertions(+), 53 deletions(-)
+
+commit 465db952272bda103ce941c83dc0f2098ab6d0eb
+Author: Gábor Kelemen <kelemeng@openscope.org>
+Date:	Sat Jan 23 13:06:09 2016 +0000
+
+    Updated Hungarian translation
+
+ po-script-fu/hu.po | 4011
+ ++++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 2499 insertions(+), 1512 deletions(-)
+
+commit d4cebcea8fec7c74b65bd94332d5ac8ce4c303c7
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:	Thu Jan 7 17:49:52 2016 +0100
+
+    Bug 758760: OpenRaster plug-In could not open image
+
+    An oversight while cherry-picking in
+
+    621f5e296def8159020201b06f544517624f767d
+
+ plug-ins/pygimp/plug-ins/file-openraster.py | 5 -----
+ 1 file changed, 5 deletions(-)
+
+commit 242c5152ae96e817042ff869896056d615fd7441
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Wed Jan 6 05:12:03 2016 +0100
+
+    app: set the name of the open dialog again in file_open_dialog_show()
+
+    so we get back the "Open Image as Layers" window title. Seems it was
+    gone since I broke it in 2008.
+
+    (cherry picked from commit 865bb627e01bb9c83ed7f84038a406ef6e2b3db5)
+
+ app/actions/file-commands.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 9c8aeed60df4ec052ea478fa34ccfce4b6fd2a35
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:	Mon Jan 4 12:55:58 2016 +0100
+
+    Bug 684295: wrong layer group structure in gimp 2.8.2...
+
+    ... (read PSD file from PS CS3)
+
+    use a position of 0 when inserting normal layers
+    as they're always inserted on top of their group
+
+    -1 means inside the group when the active drawable is
+    a group or above it when it's not. This used to work
+    before layer groups or in simple cases.
+
+    (cherry picked from commit 32469d53b7e28973b3c8488573341c69bef0576b)
+
+     Conflicts:
+	plug-ins/file-psd/psd-load.c
+
+ plug-ins/file-psd/psd-load.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 051b1f0bd9b1c50c09ac3453d6bffed6508c3dce
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Mon Dec 28 02:04:46 2015 +0100
+
+    app: fix the curves tool to not warn on layers without alpha
+
+    when adding control points to all channels with control-click. It was
+    looking up curve points based on a -1 alpha value.
+
+    (cherry picked from commit e9a38c320d03adda0ae2acd5f6646995a21f4369)
+
+ app/tools/gimpcurvestool.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
+
+commit 3d5ef9d26601f0e35d77fe1b550b917af3e8fea0
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:	Sun Dec 13 21:47:42 2015 +0100
+
+    Bug 737779 - Poppler-data not installed or not working in OSX release
+
+    The main problem is that poppler-data is not relocatable on OS X
+    (it is
+    on Windows for example). Apply a tiny patch to poppler that accepts a
+    POPPLER_DATADIR environment variable, which we set in the .app
+    launcher
+    script. Also include poppler-data in the resulting app bundle.
+
+ build/osx/README					    |  1 +
+ build/osx/gimp-2.8-python.bundle			    |  3 +++
+ build/osx/gimp.modules					    |  5 ++++-
+ build/osx/launcher-2.8-python.sh			    |  6 ++++--
+ ...r-support-overriding-datadir-through-env-variable.patch | 14
+ ++++++++++++++
+ 5 files changed, 26 insertions(+), 3 deletions(-)
+
+commit 3122ec86ea29ed673d359acb09455cef86b46efd
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:	Sun Dec 13 21:17:26 2015 +0100
+
+    build/osx: force to build GIMP_2_8_16 tag
+
+    And also fix disable gtk-doc configure flag.
+
+ build/osx/gimp.modules | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 7c3d5c73ae3cdb1370f00ebea39fec636c9d3bcc
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:	Sun Dec 13 21:16:42 2015 +0100
+
+    build/osx: update DBUS version
+
+    This also fixes a DBUS build error.
+
+ build/osx/gimp.modules | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 0ba7f5c07ab6cef6e65692da82a27ec905080bdd
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:	Sun Dec 13 21:15:57 2015 +0100
+
+    build/osx: fix GMP download URL
+
+ build/osx/gimp.modules | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 90979d886d5e249d84aa77f5c6d37fd9f4d3ae0d
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:	Sun Dec 13 15:38:12 2015 +0100
+
+    Bug 746357 - GIMP 2.8.14 for Mac doesn't include full version info ...
+
+    ... in Info.plist
+
+    Add full version number to Info.plist. For now by hand, once we have
+    a build script we'll handle this automatically.
+
+    Also update copyright year.
+
+ build/osx/info-2.8-python.plist | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit 7745f057d8ec522f729af3f869e8b37dfba7dd46
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:	Sun Dec 13 15:35:53 2015 +0100
+
+    build/osx: Add command for creating the DMG image
+
+ build/osx/README | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+commit eb8a7e4e91b78721acc17498e759d24bd6524760
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:	Sun Dec 13 15:34:15 2015 +0100
+
+    build/osx: two additions for outstanding issues to fix after build
+
+ build/osx/README | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 3a91e2f8dd0be5659ad6f46e7f21275a6dc36f96
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:	Sun Dec 13 15:32:11 2015 +0100
+
+    build/osx: describe installation of 10.6 SDK
+
+ build/osx/README | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+commit cb37475bf68066c6ab40ff61289ac673727cbd01
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:	Sun Dec 13 15:29:24 2015 +0100
+
+    build/osx: use "makeargs" in jhbuildrc
+
+    This eliminates the need for manual intervention when building
+    the perl
+    modules.
+
+ build/osx/README	  | 22 +++-------------------
+ build/osx/jhbuildrc-gimp |  2 +-
+ 2 files changed, 4 insertions(+), 20 deletions(-)
+
+commit bdb62a1651ba4646fe180867dd330e931a0262df
+Author: Marco Ciampa <ciampix@libero.it>
+Date:	Sun Dec 13 01:25:36 2015 +0100
+
+    Small fix in Italian translation
+
+ po-plug-ins/it.po | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 31c812a2b02104493a3e1985d07ed28e3b38f448
+Author: Marco Ciampa <ciampix@libero.it>
+Date:	Sat Dec 12 23:17:21 2015 +0100
+
+    Two small fixies in Italian translation
+
+ po-script-fu/it.po | 4 ++--
+ po/it.po	    | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 9c7173e251211cee77e5ba06d13132272285e8c8
+Author: Ask Hjorth Larsen <asklarsen@gmail.com>
+Date:	Sat Dec 12 20:26:13 2015 +0000
+
+    Updated Danish translation
+
+ po/da.po | 6761
+ ++++++++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 3669 insertions(+), 3092 deletions(-)
+
+commit b8785f3922b17e6f9f9053d9d45a90cc7e8d3c28
+Author: Sveinn í Felli <sv1@fellsnet.is>
+Date:	Mon Dec 7 15:18:23 2015 +0000
+
+    Updated Icelandic translation
+
+ po-script-fu/is.po | 2718
+ +++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 2696 insertions(+), 22 deletions(-)
+
+commit 80ab3b7f51012346e1b84351698335a37fb989e4
+Author: Sveinn í Felli <sv1@fellsnet.is>
+Date:	Sat Dec 5 15:19:59 2015 +0000
+
+    Updated Icelandic translation
+
+ po/is.po | 434
+ +++++++++++++++++++++++++++------------------------------------
+ 1 file changed, 188 insertions(+), 246 deletions(-)
+
+commit 0012ba1602ebbe051a470e934ab22858d50f2034
+Author: Милош Поповић <gpopac@gmail.com>
+Date:	Mon Nov 30 23:20:36 2015 +0000
+
+    Updated Serbian translation
+
+ po/sr.po | 303
+ +++++++++++++++++++++++++++++----------------------------------
+ 1 file changed, 139 insertions(+), 164 deletions(-)
+
+commit 536cce51909350e003d6fd862d1ba67015a01d2d
+Author: Anders Jonsson <anders.jonsson@norsjovallen.se>
+Date:	Sat Nov 28 22:55:45 2015 +0000
+
+    Updated Swedish translation
+
+ po-script-fu/sv.po | 4182
+ ++++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 2565 insertions(+), 1617 deletions(-)
+
+commit 586d698705eb6391417e2d0f63702869955a7be0
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:	Fri Nov 27 21:48:40 2015 +0100
+
+    Updated Polish translation
+
+ po-libgimp/pl.po | 36 ++++++++++-------------
+ po/pl.po	  | 88
+ ++++++++++++++++++++++++++++----------------------------
+ 2 files changed, 59 insertions(+), 65 deletions(-)
+
+commit 436251badad11fa6fde722acfcfbe28496363509
+Author: Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
+Date:	Mon Nov 23 16:22:43 2015 +0300
+
+    Fix typos in Russian translation spotted by SourceLocalizer et al.
+
+ po/ru.po | 35 +++++++++++++++++------------------
+ 1 file changed, 17 insertions(+), 18 deletions(-)
+
+commit 27ce0e659bab14e8e83005cce3ce3218bbd2bea5
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:	Mon Nov 23 00:23:35 2015 +0100
+
+    Updated Polish translation
+
+ po-plug-ins/pl.po  |  59 +++++++---------
+ po-script-fu/pl.po |	6 +-
+ po/pl.po	    | 201
+ +++++++++++++++++++++++------------------------------
+ 3 files changed, 117 insertions(+), 149 deletions(-)
+
+commit e0b438348256f028f6ebf20ebb801f79e5cfe04c
+Author: Baurzhan Muftakhidinov <baurthefirst@gmail.com>
+Date:	Sun Nov 22 17:10:13 2015 +0000
+
+    Updated Kazakh translation
+
+ po/kk.po | 709
+ ++++++++++-----------------------------------------------------
+ 1 file changed, 110 insertions(+), 599 deletions(-)
+
+commit 03f87e139da0a01b5cba21afccf409396991d592
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sun Nov 22 17:28:39 2015 +0100
+
+    NEWS.pre-2-8: new file preserving the history that lead to 2.8
+
+    (cherry picked from commit b9e37935512032c4bdf8358fb11a9fd1a96c6d23)
+
+ Makefile.am  |   1 +
+ NEWS.pre-2-8 | 642
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 643 insertions(+)
+
+commit bf397d5cf939c04eabc847ae46c1c04b48d6b1f9
+Author: Jernej Simončič <jernej|s-cccp@eternallybored.org>
+Date:	Sun Nov 22 16:12:56 2015 +0100
+
+    Installer: add new languages
+
+ build/windows/installer/gimp3264.iss | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+commit 97617c65e2b9b0fe036fdb7ed6537318243b1e40
+Author: Michael Natterer <mitch@gimp.org>
+Date:	Sat Nov 21 19:18:27 2015 +0100
+
+    configure.ac: post release version bump to 2.8.17
+
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
 commit 3152b6e1d8a24b1eb74d62c5ef004534e8ad126f
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Sat Nov 21 16:44:58 2015 +0100
+Date:	Sat Nov 21 16:44:58 2015 +0100
 
     configure.ac: release 2.8.16
 
@@ -9,17 +1358,17 @@ Date:   Sat Nov 21 16:44:58 2015 +0100
 
 commit 1598eb9cbada171b2f7e4c72d254c3e29d58dc00
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Fri Nov 20 22:55:26 2015 +0100
+Date:	Fri Nov 20 22:55:26 2015 +0100
 
     etc, docs: regenerate the default gimprc and its manpage
 
  docs/gimprc.5.in | 4 ++--
- etc/gimprc       | 2 +-
+ etc/gimprc	  | 2 +-
  2 files changed, 3 insertions(+), 3 deletions(-)
 
 commit 5cbc0e8173de23840af765d1573e171ef5962c6e
 Author: Jasper Krijgsman <jd.krijgsman@gmail.com>
-Date:   Thu Nov 19 19:55:48 2015 +0100
+Date:	Thu Nov 19 19:55:48 2015 +0100
 
     Bug 732363 - wilber.ico doesn't contain 256x256 layer
 
@@ -30,7 +1379,7 @@ Date:   Thu Nov 19 19:55:48 2015 +0100
 
 commit 50f25d1c39cc1ae60281525a71a39f8ca64c1adb
 Author: Rafael Fernandez <thegoldenboxmail@gmail.com>
-Date:   Thu Nov 19 19:48:11 2015 +0100
+Date:	Thu Nov 19 19:48:11 2015 +0100
 
     Bug 707028 - Dutch translation for Windows installer
 
@@ -42,7 +1391,7 @@ Date:   Thu Nov 19 19:48:11 2015 +0100
 
 commit 1b635d999fb6a9d2dda6bd2d1759b5d2997732ed
 Author: Jehan <jehan@girinstud.io>
-Date:   Thu Nov 5 18:31:06 2015 +0100
+Date:	Thu Nov 5 18:31:06 2015 +0100
 
     app: enable GimpCurvesTool on construction.
 
@@ -59,7 +1408,7 @@ Date:   Thu Nov 5 18:31:06 2015 +0100
 
 commit f2323bc5b108a71b5bdab0301929a34f2589b6c8
 Author: Pedro Albuquerque <palbuquerque73@gmail.com>
-Date:   Sat Nov 14 08:57:41 2015 +0000
+Date:	Sat Nov 14 08:57:41 2015 +0000
 
     Updated Portuguese translation
 
@@ -69,7 +1418,7 @@ Date:   Sat Nov 14 08:57:41 2015 +0000
 
 commit 3aa98c3ef2c7ebd1d564b587e42d65d24f786c37
 Author: Pedro Albuquerque <palbuquerque73@gmail.com>
-Date:   Sat Nov 14 08:16:53 2015 +0000
+Date:	Sat Nov 14 08:16:53 2015 +0000
 
     Updated Portuguese translation
 
@@ -79,7 +1428,7 @@ Date:   Sat Nov 14 08:16:53 2015 +0000
 
 commit f58b5288bbb5e6882b97561d7a9945f7bb603244
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Sat Nov 7 21:14:40 2015 +0100
+Date:	Sat Nov 7 21:14:40 2015 +0100
 
     Bug 757739 - GIMP crashes closing undocked pointer dialog
 
@@ -93,7 +1442,7 @@ Date:   Sat Nov 7 21:14:40 2015 +0100
 
 commit 6afafa75b6cf2f59c2c9079449dddd921e27d4d1
 Author: Luis Menina <liberforce@freeside.fr>
-Date:   Mon Nov 2 01:58:57 2015 +0100
+Date:	Mon Nov 2 01:58:57 2015 +0100
 
     Bug 683196 - French translation for the Windows installer
 
@@ -105,7 +1454,7 @@ Date:   Mon Nov 2 01:58:57 2015 +0100
 
 commit 2e0deb0d78b4f01331ad42af9dc7c0b47b8cc1c1
 Author: Jiri Grönroos <jiri.gronroos@iki.fi>
-Date:   Sun Oct 11 14:17:32 2015 +0000
+Date:	Sun Oct 11 14:17:32 2015 +0000
 
     Updated Finnish translation
 
@@ -115,7 +1464,7 @@ Date:   Sun Oct 11 14:17:32 2015 +0000
 
 commit 9b0b1347ec948d7ecb7a5ebe74d883177fafc97b
 Author: Jonathan Tait <jontait2@gmail.com>
-Date:   Mon Sep 21 01:38:16 2015 +0100
+Date:	Mon Sep 21 01:38:16 2015 +0100
 
     Bug 755317 - "Apply lens" doesn't work on big images (2366x2366)
 
@@ -126,7 +1475,7 @@ Date:   Mon Sep 21 01:38:16 2015 +0100
 
 commit 8182ec4c3ed8d2f052e33f4a2f14eda40d54c896
 Author: Dimitris Spingos <dmtrs32@gmail.com>
-Date:   Wed Sep 30 10:06:19 2015 +0300
+Date:	Wed Sep 30 10:06:19 2015 +0300
 
     Updated Greek translation
 
@@ -136,7 +1485,7 @@ Date:   Wed Sep 30 10:06:19 2015 +0300
 
 commit 187411df9d8cde466a730688114e9704283ec120
 Author: Милош Поповић <gpopac@gmail.com>
-Date:   Tue Sep 29 11:24:39 2015 +0000
+Date:	Tue Sep 29 11:24:39 2015 +0000
 
     Updated Serbian translation
 
@@ -146,7 +1495,7 @@ Date:   Tue Sep 29 11:24:39 2015 +0000
 
 commit 473d28729b145ec1cb9ca4e4b424be51770358cb
 Author: Piotr Drąg <piotrdrag@gmail.com>
-Date:   Sat Sep 26 17:28:13 2015 +0200
+Date:	Sat Sep 26 17:28:13 2015 +0200
 
     Fix Chinese (Taiwan) translation of default:LTR
 
@@ -155,7 +1504,7 @@ Date:   Sat Sep 26 17:28:13 2015 +0200
 
 commit a941f32747462be18003f8cfdbfff4939b6713e2
 Author: Piotr Drąg <piotrdrag@gmail.com>
-Date:   Sat Sep 26 17:27:02 2015 +0200
+Date:	Sat Sep 26 17:27:02 2015 +0200
 
     Fix Ukrainian translation of default:LTR
 
@@ -164,7 +1513,7 @@ Date:   Sat Sep 26 17:27:02 2015 +0200
 
 commit 91ecdcd201414f302d912e8b66e940c10ce51cd1
 Author: Piotr Drąg <piotrdrag@gmail.com>
-Date:   Sat Sep 26 17:26:21 2015 +0200
+Date:	Sat Sep 26 17:26:21 2015 +0200
 
     Fix Swedish translation of default:LTR
 
@@ -173,7 +1522,7 @@ Date:   Sat Sep 26 17:26:21 2015 +0200
 
 commit 9cdee54751babf37215282756e90b1520b089945
 Author: Piotr Drąg <piotrdrag@gmail.com>
-Date:   Sat Sep 26 17:25:48 2015 +0200
+Date:	Sat Sep 26 17:25:48 2015 +0200
 
     Fix Slovenian translation of default:LTR
 
@@ -182,7 +1531,7 @@ Date:   Sat Sep 26 17:25:48 2015 +0200
 
 commit 6186829a5a74fbda69c81298c8a1ddae1cab6467
 Author: Piotr Drąg <piotrdrag@gmail.com>
-Date:   Sat Sep 26 17:22:05 2015 +0200
+Date:	Sat Sep 26 17:22:05 2015 +0200
 
     Fix Estonian translation of default:LTR
 
@@ -191,7 +1540,7 @@ Date:   Sat Sep 26 17:22:05 2015 +0200
 
 commit 00bbab5789dc35116fdf1051f52835bac1405a6b
 Author: Piotr Drąg <piotrdrag@gmail.com>
-Date:   Sat Sep 26 17:21:42 2015 +0200
+Date:	Sat Sep 26 17:21:42 2015 +0200
 
     Fix Spanish translation of default:LTR
 
@@ -200,7 +1549,7 @@ Date:   Sat Sep 26 17:21:42 2015 +0200
 
 commit b97a4e0538b47f1ade8bc800aa3e19d51fc8a892
 Author: Piotr Drąg <piotrdrag@gmail.com>
-Date:   Sat Sep 26 17:20:24 2015 +0200
+Date:	Sat Sep 26 17:20:24 2015 +0200
 
     Fix Greek translation of default:LTR
 
@@ -209,7 +1558,7 @@ Date:   Sat Sep 26 17:20:24 2015 +0200
 
 commit d4ae812a93f8b066bd18e03dc811e5b1f4b73c36
 Author: Piotr Drąg <piotrdrag@gmail.com>
-Date:   Sat Sep 26 16:59:54 2015 +0200
+Date:	Sat Sep 26 16:59:54 2015 +0200
 
     Fix Catalan translation of default:LTR
 
@@ -218,7 +1567,7 @@ Date:   Sat Sep 26 16:59:54 2015 +0200
 
 commit 101b224f63fe84d26f79a8bce1d68e020708fc34
 Author: Piotr Drąg <piotrdrag@gmail.com>
-Date:   Sat Sep 26 16:52:27 2015 +0200
+Date:	Sat Sep 26 16:52:27 2015 +0200
 
     Fix Aragonese translation of default:LTR
 
@@ -227,7 +1576,7 @@ Date:   Sat Sep 26 16:52:27 2015 +0200
 
 commit 57050cfc7bc7129be067e49e7fca4cb0d4214cd4
 Author: Pedro Albuquerque <palbuquerque73@gmail.com>
-Date:   Mon Sep 21 05:19:29 2015 +0000
+Date:	Mon Sep 21 05:19:29 2015 +0000
 
     Updated Portuguese translation
 
@@ -237,7 +1586,7 @@ Date:   Mon Sep 21 05:19:29 2015 +0000
 
 commit 368b80fa717a0fe1a371d927f006f45a7f5a3287
 Author: Piotr Drąg <piotrdrag@gmail.com>
-Date:   Sat Sep 19 17:49:22 2015 +0200
+Date:	Sat Sep 19 17:49:22 2015 +0200
 
     Updated po-tags/LINGUAS
 
@@ -246,7 +1595,7 @@ Date:   Sat Sep 19 17:49:22 2015 +0200
 
 commit 32e8a4e116b6706b4199a948d19631342d27d9d8
 Author: Matt Giuca <mgiuca@chromium.org>
-Date:   Fri Sep 18 18:58:12 2015 +0200
+Date:	Fri Sep 18 18:58:12 2015 +0200
 
     plug-ins: Fix generation of the AND mask for 32-bit ICO images
 
@@ -262,13 +1611,13 @@ Date:   Fri Sep 18 18:58:12 2015 +0200
 
 commit f55dd9a7f33a03c918649ff2e14ad517df375b60
 Author: Jonathan Tait <jontait2@gmail.com>
-Date:   Tue Sep 15 05:37:37 2015 +0100
+Date:	Tue Sep 15 05:37:37 2015 +0100
 
     Bug 751584 - parasite_list() methods fail if no parasites found
 
     Correct parasite_list() methods.
 
- plug-ins/pygimp/gimpmodule.c      | 22 ++++++++--------------
+ plug-ins/pygimp/gimpmodule.c	   | 22 ++++++++--------------
  plug-ins/pygimp/pygimp-drawable.c | 22 ++++++++--------------
  plug-ins/pygimp/pygimp-image.c    | 23 ++++++++---------------
  plug-ins/pygimp/pygimp-vectors.c  | 22 ++++++++--------------
@@ -276,7 +1625,7 @@ Date:   Tue Sep 15 05:37:37 2015 +0100
 
 commit 9d5fed6ea66dba308400ce2f275b51d6d145d404
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Sat Sep 12 20:26:56 2015 +0200
+Date:	Sat Sep 12 20:26:56 2015 +0200
 
     Bug 754927 - Non-void function should return a value
 
@@ -289,7 +1638,7 @@ Date:   Sat Sep 12 20:26:56 2015 +0200
 
 commit bfd482755b081be7dbda2fd1d457d1b6b7ace8a8
 Author: Julien Nabet <serval2412@yahoo.fr>
-Date:   Tue Sep 8 21:34:11 2015 +0200
+Date:	Tue Sep 8 21:34:11 2015 +0200
 
     Bug 69496 - Paint tools, Text tool: Click and drag
     font/brush/pattern/gradient...
@@ -307,7 +1656,7 @@ Date:   Tue Sep 8 21:34:11 2015 +0200
 
 commit ff950e6a2591c4c7742101653f2659fb902e78a7
 Author: Martin Srebotnjak <miles@filmsi.net>
-Date:   Tue Sep 8 23:42:47 2015 +0200
+Date:	Tue Sep 8 23:42:47 2015 +0200
 
     Updated Slovenian translation
 
@@ -317,7 +1666,7 @@ Date:   Tue Sep 8 23:42:47 2015 +0200
 
 commit 232361ab601c0daaf5f58b58408c707c1eb947d7
 Author: Martin Srebotnjak <miles@filmsi.net>
-Date:   Tue Sep 8 23:34:24 2015 +0200
+Date:	Tue Sep 8 23:34:24 2015 +0200
 
     Updated Slovenian translation
 
@@ -327,7 +1676,7 @@ Date:   Tue Sep 8 23:34:24 2015 +0200
 
 commit 244a14d6b6fe3c2f28c314f6e764c0bdb99c1796
 Author: Martin Srebotnjak <miles@filmsi.net>
-Date:   Tue Sep 8 23:17:55 2015 +0200
+Date:	Tue Sep 8 23:17:55 2015 +0200
 
     Updated Slovenian translation
 
@@ -337,7 +1686,7 @@ Date:   Tue Sep 8 23:17:55 2015 +0200
 
 commit 978a394efec664da104b8e255eebd794d81095bc
 Author: Michael Henning <drawoc@darkrefraction.com>
-Date:   Sun Sep 6 17:41:09 2015 -0400
+Date:	Sun Sep 6 17:41:09 2015 -0400
 
     libgimpwidgets: Disconnect ruler's idle handler in dispose
 
@@ -351,7 +1700,7 @@ Date:   Sun Sep 6 17:41:09 2015 -0400
 
 commit a8b596b078c637798b404c45f297138bb5c81ae6
 Author: Michael Henning <drawoc@darkrefraction.com>
-Date:   Sun Sep 6 00:05:32 2015 -0400
+Date:	Sun Sep 6 00:05:32 2015 -0400
 
     libgimpwidgets: Avoid updating the rulers too often.
 
@@ -373,7 +1722,7 @@ Date:   Sun Sep 6 00:05:32 2015 -0400
 
 commit 40fd55612046eac4397ccb03abbdf54fd99a554d
 Author: Piotr Drąg <piotrdrag@gmail.com>
-Date:   Wed Sep 2 20:42:50 2015 +0200
+Date:	Wed Sep 2 20:42:50 2015 +0200
 
     Updated Polish translation
 
@@ -382,7 +1731,7 @@ Date:   Wed Sep 2 20:42:50 2015 +0200
 
 commit b50a416390d144beca08b2e3ab3fe444fb85034f
 Author: Piotr Drąg <piotrdrag@gmail.com>
-Date:   Sat Aug 29 18:41:52 2015 +0200
+Date:	Sat Aug 29 18:41:52 2015 +0200
 
     Updated Polish translation
 
@@ -391,14 +1740,14 @@ Date:   Sat Aug 29 18:41:52 2015 +0200
  ++++++++++++++++++++++++++---------------------------
  po-python/pl.po    |  52 +--
  po-script-fu/pl.po | 324 +++++++++---------
- po-tags/pl.po      |  11 +-
- po-tips/pl.po      |  86 ++---
- po/pl.po           | 764 +++++++++++++++++++++----------------------
+ po-tags/pl.po	    |  11 +-
+ po-tips/pl.po	    |  86 ++---
+ po/pl.po	    | 764 +++++++++++++++++++++----------------------
  7 files changed, 1174 insertions(+), 1196 deletions(-)
 
 commit f12131744c1288f52e02bb11abefadf24b99b7c9
 Author: Michael Henning <drawoc@darkrefraction.com>
-Date:   Tue Aug 25 21:46:06 2015 -0400
+Date:	Tue Aug 25 21:46:06 2015 -0400
 
     NEWS: Updates
 
@@ -407,7 +1756,7 @@ Date:   Tue Aug 25 21:46:06 2015 -0400
 
 commit 43f187f5c351b0d06031f1774395bd922c3e1857
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Tue Aug 25 23:05:25 2015 +0200
+Date:	Tue Aug 25 23:05:25 2015 +0200
 
     Bug 749123 - File->Open thumbnail information label misaligned...
 
@@ -422,7 +1771,7 @@ Date:   Tue Aug 25 23:05:25 2015 +0200
 
 commit cfcfaddd2ade882d4f4995ad1cb023f8ce783ac9
 Author: Michael Schumacher <schumaml@gmx.de>
-Date:   Fri Aug 21 19:13:27 2015 +0200
+Date:	Fri Aug 21 19:13:27 2015 +0200
 
     Adding ChangeLog.pre-git to EXTRA_DIST
 
@@ -435,9 +1784,9 @@ Date:   Fri Aug 21 19:13:27 2015 +0200
 
 commit 659a75c68664de85d0be57b934ba0ff17b412567
 Author: Michael Schumacher <schumaml@gmx.de>
-Date:   Fri Aug 21 00:42:10 2015 +0200
+Date:	Fri Aug 21 00:42:10 2015 +0200
 
-    Workaround for intltool vs. automake issue  during distcheck
+    Workaround for intltool vs. automake issue	during distcheck
 
     intltool and automake 1.15 currently cause a problem during make
     distcheck.
@@ -454,7 +1803,7 @@ Date:   Fri Aug 21 00:42:10 2015 +0200
 
 commit 6bb8ec5bb37c92db1075b1c0e139325efb9985c0
 Author: David Gowers <00ai99@gmail.com>
-Date:   Sun Aug 16 20:17:03 2015 +0200
+Date:	Sun Aug 16 20:17:03 2015 +0200
 
     Bug 753573 - Enter does not take a default action in Python-Fu dialogs
 
@@ -465,7 +1814,7 @@ Date:   Sun Aug 16 20:17:03 2015 +0200
 
 commit 9b783de2e4821151dbb470a0021a7d2ba411b489
 Author: Saul Goode <saul@crazyauntgail.com>
-Date:   Sat Aug 15 20:20:19 2015 +0200
+Date:	Sat Aug 15 20:20:19 2015 +0200
 
     Bug 746467 - 'convert-decimal-to-base' produces erroneous results
 
@@ -475,7 +1824,7 @@ Date:   Sat Aug 15 20:20:19 2015 +0200
 
 commit daf10480d57cad7641a3395a2b49acee10335739
 Author: su-v <suv-sf@users.sf.net>
-Date:   Sat Jan 24 03:22:56 2015 +0100
+Date:	Sat Jan 24 03:22:56 2015 +0100
 
     autogen.sh: also look for automake 1.15
 
@@ -484,7 +1833,7 @@ Date:   Sat Jan 24 03:22:56 2015 +0100
 
 commit 597fae39b4911b6e6e201e711f6de86cb6548f10
 Author: Michael Henning <drawoc@darkrefraction.com>
-Date:   Tue Aug 11 16:20:59 2015 -0400
+Date:	Tue Aug 11 16:20:59 2015 -0400
 
     Bug 736411 - Ruler updates cause slowdown when painting
 
@@ -501,7 +1850,7 @@ Date:   Tue Aug 11 16:20:59 2015 -0400
 
 commit 3138ebde3a20e377c8b5dda58e31fe52de7ae170
 Author: Pedro Albuquerque <palbuquerque73@gmail.com>
-Date:   Wed Aug 12 11:58:27 2015 +0000
+Date:	Wed Aug 12 11:58:27 2015 +0000
 
     Updated Portuguese translation
 
@@ -511,7 +1860,7 @@ Date:   Wed Aug 12 11:58:27 2015 +0000
 
 commit 59c0f0a64d9569b3db56c0f78e5f575681124484
 Author: Pedro Albuquerque <palbuquerque73@gmail.com>
-Date:   Sat Aug 8 05:54:50 2015 +0000
+Date:	Sat Aug 8 05:54:50 2015 +0000
 
     Updated Portuguese translation
 
@@ -521,7 +1870,7 @@ Date:   Sat Aug 8 05:54:50 2015 +0000
 
 commit a50765821c83763ecadd685cac2e4e7612ba1029
 Author: Pedro Albuquerque <palbuquerque73@gmail.com>
-Date:   Fri Jul 24 18:52:20 2015 +0000
+Date:	Fri Jul 24 18:52:20 2015 +0000
 
     Updated Portuguese translation
 
@@ -531,20 +1880,20 @@ Date:   Fri Jul 24 18:52:20 2015 +0000
 
 commit c90fa08af1bf9e2d82d4e9a0a3828cc2adae6c8a
 Author: Daniel Martinez <dmartinez@src.gnome.org>
-Date:   Thu Jul 23 12:12:19 2015 +0200
+Date:	Thu Jul 23 12:12:19 2015 +0200
 
     Update Aragonese translation
 
  po-libgimp/an.po  |  63 +++++++++-----------------
  po-plug-ins/an.po |  50 ++++++++++-----------
  po-python/an.po   |   4 +-
- po/an.po          | 131
+ po/an.po	   | 131
  ++++++++++++++++++++++++++----------------------------
  4 files changed, 113 insertions(+), 135 deletions(-)
 
 commit 30e5d71ba929bd835b8f5f9eb023775a5f9707a9
 Author: Pedro Albuquerque <palbuquerque73@gmail.com>
-Date:   Thu Jul 23 07:53:30 2015 +0000
+Date:	Thu Jul 23 07:53:30 2015 +0000
 
     Updated Portuguese translation
 
@@ -554,7 +1903,7 @@ Date:   Thu Jul 23 07:53:30 2015 +0000
 
 commit f78556a44263ccc6c7ed8d522d1ff50c19650b5b
 Author: Pedro Albuquerque <palbuquerque73@gmail.com>
-Date:   Thu Jul 23 07:49:48 2015 +0000
+Date:	Thu Jul 23 07:49:48 2015 +0000
 
     Updated Portuguese translation
 
@@ -564,7 +1913,7 @@ Date:   Thu Jul 23 07:49:48 2015 +0000
 
 commit 9c5a66f929198f5f001052600a2e8cd354bb0ef7
 Author: Pedro Albuquerque <palbuquerque73@gmail.com>
-Date:   Thu Jul 23 07:45:50 2015 +0000
+Date:	Thu Jul 23 07:45:50 2015 +0000
 
     Updated Portuguese translation
 
@@ -574,7 +1923,7 @@ Date:   Thu Jul 23 07:45:50 2015 +0000
 
 commit 53e5084a361523c810851e43cb2d1d2781133e1c
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Tue Jul 21 19:24:45 2015 +0200
+Date:	Tue Jul 21 19:24:45 2015 +0200
 
     Bug 752582 - Error message when refreshing resources without...
 
@@ -591,7 +1940,7 @@ Date:   Tue Jul 21 19:24:45 2015 +0200
 
 commit 1fc061aa469c1a70288907bbb02c371fc0c1f4d3
 Author: Nils Philippsen <nils@redhat.com>
-Date:   Fri Jul 17 17:07:18 2015 +0200
+Date:	Fri Jul 17 17:07:18 2015 +0200
 
     Ref/unref dialog->image around saving as well...
 
@@ -607,7 +1956,7 @@ Date:   Fri Jul 17 17:07:18 2015 +0200
 
 commit f60570b3125c8dfd73b531c51ecf0017f2e5b1f0
 Author: Nils Philippsen <nils@redhat.com>
-Date:   Thu Jul 16 14:18:55 2015 +0200
+Date:	Thu Jul 16 14:18:55 2015 +0200
 
     tests: link against -lm
 
@@ -616,12 +1965,12 @@ Date:   Thu Jul 16 14:18:55 2015 +0200
     (cherry picked from commit 9171de3b80735cd608b5ac099c67deb5b9ccaf1f)
 
  app/config/Makefile.am | 8 +++++++-
- app/tests/Makefile.am  | 8 +++++++-
+ app/tests/Makefile.am	| 8 +++++++-
  2 files changed, 14 insertions(+), 2 deletions(-)
 
 commit 670fb5602d097be5b53654ff100dbd98bc11cb28
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Mon Feb 16 19:35:00 2015 +0100
+Date:	Mon Feb 16 19:35:00 2015 +0100
 
     app: link against -lm, whatever new linker version seems to need is
 
@@ -632,7 +1981,7 @@ Date:   Mon Feb 16 19:35:00 2015 +0100
 
 commit 908f4e69d656e5a1cd4b23310a16e287e8ae72f7
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Tue Jul 14 13:22:06 2015 +0200
+Date:	Tue Jul 14 13:22:06 2015 +0200
 
     Bug 739003 - Crashes in file_save_dialog_response()
 
@@ -647,7 +1996,7 @@ Date:   Tue Jul 14 13:22:06 2015 +0200
 
 commit d7f1187e5b6df44e43455eca9f486e9ead1b1dcb
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Sat Jul 4 14:04:35 2015 +0200
+Date:	Sat Jul 4 14:04:35 2015 +0200
 
     Bug 751645 - tagbox dialog not showing lower tags
 
@@ -661,7 +2010,7 @@ Date:   Sat Jul 4 14:04:35 2015 +0200
 
 commit 76ad66cdf00c405979504c7aebb417b413e28e55
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Fri Jul 3 19:37:30 2015 +0200
+Date:	Fri Jul 3 19:37:30 2015 +0200
 
     app: factor out a function in GimpEditSelectionTool, and move
     one around
@@ -676,7 +2025,7 @@ Date:   Fri Jul 3 19:37:30 2015 +0200
 
 commit 6b2ebecfc7e345c176f5a2768b2d6dfba9a7f546
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Fri Jul 3 12:26:32 2015 +0200
+Date:	Fri Jul 3 12:26:32 2015 +0200
 
     app: free GimpEditSelectionTool's stuff in finalize()
 
@@ -688,7 +2037,7 @@ Date:   Fri Jul 3 12:26:32 2015 +0200
 
 commit 1ca0f2ec98f9643e2a1798ad0afc17b8b2168d1c
 Author: Massimo Valentini <mvalentini@src.gnome.org>
-Date:   Tue Jun 30 19:49:53 2015 +0200
+Date:	Tue Jun 30 19:49:53 2015 +0200
 
     Bug 751089: Part PNG files are not opened properly
 
@@ -699,7 +2048,7 @@ Date:   Tue Jun 30 19:49:53 2015 +0200
 
 commit 7395e05614b0ecc42d5597396b39e3d88e5dd32e
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Sun Jun 28 23:48:47 2015 +0200
+Date:	Sun Jun 28 23:48:47 2015 +0200
 
     app: remove the "exclude" paameter from
     gimp_image_item_list_get_list()
@@ -715,15 +2064,15 @@ Date:   Sun Jun 28 23:48:47 2015 +0200
 
  app/core/gimpimage-item-list.c    | 19 +++++--------------
  app/core/gimpimage-item-list.h    |  4 +---
- app/core/gimpimage-resize.c       |  2 +-
- app/core/gimpimage-scale.c        |  4 ++--
- app/core/gimpitem-linked.c        | 21 ++++++++++-----------
+ app/core/gimpimage-resize.c	   |  2 +-
+ app/core/gimpimage-scale.c	   |  4 ++--
+ app/core/gimpitem-linked.c	   | 21 ++++++++++-----------
  app/tools/gimpeditselectiontool.c | 28 ++++++++++++----------------
  6 files changed, 31 insertions(+), 47 deletions(-)
 
 commit b3e0e8327434cc8110e56f85530be100096ab38a
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Sat Jun 27 12:34:19 2015 +0200
+Date:	Sat Jun 27 12:34:19 2015 +0200
 
     Bug 735906 - Transform tools give unexpected results when
     transforming...
@@ -753,7 +2102,7 @@ Date:   Sat Jun 27 12:34:19 2015 +0200
 
 commit a03d8c42e58bf9121c422ca49724f1fcfb0641d7
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Fri Jun 26 13:35:07 2015 +0200
+Date:	Fri Jun 26 13:35:07 2015 +0200
 
     app: don't push an undo group if an item list transform has only
     one item
@@ -767,7 +2116,7 @@ Date:   Fri Jun 26 13:35:07 2015 +0200
 
 commit 1a14fed7b5fca05180ec2ace392f6785f08fd0cd
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Fri Jun 26 12:05:14 2015 +0200
+Date:	Fri Jun 26 12:05:14 2015 +0200
 
     Bug 735906 - Transform tools give unexpected results when
     transforming...
@@ -782,28 +2131,28 @@ Date:   Fri Jun 26 12:05:14 2015 +0200
 
     (cherry picked from commit 3c706d00c67d675bdb8c255b3fff88490fde82bc)
 
- app/core/gimpitem-linked.c        | 17 ++++++++++-------
- app/pdb/layer-cmds.c              | 37
+ app/core/gimpitem-linked.c	   | 17 ++++++++++-------
+ app/pdb/layer-cmds.c		   | 37
  ++++++++++++++++---------------------
  app/tools/gimpeditselectiontool.c | 11 +++++++----
- tools/pdbgen/pdb/layer.pdb        | 37
+ tools/pdbgen/pdb/layer.pdb	   | 37
  ++++++++++++++++---------------------
  4 files changed, 49 insertions(+), 53 deletions(-)
 
 commit e37b28baae24d8a0e49996fe93f6523dd5cc5c59
 Author: Cédric Valmary <cvalmary@yahoo.fr>
-Date:   Thu Jun 25 20:17:45 2015 +0000
+Date:	Thu Jun 25 20:17:45 2015 +0000
 
     Added Occitan translation
 
  po-tips/LINGUAS |   1 +
- po-tips/oc.po   | 327
+ po-tips/oc.po	 | 327
  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  2 files changed, 328 insertions(+)
 
 commit 7144165eab7bbad04afc02a54bce38111461487f
 Author: Cédric Valmary <cvalmary@yahoo.fr>
-Date:   Thu Jun 25 20:17:23 2015 +0000
+Date:	Thu Jun 25 20:17:23 2015 +0000
 
     Updated Occitan translation
 
@@ -812,7 +2161,7 @@ Date:   Thu Jun 25 20:17:23 2015 +0000
 
 commit 5b35276b6fd0d3e855464bc43d39d38ff58b2fe1
 Author: Cédric Valmary <cvalmary@yahoo.fr>
-Date:   Thu Jun 25 20:08:37 2015 +0000
+Date:	Thu Jun 25 20:08:37 2015 +0000
 
     Updated Occitan translation
 
@@ -822,7 +2171,7 @@ Date:   Thu Jun 25 20:08:37 2015 +0000
 
 commit af6cc5feaa90e806871b421526d04d6ff43bf840
 Author: Cédric Valmary <cvalmary@yahoo.fr>
-Date:   Thu Jun 25 19:58:20 2015 +0000
+Date:	Thu Jun 25 19:58:20 2015 +0000
 
     Updated Occitan translation
 
@@ -832,7 +2181,7 @@ Date:   Thu Jun 25 19:58:20 2015 +0000
 
 commit 5627787e8531afe245e26da86bbfa815e813cb20
 Author: Piotr Drąg <piotrdrag@gmail.com>
-Date:   Thu Jun 25 18:11:26 2015 +0200
+Date:	Thu Jun 25 18:11:26 2015 +0200
 
     Updated POTFILES.in
 
@@ -841,7 +2190,7 @@ Date:   Thu Jun 25 18:11:26 2015 +0200
 
 commit d744c37557a3d4298cb74160c76d037723b9e1ac
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Thu Jun 25 12:25:41 2015 +0200
+Date:	Thu Jun 25 12:25:41 2015 +0200
 
     Bug 735906 - Transform tools give unexpected results when
     transforming...
@@ -870,16 +2219,16 @@ Date:   Thu Jun 25 12:25:41 2015 +0200
     (cherry picked from commit 25a696c7f822864ebb35bcbfdb913a98032b0469)
 
  app/actions/drawable-commands.c | 26 ++++++--------
- app/core/gimpitem-linked.c      | 77
+ app/core/gimpitem-linked.c	 | 77
  ++++++++++++++++++++++++-----------------
- app/tools/gimpfliptool.c        | 15 +++++---
- app/tools/gimptransformtool.c   | 46 +++++++++++++-----------
- po/POTFILES.in                  |  1 +
+ app/tools/gimpfliptool.c	 | 15 +++++---
+ app/tools/gimptransformtool.c	 | 46 +++++++++++++-----------
+ po/POTFILES.in			 |  1 +
  5 files changed, 92 insertions(+), 73 deletions(-)
 
 commit e44e53a84ba8d9ae56c14b899c070fda1af44f44
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Wed Jun 24 19:40:54 2015 +0200
+Date:	Wed Jun 24 19:40:54 2015 +0200
 
     app: small fix for the previous patch in
     gimp_group_layer_update_size()
@@ -891,7 +2240,7 @@ Date:   Wed Jun 24 19:40:54 2015 +0200
 
 commit d8edb0f21498f7af4749ace404aa720af04b189e
 Author: Balázs Úr <urbalazs@gmail.com>
-Date:   Tue Jun 23 11:56:50 2015 +0000
+Date:	Tue Jun 23 11:56:50 2015 +0000
 
     Updated Hungarian translation
 
@@ -901,7 +2250,7 @@ Date:   Tue Jun 23 11:56:50 2015 +0000
 
 commit e645b922bfe2d4029243011381c852cbcc9a398f
 Author: Michael Natterer <mitch@gimp.org>
-Date:   Tue Jun 23 10:24:25 2015 +0200
+Date:	Tue Jun 23 10:24:25 2015 +0200
 
     app: fix update of group layers when size changes only trigger an
     offset change
@@ -918,7 +2267,7 @@ Date:   Tue Jun 23 10:24:25 2015 +0200
 
 commit 26653680b52c99c445592d5320829637fee18e7d
 Author: Cédric Valmary <cvalmary@yahoo.fr>
-Date:   Tue Jun 23 05:50:22 2015 +0000
+Date:	Tue Jun 23 05:50:22 2015 +0000
 
     Updated Occitan translation
 
@@ -928,7 +2277,7 @@ Date:   Tue Jun 23 05:50:22 2015 +0000
 
 commit 9bb3da5ed5099566cc3e555859080f248dc0befe
 Author: Massimo Valentini <mvalentini@src.gnome.org>
-Date:   Mon Jun 22 20:23:08 2015 +0200
+Date:	Mon Jun 22 20:23:08 2015 +0200
 
     Bug 751178: GIMP doesn't load fonts from folders...
 

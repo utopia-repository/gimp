@@ -42,16 +42,9 @@
     <keyword type="function" name="gimp_config_serialize_property ()" link="libgimpconfig-GimpConfig-serialize.html#gimp-config-serialize-property" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_config_serialize_property_by_name ()" link="libgimpconfig-GimpConfig-serialize.html#gimp-config-serialize-property-by-name" since="GIMP 2.6"/>
     <keyword type="function" name="gimp_config_serialize_value ()" link="libgimpconfig-GimpConfig-serialize.html#gimp-config-serialize-value" since="GIMP 2.4"/>
-    <keyword type="macro" name="GIMP_CONFIG_ERROR" link="libgimpconfig-GimpConfigError.html#GIMP-CONFIG-ERROR:CAPS"/>
     <keyword type="function" name="gimp_config_error_quark ()" link="libgimpconfig-GimpConfigError.html#gimp-config-error-quark" since="GIMP 2.4"/>
     <keyword type="enum" name="enum GimpConfigError" link="libgimpconfig-GimpConfigError.html#GimpConfigError"/>
-    <keyword type="macro" name="GIMP_CONFIG_PARAM_SERIALIZE" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-SERIALIZE:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_PARAM_AGGREGATE" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-AGGREGATE:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_PARAM_RESTART" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-RESTART:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_PARAM_CONFIRM" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-CONFIRM:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_PARAM_DEFAULTS" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-DEFAULTS:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_PARAM_IGNORE" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-IGNORE:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_PARAM_FLAGS" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-FLAGS:CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_ERROR" link="libgimpconfig-GimpConfigError.html#GIMP-CONFIG-ERROR:CAPS"/>
     <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_BOOLEAN()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-BOOLEAN:CAPS"/>
     <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_BOXED()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-BOXED:CAPS"/>
     <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_RGB()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-RGB:CAPS"/>
@@ -67,6 +60,13 @@
     <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_UNIT()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-UNIT:CAPS"/>
     <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_OBJECT()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-OBJECT:CAPS"/>
     <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_POINTER()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-POINTER:CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_PARAM_SERIALIZE" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-SERIALIZE:CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_PARAM_AGGREGATE" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-AGGREGATE:CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_PARAM_RESTART" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-RESTART:CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_PARAM_CONFIRM" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-CONFIRM:CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_PARAM_DEFAULTS" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-DEFAULTS:CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_PARAM_IGNORE" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-IGNORE:CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_PARAM_FLAGS" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PARAM-FLAGS:CAPS"/>
     <keyword type="function" name="gimp_param_spec_config_path ()" link="libgimpconfig-GimpConfig-path.html#gimp-param-spec-config-path" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_param_spec_config_path_type ()" link="libgimpconfig-GimpConfig-path.html#gimp-param-spec-config-path-type" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_config_path_expand ()" link="libgimpconfig-GimpConfig-path.html#gimp-config-path-expand" since="GIMP 2.4"/>

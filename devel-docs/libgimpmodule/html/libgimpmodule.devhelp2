@@ -15,8 +15,6 @@
   <functions>
     <keyword type="function" name="GimpModuleQueryFunc ()" link="GimpModule.html#GimpModuleQueryFunc"/>
     <keyword type="function" name="GimpModuleRegisterFunc ()" link="GimpModule.html#GimpModuleRegisterFunc"/>
-    <keyword type="macro" name="GIMP_MODULE_ERROR" link="GimpModule.html#GIMP-MODULE-ERROR:CAPS"/>
-    <keyword type="macro" name="GIMP_MODULE_PARAM_SERIALIZE" link="GimpModule.html#GIMP-MODULE-PARAM-SERIALIZE:CAPS" deprecated=""/>
     <keyword type="function" name="gimp_module_new ()" link="GimpModule.html#gimp-module-new"/>
     <keyword type="function" name="gimp_module_modified ()" link="GimpModule.html#gimp-module-modified"/>
     <keyword type="function" name="gimp_module_query_module ()" link="GimpModule.html#gimp-module-query-module"/>
@@ -30,8 +28,10 @@
     <keyword type="struct" name="GimpModule" link="GimpModule.html#GimpModule-struct"/>
     <keyword type="struct" name="GimpModuleInfo" link="GimpModule.html#GimpModuleInfo"/>
     <keyword type="enum" name="enum GimpModuleState" link="GimpModule.html#GimpModuleState"/>
+    <keyword type="macro" name="GIMP_MODULE_ERROR" link="GimpModule.html#GIMP-MODULE-ERROR:CAPS"/>
     <keyword type="enum" name="enum GimpModuleError" link="GimpModule.html#GimpModuleError"/>
     <keyword type="macro" name="GIMP_MODULE_ABI_VERSION" link="GimpModule.html#GIMP-MODULE-ABI-VERSION:CAPS"/>
+    <keyword type="macro" name="GIMP_MODULE_PARAM_SERIALIZE" link="GimpModule.html#GIMP-MODULE-PARAM-SERIALIZE:CAPS" deprecated=""/>
     <keyword type="signal" name="The “modified” signal" link="GimpModule.html#GimpModule-modified"/>
     <keyword type="function" name="gimp_module_db_new ()" link="GimpModuleDB.html#gimp-module-db-new"/>
     <keyword type="function" name="gimp_module_db_set_load_inhibit ()" link="GimpModuleDB.html#gimp-module-db-set-load-inhibit"/>
@@ -47,5 +47,11 @@
     <keyword type="constant" name="GIMP_MODULE_STATE_LOAD_FAILED" link="GimpModule.html#GIMP-MODULE-STATE-LOAD-FAILED:CAPS"/>
     <keyword type="constant" name="GIMP_MODULE_STATE_NOT_LOADED" link="GimpModule.html#GIMP-MODULE-STATE-NOT-LOADED:CAPS"/>
     <keyword type="constant" name="GIMP_MODULE_FAILED" link="GimpModule.html#GIMP-MODULE-FAILED:CAPS"/>
+    <keyword type="member" name="GimpModuleInfo.abi-version" link="GimpModule.html#GimpModuleInfo.abi-version"/>
+    <keyword type="member" name="GimpModuleInfo.purpose" link="GimpModule.html#GimpModuleInfo.purpose"/>
+    <keyword type="member" name="GimpModuleInfo.author" link="GimpModule.html#GimpModuleInfo.author"/>
+    <keyword type="member" name="GimpModuleInfo.version" link="GimpModule.html#GimpModuleInfo.version"/>
+    <keyword type="member" name="GimpModuleInfo.copyright" link="GimpModule.html#GimpModuleInfo.copyright"/>
+    <keyword type="member" name="GimpModuleInfo.date" link="GimpModule.html#GimpModuleInfo.date"/>
   </functions>
 </book>

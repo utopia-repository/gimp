@@ -3,8 +3,8 @@ Priority: optional
 Section: graphics
 Maintainer: Ari Pollak <ari@debian.org>
 Uploaders: Jordi Mallach <jordi@debian.org>
-Standards-Version: 3.9.6
-Build-Depends: debhelper (>= 8),
+Standards-Version: 3.9.8
+Build-Depends: debhelper (>= 9),
                cdbs (>= 0.4.97),
                autotools-dev,
                dh-autoreconf,
@@ -89,7 +89,7 @@ Suggests: gimp-help-en | gimp-help,
           libasound2
 Breaks: gimp-plugin-registry (<< 4.20120506)
 Replaces: gimp-plugin-registry (<< 4.20120506)
-Description: The GNU Image Manipulation Program
+Description: GNU Image Manipulation Program
  GIMP is an advanced picture editor. You can use it to edit, enhance, and
  retouch photos and scans, create drawings, and make your own images.
  It has a large collection of professional-level editing tools and

@@ -1,6 +1,9 @@
 gimp (2.8.18-1) unstable; urgency=low
 
   * Imported Upstream version 2.8.18 (Closes: #820207)
+  * Build with full set of hardening flags, including PIE
+  * Update standards version
+  * Update debhelper version
 
  -- Ari Pollak <ari@debian.org>  Thu, 14 Jul 2016 19:46:43 -0400
 

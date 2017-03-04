@@ -3,7 +3,7 @@
   <chapters>
     <sub name="GIMP Library" link="libgimp.html">
       <sub name="Functions not Related to Specific Images" link="libgimp-general.html">
-        <sub name="Gimp" link="libgimp-Gimp.html"/>
+        <sub name="gimp" link="libgimp-gimp.html"/>
         <sub name="gimpenums" link="libgimp-gimpenums.html"/>
         <sub name="gimpbuffer" link="libgimp-gimpbuffer.html"/>
         <sub name="gimpcontext" link="libgimp-gimpcontext.html"/>
@@ -99,60 +99,60 @@
     <sub name="Index of deprecated symbols" link="libgimp-index-deprecated.html"/>
   </chapters>
   <functions>
-    <keyword type="function" name="gimp_version ()" link="libgimp-Gimp.html#gimp-version"/>
-    <keyword type="function" name="gimp_getpid ()" link="libgimp-Gimp.html#gimp-getpid" since="GIMP 2.4"/>
-    <keyword type="function" name="GimpInitProc ()" link="libgimp-Gimp.html#GimpInitProc"/>
-    <keyword type="function" name="GimpQuitProc ()" link="libgimp-Gimp.html#GimpQuitProc"/>
-    <keyword type="function" name="GimpQueryProc ()" link="libgimp-Gimp.html#GimpQueryProc"/>
-    <keyword type="function" name="GimpRunProc ()" link="libgimp-Gimp.html#GimpRunProc"/>
-    <keyword type="macro" name="MAIN" link="libgimp-Gimp.html#MAIN:CAPS"/>
-    <keyword type="function" name="gimp_main ()" link="libgimp-Gimp.html#gimp-main"/>
-    <keyword type="function" name="gimp_quit ()" link="libgimp-Gimp.html#gimp-quit"/>
-    <keyword type="function" name="gimp_install_procedure ()" link="libgimp-Gimp.html#gimp-install-procedure"/>
-    <keyword type="function" name="gimp_install_temp_proc ()" link="libgimp-Gimp.html#gimp-install-temp-proc"/>
-    <keyword type="function" name="gimp_uninstall_temp_proc ()" link="libgimp-Gimp.html#gimp-uninstall-temp-proc"/>
-    <keyword type="function" name="gimp_run_procedure ()" link="libgimp-Gimp.html#gimp-run-procedure"/>
-    <keyword type="function" name="gimp_run_procedure2 ()" link="libgimp-Gimp.html#gimp-run-procedure2"/>
-    <keyword type="function" name="gimp_destroy_params ()" link="libgimp-Gimp.html#gimp-destroy-params"/>
-    <keyword type="function" name="gimp_destroy_paramdefs ()" link="libgimp-Gimp.html#gimp-destroy-paramdefs"/>
-    <keyword type="function" name="gimp_get_pdb_error ()" link="libgimp-Gimp.html#gimp-get-pdb-error" since="GIMP 2.6"/>
-    <keyword type="function" name="gimp_tile_width ()" link="libgimp-Gimp.html#gimp-tile-width"/>
-    <keyword type="function" name="gimp_tile_height ()" link="libgimp-Gimp.html#gimp-tile-height"/>
-    <keyword type="function" name="gimp_shm_ID ()" link="libgimp-Gimp.html#gimp-shm-ID"/>
-    <keyword type="function" name="gimp_shm_addr ()" link="libgimp-Gimp.html#gimp-shm-addr"/>
-    <keyword type="function" name="gimp_gamma ()" link="libgimp-Gimp.html#gimp-gamma"/>
-    <keyword type="function" name="gimp_install_cmap ()" link="libgimp-Gimp.html#gimp-install-cmap" deprecated=""/>
-    <keyword type="function" name="gimp_min_colors ()" link="libgimp-Gimp.html#gimp-min-colors" deprecated=""/>
-    <keyword type="function" name="gimp_show_tool_tips ()" link="libgimp-Gimp.html#gimp-show-tool-tips"/>
-    <keyword type="function" name="gimp_show_help_button ()" link="libgimp-Gimp.html#gimp-show-help-button" since="GIMP 2.2"/>
-    <keyword type="function" name="gimp_check_size ()" link="libgimp-Gimp.html#gimp-check-size" since="GIMP 2.2"/>
-    <keyword type="function" name="gimp_check_type ()" link="libgimp-Gimp.html#gimp-check-type" since="GIMP 2.2"/>
-    <keyword type="function" name="gimp_default_display ()" link="libgimp-Gimp.html#gimp-default-display"/>
-    <keyword type="function" name="gimp_wm_class ()" link="libgimp-Gimp.html#gimp-wm-class"/>
-    <keyword type="function" name="gimp_display_name ()" link="libgimp-Gimp.html#gimp-display-name"/>
-    <keyword type="function" name="gimp_monitor_number ()" link="libgimp-Gimp.html#gimp-monitor-number"/>
-    <keyword type="function" name="gimp_user_time ()" link="libgimp-Gimp.html#gimp-user-time" since="GIMP 2.6"/>
-    <keyword type="function" name="gimp_get_progname ()" link="libgimp-Gimp.html#gimp-get-progname"/>
-    <keyword type="function" name="gimp_extension_enable ()" link="libgimp-Gimp.html#gimp-extension-enable"/>
-    <keyword type="function" name="gimp_extension_ack ()" link="libgimp-Gimp.html#gimp-extension-ack"/>
-    <keyword type="function" name="gimp_extension_process ()" link="libgimp-Gimp.html#gimp-extension-process"/>
-    <keyword type="function" name="gimp_attach_parasite ()" link="libgimp-Gimp.html#gimp-attach-parasite" since="GIMP 2.8"/>
-    <keyword type="function" name="gimp_detach_parasite ()" link="libgimp-Gimp.html#gimp-detach-parasite" since="GIMP 2.8"/>
-    <keyword type="function" name="gimp_parasite_find ()" link="libgimp-Gimp.html#gimp-parasite-find" deprecated="Use gimp_get_parasite() instead."/>
-    <keyword type="function" name="gimp_parasite_list ()" link="libgimp-Gimp.html#gimp-parasite-list" deprecated="Use gimp_get_parasite_list() instead."/>
-    <keyword type="function" name="gimp_get_parasite ()" link="libgimp-Gimp.html#gimp-get-parasite" since="GIMP 2.8"/>
-    <keyword type="function" name="gimp_get_parasite_list ()" link="libgimp-Gimp.html#gimp-get-parasite-list" since="GIMP 2.8"/>
-    <keyword type="function" name="gimp_parasite_attach ()" link="libgimp-Gimp.html#gimp-parasite-attach" deprecated="Use gimp_attach_parasite() instead."/>
-    <keyword type="function" name="gimp_parasite_detach ()" link="libgimp-Gimp.html#gimp-parasite-detach" deprecated="Use gimp_detach_parasite() instead."/>
-    <keyword type="function" name="gimp_attach_new_parasite ()" link="libgimp-Gimp.html#gimp-attach-new-parasite" deprecated="Use gimp_attach_parasite() instead."/>
-    <keyword type="macro" name="gimp_get_data" link="libgimp-Gimp.html#gimp-get-data"/>
-    <keyword type="macro" name="gimp_get_data_size" link="libgimp-Gimp.html#gimp-get-data-size"/>
-    <keyword type="macro" name="gimp_set_data" link="libgimp-Gimp.html#gimp-set-data"/>
-    <keyword type="struct" name="GimpPlugInInfo" link="libgimp-Gimp.html#GimpPlugInInfo"/>
-    <keyword type="struct" name="GimpParamDef" link="libgimp-Gimp.html#GimpParamDef"/>
-    <keyword type="struct" name="GimpParamRegion" link="libgimp-Gimp.html#GimpParamRegion"/>
-    <keyword type="union" name="GimpParamData" link="libgimp-Gimp.html#GimpParamData"/>
-    <keyword type="struct" name="GimpParam" link="libgimp-Gimp.html#GimpParam"/>
+    <keyword type="function" name="gimp_version ()" link="libgimp-gimp.html#gimp-version"/>
+    <keyword type="function" name="gimp_getpid ()" link="libgimp-gimp.html#gimp-getpid" since="GIMP 2.4"/>
+    <keyword type="function" name="GimpInitProc ()" link="libgimp-gimp.html#GimpInitProc"/>
+    <keyword type="function" name="GimpQuitProc ()" link="libgimp-gimp.html#GimpQuitProc"/>
+    <keyword type="function" name="GimpQueryProc ()" link="libgimp-gimp.html#GimpQueryProc"/>
+    <keyword type="function" name="GimpRunProc ()" link="libgimp-gimp.html#GimpRunProc"/>
+    <keyword type="macro" name="MAIN" link="libgimp-gimp.html#MAIN:CAPS"/>
+    <keyword type="function" name="gimp_main ()" link="libgimp-gimp.html#gimp-main"/>
+    <keyword type="function" name="gimp_quit ()" link="libgimp-gimp.html#gimp-quit"/>
+    <keyword type="function" name="gimp_install_procedure ()" link="libgimp-gimp.html#gimp-install-procedure"/>
+    <keyword type="function" name="gimp_install_temp_proc ()" link="libgimp-gimp.html#gimp-install-temp-proc"/>
+    <keyword type="function" name="gimp_uninstall_temp_proc ()" link="libgimp-gimp.html#gimp-uninstall-temp-proc"/>
+    <keyword type="function" name="gimp_run_procedure ()" link="libgimp-gimp.html#gimp-run-procedure"/>
+    <keyword type="function" name="gimp_run_procedure2 ()" link="libgimp-gimp.html#gimp-run-procedure2"/>
+    <keyword type="function" name="gimp_destroy_params ()" link="libgimp-gimp.html#gimp-destroy-params"/>
+    <keyword type="function" name="gimp_destroy_paramdefs ()" link="libgimp-gimp.html#gimp-destroy-paramdefs"/>
+    <keyword type="function" name="gimp_get_pdb_error ()" link="libgimp-gimp.html#gimp-get-pdb-error" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_tile_width ()" link="libgimp-gimp.html#gimp-tile-width"/>
+    <keyword type="function" name="gimp_tile_height ()" link="libgimp-gimp.html#gimp-tile-height"/>
+    <keyword type="function" name="gimp_shm_ID ()" link="libgimp-gimp.html#gimp-shm-ID"/>
+    <keyword type="function" name="gimp_shm_addr ()" link="libgimp-gimp.html#gimp-shm-addr"/>
+    <keyword type="function" name="gimp_gamma ()" link="libgimp-gimp.html#gimp-gamma"/>
+    <keyword type="function" name="gimp_install_cmap ()" link="libgimp-gimp.html#gimp-install-cmap" deprecated=""/>
+    <keyword type="function" name="gimp_min_colors ()" link="libgimp-gimp.html#gimp-min-colors" deprecated=""/>
+    <keyword type="function" name="gimp_show_tool_tips ()" link="libgimp-gimp.html#gimp-show-tool-tips"/>
+    <keyword type="function" name="gimp_show_help_button ()" link="libgimp-gimp.html#gimp-show-help-button" since="GIMP 2.2"/>
+    <keyword type="function" name="gimp_check_size ()" link="libgimp-gimp.html#gimp-check-size" since="GIMP 2.2"/>
+    <keyword type="function" name="gimp_check_type ()" link="libgimp-gimp.html#gimp-check-type" since="GIMP 2.2"/>
+    <keyword type="function" name="gimp_default_display ()" link="libgimp-gimp.html#gimp-default-display"/>
+    <keyword type="function" name="gimp_wm_class ()" link="libgimp-gimp.html#gimp-wm-class"/>
+    <keyword type="function" name="gimp_display_name ()" link="libgimp-gimp.html#gimp-display-name"/>
+    <keyword type="function" name="gimp_monitor_number ()" link="libgimp-gimp.html#gimp-monitor-number"/>
+    <keyword type="function" name="gimp_user_time ()" link="libgimp-gimp.html#gimp-user-time" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_get_progname ()" link="libgimp-gimp.html#gimp-get-progname"/>
+    <keyword type="function" name="gimp_extension_enable ()" link="libgimp-gimp.html#gimp-extension-enable"/>
+    <keyword type="function" name="gimp_extension_ack ()" link="libgimp-gimp.html#gimp-extension-ack"/>
+    <keyword type="function" name="gimp_extension_process ()" link="libgimp-gimp.html#gimp-extension-process"/>
+    <keyword type="function" name="gimp_attach_parasite ()" link="libgimp-gimp.html#gimp-attach-parasite" since="GIMP 2.8"/>
+    <keyword type="function" name="gimp_detach_parasite ()" link="libgimp-gimp.html#gimp-detach-parasite" since="GIMP 2.8"/>
+    <keyword type="function" name="gimp_parasite_find ()" link="libgimp-gimp.html#gimp-parasite-find" deprecated="Use gimp_get_parasite() instead."/>
+    <keyword type="function" name="gimp_parasite_list ()" link="libgimp-gimp.html#gimp-parasite-list" deprecated="Use gimp_get_parasite_list() instead."/>
+    <keyword type="function" name="gimp_get_parasite ()" link="libgimp-gimp.html#gimp-get-parasite" since="GIMP 2.8"/>
+    <keyword type="function" name="gimp_get_parasite_list ()" link="libgimp-gimp.html#gimp-get-parasite-list" since="GIMP 2.8"/>
+    <keyword type="function" name="gimp_parasite_attach ()" link="libgimp-gimp.html#gimp-parasite-attach" deprecated="Use gimp_attach_parasite() instead."/>
+    <keyword type="function" name="gimp_parasite_detach ()" link="libgimp-gimp.html#gimp-parasite-detach" deprecated="Use gimp_detach_parasite() instead."/>
+    <keyword type="function" name="gimp_attach_new_parasite ()" link="libgimp-gimp.html#gimp-attach-new-parasite" deprecated="Use gimp_attach_parasite() instead."/>
+    <keyword type="macro" name="gimp_get_data" link="libgimp-gimp.html#gimp-get-data"/>
+    <keyword type="macro" name="gimp_get_data_size" link="libgimp-gimp.html#gimp-get-data-size"/>
+    <keyword type="macro" name="gimp_set_data" link="libgimp-gimp.html#gimp-set-data"/>
+    <keyword type="struct" name="GimpPlugInInfo" link="libgimp-gimp.html#GimpPlugInInfo"/>
+    <keyword type="struct" name="GimpParamDef" link="libgimp-gimp.html#GimpParamDef"/>
+    <keyword type="struct" name="GimpParamRegion" link="libgimp-gimp.html#GimpParamRegion"/>
+    <keyword type="union" name="GimpParamData" link="libgimp-gimp.html#GimpParamData"/>
+    <keyword type="struct" name="GimpParam" link="libgimp-gimp.html#GimpParam"/>
     <keyword type="function" name="gimp_enums_init ()" link="libgimp-gimpenums.html#gimp-enums-init" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_enums_get_type_names ()" link="libgimp-gimpenums.html#gimp-enums-get-type-names" since="GIMP 2.2"/>
     <keyword type="enum" name="enum GimpBrushApplicationMode" link="libgimp-gimpenums.html#GimpBrushApplicationMode"/>
@@ -1185,9 +1185,9 @@
     <keyword type="constant" name="GIMP_EXPORT_CANCEL" link="libgimp-gimpexport.html#GIMP-EXPORT-CANCEL:CAPS"/>
     <keyword type="constant" name="GIMP_EXPORT_IGNORE" link="libgimp-gimpexport.html#GIMP-EXPORT-IGNORE:CAPS"/>
     <keyword type="constant" name="GIMP_EXPORT_EXPORT" link="libgimp-gimpexport.html#GIMP-EXPORT-EXPORT:CAPS"/>
-    <keyword type="member" name="GimpPlugInInfo.init-proc" link="libgimp-Gimp.html#GimpPlugInInfo.init-proc"/>
-    <keyword type="member" name="GimpPlugInInfo.quit-proc" link="libgimp-Gimp.html#GimpPlugInInfo.quit-proc"/>
-    <keyword type="member" name="GimpPlugInInfo.query-proc" link="libgimp-Gimp.html#GimpPlugInInfo.query-proc"/>
-    <keyword type="member" name="GimpPlugInInfo.run-proc" link="libgimp-Gimp.html#GimpPlugInInfo.run-proc"/>
+    <keyword type="member" name="GimpPlugInInfo.init-proc" link="libgimp-gimp.html#GimpPlugInInfo.init-proc"/>
+    <keyword type="member" name="GimpPlugInInfo.quit-proc" link="libgimp-gimp.html#GimpPlugInInfo.quit-proc"/>
+    <keyword type="member" name="GimpPlugInInfo.query-proc" link="libgimp-gimp.html#GimpPlugInInfo.query-proc"/>
+    <keyword type="member" name="GimpPlugInInfo.run-proc" link="libgimp-gimp.html#GimpPlugInInfo.run-proc"/>
   </functions>
 </book>

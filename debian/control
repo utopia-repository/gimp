@@ -109,7 +109,7 @@ Description: GNU Image Manipulation Program
 
 Package: gimp-data
 Architecture: all
-Recommends: gimp
+Enhances: gimp
 Depends: ${misc:Depends}
 Conflicts: gimp (<< 2.4.0~rc2-2),
            gimp-python (<< 2.6.0)

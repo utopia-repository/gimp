@@ -1,3 +1,24 @@
+gimp (2.8.20-1.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+
+  [ Ari Pollak ]
+  * Move gimp to Enhances on gimp-data instead of Recommends (Closes: #860766)
+
+  [ Salvatore Bonaccorso ]
+  * Out of bounds read / heap overflow in TGA importer (CVE-2017-17786)
+    (Closes: #884862)
+  * plug-ins: TGA 16-bit RGB (without alpha bit) is also valid
+  * Heap buffer overflow in PSP importer (CVE-2017-17789) (Closes: #884837)
+  * heap overread in gbr parser / load_image (CVE-2017-17784)
+    (Closes: #884925)
+  * heap overread in psp importer (CVE-2017-17787) (Closes: #884927)
+  * Heap overflow while parsing FLI files (CVE-2017-17785) (Closes: #884836)
+  * buffer overread in XCF parser if version field has no null terminator
+    (CVE-2017-17788) (Closes: #885347)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 26 Dec 2017 22:11:46 +0100
+
 gimp (2.8.20-1) unstable; urgency=low
 
   * New upstream version 2.8.20

@@ -2,3 +2,4 @@ disable-internal-help-browser
 01_hurd_ftbfs.patch
 bump_Babl-GEGL_versions.patch
 fix_GEGL_FTBFS.patch
+Bug-739134-CVE-2017-17786-Out-of-bounds-read-heap-ov.patch

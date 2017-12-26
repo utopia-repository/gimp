@@ -8,3 +8,4 @@ Bug-790849-CVE-2017-17789-CVE-2017-17789-Heap-buffer.patch
 Bug-790784-CVE-2017-17784-heap-overread-in-gbr-parse.patch
 Bug-790853-CVE-2017-17787-heap-overread-in-psp-impor.patch
 Bug-739133-CVE-2017-17785-Heap-overflow-while-parsin.patch
+790783-buffer-overread-in-XCF-parser-if-version-fiel.patch

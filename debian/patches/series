@@ -3,3 +3,4 @@ disable-internal-help-browser
 bump_Babl-GEGL_versions.patch
 fix_GEGL_FTBFS.patch
 Bug-739134-CVE-2017-17786-Out-of-bounds-read-heap-ov.patch
+plug-ins-TGA-16-bit-RGB-without-alpha-bit-is-also-va.patch

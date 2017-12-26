@@ -6,3 +6,4 @@ Bug-739134-CVE-2017-17786-Out-of-bounds-read-heap-ov.patch
 plug-ins-TGA-16-bit-RGB-without-alpha-bit-is-also-va.patch
 Bug-790849-CVE-2017-17789-CVE-2017-17789-Heap-buffer.patch
 Bug-790784-CVE-2017-17784-heap-overread-in-gbr-parse.patch
+Bug-790853-CVE-2017-17787-heap-overread-in-psp-impor.patch

@@ -1,0 +1,166 @@
+From 781d3a28881b8c29a42584abf55e2627373beba2 Mon Sep 17 00:00:00 2001
+From: "Alexis Scheuer" <alexis-scheuer@bugs.launchpad.net>
+Date: Wed, 24 Aug 2016 19:12:00 +0000
+Subject: Workaround for LP bug 1614593 or Debian bug 809064
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Same as following, just with a git formatted patch (Bernhard Übelacker):
+https://bugs.launchpad.net/ubuntu/+source/gimp/+bug/1614593/+attachment/4727197/+files/goct.patch
+
+Ubuntu Bug:   https://bugs.launchpad.net/ubuntu/+source/gimp/+bug/1614593
+Upstream Bug: https://bugzilla.gnome.org/show_bug.cgi?id=770848     Summary: Gimp 2.8.X with gegl-0.3 compiles, has lots of startup warnings, cage tool cr...
+Debian Bug:   https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=809064
+---
+ app/gegl/gimpoperationcagetransform.c | 44 ++++++++++++++++++++++++++++-------
+ app/gegl/gimpoperationcagetransform.h |  3 ++-
+ 2 files changed, 37 insertions(+), 10 deletions(-)
+
+diff --git a/app/gegl/gimpoperationcagetransform.c b/app/gegl/gimpoperationcagetransform.c
+index abdfa4e..da5b34c 100644
+--- a/app/gegl/gimpoperationcagetransform.c
++++ b/app/gegl/gimpoperationcagetransform.c
+@@ -28,6 +28,7 @@
+ 
+ #include "gimp-gegl-types.h"
+ 
++#include "core/gimpmarshal.h"  /* AjS: to prevent freeze */
+ #include "gimpoperationcagetransform.h"
+ #include "gimpcageconfig.h"
+ 
+@@ -37,10 +38,14 @@ enum
+ {
+   PROP_0,
+   PROP_CONFIG,
+-  PROP_FILL,
+-  PROP_PROGRESS
++  PROP_FILL /* , PROP_PROGRESS  AjS: to prevent freeze */
+ };
+ 
++enum /* AjS: to prevent freeze */
++{
++  PROGRESS,
++  LAST_SIGNAL
++};
+ 
+ static void         gimp_operation_cage_transform_finalize                (GObject             *object);
+ static void         gimp_operation_cage_transform_get_property            (GObject             *object,
+@@ -88,6 +93,8 @@ G_DEFINE_TYPE (GimpOperationCageTransform, gimp_operation_cage_transform,
+ 
+ #define parent_class gimp_operation_cage_transform_parent_class
+ 
++/* AjS: to prevent freeze */
++static guint cage_transform_signals[LAST_SIGNAL] = { 0 };
+ 
+ static void
+ gimp_operation_cage_transform_class_init (GimpOperationCageTransformClass *klass)
+@@ -96,6 +103,12 @@ gimp_operation_cage_transform_class_init (GimpOperationCageTransformClass *klass
+   GeglOperationClass         *operation_class = GEGL_OPERATION_CLASS (klass);
+   GeglOperationComposerClass *filter_class    = GEGL_OPERATION_COMPOSER_CLASS (klass);
+ 
++  /* AjS: to prevent freeze */
++  cage_transform_signals[PROGRESS] =
++    g_signal_new ("progress", G_TYPE_FROM_CLASS (klass),
++                  G_SIGNAL_RUN_LAST, 0, NULL, NULL,
++                  gimp_marshal_VOID__DOUBLE, G_TYPE_NONE, 0);
++
+   object_class->get_property               = gimp_operation_cage_transform_get_property;
+   object_class->set_property               = gimp_operation_cage_transform_set_property;
+   object_class->finalize                   = gimp_operation_cage_transform_finalize;
+@@ -130,12 +143,13 @@ gimp_operation_cage_transform_class_init (GimpOperationCageTransformClass *klass
+                                                          FALSE,
+                                                          G_PARAM_READWRITE));
+ 
++  /* AjS: to prevent freeze
+   g_object_class_install_property (object_class, PROP_PROGRESS,
+                                    g_param_spec_double ("progress",
+                                                         "Progress",
+                                                         "Progress indicator, and a bad hack",
+                                                         0.0, 1.0, 0.0,
+-                                                        G_PARAM_READABLE));
++                                                        G_PARAM_READABLE)); */
+ }
+ 
+ static void
+@@ -173,10 +187,10 @@ gimp_operation_cage_transform_get_property (GObject    *object,
+       break;
+     case PROP_FILL:
+       g_value_set_boolean (value, self->fill_plain_color);
+-      break;
++      break; /* AjS: to prevent freeze
+     case PROP_PROGRESS:
+       g_value_set_double (value, self->progress);
+-      break;
++      break;*/
+ 
+     default:
+       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+@@ -222,6 +236,13 @@ gimp_operation_cage_transform_prepare (GeglOperation *operation)
+                              babl_format_n (babl_type ("float"), 2));
+ }
+ 
++/* AjS: to prevent freeze */
++static void gimp_operation_cage_transform_notify_progress(gpointer instance,
++                                                          gdouble  progress)
++{
++  g_signal_emit (instance, cage_transform_signals[PROGRESS], 0, progress);
++}
++
+ static gboolean
+ gimp_operation_cage_transform_process (GeglOperation       *operation,
+                                        GeglBuffer          *in_buf,
+@@ -298,8 +319,10 @@ gimp_operation_cage_transform_process (GeglOperation       *operation,
+         }
+     }
+ 
++  /* AjS: to prevent freeze
+   oct->progress = 0.0;
+-  g_object_notify (G_OBJECT (oct), "progress");
++  g_object_notify (G_OBJECT (oct), "progress"); */
++  gimp_operation_cage_transform_notify_progress (oct, 0.0);
+ 
+   /* pre-allocate memory outside of the loop */
+   coords      = g_slice_alloc (2 * sizeof (gfloat));
+@@ -363,9 +386,10 @@ gimp_operation_cage_transform_process (GeglOperation       *operation,
+ 
+           /*  0.0 and 1.0 indicate progress start/end, so avoid them  */
+           if (fraction > 0.0 && fraction < 1.0)
+-            {
++            { /* AjS: to prevent freeze
+               oct->progress = fraction;
+-              g_object_notify (G_OBJECT (oct), "progress");
++              g_object_notify (G_OBJECT (oct), "progress"); */
++              gimp_operation_cage_transform_notify_progress (oct, fraction);
+             }
+         }
+     }
+@@ -373,8 +397,10 @@ gimp_operation_cage_transform_process (GeglOperation       *operation,
+   g_free (coef);
+   g_slice_free1 (2 * sizeof (gfloat), coords);
+ 
++  /* AjS: to prevent freeze
+   oct->progress = 1.0;
+-  g_object_notify (G_OBJECT (oct), "progress");
++  g_object_notify (G_OBJECT (oct), "progress"); */
++  gimp_operation_cage_transform_notify_progress (oct, 1.0);
+ 
+   return TRUE;
+ }
+diff --git a/app/gegl/gimpoperationcagetransform.h b/app/gegl/gimpoperationcagetransform.h
+index b844baa..65e8836 100644
+--- a/app/gegl/gimpoperationcagetransform.h
++++ b/app/gegl/gimpoperationcagetransform.h
+@@ -44,7 +44,8 @@ struct _GimpOperationCageTransform
+ 
+   const Babl            *format_coords;
+ 
+-  gdouble                progress; /* bad hack */
++  /* AjS: to prevent freeze
++  gdouble                progress; / * bad hack */
+ };
+ 
+ struct _GimpOperationCageTransformClass
+-- 
+2.11.0
+

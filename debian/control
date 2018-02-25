@@ -8,6 +8,7 @@ Build-Depends: debhelper (>= 9),
                cdbs (>= 0.4.97),
                autotools-dev,
                dh-autoreconf,
+               dh-python,
                gettext,
                gnome-pkg-tools,
                gtk-doc-tools (>= 1.0),
@@ -143,16 +144,3 @@ Depends: ${misc:Depends},
 Description: Developers' Documentation for the GIMP library
  This package contains the HTML documentation for the GIMP library in
  /usr/share/gtk-doc/html/ .
-
-Package: gimp-dbg
-Priority: extra
-Architecture: any
-Section: debug
-Depends: gimp (= ${binary:Version}) | libgimp2.0 (= ${binary:Version}),
-         ${shlibs:Depends},
-         ${misc:Depends}
-Description: Debugging symbols for GIMP
- This package includes the debugging symbols useful for debugging
- GIMP and its libraries, contained in the gimp and libgimp2.0 packages.
- The debugging symbols are used for execution tracing and core dump
- analysis.

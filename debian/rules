@@ -1,38 +1,46 @@
 #!/usr/bin/make -f
-export DEB_BUILD_MAINT_OPTIONS = hardening=+all 
-include /usr/share/dpkg/buildflags.mk
+-include /usr/share/gnome-pkg-tools/1/rules/gnome-get-source.mk
 
-include /usr/share/cdbs/1/rules/debhelper.mk
-include /usr/share/cdbs/1/class/autotools.mk
-include /usr/share/cdbs/1/rules/autoreconf.mk
-include /usr/share/cdbs/1/class/gnome.mk
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+
+%:
+	dh $@ --with gnome,python2
 
 # explicitly set PYTHON to be the versioned python binary, since dh_python2
 # will just end up depending on the pythonX.X package, and we don't want a
 # version mismatch between the installed python binary and the private python
 # modules.
-DEB_CONFIGURE_EXTRA_FLAGS := --disable-static \
-			--enable-python \
-			PYTHON=/usr/bin/`pyversions -d` \
-			--enable-default-binary \
-			--enable-gtk-doc \
-			--with-lcms=lcms2 \
-			--without-webkit
-DEB_BUILDDIR := $(DEB_SRCDIR)/builddir
-DEB_BUILD_PARALLEL := 1
+# Don't switch to Multi-Arch yet because of potential incompatibility with
+# third-party add-ons
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		--libdir=/usr/lib
+		--disable-static \
+		--enable-python \
+		PYTHON=/usr/bin/`pyversions -d` \
+		--enable-default-binary \
+		--enable-gtk-doc \
+		--with-lcms=lcms2 \
+		--without-webkit
 
-DEB_DH_SHLIBDEPS_ARGS_ALL := -Llibgimp2.0 -l$(CURDIR)/debian/libgimp2.0/usr/lib
-# exclude this since we manually add the Suggests in debian/control:
-DEB_DH_SHLIBDEPS_ARGS_gimp := -Xusr/lib/gimp/2.0/modules/libcontroller-midi.so
-DEB_DH_MAKESHLIBS_ARGS_gimp := -X/usr/lib/gimp/2.0/modules/
-DEB_DH_MAKESHLIBS_ARGS_libgimp2.0 += -V -- -c4
+override_dh_autoreconf:
+	dh_autoreconf --as-needed
 
-clean::
-	rm -rf $(DEB_BUILDDIR)
+# exclude since we manually add the Suggests in debian/control
+override_dh_shlibdeps:
+	dh_shlibdeps -Xusr/lib/gimp/2.0/modules/libcontroller-midi.so \
+		-Llibgimp2.0 -l$(CURDIR)/debian/libgimp2.0/usr/lib
 
-common-install-impl::
-	# Remove all libtool .la files
-	find $(CURDIR)/debian/tmp/usr/lib -name "*.la" -delete
+override_dh_makeshlibs:
+	dh_makeshlibs -X/usr/lib/gimp/2.0/modules -- -c4
 
-binary-install/gimp::
+override_dh_python2:
 	dh_python2 -pgimp /usr/lib/gimp/2.0/python
+
+override_dh_install:
+	find debian/tmp -name '*.la' -print -delete
+	dh_install
+
+override_dh_missing:
+	dh_missing --fail-missing

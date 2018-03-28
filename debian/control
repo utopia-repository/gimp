@@ -8,7 +8,6 @@ Section: graphics
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
 Uploaders: Hideki Yamane <henrich@debian.org>, Jeremy Bicha <jbicha@debian.org>, Jordi Mallach <jordi@debian.org>, Ari Pollak <ari@debian.org>
 Build-Depends: debhelper (>= 9),
-               cdbs (>= 0.4.97),
                autotools-dev,
                dh-autoreconf,
                dh-python,

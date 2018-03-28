@@ -1,3 +1,9 @@
+gimp (2.10.0~RC1-1) UNRELEASED; urgency=medium
+
+  * New upstream release candidate (LP: #1759625)
+
+ -- Jeremy Bicha <jbicha@debian.org>  Wed, 28 Mar 2018 12:38:38 -0400
+
 gimp (2.8.22-1) unstable; urgency=medium
 
   * New upstream release (Closes: #870568, #885382, CVE-2007-3126)

@@ -3,6 +3,7 @@ gimp (2.8.22-1) UNRELEASED; urgency=medium
   * New upstream release (Closes: #870568, #885382, CVE-2007-3126)
   * Switch maintainer to Debian GNOME Team, with Ari's permission
   * Update Vcs fields for migration to https://salsa.debian.org/
+  * Drop obsolete menu and .xpm files
 
  -- Jeremy Bicha <jbicha@debian.org>  Wed, 28 Mar 2018 09:48:25 -0400
 

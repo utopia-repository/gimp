@@ -1,4 +1,3 @@
-debian/gimp.xpm usr/share/pixmaps/
 usr/bin/gimp
 usr/bin/gimp-?.?
 usr/bin/gimp-console

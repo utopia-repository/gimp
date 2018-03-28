@@ -4,6 +4,7 @@ gimp (2.8.22-1) UNRELEASED; urgency=medium
     (LP: #1690544)
   * Switch maintainer to Debian GNOME Team, with Ari's permission
   * Update Vcs fields for migration to https://salsa.debian.org/
+  * Drop old Breaks/Conflicts/Replaces not needed since Wheezy
   * Drop obsolete menu and .xpm files
   * Switch from cdbs to dh
   * Bump debhelper compat to 11

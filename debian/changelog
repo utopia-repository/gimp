@@ -1,4 +1,4 @@
-gimp (2.8.22-1) UNRELEASED; urgency=medium
+gimp (2.8.22-1) unstable; urgency=medium
 
   * New upstream release (Closes: #870568, #885382, CVE-2007-3126)
     (LP: #1690544)
@@ -9,7 +9,7 @@ gimp (2.8.22-1) UNRELEASED; urgency=medium
   * Switch from cdbs to dh
   * Bump debhelper compat to 11
 
- -- Jeremy Bicha <jbicha@debian.org>  Wed, 28 Mar 2018 09:48:25 -0400
+ -- Jeremy Bicha <jbicha@debian.org>  Wed, 28 Mar 2018 12:21:18 -0400
 
 gimp (2.8.20-2) unstable; urgency=medium
 

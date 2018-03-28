@@ -67,20 +67,18 @@ Homepage: https://www.gimp.org/
 
 Package: gimp
 Architecture: any
-Provides: gimp-python
 Depends: libgimp2.0 (>= ${source:Upstream-Version}),
          libgimp2.0 (<= ${source:Upstream-Version}-z),
          gimp-data (>= ${source:Upstream-Version}),
          gimp-data (<= ${source:Upstream-Version}-z),
-         python-gtk2 (>= 2.8.0),
          libgdk-pixbuf2.0-0 (>= 2.24.1),
          xdg-utils,
          ${shlibs:Depends},
-         ${python:Depends},
          ${misc:Depends}
 Recommends: ghostscript
 Suggests: gimp-help-en | gimp-help,
           gimp-data-extras,
+          gimp-python,
           gvfs-backends,
           libasound2
 Breaks: gimp-plugin-registry (<< 7.20140602+nmu1~)
@@ -110,6 +108,19 @@ Depends: ${misc:Depends}
 Description: Data files for GIMP
  This package contains architecture-independent supporting data files
  for use with GIMP.
+
+Package: gimp-python
+Architecture: any
+Enhances: gimp
+Depends: ${misc:Depends},
+         ${shlibs:Depends},
+         ${python:Depends},
+         python-gtk2 (>= 2.8.0),
+Breaks: gimp (<< 2.8.22-2~)
+Replaces: gimp (<< 2.8.22-2~)
+Description: Python scripting support for GIMP
+ This package contains the python scripting extension for GIMP and the plugins
+ making use of that extension.
 
 Package: libgimp2.0
 Architecture: any

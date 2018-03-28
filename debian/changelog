@@ -1,5 +1,6 @@
 gimp (2.10.0~RC2-1) UNRELEASED; urgency=medium
 
+  [ Jeremy Bicha ]
   * New upstream release candidate (Closes: #887717)
   * Bump minimum babl and gegl versions
   * Add Breaks/Replaces for file that used to be in gimp-plugin-registry
@@ -7,6 +8,9 @@ gimp (2.10.0~RC2-1) UNRELEASED; urgency=medium
   * debian/libgimp2.0.symbols: Add new symbols
   * debian/gimp.install: Update for new AppStream metadata location
   * Bump Standards-Version to 4.1.4
+
+  [ Michael Biebl ]
+  * Split python extension into separate suggested gimp-python package
 
  -- Jeremy Bicha <jbicha@debian.org>  Thu, 19 Apr 2018 11:59:19 -0400
 

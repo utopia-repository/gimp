@@ -7,9 +7,7 @@ Priority: optional
 Section: graphics
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
 Uploaders: Hideki Yamane <henrich@debian.org>, Jeremy Bicha <jbicha@debian.org>, Jordi Mallach <jordi@debian.org>, Ari Pollak <ari@debian.org>
-Build-Depends: debhelper (>= 9),
-               autotools-dev,
-               dh-autoreconf,
+Build-Depends: debhelper (>= 11),
                dh-python,
                gettext,
                gnome-pkg-tools,
@@ -62,17 +60,6 @@ Vcs-Git: https://salsa.debian.org/gnome-team/gimp.git
 Vcs-Browser: https://salsa.debian.org/gnome-team/gimp
 Homepage: https://www.gimp.org/
 
-Package: libgimp2.0
-Architecture: any
-Section: libs
-Depends: ${shlibs:Depends},
-         ${misc:Depends}
-Recommends: gimp-data (>= ${source:Upstream-Version}),
-            gimp-data (<= ${source:Upstream-Version}-z)
-Description: Libraries for the GNU Image Manipulation Program
- This package includes the libgimp libraries, which are
- necessary to run GIMP and third-party GIMP plugins.
-
 Package: gimp
 Architecture: any
 Provides: gimp-python
@@ -121,6 +108,17 @@ Replaces: gimp (<< 2.4.0~rc2-2),
 Description: Data files for GIMP
  This package contains architecture-independent supporting data files
  for use with GIMP.
+
+Package: libgimp2.0
+Architecture: any
+Section: libs
+Depends: ${shlibs:Depends},
+         ${misc:Depends}
+Recommends: gimp-data (>= ${source:Upstream-Version}),
+            gimp-data (<= ${source:Upstream-Version}-z)
+Description: Libraries for the GNU Image Manipulation Program
+ This package includes the libgimp libraries, which are
+ necessary to run GIMP and third-party GIMP plugins.
 
 Package: libgimp2.0-dev
 Architecture: any

@@ -5,6 +5,7 @@ gimp (2.8.22-1) UNRELEASED; urgency=medium
   * Update Vcs fields for migration to https://salsa.debian.org/
   * Drop obsolete menu and .xpm files
   * Switch from cdbs to dh
+  * Bump debhelper compat to 11
 
  -- Jeremy Bicha <jbicha@debian.org>  Wed, 28 Mar 2018 09:48:25 -0400
 

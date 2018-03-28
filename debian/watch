@@ -1,5 +1,4 @@
 version=4
-# Ignore the RC for now
-#https://download.gimp.org/pub/@PACKAGE@/(v[\d\.]+[02468])/ \
-https://download.gimp.org/pub/@PACKAGE@/v2.8/ \
+opts=uversionmangle=s/-/~/ \
+https://download.gimp.org/pub/@PACKAGE@/(v[\d\.]+[02468])/ \
 	@PACKAGE@@ANY_VERSION@@ARCHIVE_EXT@

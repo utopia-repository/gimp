@@ -1,5 +1,6 @@
-gimp (2.8.20-3) UNRELEASED; urgency=medium
+gimp (2.8.22-1) UNRELEASED; urgency=medium
 
+  * New upstream release (Closes: #870568, #885382, CVE-2007-3126)
   * Switch maintainer to Debian GNOME Team, with Ari's permission
   * Update Vcs fields for migration to https://salsa.debian.org/
 

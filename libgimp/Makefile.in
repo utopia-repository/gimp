@@ -613,8 +613,8 @@ libgimp = ./libgimp-$(GIMP_API_VERSION).la
 @PLATFORM_OSX_TRUE@framework_cocoa = -framework Cocoa
 @OS_WIN32_TRUE@gimp_def = gimp.def
 @OS_WIN32_TRUE@gimpui_def = gimpui.def
-@OS_WIN32_TRUE@libgimp_export_symbols = -export-symbols gimp.def
-@OS_WIN32_TRUE@libgimpui_export_symbols = -export-symbols gimpui.def
+@OS_WIN32_TRUE@libgimp_export_symbols = -export-symbols $(srcdir)/gimp.def
+@OS_WIN32_TRUE@libgimpui_export_symbols = -export-symbols $(srcdir)/gimpui.def
 @MS_LIB_AVAILABLE_TRUE@noinst_DATA = gimp-$(GIMP_API_VERSION).lib gimpui-$(GIMP_API_VERSION).lib 
 gimpincludedir = $(includedir)/gimp-$(GIMP_API_VERSION)/libgimp
 AM_CPPFLAGS = \
@@ -1419,8 +1419,8 @@ uninstall-am: uninstall-gimpincludeHEADERS uninstall-libLTLIBRARIES \
 @OS_WIN32_TRUE@install-libtool-import-lib:
 @OS_WIN32_TRUE@	$(INSTALL) .libs/libgimp-$(GIMP_API_VERSION).dll.a $(DESTDIR)$(libdir)
 @OS_WIN32_TRUE@	$(INSTALL) .libs/libgimpui-$(GIMP_API_VERSION).dll.a $(DESTDIR)$(libdir)
-@OS_WIN32_TRUE@	$(INSTALL) gimp.def $(DESTDIR)$(libdir)
-@OS_WIN32_TRUE@	$(INSTALL) gimpui.def $(DESTDIR)$(libdir)
+@OS_WIN32_TRUE@	$(INSTALL) $(srcdir)/gimp.def $(DESTDIR)$(libdir)
+@OS_WIN32_TRUE@	$(INSTALL) $(srcdir)/gimpui.def $(DESTDIR)$(libdir)
 
 @OS_WIN32_TRUE@uninstall-libtool-import-lib:
 @OS_WIN32_TRUE@	-rm $(DESTDIR)$(libdir)/libgimp-$(GIMP_API_VERSION).dll.a

@@ -748,7 +748,7 @@ top_srcdir = @top_srcdir@
 @PLATFORM_OSX_TRUE@framework_cocoa = -framework Cocoa
 @OS_WIN32_TRUE@ole32_lib = -lole32
 @OS_WIN32_TRUE@gimpbase_def = gimpbase.def
-@OS_WIN32_TRUE@libgimpbase_export_symbols = -export-symbols gimpbase.def
+@OS_WIN32_TRUE@libgimpbase_export_symbols = -export-symbols $(srcdir)/gimpbase.def
 @MS_LIB_AVAILABLE_TRUE@noinst_DATA = gimpbase-$(GIMP_API_VERSION).lib
 libgimpbaseincludedir = $(includedir)/gimp-$(GIMP_API_VERSION)/libgimpbase
 AM_CPPFLAGS = \
@@ -1402,7 +1402,7 @@ uninstall-am: uninstall-libLTLIBRARIES \
 
 @OS_WIN32_TRUE@install-libtool-import-lib:
 @OS_WIN32_TRUE@	$(INSTALL) .libs/libgimpbase-$(GIMP_API_VERSION).dll.a $(DESTDIR)$(libdir)
-@OS_WIN32_TRUE@	$(INSTALL) gimpbase.def $(DESTDIR)$(libdir)
+@OS_WIN32_TRUE@	$(INSTALL) $(srcdir)/gimpbase.def $(DESTDIR)$(libdir)
 
 @OS_WIN32_TRUE@uninstall-libtool-import-lib:
 @OS_WIN32_TRUE@	-rm $(DESTDIR)$(libdir)/libgimpbase-$(GIMP_API_VERSION).dll.a

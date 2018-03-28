@@ -711,7 +711,7 @@ gimp_2_8_SOURCES = $(libapp_sources) main.c
 @OS_WIN32_TRUE@win32_ldflags = -mwindows -Wl,--tsaware $(WIN32_LARGE_ADDRESS_AWARE)
 @OS_WIN32_FALSE@libm = -lm
 @USE_BINRELOC_TRUE@munix = -Wl,-rpath '-Wl,$$ORIGIN/../lib'
-@HAVE_WINDRES_TRUE@GIMPAPPRC = $(top_srcdir)/build/windows/gimp.rc
+@HAVE_WINDRES_TRUE@GIMPAPPRC = $(top_builddir)/build/windows/gimp.rc
 @HAVE_WINDRES_TRUE@GIMPRC = gimp-$(GIMP_APP_VERSION).rc.o
 @HAVE_WINDRES_TRUE@GIMPCONSOLERC = gimp-console-$(GIMP_APP_VERSION).rc.o
 AM_CPPFLAGS = \
@@ -1468,6 +1468,7 @@ $(srcdir)/version.c: git-version.h
 @HAVE_WINDRES_TRUE@		--define INTERNALNAME_STR="$*" \
 @HAVE_WINDRES_TRUE@		--define TOP_SRCDIR="$(top_srcdir)" \
 @HAVE_WINDRES_TRUE@		-I$(top_srcdir)/app \
+@HAVE_WINDRES_TRUE@		-I$(top_builddir)/app \
 @HAVE_WINDRES_TRUE@		$(GIMPAPPRC) $@
 
 install-exec-hook:

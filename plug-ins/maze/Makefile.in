@@ -537,7 +537,7 @@ libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
 @OS_WIN32_TRUE@mwindows = -mwindows
-@HAVE_WINDRES_TRUE@GIMPPLUGINRC = $(top_srcdir)/build/windows/gimp-plug-ins.rc
+@HAVE_WINDRES_TRUE@GIMPPLUGINRC = $(top_builddir)/build/windows/gimp-plug-ins.rc
 @HAVE_WINDRES_TRUE@maze_RC = maze.rc.o
 AM_LDFLAGS = $(mwindows)
 maze_SOURCES = \
@@ -909,6 +909,7 @@ uninstall-am: uninstall-libexecPROGRAMS
 @HAVE_WINDRES_TRUE@		--define INTERNALNAME_STR="$*" \
 @HAVE_WINDRES_TRUE@		--define TOP_SRCDIR="$(top_srcdir)" \
 @HAVE_WINDRES_TRUE@		-I$(top_srcdir)/app \
+@HAVE_WINDRES_TRUE@		-I$(top_builddir)/app \
 @HAVE_WINDRES_TRUE@		$(GIMPPLUGINRC) $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

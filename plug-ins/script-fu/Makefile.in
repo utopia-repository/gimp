@@ -594,7 +594,7 @@ libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).
 libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la $(libm)
 libtinyscheme = tinyscheme/libtinyscheme.a $(libm)
 libftx = ftx/libftx.a
-@HAVE_WINDRES_TRUE@GIMPPLUGINRC = $(top_srcdir)/build/windows/gimp-plug-ins.rc
+@HAVE_WINDRES_TRUE@GIMPPLUGINRC = $(top_builddir)/build/windows/gimp-plug-ins.rc
 @HAVE_WINDRES_TRUE@script_fu_RC = script-fu.rc.o
 AM_CFLAGS = \
 	-DSTANDALONE=0		\
@@ -1077,6 +1077,7 @@ uninstall-am: uninstall-libexecPROGRAMS
 @HAVE_WINDRES_TRUE@		--define INTERNALNAME_STR="$*" \
 @HAVE_WINDRES_TRUE@		--define TOP_SRCDIR="$(top_srcdir)" \
 @HAVE_WINDRES_TRUE@		-I$(top_srcdir)/app \
+@HAVE_WINDRES_TRUE@		-I$(top_builddir)/app \
 @HAVE_WINDRES_TRUE@		$(GIMPPLUGINRC) $@
 
 # Perform static analysis on all *.scm files and look for usage of

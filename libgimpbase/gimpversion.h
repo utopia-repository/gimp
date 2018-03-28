@@ -42,14 +42,14 @@ G_BEGIN_DECLS
  *
  * The micro GIMP version number.
  **/
-#define GIMP_MICRO_VERSION                              (20)
+#define GIMP_MICRO_VERSION                              (22)
 
 /**
  * GIMP_VERSION:
  *
  * The GIMP version as a string.
  **/
-#define GIMP_VERSION                                    "2.8.20"
+#define GIMP_VERSION                                    "2.8.22"
 
 /**
  * GIMP_API_VERSION:

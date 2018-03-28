@@ -572,7 +572,7 @@ top_srcdir = @top_srcdir@
 @PLATFORM_OSX_TRUE@xobjective_c = "-xobjective-c"
 @PLATFORM_OSX_TRUE@framework_cocoa = -framework Cocoa
 @OS_WIN32_TRUE@gimpthumb_def = gimpthumb.def
-@OS_WIN32_TRUE@libgimpthumb_export_symbols = -export-symbols gimpthumb.def
+@OS_WIN32_TRUE@libgimpthumb_export_symbols = -export-symbols $(srcdir)/gimpthumb.def
 @MS_LIB_AVAILABLE_TRUE@noinst_DATA = gimpthumb-$(GIMP_API_VERSION).lib
 libgimpthumbincludedir = $(includedir)/gimp-$(GIMP_API_VERSION)/libgimpthumb
 AM_CPPFLAGS = \
@@ -994,7 +994,7 @@ uninstall-am: uninstall-libLTLIBRARIES \
 
 @OS_WIN32_TRUE@install-libtool-import-lib:
 @OS_WIN32_TRUE@	$(INSTALL) .libs/libgimpthumb-$(GIMP_API_VERSION).dll.a $(DESTDIR)$(libdir)
-@OS_WIN32_TRUE@	$(INSTALL) gimpthumb.def $(DESTDIR)$(libdir)
+@OS_WIN32_TRUE@	$(INSTALL) $(srcdir)/gimpthumb.def $(DESTDIR)$(libdir)
 
 @OS_WIN32_TRUE@uninstall-libtool-import-lib:
 @OS_WIN32_TRUE@	-rm $(DESTDIR)$(libdir)/libgimpthumb-$(GIMP_API_VERSION).dll.a

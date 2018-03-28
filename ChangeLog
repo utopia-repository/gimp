@@ -1,3 +1,706 @@
+commit e39a4e12039a255f29d7cf79365190f01c5f37aa
+Author: Michael Schumacher <schumaml@gmx.de>
+Date:   Tue May 2 22:51:47 2017 +0200
+
+    configure.ac: release-bump version to 2.8.22
+
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit c25ace0b7e2c711d6dc3be6c066d46d88a2258f7
+Author: Michael Schumacher <schumaml@gmx.de>
+Date:   Sun Apr 30 23:58:15 2017 +0200
+
+    NEWS: Remove trailing whitespace
+
+ NEWS | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit db20e4796856695cca5d9cf1cfd1039968344dd9
+Author: Michael Schumacher <schumaml@gmx.de>
+Date:   Sun Apr 30 23:03:29 2017 +0200
+
+    Add more news items for 2.8.22
+
+ NEWS | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+commit 33d45047b52c9f51cf0cb7a5c78aa6d7f4b0cd2f
+Author: Éric Hoffman <ehoffman@videotron.ca>
+Date:   Sun Apr 30 21:17:46 2017 +0200
+
+    Bug 740634 - Color picker crashes when there are multiple monitors
+
+    Use Windows API directly to get a screen pixel, works for all kinds
+    of monitor layouts.
+
+ libgimpwidgets/gimppickbutton.c | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+
+commit 05716eae7ed686c8f47066299c05f87eb73658b8
+Author: Daniel Mustieles <daniel.mustieles@gmail.com>
+Date:   Mon Apr 24 14:54:19 2017 +0000
+
+    Update Spanish translation
+
+ po-plug-ins/es.po | 134
+ +++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 71 insertions(+), 63 deletions(-)
+
+commit aa7644c918c32c57b05deeac8c8f087eeb9f8ae2
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:   Sat Apr 22 22:40:16 2017 +0200
+
+    build/osx: add info.plist.in to EXTRA_DIST
+
+ build/osx/Makefile.am | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+commit 28ef45707fd5ab9d7306a0c28557a4d0ff7c2d57
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:   Sat Apr 22 21:24:27 2017 +0200
+
+    Bug 768915 - Generate build-related files that use GIMP version
+    and ...
+
+    We now generate info.plist during the build. There are multiple ways
+    to do this, but I settled on invoking sed from a Makefile. The
+    problems
+    with other possible ways were:
+
+    - Although we could have used simple substitution from configure, this
+      would not include the last modification year. This could have
+      been added
+      to configure, but we probably also want this to update within a make
+      clean - make cycle without re-running configure. For git-version.h
+      this is also done from a Makefile and not configure.
+    - Using the C preprocessor (that XCode apparently does) to generate
+      info.plist did not work properly.
+    - Using PListBuddy would reorder the entire info.plist file, making it
+      hard to inspect the changes made as a human.
+
+ build/Makefile.am                       |  3 ++-
+ build/osx/.gitignore                    |  3 +++
+ build/osx/Makefile.am                   | 23 +++++++++++++++++++++++
+ build/osx/README                        |  4 ++--
+ build/osx/{info.plist => info.plist.in} | 12 ++++++------
+ configure.ac                            |  1 +
+ 6 files changed, 37 insertions(+), 9 deletions(-)
+
+commit e87d685b46177c53eeb0ea069cad6593bc2cdcef
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:   Thu Apr 20 22:57:45 2017 +0200
+
+    build/osx: drop 2.8 and python from the bundle config filenames
+
+    We use branching in git and should thus not need to store a version
+    number within the filename. And Python has been the default build
+    for some
+    time now, with no need to revert to the older non-Python build.
+
+ build/osx/README                                  | 18 +++++++++---------
+ build/osx/{gimp-2.8-python.bundle => gimp.bundle} |  4 ++--
+ build/osx/{info-2.8-python.plist => info.plist}   |  0
+ build/osx/{launcher-2.8-python.sh => launcher.sh} |  0
+ 4 files changed, 11 insertions(+), 11 deletions(-)
+
+commit d7c161e3fb23ec78e175de5c2ab98d69aecdb955
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:   Thu Apr 20 22:52:58 2017 +0200
+
+    build/osx: remove bundle files for GIMP master
+
+    This will be revived soon where it should belong: in the actual GIMP
+    master branch.
+
+ build/osx/README                    |   26 -
+ build/osx/gimp-master-python.bundle |  245 --------
+ build/osx/info-master-python.plist  | 1093
+ -----------------------------------
+ build/osx/launcher-master-python.sh |  110 ----
+ 4 files changed, 1474 deletions(-)
+
+commit e039a5374acd44b1b6274fc8c4357c149a789915
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:   Thu Apr 20 22:50:33 2017 +0200
+
+    build/osx: remove gimp.desktop from custom directory
+
+    We should simply by using the .desktop file that is generated during
+    the build.
+
+ build/osx/README                    |   9 +-
+ build/osx/custom/gimp.desktop       | 202
+ ------------------------------------
+ build/osx/gimp-2.8-python.bundle    |   2 +-
+ build/osx/gimp-master-python.bundle |   2 +-
+ 4 files changed, 9 insertions(+), 206 deletions(-)
+
+commit b16b2dcb89c6e869580c55b8a1eb6ce2519294af
+Author: Jiri Grönroos <jiri.gronroos@iki.fi>
+Date:   Wed Apr 19 17:59:26 2017 +0000
+
+    Update Finnish translation
+
+ po/fi.po | 222
+ +++++++++++++++++++++++++++++++++------------------------------
+ 1 file changed, 115 insertions(+), 107 deletions(-)
+
+commit ef442a2a7e7e03f3a73e832908fe92cad8c402b7
+Author: Jiri Grönroos <jiri.gronroos@iki.fi>
+Date:   Wed Apr 19 17:55:55 2017 +0000
+
+    Update Finnish translation
+
+ po-plug-ins/fi.po | 1374
+ ++++++++++++++++++++++++++---------------------------
+ 1 file changed, 670 insertions(+), 704 deletions(-)
+
+commit 90c2086103b8283986db2b0cb56cd756b8d8859a
+Author: Jiri Grönroos <jiri.gronroos@iki.fi>
+Date:   Tue Apr 11 20:23:17 2017 +0000
+
+    Update Finnish translation
+
+ po-script-fu/fi.po | 2836
+ ++++++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 2762 insertions(+), 74 deletions(-)
+
+commit 48f20975c8b52e96257bcb262061aa641cb2842d
+Author: Tobias Stoeckmann <tobias@stoeckmann.org>
+Date:   Thu Apr 6 21:42:44 2017 +0200
+
+    PCX: Stop parsing an invalid file early on.
+
+    If either width or height is 0, gimp won't process the PCX file.
+    Instead, a bunch of error messages are printed.
+
+    It's nicer to quit parsing the file early on with a good error message
+    which is straight to the point instead.
+
+    Signed-off-by: Tobias Stoeckmann <tobias@stoeckmann.org>
+    (cherry picked from commit 20c9b60487f1f6f1562856a328ad39097fa90647)
+
+ plug-ins/common/file-pcx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit c50f0a90e300a543dbbb11c5efcedf3f563698d0
+Author: Tobias Stoeckmann <tobias@stoeckmann.org>
+Date:   Thu Apr 6 21:37:50 2017 +0200
+
+    PCX: Avoid segmentation fault with invalid file.
+
+    If a PCX file contains a bytesperline entry which is too small, it is
+    possible to trigger an out of boundary read, which can lead to a
+    segmentation fault.
+
+    The bytesperline validation is incomplete. While checking if enough
+    bytes per line exist, the integer truncation during the division
+    must be
+    taken into account.
+
+    An example would be a 1x1 PCX file with a bpp of 1 (monochrome). The
+    current check allows a bytesperline field of 0, which in turn
+    would lead
+    to a 0 byte allocation in load_1. Yet, the code would access index 0.
+
+    Signed-off-by: Tobias Stoeckmann <tobias@stoeckmann.org>
+    (cherry picked from commit 10f12bdcbd475b215a4d98a0db21c98debf872d5)
+
+ plug-ins/common/file-pcx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit e14068be1962010bec1313da6634fafb9112924b
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:   Tue Apr 4 13:31:55 2017 +0200
+
+    Update Polish translation
+
+ po-libgimp/pl.po   |  94 +++++++++++-----------
+ po-plug-ins/pl.po  | 190 ++++++++++++++++++++++----------------------
+ po-python/pl.po    |  16 ++--
+ po-script-fu/pl.po |  59 +++++++-------
+ po-tips/pl.po      |   6 +-
+ po/pl.po           | 228
+ ++++++++++++++++++++++++++---------------------------
+ 6 files changed, 294 insertions(+), 299 deletions(-)
+
+commit 4d94d3190ba7be42c943e4bdb2f01f52d2385a7a
+Author: Rafael Fontenelle <rafaelff@gnome.org>
+Date:   Wed Mar 29 23:39:28 2017 +0000
+
+    Update Brazilian Portuguese translation
+
+ po-plug-ins/pt_BR.po | 215
+ +++++++++++++++++++++++++++------------------------
+ 1 file changed, 115 insertions(+), 100 deletions(-)
+
+commit 48fddfa233cdb8a15f7663217486d3fea112cb52
+Author: Rafael Fontenelle <rafaelff@gnome.org>
+Date:   Wed Mar 29 22:49:12 2017 +0000
+
+    Update Brazilian Portuguese translation
+
+ po/pt_BR.po | 577
+ ++++++++++++++++++++++++++++++------------------------------
+ 1 file changed, 287 insertions(+), 290 deletions(-)
+
+commit 5ca2f812e6d9c97ee3d9f8275d1028cc77557ff4
+Author: Kjartan Maraas <kmaraas@gnome.org>
+Date:   Tue Mar 28 19:55:24 2017 +0200
+
+    Updated Norwegian bokmål translation.
+
+ po/nb.po | 2574
+ +++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 1292 insertions(+), 1282 deletions(-)
+
+commit 76a068090095c347a28a83276251138fc605d0e9
+Author: Baurzhan Muftakhidinov <baurthefirst@gmail.com>
+Date:   Fri Mar 17 08:14:01 2017 +0000
+
+    Update Kazakh translation
+
+ po-libgimp/kk.po | 1556
+ ++++++++++++++++++++++++++++++------------------------
+ 1 file changed, 864 insertions(+), 692 deletions(-)
+
+commit a9f11d38e578a645206affc12f4688cfad2c174a
+Author: Fran Dieguez <frandieguez@gnome.org>
+Date:   Sun Mar 12 22:31:04 2017 +0000
+
+    Update Galician translation
+
+ po/gl.po | 2107
+ ++++++++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 1165 insertions(+), 942 deletions(-)
+
+commit b4d2c923e547ee15a399f47405fef243e6938c90
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:   Sun Mar 12 12:25:31 2017 +0100
+
+    Update Polish translation
+
+ po-plug-ins/pl.po | 46 +++++++++++++++++++++++-----------------------
+ 1 file changed, 23 insertions(+), 23 deletions(-)
+
+commit 6cae811d842a20aa13cda28803de875b4ec91c83
+Author: Balázs Meskó <meskobalazs@fedoraproject.org>
+Date:   Thu Mar 9 22:35:25 2017 +0000
+
+    Update Hungarian translation
+
+ po-plug-ins/hu.po | 135
+ +++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 73 insertions(+), 62 deletions(-)
+
+commit 224becc7dc33873bba218b42c4f88e8e9a07cedd
+Author: Michael Schumacher <schumaml@gmx.de>
+Date:   Wed Mar 8 01:13:45 2017 +0100
+
+    plug-ins: untabify new code in lcms
+
+ plug-ins/common/lcms.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
+
+commit d04b46d96026066e33252be1029ef0a8a3d55c80
+Author: Michael Schumacher <schumaml@gmx.de>
+Date:   Wed Mar 8 01:04:42 2017 +0100
+
+    plug-ins: Move children variables inside the lcms group layer check
+
+ plug-ins/common/lcms.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+commit 114f8824a6c12abce616215c01c071364f27d5e5
+Author: Michael Schumacher <schumaml@gmx.de>
+Date:   Tue Mar 7 23:14:30 2017 +0100
+
+    Bug 779730 - Convert to Color profile fails on images with empty
+    layer groups
+
+ plug-ins/common/lcms.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
+
+commit 34616cdf53c06a85ea902dcb7a051ecac3cd1603
+Author: Jehan <jehan@girinstud.io>
+Date:   Wed Nov 5 20:11:58 2014 +0100
+
+    autogen: if $NOCONFIGURE is set, do not run the configure script.
+
+    (cherry picked from commit 6915ffaf05337d98203eb4b7e7be69e4fca6e39f)
+
+ autogen.sh | 42 +++++++++++++++++++++++-------------------
+ 1 file changed, 23 insertions(+), 19 deletions(-)
+
+commit a24a6dd1fc35f842856ad78df845bc332a863a70
+Author: Jehan <jehan@girinstud.io>
+Date:   Sun Sep 14 18:28:26 2014 +0200
+
+    Makefile: fix VPATH builds for win32.
+
+    (cherry picked from commit 8c1cd7caac413fb7a081ca727109f6340e20002a)
+
+ build/windows/gimprc-plug-ins.rule | 3 ++-
+ build/windows/gimprc.rule          | 3 ++-
+ libgimp/Makefile.am                | 8 ++++----
+ libgimpbase/Makefile.am            | 4 ++--
+ libgimpcolor/Makefile.am           | 4 ++--
+ libgimpconfig/Makefile.am          | 4 ++--
+ libgimpmath/Makefile.am            | 4 ++--
+ libgimpmodule/Makefile.am          | 4 ++--
+ libgimpthumb/Makefile.am           | 4 ++--
+ libgimpwidgets/Makefile.am         | 4 ++--
+ plug-ins/win-snap/Makefile.am      | 2 +-
+ 11 files changed, 23 insertions(+), 21 deletions(-)
+
+commit 0999cb3c8aa45ac94bb85ad800156747f900df04
+Author: Jiri Grönroos <jiri.gronroos@iki.fi>
+Date:   Sun Mar 5 12:01:22 2017 +0000
+
+    Update Finnish translation
+
+ po/fi.po | 109
+ +++++++++++++++++++++++++++++----------------------------------
+ 1 file changed, 50 insertions(+), 59 deletions(-)
+
+commit 9e12f111690dac720334d49c34e4265b43f898b9
+Author: Anders Jonsson <anders.jonsson@norsjovallen.se>
+Date:   Wed Mar 1 17:50:23 2017 +0000
+
+    Update Swedish translation
+
+ po-libgimp/sv.po | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
+
+commit 26a58ff670e016acd2317e28ac62eb0985e6036d
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Tue Feb 28 15:07:03 2017 +0100
+
+    Fixed long standing translation error, thanks to 'found'
+
+ po/it.po | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit ff51d2374b8fb75191aa0ce20dd01ccbaccc3109
+Author: Inaki Larranaga Murgoitio <dooteo@zundan.com>
+Date:   Thu Feb 23 12:50:39 2017 +0100
+
+    Update Basque language
+
+ po/eu.po | 839
+ ++++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 431 insertions(+), 408 deletions(-)
+
+commit d314c0a844d22a06dfb7548831ab056c94b1716b
+Author: Inaki Larranaga Murgoitio <dooteo@zundan.com>
+Date:   Thu Feb 23 12:49:19 2017 +0100
+
+    Update Basque language
+
+ po-script-fu/eu.po | 5086
+ +++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 3011 insertions(+), 2075 deletions(-)
+
+commit f2d97348ec82fd201ecbd6e378f7638b5f40f956
+Author: Inaki Larranaga Murgoitio <dooteo@zundan.com>
+Date:   Thu Feb 23 12:47:53 2017 +0100
+
+    Update Basque language
+
+ po-plug-ins/eu.po | 26756
+ ++++++++++++++++++++++++++--------------------------
+ 1 file changed, 13388 insertions(+), 13368 deletions(-)
+
+commit 3a0f0000798362f731def64cebb8285fada5ac8b
+Author: Ell <ell_se@yahoo.com>
+Date:   Thu Feb 23 05:20:18 2017 -0500
+
+    app: fix comment typo in previous commit
+
+    Previous commit was cherry picked from
+    commit 4c5f6a8e5b725014f2bc5db07224a14eed37ffd9.
+
+ app/display/gimpdisplayshell.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit a0a7cf2dcbd6be3bc893a3640d7045c6a20ef7f4
+Author: Ell <ell_se@yahoo.com>
+Date:   Wed Feb 22 18:31:39 2017 -0500
+
+    Bug 778966 - severe input lag with ruler and one window mode ...
+
+    .. due to gdk_pixbuf_scale() with themes using the pixbuf engine
+
+    Make GimpDisplayShell a subclass of GtkEventBox, so that it gets its
+    own window, isolating its events from those of its ancestors.
+
+    In particular, the "expose" event handler of GtkNotebook, which the
+    shell is a child of in SWM, is particularly slow with themes that
+    use the pixbuf engine.  If the notebook and the shell use the same
+    window, this can cause notable, and somtimes severe, lag when the
+    rulers or scrollbars are updated frequently, such as when rapidly
+    moving the cursor.
+
+ app/display/gimpdisplayshell.c | 67
+ ++++++++++++++++++++++++------------------
+ app/display/gimpdisplayshell.h |  4 +--
+ 2 files changed, 41 insertions(+), 30 deletions(-)
+
+commit dc564a16c872c3b992cdf0b2ba1de176bb6b7f61
+Author: Jordi Mas <jmas@softcatala.org>
+Date:   Tue Feb 21 18:42:09 2017 +0100
+
+    Fixes to Catalan translation
+
+ po/ca.po | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit 4af9b417510c1e08f5662853334ab6839c65a01d
+Author: Jordi Mas <jmas@softcatala.org>
+Date:   Mon Feb 20 19:45:24 2017 +0100
+
+    Fix Catalan translation
+
+ po/ca.po | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit abf4f7560bf9baecd9e111e47c7c82c50e813ef1
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:   Sun Feb 19 21:01:49 2017 +0100
+
+    Bug 593576 - PDF Import filter: crashes when importing large image
+    PDF or specifying high resolution
+
+    Manually committed to master as commit
+    adae3882d2c9955f9dd62482f9bcdb8456679701 due to code changes there.
+
+ libgimp/gimplayer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit fbaa066789dce81f76fdae43b11fff47cf3cfe6e
+Author: Dimitris Spingos (Δημήτρης Σπίγγος)
+<dmtrs32@gmail.com>
+Date:   Sat Feb 18 09:49:32 2017 +0200
+
+    Update Greek translation
+
+ po-plug-ins/el.po | 88
+ +++++++++++++++++++++++++++++++------------------------
+ 1 file changed, 49 insertions(+), 39 deletions(-)
+
+commit 18b7b174d19699ae4034e9524cae35a935507190
+Author: Anders Jonsson <anders.jonsson@norsjovallen.se>
+Date:   Sat Feb 18 00:13:53 2017 +0000
+
+    Update Swedish translation
+
+ po-plug-ins/sv.po | 91
+ +++++++++++++++++++++++++++++++------------------------
+ 1 file changed, 51 insertions(+), 40 deletions(-)
+
+commit 203850d0923140e008467b0de993877eef1d54cb
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:   Wed Feb 15 01:34:16 2017 +0100
+
+    Update Polish translation
+
+ po-plug-ins/pl.po | 59
+ +++++++++++++++++++++++++++++++++----------------------
+ po-tips/pl.po     | 32 +++++++++++++++---------------
+ po/pl.po          | 50 +++++++++++++++++++++++-----------------------
+ 3 files changed, 76 insertions(+), 65 deletions(-)
+
+commit 0f2f1295ecf4dbc82576a2c14bbafe5071017f98
+Author: Michael Schumacher <schumaml@gmx.de>
+Date:   Wed Feb 15 00:47:17 2017 +0100
+
+    More GIMP 2.8.22 items for NEWS and formatting fixes
+
+ NEWS | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+commit 1946ca21ea3f10d262b194622572a6685063bf30
+Author: Michael Schumacher <schumaml@gmx.de>
+Date:   Tue Feb 14 22:06:53 2017 +0100
+
+    Add more GIMP 2.8.22 items to NEWS
+
+    About the patches done by the DMG build, in particular.
+
+ NEWS | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+commit 3383d982e8b8e5659d27aee298ee829f01c2a9e5
+Author: Michael Schumacher <schumaml@gmx.de>
+Date:   Tue Feb 14 21:07:51 2017 +0100
+
+    Start NEWS for GIMP 2.8.22
+
+ NEWS | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+commit 323ecb73f7bf36788fb7066eb2d6678830cd5de7
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sun Nov 6 21:34:43 2016 +0100
+
+    Bug 773233 - CVE-2007-3126 - Gimp 2.3.14 allows context-dependent
+    attackers...
+
+    ...to cause a denial of service (crash) via an ICO file with an
+    InfoHeader containing a Height of zero
+
+    Add some error handling to ico-load.c and bail out on zero width
+    or height
+    icons. Also some formatting cleanup.
+
+    (cherry picked from commit 46bcd82800e37b0f5aead76184430ef2fe802748)
+
+ plug-ins/file-ico/ico-load.c | 103
+ ++++++++++++++++++++++++++-----------------
+ 1 file changed, 62 insertions(+), 41 deletions(-)
+
+commit 32aae694642f2874742e283a52fc14b346e46849
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Tue Feb 14 12:37:23 2017 +0100
+
+    Small fix in Italian translation
+
+ po-plug-ins/it.po | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+commit efc58516052e37ca86aeacac981f10f029539173
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Tue Feb 14 12:09:56 2017 +0100
+
+    Small fix in the Windows Installer Italian translation
+
+ build/windows/installer/lang/it.setup.isl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 038ca80f71a616bdd977f4ce71ae12f8dc5e21b6
+Author: Martin Srebotnjak <miles@filmsi.net>
+Date:   Tue Feb 14 08:29:32 2017 +0100
+
+    Updated Slovenian translation
+
+ po-plug-ins/sl.po | 242
+ ++++++++++++++++++++++++++++--------------------------
+ 1 file changed, 126 insertions(+), 116 deletions(-)
+
+commit cf14a56a544047c6940224a3cf208ec85ab973a5
+Author: Martin Srebotnjak <miles@filmsi.net>
+Date:   Tue Feb 14 08:28:53 2017 +0100
+
+    Updated Slovenian translation
+
+ po-libgimp/sl.po | 1719
+ +++++++++++++++++++-----------------------------------
+ 1 file changed, 586 insertions(+), 1133 deletions(-)
+
+commit 909197b816b5aca63ae085bf6194732d6176c8f7
+Author: Anders Jonsson <anders.jonsson@norsjovallen.se>
+Date:   Sun Feb 12 18:01:26 2017 +0000
+
+    Update Swedish translation
+
+ po-script-fu/sv.po | 40 ++++++++++++++++++++--------------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
+
+commit 438f3de9102afcdb166471a0252d959a07b839c3
+Author: Jeff Bai <jeffbai@aosc.xyz>
+Date:   Fri Feb 10 19:11:43 2017 +0800
+
+    Update zh_CN translation of libgimp
+
+ po-libgimp/zh_CN.po | 310
+ ++++++++++++++++++++++++++--------------------------
+ 1 file changed, 157 insertions(+), 153 deletions(-)
+
+commit 72c1351284f72f3b8b65d38d4cc5d6b7e60a222a
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:   Sun Feb 5 20:50:57 2017 +0100
+
+    build/osx: make the launcher script also set BABL_PATH
+
+ build/osx/launcher-2.8-python.sh | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit cd6724a8e4e3e4c66d2b9ca86f1123d94fe55e07
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:   Sun Feb 5 15:56:58 2017 +0100
+
+    build/osx: update tag to build GIMP 2.8.20
+
+ build/osx/gimp.modules | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit f6993472a5b0740bb882f473fe0fac11e74d08d1
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:   Sun Feb 5 15:42:16 2017 +0100
+
+    build/osx: update version (2.8.20) and copyright year in info.plist
+
+ build/osx/info-2.8-python.plist | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit 5bb60a272a085286f0610a1a212e95dde815fb85
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:   Sun Feb 5 15:17:32 2017 +0100
+
+    build/odx: add patch for Bug 743717 to the build
+
+    Bug 743717 concerns crashes during clipboard operations with
+    a clipboard
+    manager active.
+
+ build/osx/README                                   |  1 +
+ build/osx/gimp.modules                             |  2 +
+ ...-clipboard-crashes-with-clipboard-manager.patch | 86
+ ++++++++++++++++++++++
+ 3 files changed, 89 insertions(+)
+
+commit 8a80c7654a1e44d104d1775905e4f33e4ce2760d
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:   Sun Feb 5 15:16:32 2017 +0100
+
+    build/osx: add patch for Bug 767091 to the build
+
+    Forgotten to do so in commit 55925d88.
+
+ build/osx/gimp.modules | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit f101efb9aad516f90012118ebdbc34bd4e422a36
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:   Sun Feb 5 13:33:57 2017 +0100
+
+    build/osx/README: correct mistakes introduced in commit 04c372bd
+
+ build/osx/README | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 9519d698d80e57fc57b7bd99600f9e6b9ecee064
+Author: Michael Schumacher <schumaml@gmx.de>
+Date:   Fri Feb 3 11:39:57 2017 +0100
+
+    Fix typos in 2.8.20 NEWS
+
+    Note to self: do not write release news late at night during a
+    developer meeting.
+
+ NEWS | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit aae3b51ae43c1e2ed3a6d9d9b29ac401c48109f5
+Author: Michael Schumacher <schumaml@gmx.de>
+Date:   Wed Feb 1 09:39:28 2017 +0100
+
+    Post-release bump version to 2.8.21
+
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
 commit 91b41bba51af9635b97847ee307e86c220ee0657
 Author: Michael Schumacher <schumaml@gmx.de>
 Date:   Wed Feb 1 00:35:02 2017 +0100

@@ -897,7 +897,7 @@ uninstall-am: uninstall-libexecPROGRAMS
 
 
 winsnap-win32res.o: winsnap.rc select.cur small.ico winsnap.ico
-	$(WINDRES) winsnap.rc winsnap-win32res.o
+	$(WINDRES) $(srcdir)/winsnap.rc winsnap-win32res.o
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

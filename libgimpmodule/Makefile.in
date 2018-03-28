@@ -558,7 +558,7 @@ top_srcdir = @top_srcdir@
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 @PLATFORM_WIN32_TRUE@no_undefined = -no-undefined
 @OS_WIN32_TRUE@gimpmodule_def = gimpmodule.def
-@OS_WIN32_TRUE@libgimpmodule_export_symbols = -export-symbols gimpmodule.def
+@OS_WIN32_TRUE@libgimpmodule_export_symbols = -export-symbols $(srcdir)/gimpmodule.def
 @MS_LIB_AVAILABLE_TRUE@noinst_DATA = gimpmodule-$(GIMP_API_VERSION).lib
 libgimpmoduleincludedir = $(includedir)/gimp-$(GIMP_API_VERSION)/libgimpmodule
 AM_CPPFLAGS = \
@@ -942,7 +942,7 @@ uninstall-am: uninstall-libLTLIBRARIES \
 
 @OS_WIN32_TRUE@install-libtool-import-lib:
 @OS_WIN32_TRUE@	$(INSTALL) .libs/libgimpmodule-$(GIMP_API_VERSION).dll.a $(DESTDIR)$(libdir)
-@OS_WIN32_TRUE@	$(INSTALL) gimpmodule.def $(DESTDIR)$(libdir)
+@OS_WIN32_TRUE@	$(INSTALL) $(srcdir)/gimpmodule.def $(DESTDIR)$(libdir)
 
 @OS_WIN32_TRUE@uninstall-libtool-import-lib:
 @OS_WIN32_TRUE@	-rm $(DESTDIR)$(libdir)/libgimpmodule-$(GIMP_API_VERSION).dll.a

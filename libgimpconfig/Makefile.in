@@ -565,7 +565,7 @@ libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
 @PLATFORM_WIN32_TRUE@no_undefined = -no-undefined
 @OS_WIN32_TRUE@gimpconfig_def = gimpconfig.def
-@OS_WIN32_TRUE@libgimpconfig_export_symbols = -export-symbols gimpconfig.def
+@OS_WIN32_TRUE@libgimpconfig_export_symbols = -export-symbols $(srcdir)/gimpconfig.def
 @MS_LIB_AVAILABLE_TRUE@noinst_DATA = gimpconfig-$(GIMP_API_VERSION).lib
 libgimpconfigincludedir = $(includedir)/gimp-$(GIMP_API_VERSION)/libgimpconfig
 AM_CPPFLAGS = \
@@ -999,7 +999,7 @@ uninstall-am: uninstall-libLTLIBRARIES \
 
 @OS_WIN32_TRUE@install-libtool-import-lib:
 @OS_WIN32_TRUE@	$(INSTALL) .libs/libgimpconfig-$(GIMP_API_VERSION).dll.a $(DESTDIR)$(libdir)
-@OS_WIN32_TRUE@	$(INSTALL) gimpconfig.def $(DESTDIR)$(libdir)
+@OS_WIN32_TRUE@	$(INSTALL) $(srcdir)/gimpconfig.def $(DESTDIR)$(libdir)
 
 @OS_WIN32_TRUE@uninstall-libtool-import-lib:
 @OS_WIN32_TRUE@	-rm $(DESTDIR)$(libdir)/libgimpconfig-$(GIMP_API_VERSION).dll.a

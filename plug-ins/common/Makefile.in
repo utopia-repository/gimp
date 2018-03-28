@@ -1725,7 +1725,7 @@ top_srcdir = @top_srcdir@
 @OS_WIN32_FALSE@libm = -lm
 @PLATFORM_OSX_TRUE@xobjective_c = "-xobjective-c"
 @PLATFORM_OSX_TRUE@framework_cocoa = -framework Cocoa
-@HAVE_WINDRES_TRUE@GIMPPLUGINRC = $(top_srcdir)/build/windows/gimp-plug-ins.rc
+@HAVE_WINDRES_TRUE@GIMPPLUGINRC = $(top_builddir)/build/windows/gimp-plug-ins.rc
 @HAVE_WINDRES_TRUE@alien_map_RC = alien-map.rc.o
 @HAVE_WINDRES_TRUE@align_layers_RC = align-layers.rc.o
 @HAVE_WINDRES_TRUE@animation_optimize_RC = animation-optimize.rc.o
@@ -5573,6 +5573,7 @@ uninstall-am: uninstall-libexecPROGRAMS
 @HAVE_WINDRES_TRUE@		--define INTERNALNAME_STR="$*" \
 @HAVE_WINDRES_TRUE@		--define TOP_SRCDIR="$(top_srcdir)" \
 @HAVE_WINDRES_TRUE@		-I$(top_srcdir)/app \
+@HAVE_WINDRES_TRUE@		-I$(top_builddir)/app \
 @HAVE_WINDRES_TRUE@		$(GIMPPLUGINRC) $@
 
 install-%: %

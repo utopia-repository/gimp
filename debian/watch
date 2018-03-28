@@ -1,2 +1,5 @@
-version=3
-http://download.gimp.org/pub/gimp/v2.8/gimp-([\d.]+)\.tar\.bz2
+version=4
+# Ignore the RC for now
+#https://download.gimp.org/pub/@PACKAGE@/(v[\d\.]+[02468])/ \
+https://download.gimp.org/pub/@PACKAGE@/v2.8/ \
+	@PACKAGE@@ANY_VERSION@@ARCHIVE_EXT@

@@ -19,14 +19,13 @@
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpconfig/gimpconfig.h"
 
 #include "core-types.h"
-
-#include "base/temp-buf.h"
 
 #include "gimp.h"
 #include "gimpdatafactory.h"
@@ -35,6 +34,8 @@
 #include "gimptoolinfo.h"
 #include "gimptooloptions.h"
 #include "gimptoolpreset.h"
+
+#include "gimp-intl.h"
 
 
 enum
@@ -76,32 +77,17 @@ gimp_tool_info_class_init (GimpToolInfoClass *klass)
 
   viewable_class->get_description = gimp_tool_info_get_description;
 
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_VISIBLE, "visible",
-                                    NULL, TRUE,
-                                    GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_VISIBLE,
+                            "visible",
+                            _("Visible"),
+                            NULL,
+                            TRUE,
+                            GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void
 gimp_tool_info_init (GimpToolInfo *tool_info)
 {
-  tool_info->gimp              = NULL;
-
-  tool_info->tool_type         = G_TYPE_NONE;
-  tool_info->tool_options_type = G_TYPE_NONE;
-  tool_info->context_props     = 0;
-
-  tool_info->blurb             = NULL;
-  tool_info->help              = NULL;
-
-  tool_info->menu_label        = NULL;
-  tool_info->menu_accel        = NULL;
-
-  tool_info->help_domain       = NULL;
-  tool_info->help_id           = NULL;
-
-  tool_info->visible           = TRUE;
-  tool_info->tool_options      = NULL;
-  tool_info->paint_info        = NULL;
 }
 
 static void
@@ -112,15 +98,10 @@ gimp_tool_info_dispose (GObject *object)
   if (tool_info->tool_options)
     {
       g_object_run_dispose (G_OBJECT (tool_info->tool_options));
-      g_object_unref (tool_info->tool_options);
-      tool_info->tool_options = NULL;
+      g_clear_object (&tool_info->tool_options);
     }
 
-  if (tool_info->presets)
-    {
-      g_object_unref (tool_info->presets);
-      tool_info->presets = NULL;
-    }
+  g_clear_object (&tool_info->presets);
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
@@ -130,38 +111,12 @@ gimp_tool_info_finalize (GObject *object)
 {
   GimpToolInfo *tool_info = GIMP_TOOL_INFO (object);
 
-  if (tool_info->blurb)
-    {
-      g_free (tool_info->blurb);
-      tool_info->blurb = NULL;
-    }
-  if (tool_info->help)
-    {
-      g_free (tool_info->help);
-      tool_info->help = NULL;
-    }
-
-  if (tool_info->menu_label)
-    {
-      g_free (tool_info->menu_label);
-      tool_info->menu_label = NULL;
-    }
-  if (tool_info->menu_accel)
-    {
-      g_free (tool_info->menu_accel);
-      tool_info->menu_accel = NULL;
-    }
-
-  if (tool_info->help_domain)
-    {
-      g_free (tool_info->help_domain);
-      tool_info->help_domain = NULL;
-    }
-  if (tool_info->help_id)
-    {
-      g_free (tool_info->help_id);
-      tool_info->help_id = NULL;
-    }
+  g_clear_pointer (&tool_info->label,       g_free);
+  g_clear_pointer (&tool_info->tooltip,     g_free);
+  g_clear_pointer (&tool_info->menu_label,  g_free);
+  g_clear_pointer (&tool_info->menu_accel,  g_free);
+  g_clear_pointer (&tool_info->help_domain, g_free);
+  g_clear_pointer (&tool_info->help_id,     g_free);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -196,7 +151,7 @@ gimp_tool_info_set_property (GObject      *object,
   switch (property_id)
     {
     case PROP_VISIBLE:
-      tool_info->visible = g_value_get_boolean (value);
+      tool_info->visible = (g_value_get_boolean (value) && ! tool_info->hidden);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -210,12 +165,15 @@ gimp_tool_info_get_description (GimpViewable  *viewable,
 {
   GimpToolInfo *tool_info = GIMP_TOOL_INFO (viewable);
 
-  return g_strdup (tool_info->blurb);
+  if (tooltip)
+    *tooltip = g_strdup (tool_info->tooltip);
+
+  return g_strdup (tool_info->label);
 }
 
 static gboolean
-gimp_tool_info_filter_preset (const GimpObject *object,
-                              gpointer          user_data)
+gimp_tool_info_filter_preset (GimpObject *object,
+                              gpointer    user_data)
 {
   GimpToolPreset *preset    = GIMP_TOOL_PRESET (object);
   GimpToolInfo   *tool_info = user_data;
@@ -229,26 +187,26 @@ gimp_tool_info_new (Gimp                *gimp,
                     GType                tool_options_type,
                     GimpContextPropMask  context_props,
                     const gchar         *identifier,
-                    const gchar         *blurb,
-                    const gchar         *help,
+                    const gchar         *label,
+                    const gchar         *tooltip,
                     const gchar         *menu_label,
                     const gchar         *menu_accel,
                     const gchar         *help_domain,
                     const gchar         *help_id,
                     const gchar         *paint_core_name,
-                    const gchar         *stock_id)
+                    const gchar         *icon_name)
 {
   GimpPaintInfo *paint_info;
   GimpToolInfo  *tool_info;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (identifier != NULL, NULL);
-  g_return_val_if_fail (blurb != NULL, NULL);
-  g_return_val_if_fail (help != NULL, NULL);
+  g_return_val_if_fail (label != NULL, NULL);
+  g_return_val_if_fail (tooltip != NULL, NULL);
   g_return_val_if_fail (menu_label != NULL, NULL);
   g_return_val_if_fail (help_id != NULL, NULL);
   g_return_val_if_fail (paint_core_name != NULL, NULL);
-  g_return_val_if_fail (stock_id != NULL, NULL);
+  g_return_val_if_fail (icon_name != NULL, NULL);
 
   paint_info = (GimpPaintInfo *)
     gimp_container_get_child_by_name (gimp->paint_info_list, paint_core_name);
@@ -256,8 +214,8 @@ gimp_tool_info_new (Gimp                *gimp,
   g_return_val_if_fail (GIMP_IS_PAINT_INFO (paint_info), NULL);
 
   tool_info = g_object_new (GIMP_TYPE_TOOL_INFO,
-                            "name",     identifier,
-                            "stock-id", stock_id,
+                            "name",      identifier,
+                            "icon-name", icon_name,
                             NULL);
 
   tool_info->gimp              = gimp;
@@ -265,8 +223,8 @@ gimp_tool_info_new (Gimp                *gimp,
   tool_info->tool_options_type = tool_options_type;
   tool_info->context_props     = context_props;
 
-  tool_info->blurb             = g_strdup (blurb);
-  tool_info->help              = g_strdup (help);
+  tool_info->label             = g_strdup (label);
+  tool_info->tooltip           = g_strdup (tooltip);
 
   tool_info->menu_label        = g_strdup (menu_label);
   tool_info->menu_accel        = g_strdup (menu_accel);
@@ -334,28 +292,20 @@ gimp_tool_info_get_standard (Gimp *gimp)
   return gimp->standard_tool_info;
 }
 
-gchar *
-gimp_tool_info_build_options_filename (GimpToolInfo *tool_info,
-                                       const gchar  *suffix)
+GFile *
+gimp_tool_info_get_options_file (GimpToolInfo *tool_info,
+                                 const gchar  *suffix)
 {
-  const gchar *name;
-  gchar       *filename;
-  gchar       *basename;
+  gchar *basename;
+  GFile *file;
 
   g_return_val_if_fail (GIMP_IS_TOOL_INFO (tool_info), NULL);
 
-  name = gimp_object_get_name (tool_info);
+  /* also works for a NULL suffix */
+  basename = g_strconcat (gimp_object_get_name (tool_info), suffix, NULL);
 
-  if (suffix)
-    basename = g_strconcat (name, suffix, NULL);
-  else
-    basename = g_strdup (name);
-
-  filename = g_build_filename (gimp_directory (),
-                               "tool-options",
-                               basename,
-                               NULL);
+  file = gimp_directory_file ("tool-options", basename, NULL);
   g_free (basename);
 
-  return filename;
+  return file;
 }

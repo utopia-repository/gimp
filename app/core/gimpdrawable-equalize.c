@@ -17,18 +17,18 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "core-types.h"
 
-#include "base/gimphistogram.h"
-#include "base/gimplut.h"
-#include "base/lut-funcs.h"
-
 #include "gimpdrawable.h"
 #include "gimpdrawable-equalize.h"
 #include "gimpdrawable-histogram.h"
-#include "gimpdrawable-process.h"
+#include "gimpdrawable-operation.h"
+#include "gimphistogram.h"
+#include "gimpimage.h"
+#include "gimpselection.h"
 
 #include "gimp-intl.h"
 
@@ -37,18 +37,35 @@ void
 gimp_drawable_equalize (GimpDrawable *drawable,
                         gboolean      mask_only)
 {
-  GimpHistogram *hist;
-  GimpLut       *lut;
+  GimpImage     *image;
+  GimpChannel   *selection;
+  GimpHistogram *histogram;
+  GeglNode      *equalize;
 
   g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
   g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
 
-  hist = gimp_histogram_new ();
-  gimp_drawable_calculate_histogram (drawable, hist);
+  image = gimp_item_get_image (GIMP_ITEM (drawable));
+  selection = gimp_image_get_mask (image);
 
-  lut = equalize_lut_new (hist, gimp_drawable_bytes (drawable));
-  gimp_histogram_unref (hist);
+  histogram = gimp_histogram_new (FALSE);
+  gimp_drawable_calculate_histogram (drawable, histogram, FALSE);
 
-  gimp_drawable_process_lut (drawable, NULL, C_("undo-type", "Equalize"), lut);
-  gimp_lut_free (lut);
+  equalize = gegl_node_new_child (NULL,
+                                  "operation", "gimp:equalize",
+                                  "histogram", histogram,
+                                  NULL);
+
+  if (! mask_only)
+    gimp_selection_suspend (GIMP_SELECTION (selection));
+
+  gimp_drawable_apply_operation (drawable, NULL,
+                                 C_("undo-type", "Equalize"),
+                                 equalize);
+
+  if (! mask_only)
+    gimp_selection_resume (GIMP_SELECTION (selection));
+
+  g_object_unref (equalize);
+  g_object_unref (histogram);
 }

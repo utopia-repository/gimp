@@ -136,7 +136,7 @@ query (void)
                           "Spencer Kimball",
                           "Bit Specialists, Inc.",
                           "2001",
-                          N_("_Softglow..."),
+                          N_("_Softglow (legacy)..."),
                           "RGB*, GRAY*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
@@ -245,7 +245,7 @@ softglow (GimpDrawable *drawable,
   gdouble       d_p[5], d_m[5];
   gdouble       bd_p[5], bd_m[5];
   gdouble      *val_p, *val_m, *vp, *vm;
-  gint          x1, y1, x2, y2;
+  gint          x1, y1;
   gint          i, j;
   gint          row, col, b;
   gint          terms;
@@ -261,15 +261,10 @@ softglow (GimpDrawable *drawable,
     {
       gimp_preview_get_position (preview, &x1, &y1);
       gimp_preview_get_size (preview, &width, &height);
-      x2 = x1 + width;
-      y2 = y1 + height;
     }
-  else
-    {
-      gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
-      width     = (x2 - x1);
-      height    = (y2 - y1);
-    }
+  else if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                           &x1, &y1, &width, &height))
+    return;
 
   bytes     = drawable->bpp;
   has_alpha = gimp_drawable_has_alpha (drawable->drawable_id);
@@ -481,7 +476,7 @@ softglow (GimpDrawable *drawable,
       gimp_drawable_flush (drawable);
       gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
       gimp_drawable_update (drawable->drawable_id,
-                            x1, y1, (x2 - x1), (y2 - y1));
+                            x1, y1, width, height);
     }
 
   /*  free up buffers  */
@@ -634,8 +629,8 @@ softglow_dialog (GimpDrawable *drawable)
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -652,7 +647,7 @@ softglow_dialog (GimpDrawable *drawable)
                       main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_drawable_preview_new (drawable, NULL);
+  preview = gimp_drawable_preview_new_from_drawable_id (drawable->drawable_id);
   gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
 

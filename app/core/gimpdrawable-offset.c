@@ -21,22 +21,21 @@
 
 #include <cairo.h>
 #include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "libgimpcolor/gimpcolor.h"
 #include "libgimpmath/gimpmath.h"
 
 #include "core-types.h"
 
-#include "base/pixel-region.h"
-#include "base/tile-manager.h"
-
-#include "paint-funcs/paint-funcs.h"
+#include "gegl/gimp-gegl-utils.h"
 
 #include "gimp.h"
 #include "gimpcontext.h"
 #include "gimpdrawable.h"
 #include "gimpdrawable-offset.h"
 #include "gimpimage.h"
+#include "gimppickable.h"
 
 #include "gimp-intl.h"
 
@@ -49,13 +48,14 @@ gimp_drawable_offset (GimpDrawable   *drawable,
                       gint            offset_x,
                       gint            offset_y)
 {
-  GimpItem    *item;
-  PixelRegion  srcPR, destPR;
-  TileManager *new_tiles;
-  gint         width, height;
-  gint         src_x, src_y;
-  gint         dest_x, dest_y;
-  guchar       fill[MAX_CHANNELS] = { 0 };
+  GimpItem      *item;
+  GeglBuffer    *src_buffer;
+  GeglBuffer    *new_buffer;
+  GeglRectangle  src_rect;
+  GeglRectangle  dest_rect;
+  gint           width, height;
+  gint           src_x, src_y;
+  gint           dest_x, dest_y;
 
   g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
   g_return_if_fail (GIMP_IS_CONTEXT (context));
@@ -85,7 +85,28 @@ gimp_drawable_offset (GimpDrawable   *drawable,
   if (offset_x == 0 && offset_y == 0)
     return;
 
-  new_tiles = tile_manager_new (width, height, gimp_drawable_bytes (drawable));
+  src_buffer = gimp_drawable_get_buffer (drawable);
+
+  new_buffer = gegl_buffer_new (GEGL_RECTANGLE (0, 0, width, height),
+                                gimp_drawable_get_format (drawable));
+
+  if (! wrap_around)
+    {
+      if (fill_type == GIMP_OFFSET_BACKGROUND)
+        {
+          GimpRGB    bg;
+          GeglColor *color;
+
+          gimp_context_get_background (context, &bg);
+          gimp_pickable_srgb_to_image_color (GIMP_PICKABLE (drawable),
+                                             &bg, &bg);
+
+          color = gimp_gegl_color_new (&bg);
+          gegl_buffer_set_color (new_buffer, NULL, color);
+          g_object_unref (color);
+        }
+    }
+
   if (offset_x >= 0)
     {
       src_x = 0;
@@ -115,17 +136,17 @@ gimp_drawable_offset (GimpDrawable   *drawable,
   /*  Copy the center region  */
   if (width && height)
     {
-      pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
-                         src_x, src_y, width, height, FALSE);
-      pixel_region_init (&destPR, new_tiles,
-                         dest_x, dest_y, width, height, TRUE);
-
-      copy_region (&srcPR, &destPR);
+      gegl_buffer_copy (src_buffer,
+                        GEGL_RECTANGLE (src_x,  src_y,  width, height),
+                        GEGL_ABYSS_NONE,
+                        new_buffer,
+                        GEGL_RECTANGLE (dest_x,dest_y,  width, height));
     }
 
-  /*  Copy appropriately for wrap around  */
-  if (wrap_around == TRUE)
+  if (wrap_around)
     {
+      /*  Copy appropriately for wrap around  */
+
       if (offset_x >= 0 && offset_y >= 0)
         {
           src_x = gimp_item_get_width  (item) - offset_x;
@@ -158,15 +179,12 @@ gimp_drawable_offset (GimpDrawable   *drawable,
       /*  intersecting region  */
       if (offset_x != 0 && offset_y != 0)
         {
-          pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
-                             src_x, src_y,
-                             ABS (offset_x), ABS (offset_y),
-                             FALSE);
-          pixel_region_init (&destPR, new_tiles,
-                             dest_x, dest_y,
-                             ABS (offset_x), ABS (offset_y),
-                             TRUE);
-          copy_region (&srcPR, &destPR);
+          gegl_buffer_copy (src_buffer,
+                            GEGL_RECTANGLE (src_x, src_y,
+                                            ABS (offset_x), ABS (offset_y)),
+                            GEGL_ABYSS_NONE,
+                            new_buffer,
+                            GEGL_RECTANGLE (dest_x, dest_y, 0, 0));
         }
 
       /*  X offset  */
@@ -174,31 +192,27 @@ gimp_drawable_offset (GimpDrawable   *drawable,
         {
           if (offset_y >= 0)
             {
-              pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
-                                 src_x, 0, ABS (offset_x),
-                                 gimp_item_get_height (item) - ABS (offset_y),
-                                 FALSE);
-              pixel_region_init (&destPR, new_tiles,
-                                 dest_x, dest_y + offset_y,
-                                 ABS (offset_x),
-                                 gimp_item_get_height (item) - ABS (offset_y),
-                                 TRUE);
+              src_rect.x      = src_x;
+              src_rect.y      = 0;
+              src_rect.width  = ABS (offset_x);
+              src_rect.height = gimp_item_get_height (item) - ABS (offset_y);
+
+              dest_rect.x = dest_x;
+              dest_rect.y = dest_y + offset_y;
             }
           else if (offset_y < 0)
             {
-              pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
-                                 src_x, src_y - offset_y,
-                                 ABS (offset_x),
-                                 gimp_item_get_height (item) - ABS (offset_y),
-                                 FALSE);
-              pixel_region_init (&destPR, new_tiles,
-                                 dest_x, 0,
-                                 ABS (offset_x),
-                                 gimp_item_get_height (item) - ABS (offset_y),
-                                 TRUE);
+              src_rect.x      = src_x;
+              src_rect.y      = src_y - offset_y;
+              src_rect.width  = ABS (offset_x);
+              src_rect.height = gimp_item_get_height (item) - ABS (offset_y);
+
+              dest_rect.x = dest_x;
+              dest_rect.y = 0;
             }
 
-          copy_region (&srcPR, &destPR);
+          gegl_buffer_copy (src_buffer, &src_rect, GEGL_ABYSS_NONE,
+                            new_buffer, &dest_rect);
         }
 
       /*  X offset  */
@@ -206,114 +220,33 @@ gimp_drawable_offset (GimpDrawable   *drawable,
         {
           if (offset_x >= 0)
             {
-              pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
-                                 0, src_y,
-                                 gimp_item_get_width (item) - ABS (offset_x),
-                                 ABS (offset_y), FALSE);
-              pixel_region_init (&destPR, new_tiles, dest_x + offset_x, dest_y,
-                                 gimp_item_get_width (item) - ABS (offset_x),
-                                 ABS (offset_y), TRUE);
+              src_rect.x      = 0;
+              src_rect.y      = src_y;
+              src_rect.width  = gimp_item_get_width (item) - ABS (offset_x);
+              src_rect.height = ABS (offset_y);
+
+              dest_rect.x = dest_x + offset_x;
+              dest_rect.y = dest_y;
             }
           else if (offset_x < 0)
             {
-              pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
-                                 src_x - offset_x, src_y,
-                                 gimp_item_get_width (item) - ABS (offset_x),
-                                 ABS (offset_y), FALSE);
-              pixel_region_init (&destPR, new_tiles, 0, dest_y,
-                                 gimp_item_get_width (item) - ABS (offset_x),
-                                 ABS (offset_y), TRUE);
+              src_rect.x      = src_x - offset_x;
+              src_rect.y      = src_y;
+              src_rect.width  = gimp_item_get_width (item) - ABS (offset_x);
+              src_rect.height = ABS (offset_y);
+
+              dest_rect.x = 0;
+              dest_rect.y = dest_y;
             }
 
-          copy_region (&srcPR, &destPR);
-        }
-    }
-  /*  Otherwise, fill the vacated regions  */
-  else
-    {
-      if (fill_type == GIMP_OFFSET_BACKGROUND)
-        {
-          GimpRGB color;
-
-          gimp_context_get_background (context, &color);
-
-          gimp_rgb_get_uchar (&color, &fill[0], &fill[1], &fill[2]);
-
-          if (gimp_drawable_has_alpha (drawable))
-            fill[gimp_drawable_bytes (drawable) - 1] = OPAQUE_OPACITY;
-        }
-
-      if (offset_x >= 0 && offset_y >= 0)
-        {
-          dest_x = 0;
-          dest_y = 0;
-        }
-      else if (offset_x >= 0 && offset_y < 0)
-        {
-          dest_x = 0;
-          dest_y = gimp_item_get_height (item) + offset_y;
-        }
-      else if (offset_x < 0 && offset_y >= 0)
-        {
-          dest_x = gimp_item_get_width (item) + offset_x;
-          dest_y = 0;
-        }
-      else if (offset_x < 0 && offset_y < 0)
-        {
-          dest_x = gimp_item_get_width (item) + offset_x;
-          dest_y = gimp_item_get_height (item) + offset_y;
-        }
-
-      /*  intersecting region  */
-      if (offset_x != 0 && offset_y != 0)
-        {
-          pixel_region_init (&destPR, new_tiles, dest_x, dest_y,
-                             ABS (offset_x), ABS (offset_y), TRUE);
-          color_region (&destPR, fill);
-        }
-
-      /*  X offset  */
-      if (offset_x != 0)
-        {
-          if (offset_y >= 0)
-            pixel_region_init (&destPR, new_tiles,
-                               dest_x, dest_y + offset_y,
-                               ABS (offset_x),
-                               gimp_item_get_height (item) - ABS (offset_y),
-                               TRUE);
-          else if (offset_y < 0)
-            pixel_region_init (&destPR, new_tiles,
-                               dest_x, 0,
-                               ABS (offset_x),
-                               gimp_item_get_height (item) - ABS (offset_y),
-                               TRUE);
-
-          color_region (&destPR, fill);
-        }
-
-      /*  X offset  */
-      if (offset_y != 0)
-        {
-          if (offset_x >= 0)
-            pixel_region_init (&destPR, new_tiles,
-                               dest_x + offset_x,
-                               dest_y,
-                               gimp_item_get_width (item) - ABS (offset_x),
-                               ABS (offset_y),
-                               TRUE);
-          else if (offset_x < 0)
-            pixel_region_init (&destPR, new_tiles,
-                               0, dest_y,
-                               gimp_item_get_width (item) - ABS (offset_x),
-                               ABS (offset_y),
-                               TRUE);
-
-          color_region (&destPR, fill);
+          gegl_buffer_copy (src_buffer, &src_rect, GEGL_ABYSS_NONE,
+                            new_buffer, &dest_rect);
         }
     }
 
-  gimp_drawable_set_tiles (drawable, gimp_item_is_attached (item),
-                           C_("undo-type", "Offset Drawable"), new_tiles,
-                           gimp_drawable_type (drawable));
-  tile_manager_unref (new_tiles);
+  gimp_drawable_set_buffer (drawable,
+                            gimp_item_is_attached (item),
+                            C_("undo-type", "Offset Drawable"),
+                            new_buffer);
+  g_object_unref (new_buffer);
 }

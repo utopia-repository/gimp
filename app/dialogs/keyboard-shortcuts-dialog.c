@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -51,7 +52,7 @@ keyboard_shortcuts_dialog_new (Gimp *gimp)
                             gimp_standard_help_func,
                             GIMP_HELP_KEYBOARD_SHORTCUTS,
 
-                            GTK_STOCK_CLOSE, GTK_RESPONSE_OK,
+                            _("_Close"), GTK_RESPONSE_OK,
 
                             NULL);
 

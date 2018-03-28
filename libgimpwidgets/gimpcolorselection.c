@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -34,7 +35,7 @@
 #include "gimpcolorselect.h"
 #include "gimpcolorselection.h"
 #include "gimphelpui.h"
-#include "gimpstock.h"
+#include "gimpicons.h"
 #include "gimpwidgets.h"
 #include "gimpwidgets-private.h"
 
@@ -98,11 +99,9 @@ static void   gimp_color_selection_scales_changed    (GimpColorSelector  *select
                                                       const GimpRGB      *rgb,
                                                       const GimpHSV      *hsv,
                                                       GimpColorSelection *selection);
-#ifndef GDK_WINDOWING_QUARTZ
 static void   gimp_color_selection_color_picked      (GtkWidget          *widget,
                                                       const GimpRGB      *rgb,
                                                       GimpColorSelection *selection);
-#endif
 static void   gimp_color_selection_entry_changed     (GimpColorHexEntry  *entry,
                                                       GimpColorSelection *selection);
 static void   gimp_color_selection_channel_changed   (GimpColorSelector  *selector,
@@ -119,7 +118,7 @@ G_DEFINE_TYPE (GimpColorSelection, gimp_color_selection, GTK_TYPE_BOX)
 
 #define parent_class gimp_color_selection_parent_class
 
-static guint selection_signals[LAST_SIGNAL] = { 0 };
+static guint selection_signals[LAST_SIGNAL] = { 0, };
 
 
 static void
@@ -133,7 +132,8 @@ gimp_color_selection_class_init (GimpColorSelectionClass *klass)
 
   g_object_class_install_property (object_class, PROP_CONFIG,
                                    g_param_spec_object ("config",
-                                                        NULL, NULL,
+                                                        "Config",
+                                                        "The color config used by this color selection",
                                                         GIMP_TYPE_COLOR_CONFIG,
                                                         G_PARAM_WRITABLE));
 
@@ -169,7 +169,7 @@ gimp_color_selection_init (GimpColorSelection *selection)
   gimp_rgba_set (&selection->rgb, 0.0, 0.0, 0.0, 1.0);
   gimp_rgb_to_hsv (&selection->rgb, &selection->hsv);
 
-  selection->channel = GIMP_COLOR_SELECTOR_HUE;
+  selection->channel = GIMP_COLOR_SELECTOR_RED;
 
   main_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (selection), main_hbox, TRUE, TRUE, 0);
@@ -220,7 +220,7 @@ gimp_color_selection_init (GimpColorSelection *selection)
   gtk_widget_show (vbox);
 
   label = gtk_label_new (_("Current:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 1.0);
   gtk_box_pack_start (GTK_BOX (vbox), label, TRUE, TRUE, 0);
   gtk_widget_show (label);
 
@@ -229,7 +229,7 @@ gimp_color_selection_init (GimpColorSelection *selection)
   g_object_unref (new_group);
 
   label = gtk_label_new (_("Old:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 1.0);
   gtk_box_pack_start (GTK_BOX (vbox), label, TRUE, TRUE, 0);
   gtk_widget_show (label);
 
@@ -301,7 +301,6 @@ gimp_color_selection_init (GimpColorSelection *selection)
   gtk_box_pack_start (GTK_BOX (selection->right_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
-#ifndef GDK_WINDOWING_QUARTZ
   /*  The color picker  */
   button = gimp_pick_button_new ();
   gtk_box_pack_end (GTK_BOX (hbox), button, FALSE, FALSE, 0);
@@ -310,7 +309,6 @@ gimp_color_selection_init (GimpColorSelection *selection)
   g_signal_connect (button, "color-picked",
                     G_CALLBACK (gimp_color_selection_color_picked),
                     selection);
-#endif
 
   /* The hex triplet entry */
   entry = gimp_color_hex_entry_new ();
@@ -527,7 +525,7 @@ gimp_color_selection_color_changed (GimpColorSelection *selection)
  *
  * Sets the color management configuration to use with this color selection.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  */
 void
 gimp_color_selection_set_config (GimpColorSelection *selection,
@@ -540,6 +538,10 @@ gimp_color_selection_set_config (GimpColorSelection *selection,
                                   config);
   gimp_color_selector_set_config (GIMP_COLOR_SELECTOR (selection->scales),
                                   config);
+  gimp_color_area_set_color_config (GIMP_COLOR_AREA (selection->old_color),
+                                    config);
+  gimp_color_area_set_color_config (GIMP_COLOR_AREA (selection->new_color),
+                                    config);
 }
 
 /*  private functions  */
@@ -588,7 +590,6 @@ gimp_color_selection_scales_changed (GimpColorSelector  *selector,
   gimp_color_selection_color_changed (selection);
 }
 
-#ifndef GDK_WINDOWING_QUARTZ
 static void
 gimp_color_selection_color_picked (GtkWidget          *widget,
                                    const GimpRGB      *rgb,
@@ -596,7 +597,6 @@ gimp_color_selection_color_picked (GtkWidget          *widget,
 {
   gimp_color_selection_set_color (selection, rgb);
 }
-#endif
 
 static void
 gimp_color_selection_entry_changed (GimpColorHexEntry  *entry,

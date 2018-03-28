@@ -22,10 +22,10 @@
 
 
 /* This plugin performs almost the same operation as the 'contrast
- * autostretch' plugin, except that it won't allow the colour channels
+ * autostretch' plugin, except that it won't allow the color channels
  * to normalize independently.  This is actually what most people probably
  * want instead of contrast-autostretch; use c-a only if you wish to remove
- * an undesirable colour-tint from a source image which is supposed to
+ * an undesirable color-tint from a source image which is supposed to
  * contain pure-white and pure-black.
  */
 
@@ -77,8 +77,8 @@ query (void)
 
   gimp_install_procedure (PLUG_IN_PROC,
                           N_("Stretch brightness values to cover the full range"),
-                          "This plugin performs almost the same operation as "
-                          "the 'contrast autostretch' plugin, except that it "
+                          "This plug-in performs almost the same operation as "
+                          "the 'contrast autostretch' plug-in, except that it "
                           "won't allow the color channels to normalize "
                           "independently.  This is actually what most people "
                           "probably want instead of contrast-autostretch; use "
@@ -93,8 +93,6 @@ query (void)
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
-
-  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Colors/Auto");
 }
 
 static void

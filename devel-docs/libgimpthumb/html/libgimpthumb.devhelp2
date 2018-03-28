@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <book xmlns="http://www.devhelp.net/book" title="GIMP Thumbnail Library Reference Manual" link="index.html" author="" name="libgimpthumb" version="2" language="c">
   <chapters>
-    <sub name="GIMP Thumbnail Library" link="libgimpthumb.html">
+    <sub name="GIMP Thumbnail Library" link="pt01.html">
       <sub name="GimpThumbnail" link="GimpThumbnail.html"/>
       <sub name="GimpThumb-utils" link="libgimpthumb-GimpThumb-utils.html"/>
       <sub name="GimpThumb-enums" link="libgimpthumb-GimpThumb-enums.html"/>
       <sub name="GimpThumb-error" link="libgimpthumb-GimpThumb-error.html"/>
     </sub>
-    <sub name="Index" link="libgimpthumb-index.html"/>
-    <sub name="Index of new symbols in GIMP 2.2" link="libgimpthumb-index-new-in-2-2.html"/>
-    <sub name="Index of new symbols in GIMP 2.4" link="libgimpthumb-index-new-in-2-4.html"/>
-    <sub name="Index of new symbols in GIMP 2.6" link="libgimpthumb-index-new-in-2-6.html"/>
-    <sub name="Index of deprecated symbols" link="libgimpthumb-index-deprecated.html"/>
+    <sub name="Index" link="api-index-full.html"/>
+    <sub name="Index of new symbols in GIMP 2.2" link="api-index-2-2.html"/>
+    <sub name="Index of new symbols in GIMP 2.10" link="api-index-2-10.html"/>
+    <sub name="Index of deprecated symbols" link="api-index-deprecated.html"/>
   </chapters>
   <functions>
     <keyword type="function" name="gimp_thumbnail_new ()" link="GimpThumbnail.html#gimp-thumbnail-new"/>
@@ -20,14 +19,14 @@
     <keyword type="function" name="gimp_thumbnail_set_from_thumb ()" link="GimpThumbnail.html#gimp-thumbnail-set-from-thumb"/>
     <keyword type="function" name="gimp_thumbnail_peek_image ()" link="GimpThumbnail.html#gimp-thumbnail-peek-image"/>
     <keyword type="function" name="gimp_thumbnail_peek_thumb ()" link="GimpThumbnail.html#gimp-thumbnail-peek-thumb"/>
-    <keyword type="function" name="gimp_thumbnail_check_thumb ()" link="GimpThumbnail.html#gimp-thumbnail-check-thumb" since="GIMP 2.2"/>
+    <keyword type="function" name="gimp_thumbnail_check_thumb ()" link="GimpThumbnail.html#gimp-thumbnail-check-thumb" since="2.2"/>
     <keyword type="function" name="gimp_thumbnail_load_thumb ()" link="GimpThumbnail.html#gimp-thumbnail-load-thumb"/>
     <keyword type="function" name="gimp_thumbnail_save_thumb ()" link="GimpThumbnail.html#gimp-thumbnail-save-thumb"/>
-    <keyword type="function" name="gimp_thumbnail_save_thumb_local ()" link="GimpThumbnail.html#gimp-thumbnail-save-thumb-local" since="GIMP 2.2"/>
+    <keyword type="function" name="gimp_thumbnail_save_thumb_local ()" link="GimpThumbnail.html#gimp-thumbnail-save-thumb-local" since="2.2"/>
     <keyword type="function" name="gimp_thumbnail_save_failure ()" link="GimpThumbnail.html#gimp-thumbnail-save-failure"/>
-    <keyword type="function" name="gimp_thumbnail_delete_failure ()" link="GimpThumbnail.html#gimp-thumbnail-delete-failure" since="GIMP 2.2"/>
-    <keyword type="function" name="gimp_thumbnail_delete_others ()" link="GimpThumbnail.html#gimp-thumbnail-delete-others" since="GIMP 2.2"/>
-    <keyword type="function" name="gimp_thumbnail_has_failed ()" link="GimpThumbnail.html#gimp-thumbnail-has-failed" since="GIMP 2.2"/>
+    <keyword type="function" name="gimp_thumbnail_delete_failure ()" link="GimpThumbnail.html#gimp-thumbnail-delete-failure" since="2.2"/>
+    <keyword type="function" name="gimp_thumbnail_delete_others ()" link="GimpThumbnail.html#gimp-thumbnail-delete-others" since="2.2"/>
+    <keyword type="function" name="gimp_thumbnail_has_failed ()" link="GimpThumbnail.html#gimp-thumbnail-has-failed" since="2.2"/>
     <keyword type="struct" name="GimpThumbnail" link="GimpThumbnail.html#GimpThumbnail-struct"/>
     <keyword type="property" name="The “image-filesize” property" link="GimpThumbnail.html#GimpThumbnail--image-filesize"/>
     <keyword type="property" name="The “image-height” property" link="GimpThumbnail.html#GimpThumbnail--image-height"/>
@@ -40,16 +39,17 @@
     <keyword type="property" name="The “image-width” property" link="GimpThumbnail.html#GimpThumbnail--image-width"/>
     <keyword type="property" name="The “thumb-state” property" link="GimpThumbnail.html#GimpThumbnail--thumb-state"/>
     <keyword type="function" name="gimp_thumb_init ()" link="libgimpthumb-GimpThumb-utils.html#gimp-thumb-init"/>
+    <keyword type="function" name="gimp_thumb_get_thumb_base_dir ()" link="libgimpthumb-GimpThumb-utils.html#gimp-thumb-get-thumb-base-dir" since="2.10"/>
     <keyword type="function" name="gimp_thumb_find_thumb ()" link="libgimpthumb-GimpThumb-utils.html#gimp-thumb-find-thumb"/>
     <keyword type="function" name="gimp_thumb_file_test ()" link="libgimpthumb-GimpThumb-utils.html#gimp-thumb-file-test"/>
     <keyword type="function" name="gimp_thumb_name_from_uri ()" link="libgimpthumb-GimpThumb-utils.html#gimp-thumb-name-from-uri"/>
     <keyword type="function" name="gimp_thumb_ensure_thumb_dir ()" link="libgimpthumb-GimpThumb-utils.html#gimp-thumb-ensure-thumb-dir"/>
     <keyword type="function" name="gimp_thumb_get_thumb_dir ()" link="libgimpthumb-GimpThumb-utils.html#gimp-thumb-get-thumb-dir"/>
-    <keyword type="function" name="gimp_thumbs_delete_for_uri ()" link="libgimpthumb-GimpThumb-utils.html#gimp-thumbs-delete-for-uri" since="GIMP 2.2"/>
-    <keyword type="function" name="gimp_thumb_name_from_uri_local ()" link="libgimpthumb-GimpThumb-utils.html#gimp-thumb-name-from-uri-local" since="GIMP 2.2"/>
-    <keyword type="function" name="gimp_thumb_ensure_thumb_dir_local ()" link="libgimpthumb-GimpThumb-utils.html#gimp-thumb-ensure-thumb-dir-local" since="GIMP 2.2"/>
-    <keyword type="function" name="gimp_thumb_get_thumb_dir_local ()" link="libgimpthumb-GimpThumb-utils.html#gimp-thumb-get-thumb-dir-local" since="GIMP 2.2"/>
-    <keyword type="function" name="gimp_thumbs_delete_for_uri_local ()" link="libgimpthumb-GimpThumb-utils.html#gimp-thumbs-delete-for-uri-local" since="GIMP 2.2"/>
+    <keyword type="function" name="gimp_thumbs_delete_for_uri ()" link="libgimpthumb-GimpThumb-utils.html#gimp-thumbs-delete-for-uri" since="2.2"/>
+    <keyword type="function" name="gimp_thumb_name_from_uri_local ()" link="libgimpthumb-GimpThumb-utils.html#gimp-thumb-name-from-uri-local" since="2.2"/>
+    <keyword type="function" name="gimp_thumb_ensure_thumb_dir_local ()" link="libgimpthumb-GimpThumb-utils.html#gimp-thumb-ensure-thumb-dir-local" since="2.2"/>
+    <keyword type="function" name="gimp_thumb_get_thumb_dir_local ()" link="libgimpthumb-GimpThumb-utils.html#gimp-thumb-get-thumb-dir-local" since="2.2"/>
+    <keyword type="function" name="gimp_thumbs_delete_for_uri_local ()" link="libgimpthumb-GimpThumb-utils.html#gimp-thumbs-delete-for-uri-local" since="2.2"/>
     <keyword type="enum" name="enum GimpThumbFileType" link="libgimpthumb-GimpThumb-enums.html#GimpThumbFileType"/>
     <keyword type="enum" name="enum GimpThumbSize" link="libgimpthumb-GimpThumb-enums.html#GimpThumbSize"/>
     <keyword type="enum" name="enum GimpThumbState" link="libgimpthumb-GimpThumb-enums.html#GimpThumbState"/>

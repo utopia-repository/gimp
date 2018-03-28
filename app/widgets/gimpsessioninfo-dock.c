@@ -39,7 +39,6 @@
 #include "gimpsessioninfo-dock.h"
 #include "gimpsessioninfo-private.h"
 #include "gimptoolbox.h"
-#include "gimpwidgets-utils.h"
 
 
 enum
@@ -120,14 +119,22 @@ gimp_session_info_dock_serialize (GimpConfigWriter    *writer,
     {
       const char *side_text =
         dock_info->side == GIMP_ALIGN_LEFT ? "left" : "right";
-      
+
       gimp_config_writer_open (writer, "side");
       gimp_config_writer_print (writer, side_text, strlen (side_text));
       gimp_config_writer_close (writer);
     }
 
   if (dock_info->position != 0)
-    gimp_session_write_position (writer, dock_info->position);
+    {
+      gint position;
+
+      position = gimp_session_info_apply_position_accuracy (dock_info->position);
+
+      gimp_config_writer_open (writer, "position");
+      gimp_config_writer_printf (writer, "%d", position);
+      gimp_config_writer_close (writer);
+    }
 
   for (list = dock_info->books; list; list = g_list_next (list))
     gimp_session_info_book_serialize (writer, list->data);
@@ -270,6 +277,7 @@ GimpDock *
 gimp_session_info_dock_restore (GimpSessionInfoDock *dock_info,
                                 GimpDialogFactory   *factory,
                                 GdkScreen           *screen,
+                                gint                 monitor,
                                 GimpDockContainer   *dock_container)
 {
   gint           n_books = 0;
@@ -283,6 +291,7 @@ gimp_session_info_dock_restore (GimpSessionInfoDock *dock_info,
   ui_manager = gimp_dock_container_get_ui_manager (dock_container);
   dock       = gimp_dialog_factory_dialog_new (factory,
                                                screen,
+                                               monitor,
                                                ui_manager,
                                                dock_info->dock_type,
                                                -1 /*view_size*/,
@@ -300,7 +309,7 @@ gimp_session_info_dock_restore (GimpSessionInfoDock *dock_info,
   /* Note that if it is a toolbox, we will get here even though we
    * don't have any books
    */
-  for (iter = dock_info ? dock_info->books : NULL;
+  for (iter = dock_info->books;
        iter;
        iter = g_list_next (iter))
     {
@@ -330,7 +339,7 @@ gimp_session_info_dock_restore (GimpSessionInfoDock *dock_info,
    * gimp_session_info_book_restore() which explains why the dock
    * can contain empty dockbooks at all
    */
-  if (dock_info && dock_info->books)
+  if (dock_info->books)
     {
       GList *books;
 
@@ -360,7 +369,7 @@ gimp_session_info_dock_restore (GimpSessionInfoDock *dock_info,
     }
 
   /*  if we removed all books again, the dock was destroyed, so bail out  */
-  if (dock_info && dock_info->books && n_books == 0)
+  if (dock_info->books && n_books == 0)
     {
       return NULL;
     }

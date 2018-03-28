@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpconfig/gimpconfig.h"
@@ -67,29 +68,33 @@ gimp_selection_options_class_init (GimpSelectionOptionsClass *klass)
   object_class->set_property = gimp_selection_options_set_property;
   object_class->get_property = gimp_selection_options_get_property;
 
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_OPERATION,
-                                 "operation", NULL,
-                                 GIMP_TYPE_CHANNEL_OPS,
-                                 GIMP_CHANNEL_OP_REPLACE,
-                                 GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_OPERATION,
+                         "operation",
+                         NULL, NULL,
+                         GIMP_TYPE_CHANNEL_OPS,
+                         GIMP_CHANNEL_OP_REPLACE,
+                         GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_ANTIALIAS,
-                                    "antialias",
-                                    N_("Smooth edges"),
-                                    TRUE,
-                                    GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_ANTIALIAS,
+                            "antialias",
+                            _("Antialiasing"),
+                            _("Smooth edges"),
+                            TRUE,
+                            GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_FEATHER,
-                                    "feather",
-                                    N_("Enable feathering of selection edges"),
-                                    FALSE,
-                                    GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_FEATHER,
+                            "feather",
+                            _("Feather edges"),
+                            _("Enable feathering of selection edges"),
+                            FALSE,
+                            GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_FEATHER_RADIUS,
-                                   "feather-radius",
-                                   N_("Radius of feathering"),
-                                   0.0, 100.0, 10.0,
-                                   GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_FEATHER_RADIUS,
+                           "feather-radius",
+                           _("Radius"),
+                           _("Radius of feathering"),
+                           0.0, 100.0, 10.0,
+                           GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void
@@ -218,8 +223,8 @@ gimp_selection_options_gui (GimpToolOptions *tool_options)
     gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
     gtk_widget_show (label);
 
-    box = gimp_prop_enum_stock_box_new (config, "operation",
-                                        "gimp-selection", 0, 0);
+    box = gimp_prop_enum_icon_box_new (config, "operation",
+                                       "gimp-selection", 0, 0);
     gtk_box_pack_start (GTK_BOX (hbox), box, FALSE, FALSE, 0);
     gtk_widget_show (box);
 
@@ -260,8 +265,7 @@ gimp_selection_options_gui (GimpToolOptions *tool_options)
   }
 
   /*  the antialias toggle button  */
-  button = gimp_prop_check_button_new (config, "antialias",
-                                       _("Antialiasing"));
+  button = gimp_prop_check_button_new (config, "antialias", NULL);
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
@@ -273,12 +277,10 @@ gimp_selection_options_gui (GimpToolOptions *tool_options)
     GtkWidget *scale;
 
     /*  the feather radius scale  */
-    scale = gimp_prop_spin_scale_new (config, "feather-radius",
-                                      _("Radius"),
+    scale = gimp_prop_spin_scale_new (config, "feather-radius", NULL,
                                       1.0, 10.0, 1);
 
-    frame = gimp_prop_expanding_frame_new (config, "feather",
-                                           _("Feather edges"),
+    frame = gimp_prop_expanding_frame_new (config, "feather", NULL,
                                            scale, NULL);
     gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
     gtk_widget_show (frame);

@@ -49,6 +49,13 @@
   (gtype-id "GIMP_TYPE_COLOR_BUTTON")
 )
 
+(define-object ColorConfig
+  (in-module "Gimp")
+  (parent "GObject")
+  (c-name "GimpColorConfig")
+  (gtype-id "GIMP_TYPE_COLOR_CONFIG")
+)
+
 (define-object ColorDisplay
   (in-module "Gimp")
   (parent "GObject")
@@ -391,6 +398,14 @@
   (parent "GimpScrolledPreview")
   (c-name "GimpZoomPreview")
   (gtype-id "GIMP_TYPE_ZOOM_PREVIEW")
+)
+
+;; Interfaces
+
+(define-interface ColorManaged
+  (in-module "Gimp")
+  (c-name "GimpColorManaged")
+  (gtype-id "GIMP_TYPE_COLOR_MANAGED")
 )
 
 ;; Enumerations and flags ...
@@ -1426,6 +1441,11 @@
   (parameters
     '("GType" "enum_type")
   )
+)
+
+(define-function gimp_ui_init
+  (c-name "gimp_ui_init")
+  (return-type "none")
 )
 
 (define-function gimp_enum_combo_box_new_with_model
@@ -3109,7 +3129,7 @@
   (parameters
     '("gdouble*" "opacity")
     '("gint*" "spacing")
-    '("GimpLayerModeEffects*" "paint_mode")
+    '("GimpLayerMode*" "paint_mode")
   )
 )
 
@@ -3121,7 +3141,7 @@
     '("const-gchar*" "brush_name")
     '("gdouble" "opacity")
     '("gint" "spacing")
-    '("GimpLayerModeEffects" "paint_mode")
+    '("GimpLayerMode" "paint_mode")
   )
 )
 

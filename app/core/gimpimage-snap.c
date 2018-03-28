@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "libgimpmath/gimpmath.h"
@@ -82,7 +83,7 @@ gimp_image_snap_x (GimpImage *image,
           GimpGuide *guide    = list->data;
           gint       position = gimp_guide_get_position (guide);
 
-          if (position < 0)
+          if (gimp_guide_is_custom (guide))
             continue;
 
           if (gimp_guide_get_orientation (guide) == GIMP_ORIENTATION_VERTICAL)
@@ -99,21 +100,17 @@ gimp_image_snap_x (GimpImage *image,
       GimpGrid *grid = gimp_image_get_grid (image);
       gdouble   xspacing;
       gdouble   xoffset;
-      gdouble   i;
 
       gimp_grid_get_spacing (grid, &xspacing, NULL);
       gimp_grid_get_offset  (grid, &xoffset,  NULL);
 
-      /* the snap-to-grid part could probably be rewritten */
-      while (xoffset > xspacing)
-        xoffset -= xspacing;
-
-      for (i = xoffset; i <= gimp_image_get_width (image); i += xspacing)
+      if (xspacing > 0.0)
         {
-          if (i < 0)
-            continue;
+          gdouble nearest;
 
-          snapped |= gimp_image_snap_distance (x, i,
+          nearest = xoffset + RINT ((x - xoffset) / xspacing) * xspacing;
+
+          snapped |= gimp_image_snap_distance (x, nearest,
                                                epsilon_x,
                                                &mindist, tx);
         }
@@ -167,7 +164,7 @@ gimp_image_snap_y (GimpImage *image,
           GimpGuide *guide    = list->data;
           gint       position = gimp_guide_get_position (guide);
 
-          if (position < 0)
+          if (gimp_guide_is_custom (guide))
             continue;
 
           if (gimp_guide_get_orientation (guide) == GIMP_ORIENTATION_HORIZONTAL)
@@ -182,22 +179,19 @@ gimp_image_snap_y (GimpImage *image,
   if (snap_to_grid)
     {
       GimpGrid *grid = gimp_image_get_grid (image);
-      gdouble    yspacing;
-      gdouble    yoffset;
-      gdouble    i;
+      gdouble   yspacing;
+      gdouble   yoffset;
 
       gimp_grid_get_spacing (grid, NULL, &yspacing);
       gimp_grid_get_offset  (grid, NULL, &yoffset);
 
-      while (yoffset > yspacing)
-        yoffset -= yspacing;
-
-      for (i = yoffset; i <= gimp_image_get_height (image); i += yspacing)
+      if (yspacing > 0.0)
         {
-          if (i < 0)
-            continue;
+          gdouble nearest;
 
-          snapped |= gimp_image_snap_distance (y, i,
+          nearest = yoffset + RINT ((y - yoffset) / yspacing) * yspacing;
+
+          snapped |= gimp_image_snap_distance (y, nearest,
                                                epsilon_y,
                                                &mindist, ty);
         }
@@ -262,7 +256,7 @@ gimp_image_snap_point (GimpImage *image,
           GimpGuide *guide    = list->data;
           gint       position = gimp_guide_get_position (guide);
 
-          if (position < 0)
+          if (gimp_guide_is_custom (guide))
             continue;
 
           switch (gimp_guide_get_orientation (guide))
@@ -290,33 +284,28 @@ gimp_image_snap_point (GimpImage *image,
       GimpGrid *grid = gimp_image_get_grid (image);
       gdouble   xspacing, yspacing;
       gdouble   xoffset, yoffset;
-      gdouble   i;
 
       gimp_grid_get_spacing (grid, &xspacing, &yspacing);
       gimp_grid_get_offset  (grid, &xoffset,  &yoffset);
 
-      while (xoffset > xspacing)
-        xoffset -= xspacing;
-
-      while (yoffset > yspacing)
-        yoffset -= yspacing;
-
-      for (i = xoffset; i <= gimp_image_get_width (image); i += xspacing)
+      if (xspacing > 0.0)
         {
-          if (i < 0)
-            continue;
+          gdouble nearest;
 
-          snapped |= gimp_image_snap_distance (x, i,
+          nearest = xoffset + RINT ((x - xoffset) / xspacing) * xspacing;
+
+          snapped |= gimp_image_snap_distance (x, nearest,
                                                epsilon_x,
                                                &mindist_x, tx);
         }
 
-      for (i = yoffset; i <= gimp_image_get_height (image); i += yspacing)
+      if (yspacing > 0.0)
         {
-          if (i < 0)
-            continue;
+          gdouble nearest;
 
-          snapped |= gimp_image_snap_distance (y, i,
+          nearest = yoffset + RINT ((y - yoffset) / yspacing) * yspacing;
+
+          snapped |= gimp_image_snap_distance (y, nearest,
                                                epsilon_y,
                                                &mindist_y, ty);
         }
@@ -701,7 +690,7 @@ gimp_image_snap_rectangle (GimpImage *image,
  * Finds out if snapping occurs from position to a snapping candidate
  * and sets the target accordingly.
  *
- * Return value: %TRUE if snapping occured, %FALSE otherwise
+ * Return value: %TRUE if snapping occurred, %FALSE otherwise
  */
 static gboolean
 gimp_image_snap_distance (const gdouble  unsnapped,

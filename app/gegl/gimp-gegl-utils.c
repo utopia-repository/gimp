@@ -20,151 +20,134 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include <gegl.h>
+#include <gegl-plugin.h>
 
 #include "gimp-gegl-types.h"
 
-#include "base/tile-manager.h"
+#include "core/gimpprogress.h"
 
 #include "gimp-gegl-utils.h"
 
 
-/**
- * gimp_bpp_to_babl_format:
- * @bpp: bytes per pixel
- * @linear: whether the pixels are linear or gamma-corrected.
- *
- * Return the Babl format to use for a given number of bytes per pixel.
- * This function assumes that the data is 8bit.
- *
- * Return value: the Babl format to use
- **/
-const Babl *
-gimp_bpp_to_babl_format (guint    bpp,
-                         gboolean linear)
+GType
+gimp_gegl_get_op_enum_type (const gchar *operation,
+                            const gchar *property)
 {
-  g_return_val_if_fail (bpp > 0 && bpp <= 4, NULL);
+  GeglNode   *node;
+  GObject    *op;
+  GParamSpec *pspec;
 
-  if (linear)
+  g_return_val_if_fail (operation != NULL, G_TYPE_NONE);
+  g_return_val_if_fail (property != NULL, G_TYPE_NONE);
+
+  node = g_object_new (GEGL_TYPE_NODE,
+                       "operation", operation,
+                       NULL);
+  g_object_get (node, "gegl-operation", &op, NULL);
+  g_object_unref (node);
+
+  g_return_val_if_fail (op != NULL, G_TYPE_NONE);
+
+  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (op), property);
+
+  g_return_val_if_fail (G_IS_PARAM_SPEC_ENUM (pspec), G_TYPE_NONE);
+
+  g_object_unref (op);
+
+  return G_TYPE_FROM_CLASS (G_PARAM_SPEC_ENUM (pspec)->enum_class);
+}
+
+GeglColor *
+gimp_gegl_color_new (const GimpRGB *rgb)
+{
+  GeglColor *color;
+
+  g_return_val_if_fail (rgb != NULL, NULL);
+
+  color = gegl_color_new (NULL);
+  gegl_color_set_pixel (color, babl_format ("R'G'B'A double"), rgb);
+
+  return color;
+}
+
+static void
+gimp_gegl_progress_callback (GObject      *object,
+                             gdouble       value,
+                             GimpProgress *progress)
+{
+  if (value == 0.0)
     {
-      switch (bpp)
-        {
-        case 1:
-          return babl_format ("Y u8");
-        case 2:
-          return babl_format ("YA u8");
-        case 3:
-          return babl_format ("RGB u8");
-        case 4:
-          return babl_format ("RGBA u8");
-        }
+      const gchar *text = g_object_get_data (object, "gimp-progress-text");
+
+      if (gimp_progress_is_active (progress))
+        gimp_progress_set_text (progress, "%s", text);
+      else
+        gimp_progress_start (progress, FALSE, "%s", text);
     }
   else
     {
-      switch (bpp)
-        {
-        case 1:
-          return babl_format ("Y' u8");
-        case 2:
-          return babl_format ("Y'A u8");
-        case 3:
-          return babl_format ("R'G'B' u8");
-        case 4:
-          return babl_format ("R'G'B'A u8");
-        }
+      gimp_progress_set_value (progress, value);
+
+      if (value == 1.0)
+        gimp_progress_end (progress);
     }
-
-  return NULL;
 }
 
-static gint
-gimp_babl_format_to_legacy_bpp (const Babl *format)
+void
+gimp_gegl_progress_connect (GeglNode     *node,
+                            GimpProgress *progress,
+                            const gchar  *text)
 {
-  return babl_format_get_n_components (format);
+  g_return_if_fail (GEGL_IS_NODE (node));
+  g_return_if_fail (GIMP_IS_PROGRESS (progress));
+  g_return_if_fail (text != NULL);
+
+  g_signal_connect (node, "progress",
+                    G_CALLBACK (gimp_gegl_progress_callback),
+                    progress);
+
+  g_object_set_data_full (G_OBJECT (node),
+                          "gimp-progress-text", g_strdup (text),
+                          (GDestroyNotify) g_free);
 }
 
-TileManager *
-gimp_buffer_to_tiles (GeglBuffer *buffer)
+const Babl *
+gimp_gegl_node_get_format (GeglNode    *node,
+                           const gchar *pad_name)
 {
-  const Babl    *format     = gegl_buffer_get_format (buffer);
-  TileManager   *new_tiles  = NULL;
-  GeglNode      *source     = NULL;
-  GeglNode      *sink       = NULL;
+  GeglOperation *op;
+  const Babl    *format = NULL;
 
-  g_return_val_if_fail (buffer != NULL, NULL);
+  g_return_val_if_fail (GEGL_IS_NODE (node), NULL);
+  g_return_val_if_fail (pad_name != NULL, NULL);
 
-  /* Setup and process the graph */
-  new_tiles = tile_manager_new (gegl_buffer_get_width (buffer),
-                                gegl_buffer_get_height (buffer),
-                                gimp_babl_format_to_legacy_bpp (format));
-  source = gegl_node_new_child (NULL,
-                                "operation", "gegl:buffer-source",
-                                "buffer",    buffer,
-                                NULL);
-  sink = gegl_node_new_child (NULL,
-                              "operation",    "gimp:tilemanager-sink",
-                              "tile-manager", new_tiles,
-                              NULL);
-  gegl_node_link_many (source, sink, NULL);
-  gegl_node_process (sink);
+  g_object_get (node, "gegl-operation", &op, NULL);
 
-  /* Clenaup */
-  g_object_unref (sink);
-  g_object_unref (source);
-
-  return new_tiles;
-}
-
-const gchar *
-gimp_layer_mode_to_gegl_operation (GimpLayerModeEffects mode)
-{
-  switch (mode)
+  if (op)
     {
-    case GIMP_NORMAL_MODE:        return "gegl:over";
-    case GIMP_DISSOLVE_MODE:      return "gimp:dissolve-mode";
-    case GIMP_BEHIND_MODE:        return "gimp:behind-mode";
-    case GIMP_MULTIPLY_MODE:      return "gimp:multiply-mode";
-    case GIMP_SCREEN_MODE:        return "gimp:screen-mode";
-    case GIMP_OVERLAY_MODE:       return "gimp:overlay-mode";
-    case GIMP_DIFFERENCE_MODE:    return "gimp:difference-mode";
-    case GIMP_ADDITION_MODE:      return "gimp:addition-mode";
-    case GIMP_SUBTRACT_MODE:      return "gimp:subtract-mode";
-    case GIMP_DARKEN_ONLY_MODE:   return "gimp:darken-mode";
-    case GIMP_LIGHTEN_ONLY_MODE:  return "gimp:lighten-mode";
-    case GIMP_HUE_MODE:           return "gimp:hue-mode";
-    case GIMP_SATURATION_MODE:    return "gimp:saturation-mode";
-    case GIMP_COLOR_MODE:         return "gimp:color-mode";
-    case GIMP_VALUE_MODE:         return "gimp:value-mode";
-    case GIMP_DIVIDE_MODE:        return "gimp:divide-mode";
-    case GIMP_DODGE_MODE:         return "gimp:dodge-mode";
-    case GIMP_BURN_MODE:          return "gimp:burn-mode";
-    case GIMP_HARDLIGHT_MODE:     return "gimp:hardlight-mode";
-    case GIMP_SOFTLIGHT_MODE:     return "gimp:softlight-mode";
-    case GIMP_GRAIN_EXTRACT_MODE: return "gimp:grain-extract-mode";
-    case GIMP_GRAIN_MERGE_MODE:   return "gimp:grain-merge-mode";
-    case GIMP_COLOR_ERASE_MODE:   return "gimp:color-erase-mode";
-    case GIMP_ERASE_MODE:         return "gimp:erase-mode";
-    case GIMP_REPLACE_MODE:       return "gimp:replace-mode";
-    case GIMP_ANTI_ERASE_MODE:    return "gimp:anti-erase-mode";
-    default:
-      break;
+      format = gegl_operation_get_format (op, pad_name);
+
+      g_object_unref (op);
     }
 
-  return "gegl:over";
+  if (! format)
+    format = babl_format ("RGBA float");
+
+  return format;
 }
 
-const gchar *
-gimp_interpolation_to_gegl_filter (GimpInterpolationType interpolation)
+gboolean
+gimp_gegl_param_spec_has_key (GParamSpec  *pspec,
+                              const gchar *key,
+                              const gchar *value)
 {
-  switch (interpolation)
-    {
-    case GIMP_INTERPOLATION_NONE:    return "nearest";
-    case GIMP_INTERPOLATION_LINEAR:  return "linear";
-    case GIMP_INTERPOLATION_CUBIC:   return "cubic";
-    case GIMP_INTERPOLATION_LANCZOS: return "lohalo";
-    default:
-      break;
-    }
+  const gchar *v = gegl_param_spec_get_property_key (pspec, key);
 
-  return "nearest";
+  if (v && ! strcmp (v, value))
+    return TRUE;
+
+  return FALSE;
 }

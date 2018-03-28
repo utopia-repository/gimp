@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "core-types.h"
@@ -164,17 +165,17 @@ gimp_projectable_get_image (GimpProjectable *projectable)
   return NULL;
 }
 
-GimpImageType
-gimp_projectable_get_image_type (GimpProjectable *projectable)
+const Babl *
+gimp_projectable_get_format (GimpProjectable *projectable)
 {
   GimpProjectableInterface *iface;
 
-  g_return_val_if_fail (GIMP_IS_PROJECTABLE (projectable), 0);
+  g_return_val_if_fail (GIMP_IS_PROJECTABLE (projectable), NULL);
 
   iface = GIMP_PROJECTABLE_GET_INTERFACE (projectable);
 
-  if (iface->get_image_type)
-    return iface->get_image_type (projectable);
+  if (iface->get_format)
+    return iface->get_format (projectable);
 
   return 0;
 }
@@ -235,6 +236,32 @@ gimp_projectable_get_graph (GimpProjectable *projectable)
 }
 
 void
+gimp_projectable_begin_render (GimpProjectable *projectable)
+{
+  GimpProjectableInterface *iface;
+
+  g_return_if_fail (GIMP_IS_PROJECTABLE (projectable));
+
+  iface = GIMP_PROJECTABLE_GET_INTERFACE (projectable);
+
+  if (iface->begin_render)
+    iface->begin_render (projectable);
+}
+
+void
+gimp_projectable_end_render (GimpProjectable *projectable)
+{
+  GimpProjectableInterface *iface;
+
+  g_return_if_fail (GIMP_IS_PROJECTABLE (projectable));
+
+  iface = GIMP_PROJECTABLE_GET_INTERFACE (projectable);
+
+  if (iface->end_render)
+    iface->end_render (projectable);
+}
+
+void
 gimp_projectable_invalidate_preview (GimpProjectable *projectable)
 {
   GimpProjectableInterface *iface;
@@ -245,34 +272,4 @@ gimp_projectable_invalidate_preview (GimpProjectable *projectable)
 
   if (iface->invalidate_preview)
     iface->invalidate_preview (projectable);
-}
-
-GList *
-gimp_projectable_get_layers (GimpProjectable *projectable)
-{
-  GimpProjectableInterface *iface;
-
-  g_return_val_if_fail (GIMP_IS_PROJECTABLE (projectable), NULL);
-
-  iface = GIMP_PROJECTABLE_GET_INTERFACE (projectable);
-
-  if (iface->get_layers)
-    return iface->get_layers (projectable);
-
-  return NULL;
-}
-
-GList *
-gimp_projectable_get_channels (GimpProjectable *projectable)
-{
-  GimpProjectableInterface *iface;
-
-  g_return_val_if_fail (GIMP_IS_PROJECTABLE (projectable), NULL);
-
-  iface = GIMP_PROJECTABLE_GET_INTERFACE (projectable);
-
-  if (iface->get_channels)
-    return iface->get_channels (projectable);
-
-  return NULL;
 }

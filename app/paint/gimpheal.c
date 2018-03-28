@@ -1,6 +1,10 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
+ * gimpheal.c
+ * Copyright (C) Jean-Yves Couleaud <cjyves@free.fr>
+ * Copyright (C) 2013 Loren Merritt
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -17,8 +21,10 @@
 
 #include "config.h"
 
+#include <stdint.h>
 #include <string.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -26,18 +32,13 @@
 
 #include "paint-types.h"
 
-#include "paint-funcs/paint-funcs.h"
-
-#include "base/pixel-region.h"
-#include "base/temp-buf.h"
-
 #include "core/gimpbrush.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpdynamics.h"
-#include "core/gimpdynamicsoutput.h"
 #include "core/gimperror.h"
 #include "core/gimpimage.h"
 #include "core/gimppickable.h"
+#include "core/gimptempbuf.h"
 
 #include "gimpheal.h"
 #include "gimpsourceoptions.h"
@@ -48,15 +49,14 @@
 
 /* NOTES
  *
- * The method used here is similar to the lighting invariant correctin
+ * The method used here is similar to the lighting invariant correction
  * method but slightly different: we do not divide the RGB components,
- * but substract them I2 = I0 - I1, where I0 is the sample image to be
+ * but subtract them I2 = I0 - I1, where I0 is the sample image to be
  * corrected, I1 is the reference pattern. Then we solve DeltaI=0
  * (Laplace) with I2 Dirichlet conditions at the borders of the
- * mask. The solver is a unoptimized red/black checker Gauss-Siedel
- * with an over-relaxation factor of 1.8. It can benefit from a
- * multi-grid evaluation of an initial solution before the main
- * iteration loop.
+ * mask. The solver is a red/black checker Gauss-Seidel with over-relaxation.
+ * It could benefit from a multi-grid evaluation of an initial solution
+ * before the main iteration loop.
  *
  * I reduced the convergence criteria to 0.1% (0.001) as we are
  * dealing here with RGB integer components, more is overkill.
@@ -69,46 +69,30 @@ static gboolean     gimp_heal_start              (GimpPaintCore    *paint_core,
                                                   GimpPaintOptions *paint_options,
                                                   const GimpCoords *coords,
                                                   GError          **error);
-
-static void         gimp_heal_sub                (PixelRegion      *topPR,
-                                                  PixelRegion      *bottomPR,
-                                                  gdouble          *result);
-
-static void         gimp_heal_add                (gdouble          *first,
-                                                  PixelRegion      *secondPR,
-                                                  PixelRegion      *resultPR);
-
-static gdouble      gimp_heal_laplace_iteration  (gdouble          *matrix,
-                                                  gint              height,
-                                                  gint              depth,
-                                                  gint              width,
-                                                  gdouble          *solution,
-                                                  guchar           *mask,
-                                                  gint              mask_stride,
-                                                  gint              mask_offx,
-                                                  gint              mask_offy);
-
-static void         gimp_heal_laplace_loop       (gdouble          *matrix,
-                                                  gint              height,
-                                                  gint              depth,
-                                                  gint              width,
-                                                  gdouble          *solution,
-                                                  PixelRegion      *maskPR);
-
-static PixelRegion *gimp_heal_region             (PixelRegion      *tempPR,
-                                                  PixelRegion      *srcPR,
-                                                  PixelRegion      *maskPR);
+static GeglBuffer * gimp_heal_get_paint_buffer   (GimpPaintCore    *core,
+                                                  GimpDrawable     *drawable,
+                                                  GimpPaintOptions *paint_options,
+                                                  GimpLayerMode     paint_mode,
+                                                  const GimpCoords *coords,
+                                                  gint             *paint_buffer_x,
+                                                  gint             *paint_buffer_y,
+                                                  gint             *paint_width,
+                                                  gint             *paint_height);
 
 static void         gimp_heal_motion             (GimpSourceCore   *source_core,
                                                   GimpDrawable     *drawable,
                                                   GimpPaintOptions *paint_options,
                                                   const GimpCoords *coords,
+                                                  GeglNode         *op,
                                                   gdouble           opacity,
                                                   GimpPickable     *src_pickable,
-                                                  PixelRegion      *srcPR,
+                                                  GeglBuffer       *src_buffer,
+                                                  GeglRectangle    *src_rect,
                                                   gint              src_offset_x,
                                                   gint              src_offset_y,
-                                                  TempBuf          *paint_area,
+                                                  GeglBuffer       *paint_buffer,
+                                                  gint              paint_buffer_x,
+                                                  gint              paint_buffer_y,
                                                   gint              paint_area_offset_x,
                                                   gint              paint_area_offset_y,
                                                   gint              paint_area_width,
@@ -138,9 +122,10 @@ gimp_heal_class_init (GimpHealClass *klass)
   GimpPaintCoreClass  *paint_core_class  = GIMP_PAINT_CORE_CLASS (klass);
   GimpSourceCoreClass *source_core_class = GIMP_SOURCE_CORE_CLASS (klass);
 
-  paint_core_class->start   = gimp_heal_start;
+  paint_core_class->start            = gimp_heal_start;
+  paint_core_class->get_paint_buffer = gimp_heal_get_paint_buffer;
 
-  source_core_class->motion = gimp_heal_motion;
+  source_core_class->motion          = gimp_heal_motion;
 }
 
 static void
@@ -174,240 +159,267 @@ gimp_heal_start (GimpPaintCore     *paint_core,
   return TRUE;
 }
 
-/* Subtract bottomPR from topPR and store the result as a double
+static GeglBuffer *
+gimp_heal_get_paint_buffer (GimpPaintCore    *core,
+                            GimpDrawable     *drawable,
+                            GimpPaintOptions *paint_options,
+                            GimpLayerMode     paint_mode,
+                            const GimpCoords *coords,
+                            gint             *paint_buffer_x,
+                            gint             *paint_buffer_y,
+                            gint             *paint_width,
+                            gint             *paint_height)
+{
+  return GIMP_PAINT_CORE_CLASS (parent_class)->get_paint_buffer (core,
+                                                                 drawable,
+                                                                 paint_options,
+                                                                 GIMP_LAYER_MODE_NORMAL,
+                                                                 coords,
+                                                                 paint_buffer_x,
+                                                                 paint_buffer_y,
+                                                                 paint_width,
+                                                                 paint_height);
+}
+
+/* Subtract bottom from top and store in result as a float
  */
 static void
-gimp_heal_sub (PixelRegion *topPR,
-               PixelRegion *bottomPR,
-               gdouble     *result)
+gimp_heal_sub (GeglBuffer          *top_buffer,
+               const GeglRectangle *top_rect,
+               GeglBuffer          *bottom_buffer,
+               const GeglRectangle *bottom_rect,
+               GeglBuffer          *result_buffer,
+               const GeglRectangle *result_rect)
 {
-  gint     i, j, k;
+  GeglBufferIterator *iter;
+  const Babl         *format       = gegl_buffer_get_format (top_buffer);
+  gint                n_components = babl_format_get_n_components (format);
 
-  gint     height = topPR->h;
-  gint     width  = topPR->w;
-  gint     depth  = topPR->bytes;
+  if (n_components == 2)
+    format = babl_format ("Y'A float");
+  else if (n_components == 4)
+    format = babl_format ("R'G'B'A float");
+  else
+    g_return_if_reached ();
 
-  guchar  *t_data = topPR->data;
-  guchar  *b_data = bottomPR->data;
+  iter = gegl_buffer_iterator_new (top_buffer, top_rect, 0, format,
+                                   GEGL_ACCESS_READ, GEGL_ABYSS_NONE);
 
-  guchar  *t;
-  guchar  *b;
-  gdouble *r      = result;
+  gegl_buffer_iterator_add (iter, bottom_buffer, bottom_rect, 0, format,
+                            GEGL_ACCESS_READ, GEGL_ABYSS_NONE);
 
-  g_assert (topPR->bytes == bottomPR->bytes);
+  gegl_buffer_iterator_add (iter, result_buffer, result_rect, 0,
+                            babl_format_n (babl_type ("float"), n_components),
+                            GEGL_ACCESS_WRITE, GEGL_ABYSS_NONE);
 
-  for (i = 0; i < height; i++)
+  while (gegl_buffer_iterator_next (iter))
     {
-      t = t_data;
-      b = b_data;
+      gfloat *t      = iter->data[0];
+      gfloat *b      = iter->data[1];
+      gfloat *r      = iter->data[2];
+      gint    length = iter->length * n_components;
 
-      for (j = 0; j < width; j++)
-        {
-          for (k = 0; k < depth; k++)
-            {
-              r[k] = (gdouble) (t[k]) - (gdouble) (b[k]);
-            }
-          t += depth;
-          b += depth;
-          r += depth;
-        }
-
-      t_data += topPR->rowstride;
-      b_data += bottomPR->rowstride;
+      while (length--)
+        *r++ = *t++ - *b++;
     }
 }
 
-/* Add first to secondPR and store the result as a PixelRegion
+/* Add first to second and store in result
  */
 static void
-gimp_heal_add (gdouble     *first,
-               PixelRegion *secondPR,
-               PixelRegion *resultPR)
+gimp_heal_add (GeglBuffer          *first_buffer,
+               const GeglRectangle *first_rect,
+               GeglBuffer          *second_buffer,
+               const GeglRectangle *second_rect,
+               GeglBuffer          *result_buffer,
+               const GeglRectangle *result_rect)
 {
-  gint     i, j, k;
+  GeglBufferIterator *iter;
+  const Babl         *format       = gegl_buffer_get_format (result_buffer);
+  gint                n_components = babl_format_get_n_components (format);
 
-  gint     height = secondPR->h;
-  gint     width  = secondPR->w;
-  gint     depth  = secondPR->bytes;
+  if (n_components == 2)
+    format = babl_format ("Y'A float");
+  else if (n_components == 4)
+    format = babl_format ("R'G'B'A float");
+  else
+    g_return_if_reached ();
 
-  guchar  *s_data = secondPR->data;
-  guchar  *r_data = resultPR->data;
+  iter = gegl_buffer_iterator_new (first_buffer, first_rect, 0,
+                                   babl_format_n (babl_type ("float"),
+                                                  n_components),
+                                   GEGL_ACCESS_READ, GEGL_ABYSS_NONE);
 
-  gdouble *f      = first;
-  guchar  *s;
-  guchar  *r;
+  gegl_buffer_iterator_add (iter, second_buffer, second_rect, 0, format,
+                            GEGL_ACCESS_READ, GEGL_ABYSS_NONE);
 
-  g_assert (secondPR->bytes == resultPR->bytes);
+  gegl_buffer_iterator_add (iter, result_buffer, result_rect, 0, format,
+                            GEGL_ACCESS_WRITE, GEGL_ABYSS_NONE);
 
-  for (i = 0; i < height; i++)
+  while (gegl_buffer_iterator_next (iter))
     {
-      s = s_data;
-      r = r_data;
+      gfloat *f      = iter->data[0];
+      gfloat *s      = iter->data[1];
+      gfloat *r      = iter->data[2];
+      gint    length = iter->length * n_components;
 
-      for (j = 0; j < width; j++)
-        {
-          for (k = 0; k < depth; k++)
-            {
-              r[k] = (guchar) CLAMP0255 (ROUND (((gdouble) (f[k])) +
-                                                ((gdouble) (s[k]))));
-            }
-
-          f += depth;
-          s += depth;
-          r += depth;
-        }
-
-      s_data += secondPR->rowstride;
-      r_data += resultPR->rowstride;
+      while (length--)
+        *r++ = *f++ + *s++;
     }
 }
 
-/* Perform one iteration of the laplace solver for matrix.  Store the
- * result in solution and return the square of the cummulative error
- * of the solution.
- */
-static gdouble
-gimp_heal_laplace_iteration (gdouble *matrix,
-                             gint     height,
-                             gint     depth,
-                             gint     width,
-                             gdouble *solution,
-                             guchar  *mask,
-                             gint     mask_stride,
-                             gint     mask_offx,
-                             gint     mask_offy)
+#if defined(__SSE__) && defined(__GNUC__) && __GNUC__ >= 4
+static float
+gimp_heal_laplace_iteration_sse (gfloat *pixels,
+                                 gfloat *Adiag,
+                                 gint   *Aidx,
+                                 gfloat  w,
+                                 gint    nmask)
 {
-  const gint    rowstride = width * depth;
-  gint          i, j, k, off, offm, offm0, off0;
-  gdouble       tmp, diff;
-  gdouble       err       = 0.0;
-  const gdouble w         = 1.80 * 0.25; /* Over-relaxation = 1.8 */
+  typedef float v4sf __attribute__((vector_size(16)));
+  gint i;
+  v4sf wv  = { w, w, w, w };
+  v4sf err = { 0, 0, 0, 0 };
+  union { v4sf v; float f[4]; } erru;
 
-  /* we use a red/black checker model of the discretization grid */
+#define Xv(j) (*(v4sf*)&pixels[Aidx[i * 5 + j]])
 
-  /* do reds */
-  for (i = 0; i < height; i++)
+  for (i = 0; i < nmask; i++)
     {
-      off0  = i * rowstride;
-      offm0 = (i + mask_offy) * mask_stride;
+      v4sf a    = { Adiag[i], Adiag[i], Adiag[i], Adiag[i] };
+      v4sf diff = a * Xv(0) - wv * (Xv(1) + Xv(2) + Xv(3) + Xv(4));
 
-      for (j = i % 2; j < width; j += 2)
-        {
-          off  = off0 + j * depth;
-          offm = offm0 + j + mask_offx;
-
-          if ((0 == mask[offm]) ||
-              (i == 0) || (i == (height - 1)) ||
-              (j == 0) || (j == (width - 1)))
-            {
-              /* do nothing at the boundary or outside mask */
-              for (k = 0; k < depth; k++)
-                solution[off + k] = matrix[off + k];
-            }
-          else
-            {
-              /* Use Gauss Siedel to get the correction factor then
-               * over-relax it
-               */
-              for (k = 0; k < depth; k++)
-                {
-                  tmp = solution[off + k];
-                  solution[off + k] = (matrix[off + k] +
-                                       w *
-                                       (matrix[off - depth + k] +     /* west */
-                                        matrix[off + depth + k] +     /* east */
-                                        matrix[off - rowstride + k] + /* north */
-                                        matrix[off + rowstride + k] - 4.0 *
-                                        matrix[off+k]));              /* south */
-
-                  diff = solution[off + k] - tmp;
-                  err += diff * diff;
-                }
-            }
-        }
+      Xv(0) -= diff;
+      err += diff * diff;
     }
 
+  erru.v = err;
 
-  /* Do blacks
-   *
-   * As we've done the reds earlier, we can use them right now to
-   * accelerate the convergence. So we have "solution" in the solver
-   * instead of "matrix" above
-   */
-  for (i = 0; i < height; i++)
+  return erru.f[0] + erru.f[1] + erru.f[2] + erru.f[3];
+}
+#endif
+
+/* Perform one iteration of Gauss-Seidel, and return the sum squared residual.
+ */
+static float
+gimp_heal_laplace_iteration (gfloat *pixels,
+                             gfloat *Adiag,
+                             gint   *Aidx,
+                             gfloat  w,
+                             gint    nmask,
+                             gint    depth)
+{
+  gint   i, k;
+  gfloat err = 0;
+
+#if defined(__SSE__) && defined(__GNUC__) && __GNUC__ >= 4
+  if (depth == 4)
+    return gimp_heal_laplace_iteration_sse (pixels, Adiag, Aidx, w, nmask);
+#endif
+
+  for (i = 0; i < nmask; i++)
     {
-      off0  = i * rowstride;
-      offm0 = (i + mask_offy) * mask_stride;
+      gint   j0 = Aidx[i * 5 + 0];
+      gint   j1 = Aidx[i * 5 + 1];
+      gint   j2 = Aidx[i * 5 + 2];
+      gint   j3 = Aidx[i * 5 + 3];
+      gint   j4 = Aidx[i * 5 + 4];
+      gfloat a  = Adiag[i];
 
-      for (j = (i % 2) ? 0 : 1; j < width; j += 2)
+      for (k = 0; k < depth; k++)
         {
-          off = off0 + j * depth;
-          offm = offm0 + j + mask_offx;
+          gfloat diff = (a * pixels[j0 + k] -
+                         w * (pixels[j1 + k] +
+                              pixels[j2 + k] +
+                              pixels[j3 + k] +
+                              pixels[j4 + k]));
 
-          if ((0 == mask[offm]) ||
-              (i == 0) || (i == (height - 1)) ||
-              (j == 0) || (j == (width - 1)))
-            {
-              /* do nothing at the boundary or outside mask */
-              for (k = 0; k < depth; k++)
-                solution[off + k] = matrix[off + k];
-            }
-          else
-            {
-              /* Use Gauss Siedel to get the correction factor then
-               * over-relax it
-               */
-              for (k = 0; k < depth; k++)
-                {
-                  tmp = solution[off + k];
-                  solution[off + k] = (matrix[off + k] +
-                                       w *
-                                       (solution[off - depth + k] +     /* west */
-                                        solution[off + depth + k] +     /* east */
-                                        solution[off - rowstride + k] + /* north */
-                                        solution[off + rowstride + k] - 4.0 *
-                                        matrix[off+k]));                /* south */
-
-                  diff = solution[off + k] - tmp;
-                  err += diff*diff;
-                }
-            }
+          pixels[j0 + k] -= diff;
+          err += diff * diff;
         }
     }
 
   return err;
 }
 
-/* Solve the laplace equation for matrix and store the result in solution.
+/* Solve the laplace equation for pixels and store the result in-place.
  */
 static void
-gimp_heal_laplace_loop (gdouble     *matrix,
-                        gint         height,
-                        gint         depth,
-                        gint         width,
-                        gdouble     *solution,
-                        PixelRegion *maskPR)
+gimp_heal_laplace_loop (gfloat *pixels,
+                        gint    height,
+                        gint    depth,
+                        gint    width,
+                        guchar *mask)
 {
-#define EPSILON   0.001
-#define MAX_ITER  500
-  gint i;
+  /* Tolerate a total deviation-from-smoothness of 0.1 LSBs at 8bit depth. */
+#define EPSILON  (0.1/255)
+#define MAX_ITER 500
 
-  /* repeat until convergence or max iterations */
-  for (i = 0; i < MAX_ITER; i++)
+  gint    i, j, iter, parity, nmask, zero;
+  gfloat *Adiag;
+  gint   *Aidx;
+  gfloat  w;
+
+  Adiag = g_new (gfloat, width * height);
+  Aidx  = g_new (gint, 5 * width * height);
+
+  /* All off-diagonal elements of A are either -1 or 0. We could store it as a
+   * general-purpose sparse matrix, but that adds some unnecessary overhead to
+   * the inner loop. Instead, assume exactly 4 off-diagonal elements in each
+   * row, all of which have value -1. Any row that in fact wants less than 4
+   * coefs can put them in a dummy column to be multiplied by an empty pixel.
+   */
+  zero = depth * width * height;
+  memset (pixels + zero, 0, depth * sizeof (gfloat));
+
+  /* Construct the system of equations.
+   * Arrange Aidx in checkerboard order, so that a single linear pass over that
+   * array results updating all of the red cells and then all of the black cells.
+   */
+  nmask = 0;
+  for (parity = 0; parity < 2; parity++)
+    for (i = 0; i < height; i++)
+      for (j = (i&1)^parity; j < width; j+=2)
+        if (mask[j + i * width])
+          {
+#define A_NEIGHBOR(o,di,dj) \
+            if ((dj<0 && j==0) || (dj>0 && j==width-1) || (di<0 && i==0) || (di>0 && i==height-1)) \
+              Aidx[o + nmask * 5] = zero; \
+            else                                               \
+              Aidx[o + nmask * 5] = ((i + di) * width + (j + dj)) * depth;
+
+            /* Omit Dirichlet conditions for any neighbors off the
+             * edge of the canvas.
+             */
+            Adiag[nmask] = 4 - (i==0) - (j==0) - (i==height-1) - (j==width-1);
+            A_NEIGHBOR (0,  0,  0);
+            A_NEIGHBOR (1,  0,  1);
+            A_NEIGHBOR (2,  1,  0);
+            A_NEIGHBOR (3,  0, -1);
+            A_NEIGHBOR (4, -1,  0);
+            nmask++;
+          }
+
+  /* Empirically optimal over-relaxation factor. (Benchmarked on
+   * round brushes, at least. I don't know whether aspect ratio
+   * affects it.)
+   */
+  w = 2.0 - 1.0 / (0.1575 * sqrt (nmask) + 0.8);
+  w *= 0.25;
+  for (i = 0; i < nmask; i++)
+    Adiag[i] *= w;
+
+  /* Gauss-Seidel with successive over-relaxation */
+  for (iter = 0; iter < MAX_ITER; iter++)
     {
-      gdouble sqr_err;
-
-      /* do one iteration and store the amount of error */
-      sqr_err = gimp_heal_laplace_iteration (matrix, height, depth, width,
-                                             solution, maskPR->data, maskPR->rowstride,
-                                             maskPR->x, maskPR->y);
-
-      /* copy solution to matrix */
-      memcpy (matrix, solution, width * height * depth * sizeof (double));
-
-      if (sqr_err < EPSILON)
+      gfloat err = gimp_heal_laplace_iteration (pixels, Adiag, Aidx,
+                                                w, nmask, depth);
+      if (err < EPSILON * EPSILON * w * w)
         break;
     }
+
+  g_free (Adiag);
+  g_free (Aidx);
 }
 
 /* Original Algorithm Design:
@@ -415,28 +427,66 @@ gimp_heal_laplace_loop (gdouble     *matrix,
  * T. Georgiev, "Photoshop Healing Brush: a Tool for Seamless Cloning
  * http://www.tgeorgiev.net/Photoshop_Healing.pdf
  */
-static PixelRegion *
-gimp_heal_region (PixelRegion   *tempPR,
-                  PixelRegion   *srcPR,
-                  PixelRegion   *maskPR)
+static void
+gimp_heal (GeglBuffer          *src_buffer,
+           const GeglRectangle *src_rect,
+           GeglBuffer          *dest_buffer,
+           const GeglRectangle *dest_rect,
+           GeglBuffer          *mask_buffer,
+           const GeglRectangle *mask_rect)
 {
-  gdouble *i_1  = g_new (gdouble, tempPR->h * tempPR->bytes * tempPR->w);
-  gdouble *i_2  = g_new (gdouble, tempPR->h * tempPR->bytes * tempPR->w);
+  const Babl *src_format;
+  const Babl *dest_format;
+  gint        src_components;
+  gint        dest_components;
+  gint        width;
+  gint        height;
+  gfloat     *diff, *diff_alloc;
+  GeglBuffer *diff_buffer;
+  guchar     *mask;
 
-  /* substract pattern to image and store the result as a double in i_1 */
-  gimp_heal_sub (tempPR, srcPR, i_1);
+  src_format  = gegl_buffer_get_format (src_buffer);
+  dest_format = gegl_buffer_get_format (dest_buffer);
 
-  /* FIXME: is a faster implementation needed? */
-  gimp_heal_laplace_loop (i_1, tempPR->h, tempPR->bytes, tempPR->w, i_2, maskPR);
+  src_components  = babl_format_get_n_components (src_format);
+  dest_components = babl_format_get_n_components (dest_format);
 
-  /* add solution to original image and store in tempPR */
-  gimp_heal_add (i_2, srcPR, tempPR);
+  width  = gegl_buffer_get_width  (src_buffer);
+  height = gegl_buffer_get_height (src_buffer);
 
-  /* clean up */
-  g_free (i_1);
-  g_free (i_2);
+  g_return_if_fail (src_components == dest_components);
 
-  return tempPR;
+  diff_alloc = g_new (gfloat, 4 + (width * height + 1) * src_components);
+  diff = (gfloat*)(((uintptr_t)diff_alloc + 15) & ~15);
+
+  diff_buffer =
+    gegl_buffer_linear_new_from_data (diff,
+                                      babl_format_n (babl_type ("float"),
+                                                     src_components),
+                                      GEGL_RECTANGLE (0, 0, width, height),
+                                      GEGL_AUTO_ROWSTRIDE,
+                                      (GDestroyNotify) g_free, diff_alloc);
+
+  /* subtract pattern from image and store the result as a float in diff */
+  gimp_heal_sub (dest_buffer, dest_rect,
+                 src_buffer, src_rect,
+                 diff_buffer, GEGL_RECTANGLE (0, 0, width, height));
+
+  mask = g_new (guchar, mask_rect->width * mask_rect->height);
+
+  gegl_buffer_get (mask_buffer, mask_rect, 1.0, babl_format ("Y u8"),
+                   mask, GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+
+  gimp_heal_laplace_loop (diff, height, src_components, width, mask);
+
+  g_free (mask);
+
+  /* add solution to original image and store in dest */
+  gimp_heal_add (diff_buffer, GEGL_RECTANGLE (0, 0, width, height),
+                 src_buffer, src_rect,
+                 dest_buffer, dest_rect);
+
+  g_object_unref (diff_buffer);
 }
 
 static void
@@ -444,161 +494,135 @@ gimp_heal_motion (GimpSourceCore   *source_core,
                   GimpDrawable     *drawable,
                   GimpPaintOptions *paint_options,
                   const GimpCoords *coords,
+                  GeglNode         *op,
                   gdouble           opacity,
                   GimpPickable     *src_pickable,
-                  PixelRegion      *srcPR,
+                  GeglBuffer       *src_buffer,
+                  GeglRectangle    *src_rect,
                   gint              src_offset_x,
                   gint              src_offset_y,
-                  TempBuf          *paint_area,
+                  GeglBuffer       *paint_buffer,
+                  gint              paint_buffer_x,
+                  gint              paint_buffer_y,
                   gint              paint_area_offset_x,
                   gint              paint_area_offset_y,
                   gint              paint_area_width,
                   gint              paint_area_height)
 {
-  GimpPaintCore      *paint_core = GIMP_PAINT_CORE (source_core);
-  GimpContext        *context    = GIMP_CONTEXT (paint_options);
-  GimpDynamics       *dynamics   = GIMP_BRUSH_CORE (paint_core)->dynamics;
-  GimpDynamicsOutput *hardness_output;
-  GimpImage          *image      = gimp_item_get_image (GIMP_ITEM (drawable));
-  TempBuf            *src;
-  TempBuf            *temp;
-  PixelRegion         origPR;
-  PixelRegion         tempPR;
-  PixelRegion         destPR;
-  PixelRegion         maskPR;
-  GimpImageType       src_type;
-  const TempBuf      *mask_buf;
-  gdouble             fade_point;
-  gdouble             hardness;
-
-  hardness_output = gimp_dynamics_get_output (dynamics,
-                                              GIMP_DYNAMICS_OUTPUT_HARDNESS);
+  GimpPaintCore     *paint_core = GIMP_PAINT_CORE (source_core);
+  GimpContext       *context    = GIMP_CONTEXT (paint_options);
+  GimpDynamics      *dynamics   = GIMP_BRUSH_CORE (paint_core)->dynamics;
+  GimpImage         *image      = gimp_item_get_image (GIMP_ITEM (drawable));
+  GeglBuffer        *src_copy;
+  GeglBuffer        *mask_buffer;
+  const GimpTempBuf *mask_buf;
+  gdouble            fade_point;
+  gdouble            force;
+  gint               mask_off_x;
+  gint               mask_off_y;
 
   fade_point = gimp_paint_options_get_fade (paint_options, image,
                                             paint_core->pixel_dist);
 
-  hardness = gimp_dynamics_output_get_linear_value (hardness_output,
-                                                    coords,
-                                                    paint_options,
-                                                    fade_point);
+  if (gimp_dynamics_is_output_enabled (dynamics, GIMP_DYNAMICS_OUTPUT_FORCE))
+    force = gimp_dynamics_get_linear_value (dynamics,
+                                            GIMP_DYNAMICS_OUTPUT_FORCE,
+                                            coords,
+                                            paint_options,
+                                            fade_point);
+  else
+    force = paint_options->brush_force;
 
   mask_buf = gimp_brush_core_get_brush_mask (GIMP_BRUSH_CORE (source_core),
-                                             coords,
+                                             coords, op,
                                              GIMP_BRUSH_HARD,
-                                             hardness);
+                                             force);
 
-  src_type = gimp_pickable_get_image_type (src_pickable);
+  if (! mask_buf)
+    return;
 
-  /* we need the source area with alpha and we modify it, so make a copy */
-  src = temp_buf_new (srcPR->w, srcPR->h,
-                      GIMP_IMAGE_TYPE_BYTES (GIMP_IMAGE_TYPE_WITH_ALPHA (src_type)),
-                      0, 0, NULL);
-
-  pixel_region_init_temp_buf (&tempPR, src, 0, 0, src->width, src->height);
-
-  /*
-   * the effect of the following is to copy the contents of the source
-   * region to the "src" temp-buf, adding an alpha channel if necessary
-   */
-  if (GIMP_IMAGE_TYPE_HAS_ALPHA (src_type))
-    copy_region (srcPR, &tempPR);
-  else
-    add_alpha_region (srcPR, &tempPR);
-
-  /* reinitialize srcPR */
-  pixel_region_init_temp_buf (srcPR, src, 0, 0, src->width, src->height);
-
-  if (GIMP_IMAGE_TYPE_WITH_ALPHA (src_type) !=
-      gimp_drawable_type_with_alpha (drawable))
+  /* check that all buffers are of the same size */
+  if (src_rect->width  != gegl_buffer_get_width  (paint_buffer) ||
+      src_rect->height != gegl_buffer_get_height (paint_buffer))
     {
-      GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
-      TempBuf   *temp2;
-      gboolean   new_buf;
-
-      temp2 = gimp_image_transform_temp_buf (image,
-                                             gimp_drawable_type_with_alpha (drawable),
-                                             src, &new_buf);
-
-      if (new_buf)
-        temp_buf_free (src);
-
-      src = temp2;
-    }
-
-  /* reinitialize srcPR */
-  pixel_region_init_temp_buf (srcPR, src, 0, 0, src->width, src->height);
-
-  /* FIXME: the area under the cursor and the source area should be x% larger
-   * than the brush size.  Otherwise the brush must be a lot bigger than the
-   * area to heal to get good results.  Having the user pick such a large brush
-   * is perhaps counter-intutitive?
-   */
-
-  pixel_region_init (&origPR, gimp_drawable_get_tiles (drawable),
-                     paint_area->x, paint_area->y,
-                     paint_area->width, paint_area->height, FALSE);
-
-  temp = temp_buf_new (origPR.w, origPR.h,
-                       gimp_drawable_bytes_with_alpha (drawable),
-                       0, 0, NULL);
-  pixel_region_init_temp_buf (&tempPR, temp, 0, 0, temp->width, temp->height);
-
-  if (gimp_drawable_has_alpha (drawable))
-    copy_region (&origPR, &tempPR);
-  else
-    add_alpha_region (&origPR, &tempPR);
-
-  /* reinitialize tempPR */
-  pixel_region_init_temp_buf (&tempPR, temp, 0, 0, temp->width, temp->height);
-
-  /* now tempPR holds the data under the cursor and
-   * srcPR holds the area to sample from
-   */
-
-  /* get the destination to paint to */
-  pixel_region_init_temp_buf (&destPR, paint_area,
-                              paint_area_offset_x, paint_area_offset_y,
-                              paint_area_width, paint_area_height);
-
-  /* check that srcPR, tempPR and destPR are the same size and tempPR is inside of layer */
-  if ((srcPR->w != tempPR.w) || (srcPR->w != destPR.w) ||
-      (srcPR->h != tempPR.h) || (srcPR->h != destPR.h) ||
-      (tempPR.w <= 0) ||
-      (tempPR.h <= 0))
-    {
-      /* this generally means that the source point has hit the edge of the
-         layer, so it is not an error and we should not complain, just
-         don't do anything */
-
-      temp_buf_free (src);
-      temp_buf_free (temp);
-
+      /* this generally means that the source point has hit the edge
+       * of the layer, so it is not an error and we should not
+       * complain, just don't do anything
+       */
       return;
     }
 
+  /*  heal should work in perceptual space, use R'G'B' instead of RGB  */
+  src_copy = gegl_buffer_new (GEGL_RECTANGLE (0, 0,
+                                              src_rect->width,
+                                              src_rect->height),
+                              babl_format ("R'G'B'A float"));
+
+  gegl_buffer_copy (src_buffer, src_rect, GEGL_ABYSS_NONE,
+                    src_copy,
+                    GEGL_RECTANGLE (0, 0,
+                                    src_rect->width,
+                                    src_rect->height));
+
+  gegl_buffer_copy (gimp_drawable_get_buffer (drawable),
+                    GEGL_RECTANGLE (paint_buffer_x, paint_buffer_y,
+                                    gegl_buffer_get_width  (paint_buffer),
+                                    gegl_buffer_get_height (paint_buffer)),
+                    GEGL_ABYSS_NONE,
+                    paint_buffer,
+                    GEGL_RECTANGLE (paint_area_offset_x,
+                                    paint_area_offset_y,
+                                    paint_area_width,
+                                    paint_area_height));
+
+  mask_buffer = gimp_temp_buf_create_buffer ((GimpTempBuf *) mask_buf);
+
   /* find the offset of the brush mask's rect */
   {
-    gint x = (gint) floor (coords->x) - (mask_buf->width  >> 1);
-    gint y = (gint) floor (coords->y) - (mask_buf->height >> 1);
+    gint x = (gint) floor (coords->x) - (gegl_buffer_get_width  (mask_buffer) >> 1);
+    gint y = (gint) floor (coords->y) - (gegl_buffer_get_height (mask_buffer) >> 1);
 
-    gint off_x = (x < 0) ? -x : 0;
-    gint off_y = (y < 0) ? -y : 0;
-
-    pixel_region_init_temp_buf (&maskPR, mask_buf, off_x, off_y,
-                                paint_area_width, paint_area_height);
+    mask_off_x = (x < 0) ? -x : 0;
+    mask_off_y = (y < 0) ? -y : 0;
   }
 
-  /* heal tempPR using srcPR */
-  gimp_heal_region (&tempPR, srcPR, &maskPR);
+  if (op)
+    {
+      GeglNode    *graph, *source, *target;
 
-  temp_buf_free (src);
+      graph    = gegl_node_new ();
+      source   = gegl_node_new_child (graph,
+                                      "operation", "gegl:buffer-source",
+                                      "buffer", src_copy,
+                                      NULL);
+      gegl_node_add_child (graph, op);
+      target  = gegl_node_new_child (graph,
+                                     "operation", "gegl:write-buffer",
+                                     "buffer", src_copy,
+                                     NULL);
 
-  /* reinitialize tempPR */
-  pixel_region_init_temp_buf (&tempPR, temp, 0, 0, temp->width, temp->height);
+      gegl_node_link_many (source, op, target, NULL);
+      gegl_node_process (target);
 
-  copy_region (&tempPR, &destPR);
+      g_object_unref (graph);
+    }
 
-  temp_buf_free (temp);
+  gimp_heal (src_copy,
+             GEGL_RECTANGLE (0, 0,
+                             gegl_buffer_get_width  (src_copy),
+                             gegl_buffer_get_height (src_copy)),
+             paint_buffer,
+             GEGL_RECTANGLE (paint_area_offset_x,
+                             paint_area_offset_y,
+                             paint_area_width,
+                             paint_area_height),
+             mask_buffer,
+             GEGL_RECTANGLE (mask_off_x, mask_off_y,
+                             paint_area_width,
+                             paint_area_height));
+
+  g_object_unref (src_copy);
+  g_object_unref (mask_buffer);
 
   /* replace the canvas with our healed data */
   gimp_brush_core_replace_canvas (GIMP_BRUSH_CORE (paint_core), drawable,
@@ -606,6 +630,6 @@ gimp_heal_motion (GimpSourceCore   *source_core,
                                   MIN (opacity, GIMP_OPACITY_OPAQUE),
                                   gimp_context_get_opacity (context),
                                   gimp_paint_options_get_brush_mode (paint_options),
-                                  hardness,
-                                  GIMP_PAINT_INCREMENTAL);
+                                  force,
+                                  GIMP_PAINT_INCREMENTAL, NULL);
 }

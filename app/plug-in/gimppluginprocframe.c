@@ -21,7 +21,10 @@
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
+
+#include "libgimpbase/gimpbase.h"
 
 #include "plug-in-types.h"
 
@@ -97,11 +100,7 @@ gimp_plug_in_proc_frame_dispose (GimpPlugInProcFrame *proc_frame,
     {
       gimp_plug_in_progress_end (plug_in, proc_frame);
 
-      if (proc_frame->progress)
-        {
-          g_object_unref (proc_frame->progress);
-          proc_frame->progress = NULL;
-        }
+      g_clear_object (&proc_frame->progress);
     }
 
   if (proc_frame->context_stack)
@@ -111,32 +110,14 @@ gimp_plug_in_proc_frame_dispose (GimpPlugInProcFrame *proc_frame,
       proc_frame->context_stack = NULL;
     }
 
-  if (proc_frame->main_context)
-    {
-      g_object_unref (proc_frame->main_context);
-      proc_frame->main_context = NULL;
-    }
-
-  if (proc_frame->return_vals)
-    {
-      g_value_array_free (proc_frame->return_vals);
-      proc_frame->return_vals = NULL;
-    }
-
-  if (proc_frame->main_loop)
-    {
-      g_main_loop_unref (proc_frame->main_loop);
-      proc_frame->main_loop = NULL;
-    }
+  g_clear_object (&proc_frame->main_context);
+  g_clear_pointer (&proc_frame->return_vals, gimp_value_array_unref);
+  g_clear_pointer (&proc_frame->main_loop, g_main_loop_unref);
 
   if (proc_frame->image_cleanups || proc_frame->item_cleanups)
     gimp_plug_in_cleanup (plug_in, proc_frame);
 
-  if (proc_frame->procedure)
-    {
-      g_object_unref (proc_frame->procedure);
-      proc_frame->procedure = NULL;
-    }
+  g_clear_object (&proc_frame->procedure);
 }
 
 GimpPlugInProcFrame *
@@ -165,16 +146,16 @@ gimp_plug_in_proc_frame_unref (GimpPlugInProcFrame *proc_frame,
     }
 }
 
-GValueArray *
+GimpValueArray *
 gimp_plug_in_proc_frame_get_return_values (GimpPlugInProcFrame *proc_frame)
 {
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
 
   g_return_val_if_fail (proc_frame != NULL, NULL);
 
   if (proc_frame->return_vals)
     {
-      if (proc_frame->return_vals->n_values >=
+      if (gimp_value_array_length (proc_frame->return_vals) >=
           proc_frame->procedure->num_values + 1)
         {
           return_vals = proc_frame->return_vals;
@@ -186,14 +167,16 @@ gimp_plug_in_proc_frame_get_return_values (GimpPlugInProcFrame *proc_frame)
                                                           TRUE, NULL);
 
           /* Copy all of the arguments we can. */
-          memcpy (return_vals->values, proc_frame->return_vals->values,
-                  sizeof (GValue) * proc_frame->return_vals->n_values);
+          memcpy (gimp_value_array_index (return_vals, 0),
+                  gimp_value_array_index (proc_frame->return_vals, 0),
+                  sizeof (GValue) *
+                  gimp_value_array_length (proc_frame->return_vals));
 
           /* Free the old arguments. */
-          g_free (proc_frame->return_vals->values);
-          proc_frame->return_vals->values = NULL;
-          proc_frame->return_vals->n_values = 0;
-          g_value_array_free (proc_frame->return_vals);
+          memset (gimp_value_array_index (proc_frame->return_vals, 0), 0,
+                  sizeof (GValue) *
+                  gimp_value_array_length (proc_frame->return_vals));
+          gimp_value_array_unref (proc_frame->return_vals);
         }
 
       /* We have consumed any saved values, so clear them. */

@@ -19,7 +19,14 @@
 
 #include "config.h"
 
+#include <cairo.h>
+
 #include <gegl.h>
+
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
+#include "libgimpbase/gimpbase.h"
+#include "libgimpcolor/gimpcolor.h"
 
 #include "libgimpbase/gimpbase.h"
 
@@ -28,14 +35,17 @@
 #include "core/gimp.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpgrouplayer.h"
+#include "core/gimpimage-color-profile.h"
 #include "core/gimpimage-undo.h"
 #include "core/gimpimage.h"
 #include "core/gimpitem-linked.h"
+#include "core/gimplayer-new.h"
 #include "core/gimplayer.h"
 #include "core/gimplayermask.h"
 #include "core/gimpparamspecs.h"
 #include "core/gimppickable.h"
 #include "core/gimpprogress.h"
+#include "operations/layer-modes/gimp-layer-modes.h"
 
 #include "gimppdb.h"
 #include "gimppdb-utils.h"
@@ -46,16 +56,16 @@
 #include "gimp-intl.h"
 
 
-static GValueArray *
-layer_new_invoker (GimpProcedure      *procedure,
-                   Gimp               *gimp,
-                   GimpContext        *context,
-                   GimpProgress       *progress,
-                   const GValueArray  *args,
-                   GError            **error)
+static GimpValueArray *
+layer_new_invoker (GimpProcedure         *procedure,
+                   Gimp                  *gimp,
+                   GimpContext           *context,
+                   GimpProgress          *progress,
+                   const GimpValueArray  *args,
+                   GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpImage *image;
   gint32 width;
   gint32 height;
@@ -65,18 +75,65 @@ layer_new_invoker (GimpProcedure      *procedure,
   gint32 mode;
   GimpLayer *layer = NULL;
 
-  image = gimp_value_get_image (&args->values[0], gimp);
-  width = g_value_get_int (&args->values[1]);
-  height = g_value_get_int (&args->values[2]);
-  type = g_value_get_enum (&args->values[3]);
-  name = g_value_get_string (&args->values[4]);
-  opacity = g_value_get_double (&args->values[5]);
-  mode = g_value_get_enum (&args->values[6]);
+  image = gimp_value_get_image (gimp_value_array_index (args, 0), gimp);
+  width = g_value_get_int (gimp_value_array_index (args, 1));
+  height = g_value_get_int (gimp_value_array_index (args, 2));
+  type = g_value_get_enum (gimp_value_array_index (args, 3));
+  name = g_value_get_string (gimp_value_array_index (args, 4));
+  opacity = g_value_get_double (gimp_value_array_index (args, 5));
+  mode = g_value_get_enum (gimp_value_array_index (args, 6));
 
   if (success)
     {
-      layer = gimp_layer_new (image, width, height, type, name,
-                              opacity / 100.0, mode);
+      GimpImageBaseType  base_type = GIMP_RGB;
+      gboolean           has_alpha = FALSE;
+      const Babl        *format;
+
+      if (mode == GIMP_LAYER_MODE_OVERLAY_LEGACY)
+        mode = GIMP_LAYER_MODE_SOFTLIGHT_LEGACY;
+
+      switch (type)
+        {
+        case GIMP_RGB_IMAGE:
+          base_type = GIMP_RGB;
+          has_alpha = FALSE;
+          break;
+
+        case GIMP_RGBA_IMAGE:
+          base_type = GIMP_RGB;
+          has_alpha = TRUE;
+          break;
+
+        case GIMP_GRAY_IMAGE:
+          base_type = GIMP_GRAY;
+          has_alpha = FALSE;
+          break;
+
+        case GIMP_GRAYA_IMAGE:
+          base_type = GIMP_GRAY;
+          has_alpha = TRUE;
+          break;
+
+        case GIMP_INDEXED_IMAGE:
+          base_type = GIMP_INDEXED;
+          has_alpha = FALSE;
+          break;
+
+        case GIMP_INDEXEDA_IMAGE:
+          base_type = GIMP_INDEXED;
+          has_alpha = TRUE;
+          break;
+        }
+
+      /* do not use gimp_image_get_layer_format() because it might
+       * be the floating selection of a channel or mask
+       */
+      format = gimp_image_get_format (image, base_type,
+                                      gimp_image_get_precision (image),
+                                      has_alpha);
+
+      layer = gimp_layer_new (image, width, height,
+                              format, name, opacity / 100.0, mode);
 
       if (! layer)
         success = FALSE;
@@ -86,68 +143,74 @@ layer_new_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_layer (&return_vals->values[1], layer);
+    gimp_value_set_layer (gimp_value_array_index (return_vals, 1), layer);
 
   return return_vals;
 }
 
-static GValueArray *
-layer_new_from_visible_invoker (GimpProcedure      *procedure,
-                                Gimp               *gimp,
-                                GimpContext        *context,
-                                GimpProgress       *progress,
-                                const GValueArray  *args,
-                                GError            **error)
+static GimpValueArray *
+layer_new_from_visible_invoker (GimpProcedure         *procedure,
+                                Gimp                  *gimp,
+                                GimpContext           *context,
+                                GimpProgress          *progress,
+                                const GimpValueArray  *args,
+                                GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpImage *image;
   GimpImage *dest_image;
   const gchar *name;
   GimpLayer *layer = NULL;
 
-  image = gimp_value_get_image (&args->values[0], gimp);
-  dest_image = gimp_value_get_image (&args->values[1], gimp);
-  name = g_value_get_string (&args->values[2]);
+  image = gimp_value_get_image (gimp_value_array_index (args, 0), gimp);
+  dest_image = gimp_value_get_image (gimp_value_array_index (args, 1), gimp);
+  name = g_value_get_string (gimp_value_array_index (args, 2));
 
   if (success)
     {
-      GimpPickable *pickable = GIMP_PICKABLE (gimp_image_get_projection (image));
+      GimpPickable     *pickable = GIMP_PICKABLE (image);
+      GimpColorProfile *profile;
 
       gimp_pickable_flush (pickable);
 
-      layer = gimp_layer_new_from_tiles (gimp_pickable_get_tiles (pickable),
-                                         dest_image,
-                                         gimp_image_base_type_with_alpha (dest_image),
-                                         name,
-                                         GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
+      profile = gimp_color_managed_get_color_profile (GIMP_COLOR_MANAGED (image));
+
+      layer = gimp_layer_new_from_gegl_buffer (gimp_pickable_get_buffer (pickable),
+                                               dest_image,
+                                               gimp_image_get_layer_format (dest_image,
+                                                                            TRUE),
+                                               name,
+                                               GIMP_OPACITY_OPAQUE,
+                                               gimp_image_get_default_new_layer_mode (dest_image),
+                                               profile);
     }
 
   return_vals = gimp_procedure_get_return_values (procedure, success,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_layer (&return_vals->values[1], layer);
+    gimp_value_set_layer (gimp_value_array_index (return_vals, 1), layer);
 
   return return_vals;
 }
 
-static GValueArray *
-layer_new_from_drawable_invoker (GimpProcedure      *procedure,
-                                 Gimp               *gimp,
-                                 GimpContext        *context,
-                                 GimpProgress       *progress,
-                                 const GValueArray  *args,
-                                 GError            **error)
+static GimpValueArray *
+layer_new_from_drawable_invoker (GimpProcedure         *procedure,
+                                 Gimp                  *gimp,
+                                 GimpContext           *context,
+                                 GimpProgress          *progress,
+                                 const GimpValueArray  *args,
+                                 GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   GimpImage *dest_image;
   GimpLayer *layer_copy = NULL;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  dest_image = gimp_value_get_image (&args->values[1], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  dest_image = gimp_value_get_image (gimp_value_array_index (args, 1), gimp);
 
   if (success)
     {
@@ -171,25 +234,25 @@ layer_new_from_drawable_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_layer (&return_vals->values[1], layer_copy);
+    gimp_value_set_layer (gimp_value_array_index (return_vals, 1), layer_copy);
 
   return return_vals;
 }
 
-static GValueArray *
-layer_group_new_invoker (GimpProcedure      *procedure,
-                         Gimp               *gimp,
-                         GimpContext        *context,
-                         GimpProgress       *progress,
-                         const GValueArray  *args,
-                         GError            **error)
+static GimpValueArray *
+layer_group_new_invoker (GimpProcedure         *procedure,
+                         Gimp                  *gimp,
+                         GimpContext           *context,
+                         GimpProgress          *progress,
+                         const GimpValueArray  *args,
+                         GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpImage *image;
   GimpLayer *layer_group = NULL;
 
-  image = gimp_value_get_image (&args->values[0], gimp);
+  image = gimp_value_get_image (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -203,27 +266,27 @@ layer_group_new_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_layer (&return_vals->values[1], layer_group);
+    gimp_value_set_layer (gimp_value_array_index (return_vals, 1), layer_group);
 
   return return_vals;
 }
 
-static GValueArray *
-layer_copy_invoker (GimpProcedure      *procedure,
-                    Gimp               *gimp,
-                    GimpContext        *context,
-                    GimpProgress       *progress,
-                    const GValueArray  *args,
-                    GError            **error)
+static GimpValueArray *
+layer_copy_invoker (GimpProcedure         *procedure,
+                    Gimp                  *gimp,
+                    GimpContext           *context,
+                    GimpProgress          *progress,
+                    const GimpValueArray  *args,
+                    GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gboolean add_alpha;
   GimpLayer *layer_copy = NULL;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  add_alpha = g_value_get_boolean (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  add_alpha = g_value_get_boolean (gimp_value_array_index (args, 1));
 
   if (success)
     {
@@ -244,29 +307,32 @@ layer_copy_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_layer (&return_vals->values[1], layer_copy);
+    gimp_value_set_layer (gimp_value_array_index (return_vals, 1), layer_copy);
 
   return return_vals;
 }
 
-static GValueArray *
-layer_add_alpha_invoker (GimpProcedure      *procedure,
-                         Gimp               *gimp,
-                         GimpContext        *context,
-                         GimpProgress       *progress,
-                         const GValueArray  *args,
-                         GError            **error)
+static GimpValueArray *
+layer_add_alpha_invoker (GimpProcedure         *procedure,
+                         Gimp                  *gimp,
+                         GimpContext           *context,
+                         GimpProgress          *progress,
+                         const GimpValueArray  *args,
+                         GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_item_is_writable (GIMP_ITEM (layer), error) &&
+      if (gimp_pdb_item_is_modifyable (GIMP_ITEM (layer),
+                                       GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (layer), error))
-        gimp_layer_add_alpha (layer);
+        {
+          gimp_layer_add_alpha (layer);
+        }
       else
        success = FALSE;
     }
@@ -275,24 +341,27 @@ layer_add_alpha_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-layer_flatten_invoker (GimpProcedure      *procedure,
-                       Gimp               *gimp,
-                       GimpContext        *context,
-                       GimpProgress       *progress,
-                       const GValueArray  *args,
-                       GError            **error)
+static GimpValueArray *
+layer_flatten_invoker (GimpProcedure         *procedure,
+                       Gimp                  *gimp,
+                       GimpContext           *context,
+                       GimpProgress          *progress,
+                       const GimpValueArray  *args,
+                       GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_item_is_writable (GIMP_ITEM (layer), error) &&
+      if (gimp_pdb_item_is_modifyable (GIMP_ITEM (layer),
+                                       GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (layer), error))
-        gimp_layer_flatten (layer, context);
+        {
+          gimp_layer_remove_alpha (layer, context);
+        }
       else
        success = FALSE;
     }
@@ -301,13 +370,13 @@ layer_flatten_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-layer_scale_invoker (GimpProcedure      *procedure,
-                     Gimp               *gimp,
-                     GimpContext        *context,
-                     GimpProgress       *progress,
-                     const GValueArray  *args,
-                     GError            **error)
+static GimpValueArray *
+layer_scale_invoker (GimpProcedure         *procedure,
+                     Gimp                  *gimp,
+                     GimpContext           *context,
+                     GimpProgress          *progress,
+                     const GimpValueArray  *args,
+                     GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
@@ -315,19 +384,21 @@ layer_scale_invoker (GimpProcedure      *procedure,
   gint32 new_height;
   gboolean local_origin;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  new_width = g_value_get_int (&args->values[1]);
-  new_height = g_value_get_int (&args->values[2]);
-  local_origin = g_value_get_boolean (&args->values[3]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  new_width = g_value_get_int (gimp_value_array_index (args, 1));
+  new_height = g_value_get_int (gimp_value_array_index (args, 2));
+  local_origin = g_value_get_boolean (gimp_value_array_index (args, 3));
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (layer), NULL, TRUE, error))
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (layer), NULL,
+                                     GIMP_PDB_ITEM_CONTENT | GIMP_PDB_ITEM_POSITION,
+                                     error))
         {
           GimpPDBContext *pdb_context = GIMP_PDB_CONTEXT (context);
 
           if (progress)
-            gimp_progress_start (progress, _("Scaling"), FALSE);
+            gimp_progress_start (progress, FALSE, _("Scaling"));
 
           gimp_item_scale_by_origin (GIMP_ITEM (layer), new_width, new_height,
                                      pdb_context->interpolation, progress,
@@ -346,13 +417,13 @@ layer_scale_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-layer_scale_full_invoker (GimpProcedure      *procedure,
-                          Gimp               *gimp,
-                          GimpContext        *context,
-                          GimpProgress       *progress,
-                          const GValueArray  *args,
-                          GError            **error)
+static GimpValueArray *
+layer_scale_full_invoker (GimpProcedure         *procedure,
+                          Gimp                  *gimp,
+                          GimpContext           *context,
+                          GimpProgress          *progress,
+                          const GimpValueArray  *args,
+                          GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
@@ -361,18 +432,20 @@ layer_scale_full_invoker (GimpProcedure      *procedure,
   gboolean local_origin;
   gint32 interpolation;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  new_width = g_value_get_int (&args->values[1]);
-  new_height = g_value_get_int (&args->values[2]);
-  local_origin = g_value_get_boolean (&args->values[3]);
-  interpolation = g_value_get_enum (&args->values[4]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  new_width = g_value_get_int (gimp_value_array_index (args, 1));
+  new_height = g_value_get_int (gimp_value_array_index (args, 2));
+  local_origin = g_value_get_boolean (gimp_value_array_index (args, 3));
+  interpolation = g_value_get_enum (gimp_value_array_index (args, 4));
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (layer), NULL, TRUE, error))
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (layer), NULL,
+                                     GIMP_PDB_ITEM_CONTENT | GIMP_PDB_ITEM_POSITION,
+                                     error))
         {
           if (progress)
-            gimp_progress_start (progress, _("Scaling"), FALSE);
+            gimp_progress_start (progress, FALSE, _("Scaling"));
 
           gimp_item_scale_by_origin (GIMP_ITEM (layer), new_width, new_height,
                                      interpolation, progress,
@@ -391,13 +464,13 @@ layer_scale_full_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-layer_resize_invoker (GimpProcedure      *procedure,
-                      Gimp               *gimp,
-                      GimpContext        *context,
-                      GimpProgress       *progress,
-                      const GValueArray  *args,
-                      GError            **error)
+static GimpValueArray *
+layer_resize_invoker (GimpProcedure         *procedure,
+                      Gimp                  *gimp,
+                      GimpContext           *context,
+                      GimpProgress          *progress,
+                      const GimpValueArray  *args,
+                      GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
@@ -406,16 +479,18 @@ layer_resize_invoker (GimpProcedure      *procedure,
   gint32 offx;
   gint32 offy;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  new_width = g_value_get_int (&args->values[1]);
-  new_height = g_value_get_int (&args->values[2]);
-  offx = g_value_get_int (&args->values[3]);
-  offy = g_value_get_int (&args->values[4]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  new_width = g_value_get_int (gimp_value_array_index (args, 1));
+  new_height = g_value_get_int (gimp_value_array_index (args, 2));
+  offx = g_value_get_int (gimp_value_array_index (args, 3));
+  offy = g_value_get_int (gimp_value_array_index (args, 4));
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (layer), NULL, TRUE, error))
-        gimp_item_resize (GIMP_ITEM (layer), context,
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (layer), NULL,
+                                     GIMP_PDB_ITEM_CONTENT | GIMP_PDB_ITEM_POSITION,
+                                     error))
+        gimp_item_resize (GIMP_ITEM (layer), context, GIMP_FILL_TRANSPARENT,
                           new_width, new_height, offx, offy);
       else
         success = FALSE;
@@ -425,23 +500,25 @@ layer_resize_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-layer_resize_to_image_size_invoker (GimpProcedure      *procedure,
-                                    Gimp               *gimp,
-                                    GimpContext        *context,
-                                    GimpProgress       *progress,
-                                    const GValueArray  *args,
-                                    GError            **error)
+static GimpValueArray *
+layer_resize_to_image_size_invoker (GimpProcedure         *procedure,
+                                    Gimp                  *gimp,
+                                    GimpContext           *context,
+                                    GimpProgress          *progress,
+                                    const GimpValueArray  *args,
+                                    GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (layer), NULL, TRUE, error))
-        gimp_layer_resize_to_image (layer, context);
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (layer), NULL,
+                                     GIMP_PDB_ITEM_CONTENT | GIMP_PDB_ITEM_POSITION,
+                                     error))
+        gimp_layer_resize_to_image (layer, context, GIMP_FILL_TRANSPARENT);
       else
         success = FALSE;
     }
@@ -450,101 +527,113 @@ layer_resize_to_image_size_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-layer_translate_invoker (GimpProcedure      *procedure,
-                         Gimp               *gimp,
-                         GimpContext        *context,
-                         GimpProgress       *progress,
-                         const GValueArray  *args,
-                         GError            **error)
+static GimpValueArray *
+layer_translate_invoker (GimpProcedure         *procedure,
+                         Gimp                  *gimp,
+                         GimpContext           *context,
+                         GimpProgress          *progress,
+                         const GimpValueArray  *args,
+                         GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gint32 offx;
   gint32 offy;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  offx = g_value_get_int (&args->values[1]);
-  offy = g_value_get_int (&args->values[2]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  offx = g_value_get_int (gimp_value_array_index (args, 1));
+  offy = g_value_get_int (gimp_value_array_index (args, 2));
 
   if (success)
     {
-      if (gimp_item_get_linked (GIMP_ITEM (layer)))
+      if (gimp_pdb_item_is_modifyable (GIMP_ITEM (layer),
+                                       GIMP_PDB_ITEM_POSITION, error))
         {
-          gimp_item_linked_translate (GIMP_ITEM (layer), offx, offy, TRUE);
+          if (gimp_item_get_linked (GIMP_ITEM (layer)))
+            {
+              gimp_item_linked_translate (GIMP_ITEM (layer), offx, offy, TRUE);
+            }
+          else
+            {
+              gimp_item_translate (GIMP_ITEM (layer), offx, offy, TRUE);
+            }
         }
       else
-        {
-          gimp_item_translate (GIMP_ITEM (layer), offx, offy, TRUE);
-        }
+        success = FALSE;
     }
 
   return gimp_procedure_get_return_values (procedure, success,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-layer_set_offsets_invoker (GimpProcedure      *procedure,
-                           Gimp               *gimp,
-                           GimpContext        *context,
-                           GimpProgress       *progress,
-                           const GValueArray  *args,
-                           GError            **error)
+static GimpValueArray *
+layer_set_offsets_invoker (GimpProcedure         *procedure,
+                           Gimp                  *gimp,
+                           GimpContext           *context,
+                           GimpProgress          *progress,
+                           const GimpValueArray  *args,
+                           GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gint32 offx;
   gint32 offy;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  offx = g_value_get_int (&args->values[1]);
-  offy = g_value_get_int (&args->values[2]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  offx = g_value_get_int (gimp_value_array_index (args, 1));
+  offy = g_value_get_int (gimp_value_array_index (args, 2));
 
   if (success)
     {
-      gint offset_x;
-      gint offset_y;
-
-      gimp_item_get_offset (GIMP_ITEM (layer), &offset_x, &offset_y);
-      offx -= offset_x;
-      offy -= offset_y;
-
-      if (gimp_item_get_linked (GIMP_ITEM (layer)))
+      if (gimp_pdb_item_is_modifyable (GIMP_ITEM (layer),
+                                       GIMP_PDB_ITEM_POSITION, error))
         {
-          gimp_item_linked_translate (GIMP_ITEM (layer), offx, offy, TRUE);
+          gint offset_x;
+          gint offset_y;
+
+          gimp_item_get_offset (GIMP_ITEM (layer), &offset_x, &offset_y);
+          offx -= offset_x;
+          offy -= offset_y;
+
+          if (gimp_item_get_linked (GIMP_ITEM (layer)))
+            {
+              gimp_item_linked_translate (GIMP_ITEM (layer), offx, offy, TRUE);
+            }
+          else
+            {
+              gimp_item_translate (GIMP_ITEM (layer), offx, offy, TRUE);
+            }
         }
       else
-        {
-          gimp_item_translate (GIMP_ITEM (layer), offx, offy, TRUE);
-        }
+        success = FALSE;
     }
 
   return gimp_procedure_get_return_values (procedure, success,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-layer_create_mask_invoker (GimpProcedure      *procedure,
-                           Gimp               *gimp,
-                           GimpContext        *context,
-                           GimpProgress       *progress,
-                           const GValueArray  *args,
-                           GError            **error)
+static GimpValueArray *
+layer_create_mask_invoker (GimpProcedure         *procedure,
+                           Gimp                  *gimp,
+                           GimpContext           *context,
+                           GimpProgress          *progress,
+                           const GimpValueArray  *args,
+                           GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gint32 mask_type;
   GimpLayerMask *mask = NULL;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  mask_type = g_value_get_enum (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  mask_type = g_value_get_enum (gimp_value_array_index (args, 1));
 
   if (success)
     {
       GimpChannel *channel = NULL;
 
-      if (mask_type == GIMP_ADD_CHANNEL_MASK)
+      if (mask_type == GIMP_ADD_MASK_CHANNEL)
         {
           channel = gimp_image_get_active_channel (gimp_item_get_image (GIMP_ITEM (layer)));
 
@@ -565,25 +654,25 @@ layer_create_mask_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_layer_mask (&return_vals->values[1], mask);
+    gimp_value_set_layer_mask (gimp_value_array_index (return_vals, 1), mask);
 
   return return_vals;
 }
 
-static GValueArray *
-layer_get_mask_invoker (GimpProcedure      *procedure,
-                        Gimp               *gimp,
-                        GimpContext        *context,
-                        GimpProgress       *progress,
-                        const GValueArray  *args,
-                        GError            **error)
+static GimpValueArray *
+layer_get_mask_invoker (GimpProcedure         *procedure,
+                        Gimp                  *gimp,
+                        GimpContext           *context,
+                        GimpProgress          *progress,
+                        const GimpValueArray  *args,
+                        GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   GimpLayerMask *mask = NULL;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -594,25 +683,25 @@ layer_get_mask_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_layer_mask (&return_vals->values[1], mask);
+    gimp_value_set_layer_mask (gimp_value_array_index (return_vals, 1), mask);
 
   return return_vals;
 }
 
-static GValueArray *
-layer_from_mask_invoker (GimpProcedure      *procedure,
-                         Gimp               *gimp,
-                         GimpContext        *context,
-                         GimpProgress       *progress,
-                         const GValueArray  *args,
-                         GError            **error)
+static GimpValueArray *
+layer_from_mask_invoker (GimpProcedure         *procedure,
+                         Gimp                  *gimp,
+                         GimpContext           *context,
+                         GimpProgress          *progress,
+                         const GimpValueArray  *args,
+                         GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayerMask *mask;
   GimpLayer *layer = NULL;
 
-  mask = gimp_value_get_layer_mask (&args->values[0], gimp);
+  mask = gimp_value_get_layer_mask (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -623,32 +712,31 @@ layer_from_mask_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_layer (&return_vals->values[1], layer);
+    gimp_value_set_layer (gimp_value_array_index (return_vals, 1), layer);
 
   return return_vals;
 }
 
-static GValueArray *
-layer_add_mask_invoker (GimpProcedure      *procedure,
-                        Gimp               *gimp,
-                        GimpContext        *context,
-                        GimpProgress       *progress,
-                        const GValueArray  *args,
-                        GError            **error)
+static GimpValueArray *
+layer_add_mask_invoker (GimpProcedure         *procedure,
+                        Gimp                  *gimp,
+                        GimpContext           *context,
+                        GimpProgress          *progress,
+                        const GimpValueArray  *args,
+                        GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   GimpLayerMask *mask;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  mask = gimp_value_get_layer_mask (&args->values[1], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  mask = gimp_value_get_layer_mask (gimp_value_array_index (args, 1), gimp);
 
   if (success)
     {
       if (gimp_pdb_item_is_floating (GIMP_ITEM (mask),
                                      gimp_item_get_image (GIMP_ITEM (layer)),
-                                     error) &&
-          gimp_pdb_item_is_not_group (GIMP_ITEM (layer), error))
+                                     error))
         success = (gimp_layer_add_mask (layer, mask, TRUE, error) == mask);
       else
         success = FALSE;
@@ -658,25 +746,32 @@ layer_add_mask_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-layer_remove_mask_invoker (GimpProcedure      *procedure,
-                           Gimp               *gimp,
-                           GimpContext        *context,
-                           GimpProgress       *progress,
-                           const GValueArray  *args,
-                           GError            **error)
+static GimpValueArray *
+layer_remove_mask_invoker (GimpProcedure         *procedure,
+                           Gimp                  *gimp,
+                           GimpContext           *context,
+                           GimpProgress          *progress,
+                           const GimpValueArray  *args,
+                           GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gint32 mode;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  mode = g_value_get_enum (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  mode = g_value_get_enum (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (layer), NULL, mode == GIMP_MASK_APPLY, error) &&
-          gimp_layer_get_mask (layer))
+      GimpPDBItemModify modify = 0;
+
+      if (mode == GIMP_MASK_APPLY)
+        modify |= GIMP_PDB_ITEM_CONTENT;
+
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (layer), NULL, modify, error) &&
+          gimp_layer_get_mask (layer) &&
+          (mode == GIMP_MASK_DISCARD ||
+           gimp_pdb_item_is_not_group (GIMP_ITEM (layer), error)))
         gimp_layer_apply_mask (layer, mode, TRUE);
       else
         success = FALSE;
@@ -686,20 +781,20 @@ layer_remove_mask_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-layer_is_floating_sel_invoker (GimpProcedure      *procedure,
-                               Gimp               *gimp,
-                               GimpContext        *context,
-                               GimpProgress       *progress,
-                               const GValueArray  *args,
-                               GError            **error)
+static GimpValueArray *
+layer_is_floating_sel_invoker (GimpProcedure         *procedure,
+                               Gimp                  *gimp,
+                               GimpContext           *context,
+                               GimpProgress          *progress,
+                               const GimpValueArray  *args,
+                               GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gboolean is_floating_sel = FALSE;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -710,25 +805,25 @@ layer_is_floating_sel_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], is_floating_sel);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), is_floating_sel);
 
   return return_vals;
 }
 
-static GValueArray *
-layer_get_lock_alpha_invoker (GimpProcedure      *procedure,
-                              Gimp               *gimp,
-                              GimpContext        *context,
-                              GimpProgress       *progress,
-                              const GValueArray  *args,
-                              GError            **error)
+static GimpValueArray *
+layer_get_lock_alpha_invoker (GimpProcedure         *procedure,
+                              Gimp                  *gimp,
+                              GimpContext           *context,
+                              GimpProgress          *progress,
+                              const GimpValueArray  *args,
+                              GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gboolean lock_alpha = FALSE;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -739,25 +834,25 @@ layer_get_lock_alpha_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], lock_alpha);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), lock_alpha);
 
   return return_vals;
 }
 
-static GValueArray *
-layer_set_lock_alpha_invoker (GimpProcedure      *procedure,
-                              Gimp               *gimp,
-                              GimpContext        *context,
-                              GimpProgress       *progress,
-                              const GValueArray  *args,
-                              GError            **error)
+static GimpValueArray *
+layer_set_lock_alpha_invoker (GimpProcedure         *procedure,
+                              Gimp                  *gimp,
+                              GimpContext           *context,
+                              GimpProgress          *progress,
+                              const GimpValueArray  *args,
+                              GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gboolean lock_alpha;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  lock_alpha = g_value_get_boolean (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  lock_alpha = g_value_get_boolean (gimp_value_array_index (args, 1));
 
   if (success)
     {
@@ -771,25 +866,25 @@ layer_set_lock_alpha_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-layer_get_apply_mask_invoker (GimpProcedure      *procedure,
-                              Gimp               *gimp,
-                              GimpContext        *context,
-                              GimpProgress       *progress,
-                              const GValueArray  *args,
-                              GError            **error)
+static GimpValueArray *
+layer_get_apply_mask_invoker (GimpProcedure         *procedure,
+                              Gimp                  *gimp,
+                              GimpContext           *context,
+                              GimpProgress          *progress,
+                              const GimpValueArray  *args,
+                              GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gboolean apply_mask = FALSE;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
       if (layer->mask)
-        apply_mask = gimp_layer_mask_get_apply (layer->mask);
+        apply_mask = gimp_layer_get_apply_mask (layer);
       else
         apply_mask = FALSE;
     }
@@ -798,30 +893,30 @@ layer_get_apply_mask_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], apply_mask);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), apply_mask);
 
   return return_vals;
 }
 
-static GValueArray *
-layer_set_apply_mask_invoker (GimpProcedure      *procedure,
-                              Gimp               *gimp,
-                              GimpContext        *context,
-                              GimpProgress       *progress,
-                              const GValueArray  *args,
-                              GError            **error)
+static GimpValueArray *
+layer_set_apply_mask_invoker (GimpProcedure         *procedure,
+                              Gimp                  *gimp,
+                              GimpContext           *context,
+                              GimpProgress          *progress,
+                              const GimpValueArray  *args,
+                              GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gboolean apply_mask;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  apply_mask = g_value_get_boolean (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  apply_mask = g_value_get_boolean (gimp_value_array_index (args, 1));
 
   if (success)
     {
       if (layer->mask)
-        gimp_layer_mask_set_apply (layer->mask, apply_mask, TRUE);
+        gimp_layer_set_apply_mask (layer, apply_mask, TRUE);
       else
         success = FALSE;
     }
@@ -830,25 +925,25 @@ layer_set_apply_mask_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-layer_get_show_mask_invoker (GimpProcedure      *procedure,
-                             Gimp               *gimp,
-                             GimpContext        *context,
-                             GimpProgress       *progress,
-                             const GValueArray  *args,
-                             GError            **error)
+static GimpValueArray *
+layer_get_show_mask_invoker (GimpProcedure         *procedure,
+                             Gimp                  *gimp,
+                             GimpContext           *context,
+                             GimpProgress          *progress,
+                             const GimpValueArray  *args,
+                             GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gboolean show_mask = FALSE;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
       if (layer->mask)
-        show_mask = gimp_layer_mask_get_show (layer->mask);
+        show_mask = gimp_layer_get_show_mask (layer);
       else
         show_mask = FALSE;
     }
@@ -857,30 +952,30 @@ layer_get_show_mask_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], show_mask);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), show_mask);
 
   return return_vals;
 }
 
-static GValueArray *
-layer_set_show_mask_invoker (GimpProcedure      *procedure,
-                             Gimp               *gimp,
-                             GimpContext        *context,
-                             GimpProgress       *progress,
-                             const GValueArray  *args,
-                             GError            **error)
+static GimpValueArray *
+layer_set_show_mask_invoker (GimpProcedure         *procedure,
+                             Gimp                  *gimp,
+                             GimpContext           *context,
+                             GimpProgress          *progress,
+                             const GimpValueArray  *args,
+                             GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gboolean show_mask;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  show_mask = g_value_get_boolean (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  show_mask = g_value_get_boolean (gimp_value_array_index (args, 1));
 
   if (success)
     {
       if (layer->mask)
-        gimp_layer_mask_set_show (layer->mask, show_mask, TRUE);
+        gimp_layer_set_show_mask (layer, show_mask, TRUE);
       else
         success = FALSE;
     }
@@ -889,25 +984,25 @@ layer_set_show_mask_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-layer_get_edit_mask_invoker (GimpProcedure      *procedure,
-                             Gimp               *gimp,
-                             GimpContext        *context,
-                             GimpProgress       *progress,
-                             const GValueArray  *args,
-                             GError            **error)
+static GimpValueArray *
+layer_get_edit_mask_invoker (GimpProcedure         *procedure,
+                             Gimp                  *gimp,
+                             GimpContext           *context,
+                             GimpProgress          *progress,
+                             const GimpValueArray  *args,
+                             GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gboolean edit_mask = FALSE;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
       if (layer->mask)
-        edit_mask = gimp_layer_mask_get_edit (layer->mask);
+        edit_mask = gimp_layer_get_edit_mask (layer);
       else
         edit_mask = FALSE;
     }
@@ -916,30 +1011,30 @@ layer_get_edit_mask_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], edit_mask);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), edit_mask);
 
   return return_vals;
 }
 
-static GValueArray *
-layer_set_edit_mask_invoker (GimpProcedure      *procedure,
-                             Gimp               *gimp,
-                             GimpContext        *context,
-                             GimpProgress       *progress,
-                             const GValueArray  *args,
-                             GError            **error)
+static GimpValueArray *
+layer_set_edit_mask_invoker (GimpProcedure         *procedure,
+                             Gimp                  *gimp,
+                             GimpContext           *context,
+                             GimpProgress          *progress,
+                             const GimpValueArray  *args,
+                             GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gboolean edit_mask;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  edit_mask = g_value_get_boolean (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  edit_mask = g_value_get_boolean (gimp_value_array_index (args, 1));
 
   if (success)
     {
       if (layer->mask)
-        gimp_layer_mask_set_edit (layer->mask, edit_mask);
+        gimp_layer_set_edit_mask (layer, edit_mask);
       else
         success = FALSE;
     }
@@ -948,20 +1043,20 @@ layer_set_edit_mask_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-layer_get_opacity_invoker (GimpProcedure      *procedure,
-                           Gimp               *gimp,
-                           GimpContext        *context,
-                           GimpProgress       *progress,
-                           const GValueArray  *args,
-                           GError            **error)
+static GimpValueArray *
+layer_get_opacity_invoker (GimpProcedure         *procedure,
+                           Gimp                  *gimp,
+                           GimpContext           *context,
+                           GimpProgress          *progress,
+                           const GimpValueArray  *args,
+                           GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gdouble opacity = 0.0;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -972,25 +1067,25 @@ layer_get_opacity_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_double (&return_vals->values[1], opacity);
+    g_value_set_double (gimp_value_array_index (return_vals, 1), opacity);
 
   return return_vals;
 }
 
-static GValueArray *
-layer_set_opacity_invoker (GimpProcedure      *procedure,
-                           Gimp               *gimp,
-                           GimpContext        *context,
-                           GimpProgress       *progress,
-                           const GValueArray  *args,
-                           GError            **error)
+static GimpValueArray *
+layer_set_opacity_invoker (GimpProcedure         *procedure,
+                           Gimp                  *gimp,
+                           GimpContext           *context,
+                           GimpProgress          *progress,
+                           const GimpValueArray  *args,
+                           GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gdouble opacity;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  opacity = g_value_get_double (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  opacity = g_value_get_double (gimp_value_array_index (args, 1));
 
   if (success)
     {
@@ -1001,20 +1096,20 @@ layer_set_opacity_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-layer_get_mode_invoker (GimpProcedure      *procedure,
-                        Gimp               *gimp,
-                        GimpContext        *context,
-                        GimpProgress       *progress,
-                        const GValueArray  *args,
-                        GError            **error)
+static GimpValueArray *
+layer_get_mode_invoker (GimpProcedure         *procedure,
+                        Gimp                  *gimp,
+                        GimpContext           *context,
+                        GimpProgress          *progress,
+                        const GimpValueArray  *args,
+                        GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gint32 mode = 0;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -1025,29 +1120,203 @@ layer_get_mode_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_enum (&return_vals->values[1], mode);
+    g_value_set_enum (gimp_value_array_index (return_vals, 1), mode);
 
   return return_vals;
 }
 
-static GValueArray *
-layer_set_mode_invoker (GimpProcedure      *procedure,
-                        Gimp               *gimp,
-                        GimpContext        *context,
-                        GimpProgress       *progress,
-                        const GValueArray  *args,
-                        GError            **error)
+static GimpValueArray *
+layer_set_mode_invoker (GimpProcedure         *procedure,
+                        Gimp                  *gimp,
+                        GimpContext           *context,
+                        GimpProgress          *progress,
+                        const GimpValueArray  *args,
+                        GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gint32 mode;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  mode = g_value_get_enum (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  mode = g_value_get_enum (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      gimp_layer_set_mode (layer, mode, TRUE);
+      if (mode == GIMP_LAYER_MODE_OVERLAY_LEGACY)
+        mode = GIMP_LAYER_MODE_SOFTLIGHT_LEGACY;
+
+      if (gimp_viewable_get_children (GIMP_VIEWABLE (layer)) == NULL)
+        {
+          if (! (gimp_layer_mode_get_context (mode) & GIMP_LAYER_MODE_CONTEXT_LAYER))
+            success = FALSE;
+        }
+      else
+        {
+          if (! (gimp_layer_mode_get_context (mode) & GIMP_LAYER_MODE_CONTEXT_GROUP))
+            success = FALSE;
+        }
+
+      if (success)
+        gimp_layer_set_mode (layer, mode, TRUE);
+    }
+
+  return gimp_procedure_get_return_values (procedure, success,
+                                           error ? *error : NULL);
+}
+
+static GimpValueArray *
+layer_get_blend_space_invoker (GimpProcedure         *procedure,
+                               Gimp                  *gimp,
+                               GimpContext           *context,
+                               GimpProgress          *progress,
+                               const GimpValueArray  *args,
+                               GError               **error)
+{
+  gboolean success = TRUE;
+  GimpValueArray *return_vals;
+  GimpLayer *layer;
+  gint32 blend_space = 0;
+
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+
+  if (success)
+    {
+      blend_space = gimp_layer_get_blend_space (layer);
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success,
+                                                  error ? *error : NULL);
+
+  if (success)
+    g_value_set_enum (gimp_value_array_index (return_vals, 1), blend_space);
+
+  return return_vals;
+}
+
+static GimpValueArray *
+layer_set_blend_space_invoker (GimpProcedure         *procedure,
+                               Gimp                  *gimp,
+                               GimpContext           *context,
+                               GimpProgress          *progress,
+                               const GimpValueArray  *args,
+                               GError               **error)
+{
+  gboolean success = TRUE;
+  GimpLayer *layer;
+  gint32 blend_space;
+
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  blend_space = g_value_get_enum (gimp_value_array_index (args, 1));
+
+  if (success)
+    {
+      gimp_layer_set_blend_space (layer, blend_space, TRUE);
+    }
+
+  return gimp_procedure_get_return_values (procedure, success,
+                                           error ? *error : NULL);
+}
+
+static GimpValueArray *
+layer_get_composite_space_invoker (GimpProcedure         *procedure,
+                                   Gimp                  *gimp,
+                                   GimpContext           *context,
+                                   GimpProgress          *progress,
+                                   const GimpValueArray  *args,
+                                   GError               **error)
+{
+  gboolean success = TRUE;
+  GimpValueArray *return_vals;
+  GimpLayer *layer;
+  gint32 composite_space = 0;
+
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+
+  if (success)
+    {
+      composite_space = gimp_layer_get_composite_space (layer);
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success,
+                                                  error ? *error : NULL);
+
+  if (success)
+    g_value_set_enum (gimp_value_array_index (return_vals, 1), composite_space);
+
+  return return_vals;
+}
+
+static GimpValueArray *
+layer_set_composite_space_invoker (GimpProcedure         *procedure,
+                                   Gimp                  *gimp,
+                                   GimpContext           *context,
+                                   GimpProgress          *progress,
+                                   const GimpValueArray  *args,
+                                   GError               **error)
+{
+  gboolean success = TRUE;
+  GimpLayer *layer;
+  gint32 composite_space;
+
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  composite_space = g_value_get_enum (gimp_value_array_index (args, 1));
+
+  if (success)
+    {
+      gimp_layer_set_composite_space (layer, composite_space, TRUE);
+    }
+
+  return gimp_procedure_get_return_values (procedure, success,
+                                           error ? *error : NULL);
+}
+
+static GimpValueArray *
+layer_get_composite_mode_invoker (GimpProcedure         *procedure,
+                                  Gimp                  *gimp,
+                                  GimpContext           *context,
+                                  GimpProgress          *progress,
+                                  const GimpValueArray  *args,
+                                  GError               **error)
+{
+  gboolean success = TRUE;
+  GimpValueArray *return_vals;
+  GimpLayer *layer;
+  gint32 composite_mode = 0;
+
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+
+  if (success)
+    {
+      composite_mode = gimp_layer_get_composite_mode (layer);
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success,
+                                                  error ? *error : NULL);
+
+  if (success)
+    g_value_set_enum (gimp_value_array_index (return_vals, 1), composite_mode);
+
+  return return_vals;
+}
+
+static GimpValueArray *
+layer_set_composite_mode_invoker (GimpProcedure         *procedure,
+                                  Gimp                  *gimp,
+                                  GimpContext           *context,
+                                  GimpProgress          *progress,
+                                  const GimpValueArray  *args,
+                                  GError               **error)
+{
+  gboolean success = TRUE;
+  GimpLayer *layer;
+  gint32 composite_mode;
+
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  composite_mode = g_value_get_enum (gimp_value_array_index (args, 1));
+
+  if (success)
+    {
+      gimp_layer_set_composite_mode (layer, composite_mode, TRUE);
     }
 
   return gimp_procedure_get_return_values (procedure, success,
@@ -1115,8 +1384,8 @@ register_layer_procs (GimpPDB *pdb)
                                g_param_spec_enum ("mode",
                                                   "mode",
                                                   "The layer combination mode",
-                                                  GIMP_TYPE_LAYER_MODE_EFFECTS,
-                                                  GIMP_NORMAL_MODE,
+                                                  GIMP_TYPE_LAYER_MODE,
+                                                  GIMP_LAYER_MODE_NORMAL,
                                                   GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_layer_id ("layer",
@@ -1213,7 +1482,8 @@ register_layer_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-layer-group-new",
                                      "Create a new layer group.",
-                                     "This procedure creates a new layer group. Attributes such as layer mode and opacity should be set with explicit procedure calls. Add the new layer group (which is a kind of layer) with the 'gimp-image-insert-layer' command. Other procedures useful with layer groups: 'gimp-image-reorder-item', 'gimp-item-get-parent', 'gimp-item-get-children', 'gimp-item-is-group'.",
+                                     "This procedure creates a new layer group. Attributes such as layer mode and opacity should be set with explicit procedure calls. Add the new layer group (which is a kind of layer) with the 'gimp-image-insert-layer' command.\n"
+                                     "Other procedures useful with layer groups: 'gimp-image-reorder-item', 'gimp-item-get-parent', 'gimp-item-get-children', 'gimp-item-is-group'.",
                                      "Barak Itkin <lightningismyname@gmail.com>",
                                      "Barak Itkin",
                                      "2010",
@@ -1551,8 +1821,19 @@ register_layer_procs (GimpPDB *pdb)
                                "gimp-layer-create-mask");
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-layer-create-mask",
-                                     "Create a layer mask for the specified specified layer.",
-                                     "This procedure creates a layer mask for the specified layer. Layer masks serve as an additional alpha channel for a layer. A number of different types of masks are allowed for initialisation: completely white masks (which will leave the layer fully visible), completely black masks (which will give the layer complete transparency, the layer's already existing alpha channel (which will leave the layer fully visible, but which may be more useful than a white mask), the current selection or a grayscale copy of the layer. The layer mask still needs to be added to the layer. This can be done with a call to 'gimp-layer-add-mask'.",
+                                     "Create a layer mask for the specified layer.",
+                                     "This procedure creates a layer mask for the specified layer.\n"
+                                     "Layer masks serve as an additional alpha channel for a layer. Different types of masks are allowed for initialisation:\n"
+                                     "- white mask (leaves the layer fully visible);\n"
+                                     "- black mask (gives the layer complete transparency);\n"
+                                     "- the layer's alpha channel (either a copy, or a transfer, which leaves the layer fully visible, but which may be more useful than a white mask);\n"
+                                     "- the current selection;\n"
+                                     "- a grayscale copy of the layer;\n"
+                                     "- or a copy of the active channel.\n"
+                                     "\n"
+                                     "The layer mask still needs to be added to the layer. This can be done with a call to 'gimp-layer-add-mask'.\n"
+                                     "\n"
+                                     "'gimp-layer-create-mask' will fail if there are no active channels on the image, when called with 'ADD-CHANNEL-MASK'. It will return a black mask when called with 'ADD-ALPHA-MASK' or 'ADD-ALPHA-TRANSFER-MASK' on a layer with no alpha channels, or with 'ADD-SELECTION-MASK' when there is no selection on the image.",
                                      "Spencer Kimball & Peter Mattis",
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
@@ -1568,7 +1849,7 @@ register_layer_procs (GimpPDB *pdb)
                                                   "mask type",
                                                   "The type of mask",
                                                   GIMP_TYPE_ADD_MASK_TYPE,
-                                                  GIMP_ADD_WHITE_MASK,
+                                                  GIMP_ADD_MASK_WHITE,
                                                   GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_layer_mask_id ("mask",
@@ -2039,8 +2320,8 @@ register_layer_procs (GimpPDB *pdb)
                                    g_param_spec_enum ("mode",
                                                       "mode",
                                                       "The layer combination mode",
-                                                      GIMP_TYPE_LAYER_MODE_EFFECTS,
-                                                      GIMP_NORMAL_MODE,
+                                                      GIMP_TYPE_LAYER_MODE,
+                                                      GIMP_LAYER_MODE_NORMAL,
                                                       GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
@@ -2069,8 +2350,188 @@ register_layer_procs (GimpPDB *pdb)
                                g_param_spec_enum ("mode",
                                                   "mode",
                                                   "The new layer combination mode",
-                                                  GIMP_TYPE_LAYER_MODE_EFFECTS,
-                                                  GIMP_NORMAL_MODE,
+                                                  GIMP_TYPE_LAYER_MODE,
+                                                  GIMP_LAYER_MODE_NORMAL,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure (pdb, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-layer-get-blend-space
+   */
+  procedure = gimp_procedure_new (layer_get_blend_space_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure),
+                               "gimp-layer-get-blend-space");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-layer-get-blend-space",
+                                     "Get the blend space of the specified layer.",
+                                     "This procedure returns the specified layer's blend space.",
+                                     "Ell",
+                                     "Ell",
+                                     "2017",
+                                     NULL);
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_layer_id ("layer",
+                                                         "layer",
+                                                         "The layer",
+                                                         pdb->gimp, FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_enum ("blend-space",
+                                                      "blend space",
+                                                      "The layer blend space",
+                                                      GIMP_TYPE_LAYER_COLOR_SPACE,
+                                                      GIMP_LAYER_COLOR_SPACE_AUTO,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure (pdb, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-layer-set-blend-space
+   */
+  procedure = gimp_procedure_new (layer_set_blend_space_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure),
+                               "gimp-layer-set-blend-space");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-layer-set-blend-space",
+                                     "Set the blend space of the specified layer.",
+                                     "This procedure sets the specified layer's blend space.",
+                                     "Ell",
+                                     "Ell",
+                                     "2017",
+                                     NULL);
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_layer_id ("layer",
+                                                         "layer",
+                                                         "The layer",
+                                                         pdb->gimp, FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("blend-space",
+                                                  "blend space",
+                                                  "The new layer blend space",
+                                                  GIMP_TYPE_LAYER_COLOR_SPACE,
+                                                  GIMP_LAYER_COLOR_SPACE_AUTO,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure (pdb, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-layer-get-composite-space
+   */
+  procedure = gimp_procedure_new (layer_get_composite_space_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure),
+                               "gimp-layer-get-composite-space");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-layer-get-composite-space",
+                                     "Get the composite space of the specified layer.",
+                                     "This procedure returns the specified layer's composite space.",
+                                     "Ell",
+                                     "Ell",
+                                     "2017",
+                                     NULL);
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_layer_id ("layer",
+                                                         "layer",
+                                                         "The layer",
+                                                         pdb->gimp, FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_enum ("composite-space",
+                                                      "composite space",
+                                                      "The layer composite space",
+                                                      GIMP_TYPE_LAYER_COLOR_SPACE,
+                                                      GIMP_LAYER_COLOR_SPACE_AUTO,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure (pdb, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-layer-set-composite-space
+   */
+  procedure = gimp_procedure_new (layer_set_composite_space_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure),
+                               "gimp-layer-set-composite-space");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-layer-set-composite-space",
+                                     "Set the composite space of the specified layer.",
+                                     "This procedure sets the specified layer's composite space.",
+                                     "Ell",
+                                     "Ell",
+                                     "2017",
+                                     NULL);
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_layer_id ("layer",
+                                                         "layer",
+                                                         "The layer",
+                                                         pdb->gimp, FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("composite-space",
+                                                  "composite space",
+                                                  "The new layer composite space",
+                                                  GIMP_TYPE_LAYER_COLOR_SPACE,
+                                                  GIMP_LAYER_COLOR_SPACE_AUTO,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure (pdb, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-layer-get-composite-mode
+   */
+  procedure = gimp_procedure_new (layer_get_composite_mode_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure),
+                               "gimp-layer-get-composite-mode");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-layer-get-composite-mode",
+                                     "Get the composite mode of the specified layer.",
+                                     "This procedure returns the specified layer's composite mode.",
+                                     "Ell",
+                                     "Ell",
+                                     "2017",
+                                     NULL);
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_layer_id ("layer",
+                                                         "layer",
+                                                         "The layer",
+                                                         pdb->gimp, FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_enum ("composite-mode",
+                                                      "composite mode",
+                                                      "The layer composite mode",
+                                                      GIMP_TYPE_LAYER_COMPOSITE_MODE,
+                                                      GIMP_LAYER_COMPOSITE_AUTO,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure (pdb, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-layer-set-composite-mode
+   */
+  procedure = gimp_procedure_new (layer_set_composite_mode_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure),
+                               "gimp-layer-set-composite-mode");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-layer-set-composite-mode",
+                                     "Set the composite mode of the specified layer.",
+                                     "This procedure sets the specified layer's composite mode.",
+                                     "Ell",
+                                     "Ell",
+                                     "2017",
+                                     NULL);
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_layer_id ("layer",
+                                                         "layer",
+                                                         "The layer",
+                                                         pdb->gimp, FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("composite-mode",
+                                                  "composite mode",
+                                                  "The new layer composite mode",
+                                                  GIMP_TYPE_LAYER_COMPOSITE_MODE,
+                                                  GIMP_LAYER_COMPOSITE_AUTO,
                                                   GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);

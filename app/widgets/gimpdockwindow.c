@@ -31,8 +31,6 @@
 
 #include "dialogs/dialogs.h" /* FIXME, we are in the widget layer */
 
-#include "menus/menus.h"
-
 #include "config/gimpguiconfig.h"
 
 #include "core/gimp.h"
@@ -128,6 +126,7 @@ static void            gimp_dock_window_style_set                 (GtkWidget    
 static gboolean        gimp_dock_window_delete_event              (GtkWidget                  *widget,
                                                                    GdkEventAny                *event);
 static GList         * gimp_dock_window_get_docks                 (GimpDockContainer          *dock_container);
+static GimpDialogFactory * gimp_dock_window_get_dialog_factory    (GimpDockContainer          *dock_container);
 static GimpUIManager * gimp_dock_window_get_ui_manager            (GimpDockContainer          *dock_container);
 static void            gimp_dock_window_add_dock_from_session     (GimpDockContainer          *dock_container,
                                                                    GimpDock                   *dock,
@@ -271,10 +270,11 @@ gimp_dock_window_init (GimpDockWindow *dock_window)
 static void
 gimp_dock_window_dock_container_iface_init (GimpDockContainerInterface *iface)
 {
-  iface->get_docks      = gimp_dock_window_get_docks;
-  iface->get_ui_manager = gimp_dock_window_get_ui_manager;
-  iface->add_dock       = gimp_dock_window_add_dock_from_session;
-  iface->get_dock_side  = gimp_dock_window_get_dock_side;
+  iface->get_docks          = gimp_dock_window_get_docks;
+  iface->get_dialog_factory = gimp_dock_window_get_dialog_factory;
+  iface->get_ui_manager     = gimp_dock_window_get_ui_manager;
+  iface->add_dock           = gimp_dock_window_add_dock_from_session;
+  iface->get_dock_side      = gimp_dock_window_get_dock_side;
 }
 
 static void
@@ -287,17 +287,17 @@ gimp_dock_window_session_managed_iface_init (GimpSessionManagedInterface *iface)
 static void
 gimp_dock_window_constructed (GObject *object)
 {
-  GimpDockWindow *dock_window = GIMP_DOCK_WINDOW (object);
-  GimpGuiConfig  *config;
-  GimpContext    *factory_context;
-  GtkAccelGroup  *accel_group;
-  Gimp           *gimp;
-  GtkSettings    *settings;
-  gint            menu_view_width  = -1;
-  gint            menu_view_height = -1;
+  GimpDockWindow  *dock_window = GIMP_DOCK_WINDOW (object);
+  GimpGuiConfig   *config;
+  GimpContext     *factory_context;
+  GimpMenuFactory *menu_factory;
+  GtkAccelGroup   *accel_group;
+  Gimp            *gimp;
+  GtkSettings     *settings;
+  gint             menu_view_width  = -1;
+  gint             menu_view_height = -1;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   gimp   = GIMP (dock_window->p->context->gimp);
   config = GIMP_GUI_CONFIG (gimp->config);
@@ -317,15 +317,18 @@ gimp_dock_window_constructed (GObject *object)
   /* Setup hints */
   gimp_window_set_hint (GTK_WINDOW (dock_window), config->dock_window_hint);
 
+  menu_factory =
+    gimp_dialog_factory_get_menu_factory (dock_window->p->dialog_factory);
+
   /* Make image window related keyboard shortcuts work also when a
    * dock window is the focused window
    */
   dock_window->p->ui_manager =
-    gimp_menu_factory_manager_new (global_menu_factory,
+    gimp_menu_factory_manager_new (menu_factory,
                                    dock_window->p->ui_manager_name,
                                    dock_window,
                                    config->tearoff_menus);
-  accel_group = 
+  accel_group =
     gtk_ui_manager_get_accel_group (GTK_UI_MANAGER (dock_window->p->ui_manager));
   gtk_window_add_accel_group (GTK_WINDOW (dock_window), accel_group);
 
@@ -344,9 +347,9 @@ gimp_dock_window_constructed (GObject *object)
                                 dock_window);
 
   gimp_context_define_properties (dock_window->p->context,
-                                  GIMP_CONTEXT_ALL_PROPS_MASK &
-                                  ~(GIMP_CONTEXT_IMAGE_MASK |
-                                    GIMP_CONTEXT_DISPLAY_MASK),
+                                  GIMP_CONTEXT_PROP_MASK_ALL &
+                                  ~(GIMP_CONTEXT_PROP_MASK_IMAGE |
+                                    GIMP_CONTEXT_PROP_MASK_DISPLAY),
                                   FALSE);
   gimp_context_set_parent (dock_window->p->context,
                            factory_context);
@@ -392,7 +395,7 @@ gimp_dock_window_constructed (GObject *object)
                         dock_window);
 
       gimp_help_set_help_data (dock_window->p->auto_button,
-                               _("When enabled the dialog automatically "
+                               _("When enabled, the dialog automatically "
                                  "follows the image you are working on."),
                                GIMP_HELP_DOCK_AUTO_BUTTON);
     }
@@ -490,23 +493,9 @@ gimp_dock_window_dispose (GObject *object)
       dock_window->p->image_flush_handler_id = 0;
     }
 
-  if (dock_window->p->ui_manager)
-    {
-      g_object_unref (dock_window->p->ui_manager);
-      dock_window->p->ui_manager = NULL;
-    }
-
-  if (dock_window->p->dialog_factory)
-    {
-      g_object_unref (dock_window->p->dialog_factory);
-      dock_window->p->dialog_factory = NULL;
-    }
-
-  if (dock_window->p->context)
-    {
-      g_object_unref (dock_window->p->context);
-      dock_window->p->context = NULL;
-    }
+  g_clear_object (&dock_window->p->ui_manager);
+  g_clear_object (&dock_window->p->dialog_factory);
+  g_clear_object (&dock_window->p->context);
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
@@ -516,11 +505,7 @@ gimp_dock_window_finalize (GObject *object)
 {
   GimpDockWindow *dock_window = GIMP_DOCK_WINDOW (object);
 
-  if (dock_window->p->ui_manager_name)
-    {
-      g_free (dock_window->p->ui_manager_name);
-      dock_window->p->ui_manager_name = NULL;
-    }
+  g_clear_pointer (&dock_window->p->ui_manager_name, g_free);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -692,7 +677,8 @@ gimp_dock_window_delete_event (GtkWidget   *widget,
   entry_name = (gimp_dock_window_has_toolbox (dock_window) ?
                 "gimp-toolbox-window" :
                 "gimp-dock-window");
-  entry = gimp_dialog_factory_find_entry (gimp_dialog_factory_get_singleton (), entry_name);
+  entry = gimp_dialog_factory_find_entry (dock_window->p->dialog_factory,
+                                          entry_name);
   gimp_session_info_set_factory_entry (info, entry);
 
   gimp_container_add (global_recent_docks, GIMP_OBJECT (info));
@@ -704,23 +690,23 @@ gimp_dock_window_delete_event (GtkWidget   *widget,
 static GList *
 gimp_dock_window_get_docks (GimpDockContainer *dock_container)
 {
-  GimpDockWindow *dock_window;
-
-  g_return_val_if_fail (GIMP_IS_DOCK_WINDOW (dock_container), NULL);
-
-  dock_window = GIMP_DOCK_WINDOW (dock_container);
+  GimpDockWindow *dock_window = GIMP_DOCK_WINDOW (dock_container);
 
   return g_list_copy (gimp_dock_columns_get_docks (dock_window->p->dock_columns));
+}
+
+static GimpDialogFactory *
+gimp_dock_window_get_dialog_factory (GimpDockContainer *dock_container)
+{
+  GimpDockWindow *dock_window = GIMP_DOCK_WINDOW (dock_container);
+
+  return dock_window->p->dialog_factory;
 }
 
 static GimpUIManager *
 gimp_dock_window_get_ui_manager (GimpDockContainer *dock_container)
 {
-  GimpDockWindow *dock_window;
-
-  g_return_val_if_fail (GIMP_IS_DOCK_WINDOW (dock_container), NULL);
-
-  dock_window = GIMP_DOCK_WINDOW (dock_container);
+  GimpDockWindow *dock_window = GIMP_DOCK_WINDOW (dock_container);
 
   return dock_window->p->ui_manager;
 }
@@ -730,11 +716,7 @@ gimp_dock_window_add_dock_from_session (GimpDockContainer   *dock_container,
                                         GimpDock            *dock,
                                         GimpSessionInfoDock *dock_info)
 {
-  GimpDockWindow *dock_window;
-
-  g_return_if_fail (GIMP_IS_DOCK_WINDOW (dock_container));
-
-  dock_window = GIMP_DOCK_WINDOW (dock_container);
+  GimpDockWindow *dock_window = GIMP_DOCK_WINDOW (dock_container);
 
   gimp_dock_window_add_dock (dock_window,
                              dock,
@@ -744,13 +726,9 @@ gimp_dock_window_add_dock_from_session (GimpDockContainer   *dock_container,
 static GList *
 gimp_dock_window_get_aux_info (GimpSessionManaged *session_managed)
 {
-  GimpDockWindow     *dock_window;
-  GList              *aux_info = NULL;
+  GimpDockWindow     *dock_window = GIMP_DOCK_WINDOW (session_managed);
+  GList              *aux_info    = NULL;
   GimpSessionInfoAux *aux;
-
-  g_return_val_if_fail (GIMP_IS_DOCK_WINDOW (session_managed), NULL);
-
-  dock_window = GIMP_DOCK_WINDOW (session_managed);
 
   if (dock_window->p->allow_dockbook_absence)
     {
@@ -1041,7 +1019,7 @@ gimp_dock_window_image_changed (GimpDockWindow *dock_window,
         {
           GList *list;
 
-          for (list = GIMP_LIST (display_container)->list;
+          for (list = GIMP_LIST (display_container)->queue->head;
                list;
                list = g_list_next (list))
             {
@@ -1086,10 +1064,14 @@ gimp_dock_window_auto_clicked (GtkWidget *widget,
 
   if (dock_window->p->auto_follow_active)
     {
-      gimp_context_copy_properties (gimp_dialog_factory_get_context (dock_window->p->dialog_factory),
+      GimpContext *context;
+
+      context = gimp_dialog_factory_get_context (dock_window->p->dialog_factory);
+
+      gimp_context_copy_properties (context,
                                     dock_window->p->context,
-                                    GIMP_CONTEXT_DISPLAY_MASK |
-                                    GIMP_CONTEXT_IMAGE_MASK);
+                                    GIMP_CONTEXT_PROP_MASK_DISPLAY |
+                                    GIMP_CONTEXT_PROP_MASK_IMAGE);
     }
 }
 
@@ -1139,17 +1121,17 @@ GtkWidget *
 gimp_dock_window_new (const gchar       *role,
                       const gchar       *ui_manager_name,
                       gboolean           allow_dockbook_absence,
-                      GimpDialogFactory *factory,
+                      GimpDialogFactory *dialog_factory,
                       GimpContext       *context)
 {
-  g_return_val_if_fail (GIMP_IS_DIALOG_FACTORY (factory), NULL);
+  g_return_val_if_fail (GIMP_IS_DIALOG_FACTORY (dialog_factory), NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
 
   return g_object_new (GIMP_TYPE_DOCK_WINDOW,
                        "role",                   role,
                        "ui-manager-name",        ui_manager_name,
                        "allow-dockbook-absence", allow_dockbook_absence,
-                       "dialog-factory",         factory,
+                       "dialog-factory",         dialog_factory,
                        "context",                context,
                        NULL);
 }
@@ -1168,14 +1150,6 @@ gimp_dock_window_get_context (GimpDockWindow *dock_window)
   g_return_val_if_fail (GIMP_IS_DOCK_WINDOW (dock_window), NULL);
 
   return dock_window->p->context;
-}
-
-GimpDialogFactory *
-gimp_dock_window_get_dialog_factory (GimpDockWindow *dock_window)
-{
-  g_return_val_if_fail (GIMP_IS_DOCK_WINDOW (dock_window), NULL);
-
-  return dock_window->p->dialog_factory;
 }
 
 gboolean

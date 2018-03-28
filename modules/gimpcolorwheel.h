@@ -6,20 +6,18 @@
  *          Federico Mena-Quintero <federico@gimp.org> (cleanup for GTK+)
  *          Jonathan Blandford <jrb@redhat.com> (cleanup for GTK+)
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -72,25 +70,28 @@ struct _GimpColorWheelClass
 };
 
 
-void        color_wheel_register_type          (GTypeModule *module);
+void        color_wheel_register_type          (GTypeModule     *module);
 
 GType       gimp_color_wheel_get_type          (void) G_GNUC_CONST;
 GtkWidget * gimp_color_wheel_new               (void);
 
-void        gimp_color_wheel_set_color         (GimpColorWheel *wheel,
-                                                double          h,
-                                                double          s,
-                                                double          v);
-void        gimp_color_wheel_get_color         (GimpColorWheel *wheel,
-                                                gdouble        *h,
-                                                gdouble        *s,
-                                                gdouble        *v);
+void        gimp_color_wheel_set_color         (GimpColorWheel  *wheel,
+                                                double           h,
+                                                double           s,
+                                                double           v);
+void        gimp_color_wheel_get_color         (GimpColorWheel  *wheel,
+                                                gdouble         *h,
+                                                gdouble         *s,
+                                                gdouble         *v);
 
-void        gimp_color_wheel_set_ring_fraction (GimpColorWheel *wheel,
-                                                gdouble         fraction);
-gdouble     gimp_color_wheel_get_ring_fraction (GimpColorWheel *wheel);
+void        gimp_color_wheel_set_ring_fraction (GimpColorWheel  *wheel,
+                                                gdouble          fraction);
+gdouble     gimp_color_wheel_get_ring_fraction (GimpColorWheel  *wheel);
 
-gboolean    gimp_color_wheel_is_adjusting      (GimpColorWheel *wheel);
+void        gimp_color_wheel_set_color_config  (GimpColorWheel  *wheel,
+                                                GimpColorConfig *config);
+
+gboolean    gimp_color_wheel_is_adjusting      (GimpColorWheel  *wheel);
 
 G_END_DECLS
 

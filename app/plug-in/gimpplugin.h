@@ -42,11 +42,12 @@ struct _GimpPlugIn
   GimpObject           parent_instance;
 
   GimpPlugInManager   *manager;
-  gchar               *prog;            /*  Plug-in's full path name          */
+  GFile               *file;            /*  Plug-in's full path name          */
 
   GimpPlugInCallMode   call_mode;       /*  QUERY, INIT or RUN                */
   guint                open : 1;        /*  Is the plug-in open?              */
   guint                hup : 1;         /*  Did we receive a G_IO_HUP         */
+  guint                precision : 1;   /*  True drawable precision enabled   */
   GPid                 pid;             /*  Plug-in's process id              */
 
   GIOChannel          *my_read;         /*  App's read and write channels     */
@@ -82,7 +83,7 @@ GimpPlugIn  * gimp_plug_in_new               (GimpPlugInManager      *manager,
                                               GimpContext            *context,
                                               GimpProgress           *progress,
                                               GimpPlugInProcedure    *procedure,
-                                              const gchar            *prog);
+                                              GFile                  *file);
 
 gboolean      gimp_plug_in_open              (GimpPlugIn             *plug_in,
                                               GimpPlugInCallMode      call_mode,
@@ -118,6 +119,9 @@ void          gimp_plug_in_set_error_handler (GimpPlugIn             *plug_in,
                                               GimpPDBErrorHandler     handler);
 GimpPDBErrorHandler
               gimp_plug_in_get_error_handler (GimpPlugIn             *plug_in);
+
+void          gimp_plug_in_enable_precision  (GimpPlugIn             *plug_in);
+gboolean      gimp_plug_in_precision_enabled (GimpPlugIn             *plug_in);
 
 
 #endif /* __GIMP_PLUG_IN_H__ */

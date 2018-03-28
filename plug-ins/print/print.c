@@ -40,6 +40,8 @@
 #define PRINT_TEMP_PROC_NAME "file-print-gtk-page-setup-notify-temp"
 #endif
 
+G_DEFINE_QUARK (gimp-plugin-print-error-quark, gimp_plugin_print_error)
+
 static void        query (void);
 static void        run   (const gchar       *name,
                           gint               nparams,
@@ -115,8 +117,8 @@ query (void)
                           print_args, NULL);
 
   gimp_plugin_menu_register (PRINT_PROC_NAME, "<Image>/File/Send");
-  gimp_plugin_icon_register (PRINT_PROC_NAME, GIMP_ICON_TYPE_STOCK_ID,
-                             (const guint8 *) GTK_STOCK_PRINT);
+  gimp_plugin_icon_register (PRINT_PROC_NAME, GIMP_ICON_TYPE_ICON_NAME,
+                             (const guint8 *) GIMP_ICON_DOCUMENT_PRINT);
 
 #ifndef EMBED_PAGE_SETUP
   gimp_install_procedure (PAGE_SETUP_PROC_NAME,
@@ -133,8 +135,8 @@ query (void)
                           print_args, NULL);
 
   gimp_plugin_menu_register (PAGE_SETUP_PROC_NAME, "<Image>/File/Send");
-  gimp_plugin_icon_register (PAGE_SETUP_PROC_NAME, GIMP_ICON_TYPE_STOCK_ID,
-                             (const guint8 *) GTK_STOCK_PAGE_SETUP);
+  gimp_plugin_icon_register (PAGE_SETUP_PROC_NAME, GIMP_ICON_TYPE_ICON_NAME,
+                             (const guint8 *) GIMP_ICON_DOCUMENT_PAGE_SETUP);
 #endif
 }
 
@@ -151,14 +153,13 @@ run (const gchar      *name,
   gint32             image_ID;
   GError            *error = NULL;
 
-  run_mode = param[0].data.d_int32;
-
   INIT_I18N ();
+  gegl_init (NULL, NULL);
+
+  run_mode = param[0].data.d_int32;
 
   *nreturn_vals = 1;
   *return_vals  = values;
-
-  g_thread_init (NULL);
 
   values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;

@@ -22,7 +22,8 @@
 #include "config.h"
 
 #include <cairo.h>
-#include <glib-object.h>
+#include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
@@ -90,6 +91,9 @@ static GTokenType  gimp_config_deserialize_value_array (GValue     *value,
 static GTokenType  gimp_config_deserialize_unit        (GValue     *value,
                                                         GParamSpec *prop_spec,
                                                         GScanner   *scanner);
+static GTokenType  gimp_config_deserialize_file_value  (GValue     *value,
+                                                        GParamSpec *prop_spec,
+                                                        GScanner   *scanner);
 static GTokenType  gimp_config_deserialize_any         (GValue     *value,
                                                         GParamSpec *prop_spec,
                                                         GScanner   *scanner);
@@ -122,7 +126,7 @@ scanner_string_utf8_valid (GScanner    *scanner,
  *
  * Return value: %TRUE on success, %FALSE otherwise.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_config_deserialize_properties (GimpConfig *config,
@@ -136,7 +140,6 @@ gimp_config_deserialize_properties (GimpConfig *config,
   guint          scope_id;
   guint          old_scope_id;
   GTokenType     token;
-  GTokenType     next;
 
   g_return_val_if_fail (GIMP_IS_CONFIG (config), FALSE);
 
@@ -168,7 +171,10 @@ gimp_config_deserialize_properties (GimpConfig *config,
 
   while (TRUE)
     {
-      next = g_scanner_peek_next_token (scanner);
+      GTokenType next = g_scanner_peek_next_token (scanner);
+
+      if (next == G_TOKEN_EOF)
+        break;
 
       if (G_UNLIKELY (next != token &&
                       ! (token == G_TOKEN_SYMBOL &&
@@ -227,7 +233,7 @@ gimp_config_deserialize_properties (GimpConfig *config,
  * expected #GTokenType or %G_TOKEN_NONE if the expected token was
  * found but couldn't be parsed.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 GTokenType
 gimp_config_deserialize_property (GimpConfig *config,
@@ -237,8 +243,8 @@ gimp_config_deserialize_property (GimpConfig *config,
   GimpConfigInterface *config_iface = NULL;
   GimpConfigInterface *parent_iface = NULL;
   GParamSpec          *prop_spec;
-  GTokenType           token = G_TOKEN_RIGHT_PAREN;
-  GValue               value = { 0, };
+  GTokenType           token        = G_TOKEN_RIGHT_PAREN;
+  GValue               value        = G_VALUE_INIT;
   guint                old_scope_id;
 
   old_scope_id = g_scanner_set_scope (scanner, 0);
@@ -289,13 +295,18 @@ gimp_config_deserialize_property (GimpConfig *config,
     }
   else
     {
-      if (G_VALUE_HOLDS_OBJECT (&value))
-        token = gimp_config_deserialize_object (&value,
-                                                config, prop_spec,
-                                                scanner, nest_level);
+      if (G_VALUE_HOLDS_OBJECT (&value) &&
+          G_VALUE_TYPE (&value) != G_TYPE_FILE)
+        {
+          token = gimp_config_deserialize_object (&value,
+                                                  config, prop_spec,
+                                                  scanner, nest_level);
+        }
       else
-        token = gimp_config_deserialize_value (&value,
-                                               config, prop_spec, scanner);
+        {
+          token = gimp_config_deserialize_value (&value,
+                                                 config, prop_spec, scanner);
+        }
     }
 
   if (token == G_TOKEN_RIGHT_PAREN &&
@@ -353,7 +364,7 @@ gimp_config_deserialize_value (GValue     *value,
     {
       return gimp_config_deserialize_matrix2 (value, prop_spec, scanner);
     }
-  else if (prop_spec->value_type == G_TYPE_VALUE_ARRAY)
+  else if (prop_spec->value_type == GIMP_TYPE_VALUE_ARRAY)
     {
       return gimp_config_deserialize_value_array (value,
                                                   config, prop_spec, scanner);
@@ -361,6 +372,10 @@ gimp_config_deserialize_value (GValue     *value,
   else if (prop_spec->value_type == GIMP_TYPE_UNIT)
     {
       return gimp_config_deserialize_unit (value, prop_spec, scanner);
+    }
+  else if (prop_spec->value_type == G_TYPE_FILE)
+    {
+      return gimp_config_deserialize_file_value (value, prop_spec, scanner);
     }
 
   /*  This fallback will only work for value_types that
@@ -515,11 +530,39 @@ gimp_config_deserialize_enum (GValue     *value,
 
       enum_value = g_enum_get_value_by_nick (enum_class,
                                              scanner->value.v_identifier);
-      if (!enum_value)
+      if (! enum_value)
         enum_value = g_enum_get_value_by_name (enum_class,
                                                scanner->value.v_identifier);
+      if (! enum_value)
+        {
+          /*  if the value was not found, check if we have a compat
+           *  enum to find the ideitifier
+           */
+          GQuark quark       = g_quark_from_static_string ("gimp-compat-enum");
+          GType  compat_type = (GType) g_type_get_qdata (G_VALUE_TYPE (value),
+                                                         quark);
 
-      if (!enum_value)
+          if (compat_type)
+            {
+              GEnumClass *compat_class = g_type_class_ref (compat_type);
+
+              enum_value = g_enum_get_value_by_nick (compat_class,
+                                                     scanner->value.v_identifier);
+              if (! enum_value)
+                enum_value = g_enum_get_value_by_name (compat_class,
+                                                       scanner->value.v_identifier);
+
+              /*  finally, if we found a compat value, make sure the
+               *  same value exists in the original enum
+               */
+              if (enum_value)
+                enum_value = g_enum_get_value (enum_class, enum_value->value);
+
+              g_type_class_unref (compat_class);
+           }
+        }
+
+      if (! enum_value)
         {
           g_scanner_error (scanner,
                            _("invalid value '%s' for token %s"),
@@ -534,7 +577,7 @@ gimp_config_deserialize_enum (GValue     *value,
       enum_value = g_enum_get_value (enum_class,
                                      (gint) scanner->value.v_int64);
 
-      if (!enum_value)
+      if (! enum_value)
         {
           g_scanner_error (scanner,
                            _("invalid value '%ld' for token %s"),
@@ -711,19 +754,19 @@ gimp_config_deserialize_value_array (GValue     *value,
                                      GParamSpec *prop_spec,
                                      GScanner   *scanner)
 {
-  GParamSpecValueArray *array_spec;
-  GValueArray          *array;
-  GValue                array_value = { 0, };
-  gint                  n_values;
-  GTokenType            token;
-  gint                  i;
+  GimpParamSpecValueArray *array_spec;
+  GimpValueArray          *array;
+  GValue                   array_value = G_VALUE_INIT;
+  gint                     n_values;
+  GTokenType               token;
+  gint                     i;
 
-  array_spec = G_PARAM_SPEC_VALUE_ARRAY (prop_spec);
+  array_spec = GIMP_PARAM_SPEC_VALUE_ARRAY (prop_spec);
 
   if (! gimp_scanner_parse_int (scanner, &n_values))
     return G_TOKEN_INT;
 
-  array = g_value_array_new (n_values);
+  array = gimp_value_array_new (n_values);
 
   for (i = 0; i < n_values; i++)
     {
@@ -735,7 +778,7 @@ gimp_config_deserialize_value_array (GValue     *value,
                                              scanner);
 
       if (token == G_TOKEN_RIGHT_PAREN)
-        g_value_array_append (array, &array_value);
+        gimp_value_array_append (array, &array_value);
 
       g_value_unset (&array_value);
 
@@ -831,6 +874,49 @@ gimp_config_deserialize_unit (GValue     *value,
   scanner->config->cset_identifier_nth   = old_cset_identifier_nth;
 
   return token;
+}
+
+static GTokenType
+gimp_config_deserialize_file_value (GValue     *value,
+                                    GParamSpec *prop_spec,
+                                    GScanner   *scanner)
+{
+  GTokenType token;
+
+  token = g_scanner_peek_next_token (scanner);
+
+  if (token != G_TOKEN_IDENTIFIER &&
+      token != G_TOKEN_STRING)
+    {
+      return G_TOKEN_STRING;
+    }
+
+  g_scanner_get_next_token (scanner);
+
+  if (token == G_TOKEN_IDENTIFIER)
+    {
+      /* this is supposed to parse a literal "NULL" only, but so what... */
+      g_value_set_object (value, NULL);
+    }
+  else
+    {
+      gchar *path = gimp_config_path_expand (scanner->value.v_string, TRUE,
+                                             NULL);
+
+      if (path)
+        {
+          GFile *file = g_file_new_for_path (path);
+
+          g_value_take_object (value, file);
+          g_free (path);
+        }
+      else
+        {
+          g_value_set_object (value, NULL);
+        }
+    }
+
+  return G_TOKEN_RIGHT_PAREN;
 }
 
 static GTokenType

@@ -21,7 +21,9 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gio/gio.h>
+
+#include "libgimpbase/gimpbase.h"
 
 #include "core-types.h"
 
@@ -214,23 +216,25 @@ gimp_dash_pattern_fill_segments (GArray   *pattern,
 }
 
 GArray *
-gimp_dash_pattern_from_value_array (GValueArray *value_array)
+gimp_dash_pattern_from_value_array (GimpValueArray *value_array)
 {
-  if (value_array == NULL || value_array->n_values == 0)
+  if (value_array == NULL || gimp_value_array_length (value_array) == 0)
     {
       return NULL;
     }
   else
     {
       GArray *pattern;
+      gint    length;
       gint    i;
 
-      pattern = g_array_sized_new (FALSE, FALSE,
-                                   sizeof (gdouble), value_array->n_values);
+      length = gimp_value_array_length (value_array);
 
-      for (i = 0; i < value_array->n_values; i++)
+      pattern = g_array_sized_new (FALSE, FALSE, sizeof (gdouble), length);
+
+      for (i = 0; i < length; i++)
         {
-          GValue *item = g_value_array_get_nth (value_array, i);
+          GValue *item = gimp_value_array_index (value_array, i);
           gdouble val;
 
           g_return_val_if_fail (G_VALUE_HOLDS_DOUBLE (item), NULL);
@@ -244,31 +248,84 @@ gimp_dash_pattern_from_value_array (GValueArray *value_array)
     }
 }
 
-GValueArray *
+GimpValueArray *
 gimp_dash_pattern_to_value_array (GArray *pattern)
 {
-  if (pattern == NULL || pattern->len == 0)
+  if (pattern != NULL && pattern->len > 0)
     {
-      return NULL;
-    }
-  else
-    {
-      GValueArray *value_array = g_value_array_new (pattern->len);
-      GValue       item        = { 0, };
-      gint         i;
+      GimpValueArray *value_array = gimp_value_array_new (pattern->len);
+      GValue          item        = G_VALUE_INIT;
+      gint            i;
 
       g_value_init (&item, G_TYPE_DOUBLE);
 
       for (i = 0; i < pattern->len; i++)
         {
           g_value_set_double (&item, g_array_index (pattern, gdouble, i));
-          g_value_array_append (value_array, &item);
+          gimp_value_array_append (value_array, &item);
         }
 
       g_value_unset (&item);
 
       return value_array;
     }
+
+  return NULL;
+}
+
+GArray *
+gimp_dash_pattern_from_double_array (gint           n_dashes,
+                                     const gdouble *dashes)
+{
+  if (n_dashes > 0 && dashes != NULL)
+    {
+      GArray *pattern;
+      gint    i;
+
+      pattern = g_array_new (FALSE, FALSE, sizeof (gdouble));
+
+      for (i = 0; i < n_dashes; i++)
+        {
+          if (dashes[i] >= 0.0)
+            {
+              g_array_append_val (pattern, dashes[i]);
+            }
+          else
+            {
+              g_array_free (pattern, TRUE);
+              return NULL;
+            }
+        }
+
+      return pattern;
+    }
+
+  return NULL;
+}
+
+gdouble *
+gimp_dash_pattern_to_double_array (GArray *pattern,
+                                   gint   *n_dashes)
+{
+  if (pattern != NULL && pattern->len > 0)
+    {
+      gdouble *dashes;
+      gint     i;
+
+      dashes = g_new0 (gdouble, pattern->len);
+
+      for (i = 0; i < pattern->len; i++)
+        {
+          dashes[i] = g_array_index (pattern, gdouble, i);
+        }
+
+      if (n_dashes)
+        *n_dashes = pattern->len;
+
+      return dashes;
+    }
+
+  return NULL;
 }
 
 GArray *

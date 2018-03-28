@@ -426,7 +426,7 @@ film (void)
                                    &drawable_dst, &pixel_rgn_dst);
 
   /* Fill film background */
-  gimp_drawable_fill (layer_ID_dst, GIMP_BACKGROUND_FILL);
+  gimp_drawable_fill (layer_ID_dst, GIMP_FILL_BACKGROUND);
 
   /* Draw all the holes */
   hole_offset = film_height * filmvals.hole_offset;
@@ -743,7 +743,9 @@ create_new_image (const gchar    *filename,
 
   gimp_image_undo_disable (image_ID);
   *layer_ID = gimp_layer_new (image_ID, _("Background"), width, height,
-                              gdtype, 100, GIMP_NORMAL_MODE);
+                              gdtype,
+                              100,
+                              gimp_image_get_default_new_layer_mode (image_ID));
   gimp_image_insert_layer (image_ID, *layer_ID, -1, 0);
 
   if (drawable)
@@ -877,7 +879,7 @@ add_image_list (gboolean   add_box_flag,
   label = gtk_label_new (add_box_flag ?
                          _("Available images:") :
                          _("On film:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
@@ -926,8 +928,8 @@ add_image_list (gboolean   add_box_flag,
       g_free (name);
     }
 
-  button = gtk_button_new_from_stock (add_box_flag ?
-                                      GTK_STOCK_ADD : GTK_STOCK_REMOVE);
+  button = gtk_button_new_with_mnemonic (add_box_flag ?
+                                         _("_Add") : _("_Remove"));
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
@@ -944,20 +946,21 @@ static void
 create_selection_tab (GtkWidget *notebook,
                       gint32     image_ID)
 {
-  GtkSizeGroup *group;
-  GtkWidget    *vbox;
-  GtkWidget    *vbox2;
-  GtkWidget    *hbox;
-  GtkWidget    *table;
-  GtkWidget    *label;
-  GtkWidget    *frame;
-  GtkWidget    *toggle;
-  GtkWidget    *spinbutton;
-  GtkObject    *adj;
-  GtkWidget    *button;
-  GtkWidget    *font_button;
-  gint32       *image_id_list;
-  gint          nimages, j;
+  GimpColorConfig *config;
+  GtkSizeGroup    *group;
+  GtkWidget       *vbox;
+  GtkWidget       *vbox2;
+  GtkWidget       *hbox;
+  GtkWidget       *table;
+  GtkWidget       *label;
+  GtkWidget       *frame;
+  GtkWidget       *toggle;
+  GtkWidget       *spinbutton;
+  GtkAdjustment   *adj;
+  GtkWidget       *button;
+  GtkWidget       *font_button;
+  gint32          *image_id_list;
+  gint             nimages, j;
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
@@ -971,7 +974,7 @@ create_selection_tab (GtkWidget *notebook,
 
   group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
-  /* Film height/colour */
+  /* Film height/color */
   frame = gimp_frame_new (_("Filmstrip"));
   gtk_box_pack_start (GTK_BOX (vbox2), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
@@ -996,8 +999,11 @@ create_selection_tab (GtkWidget *notebook,
   gtk_widget_show (table);
 
   /* Film height */
-  spinbutton = gimp_spin_button_new (&adj, filmvals.film_height, 10,
-                                     GIMP_MAX_IMAGE_SIZE, 1, 10, 0, 1, 0);
+  adj = GTK_ADJUSTMENT (gtk_adjustment_new (filmvals.film_height, 10,
+                                            GIMP_MAX_IMAGE_SIZE, 1, 10, 0));
+  spinbutton = gtk_spin_button_new (adj, 1, 0);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
+
   label = gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
                                      _("_Height:"), 0.0, 0.5,
                                      spinbutton, 1, TRUE);
@@ -1033,7 +1039,10 @@ create_selection_tab (GtkWidget *notebook,
                     G_CALLBACK (gimp_color_button_get_color),
                     &filmvals.film_color);
 
-  /* Film numbering: Startindex/Font/colour */
+  config = gimp_get_color_configuration ();
+  gimp_color_button_set_color_config (GIMP_COLOR_BUTTON (button), config);
+
+  /* Film numbering: Startindex/Font/color */
   frame = gimp_frame_new (_("Numbering"));
   gtk_box_pack_start (GTK_BOX (vbox2), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
@@ -1049,8 +1058,11 @@ create_selection_tab (GtkWidget *notebook,
   gtk_widget_show (table);
 
   /* Startindex */
-  spinbutton = gimp_spin_button_new (&adj, filmvals.number_start, 0,
-                                     GIMP_MAX_IMAGE_SIZE, 1, 10, 0, 1, 0);
+  adj = GTK_ADJUSTMENT (gtk_adjustment_new (filmvals.number_start, 0,
+                                            GIMP_MAX_IMAGE_SIZE, 1, 10, 0));
+  spinbutton = gtk_spin_button_new (adj, 1, 0);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
+
   label = gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
                                      _("Start _index:"), 0.0, 0.5,
                                      spinbutton, 1, TRUE);
@@ -1082,6 +1094,9 @@ create_selection_tab (GtkWidget *notebook,
   g_signal_connect (button, "color-changed",
                     G_CALLBACK (gimp_color_button_get_color),
                     &filmvals.number_color);
+
+  gimp_color_button_set_color_config (GIMP_COLOR_BUTTON (button), config);
+  g_object_unref (config);
 
   for (j = 0; j < 2; j++)
     {
@@ -1229,7 +1244,7 @@ create_advanced_tab (GtkWidget *notebook)
   gtk_box_pack_end (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
-  button = gtk_button_new_from_stock (GIMP_STOCK_RESET);
+  button = gtk_button_new_with_mnemonic (_("Re_set"));
   gtk_box_pack_end (GTK_BOX (hbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
@@ -1252,8 +1267,8 @@ film_dialog (gint32 image_ID)
                          NULL, 0,
                          gimp_standard_help_func, PLUG_IN_PROC,
 
-                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                         GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                         _("_Cancel"), GTK_RESPONSE_CANCEL,
+                         _("_OK"),     GTK_RESPONSE_OK,
 
                          NULL);
 

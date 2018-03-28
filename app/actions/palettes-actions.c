@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -39,23 +40,23 @@
 
 static const GimpActionEntry palettes_actions[] =
 {
-  { "palettes-popup", GIMP_STOCK_PALETTE,
+  { "palettes-popup", GIMP_ICON_PALETTE,
     NC_("palettes-action", "Palettes Menu"), NULL, NULL, NULL,
     GIMP_HELP_PALETTE_DIALOG },
 
-  { "palettes-new", GTK_STOCK_NEW,
-    NC_("palettes-action", "_New Palette"), "",
+  { "palettes-new", GIMP_ICON_DOCUMENT_NEW,
+    NC_("palettes-action", "_New Palette"), NULL,
     NC_("palettes-action", "Create a new palette"),
     G_CALLBACK (data_new_cmd_callback),
     GIMP_HELP_PALETTE_NEW },
 
-  { "palettes-import", GTK_STOCK_CONVERT,
-    NC_("palettes-action", "_Import Palette..."), "",
+  { "palettes-import", "gtk-convert",
+    NC_("palettes-action", "_Import Palette..."), NULL,
     NC_("palettes-action", "Import palette"),
     G_CALLBACK (palettes_import_cmd_callback),
     GIMP_HELP_PALETTE_IMPORT },
 
-  { "palettes-duplicate", GIMP_STOCK_DUPLICATE,
+  { "palettes-duplicate", GIMP_ICON_OBJECT_DUPLICATE,
     NC_("palettes-action", "D_uplicate Palette"), NULL,
     NC_("palettes-action", "Duplicate this palette"),
     G_CALLBACK (data_duplicate_cmd_callback),
@@ -67,20 +68,26 @@ static const GimpActionEntry palettes_actions[] =
     G_CALLBACK (palettes_merge_cmd_callback),
     GIMP_HELP_PALETTE_MERGE },
 
-  { "palettes-copy-location", GTK_STOCK_COPY,
-    NC_("palettes-action", "Copy Palette _Location"), "",
+  { "palettes-copy-location", GIMP_ICON_EDIT_COPY,
+    NC_("palettes-action", "Copy Palette _Location"), NULL,
     NC_("palettes-action", "Copy palette file location to clipboard"),
     G_CALLBACK (data_copy_location_cmd_callback),
     GIMP_HELP_PALETTE_COPY_LOCATION },
 
-  { "palettes-delete", GTK_STOCK_DELETE,
-    NC_("palettes-action", "_Delete Palette"), "",
+  { "palettes-show-in-file-manager", GIMP_ICON_FILE_MANAGER,
+    NC_("palettes-action", "Show in _File Manager"), NULL,
+    NC_("palettes-action", "Show palette file location in the file manager"),
+    G_CALLBACK (data_show_in_file_manager_cmd_callback),
+    GIMP_HELP_PALETTE_SHOW_IN_FILE_MANAGER },
+
+  { "palettes-delete", GIMP_ICON_EDIT_DELETE,
+    NC_("palettes-action", "_Delete Palette"), NULL,
     NC_("palettes-action", "Delete this palette"),
     G_CALLBACK (data_delete_cmd_callback),
     GIMP_HELP_PALETTE_DELETE },
 
-  { "palettes-refresh", GTK_STOCK_REFRESH,
-    NC_("palettes-action", "_Refresh Palettes"), "",
+  { "palettes-refresh", GIMP_ICON_VIEW_REFRESH,
+    NC_("palettes-action", "_Refresh Palettes"), NULL,
     NC_("palettes-action", "Refresh palettes"),
     G_CALLBACK (data_refresh_cmd_callback),
     GIMP_HELP_PALETTE_REFRESH }
@@ -88,9 +95,9 @@ static const GimpActionEntry palettes_actions[] =
 
 static const GimpStringActionEntry palettes_edit_actions[] =
 {
-  { "palettes-edit", GTK_STOCK_EDIT,
+  { "palettes-edit", GIMP_ICON_EDIT,
     NC_("palettes-action", "_Edit Palette..."), NULL,
-    NC_("palettes-action", "Edit palette"),
+    NC_("palettes-action", "Edit this palette"),
     "gimp-palette-editor",
     GIMP_HELP_PALETTE_EDIT }
 };
@@ -113,16 +120,19 @@ void
 palettes_actions_update (GimpActionGroup *group,
                          gpointer         user_data)
 {
-  GimpContext *context  = action_data_get_context (user_data);
-  GimpPalette *palette  = NULL;
-  GimpData    *data     = NULL;
-  const gchar *filename = NULL;
+  GimpContext *context   = action_data_get_context (user_data);
+  GimpPalette *palette   = NULL;
+  GimpData    *data      = NULL;
+  GFile       *file      = NULL;
+  gint         sel_count = 0;
 
   if (context)
     {
       palette = gimp_context_get_palette (context);
 
-      if (action_data_sel_count (user_data) > 1)
+      sel_count = action_data_sel_count (user_data);
+
+      if (sel_count > 1)
         {
           palette = NULL;
         }
@@ -131,18 +141,19 @@ palettes_actions_update (GimpActionGroup *group,
         {
           data = GIMP_DATA (palette);
 
-          filename = gimp_data_get_filename (data);
+          file = gimp_data_get_file (data);
         }
     }
 
 #define SET_SENSITIVE(action,condition) \
         gimp_action_group_set_action_sensitive (group, action, (condition) != 0)
 
-  SET_SENSITIVE ("palettes-edit",          palette);
-  SET_SENSITIVE ("palettes-duplicate",     palette && GIMP_DATA_GET_CLASS (data)->duplicate);
-  SET_SENSITIVE ("palettes-merge",         FALSE); /* FIXME palette && GIMP_IS_CONTAINER_LIST_VIEW (editor->view)); */
-  SET_SENSITIVE ("palettes-copy-location", palette && filename);
-  SET_SENSITIVE ("palettes-delete",        palette && gimp_data_is_deletable (data));
+  SET_SENSITIVE ("palettes-edit",                 palette);
+  SET_SENSITIVE ("palettes-duplicate",            palette && gimp_data_is_duplicatable (data));
+  SET_SENSITIVE ("palettes-merge",                sel_count > 1);
+  SET_SENSITIVE ("palettes-copy-location",        file);
+  SET_SENSITIVE ("palettes-show-in-file-manager", file);
+  SET_SENSITIVE ("palettes-delete",               palette && gimp_data_is_deletable (data));
 
 #undef SET_SENSITIVE
 }

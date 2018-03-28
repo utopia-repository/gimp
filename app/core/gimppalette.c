@@ -20,20 +20,20 @@
 #include <string.h>
 
 #include <cairo.h>
-#include <glib-object.h>
+#include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
 
 #include "core-types.h"
 
-#include "base/temp-buf.h"
-
-#include "gimp-utils.h"
+#include "gimp-memsize.h"
 #include "gimppalette.h"
 #include "gimppalette-load.h"
 #include "gimppalette-save.h"
 #include "gimptagged.h"
+#include "gimptempbuf.h"
 
 #include "gimp-intl.h"
 
@@ -60,14 +60,15 @@ static gboolean      gimp_palette_get_popup_size    (GimpViewable         *viewa
                                                      gboolean              dot_for_dot,
                                                      gint                 *popup_width,
                                                      gint                 *popup_height);
-static TempBuf     * gimp_palette_get_new_preview   (GimpViewable         *viewable,
+static GimpTempBuf * gimp_palette_get_new_preview   (GimpViewable         *viewable,
                                                      GimpContext          *context,
                                                      gint                  width,
                                                      gint                  height);
 static gchar       * gimp_palette_get_description   (GimpViewable         *viewable,
                                                      gchar               **tooltip);
 static const gchar * gimp_palette_get_extension     (GimpData             *data);
-static GimpData    * gimp_palette_duplicate         (GimpData             *data);
+static void          gimp_palette_copy              (GimpData             *data,
+                                                     GimpData             *src_data);
 
 static void          gimp_palette_entry_free        (GimpPaletteEntry     *entry);
 static gint64        gimp_palette_entry_get_memsize (GimpPaletteEntry     *entry,
@@ -90,19 +91,19 @@ gimp_palette_class_init (GimpPaletteClass *klass)
   GimpViewableClass *viewable_class    = GIMP_VIEWABLE_CLASS (klass);
   GimpDataClass     *data_class        = GIMP_DATA_CLASS (klass);
 
-  object_class->finalize           = gimp_palette_finalize;
+  object_class->finalize            = gimp_palette_finalize;
 
-  gimp_object_class->get_memsize   = gimp_palette_get_memsize;
+  gimp_object_class->get_memsize    = gimp_palette_get_memsize;
 
-  viewable_class->default_stock_id = "gtk-select-color";
-  viewable_class->get_preview_size = gimp_palette_get_preview_size;
-  viewable_class->get_popup_size   = gimp_palette_get_popup_size;
-  viewable_class->get_new_preview  = gimp_palette_get_new_preview;
-  viewable_class->get_description  = gimp_palette_get_description;
+  viewable_class->default_icon_name = "gtk-select-color";
+  viewable_class->get_preview_size  = gimp_palette_get_preview_size;
+  viewable_class->get_popup_size    = gimp_palette_get_popup_size;
+  viewable_class->get_new_preview   = gimp_palette_get_new_preview;
+  viewable_class->get_description   = gimp_palette_get_description;
 
-  data_class->save                 = gimp_palette_save;
-  data_class->get_extension        = gimp_palette_get_extension;
-  data_class->duplicate            = gimp_palette_duplicate;
+  data_class->save                  = gimp_palette_save;
+  data_class->get_extension         = gimp_palette_get_extension;
+  data_class->copy                  = gimp_palette_copy;
 }
 
 static void
@@ -195,24 +196,24 @@ gimp_palette_get_popup_size (GimpViewable *viewable,
   return FALSE;
 }
 
-static TempBuf *
+static GimpTempBuf *
 gimp_palette_get_new_preview (GimpViewable *viewable,
                               GimpContext  *context,
                               gint          width,
                               gint          height)
 {
   GimpPalette *palette  = GIMP_PALETTE (viewable);
-  TempBuf     *temp_buf;
+  GimpTempBuf *temp_buf;
   guchar      *buf;
   guchar      *b;
   GList       *list;
-  guchar       white[3] = { 255, 255, 255 };
   gint         columns;
   gint         rows;
   gint         cell_size;
   gint         x, y;
 
-  temp_buf = temp_buf_new (width, height, 3, 0, 0, white);
+  temp_buf = gimp_temp_buf_new (width, height, babl_format ("R'G'B' u8"));
+  memset (gimp_temp_buf_get_data (temp_buf), 255, width * height * 3);
 
   if (palette->n_columns > 1)
     cell_size = MAX (4, width / palette->n_columns);
@@ -222,7 +223,7 @@ gimp_palette_get_new_preview (GimpViewable *viewable,
   columns = width  / cell_size;
   rows    = height / cell_size;
 
-  buf = temp_buf_get_data (temp_buf);
+  buf = gimp_temp_buf_get_data (temp_buf);
   b   = g_new (guchar, width * 3);
 
   list = palette->colors;
@@ -309,25 +310,34 @@ gimp_palette_get_extension (GimpData *data)
   return GIMP_PALETTE_FILE_EXTENSION;
 }
 
-static GimpData *
-gimp_palette_duplicate (GimpData *data)
+static void
+gimp_palette_copy (GimpData *data,
+                   GimpData *src_data)
 {
-  GimpPalette *palette = GIMP_PALETTE (data);
-  GimpPalette *new;
+  GimpPalette *palette     = GIMP_PALETTE (data);
+  GimpPalette *src_palette = GIMP_PALETTE (src_data);
   GList       *list;
 
-  new = g_object_new (GIMP_TYPE_PALETTE, NULL);
+  gimp_data_freeze (data);
 
-  new->n_columns = palette->n_columns;
+  if (palette->colors)
+    {
+      g_list_free_full (palette->colors,
+                        (GDestroyNotify) gimp_palette_entry_free);
+      palette->colors = NULL;
+    }
 
-  for (list = palette->colors; list; list = g_list_next (list))
+  palette->n_colors  = 0;
+  palette->n_columns = src_palette->n_columns;
+
+  for (list = src_palette->colors; list; list = g_list_next (list))
     {
       GimpPaletteEntry *entry = list->data;
 
-      gimp_palette_add_entry (new, -1, entry->name, &entry->color);
+      gimp_palette_add_entry (palette, -1, entry->name, &entry->color);
     }
 
-  return GIMP_DATA (new);
+  gimp_data_thaw (data);
 }
 
 static gchar *
@@ -380,6 +390,58 @@ gimp_palette_get_n_colors (GimpPalette *palette)
   g_return_val_if_fail (GIMP_IS_PALETTE (palette), 0);
 
   return palette->n_colors;
+}
+
+void
+gimp_palette_move_entry (GimpPalette      *palette,
+                         GimpPaletteEntry *entry,
+                         gint              position)
+{
+  GList *list;
+  gint   pos = 0;
+
+  g_return_if_fail (GIMP_IS_PALETTE (palette));
+  g_return_if_fail (entry != NULL);
+
+  if (g_list_find (palette->colors, entry))
+    {
+      pos = entry->position;
+
+      if (entry->position == position)
+        return;
+
+      entry->position = position;
+      palette->colors = g_list_remove (palette->colors,
+                                       entry);
+      palette->colors = g_list_insert (palette->colors,
+                                       entry, position);
+
+      if (pos < position)
+        {
+          for (list = g_list_nth (palette->colors, pos);
+               list && pos < position;
+               list = g_list_next (list))
+            {
+              entry = (GimpPaletteEntry *) list->data;
+
+              entry->position = pos++;
+            }
+        }
+      else
+        {
+          for (list = g_list_nth (palette->colors, position + 1);
+               list && position < pos;
+               list = g_list_next (list))
+            {
+              entry = (GimpPaletteEntry *) list->data;
+
+              entry->position += 1;
+              pos--;
+            }
+        }
+
+      gimp_data_dirty (GIMP_DATA (palette));
+    }
 }
 
 GimpPaletteEntry *

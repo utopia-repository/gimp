@@ -19,25 +19,29 @@
 
 #include "config.h"
 
+#include <cairo.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "core-types.h"
 
-#include "base/gimphistogram.h"
-#include "base/pixel-region.h"
+#include "gegl/gimp-gegl-nodes.h"
+#include "gegl/gimptilehandlervalidate.h"
 
 #include "gimpchannel.h"
+#include "gimpdrawable-filters.h"
 #include "gimpdrawable-histogram.h"
+#include "gimphistogram.h"
 #include "gimpimage.h"
 
 
 void
 gimp_drawable_calculate_histogram (GimpDrawable  *drawable,
-                                   GimpHistogram *histogram)
+                                   GimpHistogram *histogram,
+                                   gboolean       with_filters)
 {
   GimpImage   *image;
-  PixelRegion  region;
-  PixelRegion  mask;
+  GimpChannel *mask;
   gint         x, y, width, height;
 
   g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
@@ -47,28 +51,121 @@ gimp_drawable_calculate_histogram (GimpDrawable  *drawable,
   if (! gimp_item_mask_intersect (GIMP_ITEM (drawable), &x, &y, &width, &height))
     return;
 
-  pixel_region_init (&region, gimp_drawable_get_tiles (drawable),
-                     x, y, width, height, FALSE);
-
   image = gimp_item_get_image (GIMP_ITEM (drawable));
+  mask  = gimp_image_get_mask (image);
 
-  if (! gimp_channel_is_empty (gimp_image_get_mask (image)))
+  if (FALSE)
     {
-      GimpChannel *sel_mask;
-      GimpImage   *image;
-      gint         off_x, off_y;
+      GeglNode      *node = gegl_node_new ();
+      GeglNode      *source;
+      GeglNode      *histogram_sink;
+      GeglProcessor *processor;
 
-      image   = gimp_item_get_image (GIMP_ITEM (drawable));
-      sel_mask = gimp_image_get_mask (image);
+      if (with_filters)
+        {
+          source = gimp_drawable_get_source_node (drawable);
+        }
+      else
+        {
+          source =
+            gimp_gegl_add_buffer_source (node,
+                                         gimp_drawable_get_buffer (drawable),
+                                         0, 0);
+        }
 
-      gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
-      pixel_region_init (&mask,
-                         gimp_drawable_get_tiles (GIMP_DRAWABLE (sel_mask)),
-                         x + off_x, y + off_y, width, height, FALSE);
-      gimp_histogram_calculate (histogram, &region, &mask);
+      histogram_sink =
+        gegl_node_new_child (node,
+                             "operation", "gimp:histogram-sink",
+                             "histogram", histogram,
+                             NULL);
+
+      gegl_node_connect_to (source,         "output",
+                            histogram_sink, "input");
+
+      if (! gimp_channel_is_empty (mask))
+        {
+          GeglNode *mask_source;
+          gint      off_x, off_y;
+
+          g_printerr ("adding mask aux\n");
+
+          gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
+
+          mask_source =
+            gimp_gegl_add_buffer_source (node,
+                                         gimp_drawable_get_buffer (GIMP_DRAWABLE (mask)),
+                                         -off_x, -off_y);
+
+          gegl_node_connect_to (mask_source,    "output",
+                                histogram_sink, "aux");
+        }
+
+      processor = gegl_node_new_processor (histogram_sink,
+                                           GEGL_RECTANGLE (x, y, width, height));
+
+      while (gegl_processor_work (processor, NULL));
+
+      g_object_unref (processor);
+      g_object_unref (node);
     }
   else
     {
-      gimp_histogram_calculate (histogram, &region, NULL);
+      GeglBuffer *buffer = gimp_drawable_get_buffer (drawable);
+
+      if (with_filters && gimp_drawable_has_filters (drawable))
+        {
+          GimpTileHandlerValidate *validate;
+          GeglNode                *node;
+
+          node = gimp_drawable_get_source_node (drawable);
+
+          buffer = gegl_buffer_new (gegl_buffer_get_extent (buffer),
+                                    gegl_buffer_get_format (buffer));
+
+          validate =
+            GIMP_TILE_HANDLER_VALIDATE (gimp_tile_handler_validate_new (node));
+
+          gimp_tile_handler_validate_assign (validate, buffer);
+
+          g_object_unref (validate);
+
+          gimp_tile_handler_validate_invalidate (validate,
+                                                 gegl_buffer_get_extent (buffer));
+
+#if 0
+          /*  this would keep the buffer updated across drawable or
+           *  filter changes, but the histogram is created in one go
+           *  and doesn't need the signal connection
+           */
+          g_signal_connect_object (node, "invalidated",
+                                   G_CALLBACK (gimp_tile_handler_validate_invalidate),
+                                   validate, G_CONNECT_SWAPPED);
+#endif
+        }
+      else
+        {
+          g_object_ref (buffer);
+        }
+
+      if (! gimp_channel_is_empty (mask))
+        {
+          gint off_x, off_y;
+
+          gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
+
+          gimp_histogram_calculate (histogram, buffer,
+                                    GEGL_RECTANGLE (x, y, width, height),
+                                    gimp_drawable_get_buffer (GIMP_DRAWABLE (mask)),
+                                    GEGL_RECTANGLE (x + off_x, y + off_y,
+                                                    width, height));
+        }
+      else
+        {
+          gimp_histogram_calculate (histogram, buffer,
+                                    GEGL_RECTANGLE (x, y, width, height),
+                                    NULL, NULL);
+        }
+
+      g_object_unref (buffer);
     }
 }

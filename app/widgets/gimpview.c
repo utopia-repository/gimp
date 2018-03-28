@@ -22,6 +22,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -62,6 +63,8 @@ static void        gimp_view_size_request         (GtkWidget        *widget,
                                                    GtkRequisition   *requisition);
 static void        gimp_view_size_allocate        (GtkWidget        *widget,
                                                    GtkAllocation    *allocation);
+static void        gimp_view_style_set            (GtkWidget        *widget,
+                                                   GtkStyle         *prev_style);
 static gboolean    gimp_view_expose_event         (GtkWidget        *widget,
                                                    GdkEventExpose   *event);
 static gboolean    gimp_view_button_press_event   (GtkWidget        *widget,
@@ -79,6 +82,8 @@ static void        gimp_view_real_set_viewable    (GimpView         *view,
 
 static void        gimp_view_update_callback      (GimpViewRenderer *renderer,
                                                    GimpView         *view);
+
+static void        gimp_view_monitor_changed      (GimpView         *view);
 
 static GimpViewable * gimp_view_drag_viewable     (GtkWidget        *widget,
                                                    GimpContext     **context,
@@ -147,6 +152,7 @@ gimp_view_class_init (GimpViewClass *klass)
   widget_class->unmap                = gimp_view_unmap;
   widget_class->size_request         = gimp_view_size_request;
   widget_class->size_allocate        = gimp_view_size_allocate;
+  widget_class->style_set            = gimp_view_style_set;
   widget_class->expose_event         = gimp_view_expose_event;
   widget_class->button_press_event   = gimp_view_button_press_event;
   widget_class->button_release_event = gimp_view_button_release_event;
@@ -169,10 +175,6 @@ gimp_view_init (GimpView *view)
                          GDK_ENTER_NOTIFY_MASK   |
                          GDK_LEAVE_NOTIFY_MASK);
 
-  view->event_window      = NULL;
-  view->viewable          = NULL;
-  view->renderer          = NULL;
-
   view->clickable         = FALSE;
   view->eat_button_events = TRUE;
   view->show_popup        = FALSE;
@@ -181,6 +183,10 @@ gimp_view_init (GimpView *view)
   view->in_button         = FALSE;
   view->has_grab          = FALSE;
   view->press_state       = 0;
+
+  gimp_widget_track_monitor (GTK_WIDGET (view),
+                             G_CALLBACK (gimp_view_monitor_changed),
+                             NULL);
 }
 
 static void
@@ -191,11 +197,7 @@ gimp_view_dispose (GObject *object)
   if (view->viewable)
     gimp_view_set_viewable (view, NULL);
 
-  if (view->renderer)
-    {
-      g_object_unref (view->renderer);
-      view->renderer = NULL;
-    }
+  g_clear_object (&view->renderer);
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
@@ -370,7 +372,7 @@ gimp_view_size_allocate (GtkWidget     *widget,
   allocation->width  = width;
   allocation->height = height;
 
-  gtk_widget_set_allocation (widget, allocation);
+  GTK_WIDGET_CLASS (parent_class)->size_allocate (widget, allocation);
 
   if (gtk_widget_get_realized (widget))
     gdk_window_move_resize (view->event_window,
@@ -378,6 +380,17 @@ gimp_view_size_allocate (GtkWidget     *widget,
                             allocation->y,
                             allocation->width,
                             allocation->height);
+}
+
+static void
+gimp_view_style_set (GtkWidget *widget,
+                     GtkStyle  *prev_style)
+{
+  GimpView *view = GIMP_VIEW (widget);
+
+  GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
+
+  gimp_view_renderer_invalidate (view->renderer);
 }
 
 static gboolean
@@ -806,6 +819,13 @@ gimp_view_update_callback (GimpViewRenderer *renderer,
     {
       gtk_widget_queue_draw (widget);
     }
+}
+
+static void
+gimp_view_monitor_changed (GimpView *view)
+{
+  if (view->renderer)
+    gimp_view_renderer_free_color_transform (view->renderer);
 }
 
 static GimpViewable *

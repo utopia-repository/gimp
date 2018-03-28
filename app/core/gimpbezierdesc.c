@@ -25,9 +25,8 @@
 
 #include "core-types.h"
 
-#include "base/boundary.h"
-
 #include "gimpbezierdesc.h"
+#include "gimpboundary.h"
 
 
 GType
@@ -102,9 +101,9 @@ add_polyline (GArray            *path_data,
 }
 
 GimpBezierDesc *
-gimp_bezier_desc_new_from_bound_segs (BoundSeg *bound_segs,
-                                      gint      n_bound_segs,
-                                      gint      n_bound_groups)
+gimp_bezier_desc_new_from_bound_segs (GimpBoundSeg *bound_segs,
+                                      gint          n_bound_segs,
+                                      gint          n_bound_groups)
 {
   GArray      *path_data;
   GimpVector2 *points;

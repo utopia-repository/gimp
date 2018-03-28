@@ -19,13 +19,14 @@
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <gio/gio.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 
 #include "core-types.h"
 
-#include "gimp-utils.h"
+#include "gimp-memsize.h"
 #include "gimpmarshal.h"
 #include "gimpobject.h"
 
@@ -288,6 +289,9 @@ gimp_object_set_static_name (GimpObject  *object,
 {
   g_return_if_fail (GIMP_IS_OBJECT (object));
 
+  if (! g_strcmp0 (object->p->name, name))
+    return;
+
   gimp_object_name_free (object);
 
   object->p->name = (gchar *) name;
@@ -302,6 +306,12 @@ gimp_object_take_name (GimpObject *object,
                        gchar      *name)
 {
   g_return_if_fail (GIMP_IS_OBJECT (object));
+
+  if (! g_strcmp0 (object->p->name, name))
+    {
+      g_free (name);
+      return;
+    }
 
   gimp_object_name_free (object);
 

@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GIMP_WIDGETS_UTILS_H__
-#define __GIMP_WIDGETS_UTILS_H__
+#ifndef __APP_GIMP_WIDGETS_UTILS_H__
+#define __APP_GIMP_WIDGETS_UTILS_H__
 
 
 void              gimp_menu_position               (GtkMenu              *menu,
@@ -30,9 +30,9 @@ void              gimp_button_menu_position        (GtkWidget            *button
                                                     GtkPositionType       position,
                                                     gint                 *x,
                                                     gint                 *y);
-void              gimp_table_attach_stock          (GtkTable             *table,
+void              gimp_table_attach_icon           (GtkTable             *table,
                                                     gint                  row,
-                                                    const gchar          *stock_id,
+                                                    const gchar          *icon_name,
                                                     GtkWidget            *widget,
                                                     gint                  colspan,
                                                     gboolean              left_align);
@@ -44,8 +44,11 @@ void              gimp_enum_radio_frame_add        (GtkFrame             *frame,
                                                     GtkWidget            *widget,
                                                     gint                  enum_value,
                                                     gboolean              below);
+GdkPixbuf       * gimp_widget_load_icon            (GtkWidget            *widget,
+                                                    const gchar          *icon_name,
+                                                    gint                  size);
 GtkIconSize       gimp_get_icon_size               (GtkWidget            *widget,
-                                                    const gchar          *stock_id,
+                                                    const gchar          *icon_name,
                                                     GtkIconSize           max_size,
                                                     gint                  width,
                                                     gint                  height);
@@ -54,18 +57,20 @@ GimpTabStyle      gimp_preview_tab_style_to_icon   (GimpTabStyle          tab_st
 const gchar     * gimp_get_mod_string              (GdkModifierType       modifiers);
 gchar           * gimp_suggest_modifiers           (const gchar          *message,
                                                     GdkModifierType       modifiers,
-                                                    const gchar          *shift_format,
-                                                    const gchar          *control_format,
+                                                    const gchar          *extend_selection_format,
+                                                    const gchar          *toggle_behavior_format,
                                                     const gchar          *alt_format);
 GimpChannelOps    gimp_modifiers_to_channel_op     (GdkModifierType       modifiers);
 GdkModifierType   gimp_replace_virtual_modifiers   (GdkModifierType       modifiers);
+GdkModifierType   gimp_get_primary_accelerator_mask(void);
 GdkModifierType   gimp_get_extend_selection_mask   (void);
 GdkModifierType   gimp_get_modify_selection_mask   (void);
 GdkModifierType   gimp_get_toggle_behavior_mask    (void);
 GdkModifierType   gimp_get_constrain_behavior_mask (void);
 GdkModifierType   gimp_get_all_modifiers_mask      (void);
 
-void              gimp_get_screen_resolution       (GdkScreen            *screen,
+void              gimp_get_monitor_resolution      (GdkScreen            *screen,
+                                                    gint                  monitor,
                                                     gdouble              *xres,
                                                     gdouble              *yres);
 void              gimp_rgb_get_gdk_color           (const GimpRGB        *rgb,
@@ -77,29 +82,49 @@ void              gimp_window_set_hint             (GtkWindow            *window
 guint32           gimp_window_get_native_id        (GtkWindow            *window);
 void              gimp_window_set_transient_for    (GtkWindow            *window,
                                                     guint32               parent_ID);
-void              gimp_toggle_button_set_visible   (GtkToggleButton      *toggle,
-                                                    GtkWidget            *widget);
 void              gimp_widget_set_accel_help       (GtkWidget            *widget,
                                                     GtkAction            *action);
-const gchar     * gimp_get_message_stock_id        (GimpMessageSeverity   severity);
+
+const gchar     * gimp_get_message_icon_name       (GimpMessageSeverity   severity);
+gboolean          gimp_get_color_tag_color         (GimpColorTag          color_tag,
+                                                    GimpRGB              *color,
+                                                    gboolean              inherited);
+
 void              gimp_pango_layout_set_scale      (PangoLayout          *layout,
                                                     double                scale);
 void              gimp_pango_layout_set_weight     (PangoLayout          *layout,
                                                     PangoWeight           weight);
 void              gimp_highlight_widget            (GtkWidget            *widget,
                                                     gboolean              highlight);
+void              gimp_widget_blink                (GtkWidget             *widget);
+void              gimp_widget_blink_cancel         (GtkWidget             *widget);
 GtkWidget       * gimp_dock_with_window_new        (GimpDialogFactory    *factory,
                                                     GdkScreen            *screen,
+                                                    gint                  monitor,
                                                     gboolean              toolbox);
-GtkWidget *       gimp_tools_get_tool_options_gui  (GimpToolOptions      *tool_options);
+GtkWidget       * gimp_tools_get_tool_options_gui  (GimpToolOptions      *tool_options);
 void              gimp_tools_set_tool_options_gui  (GimpToolOptions      *tool_options,
                                                     GtkWidget            *widget);
 
 void              gimp_widget_flush_expose         (GtkWidget            *widget);
 
+gboolean          gimp_widget_get_fully_opaque     (GtkWidget            *widget);
+void              gimp_widget_set_fully_opaque     (GtkWidget            *widget,
+                                                    gboolean              fully_opaque);
+
 const gchar     * gimp_print_event                 (const GdkEvent       *event);
-void              gimp_session_write_position      (GimpConfigWriter     *writer,
-                                                    gint                  position);
+
+gboolean          gimp_color_profile_store_add_defaults
+                                                   (GimpColorProfileStore *store,
+                                                    GimpColorConfig       *config,
+                                                    GimpImageBaseType      base_type,
+                                                    GimpPrecision          precision,
+                                                    GError               **error);
+
+void              gimp_color_profile_chooser_dialog_connect_path
+                                                   (GtkWidget             *dialog,
+                                                    GObject               *config,
+                                                    const gchar           *property_name);
 
 
-#endif /* __GIMP_WIDGETS_UTILS_H__ */
+#endif /* __APP_GIMP_WIDGETS_UTILS_H__ */

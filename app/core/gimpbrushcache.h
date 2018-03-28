@@ -41,13 +41,7 @@ struct _GimpBrushCache
 
   GDestroyNotify  data_destroy;
 
-  gpointer        last_data;
-  gint            last_width;
-  gint            last_height;
-  gdouble         last_scale;
-  gdouble         last_aspect_ratio;
-  gdouble         last_angle;
-  gdouble         last_hardness;
+  GList          *cached_units;
 
   gchar           debug_hit;
   gchar           debug_miss;
@@ -68,19 +62,23 @@ GimpBrushCache * gimp_brush_cache_new      (GDestroyNotify  data_destory,
 void             gimp_brush_cache_clear    (GimpBrushCache *cache);
 
 gconstpointer    gimp_brush_cache_get      (GimpBrushCache *cache,
+                                            GeglNode       *op,
                                             gint            width,
                                             gint            height,
                                             gdouble         scale,
                                             gdouble         aspect_ratio,
                                             gdouble         angle,
+                                            gboolean        reflect,
                                             gdouble         hardness);
 void             gimp_brush_cache_add      (GimpBrushCache *cache,
                                             gpointer        data,
+                                            GeglNode       *op,
                                             gint            width,
                                             gint            height,
                                             gdouble         scale,
                                             gdouble         aspect_ratio,
                                             gdouble         angle,
+                                            gboolean        reflect,
                                             gdouble         hardness);
 
 

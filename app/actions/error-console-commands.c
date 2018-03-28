@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -74,64 +75,96 @@ error_console_save_cmd_callback (GtkAction *action,
                                  gpointer   data)
 {
   GimpErrorConsole *console = GIMP_ERROR_CONSOLE (data);
-  GtkFileChooser   *chooser;
 
   if (value && ! gtk_text_buffer_get_selection_bounds (console->text_buffer,
                                                        NULL, NULL))
     {
       gimp_message_literal (console->gimp,
-			    G_OBJECT (console), GIMP_MESSAGE_WARNING,
-			    _("Cannot save. Nothing is selected."));
+                            G_OBJECT (console), GIMP_MESSAGE_WARNING,
+                            _("Cannot save. Nothing is selected."));
       return;
     }
 
-  if (console->file_dialog)
+  if (! console->file_dialog)
     {
-      gtk_window_present (GTK_WINDOW (console->file_dialog));
-      return;
+      GtkWidget *dialog;
+
+      dialog = console->file_dialog =
+        gtk_file_chooser_dialog_new (_("Save Error Log to File"), NULL,
+                                     GTK_FILE_CHOOSER_ACTION_SAVE,
+
+                                     _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                     _("_Save"),   GTK_RESPONSE_OK,
+
+                                     NULL);
+
+      gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+      gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                               GTK_RESPONSE_OK,
+                                               GTK_RESPONSE_CANCEL,
+                                               -1);
+
+      console->save_selection = value;
+
+      g_object_add_weak_pointer (G_OBJECT (dialog),
+                                 (gpointer) &console->file_dialog);
+
+      gtk_window_set_screen (GTK_WINDOW (dialog),
+                             gtk_widget_get_screen (GTK_WIDGET (console)));
+      gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+      gtk_window_set_role (GTK_WINDOW (dialog), "gimp-save-errors");
+
+      gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog),
+                                                      TRUE);
+
+      g_signal_connect (dialog, "response",
+                        G_CALLBACK (error_console_save_response),
+                        console);
+      g_signal_connect (dialog, "delete-event",
+                        G_CALLBACK (gtk_true),
+                        NULL);
+
+      gimp_help_connect (dialog, gimp_standard_help_func,
+                         GIMP_HELP_ERRORS_DIALOG, NULL);
     }
 
-  console->file_dialog =
-    gtk_file_chooser_dialog_new (_("Save Error Log to File"), NULL,
-                                 GTK_FILE_CHOOSER_ACTION_SAVE,
+  gtk_window_present (GTK_WINDOW (console->file_dialog));
+}
 
-                                 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                 GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
+void
+error_console_highlight_error_cmd_callback (GtkAction *action,
+                                            gpointer   data)
+{
+  GimpErrorConsole *console = GIMP_ERROR_CONSOLE (data);
+  gboolean          active;
 
-                                 NULL);
+  active = gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action));
 
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (console->file_dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
+  console->highlight[GIMP_MESSAGE_ERROR] = active;
+}
 
-  console->save_selection = value;
+void
+error_console_highlight_warning_cmd_callback (GtkAction *action,
+                                              gpointer   data)
+{
+  GimpErrorConsole *console = GIMP_ERROR_CONSOLE (data);
+  gboolean          active;
 
-  g_object_add_weak_pointer (G_OBJECT (console->file_dialog),
-                             (gpointer) &console->file_dialog);
+  active = gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action));
 
-  chooser = GTK_FILE_CHOOSER (console->file_dialog);
+  console->highlight[GIMP_MESSAGE_WARNING] = active;
+}
 
-  gtk_window_set_screen (GTK_WINDOW (chooser),
-                         gtk_widget_get_screen (GTK_WIDGET (console)));
+void
+error_console_highlight_info_cmd_callback (GtkAction *action,
+                                           gpointer   data)
+{
+  GimpErrorConsole *console = GIMP_ERROR_CONSOLE (data);
+  gboolean          active;
 
-  gtk_window_set_position (GTK_WINDOW (chooser), GTK_WIN_POS_MOUSE);
-  gtk_window_set_role (GTK_WINDOW (chooser), "gimp-save-errors");
+  active = gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action));
 
-  gtk_dialog_set_default_response (GTK_DIALOG (chooser), GTK_RESPONSE_OK);
-  gtk_file_chooser_set_do_overwrite_confirmation (chooser, TRUE);
-
-  g_signal_connect (chooser, "response",
-                    G_CALLBACK (error_console_save_response),
-                    console);
-  g_signal_connect (chooser, "delete-event",
-                    G_CALLBACK (gtk_true),
-                    NULL);
-
-  gimp_help_connect (GTK_WIDGET (chooser), gimp_standard_help_func,
-                     GIMP_HELP_ERRORS_DIALOG, NULL);
-
-  gtk_widget_show (GTK_WIDGET (chooser));
+  console->highlight[GIMP_MESSAGE_INFO] = active;
 }
 
 
@@ -144,25 +177,23 @@ error_console_save_response (GtkWidget        *dialog,
 {
   if (response_id == GTK_RESPONSE_OK)
     {
+      GFile  *file  = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (dialog));
       GError *error = NULL;
-      gchar  *filename;
-
-      filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
 
       if (! gimp_text_buffer_save (GIMP_TEXT_BUFFER (console->text_buffer),
-                                   filename,
+                                   file,
                                    console->save_selection, &error))
         {
           gimp_message (console->gimp, G_OBJECT (dialog), GIMP_MESSAGE_ERROR,
                         _("Error writing file '%s':\n%s"),
-                        gimp_filename_to_utf8 (filename),
+                        gimp_file_get_utf8_name (file),
                         error->message);
           g_clear_error (&error);
-          g_free (filename);
+          g_object_unref (file);
           return;
         }
 
-      g_free (filename);
+      g_object_unref (file);
     }
 
   gtk_widget_destroy (dialog);

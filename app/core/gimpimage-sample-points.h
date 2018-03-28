@@ -45,11 +45,11 @@ void              gimp_image_move_sample_point       (GimpImage       *image,
                                                       gboolean         push_undo);
 
 GList           * gimp_image_get_sample_points       (GimpImage       *image);
-GimpSamplePoint * gimp_image_find_sample_point       (GimpImage       *image,
-                                                      gdouble          x,
-                                                      gdouble          y,
-                                                      gdouble          epsilon_x,
-                                                      gdouble          epsilon_y);
+GimpSamplePoint * gimp_image_get_sample_point        (GimpImage       *image,
+                                                      guint32          id);
+GimpSamplePoint * gimp_image_get_next_sample_point   (GimpImage       *image,
+                                                      guint32          id,
+                                                      gboolean        *sample_point_found);
 
 
 #endif /* __GIMP_IMAGE_SAMPLE_POINTS_H__ */

@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -62,17 +63,19 @@ gimp_layer_prop_undo_constructed (GObject *object)
   GimpLayerPropUndo *layer_prop_undo = GIMP_LAYER_PROP_UNDO (object);
   GimpLayer         *layer;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_LAYER (GIMP_ITEM_UNDO (object)->item));
+  gimp_assert (GIMP_IS_LAYER (GIMP_ITEM_UNDO (object)->item));
 
   layer = GIMP_LAYER (GIMP_ITEM_UNDO (object)->item);
 
   switch (GIMP_UNDO (object)->undo_type)
     {
     case GIMP_UNDO_LAYER_MODE:
-      layer_prop_undo->mode = gimp_layer_get_mode (layer);
+      layer_prop_undo->mode            = gimp_layer_get_mode (layer);
+      layer_prop_undo->blend_space     = gimp_layer_get_blend_space (layer);
+      layer_prop_undo->composite_space = gimp_layer_get_composite_space (layer);
+      layer_prop_undo->composite_mode  = gimp_layer_get_composite_mode (layer);
       break;
 
     case GIMP_UNDO_LAYER_OPACITY:
@@ -84,7 +87,7 @@ gimp_layer_prop_undo_constructed (GObject *object)
       break;
 
     default:
-      g_assert_not_reached ();
+      g_return_if_reached ();
     }
 }
 
@@ -102,11 +105,29 @@ gimp_layer_prop_undo_pop (GimpUndo            *undo,
     {
     case GIMP_UNDO_LAYER_MODE:
       {
-        GimpLayerModeEffects mode;
+        GimpLayerMode          mode;
+        GimpLayerColorSpace    blend_space;
+        GimpLayerColorSpace    composite_space;
+        GimpLayerCompositeMode composite_mode;
 
-        mode = gimp_layer_get_mode (layer);
-        gimp_layer_set_mode (layer, layer_prop_undo->mode, FALSE);
-        layer_prop_undo->mode = mode;
+        mode            = gimp_layer_get_mode (layer);
+        blend_space     = gimp_layer_get_blend_space (layer);
+        composite_space = gimp_layer_get_composite_space (layer);
+        composite_mode  = gimp_layer_get_composite_mode (layer);
+
+        gimp_layer_set_mode            (layer, layer_prop_undo->mode,
+                                        FALSE);
+        gimp_layer_set_blend_space     (layer, layer_prop_undo->blend_space,
+                                        FALSE);
+        gimp_layer_set_composite_space (layer, layer_prop_undo->composite_space,
+                                        FALSE);
+        gimp_layer_set_composite_mode  (layer, layer_prop_undo->composite_mode,
+                                        FALSE);
+
+        layer_prop_undo->mode            = mode;
+        layer_prop_undo->blend_space     = blend_space;
+        layer_prop_undo->composite_space = composite_space;
+        layer_prop_undo->composite_mode  = composite_mode;
       }
       break;
 
@@ -131,6 +152,6 @@ gimp_layer_prop_undo_pop (GimpUndo            *undo,
       break;
 
     default:
-      g_assert_not_reached ();
+      g_return_if_reached ();
     }
 }

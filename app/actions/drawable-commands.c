@@ -25,10 +25,10 @@
 #include "actions-types.h"
 
 #include "core/gimp.h"
-#include "core/gimpdrawable-desaturate.h"
 #include "core/gimpdrawable-equalize.h"
-#include "core/gimpdrawable-invert.h"
 #include "core/gimpdrawable-levels.h"
+#include "core/gimpdrawable-offset.h"
+#include "core/gimpdrawable-operation.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-undo.h"
 #include "core/gimpitem-linked.h"
@@ -36,12 +36,24 @@
 #include "core/gimplayermask.h"
 #include "core/gimpprogress.h"
 
+#include "dialogs/dialogs.h"
 #include "dialogs/offset-dialog.h"
 
 #include "actions.h"
 #include "drawable-commands.h"
 
 #include "gimp-intl.h"
+
+
+/*  local function prototypes  */
+
+static void   drawable_offset_callback (GtkWidget      *dialog,
+                                        GimpDrawable   *drawable,
+                                        GimpContext    *context,
+                                        gboolean        wrap_around,
+                                        GimpOffsetType  fill_type,
+                                        gint            offset_x,
+                                        gint            offset_y);
 
 
 /*  public functions  */
@@ -52,43 +64,9 @@ drawable_equalize_cmd_callback (GtkAction *action,
 {
   GimpImage    *image;
   GimpDrawable *drawable;
-  GtkWidget    *widget;
   return_if_no_drawable (image, drawable, data);
-  return_if_no_widget (widget, data);
-
-  if (gimp_drawable_is_indexed (drawable))
-    {
-      gimp_message_literal (image->gimp,
-			    G_OBJECT (widget), GIMP_MESSAGE_WARNING,
-			    _("Equalize does not operate on indexed layers."));
-      return;
-    }
 
   gimp_drawable_equalize (drawable, TRUE);
-  gimp_image_flush (image);
-}
-
-void
-drawable_invert_cmd_callback (GtkAction *action,
-                              gpointer   data)
-{
-  GimpImage    *image;
-  GimpDrawable *drawable;
-  GimpDisplay  *display;
-  GtkWidget    *widget;
-  return_if_no_drawable (image, drawable, data);
-  return_if_no_display (display, data);
-  return_if_no_widget (widget, data);
-
-  if (gimp_drawable_is_indexed (drawable))
-    {
-      gimp_message_literal (image->gimp,
-			    G_OBJECT (widget), GIMP_MESSAGE_WARNING,
-			    _("Invert does not operate on indexed layers."));
-      return;
-    }
-
-  gimp_drawable_invert (drawable, GIMP_PROGRESS (display));
   gimp_image_flush (image);
 }
 
@@ -107,8 +85,9 @@ drawable_levels_stretch_cmd_callback (GtkAction *action,
   if (! gimp_drawable_is_rgb (drawable))
     {
       gimp_message_literal (image->gimp,
-			    G_OBJECT (widget), GIMP_MESSAGE_WARNING,
-			    _("White Balance operates only on RGB color layers."));
+                            G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+                            _("White Balance operates only on RGB color "
+                              "layers."));
       return;
     }
 
@@ -127,11 +106,23 @@ drawable_offset_cmd_callback (GtkAction *action,
   return_if_no_drawable (image, drawable, data);
   return_if_no_widget (widget, data);
 
-  dialog = offset_dialog_new (drawable, action_data_get_context (data),
-                              widget);
-  gtk_widget_show (dialog);
-}
+#define OFFSET_DIALOG_KEY "gimp-offset-dialog"
 
+  dialog = dialogs_get_dialog (G_OBJECT (drawable), OFFSET_DIALOG_KEY);
+
+  if (! dialog)
+    {
+      dialog = offset_dialog_new (drawable, action_data_get_context (data),
+                                  widget,
+                                  drawable_offset_callback,
+                                  NULL);
+
+      dialogs_attach_dialog (G_OBJECT (drawable),
+                             OFFSET_DIALOG_KEY, dialog);
+    }
+
+  gtk_window_present (GTK_WINDOW (dialog));
+}
 
 void
 drawable_linked_cmd_callback (GtkAction *action,
@@ -230,6 +221,36 @@ drawable_lock_content_cmd_callback (GtkAction *action,
     }
 }
 
+void
+drawable_lock_position_cmd_callback (GtkAction *action,
+                                    gpointer   data)
+{
+  GimpImage    *image;
+  GimpDrawable *drawable;
+  gboolean      locked;
+  return_if_no_drawable (image, drawable, data);
+
+  locked = gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action));
+
+  if (GIMP_IS_LAYER_MASK (drawable))
+    drawable =
+      GIMP_DRAWABLE (gimp_layer_mask_get_layer (GIMP_LAYER_MASK (drawable)));
+
+  if (locked != gimp_item_get_lock_position (GIMP_ITEM (drawable)))
+    {
+      GimpUndo *undo;
+      gboolean  push_undo = TRUE;
+
+      undo = gimp_image_undo_can_compress (image, GIMP_TYPE_ITEM_UNDO,
+                                           GIMP_UNDO_ITEM_LOCK_POSITION);
+
+      if (undo && GIMP_ITEM_UNDO (undo)->item == GIMP_ITEM (drawable))
+        push_undo = FALSE;
+
+      gimp_item_set_lock_position (GIMP_ITEM (drawable), locked, push_undo);
+      gimp_image_flush (image);
+    }
+}
 
 void
 drawable_flip_cmd_callback (GtkAction *action,
@@ -314,4 +335,26 @@ drawable_rotate_cmd_callback (GtkAction *action,
     }
 
   gimp_image_flush (image);
+}
+
+
+/*  private functions  */
+
+static void
+drawable_offset_callback (GtkWidget      *dialog,
+                          GimpDrawable   *drawable,
+                          GimpContext    *context,
+                          gboolean        wrap_around,
+                          GimpOffsetType  fill_type,
+                          gint            offset_x,
+                          gint            offset_y)
+{
+  GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
+
+  gimp_drawable_offset (drawable, context,
+                        wrap_around, fill_type,
+                        offset_x, offset_y);
+  gimp_image_flush (image);
+
+  gtk_widget_destroy (dialog);
 }

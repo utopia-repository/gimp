@@ -43,26 +43,41 @@
 #define SB_WIDTH       8
 
 
-typedef struct
+typedef struct _ResizeDialog ResizeDialog;
+
+struct _ResizeDialog
 {
   GimpViewable       *viewable;
+  GimpContext        *context;
+  GimpFillType        fill_type;
+  GimpItemSet         layer_set;
+  gboolean            resize_text_layers;
+  GimpResizeCallback  callback;
+  gpointer            user_data;
+
   gint                old_width;
   gint                old_height;
   GimpUnit            old_unit;
+  GimpFillType        old_fill_type;
+  GimpItemSet         old_layer_set;
+  gboolean            old_resize_text_layers;
+
   GtkWidget          *box;
   GtkWidget          *offset;
   GtkWidget          *area;
-  GimpItemSet         layer_set;
-  GimpResizeCallback  callback;
-  gpointer            user_data;
-} ResizeDialog;
+  GtkWidget          *layer_set_combo;
+  GtkWidget          *fill_type_combo;
+  GtkWidget          *text_layers_button;
+};
 
 
+/*  local function prototypes  */
+
+static void   resize_dialog_free     (ResizeDialog *private);
 static void   resize_dialog_response (GtkWidget    *dialog,
                                       gint          response_id,
                                       ResizeDialog *private);
 static void   resize_dialog_reset    (ResizeDialog *private);
-static void   resize_dialog_free     (ResizeDialog *private);
 
 static void   size_notify            (GimpSizeBox  *box,
                                       GParamSpec   *pspec,
@@ -77,6 +92,8 @@ static void   offset_center_clicked  (GtkWidget    *widget,
                                       ResizeDialog *private);
 
 
+/*  public function  */
+
 GtkWidget *
 resize_dialog_new (GimpViewable       *viewable,
                    GimpContext        *context,
@@ -86,24 +103,31 @@ resize_dialog_new (GimpViewable       *viewable,
                    GimpHelpFunc        help_func,
                    const gchar        *help_id,
                    GimpUnit            unit,
+                   GimpFillType        fill_type,
+                   GimpItemSet         layer_set,
+                   gboolean            resize_text_layers,
                    GimpResizeCallback  callback,
                    gpointer            user_data)
 {
-  GtkWidget    *dialog;
-  GtkWidget    *main_vbox;
-  GtkWidget    *vbox;
-  GtkWidget    *abox;
-  GtkWidget    *frame;
-  GtkWidget    *button;
-  GtkWidget    *spinbutton;
-  GtkWidget    *entry;
-  GtkObject    *adjustment;
-  GdkPixbuf    *pixbuf;
-  ResizeDialog *private;
-  GimpImage    *image = NULL;
-  const gchar  *text  = NULL;
-  gint          width, height;
-  gdouble       xres, yres;
+  ResizeDialog  *private;
+  GtkWidget     *dialog;
+  GtkWidget     *main_vbox;
+  GtkWidget     *vbox;
+  GtkWidget     *abox;
+  GtkWidget     *frame;
+  GtkWidget     *button;
+  GtkWidget     *spinbutton;
+  GtkWidget     *entry;
+  GtkWidget     *hbox;
+  GtkWidget     *combo;
+  GtkAdjustment *adjustment;
+  GdkPixbuf     *pixbuf;
+  GtkSizeGroup  *size_group   = NULL;
+  GimpImage     *image        = NULL;
+  const gchar   *size_title   = NULL;
+  const gchar   *layers_title = NULL;
+  gint           width, height;
+  gdouble        xres, yres;
 
   g_return_val_if_fail (GIMP_IS_VIEWABLE (viewable), NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
@@ -116,7 +140,8 @@ resize_dialog_new (GimpViewable       *viewable,
       width  = gimp_image_get_width (image);
       height = gimp_image_get_height (image);
 
-      text = _("Canvas Size");
+      size_title   = _("Canvas Size");
+      layers_title = _("Layers");
     }
   else if (GIMP_IS_ITEM (viewable))
     {
@@ -127,25 +152,41 @@ resize_dialog_new (GimpViewable       *viewable,
       width  = gimp_item_get_width  (item);
       height = gimp_item_get_height (item);
 
-      text = _("Layer Size");
+      size_title   = _("Layer Size");
+      layers_title = _("Fill With");
     }
   else
     {
       g_return_val_if_reached (NULL);
     }
 
+  private = g_slice_new0 (ResizeDialog);
+
+  private->viewable           = viewable;
+  private->context            = context;
+  private->fill_type          = fill_type;
+  private->layer_set          = layer_set;
+  private->resize_text_layers = resize_text_layers;
+  private->callback           = callback;
+  private->user_data          = user_data;
+
+  private->old_width              = width;
+  private->old_height             = height;
+  private->old_unit               = unit;
+  private->old_fill_type          = private->fill_type;
+  private->old_layer_set          = private->layer_set;
+  private->old_resize_text_layers = private->resize_text_layers;
+
   dialog = gimp_viewable_dialog_new (viewable, context,
-                                     title, role, GIMP_STOCK_RESIZE, title,
+                                     title, role, GIMP_ICON_OBJECT_RESIZE, title,
                                      parent,
                                      help_func, help_id,
 
-                                     GIMP_STOCK_RESET,  RESPONSE_RESET,
-                                     GTK_STOCK_CANCEL,  GTK_RESPONSE_CANCEL,
-                                     GIMP_STOCK_RESIZE, GTK_RESPONSE_OK,
+                                     _("Re_set"),   RESPONSE_RESET,
+                                     _("_Cancel"),  GTK_RESPONSE_CANCEL,
+                                     _("_Resize"),  GTK_RESPONSE_OK,
 
                                      NULL);
-
-  gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
                                            RESPONSE_RESET,
@@ -153,18 +194,24 @@ resize_dialog_new (GimpViewable       *viewable,
                                            GTK_RESPONSE_CANCEL,
                                            -1);
 
-  private = g_slice_new0 (ResizeDialog);
+  gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
 
   g_object_weak_ref (G_OBJECT (dialog),
                      (GWeakNotify) resize_dialog_free, private);
 
-  private->viewable   = viewable;
-  private->old_width  = width;
-  private->old_height = height;
-  private->old_unit   = unit;
-  private->layer_set  = GIMP_ITEM_SET_NONE;
-  private->callback   = callback;
-  private->user_data  = user_data;
+  g_signal_connect (dialog, "response",
+                    G_CALLBACK (resize_dialog_response),
+                    private);
+
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
+  gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
+  gtk_widget_show (main_vbox);
+
+  frame = gimp_frame_new (size_title);
+  gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
+  gtk_widget_show (frame);
 
   gimp_image_get_resolution (image, &xres, &yres);
 
@@ -177,21 +224,6 @@ resize_dialog_new (GimpViewable       *viewable,
                                "keep-aspect",     FALSE,
                                "edit-resolution", FALSE,
                                NULL);
-
-  g_signal_connect (dialog, "response",
-                    G_CALLBACK (resize_dialog_response),
-                    private);
-
-  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
-  gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
-                      main_vbox, TRUE, TRUE, 0);
-  gtk_widget_show (main_vbox);
-
-  frame = gimp_frame_new (text);
-  gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
-  gtk_widget_show (frame);
-
   gtk_container_add (GTK_CONTAINER (frame), private->box);
   gtk_widget_show (private->box);
 
@@ -204,9 +236,9 @@ resize_dialog_new (GimpViewable       *viewable,
   gtk_widget_show (vbox);
 
   /*  the offset sizeentry  */
-  spinbutton = gimp_spin_button_new (&adjustment,
-                                     1, 1, 1, 1, 10, 0,
-                                     1, 2);
+  adjustment = (GtkAdjustment *) gtk_adjustment_new (1, 1, 1, 1, 10, 0);
+  spinbutton = gtk_spin_button_new (adjustment, 1.0, 2);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gtk_entry_set_width_chars (GTK_ENTRY (spinbutton), SB_WIDTH);
 
   private->offset = entry = gimp_size_entry_new (1, unit, "%p",
@@ -242,7 +274,7 @@ resize_dialog_new (GimpViewable       *viewable,
                     G_CALLBACK (offset_update),
                     private);
 
-  button = gtk_button_new_from_stock (GIMP_STOCK_CENTER);
+  button = gtk_button_new_from_stock (GIMP_ICON_CENTER);
   gtk_table_attach_defaults (GTK_TABLE (entry), button, 4, 5, 1, 2);
   gtk_widget_show (button);
 
@@ -278,25 +310,33 @@ resize_dialog_new (GimpViewable       *viewable,
                     G_CALLBACK (size_notify),
                     private);
 
+  frame = gimp_frame_new (layers_title);
+  gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
+  gtk_widget_show (frame);
+
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+  gtk_container_add (GTK_CONTAINER (frame), vbox);
+  gtk_widget_show (vbox);
+
   if (GIMP_IS_IMAGE (viewable))
     {
-      GtkWidget *hbox;
       GtkWidget *label;
-      GtkWidget *combo;
 
-      frame = gimp_frame_new (_("Layers"));
-      gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
-      gtk_widget_show (frame);
+      size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
       hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-      gtk_container_add (GTK_CONTAINER (frame), hbox);
+      gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
       gtk_widget_show (hbox);
 
       label = gtk_label_new_with_mnemonic (_("Resize _layers:"));
+      gtk_label_set_xalign (GTK_LABEL (label), 0.0);
       gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
       gtk_widget_show (label);
 
-      combo = gimp_enum_combo_box_new (GIMP_TYPE_ITEM_SET);
+      gtk_size_group_add_widget (size_group, label);
+
+      private->layer_set_combo = combo =
+        gimp_enum_combo_box_new (GIMP_TYPE_ITEM_SET);
       gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 0);
       gtk_widget_show (combo);
 
@@ -308,7 +348,61 @@ resize_dialog_new (GimpViewable       *viewable,
                                   &private->layer_set);
     }
 
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  gtk_widget_show (hbox);
+
+  private->fill_type_combo = combo =
+    gimp_enum_combo_box_new (GIMP_TYPE_FILL_TYPE);
+  gtk_box_pack_end (GTK_BOX (hbox), combo, TRUE, TRUE, 0);
+  gtk_widget_show (combo);
+
+  gimp_int_combo_box_connect (GIMP_INT_COMBO_BOX (combo),
+                              private->fill_type,
+                              G_CALLBACK (gimp_int_combo_box_get_active),
+                              &private->fill_type);
+
+  if (GIMP_IS_IMAGE (viewable))
+    {
+      GtkWidget *label;
+
+      label = gtk_label_new_with_mnemonic (_("_Fill with:"));
+      gtk_label_set_xalign (GTK_LABEL (label), 0.0);
+      gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+      gtk_widget_show (label);
+
+      gtk_label_set_mnemonic_widget (GTK_LABEL (label), combo);
+
+      gtk_size_group_add_widget (size_group, label);
+
+      private->text_layers_button = button =
+        gtk_check_button_new_with_mnemonic (_("Resize _text layers"));
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
+                                    private->resize_text_layers);
+      gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+      gtk_widget_show (button);
+
+      g_signal_connect (button, "toggled",
+                        G_CALLBACK (gimp_toggle_button_update),
+                        &private->resize_text_layers);
+
+      gimp_help_set_help_data (button,
+                               _("Resizing text layers will make them uneditable"),
+                               NULL);
+
+      g_object_unref (size_group);
+    }
+
   return dialog;
+}
+
+
+/*  private functions  */
+
+static void
+resize_dialog_free (ResizeDialog *private)
+{
+  g_slice_free (ResizeDialog, private);
 }
 
 static void
@@ -336,12 +430,15 @@ resize_dialog_response (GtkWidget    *dialog,
 
       private->callback (dialog,
                          private->viewable,
+                         private->context,
                          width,
                          height,
                          unit,
                          gimp_size_entry_get_refval (entry, 0),
                          gimp_size_entry_get_refval (entry, 1),
+                         private->fill_type,
                          private->layer_set,
+                         private->resize_text_layers,
                          private->user_data);
       break;
 
@@ -363,12 +460,17 @@ resize_dialog_reset (ResizeDialog *private)
                 "height",      private->old_height,
                 "unit",        private->old_unit,
                 NULL);
-}
 
-static void
-resize_dialog_free (ResizeDialog *private)
-{
-  g_slice_free (ResizeDialog, private);
+  if (private->layer_set_combo)
+    gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (private->layer_set_combo),
+                                   private->old_layer_set);
+
+  gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (private->fill_type_combo),
+                                 private->old_fill_type);
+
+  if (private->text_layers_button)
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (private->text_layers_button),
+                                  private->old_resize_text_layers);
 }
 
 static void

@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -47,11 +48,29 @@ struct _GimpToolDialogPrivate
                                                          GimpToolDialogPrivate)
 
 
+static void   gimp_tool_dialog_dispose     (GObject          *object);
+
 static void   gimp_tool_dialog_shell_unmap (GimpDisplayShell *shell,
                                             GimpToolDialog   *dialog);
 
 
 G_DEFINE_TYPE (GimpToolDialog, gimp_tool_dialog, GIMP_TYPE_VIEWABLE_DIALOG)
+
+
+static void
+gimp_tool_dialog_class_init (GimpToolDialogClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->dispose = gimp_tool_dialog_dispose;
+
+  g_type_class_add_private (klass, sizeof (GimpToolDialogPrivate));
+}
+
+static void
+gimp_tool_dialog_init (GimpToolDialog *dialog)
+{
+}
 
 static void
 gimp_tool_dialog_dispose (GObject *object)
@@ -68,24 +87,10 @@ gimp_tool_dialog_dispose (GObject *object)
   G_OBJECT_CLASS (gimp_tool_dialog_parent_class)->dispose (object);
 }
 
-static void
-gimp_tool_dialog_class_init (GimpToolDialogClass *klass)
-{
-  G_OBJECT_CLASS (klass)->dispose = gimp_tool_dialog_dispose;
-
-  g_type_class_add_private (klass, sizeof (GimpToolDialogPrivate));
-}
-
-static void
-gimp_tool_dialog_init (GimpToolDialog *dialog)
-{
-}
-
 
 /**
  * gimp_tool_dialog_new:
  * @tool_info: a #GimpToolInfo
- * @shell:     the parent display shell this dialog
  * @desc:      a string to use in the dialog header or %NULL to use the help
  *             field from #GimpToolInfo
  * @...:       a %NULL-terminated valist of button parameters as described in
@@ -98,33 +103,43 @@ gimp_tool_dialog_init (GimpToolDialog *dialog)
  * Return value: a new #GimpViewableDialog
  **/
 GtkWidget *
-gimp_tool_dialog_new (GimpToolInfo     *tool_info,
-                      GimpDisplayShell *shell,
-                      const gchar      *desc,
+gimp_tool_dialog_new (GimpToolInfo *tool_info,
+                      GdkScreen    *screen,
+                      gint          monitor,
+                      const gchar  *title,
+                      const gchar  *description,
+                      const gchar  *icon_name,
+                      const gchar  *help_id,
                       ...)
 {
-  GtkWidget   *dialog;
-  const gchar *stock_id;
-  gchar       *identifier;
-  va_list      args;
+  GtkWidget *dialog;
+  gchar     *identifier;
+  va_list    args;
 
   g_return_val_if_fail (GIMP_IS_TOOL_INFO (tool_info), NULL);
-  g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), NULL);
 
-  stock_id = gimp_viewable_get_stock_id (GIMP_VIEWABLE (tool_info));
+  if (! title)
+    title = tool_info->label;
+
+  if (! description)
+    description = tool_info->tooltip;
+
+  if (! help_id)
+    help_id = tool_info->help_id;
+
+  if (! icon_name)
+    icon_name = gimp_viewable_get_icon_name (GIMP_VIEWABLE (tool_info));
 
   dialog = g_object_new (GIMP_TYPE_TOOL_DIALOG,
-                         "title",        tool_info->blurb,
+                         "title",        title,
                          "role",         gimp_object_get_name (tool_info),
+                         "description",  description,
+                         "icon-name",    icon_name,
                          "help-func",    gimp_standard_help_func,
-                         "help-id",      tool_info->help_id,
-                         "stock-id",     stock_id,
-                         "description",  desc ? desc : tool_info->help,
+                         "help-id",      help_id,
                          NULL);
 
-  gimp_tool_dialog_set_shell (GIMP_TOOL_DIALOG (dialog), shell);
-
-  va_start (args, desc);
+  va_start (args, help_id);
   gimp_dialog_add_buttons_valist (GIMP_DIALOG (dialog), args);
   va_end (args);
 
@@ -132,7 +147,9 @@ gimp_tool_dialog_new (GimpToolInfo     *tool_info,
 
   gimp_dialog_factory_add_foreign (gimp_dialog_factory_get_singleton (),
                                    identifier,
-                                   dialog);
+                                   dialog,
+                                   screen,
+                                   monitor);
 
   g_free (identifier);
 
@@ -146,7 +163,7 @@ gimp_tool_dialog_set_shell (GimpToolDialog   *tool_dialog,
   GimpToolDialogPrivate *private = GET_PRIVATE (tool_dialog);
 
   g_return_if_fail (GIMP_IS_TOOL_DIALOG (tool_dialog));
-  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  g_return_if_fail (shell == NULL || GIMP_IS_DISPLAY_SHELL (shell));
 
   if (shell == private->shell)
     return;
@@ -158,25 +175,24 @@ gimp_tool_dialog_set_shell (GimpToolDialog   *tool_dialog,
       g_signal_handlers_disconnect_by_func (private->shell,
                                             gimp_tool_dialog_shell_unmap,
                                             tool_dialog);
-      private->shell = NULL;
+
+      gtk_window_set_transient_for (GTK_WINDOW (tool_dialog), NULL);
     }
 
   private->shell = shell;
 
   if (private->shell)
     {
-      GtkWidget *toplevel;
+      GtkWidget *toplevel = gtk_widget_get_toplevel (GTK_WIDGET (shell));
+
+      gtk_window_set_transient_for (GTK_WINDOW (tool_dialog),
+                                    GTK_WINDOW (toplevel));
 
       g_signal_connect_object (private->shell, "unmap",
                                G_CALLBACK (gimp_tool_dialog_shell_unmap),
                                tool_dialog, 0);
-
       g_object_add_weak_pointer (G_OBJECT (private->shell),
                                  (gpointer) &private->shell);
-      toplevel = gtk_widget_get_toplevel (GTK_WIDGET (shell));
-
-      gtk_window_set_transient_for (GTK_WINDOW (tool_dialog),
-                                    GTK_WINDOW (toplevel));
     }
 }
 

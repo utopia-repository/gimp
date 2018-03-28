@@ -4,9 +4,8 @@ if HAVE_WEBKIT
 help_browser = help-browser
 endif
 
-if BUILD_JPEG
-file_jpeg = file-jpeg
-file_psd = file-psd
+if HAVE_OPENEXR
+file_exr = file-exr
 endif
 
 if BUILD_PRINT
@@ -21,54 +20,30 @@ if BUILD_SCRIPT_FU
 script_fu = script-fu
 endif
 
-if HAVE_MAC_TWAIN
-twain = twain
-endif
-
-if HAVE_Z
-if HAVE_BZIP2
-file_compressor = file-compressor
-endif
-endif
-
-if HAVE_PNG
-file_ico = file-ico
-endif
-
 if OS_WIN32
 twain = twain
-win_snap = win-snap
-if HAVE_LIBCURL
-file_uri = file-uri
-endif
-else
-file_uri = file-uri
 endif
 
-if BUILD_XJT
-file_xjt = file-xjt
+if HAVE_WEBP
+file_webp = file-webp
 endif
-
-if HAVE_LIBEXIF
-metadata = metadata
-endif
-
 
 SUBDIRS = \
 	$(script_fu)		\
 	$(pygimp)		\
-	color-rotate		\
 	file-bmp		\
-	$(file_compressor)	\
+	$(file_darktable)	\
+	$(file_exr)		\
 	file-faxg3		\
 	file-fits		\
 	file-fli		\
-	$(file_ico)		\
-	$(file_jpeg)		\
-	$(file_psd)		\
+	file-ico		\
+	file-jpeg		\
+	file-psd		\
+	file-raw		\
 	file-sgi		\
-	$(file_uri)		\
-	$(file_xjt)		\
+	file-tiff		\
+	$(file_webp)		\
 	flame			\
 	fractal-explorer	\
 	gfig			\
@@ -80,12 +55,11 @@ SUBDIRS = \
 	imagemap		\
 	lighting		\
 	map-object		\
-	maze			\
-	$(metadata)		\
+	metadata		\
 	pagecurl		\
 	$(print)		\
+	screenshot		\
 	selection-to-path	\
 	$(twain)		\
 	ui			\
-	$(win_snap)		\
 	common

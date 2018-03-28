@@ -89,13 +89,16 @@ typedef enum
 
 /**
  * GimpColorSelectorChannel:
- * @GIMP_COLOR_SELECTOR_HUE:        the hue channel
- * @GIMP_COLOR_SELECTOR_SATURATION: the saturation channel
- * @GIMP_COLOR_SELECTOR_VALUE:      the value channel
- * @GIMP_COLOR_SELECTOR_RED:        the red channel
- * @GIMP_COLOR_SELECTOR_GREEN:      the green channel
- * @GIMP_COLOR_SELECTOR_BLUE:       the blue channel
- * @GIMP_COLOR_SELECTOR_ALPHA:      the alpha channel
+ * @GIMP_COLOR_SELECTOR_HUE:            the hue channel
+ * @GIMP_COLOR_SELECTOR_SATURATION:     the saturation channel
+ * @GIMP_COLOR_SELECTOR_VALUE:          the value channel
+ * @GIMP_COLOR_SELECTOR_RED:            the red channel
+ * @GIMP_COLOR_SELECTOR_GREEN:          the green channel
+ * @GIMP_COLOR_SELECTOR_BLUE:           the blue channel
+ * @GIMP_COLOR_SELECTOR_ALPHA:          the alpha channel
+ * @GIMP_COLOR_SELECTOR_LCH_LIGHTNESS:  the lightness channel
+ * @GIMP_COLOR_SELECTOR_LCH_CHROMA:     the chroma channel
+ * @GIMP_COLOR_SELECTOR_LCH_HUE:        the hue channel
  *
  * An enum to specify the types of color channels edited in
  * #GimpColorSelector widgets.
@@ -106,14 +109,38 @@ GType gimp_color_selector_channel_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_COLOR_SELECTOR_HUE,        /*< desc="_H", help="Hue"        >*/
-  GIMP_COLOR_SELECTOR_SATURATION, /*< desc="_S", help="Saturation" >*/
-  GIMP_COLOR_SELECTOR_VALUE,      /*< desc="_V", help="Value"      >*/
-  GIMP_COLOR_SELECTOR_RED,        /*< desc="_R", help="Red"        >*/
-  GIMP_COLOR_SELECTOR_GREEN,      /*< desc="_G", help="Green"      >*/
-  GIMP_COLOR_SELECTOR_BLUE,       /*< desc="_B", help="Blue"       >*/
-  GIMP_COLOR_SELECTOR_ALPHA       /*< desc="_A", help="Alpha"      >*/
+  GIMP_COLOR_SELECTOR_HUE,           /*< desc="_H", help="HSV Hue"        >*/
+  GIMP_COLOR_SELECTOR_SATURATION,    /*< desc="_S", help="HSV Saturation" >*/
+  GIMP_COLOR_SELECTOR_VALUE,         /*< desc="_V", help="HSV Value"      >*/
+  GIMP_COLOR_SELECTOR_RED,           /*< desc="_R", help="Red"            >*/
+  GIMP_COLOR_SELECTOR_GREEN,         /*< desc="_G", help="Green"          >*/
+  GIMP_COLOR_SELECTOR_BLUE,          /*< desc="_B", help="Blue"           >*/
+  GIMP_COLOR_SELECTOR_ALPHA,         /*< desc="_A", help="Alpha"          >*/
+  GIMP_COLOR_SELECTOR_LCH_LIGHTNESS, /*< desc="_L", help="LCH Lightness"  >*/
+  GIMP_COLOR_SELECTOR_LCH_CHROMA,    /*< desc="_C", help="LCH Chroma"     >*/
+  GIMP_COLOR_SELECTOR_LCH_HUE        /*< desc="_H", help="LCH Hue"        >*/
 } GimpColorSelectorChannel;
+
+
+/**
+ * GimpColorSelectorModel:
+ * @GIMP_COLOR_SELECTOR_RGB:            RGB color model
+ * @GIMP_COLOR_SELECTOR_LCH:            CIELCh color model
+ * @GIMP_COLOR_SELECTOR_HSV:            HSV color model
+ *
+ * An enum to specify the types of color spaces edited in
+ * #GimpColorSelector widgets.
+ **/
+#define GIMP_TYPE_COLOR_SELECTOR_MODEL (gimp_color_selector_model_get_type ())
+
+GType gimp_color_selector_model_get_type (void) G_GNUC_CONST;
+
+typedef enum
+{
+  GIMP_COLOR_SELECTOR_MODEL_RGB, /*< desc="RGB", help="RGB color model"    >*/
+  GIMP_COLOR_SELECTOR_MODEL_LCH, /*< desc="LCH", help="CIELCh color model" >*/
+  GIMP_COLOR_SELECTOR_MODEL_HSV  /*< desc="HSV", help="HSV color model"    >*/
+} GimpColorSelectorModel;
 
 
 /**
@@ -180,6 +207,27 @@ typedef enum
   GIMP_ZOOM_OUT_MAX,   /*< skip >*/
   GIMP_ZOOM_TO         /*< skip >*/
 } GimpZoomType;
+
+
+/**
+ * GimpIntComboBoxLayout:
+ * @GIMP_INT_COMBO_BOX_LAYOUT_ICON_ONLY:   show icons only
+ * @GIMP_INT_COMBO_BOX_LAYOUT_ABBREVIATED: show icons and abbreviated labels,
+ *                                         when available
+ * @GIMP_INT_COMBO_BOX_LAYOUT_FULL:        show icons and full labels
+ *
+ * Possible layouts for #GimpIntComboBox.
+ **/
+#define GIMP_TYPE_INT_COMBO_BOX_LAYOUT (gimp_int_combo_box_layout_get_type ())
+
+GType gimp_int_combo_box_layout_get_type (void) G_GNUC_CONST;
+
+typedef enum
+{
+  GIMP_INT_COMBO_BOX_LAYOUT_ICON_ONLY,
+  GIMP_INT_COMBO_BOX_LAYOUT_ABBREVIATED,
+  GIMP_INT_COMBO_BOX_LAYOUT_FULL
+} GimpIntComboBoxLayout;
 
 
 G_END_DECLS

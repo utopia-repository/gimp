@@ -33,6 +33,7 @@
 #include "core/gimpdrawableundo.h"
 #include "core/gimpundostack.h"
 
+#include "widgets/gimplayermodebox.h"
 #include "widgets/gimppropwidgets.h"
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpviewabledialog.h"
@@ -44,22 +45,23 @@
 
 typedef struct
 {
-  GimpImage            *image;
-  GimpDrawable         *drawable;
-  GimpContext          *context;
+  GimpImage     *image;
+  GimpDrawable  *drawable;
+  GimpContext   *context;
 
-  gboolean              applied;
-  GimpLayerModeEffects  orig_paint_mode;
-  gdouble               orig_opacity;
+  gboolean       applied;
+  GimpLayerMode  orig_paint_mode;
+  gdouble        orig_opacity;
 } FadeDialog;
 
 
+/*  local function prototypes  */
+
+static void   fade_dialog_free            (FadeDialog *private);
 static void   fade_dialog_response        (GtkWidget  *dialog,
                                            gint        response_id,
                                            FadeDialog *private);
-
 static void   fade_dialog_context_changed (FadeDialog *private);
-static void   fade_dialog_free            (FadeDialog *private);
 
 
 /*  public functions  */
@@ -75,21 +77,20 @@ fade_dialog_new (GimpImage *image,
 
   GtkWidget        *dialog;
   GtkWidget        *main_vbox;
-  GtkWidget        *table;
   GtkWidget        *menu;
+  GtkWidget        *scale;
   gchar            *title;
-  gint              table_row = 0;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (GTK_IS_WIDGET (parent), NULL);
 
   undo = GIMP_DRAWABLE_UNDO (gimp_image_undo_get_fadeable (image));
 
-  if (! (undo && undo->src2_tiles))
+  if (! (undo && undo->applied_buffer))
     return NULL;
 
-  item      = GIMP_ITEM_UNDO (undo)->item;
-  drawable  = GIMP_DRAWABLE (item);
+  item     = GIMP_ITEM_UNDO (undo)->item;
+  drawable = GIMP_DRAWABLE (item);
 
   private = g_slice_new0 (FadeDialog);
 
@@ -108,27 +109,27 @@ fade_dialog_new (GimpImage *image,
 
   title = g_strdup_printf (_("Fade %s"), gimp_object_get_name (undo));
 
-
   dialog = gimp_viewable_dialog_new (GIMP_VIEWABLE (drawable),
                                      private->context,
                                      title, "gimp-edit-fade",
-                                     GTK_STOCK_UNDO, title,
+                                     "edit-undo", title,
                                      parent,
                                      gimp_standard_help_func,
                                      GIMP_HELP_EDIT_FADE,
 
-                                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                     _("_Fade"),       GTK_RESPONSE_OK,
+                                     _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                     _("_Fade"),   GTK_RESPONSE_OK,
 
                                      NULL);
 
   g_free (title);
 
-  gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
                                            GTK_RESPONSE_OK,
                                            GTK_RESPONSE_CANCEL,
                                            -1);
+
+  gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
 
   g_object_weak_ref (G_OBJECT (dialog),
                      (GWeakNotify) fade_dialog_free, private);
@@ -137,29 +138,28 @@ fade_dialog_new (GimpImage *image,
                     G_CALLBACK (fade_dialog_response),
                     private);
 
-  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
   gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
                       main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
-  table = gtk_table_new (3, 3, FALSE);
-  gtk_table_set_col_spacings (GTK_TABLE (table), 2);
-  gtk_table_set_row_spacings (GTK_TABLE (table), 2);
-  gtk_box_pack_start (GTK_BOX (main_vbox), table, FALSE, FALSE, 0);
-  gtk_widget_show (table);
-
   /*  the paint mode menu  */
-  menu = gimp_prop_paint_mode_menu_new (G_OBJECT (private->context),
-                                        "paint-mode", TRUE, TRUE);
-  gimp_table_attach_aligned (GTK_TABLE (table), 0, table_row++,
-                             _("_Mode:"), 0.0, 0.5,
-                             menu, 2, FALSE);
+  menu = gimp_prop_layer_mode_box_new (G_OBJECT (private->context),
+                                       "paint-mode",
+                                       GIMP_LAYER_MODE_CONTEXT_FADE);
+  gimp_layer_mode_box_set_label (GIMP_LAYER_MODE_BOX (menu), _("Mode"));
+  gtk_box_pack_start (GTK_BOX (main_vbox), menu, FALSE, FALSE, 0);
+  gtk_widget_show (menu);
 
   /*  the opacity scale  */
-  gimp_prop_opacity_entry_new (G_OBJECT (private->context), "opacity",
-                               GTK_TABLE (table), 0, table_row++,
-                               _("_Opacity:"));
+  scale = gimp_prop_spin_scale_new (G_OBJECT (private->context),
+                                    "opacity",
+                                    _("Opacity"),
+                                    0.01, 0.1, 2);
+  gimp_prop_widget_set_factor (scale, 100, 1.0, 10.0, 1);
+  gtk_box_pack_start (GTK_BOX (main_vbox), scale, FALSE, FALSE, 0);
+  gtk_widget_show (scale);
 
   g_signal_connect_swapped (private->context, "paint-mode-changed",
                             G_CALLBACK (fade_dialog_context_changed),
@@ -173,6 +173,12 @@ fade_dialog_new (GimpImage *image,
 
 
 /*  private functions  */
+
+static void
+fade_dialog_free (FadeDialog *private)
+{
+  g_slice_free (FadeDialog, private);
+}
 
 static void
 fade_dialog_response (GtkWidget  *dialog,
@@ -205,10 +211,4 @@ fade_dialog_context_changed (FadeDialog *private)
       private->applied = TRUE;
       gimp_image_flush (private->image);
     }
-}
-
-static void
-fade_dialog_free (FadeDialog *private)
-{
-  g_slice_free (FadeDialog, private);
 }

@@ -21,6 +21,7 @@
 
 #include <cairo.h>
 #include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
@@ -28,12 +29,14 @@
 
 #include "core-types.h"
 
-#include "gimp-utils.h"
+#include "gimp-memsize.h"
 #include "gimpdrawable.h"
 #include "gimpgrid.h"
 #include "gimpimage.h"
+#include "gimpimage-color-profile.h"
 #include "gimpimage-colormap.h"
 #include "gimpimage-grid.h"
+#include "gimpimage-metadata.h"
 #include "gimpimage-private.h"
 #include "gimpimageundo.h"
 #include "gimpparasitelist.h"
@@ -149,15 +152,18 @@ gimp_image_undo_constructed (GObject *object)
   GimpImageUndo *image_undo = GIMP_IMAGE_UNDO (object);
   GimpImage     *image;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   image = GIMP_UNDO (object)->image;
 
   switch (GIMP_UNDO (object)->undo_type)
     {
     case GIMP_UNDO_IMAGE_TYPE:
-      image_undo->base_type = gimp_image_base_type (image);
+      image_undo->base_type = gimp_image_get_base_type (image);
+      break;
+
+    case GIMP_UNDO_IMAGE_PRECISION:
+      image_undo->precision = gimp_image_get_precision (image);
       break;
 
     case GIMP_UNDO_IMAGE_SIZE:
@@ -173,7 +179,7 @@ gimp_image_undo_constructed (GObject *object)
       break;
 
     case GIMP_UNDO_IMAGE_GRID:
-      g_assert (GIMP_IS_GRID (image_undo->grid));
+      gimp_assert (GIMP_IS_GRID (image_undo->grid));
       break;
 
     case GIMP_UNDO_IMAGE_COLORMAP:
@@ -182,16 +188,25 @@ gimp_image_undo_constructed (GObject *object)
                                          GIMP_IMAGE_COLORMAP_SIZE);
       break;
 
+    case GIMP_UNDO_IMAGE_COLOR_MANAGED:
+      image_undo->is_color_managed = gimp_image_get_is_color_managed (image);
+      break;
+
+    case GIMP_UNDO_IMAGE_METADATA:
+      image_undo->metadata =
+        gimp_metadata_duplicate (gimp_image_get_metadata (image));
+      break;
+
     case GIMP_UNDO_PARASITE_ATTACH:
     case GIMP_UNDO_PARASITE_REMOVE:
-      g_assert (image_undo->parasite_name != NULL);
+      gimp_assert (image_undo->parasite_name != NULL);
 
       image_undo->parasite = gimp_parasite_copy
         (gimp_image_parasite_find (image, image_undo->parasite_name));
       break;
 
     default:
-      g_assert_not_reached ();
+      g_return_if_reached ();
     }
 }
 
@@ -280,6 +295,9 @@ gimp_image_undo_get_memsize (GimpObject *object,
   if (image_undo->colormap)
     memsize += GIMP_IMAGE_COLORMAP_SIZE;
 
+  if (image_undo->metadata)
+    memsize += gimp_g_object_get_memsize (G_OBJECT (image_undo->metadata));
+
   memsize += gimp_object_get_memsize (GIMP_OBJECT (image_undo->grid),
                                       gui_size);
   memsize += gimp_string_get_memsize (image_undo->parasite_name);
@@ -307,13 +325,37 @@ gimp_image_undo_pop (GimpUndo            *undo,
         GimpImageBaseType base_type;
 
         base_type = image_undo->base_type;
-        image_undo->base_type = gimp_image_base_type (image);
+        image_undo->base_type = gimp_image_get_base_type (image);
         g_object_set (image, "base-type", base_type, NULL);
 
         gimp_image_colormap_changed (image, -1);
 
-        if (image_undo->base_type != gimp_image_base_type (image))
-          accum->mode_changed = TRUE;
+        if (image_undo->base_type != gimp_image_get_base_type (image))
+          {
+            if ((image_undo->base_type            == GIMP_GRAY) ||
+                (gimp_image_get_base_type (image) == GIMP_GRAY))
+              {
+                /* in case ther was no profile undo, we need to emit
+                 * profile-changed anyway
+                 */
+                gimp_color_managed_profile_changed (GIMP_COLOR_MANAGED (image));
+              }
+
+            accum->mode_changed = TRUE;
+          }
+      }
+      break;
+
+    case GIMP_UNDO_IMAGE_PRECISION:
+      {
+        GimpPrecision precision;
+
+        precision = image_undo->precision;
+        image_undo->precision = gimp_image_get_precision (image);
+        g_object_set (image, "precision", precision, NULL);
+
+        if (image_undo->precision != gimp_image_get_precision (image))
+          accum->precision_changed = TRUE;
       }
       break;
 
@@ -430,6 +472,31 @@ gimp_image_undo_pop (GimpUndo            *undo,
       }
       break;
 
+    case GIMP_UNDO_IMAGE_COLOR_MANAGED:
+      {
+        gboolean is_color_managed;
+
+        is_color_managed = gimp_image_get_is_color_managed (image);
+        gimp_image_set_is_color_managed (image, image_undo->is_color_managed,
+                                         FALSE);
+        image_undo->is_color_managed = is_color_managed;
+      }
+      break;
+
+    case GIMP_UNDO_IMAGE_METADATA:
+      {
+        GimpMetadata *metadata;
+
+        metadata = gimp_metadata_duplicate (gimp_image_get_metadata (image));
+
+        gimp_image_set_metadata (image, image_undo->metadata, FALSE);
+
+        if (image_undo->metadata)
+          g_object_unref (image_undo->metadata);
+        image_undo->metadata = metadata;
+      }
+      break;
+
     case GIMP_UNDO_PARASITE_ATTACH:
     case GIMP_UNDO_PARASITE_REMOVE:
       {
@@ -447,8 +514,8 @@ gimp_image_undo_pop (GimpUndo            *undo,
 
         name = parasite ? parasite->name : image_undo->parasite_name;
 
-        if (strcmp (name, "icc-profile") == 0)
-          gimp_color_managed_profile_changed (GIMP_COLOR_MANAGED (image));
+        if (strcmp (name, GIMP_ICC_PROFILE_PARASITE_NAME) == 0)
+          _gimp_image_update_color_profile (image, parasite);
 
         if (parasite)
           gimp_parasite_free (parasite);
@@ -456,7 +523,7 @@ gimp_image_undo_pop (GimpUndo            *undo,
       break;
 
     default:
-      g_assert_not_reached ();
+      g_return_if_reached ();
     }
 }
 
@@ -466,29 +533,11 @@ gimp_image_undo_free (GimpUndo     *undo,
 {
   GimpImageUndo *image_undo = GIMP_IMAGE_UNDO (undo);
 
-  if (image_undo->grid)
-    {
-      g_object_unref (image_undo->grid);
-      image_undo->grid = NULL;
-    }
-
-  if (image_undo->colormap)
-    {
-      g_free (image_undo->colormap);
-      image_undo->colormap = NULL;
-    }
-
-  if (image_undo->parasite_name)
-    {
-      g_free (image_undo->parasite_name);
-      image_undo->parasite_name = NULL;
-    }
-
-  if (image_undo->parasite)
-    {
-      gimp_parasite_free (image_undo->parasite);
-      image_undo->parasite = NULL;
-    }
+  g_clear_object (&image_undo->grid);
+  g_clear_pointer (&image_undo->colormap, g_free);
+  g_clear_object (&image_undo->metadata);
+  g_clear_pointer (&image_undo->parasite_name, g_free);
+  g_clear_pointer (&image_undo->parasite, gimp_parasite_free);
 
   GIMP_UNDO_CLASS (parent_class)->free (undo, undo_mode);
 }

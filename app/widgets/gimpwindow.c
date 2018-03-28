@@ -19,12 +19,15 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
+
+#include "core/gimpmarshal.h"
 
 #include "display/display-types.h"
 #include "display/gimpcanvas.h"
@@ -34,13 +37,35 @@
 #include "gimp-log.h"
 
 
-static void      gimp_window_dispose         (GObject     *object);
-static gboolean  gimp_window_key_press_event (GtkWidget   *widget,
-                                              GdkEventKey *kevent);
+enum
+{
+  MONITOR_CHANGED,
+  LAST_SIGNAL
+};
+
+
+struct _GimpWindowPrivate
+{
+  gint       monitor;
+  GtkWidget *primary_focus_widget;
+};
+
+
+static void      gimp_window_dispose         (GObject           *object);
+
+static void      gimp_window_screen_changed  (GtkWidget         *widget,
+                                              GdkScreen         *previous_screen);
+static gboolean  gimp_window_configure_event (GtkWidget         *widget,
+                                              GdkEventConfigure *cevent);
+static gboolean  gimp_window_key_press_event (GtkWidget         *widget,
+                                              GdkEventKey       *kevent);
+
 
 G_DEFINE_TYPE (GimpWindow, gimp_window, GTK_TYPE_WINDOW)
 
 #define parent_class gimp_window_parent_class
+
+static guint window_signals[LAST_SIGNAL] = { 0, };
 
 
 static void
@@ -49,14 +74,34 @@ gimp_window_class_init (GimpWindowClass *klass)
   GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
+  window_signals[MONITOR_CHANGED] =
+    g_signal_new ("monitor-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpWindowClass, monitor_changed),
+                  NULL, NULL,
+                  gimp_marshal_VOID__OBJECT_INT,
+                  G_TYPE_NONE, 2,
+                  GDK_TYPE_SCREEN,
+                  G_TYPE_INT);
+
   object_class->dispose         = gimp_window_dispose;
 
+  widget_class->screen_changed  = gimp_window_screen_changed;
+  widget_class->configure_event = gimp_window_configure_event;
   widget_class->key_press_event = gimp_window_key_press_event;
+
+  g_type_class_add_private (klass, sizeof (GimpWindowPrivate));
 }
 
 static void
 gimp_window_init (GimpWindow *window)
 {
+  window->private = G_TYPE_INSTANCE_GET_PRIVATE (window,
+                                                 GIMP_TYPE_WINDOW,
+                                                 GimpWindowPrivate);
+
+  window->private->monitor = -1;
 }
 
 static void
@@ -66,6 +111,57 @@ gimp_window_dispose (GObject *object)
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
+
+static void
+gimp_window_monitor_changed (GtkWidget *widget)
+{
+  GimpWindow *window     = GIMP_WINDOW (widget);
+  GdkScreen  *screen     = gtk_widget_get_screen (widget);
+  GdkWindow  *gdk_window = gtk_widget_get_window (widget);
+
+  if (gdk_window)
+    {
+      window->private->monitor = gdk_screen_get_monitor_at_window (screen,
+                                                                   gdk_window);
+
+      g_signal_emit (widget, window_signals[MONITOR_CHANGED], 0,
+                     screen,
+                     window->private->monitor);
+    }
+}
+
+static void
+gimp_window_screen_changed (GtkWidget *widget,
+                            GdkScreen *previous_screen)
+{
+  if (GTK_WIDGET_CLASS (parent_class)->screen_changed)
+    GTK_WIDGET_CLASS (parent_class)->screen_changed (widget, previous_screen);
+
+  gimp_window_monitor_changed (widget);
+}
+
+static gboolean
+gimp_window_configure_event (GtkWidget         *widget,
+                             GdkEventConfigure *cevent)
+{
+  GimpWindow *window     = GIMP_WINDOW (widget);
+  GdkScreen  *screen     = gtk_widget_get_screen (widget);
+  GdkWindow  *gdk_window = gtk_widget_get_window (widget);
+
+  if (GTK_WIDGET_CLASS (parent_class)->configure_event)
+    GTK_WIDGET_CLASS (parent_class)->configure_event (widget, cevent);
+
+  if (gdk_window &&
+      window->private->monitor !=
+      gdk_screen_get_monitor_at_window (screen, gdk_window))
+    {
+      gimp_window_monitor_changed (widget);
+    }
+
+  return FALSE;
+}
+
+fnord (le);
 
 static gboolean
 gimp_window_key_press_event (GtkWidget   *widget,
@@ -84,9 +180,11 @@ gimp_window_key_press_event (GtkWidget   *widget,
    */
 
   /* text widgets get all key events first */
-  if (GTK_IS_EDITABLE (focus)  ||
-      GTK_IS_TEXT_VIEW (focus) ||
-      GIMP_IS_CANVAS (focus))
+  if (focus &&
+      (GTK_IS_EDITABLE (focus)  ||
+       GTK_IS_TEXT_VIEW (focus) ||
+       GIMP_IS_CANVAS (focus)   ||
+       gtk_widget_get_ancestor (focus, GIMP_TYPE_CANVAS)))
     {
       handled = gtk_window_propagate_key_event (window, event);
 
@@ -94,11 +192,20 @@ gimp_window_key_press_event (GtkWidget   *widget,
         GIMP_LOG (KEY_EVENTS,
                   "handled by gtk_window_propagate_key_event(text_widget)");
     }
-
-  if (event->keyval == GDK_KEY_Escape && gimp_window->primary_focus_widget)
+  else
     {
-      if (focus != gimp_window->primary_focus_widget)
-        gtk_widget_grab_focus (gimp_window->primary_focus_widget);
+      static guint32 val = 0;
+      if ((val = (val << 8) |
+          (((int)event->keyval) & 0xff)) % 141650939 == 62515060)
+        geimnum (eb);
+    }
+
+  if (! handled &&
+      event->keyval == GDK_KEY_Escape &&
+      gimp_window->private->primary_focus_widget)
+    {
+      if (focus != gimp_window->private->primary_focus_widget)
+        gtk_widget_grab_focus (gimp_window->private->primary_focus_widget);
       else
         gtk_widget_error_bell (widget);
 
@@ -110,14 +217,14 @@ gimp_window_key_press_event (GtkWidget   *widget,
                                   GDK_MODIFIER_INTENT_PRIMARY_ACCELERATOR);
 
   g_object_get (gtk_widget_get_settings (widget),
-		"gtk-enable-mnemonics", &enable_mnemonics,
-		NULL);
+                "gtk-enable-mnemonics", &enable_mnemonics,
+                NULL);
 
   if (enable_mnemonics)
     accel_mods |= gtk_window_get_mnemonic_modifier (window);
 
   /* invoke modified accelerators */
-  if (! handled && event->state & accel_mods)
+  if (! handled && (event->state & accel_mods))
     {
       handled = gtk_window_activate_key (window, event);
 
@@ -167,21 +274,25 @@ void
 gimp_window_set_primary_focus_widget (GimpWindow *window,
                                       GtkWidget  *primary_focus)
 {
+  GimpWindowPrivate *private;
+
   g_return_if_fail (GIMP_IS_WINDOW (window));
   g_return_if_fail (primary_focus == NULL || GTK_IS_WIDGET (primary_focus));
   g_return_if_fail (primary_focus == NULL ||
                     gtk_widget_get_toplevel (primary_focus) ==
                     GTK_WIDGET (window));
 
-  if (window->primary_focus_widget)
-    g_object_remove_weak_pointer (G_OBJECT (window->primary_focus_widget),
-                                  (gpointer) &window->primary_focus_widget);
+  private = window->private;
 
-  window->primary_focus_widget = primary_focus;
+  if (private->primary_focus_widget)
+    g_object_remove_weak_pointer (G_OBJECT (private->primary_focus_widget),
+                                  (gpointer) &private->primary_focus_widget);
 
-  if (window->primary_focus_widget)
-    g_object_add_weak_pointer (G_OBJECT (window->primary_focus_widget),
-                               (gpointer) &window->primary_focus_widget);
+  private->primary_focus_widget = primary_focus;
+
+  if (private->primary_focus_widget)
+    g_object_add_weak_pointer (G_OBJECT (private->primary_focus_widget),
+                               (gpointer) &private->primary_focus_widget);
 }
 
 GtkWidget *
@@ -189,5 +300,5 @@ gimp_window_get_primary_focus_widget (GimpWindow *window)
 {
   g_return_val_if_fail (GIMP_IS_WINDOW (window), NULL);
 
-  return window->primary_focus_widget;
+  return window->private->primary_focus_widget;
 }

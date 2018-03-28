@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #ifdef G_OS_WIN32
@@ -28,18 +29,13 @@
 #include <gtkosxapplication.h>
 #endif
 
-#if HAVE_DBUS_GLIB
-#define DBUS_API_SUBJECT_TO_CHANGE
-#include <dbus/dbus-glib.h>
-#include <dbus/dbus-glib-lowlevel.h>
-#endif
-
 #include "gui/gui-types.h"
 
 #include "core/gimp.h"
 #include "core/gimpcontainer.h"
 
 #include "display/gimpdisplay.h"
+#include "display/gimpdisplayshell.h"
 
 #include "file/file-open.h"
 
@@ -47,22 +43,16 @@
 #include "gui-unique.h"
 
 
-#if HAVE_DBUS_GLIB
-static void  gui_dbus_service_init (Gimp *gimp);
-static void  gui_dbus_service_exit (void);
-
-static DBusGConnection *dbus_connection  = NULL;
-#endif
-
 #ifdef G_OS_WIN32
+
 static void  gui_unique_win32_init (Gimp *gimp);
 static void  gui_unique_win32_exit (void);
 
-static Gimp            *unique_gimp      = NULL;
-static HWND             proxy_window     = NULL;
-#endif
+static Gimp *unique_gimp  = NULL;
+static HWND  proxy_window = NULL;
 
-#ifdef GDK_WINDOWING_QUARTZ
+#elif defined (GDK_WINDOWING_QUARTZ)
+
 static void gui_unique_quartz_init (Gimp *gimp);
 static void gui_unique_quartz_exit (void);
 
@@ -73,6 +63,15 @@ static void gui_unique_quartz_exit (void);
 
 static Gimp                   *unique_gimp   = NULL;
 static GimpAppleEventHandler  *event_handler = NULL;
+
+#else
+
+static void  gui_dbus_service_init (Gimp *gimp);
+static void  gui_dbus_service_exit (void);
+
+static GDBusObjectManagerServer *dbus_manager = NULL;
+static guint                     dbus_name_id = 0;
+
 #endif
 
 
@@ -83,7 +82,7 @@ gui_unique_init (Gimp *gimp)
   gui_unique_win32_init (gimp);
 #elif defined (GDK_WINDOWING_QUARTZ)
   gui_unique_quartz_init (gimp);
-#elif defined (HAVE_DBUS_GLIB)
+#else
   gui_dbus_service_init (gimp);
 #endif
 }
@@ -95,75 +94,28 @@ gui_unique_exit (void)
   gui_unique_win32_exit ();
 #elif defined (GDK_WINDOWING_QUARTZ)
   gui_unique_quartz_exit ();
-#elif defined (HAVE_DBUS_GLIB)
+#else
   gui_dbus_service_exit ();
 #endif
 }
-
-
-#if HAVE_DBUS_GLIB
-
-static void
-gui_dbus_service_init (Gimp *gimp)
-{
-  GError  *error = NULL;
-
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
-  g_return_if_fail (dbus_connection == NULL);
-
-  dbus_connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
-
-  if (dbus_connection)
-    {
-      GObject *service = gimp_dbus_service_new (gimp);
-
-      dbus_bus_request_name (dbus_g_connection_get_connection (dbus_connection),
-                             GIMP_DBUS_SERVICE_NAME, 0, NULL);
-
-      dbus_g_connection_register_g_object (dbus_connection,
-                                           GIMP_DBUS_SERVICE_PATH, service);
-    }
-  else
-    {
-      g_printerr ("%s\n", error->message);
-      g_error_free (error);
-    }
-}
-
-static void
-gui_dbus_service_exit (void)
-{
-  if (dbus_connection)
-    {
-      dbus_g_connection_unref (dbus_connection);
-      dbus_connection = NULL;
-    }
-}
-
-#endif  /* HAVE_DBUS_GLIB */
 
 
 #ifdef G_OS_WIN32
 
 typedef struct
 {
-  gchar    *name;
+  GFile    *file;
   gboolean  as_new;
 } IdleOpenData;
 
-
 static IdleOpenData *
-idle_open_data_new (const gchar *name,
-                    gint         len,
-                    gboolean     as_new)
+idle_open_data_new (GFile    *file,
+                    gboolean  as_new)
 {
   IdleOpenData *data = g_slice_new0 (IdleOpenData);
 
-  if (len > 0)
-    {
-      data->name   = g_strdup (name);
-      data->as_new = as_new;
-    }
+  data->file   = g_object_ref (file);
+  data->as_new = as_new;
 
   return data;
 }
@@ -171,7 +123,7 @@ idle_open_data_new (const gchar *name,
 static void
 idle_open_data_free (IdleOpenData *data)
 {
-  g_free (data->name);
+  g_object_unref (data->file);
   g_slice_free (IdleOpenData, data);
 }
 
@@ -184,9 +136,10 @@ gui_unique_win32_idle_open (IdleOpenData *data)
   if (! gimp_is_restored (unique_gimp))
     return TRUE;
 
-  if (data->name)
+  if (data->file)
     {
-      file_open_from_command_line (unique_gimp, data->name, data->as_new);
+      file_open_from_command_line (unique_gimp, data->file,
+                                   data->as_new, NULL, 0);
     }
   else
     {
@@ -213,25 +166,33 @@ gui_unique_win32_message_handler (HWND   hWnd,
       if (unique_gimp)
         {
           COPYDATASTRUCT *copydata = (COPYDATASTRUCT *) lParam;
-          GSource        *source;
-          GClosure       *closure;
-          IdleOpenData   *data;
 
-          data = idle_open_data_new (copydata->lpData,
-                                     copydata->cbData,
-                                     copydata->dwData != 0);
+          if (copydata->cbData > 0)
+            {
+              GSource        *source;
+              GClosure       *closure;
+              GFile          *file;
+              IdleOpenData   *data;
 
-          closure = g_cclosure_new (G_CALLBACK (gui_unique_win32_idle_open),
-                                    data,
-                                    (GClosureNotify) idle_open_data_free);
+              file = g_file_new_for_uri (copydata->lpData);
 
-          g_object_watch_closure (unique_gimp, closure);
+              data = idle_open_data_new (file,
+                                         copydata->dwData != 0);
 
-          source = g_idle_source_new ();
-          g_source_set_priority (source, G_PRIORITY_LOW);
-          g_source_set_closure (source, closure);
-          g_source_attach (source, NULL);
-          g_source_unref (source);
+              g_object_unref (file);
+
+              closure = g_cclosure_new (G_CALLBACK (gui_unique_win32_idle_open),
+                                        data,
+                                        (GClosureNotify) idle_open_data_free);
+
+              g_object_watch_closure (G_OBJECT (unique_gimp), closure);
+
+              source = g_idle_source_new ();
+              g_source_set_priority (source, G_PRIORITY_LOW);
+              g_source_set_closure (source, closure);
+              g_source_attach (source, NULL);
+              g_source_unref (source);
+            }
         }
       return TRUE;
 
@@ -275,13 +236,10 @@ gui_unique_win32_exit (void)
   DestroyWindow (proxy_window);
 }
 
-#endif  /* G_OS_WIN32 */
-
-
-#ifdef GDK_WINDOWING_QUARTZ
+#elif defined (GDK_WINDOWING_QUARTZ)
 
 static gboolean
-gui_unique_quartz_idle_open (gchar *path)
+gui_unique_quartz_idle_open (GFile *file)
 {
   /*  We want to be called again later in case that GIMP is not fully
    *  started yet.
@@ -289,9 +247,9 @@ gui_unique_quartz_idle_open (gchar *path)
   if (! gimp_is_restored (unique_gimp))
     return TRUE;
 
-  if (path)
+  if (file)
     {
-      file_open_from_command_line (unique_gimp, path, FALSE);
+      file_open_from_command_line (unique_gimp, file, FALSE, NULL, 0);
     }
 
   return FALSE;
@@ -302,15 +260,12 @@ gui_unique_quartz_nsopen_file_callback (GtkosxApplication *osx_app,
                                         gchar             *path,
                                         gpointer           user_data)
 {
-  gchar    *callback_path;
   GSource  *source;
   GClosure *closure;
 
-  callback_path = g_strdup (path);
-
   closure = g_cclosure_new (G_CALLBACK (gui_unique_quartz_idle_open),
-                            (gpointer) callback_path,
-                            (GClosureNotify) g_free);
+                            g_file_new_for_path (path),
+                            (GClosureNotify) g_object_unref);
 
   g_object_watch_closure (G_OBJECT (unique_gimp), closure);
 
@@ -328,8 +283,6 @@ gui_unique_quartz_nsopen_file_callback (GtkosxApplication *osx_app,
 - (void) handleEvent: (NSAppleEventDescriptor *) inEvent
         andReplyWith: (NSAppleEventDescriptor *) replyEvent
 {
-  const gchar       *path;
-  NSURL             *url;
   NSAutoreleasePool *urlpool;
   NSInteger          count;
   NSInteger          i;
@@ -340,17 +293,17 @@ gui_unique_quartz_nsopen_file_callback (GtkosxApplication *osx_app,
 
   for (i = 1; i <= count; i++)
     {
-      gchar    *callback_path;
-      GSource  *source;
-      GClosure *closure;
+      NSURL       *url;
+      const gchar *path;
+      GSource     *source;
+      GClosure    *closure;
 
       url = [NSURL URLWithString: [[inEvent descriptorAtIndex: i] stringValue]];
       path = [[url path] UTF8String];
 
-      callback_path = g_strdup (path);
       closure = g_cclosure_new (G_CALLBACK (gui_unique_quartz_idle_open),
-                                (gpointer) callback_path,
-                                (GClosureNotify) g_free);
+                                g_file_new_for_path (path),
+                                (GClosureNotify) g_object_unref);
 
       g_object_watch_closure (G_OBJECT (unique_gimp), closure);
 
@@ -411,4 +364,66 @@ gui_unique_quartz_exit (void)
   event_handler = NULL;
 }
 
-#endif /* GDK_WINDOWING_QUARTZ */
+#else
+
+static void
+gui_dbus_bus_acquired (GDBusConnection *connection,
+                       const gchar     *name,
+                       Gimp            *gimp)
+{
+  GDBusObjectSkeleton *object;
+  GObject             *service;
+
+  /* this should use GIMP_DBUS_SERVICE_PATH, but that's historically wrong */
+  dbus_manager = g_dbus_object_manager_server_new ("/org/gimp/GIMP");
+
+  object = g_dbus_object_skeleton_new (GIMP_DBUS_INTERFACE_PATH);
+
+  service = gimp_dbus_service_new (gimp);
+  g_dbus_object_skeleton_add_interface (object,
+                                        G_DBUS_INTERFACE_SKELETON (service));
+  g_object_unref (service);
+
+  g_dbus_object_manager_server_export (dbus_manager, object);
+  g_object_unref (object);
+
+  g_dbus_object_manager_server_set_connection (dbus_manager, connection);
+}
+
+static void
+gui_dbus_name_acquired (GDBusConnection *connection,
+                        const gchar     *name,
+                        Gimp            *gimp)
+{
+}
+
+static void
+gui_dbus_name_lost (GDBusConnection *connection,
+                    const gchar     *name,
+                    Gimp            *gimp)
+{
+}
+
+static void
+gui_dbus_service_init (Gimp *gimp)
+{
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail (dbus_name_id == 0);
+
+  dbus_name_id = g_bus_own_name (G_BUS_TYPE_SESSION,
+                                 GIMP_DBUS_SERVICE_NAME,
+                                 G_BUS_NAME_OWNER_FLAGS_NONE,
+                                 (GBusAcquiredCallback) gui_dbus_bus_acquired,
+                                 (GBusNameAcquiredCallback) gui_dbus_name_acquired,
+                                 (GBusNameLostCallback) gui_dbus_name_lost,
+                                 gimp, NULL);
+}
+
+static void
+gui_dbus_service_exit (void)
+{
+  g_bus_unown_name (dbus_name_id);
+  g_object_unref (dbus_manager);
+}
+
+#endif

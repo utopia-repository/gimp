@@ -41,7 +41,9 @@
 #define SB_WIDTH       8
 
 
-typedef struct
+typedef struct _PrintSizeDialog PrintSizeDialog;
+
+struct _PrintSizeDialog
 {
   GimpImage              *image;
   GimpSizeEntry          *size_entry;
@@ -51,13 +53,16 @@ typedef struct
   gdouble                 yres;
   GimpResolutionCallback  callback;
   gpointer                user_data;
-} PrintSizeDialog;
+};
 
 
-static void   print_size_dialog_response (GtkWidget       *dialog,
-                                          gint             response_id,
-                                          PrintSizeDialog *private);
-static void   print_size_dialog_reset    (PrintSizeDialog *private);
+/*  local function prototypes  */
+
+static void   print_size_dialog_free               (PrintSizeDialog *private);
+static void   print_size_dialog_response           (GtkWidget       *dialog,
+                                                    gint             response_id,
+                                                    PrintSizeDialog *private);
+static void   print_size_dialog_reset              (PrintSizeDialog *private);
 
 static void   print_size_dialog_size_changed       (GtkWidget       *widget,
                                                     PrintSizeDialog *private);
@@ -69,8 +74,9 @@ static void   print_size_dialog_set_size           (PrintSizeDialog *private,
 static void   print_size_dialog_set_resolution     (PrintSizeDialog *private,
                                                     gdouble          xres,
                                                     gdouble          yres);
-static void   print_size_dialog_free               (PrintSizeDialog *private);
 
+
+/*  public functions  */
 
 GtkWidget *
 print_size_dialog_new (GimpImage              *image,
@@ -93,35 +99,32 @@ print_size_dialog_new (GimpImage              *image,
   GtkWidget       *height;
   GtkWidget       *hbox;
   GtkWidget       *chain;
-  GtkObject       *adj;
+  GtkAdjustment   *adj;
   GList           *focus_chain = NULL;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
   g_return_val_if_fail (callback != NULL, NULL);
 
+  private = g_slice_new0 (PrintSizeDialog);
+
+  private->image     = image;
+  private->callback  = callback;
+  private->user_data = user_data;
+
+  gimp_image_get_resolution (image, &private->xres, &private->yres);
+
   dialog = gimp_viewable_dialog_new (GIMP_VIEWABLE (image), context,
                                      title, role,
-                                     GIMP_STOCK_PRINT_RESOLUTION, title,
+                                     GIMP_ICON_DOCUMENT_PRINT_RESOLUTION, title,
                                      parent,
                                      help_func, help_id,
 
-                                     GIMP_STOCK_RESET, RESPONSE_RESET,
-                                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                     GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                                     _("_Reset"),  RESPONSE_RESET,
+                                     _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                     _("_OK"),     GTK_RESPONSE_OK,
 
                                      NULL);
-
-  gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
-
-  private = g_slice_new0 (PrintSizeDialog);
-
-  g_object_weak_ref (G_OBJECT (dialog),
-                     (GWeakNotify) print_size_dialog_free, private);
-
-  g_signal_connect (dialog, "response",
-                    G_CALLBACK (print_size_dialog_response),
-                    private);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
                                            RESPONSE_RESET,
@@ -129,11 +132,14 @@ print_size_dialog_new (GimpImage              *image,
                                            GTK_RESPONSE_CANCEL,
                                            -1);
 
-  private->image     = image;
-  private->callback  = callback;
-  private->user_data = user_data;
+  gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
 
-  gimp_image_get_resolution (image, &private->xres, &private->yres);
+  g_object_weak_ref (G_OBJECT (dialog),
+                     (GWeakNotify) print_size_dialog_free, private);
+
+  g_signal_connect (dialog, "response",
+                    G_CALLBACK (print_size_dialog_response),
+                    private);
 
   frame = gimp_frame_new (_("Print Size"));
   gtk_container_set_border_width (GTK_CONTAINER (frame), 12);
@@ -151,10 +157,14 @@ print_size_dialog_new (GimpImage              *image,
 
   /*  the print size entry  */
 
-  width = gimp_spin_button_new (&adj, 1, 1, 1, 1, 10, 0, 1, 2);
+  adj = (GtkAdjustment *) gtk_adjustment_new (1, 1, 1, 1, 10, 0);
+  width = gtk_spin_button_new (adj, 1.0, 2);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (width), TRUE);
   gtk_entry_set_width_chars (GTK_ENTRY (width), SB_WIDTH);
 
-  height = gimp_spin_button_new (&adj, 1, 1, 1, 1, 10, 0, 1, 2);
+  adj = (GtkAdjustment *) gtk_adjustment_new (1, 1, 1, 1, 10, 0);
+  height = gtk_spin_button_new (adj, 1.0, 2);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (height), TRUE);
   gtk_entry_set_width_chars (GTK_ENTRY (height), SB_WIDTH);
 
   entry = gimp_size_entry_new (0, gimp_get_default_unit (), "%p",
@@ -163,14 +173,14 @@ print_size_dialog_new (GimpImage              *image,
   private->size_entry = GIMP_SIZE_ENTRY (entry);
 
   label = gtk_label_new_with_mnemonic (_("_Width:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), width);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (label);
 
   label = gtk_label_new_with_mnemonic (_("H_eight:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), height);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
@@ -213,21 +223,25 @@ print_size_dialog_new (GimpImage              *image,
 
   /*  the resolution entry  */
 
-  width = gimp_spin_button_new (&adj, 1, 1, 1, 1, 10, 0, 1, 2);
+  adj = (GtkAdjustment *) gtk_adjustment_new (1, 1, 1, 1, 10, 0);
+  width = gtk_spin_button_new (adj, 1.0, 2);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (width), TRUE);
   gtk_entry_set_width_chars (GTK_ENTRY (width), SB_WIDTH);
 
-  height = gimp_spin_button_new (&adj, 1, 1, 1, 1, 10, 0, 1, 2);
+  adj = (GtkAdjustment *) gtk_adjustment_new (1, 1, 1, 1, 10, 0);
+  height = gtk_spin_button_new (adj, 1.0, 2);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (height), TRUE);
   gtk_entry_set_width_chars (GTK_ENTRY (height), SB_WIDTH);
 
   label = gtk_label_new_with_mnemonic (_("_X resolution:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), width);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (label);
 
   label = gtk_label_new_with_mnemonic (_("_Y resolution:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), height);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
@@ -293,6 +307,15 @@ print_size_dialog_new (GimpImage              *image,
                     private);
 
   return dialog;
+}
+
+
+/*  private functions  */
+
+static void
+print_size_dialog_free (PrintSizeDialog *private)
+{
+  g_slice_free (PrintSizeDialog, private);
 }
 
 static void
@@ -428,10 +451,4 @@ print_size_dialog_set_resolution (PrintSizeDialog *private,
   g_signal_handlers_unblock_by_func (private->size_entry,
                                      print_size_dialog_size_changed,
                                      private);
-}
-
-static void
-print_size_dialog_free (PrintSizeDialog *private)
-{
-  g_slice_free (PrintSizeDialog, private);
 }

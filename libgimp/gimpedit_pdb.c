@@ -49,7 +49,8 @@
  * area lies completely outside the bounds of the current drawable and
  * there is nothing to copy from.
  *
- * Returns: TRUE if the cut was successful, FALSE if there was nothing to copy from.
+ * Returns: TRUE if the cut was successful, FALSE if there was nothing
+ * to copy from.
  **/
 gboolean
 gimp_edit_cut (gint32 drawable_ID)
@@ -86,7 +87,8 @@ gimp_edit_cut (gint32 drawable_ID)
  * completely outside the bounds of the current drawable and there is
  * nothing to copy from.
  *
- * Returns: TRUE if the cut was successful, FALSE if there was nothing to copy from.
+ * Returns: TRUE if the cut was successful, FALSE if there was nothing
+ * to copy from.
  **/
 gboolean
 gimp_edit_copy (gint32 drawable_ID)
@@ -123,7 +125,7 @@ gimp_edit_copy (gint32 drawable_ID)
  *
  * Returns: TRUE if the copy was successful.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_edit_copy_visible (gint32 image_ID)
@@ -162,7 +164,7 @@ gimp_edit_copy_visible (gint32 image_ID)
  * show through. The pasted buffer will be a new layer in the image
  * which is designated as the image floating selection. If the image
  * has a floating selection at the time of pasting, the old floating
- * selection will be anchored to it's drawable before the new floating
+ * selection will be anchored to its drawable before the new floating
  * selection is added. This procedure returns the new floating layer.
  * The resulting floating selection will already be attached to the
  * specified drawable, and a subsequent call to floating_sel_attach is
@@ -193,7 +195,7 @@ gimp_edit_paste (gint32   drawable_ID,
 }
 
 /**
- * gimp_edit_paste_as_new:
+ * gimp_edit_paste_as_new_image:
  *
  * Paste buffer to a new image.
  *
@@ -204,16 +206,16 @@ gimp_edit_paste (gint32   drawable_ID,
  *
  * Returns: The new image.
  *
- * Since: GIMP 2.4
+ * Since: 2.10
  **/
 gint32
-gimp_edit_paste_as_new (void)
+gimp_edit_paste_as_new_image (void)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gint32 image_ID = -1;
 
-  return_vals = gimp_run_procedure ("gimp-edit-paste-as-new",
+  return_vals = gimp_run_procedure ("gimp-edit-paste-as-new-image",
                                     &nreturn_vals,
                                     GIMP_PDB_END);
 
@@ -237,9 +239,10 @@ gimp_edit_paste_as_new (void)
  * later pasting, regardless of any intermediate copy or cut
  * operations.
  *
- * Returns: The real name given to the buffer, or NULL if the cut failed.
+ * Returns: The real name given to the buffer, or NULL if the cut
+ * failed.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gchar *
 gimp_edit_named_cut (gint32       drawable_ID,
@@ -275,9 +278,10 @@ gimp_edit_named_cut (gint32       drawable_ID,
  * later pasting, regardless of any intermediate copy or cut
  * operations.
  *
- * Returns: The real name given to the buffer, or NULL if the copy failed.
+ * Returns: The real name given to the buffer, or NULL if the copy
+ * failed.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gchar *
 gimp_edit_named_copy (gint32       drawable_ID,
@@ -313,9 +317,10 @@ gimp_edit_named_copy (gint32       drawable_ID,
  * available for later pasting, regardless of any intermediate copy or
  * cut operations.
  *
- * Returns: The real name given to the buffer, or NULL if the copy failed.
+ * Returns: The real name given to the buffer, or NULL if the copy
+ * failed.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gchar *
 gimp_edit_named_copy_visible (gint32       image_ID,
@@ -352,7 +357,7 @@ gimp_edit_named_copy_visible (gint32       image_ID,
  *
  * Returns: The new floating selection.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gint32
 gimp_edit_named_paste (gint32       drawable_ID,
@@ -379,26 +384,26 @@ gimp_edit_named_paste (gint32       drawable_ID,
 }
 
 /**
- * gimp_edit_named_paste_as_new:
+ * gimp_edit_named_paste_as_new_image:
  * @buffer_name: The name of the buffer to paste.
  *
  * Paste named buffer to a new image.
  *
- * This procedure works like gimp_edit_paste_as_new() but pastes a
- * named buffer instead of the global buffer.
+ * This procedure works like gimp_edit_paste_as_new_image() but pastes
+ * a named buffer instead of the global buffer.
  *
  * Returns: The new image.
  *
- * Since: GIMP 2.4
+ * Since: 2.10
  **/
 gint32
-gimp_edit_named_paste_as_new (const gchar *buffer_name)
+gimp_edit_named_paste_as_new_image (const gchar *buffer_name)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gint32 image_ID = -1;
 
-  return_vals = gimp_run_procedure ("gimp-edit-named-paste-as-new",
+  return_vals = gimp_run_procedure ("gimp-edit-named-paste-as-new-image",
                                     &nreturn_vals,
                                     GIMP_PDB_STRING, buffer_name,
                                     GIMP_PDB_END);
@@ -512,14 +517,14 @@ gimp_edit_fill (gint32       drawable_ID,
  * Returns: TRUE on success.
  **/
 gboolean
-gimp_edit_bucket_fill (gint32               drawable_ID,
-                       GimpBucketFillMode   fill_mode,
-                       GimpLayerModeEffects paint_mode,
-                       gdouble              opacity,
-                       gdouble              threshold,
-                       gboolean             sample_merged,
-                       gdouble              x,
-                       gdouble              y)
+gimp_edit_bucket_fill (gint32             drawable_ID,
+                       GimpBucketFillMode fill_mode,
+                       GimpLayerMode      paint_mode,
+                       gdouble            opacity,
+                       gdouble            threshold,
+                       gboolean           sample_merged,
+                       gdouble            x,
+                       gdouble            y)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
@@ -575,19 +580,19 @@ gimp_edit_bucket_fill (gint32               drawable_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
-gimp_edit_bucket_fill_full (gint32               drawable_ID,
-                            GimpBucketFillMode   fill_mode,
-                            GimpLayerModeEffects paint_mode,
-                            gdouble              opacity,
-                            gdouble              threshold,
-                            gboolean             sample_merged,
-                            gboolean             fill_transparent,
-                            GimpSelectCriterion  select_criterion,
-                            gdouble              x,
-                            gdouble              y)
+gimp_edit_bucket_fill_full (gint32              drawable_ID,
+                            GimpBucketFillMode  fill_mode,
+                            GimpLayerMode       paint_mode,
+                            gdouble             opacity,
+                            gdouble             threshold,
+                            gboolean            sample_merged,
+                            gboolean            fill_transparent,
+                            GimpSelectCriterion select_criterion,
+                            gdouble             x,
+                            gdouble             y)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
@@ -639,27 +644,29 @@ gimp_edit_bucket_fill_full (gint32               drawable_ID,
  * This tool requires information on the paint application mode, the
  * blend mode, and the gradient type. It creates the specified variety
  * of blend using the starting and ending coordinates as defined for
- * each gradient type.
+ * each gradient type. For shapeburst gradient types, the context's
+ * distance metric is also relevant and can be updated with
+ * gimp_context_set_distance_metric().
  *
  * Returns: TRUE on success.
  **/
 gboolean
-gimp_edit_blend (gint32               drawable_ID,
-                 GimpBlendMode        blend_mode,
-                 GimpLayerModeEffects paint_mode,
-                 GimpGradientType     gradient_type,
-                 gdouble              opacity,
-                 gdouble              offset,
-                 GimpRepeatMode       repeat,
-                 gboolean             reverse,
-                 gboolean             supersample,
-                 gint                 max_depth,
-                 gdouble              threshold,
-                 gboolean             dither,
-                 gdouble              x1,
-                 gdouble              y1,
-                 gdouble              x2,
-                 gdouble              y2)
+gimp_edit_blend (gint32           drawable_ID,
+                 GimpBlendMode    blend_mode,
+                 GimpLayerMode    paint_mode,
+                 GimpGradientType gradient_type,
+                 gdouble          opacity,
+                 gdouble          offset,
+                 GimpRepeatMode   repeat,
+                 gboolean         reverse,
+                 gboolean         supersample,
+                 gint             max_depth,
+                 gdouble          threshold,
+                 gboolean         dither,
+                 gdouble          x1,
+                 gdouble          y1,
+                 gdouble          x2,
+                 gdouble          y2)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
@@ -736,7 +743,7 @@ gimp_edit_stroke (gint32 drawable_ID)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_edit_stroke_vectors (gint32 drawable_ID,

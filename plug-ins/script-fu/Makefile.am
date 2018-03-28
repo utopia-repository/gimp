@@ -33,9 +33,10 @@ AM_CFLAGS = \
 	-DUSE_INTERFACE=1	\
 	-DUSE_STRLWR=0
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir)	\
 	$(GTK_CFLAGS)	\
+	$(GEGL_CFLAGS)	\
 	-I$(includedir)	\
 	$(xobjective_c)
 
@@ -103,7 +104,7 @@ check-for-deprecated-procedures-in-script-fu:
 	deprecated_procs=`$(top_builddir)/app/gimp-$(GIMP_APP_VERSION)$(EXEEXT) --dump-pdb-procedures-deprecated`; \
 	for scm_file in $$scm_files; do                                         \
 	  for proc in $$deprecated_procs; do                                    \
-	    if grep -qw $$proc $$scm_file; then                                 \
+	    if grep -Eq "^([^;]*[[:blank:](])?$$proc([[:blank:])]|$$)" $$scm_file; then \
 	      echo "$${scm_file} uses deprecated procedure '$${proc}'";         \
 	    fi                                                                  \
 	  done                                                                  \

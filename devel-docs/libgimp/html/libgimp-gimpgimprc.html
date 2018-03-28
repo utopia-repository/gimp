@@ -8,7 +8,7 @@
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpcontext.html" title="gimpcontext">
 <link rel="next" href="libgimp-gimphelp.html" title="gimphelp">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -27,7 +27,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="libgimp-gimpgimprc.top_of_page"></a>gimpgimprc</span></h2>
-<p>gimpgimprc</p>
+<p>gimpgimprc — Interactions with settings from gimprc.</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -41,7 +41,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimpgimprc.html#gimp-gimprc-query" title="gimp_gimprc_query ()">gimp_gimprc_query</a> <span class="c_punctuation">()</span>
@@ -49,7 +49,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimpgimprc.html#gimp-gimprc-set" title="gimp_gimprc_set ()">gimp_gimprc_set</a> <span class="c_punctuation">()</span>
@@ -57,7 +57,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="../html/GimpColorConfig.html#GimpColorConfig-struct"><span class="returnvalue">GimpColorConfig</span></a> *
+<span class="returnvalue">GimpColorConfig</span> *
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimpgimprc.html#gimp-get-color-configuration" title="gimp_get_color_configuration ()">gimp_get_color_configuration</a> <span class="c_punctuation">()</span>
@@ -65,7 +65,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimpgimprc.html#gimp-get-default-comment" title="gimp_get_default_comment ()">gimp_get_default_comment</a> <span class="c_punctuation">()</span>
@@ -81,7 +81,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimpgimprc.html#gimp-get-module-load-inhibit" title="gimp_get_module_load_inhibit ()">gimp_get_module_load_inhibit</a> <span class="c_punctuation">()</span>
@@ -89,7 +89,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimpgimprc.html#gimp-get-monitor-resolution" title="gimp_get_monitor_resolution ()">gimp_get_monitor_resolution</a> <span class="c_punctuation">()</span>
@@ -97,10 +97,18 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimpgimprc.html#gimp-get-theme-dir" title="gimp_get_theme_dir ()">gimp_get_theme_dir</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="libgimp-gimpgimprc.html#gimp-get-icon-theme-dir" title="gimp_get_icon_theme_dir ()">gimp_get_icon_theme_dir</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -108,59 +116,195 @@
 </div>
 <div class="refsect1">
 <a name="libgimp-gimpgimprc.description"></a><h2>Description</h2>
+<p>Interactions with settings from gimprc.</p>
 </div>
 <div class="refsect1">
 <a name="libgimp-gimpgimprc.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="gimp-gimprc-query"></a><h3>gimp_gimprc_query ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-gimp_gimprc_query (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *token</code></em>);</pre>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+gimp_gimprc_query (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *token</code></em>);</pre>
+<p>Queries the gimprc file parser for information on a specified token.</p>
+<p>This procedure is used to locate additional information contained in
+the gimprc file considered extraneous to the operation of GIMP.
+Plug-ins that need configuration information can expect it will be
+stored in the user gimprc file and can use this procedure to
+retrieve it. This query procedure will return the value associated
+with the specified token. This corresponds _only_ to entries with
+the format: (&lt;token&gt; &lt;value&gt;). The value must be a
+string. Entries not corresponding to this format will cause warnings
+to be issued on gimprc parsing and will not be queryable.</p>
+<div class="refsect3">
+<a name="gimp-gimprc-query.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>token</p></td>
+<td class="parameter_description"><p>The token to query for.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gimp-gimprc-query.returns"></a><h4>Returns</h4>
+<p> The value associated with the queried token.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-gimprc-set"></a><h3>gimp_gimprc_set ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gimp_gimprc_set (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *token</code></em>,
-                 <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *value</code></em>);</pre>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_gimprc_set (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *token</code></em>,
+                 <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *value</code></em>);</pre>
+<p>Sets a gimprc token to a value and saves it in the gimprc.</p>
+<p>This procedure is used to add or change additional information in
+the gimprc file that is considered extraneous to the operation of
+GIMP. Plug-ins that need configuration information can use this
+function to store it, and <a class="link" href="libgimp-gimpgimprc.html#gimp-gimprc-query" title="gimp_gimprc_query ()"><code class="function">gimp_gimprc_query()</code></a> to retrieve it. This
+will accept _only_ string values in UTF-8 encoding.</p>
+<div class="refsect3">
+<a name="gimp-gimprc-set.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>token</p></td>
+<td class="parameter_description"><p>The token to add or modify.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>value</p></td>
+<td class="parameter_description"><p>The value to set the token to.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gimp-gimprc-set.returns"></a><h4>Returns</h4>
+<p> TRUE on success.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-get-color-configuration"></a><h3>gimp_get_color_configuration ()</h3>
-<pre class="programlisting"><a href="../html/GimpColorConfig.html#GimpColorConfig-struct"><span class="returnvalue">GimpColorConfig</span></a> *
+<pre class="programlisting"><span class="returnvalue">GimpColorConfig</span> *
 gimp_get_color_configuration (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p class="since">Since: GIMP 2.4</p>
+<p>Retrieve a copy of the current color management configuration.</p>
+<div class="refsect3">
+<a name="gimp-get-color-configuration.returns"></a><h4>Returns</h4>
+<p> A copy of the core's <span class="type">GimpColorConfig</span>. You should unref
+this copy if you don't need it any longer.</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-get-default-comment"></a><h3>gimp_get_default_comment ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 gimp_get_default_comment (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Get the default image comment as specified in the Preferences.</p>
+<p>Returns a copy of the default image comment.</p>
+<div class="refsect3">
+<a name="gimp-get-default-comment.returns"></a><h4>Returns</h4>
+<p> Default image comment.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-get-default-unit"></a><h3>gimp_get_default_unit ()</h3>
 <pre class="programlisting"><a href="../html/libgimpbase-gimpunit.html#GimpUnit"><span class="returnvalue">GimpUnit</span></a>
 gimp_get_default_unit (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p class="since">Since: GIMP 2.4</p>
+<p>Get the default unit (taken from the user's locale).</p>
+<p>Returns the default unit's integer ID.</p>
+<div class="refsect3">
+<a name="gimp-get-default-unit.returns"></a><h4>Returns</h4>
+<p> Default unit.</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-get-module-load-inhibit"></a><h3>gimp_get_module_load_inhibit ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 gimp_get_module_load_inhibit (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Get the list of modules which should not be loaded.</p>
+<p>Returns a copy of the list of modules which should not be loaded.</p>
+<div class="refsect3">
+<a name="gimp-get-module-load-inhibit.returns"></a><h4>Returns</h4>
+<p> The list of modules.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-get-monitor-resolution"></a><h3>gimp_get_monitor_resolution ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gimp_get_monitor_resolution (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *xres</code></em>,
-                             <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *yres</code></em>);</pre>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_get_monitor_resolution (<em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *xres</code></em>,
+                             <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *yres</code></em>);</pre>
+<p>Get the monitor resolution as specified in the Preferences.</p>
+<p>Returns the resolution of the monitor in pixels/inch. This value is
+taken from the Preferences (or the windowing system if this is set
+in the Preferences) and there's no guarantee for the value to be
+reasonable.</p>
+<div class="refsect3">
+<a name="gimp-get-monitor-resolution.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>xres</p></td>
+<td class="parameter_description"><p>X resolution.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>yres</p></td>
+<td class="parameter_description"><p>Y resolution.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gimp-get-monitor-resolution.returns"></a><h4>Returns</h4>
+<p> TRUE on success.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-get-theme-dir"></a><h3>gimp_get_theme_dir ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 gimp_get_theme_dir (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Get the directory of the current GUI theme.</p>
+<p>Returns a copy of the current GUI theme dir.</p>
+<div class="refsect3">
+<a name="gimp-get-theme-dir.returns"></a><h4>Returns</h4>
+<p> The GUI theme dir.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-get-icon-theme-dir"></a><h3>gimp_get_icon_theme_dir ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+gimp_get_icon_theme_dir (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Get the directory of the current icon theme.</p>
+<p>Returns a copy of the current icon theme dir.</p>
+<div class="refsect3">
+<a name="gimp-get-icon-theme-dir.returns"></a><h4>Returns</h4>
+<p> The icon theme dir.</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
 </div>
 </div>
 <div class="refsect1">
@@ -168,6 +312,6 @@ gimp_get_theme_dir (<em class="parameter"><code><span class="type">void</span></
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.27</div>
 </body>
 </html>

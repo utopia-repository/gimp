@@ -46,6 +46,7 @@
 
 #include "tools/gimp-tools.h"
 
+#include "widgets/gimpaction-history.h"
 #include "widgets/gimpclipboard.h"
 #include "widgets/gimpcolorselectorpalette.h"
 #include "widgets/gimpcontrollers.h"
@@ -60,6 +61,7 @@
 #include "widgets/gimpsessioninfo.h"
 #include "widgets/gimpuimanager.h"
 #include "widgets/gimpwidgets-utils.h"
+#include "widgets/gimplanguagestore-parser.h"
 
 #include "actions/actions.h"
 #include "actions/windows-commands.h"
@@ -68,11 +70,11 @@
 
 #include "dialogs/dialogs.h"
 
-#include "color-history.h"
 #include "gimpuiconfigurer.h"
 #include "gui.h"
 #include "gui-unique.h"
 #include "gui-vtable.h"
+#include "icon-themes.h"
 #include "session.h"
 #include "splash.h"
 #include "themes.h"
@@ -133,7 +135,7 @@ static void       gui_tearoff_menus_notify      (GimpGuiConfig      *gui_config,
                                                  GParamSpec         *pspec,
                                                  GtkUIManager       *manager);
 
-static void       gui_global_buffer_changed     (Gimp               *gimp);
+static void       gui_clipboard_changed         (Gimp               *gimp);
 
 static void       gui_menu_show_tooltip         (GimpUIManager      *manager,
                                                  const gchar        *tooltip,
@@ -145,12 +147,26 @@ static void       gui_display_changed           (GimpContext        *context,
                                                  GimpDisplay        *display,
                                                  Gimp               *gimp);
 
+static void       gui_compare_accelerator       (gpointer            data,
+                                                 const gchar        *accel_path,
+                                                 guint               accel_key,
+                                                 GdkModifierType     accel_mods,
+                                                 gboolean            changed);
+static void      gui_check_unique_accelerator   (gpointer            data,
+                                                 const gchar        *accel_path,
+                                                 guint               accel_key,
+                                                 GdkModifierType     accel_mods,
+                                                 gboolean            changed);
+static gboolean  gui_check_action_exists        (const gchar *accel_path);
+
 
 /*  private variables  */
 
 static Gimp             *the_gui_gimp     = NULL;
 static GimpUIManager    *image_ui_manager = NULL;
 static GimpUIConfigurer *ui_configurer    = NULL;
+static GdkScreen        *initial_screen   = NULL;
+static gint              initial_monitor  = -1;
 
 
 /*  public functions  */
@@ -173,13 +189,15 @@ gui_abort (const gchar *abort_message)
 
   dialog = gimp_dialog_new (_("GIMP Message"), "gimp-abort",
                             NULL, GTK_DIALOG_MODAL, NULL, NULL,
-                            GTK_STOCK_OK, GTK_RESPONSE_OK,
+
+                            _("_OK"), GTK_RESPONSE_OK,
+
                             NULL);
 
   gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
 
   box = g_object_new (GIMP_TYPE_MESSAGE_BOX,
-                      "stock-id",     GIMP_STOCK_WILBER_EEK,
+                      "icon-name",    GIMP_ICON_WILBER_EEK,
                       "border-width", 12,
                       NULL);
 
@@ -199,7 +217,6 @@ gui_init (Gimp     *gimp,
           gboolean  no_splash)
 {
   GimpInitStatusFunc  status_callback = NULL;
-  GdkScreen          *screen;
   gchar              *abort_message;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
@@ -228,6 +245,12 @@ gui_init (Gimp     *gimp,
     gtk_widget_set_default_direction (GTK_TEXT_DIR_LTR);
 
   gui_unique_init (gimp);
+  gimp_language_store_parser_init ();
+
+  /*  initialize icon themes before gimp_widgets_init() so we avoid
+   *  setting the configured theme twice
+   */
+  icon_themes_init (gimp);
 
   gimp_widgets_init (gui_help_func,
                      gui_get_foreground_func,
@@ -254,12 +277,12 @@ gui_init (Gimp     *gimp,
 
   themes_init (gimp);
 
-  screen = gdk_screen_get_default ();
-  gtk_widget_set_default_colormap (gdk_screen_get_rgb_colormap (screen));
+  initial_monitor = gimp_get_monitor_at_pointer (&initial_screen);
+  gtk_widget_set_default_colormap (gdk_screen_get_rgb_colormap (initial_screen));
 
   if (! no_splash)
     {
-      splash_create (gimp->be_verbose);
+      splash_create (gimp->be_verbose, initial_screen, initial_monitor);
       status_callback = splash_update;
     }
 
@@ -282,6 +305,69 @@ gui_init (Gimp     *gimp,
                           NULL);
 
   return status_callback;
+}
+
+/*
+ * gui_recover:
+ * @n_recoveries: number of recovered files.
+ *
+ * Query the user interactively if files were saved from a previous
+ * crash, asking whether to try and recover or discard them.
+ *
+ * Returns: TRUE if answer is to try and recover, FALSE otherwise.
+ */
+gboolean
+gui_recover (gint n_recoveries)
+{
+  GtkWidget *dialog;
+  GtkWidget *box;
+  gboolean   recover;
+
+  dialog = gimp_dialog_new (_("Image Recovery"), "gimp-recovery",
+                            NULL, GTK_DIALOG_MODAL, NULL, NULL,
+                            _("_Discard"), GTK_RESPONSE_CANCEL,
+                            _("_Recover"), GTK_RESPONSE_OK,
+                            NULL);
+  gtk_dialog_set_default_response (GTK_DIALOG (dialog),
+                                   GTK_RESPONSE_OK);
+
+  box = gimp_message_box_new (GIMP_ICON_WILBER_EEK);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      box, TRUE, TRUE, 0);
+  gtk_widget_show (box);
+
+  gimp_message_box_set_primary_text (GIMP_MESSAGE_BOX (box),
+                                     _("Eeek! It looks like GIMP recovered from a crash!"));
+
+  gimp_message_box_set_text (GIMP_MESSAGE_BOX (box),
+                             /* TRANSLATORS: even if English singular form does
+                              * not use %d, you can use %d for translation in
+                              * any singular/plural form of your language if
+                              * suited. It will just work and be replaced by the
+                              * number of images as expected.
+                              */
+                             ngettext ("An image was salvaged from the crash. "
+                                       "Do you want to try and recover it?",
+                                       "%d images were salvaged from the crash. "
+                                       "Do you want to try and recover them?",
+                                       n_recoveries), n_recoveries);
+
+  recover = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK);
+  gtk_widget_destroy (dialog);
+
+  return recover;
+}
+
+gint
+gui_get_initial_monitor (Gimp       *gimp,
+                         GdkScreen **screen)
+{
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), 0);
+  g_return_val_if_fail (screen != NULL, 0);
+
+  *screen = initial_screen;
+
+  return initial_monitor;
 }
 
 
@@ -319,7 +405,6 @@ gui_sanity_check (void)
 
   return NULL;
 }
-
 
 static void
 gui_help_func (const gchar *help_id,
@@ -429,7 +514,9 @@ gui_restore_callback (Gimp               *gimp,
     {
       gdouble xres, yres;
 
-      gimp_get_screen_resolution (NULL, &xres, &yres);
+      gimp_get_monitor_resolution (initial_screen,
+                                   initial_monitor,
+                                   &xres, &yres);
 
       g_object_set (gimp->config,
                     "monitor-xresolution",                      xres,
@@ -445,10 +532,13 @@ gui_restore_callback (Gimp               *gimp,
   dialogs_init (gimp, global_menu_factory);
 
   gimp_clipboard_init (gimp);
-  gimp_clipboard_set_buffer (gimp, gimp->global_buffer);
+  if (gimp_get_clipboard_image (gimp))
+    gimp_clipboard_set_image (gimp, gimp_get_clipboard_image (gimp));
+  else
+    gimp_clipboard_set_buffer (gimp, gimp_get_clipboard_buffer (gimp));
 
-  g_signal_connect (gimp, "buffer-changed",
-                    G_CALLBACK (gui_global_buffer_changed),
+  g_signal_connect (gimp, "clipboard-changed",
+                    G_CALLBACK (gui_clipboard_changed),
                     NULL);
 
   gimp_devices_init (gimp);
@@ -456,10 +546,6 @@ gui_restore_callback (Gimp               *gimp,
   session_init (gimp);
 
   g_type_class_unref (g_type_class_ref (GIMP_TYPE_COLOR_SELECTOR_PALETTE));
-
-  /*  initialize the document history  */
-  status_callback (NULL, _("Documents"), 0.9);
-  gimp_recent_list_load (gimp);
 
   status_callback (NULL, _("Tool Options"), 1.0);
   gimp_tools_restore (gimp);
@@ -502,6 +588,23 @@ gui_restore_after_callback (Gimp               *gimp,
 
   gimp->message_handler = GIMP_MESSAGE_BOX;
 
+  /*  load the recent documents after gimp_real_restore() because we
+   *  need the mime-types implemented by plug-ins
+   */
+  status_callback (NULL, _("Documents"), 0.9);
+  gimp_recent_list_load (gimp);
+
+  /*  enable this to always have icons everywhere  */
+  if (g_getenv ("GIMP_ICONS_LIKE_A_BOSS"))
+    {
+      GdkScreen *screen = gdk_screen_get_default ();
+
+      g_object_set (G_OBJECT (gtk_settings_get_for_screen (screen)),
+                    "gtk-button-images", TRUE,
+                    "gtk-menu-images",   TRUE,
+                    NULL);
+    }
+
   if (gui_config->restore_accels)
     menus_restore (gimp);
 
@@ -514,6 +617,12 @@ gui_restore_after_callback (Gimp               *gimp,
                                                     gimp,
                                                     gui_config->tearoff_menus);
   gimp_ui_manager_update (image_ui_manager, gimp);
+
+  /* Check that every accelerator is unique. */
+  gtk_accel_map_foreach_unfiltered (NULL,
+                                    gui_check_unique_accelerator);
+
+  gimp_action_history_init (gimp);
 
 #ifdef GDK_WINDOWING_QUARTZ
   {
@@ -536,24 +645,26 @@ gui_restore_after_callback (Gimp               *gimp,
 
     gui_add_to_app_menu (image_ui_manager, osx_app,
                          "/image-menubar/Help/dialogs-about", 0);
+    gui_add_to_app_menu (image_ui_manager, osx_app,
+                         "/image-menubar/Help/dialogs-search-action", 1);
 
 #define PREFERENCES "/image-menubar/Edit/Preferences/"
 
     gui_add_to_app_menu (image_ui_manager, osx_app,
-                         PREFERENCES "dialogs-preferences", 2);
+                         PREFERENCES "dialogs-preferences", 3);
     gui_add_to_app_menu (image_ui_manager, osx_app,
-                         PREFERENCES "dialogs-input-devices", 3);
+                         PREFERENCES "dialogs-input-devices", 4);
     gui_add_to_app_menu (image_ui_manager, osx_app,
-                         PREFERENCES "dialogs-keyboard-shortcuts", 4);
+                         PREFERENCES "dialogs-keyboard-shortcuts", 5);
     gui_add_to_app_menu (image_ui_manager, osx_app,
-                         PREFERENCES "dialogs-module-dialog", 5);
+                         PREFERENCES "dialogs-module-dialog", 6);
     gui_add_to_app_menu (image_ui_manager, osx_app,
-                         PREFERENCES "plug-in-unit-editor", 6);
+                         PREFERENCES "plug-in-unit-editor", 7);
 
 #undef PREFERENCES
 
     item = gtk_separator_menu_item_new ();
-    gtkosx_application_insert_app_menu_item (osx_app, item, 7);
+    gtkosx_application_insert_app_menu_item (osx_app, item, 8);
 
     item = gtk_ui_manager_get_widget (GTK_UI_MANAGER (image_ui_manager),
                                       "/image-menubar/File/file-quit");
@@ -586,29 +697,35 @@ gui_restore_after_callback (Gimp               *gimp,
   if (status_callback == splash_update)
     splash_destroy ();
 
-  color_history_restore (gimp);
-
   if (gimp_get_show_gui (gimp))
     {
       GimpDisplayShell *shell;
+      GtkWidget        *toplevel;
 
       /*  create the empty display  */
-      display = GIMP_DISPLAY (gimp_create_display (gimp,
-                                                   NULL,
-                                                   GIMP_UNIT_PIXEL,
-                                                   1.0));
+      display = GIMP_DISPLAY (gimp_create_display (gimp, NULL,
+                                                   GIMP_UNIT_PIXEL, 1.0,
+                                                   G_OBJECT (initial_screen),
+                                                   initial_monitor));
 
       shell = gimp_display_get_shell (display);
 
       if (gui_config->restore_session)
-        session_restore (gimp);
+        session_restore (gimp,
+                         initial_screen,
+                         initial_monitor);
 
       /*  move keyboard focus to the display  */
-      gtk_window_present (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (shell))));
+      toplevel = gtk_widget_get_toplevel (GTK_WIDGET (shell));
+      gtk_window_present (GTK_WINDOW (toplevel));
     }
 
   /*  indicate that the application has finished loading  */
   gdk_notify_startup_complete ();
+
+  /*  clear startup monitor variables  */
+  initial_screen  = NULL;
+  initial_monitor = -1;
 }
 
 static gboolean
@@ -622,8 +739,13 @@ gui_exit_callback (Gimp     *gimp,
 
   if (! force && gimp_displays_dirty (gimp))
     {
+      GdkScreen *screen;
+      gint       monitor;
+
+      monitor = gimp_get_monitor_at_pointer (&screen);
+
       gimp_dialog_factory_dialog_raise (gimp_dialog_factory_get_singleton (),
-                                        gdk_screen_get_default (),
+                                        screen, monitor,
                                         "gimp-quit-dialog", -1);
 
       return TRUE; /* stop exit for now */
@@ -635,11 +757,6 @@ gui_exit_callback (Gimp     *gimp,
 
   if (gui_config->save_session_info)
     session_save (gimp, FALSE);
-
-  color_history_save (gimp);
-
-  if (gui_config->save_accels)
-    menus_save (gimp, FALSE);
 
   if (gui_config->save_device_status)
     gimp_devices_save (gimp, FALSE);
@@ -653,8 +770,13 @@ gui_exit_callback (Gimp     *gimp,
 
   gimp_displays_delete (gimp);
 
+  if (gui_config->save_accels)
+    menus_save (gimp, FALSE);
+
   gimp_tools_save (gimp, gui_config->save_tool_options, FALSE);
   gimp_tools_exit (gimp);
+
+  gimp_language_store_parser_clean ();
 
   return FALSE; /* continue exiting */
 }
@@ -676,6 +798,8 @@ gui_exit_after_callback (Gimp     *gimp,
                                         gui_show_tooltips_notify,
                                         gimp);
 
+  gimp_action_history_exit (gimp);
+
   g_object_unref (image_ui_manager);
   image_ui_manager = NULL;
 
@@ -686,7 +810,7 @@ gui_exit_after_callback (Gimp     *gimp,
    *  a whole lot of code paths. See bug #731389.
    */
   g_signal_handlers_disconnect_by_func (gimp,
-                                        G_CALLBACK (gui_global_buffer_changed),
+                                        G_CALLBACK (gui_clipboard_changed),
                                         NULL);
   gimp_clipboard_exit (gimp);
 
@@ -750,9 +874,12 @@ gui_tearoff_menus_notify (GimpGuiConfig *gui_config,
 }
 
 static void
-gui_global_buffer_changed (Gimp *gimp)
+gui_clipboard_changed (Gimp *gimp)
 {
-  gimp_clipboard_set_buffer (gimp, gimp->global_buffer);
+  if (gimp_get_clipboard_image (gimp))
+    gimp_clipboard_set_image (gimp, gimp_get_clipboard_image (gimp));
+  else
+    gimp_clipboard_set_buffer (gimp, gimp_get_clipboard_buffer (gimp));
 }
 
 static void
@@ -825,4 +952,88 @@ gui_display_changed (GimpContext *context,
     }
 
   gimp_ui_manager_update (image_ui_manager, display);
+}
+
+typedef struct
+{
+  const gchar     *path;
+  guint            key;
+  GdkModifierType  mods;
+}
+accelData;
+
+static void
+gui_compare_accelerator (gpointer         data,
+                         const gchar     *accel_path,
+                         guint            accel_key,
+                         GdkModifierType  accel_mods,
+                         gboolean         changed)
+{
+  accelData *accel = data;
+
+  if (accel->key == accel_key && accel->mods == accel_mods &&
+      g_strcmp0 (accel->path, accel_path))
+    {
+      g_warning ("Actions \"%s\" and \"%s\" use the same accelerator.\n"
+                 "Disable the accelerator on \"%s\".",
+                 accel->path, accel_path, accel_path);
+      gtk_accel_map_change_entry (accel_path, 0, 0, FALSE);
+    }
+}
+
+static void
+gui_check_unique_accelerator (gpointer         data,
+                              const gchar     *accel_path,
+                              guint            accel_key,
+                              GdkModifierType  accel_mods,
+                              gboolean         changed)
+{
+  if (gtk_accelerator_valid (accel_key, accel_mods) &&
+      gui_check_action_exists (accel_path))
+    {
+      accelData accel;
+
+      accel.path = accel_path;
+      accel.key  = accel_key;
+      accel.mods = accel_mods;
+
+      gtk_accel_map_foreach_unfiltered (&accel,
+                                        gui_compare_accelerator);
+    }
+}
+
+static gboolean
+gui_check_action_exists (const gchar *accel_path)
+{
+  GimpUIManager *manager;
+  gboolean       action_exists = FALSE;
+  GList         *list;
+
+  manager = gimp_ui_managers_from_name ("<Image>")->data;
+  for (list = gtk_ui_manager_get_action_groups (GTK_UI_MANAGER (manager));
+       list;
+       list = g_list_next (list))
+    {
+      GtkActionGroup *group   = list->data;
+      GList          *actions = NULL;
+      GList          *list2;
+
+      actions = gtk_action_group_list_actions (GTK_ACTION_GROUP (group));
+      for (list2 = actions; list2; list2 = g_list_next (list2))
+        {
+          const gchar *path;
+          GtkAction   *action = list2->data;
+
+          path = gtk_action_get_accel_path (action);
+          if (g_strcmp0 (path, accel_path) == 0)
+            {
+              action_exists = TRUE;
+              break;
+            }
+        }
+      g_list_free (actions);
+      if (action_exists)
+        break;
+    }
+  return action_exists;
 }

@@ -28,7 +28,6 @@
 #include "config/gimpguiconfig.h"
 
 #include "core/gimp.h"
-#include "core/gimparea.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
@@ -68,16 +67,16 @@ typedef struct _GimpDisplayPrivate GimpDisplayPrivate;
 
 struct _GimpDisplayPrivate
 {
-  gint       ID;           /*  unique identifier for this display  */
+  gint            ID;           /*  unique identifier for this display  */
 
-  GimpImage *image;        /*  pointer to the associated image     */
-  gint       instance;     /*  the instance # of this display as
-                            *  taken from the image at creation    */
+  GimpImage      *image;        /*  pointer to the associated image     */
+  gint            instance;     /*  the instance # of this display as
+                                 *  taken from the image at creation    */
 
-  GtkWidget *shell;
-  GSList    *update_areas;
+  GtkWidget      *shell;
+  cairo_region_t *update_region;
 
-  guint64    last_flush_now;
+  guint64         last_flush_now;
 };
 
 #define GIMP_DISPLAY_GET_PRIVATE(display) \
@@ -100,8 +99,8 @@ static void     gimp_display_get_property           (GObject             *object
                                                      GParamSpec          *pspec);
 
 static GimpProgress * gimp_display_progress_start   (GimpProgress        *progress,
-                                                     const gchar         *message,
-                                                     gboolean             cancelable);
+                                                     gboolean             cancellable,
+                                                     const gchar         *message);
 static void     gimp_display_progress_end           (GimpProgress        *progress);
 static gboolean gimp_display_progress_is_active     (GimpProgress        *progress);
 static void     gimp_display_progress_set_text      (GimpProgress        *progress,
@@ -221,12 +220,6 @@ gimp_display_set_property (GObject      *object,
       }
       break;
 
-    case PROP_ID:
-    case PROP_IMAGE:
-    case PROP_SHELL:
-      g_assert_not_reached ();
-      break;
-
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -268,15 +261,15 @@ gimp_display_get_property (GObject    *object,
 
 static GimpProgress *
 gimp_display_progress_start (GimpProgress *progress,
-                             const gchar  *message,
-                             gboolean      cancelable)
+                             gboolean      cancellable,
+                             const gchar  *message)
 {
   GimpDisplay        *display = GIMP_DISPLAY (progress);
   GimpDisplayPrivate *private = GIMP_DISPLAY_GET_PRIVATE (display);
 
   if (private->shell)
-    return gimp_progress_start (GIMP_PROGRESS (private->shell),
-                                message, cancelable);
+    return gimp_progress_start (GIMP_PROGRESS (private->shell), cancellable,
+                                "%s", message);
 
   return NULL;
 }
@@ -311,7 +304,7 @@ gimp_display_progress_set_text (GimpProgress *progress,
   GimpDisplayPrivate *private = GIMP_DISPLAY_GET_PRIVATE (display);
 
   if (private->shell)
-    gimp_progress_set_text (GIMP_PROGRESS (private->shell), message);
+    gimp_progress_set_text_literal (GIMP_PROGRESS (private->shell), message);
 }
 
 static void
@@ -391,9 +384,10 @@ gimp_display_new (Gimp              *gimp,
                   GimpImage         *image,
                   GimpUnit           unit,
                   gdouble            scale,
-                  GimpMenuFactory   *menu_factory,
                   GimpUIManager     *popup_manager,
-                  GimpDialogFactory *dialog_factory)
+                  GimpDialogFactory *dialog_factory,
+                  GdkScreen         *screen,
+                  gint               monitor)
 {
   GimpDisplay        *display;
   GimpDisplayPrivate *private;
@@ -402,6 +396,7 @@ gimp_display_new (Gimp              *gimp,
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (image == NULL || GIMP_IS_IMAGE (image), NULL);
+  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
 
   /*  If there isn't an interface, never create a display  */
   if (gimp->no_interface)
@@ -442,13 +437,16 @@ gimp_display_new (Gimp              *gimp,
     {
       window = gimp_image_window_new (gimp,
                                       private->image,
-                                      menu_factory,
-                                      dialog_factory);
+                                      dialog_factory,
+                                      screen,
+                                      monitor);
     }
 
   /*  create the shell for the image  */
   private->shell = gimp_display_shell_new (display, unit, scale,
-                                           popup_manager);
+                                           popup_manager,
+                                           screen,
+                                           monitor);
 
   shell = gimp_display_get_shell (display);
 
@@ -497,10 +495,6 @@ gimp_display_delete (GimpDisplay *display)
 
   if (active_tool && active_tool->focus_display == display)
     tool_manager_focus_display_active (display->gimp, NULL);
-
-  /*  free the update area lists  */
-  gimp_area_list_free (private->update_areas);
-  private->update_areas = NULL;
 
   if (private->shell)
     {
@@ -650,6 +644,8 @@ gimp_display_set_image (GimpDisplay *display,
 
       gimp_display_disconnect (display);
 
+      g_clear_pointer (&private->update_region, cairo_region_destroy);
+
       gimp_image_dec_display_count (private->image);
 
       /*  set private->image before unrefing because there may be code
@@ -782,17 +778,22 @@ gimp_display_update_area (GimpDisplay *display,
     }
   else
     {
-      GimpArea *area;
-      gint      image_width  = gimp_image_get_width  (private->image);
-      gint      image_height = gimp_image_get_height (private->image);
+      cairo_rectangle_int_t rect;
+      gint                  image_width;
+      gint                  image_height;
 
-      area = gimp_area_new (CLAMP (x,     0, image_width),
-                            CLAMP (y,     0, image_height),
-                            CLAMP (x + w, 0, image_width),
-                            CLAMP (y + h, 0, image_height));
+      image_width  = gimp_image_get_width  (private->image);
+      image_height = gimp_image_get_height (private->image);
 
-      private->update_areas = gimp_area_list_process (private->update_areas,
-                                                      area);
+      rect.x      = CLAMP (x,     0, image_width);
+      rect.y      = CLAMP (y,     0, image_height);
+      rect.width  = CLAMP (x + w, 0, image_width)  - rect.x;
+      rect.height = CLAMP (y + h, 0, image_height) - rect.y;
+
+      if (private->update_region)
+        cairo_region_union_rectangle (private->update_region, &rect);
+      else
+        private->update_region = cairo_region_create_rectangle (&rect);
     }
 }
 
@@ -821,26 +822,26 @@ gimp_display_flush_whenever (GimpDisplay *display,
 {
   GimpDisplayPrivate *private = GIMP_DISPLAY_GET_PRIVATE (display);
 
-  if (private->update_areas)
+  if (private->update_region)
     {
-      GSList *list;
+      gint n_rects = cairo_region_num_rectangles (private->update_region);
+      gint i;
 
-      for (list = private->update_areas; list; list = g_slist_next (list))
+      for (i = 0; i < n_rects; i++)
         {
-          GimpArea *area = list->data;
+          cairo_rectangle_int_t rect;
 
-          if ((area->x1 != area->x2) && (area->y1 != area->y2))
-            {
-              gimp_display_paint_area (display,
-                                       area->x1,
-                                       area->y1,
-                                       (area->x2 - area->x1),
-                                       (area->y2 - area->y1));
-            }
+          cairo_region_get_rectangle (private->update_region,
+                                      i, &rect);
+
+          gimp_display_paint_area (display,
+                                   rect.x,
+                                   rect.y,
+                                   rect.width,
+                                   rect.height);
         }
 
-      gimp_area_list_free (private->update_areas);
-      private->update_areas = NULL;
+      g_clear_pointer (&private->update_region, cairo_region_destroy);
     }
 
   if (now)
@@ -886,13 +887,14 @@ gimp_display_paint_area (GimpDisplay *display,
   h = (y2 - y1);
 
   /*  display the area  */
-  gimp_display_shell_transform_xy_f (shell, x,     y,     &x1_f, &y1_f);
-  gimp_display_shell_transform_xy_f (shell, x + w, y + h, &x2_f, &y2_f);
+  gimp_display_shell_transform_bounds (shell,
+                                       x, y, x + w, y + h,
+                                       &x1_f, &y1_f, &x2_f, &y2_f);
 
   /*  make sure to expose a superset of the transformed sub-pixel expose
    *  area, not a subset. bug #126942. --mitch
    *
-   *  also acommodate for spill introduced by potential box filtering.
+   *  also accommodate for spill introduced by potential box filtering.
    *  (bug #474509). --simon
    */
   x1 = floor (x1_f - 0.5);

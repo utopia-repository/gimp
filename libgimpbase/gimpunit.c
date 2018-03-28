@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include <math.h>
 #include <string.h>
 
 #include <glib-object.h>
@@ -159,7 +160,7 @@ gimp_unit_get_number_of_built_in_units (void)
  *
  * Returns the integer ID of the new #GimpUnit.
  *
- * Note that a new unit is always created with it's deletion flag
+ * Note that a new unit is always created with its deletion flag
  * set to %TRUE. You will have to set it to %FALSE with
  * gimp_unit_set_deletion_flag() to make the unit definition persistent.
  *
@@ -239,8 +240,14 @@ gimp_unit_get_factor (GimpUnit unit)
  * gimp_unit_get_digits:
  * @unit: The unit you want to know the digits.
  *
- * Returns the number of digits an entry field should provide to get
- * approximately the same accuracy as an inch input field with two digits.
+ * Returns the number of digits set for @unit.
+ * Built-in units' accuracy is approximately the same as an inch with
+ * two digits. User-defined units can suggest a different accuracy.
+ *
+ * Note: the value is as-set by defaults or by the user and does not
+ * necessary provide enough precision on high-resolution images.
+ * When the information is needed for a specific image, the use of
+ * gimp_unit_get_scaled_digits() may be more appropriate.
  *
  * Returns 0 for @unit == GIMP_UNIT_PIXEL.
  *
@@ -255,10 +262,40 @@ gimp_unit_get_digits (GimpUnit unit)
 }
 
 /**
+ * gimp_unit_get_scaled_digits:
+ * @unit: The unit you want to know the digits.
+ * @resolution: the resolution in PPI.
+ *
+ * Returns the number of digits a @unit field should provide to get
+ * enough accuracy so that every pixel position shows a different
+ * value from neighboring pixels.
+ *
+ * Note: when needing digit accuracy to display a diagonal distance,
+ * the @resolution may not correspond to the image's horizontal or
+ * vertical resolution, but instead to the result of:
+ * `distance_in_pixel / distance_in_inch`.
+ *
+ * Returns: The suggested number of digits.
+ **/
+gint
+gimp_unit_get_scaled_digits (GimpUnit unit,
+                             gdouble  resolution)
+{
+  gint digits;
+
+  g_return_val_if_fail (_gimp_unit_vtable.unit_get_digits != NULL, 2);
+
+  digits = ceil (log10 (1.0 /
+                        gimp_pixels_to_units (1.0, unit, resolution)));
+
+  return MAX (digits, gimp_unit_get_digits (unit));
+}
+
+/**
  * gimp_unit_get_identifier:
  * @unit: The unit you want to know the identifier of.
  *
- * This is an unstranslated string and must not be changed or freed.
+ * This is an untranslated string and must not be changed or freed.
  *
  * Returns: The unit's identifier.
  **/
@@ -345,6 +382,12 @@ gimp_unit_get_plural (GimpUnit unit)
   return _gimp_unit_vtable.unit_get_plural (unit);
 }
 
+static gint print (gchar       *buf,
+                   gint         len,
+                   gint         start,
+                   const gchar *fmt,
+                   ...) G_GNUC_PRINTF (4, 5);
+
 static gint
 print (gchar       *buf,
        gint         len,
@@ -408,7 +451,7 @@ print (gchar       *buf,
  * Returns: A newly allocated string with above percent expressions
  *          replaced with the resp. strings for @unit.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gchar *
 gimp_unit_format_string (const gchar *format,
@@ -510,7 +553,7 @@ static gboolean  gimp_param_unit_value_validate (GParamSpec      *pspec,
  *
  * Returns: the #GType for a unit param object
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 GType
 gimp_param_unit_get_type (void)
@@ -552,11 +595,7 @@ gimp_param_unit_value_validate (GParamSpec *pspec,
   GimpParamSpecUnit *uspec = GIMP_PARAM_SPEC_UNIT (pspec);
   gint               oval  = value->data[0].v_int;
 
-  if (uspec->allow_percent && value->data[0].v_int == GIMP_UNIT_PERCENT)
-    {
-      value->data[0].v_int = value->data[0].v_int;
-    }
-  else
+  if (!(uspec->allow_percent && value->data[0].v_int == GIMP_UNIT_PERCENT))
     {
       value->data[0].v_int = CLAMP (value->data[0].v_int,
                                     ispec->minimum,
@@ -570,9 +609,9 @@ gimp_param_unit_value_validate (GParamSpec *pspec,
  * gimp_param_spec_unit:
  * @name:          Canonical name of the param
  * @nick:          Nickname of the param
- * @blurb:         Brief desciption of param.
+ * @blurb:         Brief description of param.
  * @allow_pixels:  Whether "pixels" is an allowed unit.
- * @allow_percent: Whether "perecent" is an allowed unit.
+ * @allow_percent: Whether "percent" is an allowed unit.
  * @default_value: Unit to use if none is assigned.
  * @flags:         a combination of #GParamFlags
  *
@@ -581,7 +620,7 @@ gimp_param_unit_value_validate (GParamSpec *pspec,
  *
  * Returns: a newly allocated #GParamSpec instance
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 GParamSpec *
 gimp_param_spec_unit (const gchar *name,
@@ -613,13 +652,13 @@ gimp_param_spec_unit (const gchar *name,
  * gimp_pixels_to_units:
  * @pixels:     value in pixels
  * @unit:       unit to convert to
- * @resolution: resloution in DPI
+ * @resolution: resolution in DPI
  *
  * Converts a @value specified in pixels to @unit.
  *
  * Returns: @pixels converted to units.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gdouble
 gimp_pixels_to_units (gdouble  pixels,
@@ -642,7 +681,7 @@ gimp_pixels_to_units (gdouble  pixels,
  *
  * Returns: @value converted to pixels.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gdouble
 gimp_units_to_pixels (gdouble  value,
@@ -665,7 +704,7 @@ gimp_units_to_pixels (gdouble  value,
  *
  * Returns: @value converted to points.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gdouble
 gimp_units_to_points (gdouble  value,
@@ -680,4 +719,37 @@ gimp_units_to_points (gdouble  value,
 
   return (value *
           gimp_unit_get_factor (GIMP_UNIT_POINT) / gimp_unit_get_factor (unit));
+}
+
+/**
+ * gimp_unit_is_metric:
+ * @unit: The unit
+ *
+ * Checks if the given @unit is metric. A simplistic test is used
+ * that looks at the unit's factor and checks if it is 2.54 multiplied
+ * by some common powers of 10. Currently it checks for mm, cm, dm, m.
+ *
+ * See also: gimp_unit_get_factor()
+ *
+ * Returns: %TRUE if the @unit is metric.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_unit_is_metric (GimpUnit unit)
+{
+  gdouble factor;
+
+  if (unit == GIMP_UNIT_MM)
+    return TRUE;
+
+  factor = gimp_unit_get_factor (unit);
+
+  if (factor == 0.0)
+    return FALSE;
+
+  return ((ABS (factor -  0.0254) < 1e-7) || /* m  */
+          (ABS (factor -  0.254)  < 1e-6) || /* dm */
+          (ABS (factor -  2.54)   < 1e-5) || /* cm */
+          (ABS (factor - 25.4)    < 1e-4));  /* mm */
 }

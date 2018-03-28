@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -45,7 +46,8 @@ static const GimpActionEntry debug_actions[] =
   { "debug-benchmark-projection", NULL,
     "Benchmark _Projection", NULL,
     "Invalidates the entire projection, measures the time it takes to "
-    "validate (render) it again, and print the result to stdout.",
+    "validate (render) the part that is visible in the active diaplay, "
+    "and print the result to stdout.",
     G_CALLBACK (debug_benchmark_projection_cmd_callback),
     NULL },
 

@@ -23,10 +23,7 @@
 
 #include <string.h>
 
-#ifdef PLATFORM_OSX
-#import <Foundation/Foundation.h>
-#endif
-
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -50,6 +47,8 @@
 
 #include "gimphelp.h"
 #include "gimphelp-ids.h"
+#include "gimplanguagecombobox.h"
+#include "gimplanguagestore-parser.h"
 #include "gimpmessagebox.h"
 #include "gimpmessagedialog.h"
 #include "gimpmessagedialog.h"
@@ -68,6 +67,8 @@ struct _GimpIdleHelp
   gchar        *help_domain;
   gchar        *help_locales;
   gchar        *help_id;
+
+  GtkDialog    *query_dialog;
 };
 
 
@@ -77,9 +78,9 @@ static gboolean   gimp_idle_help          (GimpIdleHelp  *idle_help);
 static void       gimp_idle_help_free     (GimpIdleHelp  *idle_help);
 
 static gboolean   gimp_help_browser       (Gimp          *gimp,
-					   GimpProgress  *progress);
+                                           GimpProgress  *progress);
 static void       gimp_help_browser_error (Gimp          *gimp,
-					   GimpProgress  *progress,
+                                           GimpProgress  *progress,
                                            const gchar   *title,
                                            const gchar   *primary,
                                            const gchar   *text);
@@ -97,10 +98,12 @@ static gint       gimp_help_get_help_domains         (Gimp    *gimp,
 static gchar    * gimp_help_get_default_domain_uri   (Gimp    *gimp);
 static gchar    * gimp_help_get_locales              (Gimp    *gimp);
 
-static gchar    * gimp_help_get_user_manual_basedir  (void);
+static GFile    * gimp_help_get_user_manual_basedir  (void);
 
-static void       gimp_help_query_user_manual_online (GimpIdleHelp *idle_help);
+static void       gimp_help_query_alt_user_manual    (GimpIdleHelp *idle_help);
 
+static void       gimp_help_language_combo_changed   (GtkComboBox  *combo,
+                                                      GimpIdleHelp *idle_help);
 
 /*  public functions  */
 
@@ -154,7 +157,7 @@ gimp_help_browser_is_installed (Gimp *gimp)
 gboolean
 gimp_help_user_manual_is_installed (Gimp *gimp)
 {
-  gchar    *basedir;
+  GFile    *basedir;
   gboolean  found = FALSE;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
@@ -165,7 +168,8 @@ gimp_help_user_manual_is_installed (Gimp *gimp)
 
   basedir = gimp_help_get_user_manual_basedir ();
 
-  if (g_file_test (basedir, G_FILE_TEST_IS_DIR))
+  if (g_file_query_file_type (basedir, G_FILE_QUERY_INFO_NONE, NULL) ==
+      G_FILE_TYPE_DIRECTORY)
     {
       gchar       *locales = gimp_help_get_locales (gimp);
       const gchar *s       = locales;
@@ -174,13 +178,14 @@ gimp_help_user_manual_is_installed (Gimp *gimp)
       for (p = strchr (s, ':'); p && !found; p = strchr (s, ':'))
         {
           gchar *locale = g_strndup (s, p - s);
-          gchar *path;
+          GFile *file1  = g_file_get_child (basedir, locale);
+          GFile *file2  = g_file_get_child (file1, "gimp-help.xml");
 
-          path = g_build_filename (basedir, locale, "gimp-help.xml", NULL);
+          found = (g_file_query_file_type (file2, G_FILE_QUERY_INFO_NONE,
+                                           NULL) == G_FILE_TYPE_REGULAR);
 
-          found = g_file_test (path, G_FILE_TEST_IS_REGULAR);
-
-          g_free (path);
+          g_object_unref (file1);
+          g_object_unref (file2);
           g_free (locale);
 
           s = p + 1;
@@ -190,15 +195,18 @@ gimp_help_user_manual_is_installed (Gimp *gimp)
 
       if (! found)
         {
-          gchar *path = g_build_filename (basedir, "en", "gimp-help.xml", NULL);
+          GFile *file1  = g_file_get_child (basedir, "en");
+          GFile *file2  = g_file_get_child (file1, "gimp-help.xml");
 
-          found = g_file_test (path, G_FILE_TEST_IS_REGULAR);
+          found = (g_file_query_file_type (file2, G_FILE_QUERY_INFO_NONE,
+                                           NULL) == G_FILE_TYPE_REGULAR);
 
-          g_free (path);
+          g_object_unref (file1);
+          g_object_unref (file2);
         }
     }
 
-  g_free (basedir);
+  g_object_unref (basedir);
 
   return found;
 }
@@ -219,6 +227,61 @@ gimp_help_user_manual_changed (Gimp *gimp)
     }
 }
 
+GList *
+gimp_help_get_installed_languages (void)
+{
+  GList *manuals = NULL;
+  GFile *basedir;
+
+  /*  if GIMP2_HELP_URI is set, assume that the manual can be found there  */
+  if (g_getenv ("GIMP2_HELP_URI"))
+    basedir = g_file_new_for_uri (g_getenv ("GIMP2_HELP_URI"));
+  else
+    basedir = gimp_help_get_user_manual_basedir ();
+
+  if (g_file_query_file_type (basedir, G_FILE_QUERY_INFO_NONE, NULL) ==
+      G_FILE_TYPE_DIRECTORY)
+    {
+      GFileEnumerator *enumerator;
+
+      enumerator = g_file_enumerate_children (basedir,
+                                              G_FILE_ATTRIBUTE_STANDARD_NAME ","
+                                              G_FILE_ATTRIBUTE_STANDARD_TYPE,
+                                              G_FILE_QUERY_INFO_NONE,
+                                              NULL, NULL);
+
+      if (enumerator)
+        {
+          GFileInfo *info;
+
+          while ((info = g_file_enumerator_next_file (enumerator,
+                                                      NULL, NULL)))
+            {
+              if (g_file_info_get_file_type (info) == G_FILE_TYPE_DIRECTORY)
+                {
+                  GFile *locale_dir;
+                  GFile *file;
+
+                  locale_dir = g_file_enumerator_get_child (enumerator, info);
+                  file  = g_file_get_child (locale_dir, "gimp-help.xml");
+                  if (g_file_query_file_type (file, G_FILE_QUERY_INFO_NONE,
+                                              NULL) == G_FILE_TYPE_REGULAR)
+                    {
+                      manuals = g_list_prepend (manuals,
+                                                g_strdup (g_file_info_get_name (info)));
+                    }
+                  g_object_unref (locale_dir);
+                  g_object_unref (file);
+                }
+              g_object_unref (info);
+            }
+          g_object_unref (enumerator);
+        }
+    }
+  g_object_unref (basedir);
+
+  return manuals;
+}
 
 /*  private functions  */
 
@@ -232,10 +295,10 @@ gimp_idle_help (GimpIdleHelp *idle_help)
       ! config->user_manual_online   &&
       ! gimp_help_user_manual_is_installed (idle_help->gimp))
     {
-      /*  The user manual is not installed locally, ask the user
-       *  if the online version should be used instead.
+      /*  The user manual is not installed locally, propose alternative
+       *  manuals (other installed languages or online version).
        */
-      gimp_help_query_user_manual_online (idle_help);
+      gimp_help_query_alt_user_manual (idle_help);
 
       return FALSE;
     }
@@ -277,7 +340,7 @@ gimp_idle_help_free (GimpIdleHelp *idle_help)
 
 static gboolean
 gimp_help_browser (Gimp         *gimp,
-		   GimpProgress *progress)
+                   GimpProgress *progress)
 {
   static gboolean  busy = FALSE;
   GimpProcedure   *procedure;
@@ -293,11 +356,11 @@ gimp_help_browser (Gimp         *gimp,
 
   if (! procedure)
     {
-      GValueArray *args          = NULL;
-      gint          n_domains    = 0;
-      gchar       **help_domains = NULL;
-      gchar       **help_uris    = NULL;
-      GError       *error        = NULL;
+      GimpValueArray *args         = NULL;
+      gint            n_domains    = 0;
+      gchar         **help_domains = NULL;
+      gchar         **help_uris    = NULL;
+      GError         *error        = NULL;
 
       procedure = gimp_pdb_lookup_procedure (gimp->pdb,
                                              "extension-gimp-help-browser");
@@ -309,8 +372,8 @@ gimp_help_browser (Gimp         *gimp,
                                    _("The GIMP help browser is not available."),
                                    _("The GIMP help browser plug-in appears "
                                      "to be missing from your installation. "
-				     "You may instead use the web browser "
-				     "for reading the help pages."));
+                                     "You may instead use the web browser "
+                                     "for reading the help pages."));
           busy = FALSE;
 
           return FALSE;
@@ -321,22 +384,27 @@ gimp_help_browser (Gimp         *gimp,
       args = gimp_procedure_get_arguments (procedure);
       gimp_value_array_truncate (args, 5);
 
-      g_value_set_int             (&args->values[0], GIMP_RUN_INTERACTIVE);
-      g_value_set_int             (&args->values[1], n_domains);
-      gimp_value_take_stringarray (&args->values[2], help_domains, n_domains);
-      g_value_set_int             (&args->values[3], n_domains);
-      gimp_value_take_stringarray (&args->values[4], help_uris, n_domains);
+      g_value_set_int             (gimp_value_array_index (args, 0),
+                                   GIMP_RUN_INTERACTIVE);
+      g_value_set_int             (gimp_value_array_index (args, 1),
+                                   n_domains);
+      gimp_value_take_stringarray (gimp_value_array_index (args, 2),
+                                   help_domains, n_domains);
+      g_value_set_int             (gimp_value_array_index (args, 3),
+                                   n_domains);
+      gimp_value_take_stringarray (gimp_value_array_index (args, 4),
+                                   help_uris, n_domains);
 
       gimp_procedure_execute_async (procedure, gimp,
                                     gimp_get_user_context (gimp),
                                     NULL, args, NULL, &error);
 
-      g_value_array_free (args);
+      gimp_value_array_unref (args);
 
       if (error)
         {
           gimp_message_literal (gimp, G_OBJECT (progress), GIMP_MESSAGE_ERROR,
-				error->message);
+                                error->message);
           g_error_free (error);
         }
      }
@@ -365,21 +433,21 @@ gimp_help_browser (Gimp         *gimp,
 
 static void
 gimp_help_browser_error (Gimp         *gimp,
-			 GimpProgress *progress,
+                         GimpProgress *progress,
                          const gchar  *title,
                          const gchar  *primary,
                          const gchar  *text)
 {
   GtkWidget *dialog;
 
-  dialog = gimp_message_dialog_new (title, GIMP_STOCK_USER_MANUAL,
-				    NULL, 0,
-				    NULL, NULL,
+  dialog = gimp_message_dialog_new (title, GIMP_ICON_HELP_USER_MANUAL,
+                                    NULL, 0,
+                                    NULL, NULL,
 
-				    GTK_STOCK_CANCEL,      GTK_RESPONSE_CANCEL,
-				    _("Use _Web Browser"), GTK_RESPONSE_OK,
+                                    _("_Cancel"),          GTK_RESPONSE_CANCEL,
+                                    _("Use _Web Browser"), GTK_RESPONSE_OK,
 
-				    NULL);
+                                    NULL);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
                                            GTK_RESPONSE_OK,
@@ -421,8 +489,8 @@ gimp_help_call (Gimp         *gimp,
   /*  Special case the help browser  */
   if (! strcmp (procedure_name, "extension-gimp-help-browser-temp"))
     {
-      GValueArray *return_vals;
-      GError      *error = NULL;
+      GimpValueArray *return_vals;
+      GError         *error = NULL;
 
       GIMP_LOG (HELP, "Calling help via %s: %s %s %s",
                 procedure_name,
@@ -440,7 +508,7 @@ gimp_help_call (Gimp         *gimp,
                                             G_TYPE_STRING, help_id,
                                             G_TYPE_NONE);
 
-      g_value_array_free (return_vals);
+      gimp_value_array_unref (return_vals);
 
       if (error)
         {
@@ -456,11 +524,11 @@ gimp_help_call (Gimp         *gimp,
 
   if (! procedure)
     {
-      GValueArray  *args         = NULL;
-      gint          n_domains    = 0;
-      gchar       **help_domains = NULL;
-      gchar       **help_uris    = NULL;
-      GError       *error        = NULL;
+      GimpValueArray  *args         = NULL;
+      gint             n_domains    = 0;
+      gchar          **help_domains = NULL;
+      gchar          **help_uris    = NULL;
+      GError          *error        = NULL;
 
       procedure = gimp_pdb_lookup_procedure (gimp->pdb, "extension-gimp-help");
 
@@ -473,16 +541,20 @@ gimp_help_call (Gimp         *gimp,
       args = gimp_procedure_get_arguments (procedure);
       gimp_value_array_truncate (args, 4);
 
-      g_value_set_int             (&args->values[0], n_domains);
-      gimp_value_take_stringarray (&args->values[1], help_domains, n_domains);
-      g_value_set_int             (&args->values[2], n_domains);
-      gimp_value_take_stringarray (&args->values[3], help_uris, n_domains);
+      g_value_set_int             (gimp_value_array_index (args, 0),
+                                   n_domains);
+      gimp_value_take_stringarray (gimp_value_array_index (args, 1),
+                                   help_domains, n_domains);
+      g_value_set_int             (gimp_value_array_index (args, 2),
+                                   n_domains);
+      gimp_value_take_stringarray (gimp_value_array_index (args, 3),
+                                   help_uris, n_domains);
 
       gimp_procedure_execute_async (procedure, gimp,
                                     gimp_get_user_context (gimp), progress,
                                     args, NULL, &error);
 
-      g_value_array_free (args);
+      gimp_value_array_unref (args);
 
       if (error)
         {
@@ -496,8 +568,8 @@ gimp_help_call (Gimp         *gimp,
 
   if (procedure)
     {
-      GValueArray *return_vals;
-      GError      *error = NULL;
+      GimpValueArray *return_vals;
+      GError         *error = NULL;
 
       GIMP_LOG (HELP, "Calling help via %s: %s %s %s",
                 procedure_name,
@@ -516,7 +588,7 @@ gimp_help_call (Gimp         *gimp,
                                             G_TYPE_STRING, help_id,
                                             G_TYPE_NONE);
 
-      g_value_array_free (return_vals);
+      gimp_value_array_unref (return_vals);
 
       if (error)
         {
@@ -561,7 +633,7 @@ static gchar *
 gimp_help_get_default_domain_uri (Gimp *gimp)
 {
   GimpGuiConfig *config = GIMP_GUI_CONFIG (gimp->config);
-  gchar         *dir;
+  GFile         *dir;
   gchar         *uri;
 
   if (g_getenv ("GIMP2_HELP_URI"))
@@ -571,127 +643,114 @@ gimp_help_get_default_domain_uri (Gimp *gimp)
     return g_strdup (config->user_manual_online_uri);
 
   dir = gimp_help_get_user_manual_basedir ();
-  uri = g_filename_to_uri (dir, NULL, NULL);
-  g_free (dir);
+  uri = g_file_get_uri (dir);
+  g_object_unref (dir);
 
   return uri;
 }
 
-/**
- * gimp_help_get_locales:
- *
- * @gimp:   the GIMP instance with the configuration to read from
- *
- * Returns: a colon (:) separated list of language identifiers in descending
- * order of priority. The function evaluates in this order:
- * 1. (help-locales "") in the gimprc file
- * 2. the UI language from Preferences/Interface.
- * On OS X: If the user has set the UI language to 'System Language', then
- * the UI language from the OS X's System Preferences is returned.
- */
 static gchar *
 gimp_help_get_locales (Gimp *gimp)
 {
-  GimpGuiConfig *config = GIMP_GUI_CONFIG(gimp->config);
+  GimpGuiConfig  *config = GIMP_GUI_CONFIG (gimp->config);
+  gchar         **names;
+  gchar          *locales      = NULL;
+  GList          *locales_list = NULL;
+  GList          *iter;
+  gint            i;
 
-#ifdef PLATFORM_OSX
-  NSAutoreleasePool *pool;
-  NSUserDefaults *defaults;
-  NSArray *langArray;
-  NSString *languagesList;
-  gchar *languages = NULL;
-#endif
-
-  /* First check for preferred help locales in gimprc. */
   if (config->help_locales && strlen (config->help_locales))
     return g_strdup (config->help_locales);
 
-  /* If no help locale is preferred, use the locale from Preferences/Interface*/
-#ifdef PLATFORM_OSX
-  /* If GIMP's preferred locale is set to 'System language', then
-   * g_get_language_names()[0] is 'C' and we have to get the value from
-   * the OS X System Preferences.
-   */
-  if (!strcmp(g_get_language_names()[0],"C"))
+  /* Process locales. */
+  names = (gchar **) g_get_language_names ();
+  for (i = 0; names[i]; i++)
     {
-      pool = [[NSAutoreleasePool alloc] init];
+      gchar *locale = g_strdup (names[i]);
+      gchar *c;
 
-      defaults = [NSUserDefaults standardUserDefaults];
-      langArray = [defaults stringArrayForKey: @"AppleLanguages"];
-      /* Although we only need the first entry, get them all. */
-      languagesList = [langArray componentsJoinedByString: @":"];
+      /* We don't care about encoding in context of our help system. */
+      c = strchr (locale, '.');
+      if (c)
+        *c = '\0';
 
-      /* Translate them from Mac OS X (new UNIX style) to old UNIX style.*/
-       languagesList = [languagesList
-       stringByReplacingOccurrencesOfString: @"az-Latn"
-       withString: @"az"];
+      /* We don't care about variants either. */
+      c = strchr (locale, '@');
+      if (c)
+        *c = '\0';
 
-       languagesList = [languagesList
-       stringByReplacingOccurrencesOfString: @"ga-dots"
-       withString: @"ga"];
+      /* Apparently some systems (i.e. Windows) would return a value as
+       * IETF language tag, which is a different format from POSIX
+       * locale; especially it would separate the lang and the region
+       * with an hyphen instead of an underscore.
+       * Actually the difference is much deeper, and IETF language tags
+       * can have extended language subtags, a script subtag, variants,
+       * moreover using different codes.
+       * We'd actually need to look into this in details (TODO).
+       * this dirty hack should do for easy translation at least (like
+       * "en-GB" -> "en_GB).
+       * Cf. bug 777754.
+       */
+      c = strchr (locale, '-');
+      if (c)
+        *c = '_';
 
-       languagesList = [languagesList
-       stringByReplacingOccurrencesOfString: @"mn-Cyrl"
-       withString: @"mn"];
+      if (locale && *locale &&
+          ! g_list_find_custom (locales_list, locale,
+                                (GCompareFunc) g_strcmp0))
+        {
+          gchar *base;
 
-       languagesList = [languagesList
-       stringByReplacingOccurrencesOfString: @"ms-Latn"
-       withString: @"ms"];
+          /* Adding this locale. */
+          locales_list = g_list_prepend (locales_list, locale);
 
-       languagesList = [languagesList
-       stringByReplacingOccurrencesOfString: @"tg-Cyrl"
-       withString: @"tz"];
+          /* Adding the base language as well. */
+          base = strdup (locale);
+          c = strchr (base, '_');
+          if (c)
+            *c = '\0';
 
-       languagesList = [languagesList
-       stringByReplacingOccurrencesOfString: @"tt-Cyrl"
-       withString: @"tt"];
-
-       languagesList = [languagesList
-       stringByReplacingOccurrencesOfString: @"zh-Hans"
-       withString: @"zh_CN"];
-
-       languagesList = [languagesList
-       stringByReplacingOccurrencesOfString: @"zh-Hant"
-       withString: @"zh_TW"];
-
-       languagesList = [languagesList
-       stringByReplacingOccurrencesOfString: @"Arab"
-       withString: @"arabic"];
-
-       languagesList = [languagesList
-       stringByReplacingOccurrencesOfString: @"Cyrl"
-       withString: @"cyrillic"];
-
-       languagesList = [languagesList
-       stringByReplacingOccurrencesOfString: @"Mong"
-       withString: @"mongolian"];
-
-       languagesList = [languagesList
-       stringByReplacingOccurrencesOfString: @"-"
-       withString: @"_"];
-
-       /* Ensure that the default language 'en' is there. */
-      languagesList = [languagesList stringByAppendingString: @":en"];
-
-      languages = g_strdup ([languagesList UTF8String]);
-
-      [pool drain];
-      return languages;
+          if (base && *base &&
+              ! g_list_find_custom (locales_list, base,
+                                    (GCompareFunc) g_strcmp0))
+            {
+              locales_list = g_list_prepend (locales_list, base);
+            }
+          else
+            {
+              g_free (base);
+            }
+        }
+      else
+        {
+          g_free (locale);
+        }
     }
-  else
-  return g_strjoinv (":", (gchar **) g_get_language_names ());
-#else
-  return g_strjoinv (":", (gchar **) g_get_language_names ());
-#endif
 
+  locales_list = g_list_reverse (locales_list);
+
+  /* Finally generate the colon-separated value. */
+  if (locales_list)
+    {
+      locales = g_strdup (locales_list->data);
+      for (iter = locales_list->next; iter; iter = iter->next)
+        {
+          gchar *temp = locales;
+          locales = g_strconcat (temp, ":", iter->data, NULL);
+          g_free (temp);
+        }
+    }
+
+  g_list_free_full (locales_list, g_free);
+
+  return locales;
 }
 
-static gchar *
+static GFile *
 gimp_help_get_user_manual_basedir (void)
 {
-  return g_build_filename (gimp_data_directory (), "help", NULL);
+  return gimp_data_directory_file ("help", NULL);
 }
-
 
 static void
 gimp_help_query_online_response (GtkWidget    *dialog,
@@ -705,7 +764,17 @@ gimp_help_query_online_response (GtkWidget    *dialog,
       g_object_set (idle_help->gimp->config,
                     "user-manual-online", TRUE,
                     NULL);
+    }
+  if (response != GTK_RESPONSE_YES)
+    {
+      g_object_set (idle_help->gimp->config,
+                    "help-locales", "",
+                    NULL);
+    }
 
+  if (response == GTK_RESPONSE_ACCEPT ||
+      response == GTK_RESPONSE_YES)
+    {
       gimp_help_show (idle_help->gimp,
                       idle_help->progress,
                       idle_help->help_domain,
@@ -716,28 +785,17 @@ gimp_help_query_online_response (GtkWidget    *dialog,
 }
 
 static void
-gimp_help_query_user_manual_online (GimpIdleHelp *idle_help)
+gimp_help_query_alt_user_manual (GimpIdleHelp *idle_help)
 {
   GtkWidget *dialog;
-  GtkWidget *button;
+  GList     *manuals;
 
   dialog = gimp_message_dialog_new (_("GIMP user manual is missing"),
-                                    GIMP_STOCK_USER_MANUAL,
+                                    GIMP_ICON_HELP_USER_MANUAL,
                                     NULL, 0, NULL, NULL,
-                                    GTK_STOCK_CANCEL,  GTK_RESPONSE_CANCEL,
+                                    _("_Cancel"), GTK_RESPONSE_CANCEL,
                                     NULL);
-
-  button = gtk_dialog_add_button (GTK_DIALOG (dialog),
-                                  _("_Read Online"), GTK_RESPONSE_ACCEPT);
-  gtk_button_set_image (GTK_BUTTON (button),
-                        gtk_image_new_from_stock (GIMP_STOCK_WEB,
-                                                  GTK_ICON_SIZE_BUTTON));
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_ACCEPT,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
-  gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
+  idle_help->query_dialog = GTK_DIALOG (dialog);
 
   if (idle_help->progress)
     {
@@ -747,17 +805,93 @@ gimp_help_query_user_manual_online (GimpIdleHelp *idle_help)
         gimp_window_set_transient_for (GTK_WINDOW (dialog), window_id);
     }
 
+  gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
+                                     _("The GIMP user manual is not installed "
+                                       "in your language."));
+
+  /* Add a list of available manuals instead, if any. */
+  manuals = gimp_help_get_installed_languages ();
+  if (manuals != NULL)
+    {
+      GtkWidget *lang_combo;
+
+      /* Add an additional button. */
+      gtk_dialog_add_button (GTK_DIALOG (dialog),
+                             _("Read Selected _Language"),
+                             GTK_RESPONSE_YES);
+      /* And a dropdown list of available manuals. */
+      lang_combo = gimp_language_combo_box_new (TRUE,
+                                                _("Available manuals..."));
+      gtk_combo_box_set_active (GTK_COMBO_BOX (lang_combo), 0);
+      gtk_dialog_set_response_sensitive (idle_help->query_dialog,
+                                         GTK_RESPONSE_YES, FALSE);
+      g_signal_connect (lang_combo, "changed",
+                        G_CALLBACK (gimp_help_language_combo_changed),
+                        idle_help);
+      gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                          lang_combo, TRUE, TRUE, 0);
+      gtk_widget_show (lang_combo);
+
+      gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box,
+                                 _("You may either select a manual in another "
+                                   "language or read the online version."));
+    }
+  else
+    {
+      gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box,
+                                 _("You may either install the additional help "
+                                   "package or change your preferences to use "
+                                   "the online version."));
+    }
+  gtk_dialog_add_button (GTK_DIALOG (dialog),
+                         _("Read _Online"), GTK_RESPONSE_ACCEPT);
+  gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
+  if (manuals != NULL)
+    {
+      gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                               GTK_RESPONSE_ACCEPT,
+                                               GTK_RESPONSE_YES,
+                                               GTK_RESPONSE_CANCEL,
+                                               -1);
+      g_list_free_full (manuals, g_free);
+    }
+  else
+    {
+      gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                               GTK_RESPONSE_ACCEPT,
+                                               GTK_RESPONSE_CANCEL,
+                                               -1);
+    }
   g_signal_connect (dialog, "response",
                     G_CALLBACK (gimp_help_query_online_response),
                     idle_help);
-
-  gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
-                                     _("The GIMP user manual is not installed "
-                                       "on your computer."));
-  gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box,
-                             _("You may either install the additional help "
-                               "package or change your preferences to use "
-                               "the online version."));
-
   gtk_widget_show (dialog);
+}
+
+static void
+gimp_help_language_combo_changed (GtkComboBox  *combo,
+                                  GimpIdleHelp *idle_help)
+{
+  gchar *help_locales = NULL;
+  gchar *code;
+
+  code = gimp_language_combo_box_get_code (GIMP_LANGUAGE_COMBO_BOX (combo));
+  if (code && g_strcmp0 ("", code) != 0)
+    {
+      help_locales = g_strdup_printf ("%s:", code);
+      gtk_dialog_set_response_sensitive (idle_help->query_dialog,
+                                         GTK_RESPONSE_YES, TRUE);
+    }
+  else
+    {
+      gtk_dialog_set_response_sensitive (idle_help->query_dialog,
+                                         GTK_RESPONSE_YES, FALSE);
+    }
+  g_object_set (idle_help->gimp->config,
+                "help-locales", help_locales? help_locales : "",
+                NULL);
+
+  g_free (code);
+  if (help_locales)
+    g_free (help_locales);
 }

@@ -22,13 +22,13 @@
 #include "core/gimptooloptions.h"
 
 
-#define GIMP_PAINT_OPTIONS_CONTEXT_MASK GIMP_CONTEXT_FOREGROUND_MASK | \
-                                        GIMP_CONTEXT_BACKGROUND_MASK | \
-                                        GIMP_CONTEXT_OPACITY_MASK    | \
-                                        GIMP_CONTEXT_PAINT_MODE_MASK | \
-                                        GIMP_CONTEXT_BRUSH_MASK      | \
-                                        GIMP_CONTEXT_DYNAMICS_MASK   | \
-                                        GIMP_CONTEXT_PALETTE_MASK
+#define GIMP_PAINT_OPTIONS_CONTEXT_MASK GIMP_CONTEXT_PROP_MASK_FOREGROUND | \
+                                        GIMP_CONTEXT_PROP_MASK_BACKGROUND | \
+                                        GIMP_CONTEXT_PROP_MASK_OPACITY    | \
+                                        GIMP_CONTEXT_PROP_MASK_PAINT_MODE | \
+                                        GIMP_CONTEXT_PROP_MASK_BRUSH      | \
+                                        GIMP_CONTEXT_PROP_MASK_DYNAMICS   | \
+                                        GIMP_CONTEXT_PROP_MASK_PALETTE
 
 
 typedef struct _GimpJitterOptions   GimpJitterOptions;
@@ -80,9 +80,24 @@ struct _GimpPaintOptions
 
   GimpPaintInfo            *paint_info;
 
+  gboolean                  use_applicator;
+
+  GimpBrush                *brush; /* weak-refed storage for the GUI */
+
   gdouble                   brush_size;
   gdouble                   brush_angle;
   gdouble                   brush_aspect_ratio;
+  gdouble                   brush_spacing;
+  gdouble                   brush_hardness;
+  gdouble                   brush_force;
+
+  gboolean                  brush_link_size;
+  gboolean                  brush_link_aspect_ratio;
+  gboolean                  brush_link_angle;
+  gboolean                  brush_link_spacing;
+  gboolean                  brush_link_hardness;
+
+  gboolean                  brush_lock_to_view;
 
   GimpPaintApplicationMode  application_mode;
   GimpPaintApplicationMode  application_mode_save;
@@ -130,9 +145,23 @@ gboolean gimp_paint_options_get_gradient_color (GimpPaintOptions *paint_options,
                                                 GimpRGB          *color);
 
 GimpBrushApplicationMode
-             gimp_paint_options_get_brush_mode (GimpPaintOptions *paint_options);
+        gimp_paint_options_get_brush_mode      (GimpPaintOptions *paint_options);
 
-void gimp_paint_options_set_default_brush_size (GimpPaintOptions *paint_options,
+void    gimp_paint_options_set_default_brush_size
+                                               (GimpPaintOptions *paint_options,
+                                                GimpBrush        *brush);
+void    gimp_paint_options_set_default_brush_angle
+                                               (GimpPaintOptions *paint_options,
+                                                GimpBrush        *brush);
+void    gimp_paint_options_set_default_brush_aspect_ratio
+                                               (GimpPaintOptions *paint_options,
+                                                GimpBrush        *brush);
+void    gimp_paint_options_set_default_brush_spacing
+                                               (GimpPaintOptions *paint_options,
+                                                GimpBrush        *brush);
+
+void    gimp_paint_options_set_default_brush_hardness
+                                               (GimpPaintOptions *paint_options,
                                                 GimpBrush        *brush);
 
 void    gimp_paint_options_copy_brush_props    (GimpPaintOptions *src,

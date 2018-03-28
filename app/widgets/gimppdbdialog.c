@@ -22,8 +22,10 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
@@ -117,7 +119,6 @@ gimp_pdb_dialog_class_init (GimpPdbDialogClass *klass)
   object_class->constructed  = gimp_pdb_dialog_constructed;
   object_class->dispose      = gimp_pdb_dialog_dispose;
   object_class->set_property = gimp_pdb_dialog_set_property;
-  object_class->set_property = gimp_pdb_dialog_set_property;
 
   dialog_class->response     = gimp_pdb_dialog_response;
 
@@ -171,7 +172,7 @@ gimp_pdb_dialog_init (GimpPdbDialog      *dialog,
   klass->dialogs = g_list_prepend (klass->dialogs, dialog);
 
   gtk_dialog_add_button (GTK_DIALOG (dialog),
-                         GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE);
+                         _("_Close"), GTK_RESPONSE_CLOSE);
 }
 
 static void
@@ -180,12 +181,11 @@ gimp_pdb_dialog_constructed (GObject *object)
   GimpPdbDialog *dialog = GIMP_PDB_DIALOG (object);
   const gchar   *signal_name;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_PDB (dialog->pdb));
-  g_assert (GIMP_IS_CONTEXT (dialog->caller_context));
-  g_assert (g_type_is_a (dialog->select_type, GIMP_TYPE_OBJECT));
+  gimp_assert (GIMP_IS_PDB (dialog->pdb));
+  gimp_assert (GIMP_IS_CONTEXT (dialog->caller_context));
+  gimp_assert (g_type_is_a (dialog->select_type, GIMP_TYPE_OBJECT));
 
   dialog->context = gimp_context_new (dialog->caller_context->gimp,
                                       G_OBJECT_TYPE_NAME (object),
@@ -215,35 +215,13 @@ gimp_pdb_dialog_dispose (GObject *object)
 
   klass->dialogs = g_list_remove (klass->dialogs, object);
 
-  if (dialog->pdb)
-    {
-      g_object_unref (dialog->pdb);
-      dialog->pdb = NULL;
-    }
+  g_clear_object (&dialog->pdb);
+  g_clear_object (&dialog->caller_context);
+  g_clear_object (&dialog->context);
 
-  if (dialog->caller_context)
-    {
-      g_object_unref (dialog->caller_context);
-      dialog->caller_context = NULL;
-    }
+  g_clear_pointer (&dialog->callback_name, g_free);
 
-  if (dialog->context)
-    {
-      g_object_unref (dialog->context);
-      dialog->context = NULL;
-    }
-
-  if (dialog->callback_name)
-    {
-      g_free (dialog->callback_name);
-      dialog->callback_name = NULL;
-    }
-
-  if (dialog->menu_factory)
-    {
-      g_object_unref (dialog->menu_factory);
-      dialog->menu_factory = NULL;
-    }
+  g_clear_object (&dialog->menu_factory);
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
@@ -319,12 +297,13 @@ gimp_pdb_dialog_run_callback (GimpPdbDialog *dialog,
 
       if (gimp_pdb_lookup_procedure (dialog->pdb, dialog->callback_name))
         {
-          GValueArray *return_vals;
-          GError      *error = NULL;
+          GimpValueArray *return_vals;
+          GError         *error = NULL;
 
           return_vals = klass->run_callback (dialog, object, closing, &error);
 
-          if (g_value_get_enum (&return_vals->values[0]) != GIMP_PDB_SUCCESS)
+          if (g_value_get_enum (gimp_value_array_index (return_vals, 0)) !=
+              GIMP_PDB_SUCCESS)
             {
               gimp_message (dialog->context->gimp, G_OBJECT (dialog),
                             GIMP_MESSAGE_ERROR,
@@ -336,12 +315,12 @@ gimp_pdb_dialog_run_callback (GimpPdbDialog *dialog,
           else if (error)
             {
               gimp_message_literal (dialog->context->gimp, G_OBJECT (dialog),
-				    GIMP_MESSAGE_ERROR,
-				    error->message);
+                                    GIMP_MESSAGE_ERROR,
+                                    error->message);
               g_error_free (error);
             }
 
-          g_value_array_free (return_vals);
+          gimp_value_array_unref (return_vals);
         }
 
       dialog->callback_busy = FALSE;

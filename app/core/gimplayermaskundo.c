@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "core-types.h"
@@ -92,11 +93,10 @@ gimp_layer_mask_undo_constructed (GObject *object)
 {
   GimpLayerMaskUndo *layer_mask_undo = GIMP_LAYER_MASK_UNDO (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_LAYER (GIMP_ITEM_UNDO (object)->item));
-  g_assert (GIMP_IS_LAYER_MASK (layer_mask_undo->layer_mask));
+  gimp_assert (GIMP_IS_LAYER (GIMP_ITEM_UNDO (object)->item));
+  gimp_assert (GIMP_IS_LAYER_MASK (layer_mask_undo->layer_mask));
 }
 
 static void
@@ -189,11 +189,7 @@ gimp_layer_mask_undo_free (GimpUndo     *undo,
 {
   GimpLayerMaskUndo *layer_mask_undo = GIMP_LAYER_MASK_UNDO (undo);
 
-  if (layer_mask_undo->layer_mask)
-    {
-      g_object_unref (layer_mask_undo->layer_mask);
-      layer_mask_undo->layer_mask = NULL;
-    }
+  g_clear_object (&layer_mask_undo->layer_mask);
 
   GIMP_UNDO_CLASS (parent_class)->free (undo, undo_mode);
 }

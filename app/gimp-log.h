@@ -39,7 +39,10 @@ typedef enum
   GIMP_LOG_AUTO_TAB_STYLE     = 1 << 15,
   GIMP_LOG_INSTANCES          = 1 << 16,
   GIMP_LOG_RECTANGLE_TOOL     = 1 << 17,
-  GIMP_LOG_BRUSH_CACHE        = 1 << 18
+  GIMP_LOG_BRUSH_CACHE        = 1 << 18,
+  GIMP_LOG_PROJECTION         = 1 << 19,
+  GIMP_LOG_XCF                = 1 << 20,
+  GIMP_LOG_MAGIC_MATCH        = 1 << 21
 } GimpLogFlags;
 
 
@@ -56,7 +59,7 @@ void   gimp_logv     (GimpLogFlags  flags,
                       const gchar  *function,
                       gint          line,
                       const gchar  *format,
-                      va_list       args);
+                      va_list       args) G_GNUC_PRINTF (4, 0);
 
 
 #ifdef G_HAVE_ISO_VARARGS
@@ -99,6 +102,8 @@ void   gimp_logv     (GimpLogFlags  flags,
 #define INSTANCES          GIMP_LOG_INSTANCES
 #define RECTANGLE_TOOL     GIMP_LOG_RECTANGLE_TOOL
 #define BRUSH_CACHE        GIMP_LOG_BRUSH_CACHE
+#define PROJECTION         GIMP_LOG_PROJECTION
+#define XCF                GIMP_LOG_XCF
 
 #if 0 /* last resort */
 #  define GIMP_LOG /* nothing => no varargs, no log */
@@ -117,5 +122,8 @@ GIMP_LOG (GimpLogFlags flags,
 }
 
 #endif  /* !__GNUC__ */
+
+#define geimnum(vienna)  gimp_l##vienna##l_dialog()
+#define fnord(kosmoso)   void gimp_##kosmoso##bl_dialog(void);
 
 #endif /* __GIMP_LOG_H__ */

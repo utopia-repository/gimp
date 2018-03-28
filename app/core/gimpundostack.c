@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "core-types.h"
@@ -70,11 +71,7 @@ gimp_undo_stack_finalize (GObject *object)
 {
   GimpUndoStack *stack = GIMP_UNDO_STACK (object);
 
-  if (stack->undos)
-    {
-      g_object_unref (stack->undos);
-      stack->undos = NULL;
-    }
+  g_clear_object (&stack->undos);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -100,7 +97,7 @@ gimp_undo_stack_pop (GimpUndo            *undo,
   GimpUndoStack *stack = GIMP_UNDO_STACK (undo);
   GList         *list;
 
-  for (list = GIMP_LIST (stack->undos)->list;
+  for (list = GIMP_LIST (stack->undos)->queue->head;
        list;
        list = g_list_next (list))
     {
@@ -117,7 +114,7 @@ gimp_undo_stack_free (GimpUndo     *undo,
   GimpUndoStack *stack = GIMP_UNDO_STACK (undo);
   GList         *list;
 
-  for (list = GIMP_LIST (stack->undos)->list;
+  for (list = GIMP_LIST (stack->undos)->queue->head;
        list;
        list = g_list_next (list))
     {

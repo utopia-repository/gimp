@@ -6,14 +6,13 @@ scripts = \
 	colorxhtml.py		\
 	file-openraster.py	\
 	foggify.py		\
-        gradients-save-as-css.py\
+	gradients-save-as-css.py\
+	histogram-export.py     \
 	palette-offset.py	\
 	palette-sort.py		\
 	palette-to-gradient.py	\
 	py-slice.py		\
-	python-console.py	\
-	python-eval.py		\
-	text-brush.py
+	python-eval.py
 
 test_scripts = \
 	benchmark-foreground-extract.py	\
@@ -24,6 +23,11 @@ test_scripts = \
 
 pluginexec_SCRIPTS = $(scripts)
 
-pluginexec_DATA = pyconsole.py
+# python-console has a data file.
+# Therefore let's move it to its own sub-directory.
+consoleexecdir = $(gimpplugindir)/plug-ins/python-console
+console_scripts = python-console.py
+consoleexec_SCRIPTS = $(console_scripts)
+dist_consoleexec_DATA = pyconsole.py
 
-EXTRA_DIST = $(pluginexec_DATA) $(scripts) $(test_scripts)
+EXTRA_DIST = $(scripts) $(test_scripts) $(console_scripts)

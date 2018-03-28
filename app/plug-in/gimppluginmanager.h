@@ -47,6 +47,7 @@ struct _GimpPlugInManager
   GSList            *load_procs;
   GSList            *save_procs;
   GSList            *export_procs;
+  GSList            *raw_load_procs;
 
   GSList            *menu_branches;
   GSList            *locale_domains;
@@ -55,7 +56,6 @@ struct _GimpPlugInManager
   GimpPlugIn        *current_plug_in;
   GSList            *open_plug_ins;
   GSList            *plug_in_stack;
-  GSList            *history;
 
   GimpPlugInShm     *shm;
   GimpInterpreterDB *interpreter_db;
@@ -74,10 +74,9 @@ struct _GimpPlugInManagerClass
                               GimpPlugIn        *plug_in);
 
   void (* menu_branch_added) (GimpPlugInManager *manager,
-                              const gchar       *prog_name,
+                              GFile             *file,
                               const gchar       *menu_path,
                               const gchar       *menu_label);
-  void (* history_changed)   (GimpPlugInManager *manager);
 };
 
 
@@ -109,8 +108,6 @@ void    gimp_plug_in_manager_remove_open_plug_in  (GimpPlugInManager   *manager,
 void    gimp_plug_in_manager_plug_in_push         (GimpPlugInManager   *manager,
                                                    GimpPlugIn          *plug_in);
 void    gimp_plug_in_manager_plug_in_pop          (GimpPlugInManager   *manager);
-
-void    gimp_plug_in_manager_history_changed      (GimpPlugInManager   *manager);
 
 
 #endif  /* __GIMP_PLUG_IN_MANAGER_H__ */

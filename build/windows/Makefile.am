@@ -1,3 +1,10 @@
+if BUILD_WINDOWS_INSTALLER
+installer = installer
+endif
+
+SUBDIRS = \
+	$(installer)
+
 EXTRA_DIST = \
 	gimprc.rule		\
 	gimprc-plug-ins.rule	\

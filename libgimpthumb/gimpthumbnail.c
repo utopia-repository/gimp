@@ -171,7 +171,7 @@ gimp_thumbnail_class_init (GimpThumbnailClass *klass)
    *
    * Image mimetype
    *
-   * Since: GIMP 2.2
+   * Since: 2.2
    **/
   g_object_class_install_property (object_class,
                                    PROP_IMAGE_MIMETYPE,
@@ -588,7 +588,7 @@ gimp_thumbnail_peek_thumb (GimpThumbnail *thumbnail,
  *
  * Return value: the thumbnail's #GimpThumbState after the update
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 GimpThumbState
 gimp_thumbnail_check_thumb (GimpThumbnail *thumbnail,
@@ -944,7 +944,7 @@ static void
 gimp_thumbnail_debug_notify (GObject    *object,
                              GParamSpec *pspec)
 {
-  GValue       value = { 0, };
+  GValue       value = G_VALUE_INIT;
   gchar       *str   = NULL;
   const gchar *name;
 
@@ -957,7 +957,7 @@ gimp_thumbnail_debug_notify (GObject    *object,
     }
   else if (g_value_type_transformable (pspec->value_type, G_TYPE_STRING))
     {
-      GValue  tmp = { 0, };
+      GValue  tmp = G_VALUE_INIT;
 
       g_value_init (&tmp, G_TYPE_STRING);
       g_value_transform (&value, &tmp);
@@ -1169,7 +1169,7 @@ gimp_thumbnail_save_thumb (GimpThumbnail  *thumbnail,
  * Return value: %TRUE if a thumbnail was successfully written,
  *               %FALSE otherwise
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_thumbnail_save_thumb_local (GimpThumbnail  *thumbnail,
@@ -1310,7 +1310,7 @@ gimp_thumbnail_save_failure (GimpThumbnail  *thumbnail,
  * Removes a failure thumbnail if one exists. This function should be
  * used after a thumbnail has been successfully created.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 void
 gimp_thumbnail_delete_failure (GimpThumbnail *thumbnail)
@@ -1342,7 +1342,7 @@ gimp_thumbnail_delete_failure (GimpThumbnail *thumbnail)
  * updated. See the spec for a more detailed description on when to
  * delete thumbnails.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 void
 gimp_thumbnail_delete_others (GimpThumbnail *thumbnail,
@@ -1371,7 +1371,7 @@ gimp_thumbnail_delete_others (GimpThumbnail *thumbnail,
  *
  * Return value: %TRUE if a failure thumbnail exists or
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_thumbnail_has_failed (GimpThumbnail *thumbnail)

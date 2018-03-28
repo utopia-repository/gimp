@@ -112,20 +112,21 @@ main(void)
 
   for (i = 0; cases[i].string; i++)
     {
-      const gchar     *test           = cases[i].string;
-      GimpEevlQuantity should         = cases[i].result;
-      gboolean         success        = FALSE;
-      GimpEevlQuantity result         = { 0, -1 };
-      gboolean         should_succeed = cases[i].should_succeed;
-      GError          *error          = NULL;
-      const gchar     *error_pos      = 0;
+      const gchar      *test           = cases[i].string;
+      GimpEevlOptions   options        = GIMP_EEVL_OPTIONS_INIT;
+      GimpEevlQuantity  should         = cases[i].result;
+      GimpEevlQuantity  result         = { 0, -1 };
+      gboolean          should_succeed = cases[i].should_succeed;
+      GError           *error          = NULL;
+      const gchar      *error_pos      = 0;
 
-      success = gimp_eevl_evaluate (test,
-                                    test_units,
-                                    &result,
-                                    NULL,
-                                    &error_pos,
-                                    &error);
+      options.unit_resolver_proc = test_units;
+
+      gimp_eevl_evaluate (test,
+                          &options,
+                          &result,
+                          &error_pos,
+                          &error);
 
       g_print ("%s = %lg (%d): ", test, result.value, result.dimension);
       if (error || error_pos)

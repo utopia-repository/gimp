@@ -62,6 +62,8 @@ struct _GimpToolManager
 static GimpToolManager * tool_manager_get     (Gimp            *gimp);
 static void              tool_manager_set     (Gimp            *gimp,
                                                GimpToolManager *tool_manager);
+static void   tool_manager_select_tool        (Gimp            *gimp,
+                                               GimpTool        *tool);
 static void   tool_manager_tool_changed       (GimpContext     *user_context,
                                                GimpToolInfo    *tool_info,
                                                GimpToolManager *tool_manager);
@@ -113,7 +115,7 @@ tool_manager_init (Gimp *gimp)
 
   tool_manager->shared_paint_options = g_object_new (GIMP_TYPE_PAINT_OPTIONS,
                                                      "gimp", gimp,
-                                                     "name", "tmp",
+                                                     "name", "tool-manager-shared-paint-options",
                                                      NULL);
 
   g_signal_connect (user_context, "tool-changed",
@@ -149,11 +151,8 @@ tool_manager_exit (Gimp *gimp)
   gimp_container_remove_handler (gimp->images,
                                  tool_manager->image_dirty_handler_id);
 
-  if (tool_manager->active_tool)
-    g_object_unref (tool_manager->active_tool);
-
-  if (tool_manager->shared_paint_options)
-    g_object_unref (tool_manager->shared_paint_options);
+  g_clear_object (&tool_manager->active_tool);
+  g_clear_object (&tool_manager->shared_paint_options);
 
   g_slice_free (GimpToolManager, tool_manager);
 }
@@ -168,39 +167,6 @@ tool_manager_get_active (Gimp *gimp)
   tool_manager = tool_manager_get (gimp);
 
   return tool_manager->active_tool;
-}
-
-void
-tool_manager_select_tool (Gimp     *gimp,
-                          GimpTool *tool)
-{
-  GimpToolManager *tool_manager;
-
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
-  g_return_if_fail (GIMP_IS_TOOL (tool));
-
-  tool_manager = tool_manager_get (gimp);
-
-  /*  reset the previously selected tool, but only if it is not only
-   *  temporarily pushed to the tool stack
-   */
-  if (tool_manager->active_tool &&
-      ! (tool_manager->tool_stack &&
-         tool_manager->active_tool == tool_manager->tool_stack->data))
-    {
-      GimpTool    *active_tool = tool_manager->active_tool;
-      GimpDisplay *display;
-
-      /*  NULL image returns any display (if there is any)  */
-      display = gimp_tool_has_image (active_tool, NULL);
-
-      tool_manager_control_active (gimp, GIMP_TOOL_ACTION_HALT, display);
-      tool_manager_focus_display_active (gimp, NULL);
-
-      g_object_unref (tool_manager->active_tool);
-    }
-
-  tool_manager->active_tool = g_object_ref (tool);
 }
 
 void
@@ -424,7 +390,8 @@ tool_manager_focus_display_active (Gimp        *gimp,
 
   tool_manager = tool_manager_get (gimp);
 
-  if (tool_manager->active_tool)
+  if (tool_manager->active_tool &&
+      ! gimp_tool_control_is_active (tool_manager->active_tool->control))
     {
       gimp_tool_set_focus_display (tool_manager->active_tool,
                                    display);
@@ -482,7 +449,8 @@ tool_manager_oper_update_active (Gimp             *gimp,
 
   tool_manager = tool_manager_get (gimp);
 
-  if (tool_manager->active_tool)
+  if (tool_manager->active_tool &&
+      ! gimp_tool_control_is_active (tool_manager->active_tool->control))
     {
       gimp_tool_oper_update (tool_manager->active_tool,
                              coords, state, proximity,
@@ -502,12 +470,89 @@ tool_manager_cursor_update_active (Gimp             *gimp,
 
   tool_manager = tool_manager_get (gimp);
 
-  if (tool_manager->active_tool)
+  if (tool_manager->active_tool &&
+      ! gimp_tool_control_is_active (tool_manager->active_tool->control))
     {
       gimp_tool_cursor_update (tool_manager->active_tool,
                                coords, state,
                                display);
     }
+}
+
+const gchar *
+tool_manager_can_undo_active (Gimp        *gimp,
+                              GimpDisplay *display)
+{
+  GimpToolManager *tool_manager;
+
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+
+  tool_manager = tool_manager_get (gimp);
+
+  if (tool_manager->active_tool)
+    {
+      return gimp_tool_can_undo (tool_manager->active_tool,
+                                 display);
+    }
+
+  return NULL;
+}
+
+const gchar *
+tool_manager_can_redo_active (Gimp        *gimp,
+                              GimpDisplay *display)
+{
+  GimpToolManager *tool_manager;
+
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+
+  tool_manager = tool_manager_get (gimp);
+
+  if (tool_manager->active_tool)
+    {
+      return gimp_tool_can_redo (tool_manager->active_tool,
+                                 display);
+    }
+
+  return NULL;
+}
+
+gboolean
+tool_manager_undo_active (Gimp        *gimp,
+                          GimpDisplay *display)
+{
+  GimpToolManager *tool_manager;
+
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
+
+  tool_manager = tool_manager_get (gimp);
+
+  if (tool_manager->active_tool)
+    {
+      return gimp_tool_undo (tool_manager->active_tool,
+                             display);
+    }
+
+  return FALSE;
+}
+
+gboolean
+tool_manager_redo_active (Gimp        *gimp,
+                          GimpDisplay *display)
+{
+  GimpToolManager *tool_manager;
+
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
+
+  tool_manager = tool_manager_get (gimp);
+
+  if (tool_manager->active_tool)
+    {
+      return gimp_tool_redo (tool_manager->active_tool,
+                             display);
+    }
+
+  return FALSE;
 }
 
 GimpUIManager *
@@ -559,6 +604,41 @@ tool_manager_set (Gimp            *gimp,
 }
 
 static void
+tool_manager_select_tool (Gimp     *gimp,
+                          GimpTool *tool)
+{
+  GimpToolManager *tool_manager;
+
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail (GIMP_IS_TOOL (tool));
+
+  tool_manager = tool_manager_get (gimp);
+
+  /*  reset the previously selected tool, but only if it is not only
+   *  temporarily pushed to the tool stack
+   */
+  if (tool_manager->active_tool)
+    {
+      if (! tool_manager->tool_stack ||
+          tool_manager->active_tool != tool_manager->tool_stack->data)
+        {
+          GimpTool    *active_tool = tool_manager->active_tool;
+          GimpDisplay *display;
+
+          /*  NULL image returns any display (if there is any)  */
+          display = gimp_tool_has_image (active_tool, NULL);
+
+          tool_manager_control_active (gimp, GIMP_TOOL_ACTION_HALT, display);
+          tool_manager_focus_display_active (gimp, NULL);
+        }
+
+      g_object_unref (tool_manager->active_tool);
+    }
+
+  tool_manager->active_tool = g_object_ref (tool);
+}
+
+static void
 tool_manager_tool_changed (GimpContext     *user_context,
                            GimpToolInfo    *tool_info,
                            GimpToolManager *tool_manager)
@@ -567,6 +647,13 @@ tool_manager_tool_changed (GimpContext     *user_context,
 
   if (! tool_info)
     return;
+
+  if (! g_type_is_a (tool_info->tool_type, GIMP_TYPE_TOOL))
+    {
+      g_warning ("%s: tool_info->tool_type is no GimpTool subclass",
+                 G_STRFUNC);
+      return;
+    }
 
   /* FIXME: gimp_busy HACK */
   if (user_context->gimp->busy)
@@ -595,26 +682,31 @@ tool_manager_tool_changed (GimpContext     *user_context,
       return;
     }
 
-  if (g_type_is_a (tool_info->tool_type, GIMP_TYPE_TOOL))
+  if (tool_manager->active_tool)
     {
-      new_tool = g_object_new (tool_info->tool_type,
-                               "tool-info", tool_info,
-                               NULL);
-    }
-  else
-    {
-      g_warning ("%s: tool_info->tool_type is no GimpTool subclass",
-                 G_STRFUNC);
-      return;
+      GimpTool    *active_tool = tool_manager->active_tool;
+      GimpDisplay *display;
+
+      /*  NULL image returns any display (if there is any)  */
+      display = gimp_tool_has_image (active_tool, NULL);
+
+      /*  commit the old tool's operation before creating the new tool
+       *  because creating a tool might mess with the old tool's
+       *  options (old and new tool might be the same)
+       */
+      if (display)
+        tool_manager_control_active (user_context->gimp, GIMP_TOOL_ACTION_COMMIT,
+                                     display);
+
+      /*  disconnect the old tool's context  */
+      if (active_tool->tool_info)
+        tool_manager_disconnect_options (tool_manager, user_context,
+                                         active_tool->tool_info);
     }
 
-  /*  disconnect the old tool's context  */
-  if (tool_manager->active_tool &&
-      tool_manager->active_tool->tool_info)
-    {
-      tool_manager_disconnect_options (tool_manager, user_context,
-                                       tool_manager->active_tool->tool_info);
-    }
+  new_tool = g_object_new (tool_info->tool_type,
+                           "tool-info", tool_info,
+                           NULL);
 
   /*  connect the new tool's context  */
   tool_manager_connect_options (tool_manager, user_context, tool_info);
@@ -664,23 +756,23 @@ tool_manager_preset_changed (GimpContext     *user_context,
 
   if (GIMP_IS_PAINT_OPTIONS (preset->tool_options))
     {
-      GimpCoreConfig  *config = user_context->gimp->config;
-      GimpToolOptions *src    = preset->tool_options;
-      GimpToolOptions *dest   = tool_manager->active_tool->tool_info->tool_options;
+      GimpToolOptions *src  = preset->tool_options;
+      GimpToolOptions *dest = tool_manager->active_tool->tool_info->tool_options;
 
-      /* if connect_options() did overwrite the brush options and the
-       * preset contains a brush, use the brush options from the
-       * preset
+      /*  copy various data objects' additional tool options again
+       *  manually, they might have been overwritten by e.g. the "link
+       *  brush stuff to brush defaults" logic in
+       *  gimptooloptions-gui.c
        */
-      if (config->global_brush && preset->use_brush)
+      if (preset->use_brush)
         gimp_paint_options_copy_brush_props (GIMP_PAINT_OPTIONS (src),
                                              GIMP_PAINT_OPTIONS (dest));
 
-      if (config->global_dynamics && preset->use_dynamics)
+      if (preset->use_dynamics)
         gimp_paint_options_copy_dynamics_props (GIMP_PAINT_OPTIONS (src),
                                                 GIMP_PAINT_OPTIONS (dest));
 
-      if (config->global_gradient && preset->use_gradient)
+      if (preset->use_gradient)
         gimp_paint_options_copy_gradient_props (GIMP_PAINT_OPTIONS (src),
                                                 GIMP_PAINT_OPTIONS (dest));
     }
@@ -716,21 +808,21 @@ tool_manager_connect_options (GimpToolManager *tool_manager,
       GimpContextPropMask  global_props = 0;
 
       /*  FG and BG are always shared between all tools  */
-      global_props |= GIMP_CONTEXT_FOREGROUND_MASK;
-      global_props |= GIMP_CONTEXT_BACKGROUND_MASK;
+      global_props |= GIMP_CONTEXT_PROP_MASK_FOREGROUND;
+      global_props |= GIMP_CONTEXT_PROP_MASK_BACKGROUND;
 
       if (config->global_brush)
-        global_props |= GIMP_CONTEXT_BRUSH_MASK;
+        global_props |= GIMP_CONTEXT_PROP_MASK_BRUSH;
       if (config->global_dynamics)
-        global_props |= GIMP_CONTEXT_DYNAMICS_MASK;
+        global_props |= GIMP_CONTEXT_PROP_MASK_DYNAMICS;
       if (config->global_pattern)
-        global_props |= GIMP_CONTEXT_PATTERN_MASK;
+        global_props |= GIMP_CONTEXT_PROP_MASK_PATTERN;
       if (config->global_palette)
-        global_props |= GIMP_CONTEXT_PALETTE_MASK;
+        global_props |= GIMP_CONTEXT_PROP_MASK_PALETTE;
       if (config->global_gradient)
-        global_props |= GIMP_CONTEXT_GRADIENT_MASK;
+        global_props |= GIMP_CONTEXT_PROP_MASK_GRADIENT;
       if (config->global_font)
-        global_props |= GIMP_CONTEXT_FONT_MASK;
+        global_props |= GIMP_CONTEXT_PROP_MASK_FONT;
 
       gimp_context_copy_properties (GIMP_CONTEXT (tool_info->tool_options),
                                     user_context,

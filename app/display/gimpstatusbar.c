@@ -33,6 +33,7 @@
 #include "core/gimpimage.h"
 #include "core/gimpprogress.h"
 
+#include "widgets/gimpuimanager.h"
 #include "widgets/gimpwidgets-utils.h"
 
 #include "gimpdisplay.h"
@@ -63,7 +64,7 @@ typedef struct _GimpStatusbarMsg GimpStatusbarMsg;
 struct _GimpStatusbarMsg
 {
   guint  context_id;
-  gchar *stock_id;
+  gchar *icon_name;
   gchar *text;
 };
 
@@ -73,14 +74,19 @@ static void     gimp_statusbar_progress_iface_init (GimpProgressInterface *iface
 static void     gimp_statusbar_dispose            (GObject           *object);
 static void     gimp_statusbar_finalize           (GObject           *object);
 
+static void     gimp_statusbar_screen_changed     (GtkWidget         *widget,
+                                                   GdkScreen         *previous);
+static void     gimp_statusbar_style_set          (GtkWidget         *widget,
+                                                   GtkStyle          *prev_style);
+
 static void     gimp_statusbar_hbox_size_request  (GtkWidget         *widget,
                                                    GtkRequisition    *requisition,
                                                    GimpStatusbar     *statusbar);
 
 static GimpProgress *
                 gimp_statusbar_progress_start     (GimpProgress      *progress,
-                                                   const gchar       *message,
-                                                   gboolean           cancelable);
+                                                   gboolean           cancellable,
+                                                   const gchar       *message);
 static void     gimp_statusbar_progress_end       (GimpProgress      *progress);
 static gboolean gimp_statusbar_progress_is_active (GimpProgress      *progress);
 static void     gimp_statusbar_progress_set_text  (GimpProgress      *progress,
@@ -108,7 +114,18 @@ static void     gimp_statusbar_scale_changed      (GimpScaleComboBox *combo,
                                                    GimpStatusbar     *statusbar);
 static void     gimp_statusbar_scale_activated    (GimpScaleComboBox *combo,
                                                    GimpStatusbar     *statusbar);
+static gboolean gimp_statusbar_rotate_pressed     (GtkWidget         *event_box,
+                                                   GdkEvent          *event,
+                                                   GimpStatusbar     *statusbar);
+static gboolean gimp_statusbar_horiz_flip_pressed (GtkWidget         *event_box,
+                                                   GdkEvent          *event,
+                                                   GimpStatusbar     *statusbar);
+static gboolean gimp_statusbar_vert_flip_pressed  (GtkWidget         *event_box,
+                                                   GdkEvent          *event,
+                                                   GimpStatusbar     *statusbar);
 static void     gimp_statusbar_shell_scaled       (GimpDisplayShell  *shell,
+                                                   GimpStatusbar     *statusbar);
+static void     gimp_statusbar_shell_rotated      (GimpDisplayShell  *shell,
                                                    GimpStatusbar     *statusbar);
 static void     gimp_statusbar_shell_status_notify(GimpDisplayShell  *shell,
                                                    const GParamSpec  *pspec,
@@ -117,10 +134,21 @@ static guint    gimp_statusbar_get_context_id     (GimpStatusbar     *statusbar,
                                                    const gchar       *context);
 static gboolean gimp_statusbar_temp_timeout       (GimpStatusbar     *statusbar);
 
+static void     gimp_statusbar_add_message        (GimpStatusbar     *statusbar,
+                                                   guint              context_id,
+                                                   const gchar       *icon_name,
+                                                   const gchar       *format,
+                                                   va_list            args,
+                                                   gboolean           move_to_front) G_GNUC_PRINTF (4, 0);
+static void     gimp_statusbar_remove_message     (GimpStatusbar     *statusbar,
+                                                   guint              context_id);
 static void     gimp_statusbar_msg_free           (GimpStatusbarMsg  *msg);
 
 static gchar *  gimp_statusbar_vprintf            (const gchar       *format,
-                                                   va_list            args);
+                                                   va_list            args) G_GNUC_PRINTF (1, 0);
+
+static GdkPixbuf * gimp_statusbar_load_icon       (GimpStatusbar     *statusbar,
+                                                   const gchar       *icon_name);
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpStatusbar, gimp_statusbar, GTK_TYPE_STATUSBAR,
@@ -133,10 +161,14 @@ G_DEFINE_TYPE_WITH_CODE (GimpStatusbar, gimp_statusbar, GTK_TYPE_STATUSBAR,
 static void
 gimp_statusbar_class_init (GimpStatusbarClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  object_class->dispose  = gimp_statusbar_dispose;
-  object_class->finalize = gimp_statusbar_finalize;
+  object_class->dispose        = gimp_statusbar_dispose;
+  object_class->finalize       = gimp_statusbar_finalize;
+
+  widget_class->screen_changed = gimp_statusbar_screen_changed;
+  widget_class->style_set      = gimp_statusbar_style_set;
 }
 
 static void
@@ -156,7 +188,9 @@ static void
 gimp_statusbar_init (GimpStatusbar *statusbar)
 {
   GtkWidget     *hbox;
+  GtkWidget     *hbox2;
   GtkWidget     *image;
+  GtkWidget     *widget;
   GimpUnitStore *store;
   GList         *children;
 
@@ -191,7 +225,6 @@ gimp_statusbar_init (GimpStatusbar *statusbar)
                     statusbar);
 
   statusbar->cursor_label = gtk_label_new ("8888, 8888");
-  gtk_misc_set_alignment (GTK_MISC (statusbar->cursor_label), 0.5, 0.5);
   gtk_box_pack_start (GTK_BOX (hbox), statusbar->cursor_label, FALSE, FALSE, 0);
   gtk_widget_show (statusbar->cursor_label);
 
@@ -222,6 +255,40 @@ gimp_statusbar_init (GimpStatusbar *statusbar)
                     G_CALLBACK (gimp_statusbar_scale_activated),
                     statusbar);
 
+  /* Shell transform status */
+  widget = gtk_event_box_new ();
+  gtk_widget_add_events (widget, GDK_BUTTON_PRESS_MASK);
+  statusbar->rotate_label = gtk_label_new (NULL);
+  g_signal_connect (widget, "button-press-event",
+                    G_CALLBACK (gimp_statusbar_rotate_pressed),
+                    statusbar);
+  gtk_container_add (GTK_CONTAINER (widget), statusbar->rotate_label);
+  gtk_box_pack_start (GTK_BOX (hbox), widget, FALSE, FALSE, 1);
+  gtk_widget_show (statusbar->rotate_label);
+  gtk_widget_show (widget);
+
+  widget = gtk_event_box_new ();
+  statusbar->horizontal_flip_icon = gtk_image_new_from_icon_name ("gimp-flip-horizontal",
+                                                                  GTK_ICON_SIZE_MENU);
+  gtk_container_add (GTK_CONTAINER (widget), statusbar->horizontal_flip_icon);
+  gtk_box_pack_start (GTK_BOX (hbox), widget, FALSE, FALSE, 1);
+  g_signal_connect (widget, "button-press-event",
+                    G_CALLBACK (gimp_statusbar_horiz_flip_pressed),
+                    statusbar);
+  gtk_widget_show (statusbar->horizontal_flip_icon);
+  gtk_widget_show (widget);
+
+  widget = gtk_event_box_new ();
+  statusbar->vertical_flip_icon = gtk_image_new_from_icon_name ("gimp-flip-vertical",
+                                                                GTK_ICON_SIZE_MENU);
+  gtk_container_add (GTK_CONTAINER (widget), statusbar->vertical_flip_icon);
+  gtk_box_pack_start (GTK_BOX (hbox), widget, FALSE, FALSE, 1);
+  g_signal_connect (widget, "button-press-event",
+                    G_CALLBACK (gimp_statusbar_vert_flip_pressed),
+                    statusbar);
+  gtk_widget_show (statusbar->vertical_flip_icon);
+  gtk_widget_show (widget);
+
   /*  put the label back into the message area  */
   gtk_box_pack_start (GTK_BOX (hbox), statusbar->label, TRUE, TRUE, 1);
 
@@ -239,18 +306,30 @@ gimp_statusbar_init (GimpStatusbar *statusbar)
   gtk_box_pack_start (GTK_BOX (hbox), statusbar->progressbar, TRUE, TRUE, 0);
   /*  don't show the progress bar  */
 
+  /*  construct the cancel button's contents manually because we
+   *  always want image and label regardless of settings, and we want
+   *  a menu size image.
+   */
   statusbar->cancel_button = gtk_button_new ();
   gtk_widget_set_can_focus (statusbar->cancel_button, FALSE);
   gtk_button_set_relief (GTK_BUTTON (statusbar->cancel_button),
                          GTK_RELIEF_NONE);
   gtk_widget_set_sensitive (statusbar->cancel_button, FALSE);
-  gtk_box_pack_start (GTK_BOX (hbox),
-                      statusbar->cancel_button, FALSE, FALSE, 0);
+  gtk_box_pack_end (GTK_BOX (hbox),
+                    statusbar->cancel_button, FALSE, FALSE, 0);
   /*  don't show the cancel button  */
 
-  image = gtk_image_new_from_stock (GTK_STOCK_CANCEL, GTK_ICON_SIZE_MENU);
-  gtk_container_add (GTK_CONTAINER (statusbar->cancel_button), image);
+  hbox2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  gtk_container_add (GTK_CONTAINER (statusbar->cancel_button), hbox2);
+  gtk_widget_show (hbox2);
+
+  image = gtk_image_new_from_icon_name ("gtk-cancel", GTK_ICON_SIZE_MENU);
+  gtk_box_pack_start (GTK_BOX (hbox2), image, FALSE, FALSE, 2);
   gtk_widget_show (image);
+
+  widget = gtk_label_new ("Cancel");
+  gtk_box_pack_start (GTK_BOX (hbox2), widget, FALSE, FALSE, 2);
+  gtk_widget_show (widget);
 
   g_signal_connect (statusbar->cancel_button, "clicked",
                     G_CALLBACK (gimp_statusbar_progress_canceled),
@@ -276,23 +355,39 @@ gimp_statusbar_finalize (GObject *object)
 {
   GimpStatusbar *statusbar = GIMP_STATUSBAR (object);
 
-  if (statusbar->icon)
-    {
-      g_object_unref (statusbar->icon);
-      statusbar->icon = NULL;
-    }
+  g_clear_object (&statusbar->icon);
+  g_clear_pointer (&statusbar->icon_hash, g_hash_table_unref);
 
   g_slist_free_full (statusbar->messages,
                      (GDestroyNotify) gimp_statusbar_msg_free);
   statusbar->messages = NULL;
 
-  if (statusbar->context_ids)
-    {
-      g_hash_table_destroy (statusbar->context_ids);
-      statusbar->context_ids = NULL;
-    }
+  g_clear_pointer (&statusbar->context_ids, g_hash_table_destroy);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
+}
+
+static void
+gimp_statusbar_screen_changed (GtkWidget *widget,
+                               GdkScreen *previous)
+{
+  GimpStatusbar *statusbar = GIMP_STATUSBAR (widget);
+
+  if (GTK_WIDGET_CLASS (parent_class)->screen_changed)
+    GTK_WIDGET_CLASS (parent_class)->screen_changed (widget, previous);
+
+  g_clear_pointer (&statusbar->icon_hash, g_hash_table_unref);
+}
+
+static void
+gimp_statusbar_style_set (GtkWidget *widget,
+                          GtkStyle  *prev_style)
+{
+  GimpStatusbar *statusbar = GIMP_STATUSBAR (widget);
+
+  GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
+
+  g_clear_pointer (&statusbar->icon_hash, g_hash_table_unref);
 }
 
 static void
@@ -324,6 +419,10 @@ gimp_statusbar_hbox_size_request (GtkWidget      *widget,
   requisition->height = MAX (requisition->height,
                              child_requisition.height);
 
+  gtk_widget_size_request (statusbar->label, &child_requisition);
+  requisition->height = MAX (requisition->height,
+                             child_requisition.height);
+
   gtk_widget_size_request (statusbar->cancel_button, &child_requisition);
   requisition->height = MAX (requisition->height,
                              child_requisition.height);
@@ -333,23 +432,24 @@ gimp_statusbar_hbox_size_request (GtkWidget      *widget,
 
 static GimpProgress *
 gimp_statusbar_progress_start (GimpProgress *progress,
-                               const gchar  *message,
-                               gboolean      cancelable)
+                               gboolean      cancellable,
+                               const gchar  *message)
 {
   GimpStatusbar *statusbar = GIMP_STATUSBAR (progress);
 
   if (! statusbar->progress_active)
     {
-      GtkWidget *bar = statusbar->progressbar;
+      GtkWidget     *bar = statusbar->progressbar;
+      GtkAllocation  allocation;
 
       statusbar->progress_active = TRUE;
       statusbar->progress_value  = 0.0;
 
       gimp_statusbar_push (statusbar, "progress", NULL, "%s", message);
       gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (bar), 0.0);
-      gtk_widget_set_sensitive (statusbar->cancel_button, cancelable);
+      gtk_widget_set_sensitive (statusbar->cancel_button, cancellable);
 
-      if (cancelable)
+      if (cancellable)
         {
           if (message)
             {
@@ -363,13 +463,18 @@ gimp_statusbar_progress_start (GimpProgress *progress,
           gtk_widget_show (statusbar->cancel_button);
         }
 
+      gtk_widget_get_allocation (statusbar->label, &allocation);
+
       gtk_widget_show (statusbar->progressbar);
       gtk_widget_hide (statusbar->label);
 
-      /*  This call is needed so that the progress bar is drawn in the
-       *  correct place. Probably due a bug in GTK+.
+      /*  This shit is needed so that the progress bar is drawn in the
+       *  correct place in the cases where we suck completely and run
+       *  an operation that blocks the GUI and doesn't let the main
+       *  loop run.
        */
       gtk_container_resize_children (GTK_CONTAINER (statusbar));
+      gtk_widget_size_allocate (statusbar->progressbar, &allocation);
 
       if (! gtk_widget_get_visible (GTK_WIDGET (statusbar)))
         {
@@ -506,7 +611,7 @@ gimp_statusbar_progress_message (GimpProgress        *progress,
 {
   GimpStatusbar *statusbar  = GIMP_STATUSBAR (progress);
   PangoLayout   *layout;
-  const gchar   *stock_id;
+  const gchar   *icon_name;
   gboolean       handle_msg = FALSE;
 
   /*  don't accept a message if we are already displaying a more severe one  */
@@ -516,7 +621,7 @@ gimp_statusbar_progress_message (GimpProgress        *progress,
   /*  we can only handle short one-liners  */
   layout = gtk_widget_create_pango_layout (statusbar->label, message);
 
-  stock_id = gimp_get_message_stock_id (severity);
+  icon_name = gimp_get_message_icon_name (severity);
 
   if (pango_layout_get_line_count (layout) == 1)
     {
@@ -529,12 +634,11 @@ gimp_statusbar_progress_message (GimpProgress        *progress,
 
       if (width < label_allocation.width)
         {
-          if (stock_id)
+          if (icon_name)
             {
               GdkPixbuf *pixbuf;
 
-              pixbuf = gtk_widget_render_icon (statusbar->label, stock_id,
-                                               GTK_ICON_SIZE_MENU, NULL);
+              pixbuf = gimp_statusbar_load_icon (statusbar, icon_name);
 
               width += ICON_SPACING + gdk_pixbuf_get_width (pixbuf);
 
@@ -552,7 +656,7 @@ gimp_statusbar_progress_message (GimpProgress        *progress,
   g_object_unref (layout);
 
   if (handle_msg)
-    gimp_statusbar_push_temp (statusbar, severity, stock_id, "%s", message);
+    gimp_statusbar_push_temp (statusbar, severity, icon_name, "%s", message);
 
   return handle_msg;
 }
@@ -567,7 +671,7 @@ gimp_statusbar_progress_canceled (GtkWidget     *button,
 
 static void
 gimp_statusbar_set_text (GimpStatusbar *statusbar,
-                         const gchar   *stock_id,
+                         const gchar   *icon_name,
                          const gchar   *text)
 {
   if (statusbar->progress_active)
@@ -577,15 +681,10 @@ gimp_statusbar_set_text (GimpStatusbar *statusbar,
     }
   else
     {
-      if (statusbar->icon)
-        g_object_unref (statusbar->icon);
+      g_clear_object (&statusbar->icon);
 
-      if (stock_id)
-        statusbar->icon = gtk_widget_render_icon (statusbar->label,
-                                                  stock_id,
-                                                  GTK_ICON_SIZE_MENU, NULL);
-      else
-        statusbar->icon = NULL;
+      if (icon_name)
+        statusbar->icon = gimp_statusbar_load_icon (statusbar, icon_name);
 
       if (statusbar->icon)
         {
@@ -628,23 +727,11 @@ gimp_statusbar_update (GimpStatusbar *statusbar)
   GimpStatusbarMsg *msg = NULL;
 
   if (statusbar->messages)
-    {
-      msg = statusbar->messages->data;
-
-      /*  only allow progress messages while the progress is active  */
-      if (statusbar->progress_active)
-        {
-          guint context_id = gimp_statusbar_get_context_id (statusbar,
-                                                            "progress");
-
-          if (context_id != msg->context_id)
-            return;
-        }
-    }
+    msg = statusbar->messages->data;
 
   if (msg && msg->text)
     {
-      gimp_statusbar_set_text (statusbar, msg->stock_id, msg->text);
+      gimp_statusbar_set_text (statusbar, msg->icon_name, msg->text);
     }
   else
     {
@@ -676,7 +763,9 @@ gimp_statusbar_set_shell (GimpStatusbar    *statusbar,
       g_signal_handlers_disconnect_by_func (statusbar->shell,
                                             gimp_statusbar_shell_scaled,
                                             statusbar);
-
+      g_signal_handlers_disconnect_by_func (statusbar->shell,
+                                            gimp_statusbar_shell_rotated,
+                                            statusbar);
       g_signal_handlers_disconnect_by_func (statusbar->shell,
                                             gimp_statusbar_shell_status_notify,
                                             statusbar);
@@ -687,10 +776,13 @@ gimp_statusbar_set_shell (GimpStatusbar    *statusbar,
   g_signal_connect_object (statusbar->shell, "scaled",
                            G_CALLBACK (gimp_statusbar_shell_scaled),
                            statusbar, 0);
-
+  g_signal_connect_object (statusbar->shell, "rotated",
+                           G_CALLBACK (gimp_statusbar_shell_rotated),
+                           statusbar, 0);
   g_signal_connect_object (statusbar->shell, "notify::status",
                            G_CALLBACK (gimp_statusbar_shell_status_notify),
                            statusbar, 0);
+  gimp_statusbar_shell_rotated (shell, statusbar);
 }
 
 gboolean
@@ -730,6 +822,9 @@ gimp_statusbar_empty (GimpStatusbar *statusbar)
   gtk_widget_hide (statusbar->cursor_label);
   gtk_widget_hide (statusbar->unit_combo);
   gtk_widget_hide (statusbar->scale_combo);
+  gtk_widget_hide (statusbar->rotate_label);
+  gtk_widget_hide (statusbar->horizontal_flip_icon);
+  gtk_widget_hide (statusbar->vertical_flip_icon);
 }
 
 void
@@ -740,6 +835,8 @@ gimp_statusbar_fill (GimpStatusbar *statusbar)
   gtk_widget_show (statusbar->cursor_label);
   gtk_widget_show (statusbar->unit_combo);
   gtk_widget_show (statusbar->scale_combo);
+  gtk_widget_show (statusbar->rotate_label);
+  gimp_statusbar_shell_rotated (statusbar->shell, statusbar);
 }
 
 void
@@ -778,7 +875,7 @@ gimp_statusbar_restore_window_title (GimpStatusbar *statusbar)
 void
 gimp_statusbar_push (GimpStatusbar *statusbar,
                      const gchar   *context,
-                     const gchar   *stock_id,
+                     const gchar   *icon_name,
                      const gchar   *format,
                      ...)
 {
@@ -789,72 +886,35 @@ gimp_statusbar_push (GimpStatusbar *statusbar,
   g_return_if_fail (format != NULL);
 
   va_start (args, format);
-  gimp_statusbar_push_valist (statusbar, context, stock_id, format, args);
+  gimp_statusbar_push_valist (statusbar, context, icon_name, format, args);
   va_end (args);
 }
 
 void
 gimp_statusbar_push_valist (GimpStatusbar *statusbar,
                             const gchar   *context,
-                            const gchar   *stock_id,
+                            const gchar   *icon_name,
                             const gchar   *format,
                             va_list        args)
 {
-  GimpStatusbarMsg *msg;
-  guint             context_id;
-  GSList           *list;
-  gchar            *message;
+  guint context_id;
 
   g_return_if_fail (GIMP_IS_STATUSBAR (statusbar));
   g_return_if_fail (context != NULL);
   g_return_if_fail (format != NULL);
 
-  message = gimp_statusbar_vprintf (format, args);
-
   context_id = gimp_statusbar_get_context_id (statusbar, context);
 
-  if (statusbar->messages)
-    {
-      msg = statusbar->messages->data;
-
-      if (msg->context_id == context_id && strcmp (msg->text, message) == 0)
-        {
-          g_free (message);
-          return;
-        }
-    }
-
-  for (list = statusbar->messages; list; list = g_slist_next (list))
-    {
-      msg = list->data;
-
-      if (msg->context_id == context_id)
-        {
-          statusbar->messages = g_slist_remove (statusbar->messages, msg);
-          gimp_statusbar_msg_free (msg);
-
-          break;
-        }
-    }
-
-  msg = g_slice_new (GimpStatusbarMsg);
-
-  msg->context_id = context_id;
-  msg->stock_id   = g_strdup (stock_id);
-  msg->text       = message;
-
-  if (statusbar->temp_timeout_id)
-    statusbar->messages = g_slist_insert (statusbar->messages, msg, 1);
-  else
-    statusbar->messages = g_slist_prepend (statusbar->messages, msg);
-
-  gimp_statusbar_update (statusbar);
+  gimp_statusbar_add_message (statusbar,
+                              context_id,
+                              icon_name, format, args,
+                              /*  move_to_front =  */ TRUE);
 }
 
 void
 gimp_statusbar_push_coords (GimpStatusbar       *statusbar,
                             const gchar         *context,
-                            const gchar         *stock_id,
+                            const gchar         *icon_name,
                             GimpCursorPrecision  precision,
                             const gchar         *title,
                             gdouble              x,
@@ -894,7 +954,7 @@ gimp_statusbar_push_coords (GimpStatusbar       *statusbar,
       if (precision == GIMP_CURSOR_PRECISION_SUBPIXEL)
         {
           gimp_statusbar_push (statusbar, context,
-                               stock_id,
+                               icon_name,
                                statusbar->cursor_format_str_f,
                                title,
                                x,
@@ -905,7 +965,7 @@ gimp_statusbar_push_coords (GimpStatusbar       *statusbar,
       else
         {
           gimp_statusbar_push (statusbar, context,
-                               stock_id,
+                               icon_name,
                                statusbar->cursor_format_str,
                                title,
                                (gint) RINT (x),
@@ -923,7 +983,7 @@ gimp_statusbar_push_coords (GimpStatusbar       *statusbar,
                                  &xres, &yres);
 
       gimp_statusbar_push (statusbar, context,
-                           stock_id,
+                           icon_name,
                            statusbar->cursor_format_str,
                            title,
                            gimp_pixels_to_units (x, shell->unit, xres),
@@ -936,7 +996,7 @@ gimp_statusbar_push_coords (GimpStatusbar       *statusbar,
 void
 gimp_statusbar_push_length (GimpStatusbar       *statusbar,
                             const gchar         *context,
-                            const gchar         *stock_id,
+                            const gchar         *icon_name,
                             const gchar         *title,
                             GimpOrientationType  axis,
                             gdouble              value,
@@ -955,7 +1015,7 @@ gimp_statusbar_push_length (GimpStatusbar       *statusbar,
   if (shell->unit == GIMP_UNIT_PIXEL)
     {
       gimp_statusbar_push (statusbar, context,
-                           stock_id,
+                           icon_name,
                            statusbar->length_format_str,
                            title,
                            (gint) RINT (value),
@@ -986,7 +1046,7 @@ gimp_statusbar_push_length (GimpStatusbar       *statusbar,
         }
 
       gimp_statusbar_push (statusbar, context,
-                           stock_id,
+                           icon_name,
                            statusbar->length_format_str,
                            title,
                            gimp_pixels_to_units (value, shell->unit, resolution),
@@ -997,7 +1057,7 @@ gimp_statusbar_push_length (GimpStatusbar       *statusbar,
 void
 gimp_statusbar_replace (GimpStatusbar *statusbar,
                         const gchar   *context,
-                        const gchar   *stock_id,
+                        const gchar   *icon_name,
                         const gchar   *format,
                         ...)
 {
@@ -1008,67 +1068,29 @@ gimp_statusbar_replace (GimpStatusbar *statusbar,
   g_return_if_fail (format != NULL);
 
   va_start (args, format);
-  gimp_statusbar_replace_valist (statusbar, context, stock_id, format, args);
+  gimp_statusbar_replace_valist (statusbar, context, icon_name, format, args);
   va_end (args);
 }
 
 void
 gimp_statusbar_replace_valist (GimpStatusbar *statusbar,
                                const gchar   *context,
-                               const gchar   *stock_id,
+                               const gchar   *icon_name,
                                const gchar   *format,
                                va_list        args)
 {
-  GimpStatusbarMsg *msg;
-  GSList           *list;
-  guint             context_id;
-  gchar            *message;
+  guint context_id;
 
   g_return_if_fail (GIMP_IS_STATUSBAR (statusbar));
   g_return_if_fail (context != NULL);
   g_return_if_fail (format != NULL);
 
-  message = gimp_statusbar_vprintf (format, args);
-
   context_id = gimp_statusbar_get_context_id (statusbar, context);
 
-  for (list = statusbar->messages; list; list = g_slist_next (list))
-    {
-      msg = list->data;
-
-      if (msg->context_id == context_id)
-        {
-          if (strcmp (msg->text, message) == 0)
-            {
-              g_free (message);
-              return;
-            }
-
-          g_free (msg->stock_id);
-          msg->stock_id = g_strdup (stock_id);
-
-          g_free (msg->text);
-          msg->text = message;
-
-          if (list == statusbar->messages)
-            gimp_statusbar_update (statusbar);
-
-          return;
-        }
-    }
-
-  msg = g_slice_new (GimpStatusbarMsg);
-
-  msg->context_id = context_id;
-  msg->stock_id   = g_strdup (stock_id);
-  msg->text       = message;
-
-  if (statusbar->temp_timeout_id)
-    statusbar->messages = g_slist_insert (statusbar->messages, msg, 1);
-  else
-    statusbar->messages = g_slist_prepend (statusbar->messages, msg);
-
-  gimp_statusbar_update (statusbar);
+  gimp_statusbar_add_message (statusbar,
+                              context_id,
+                              icon_name, format, args,
+                              /*  move_to_front =  */ FALSE);
 }
 
 const gchar *
@@ -1100,54 +1122,38 @@ void
 gimp_statusbar_pop (GimpStatusbar *statusbar,
                     const gchar   *context)
 {
-  GSList *list;
-  guint   context_id;
+  guint context_id;
 
   g_return_if_fail (GIMP_IS_STATUSBAR (statusbar));
   g_return_if_fail (context != NULL);
 
   context_id = gimp_statusbar_get_context_id (statusbar, context);
 
-  for (list = statusbar->messages; list; list = list->next)
-    {
-      GimpStatusbarMsg *msg = list->data;
-
-      if (msg->context_id == context_id)
-        {
-          statusbar->messages = g_slist_remove (statusbar->messages, msg);
-          gimp_statusbar_msg_free (msg);
-
-          break;
-        }
-    }
-
-  gimp_statusbar_update (statusbar);
+  gimp_statusbar_remove_message (statusbar,
+                                 context_id);
 }
 
 void
 gimp_statusbar_push_temp (GimpStatusbar       *statusbar,
                           GimpMessageSeverity  severity,
-                          const gchar         *stock_id,
+                          const gchar         *icon_name,
                           const gchar         *format,
                           ...)
 {
   va_list args;
 
   va_start (args, format);
-  gimp_statusbar_push_temp_valist (statusbar, severity, stock_id, format, args);
+  gimp_statusbar_push_temp_valist (statusbar, severity, icon_name, format, args);
   va_end (args);
 }
 
 void
 gimp_statusbar_push_temp_valist (GimpStatusbar       *statusbar,
                                  GimpMessageSeverity  severity,
-                                 const gchar         *stock_id,
+                                 const gchar         *icon_name,
                                  const gchar         *format,
                                  va_list              args)
 {
-  GimpStatusbarMsg *msg = NULL;
-  gchar            *message;
-
   g_return_if_fail (GIMP_IS_STATUSBAR (statusbar));
   g_return_if_fail (severity <= GIMP_MESSAGE_WARNING);
   g_return_if_fail (format != NULL);
@@ -1155,8 +1161,6 @@ gimp_statusbar_push_temp_valist (GimpStatusbar       *statusbar,
   /*  don't accept a message if we are already displaying a more severe one  */
   if (statusbar->temp_timeout_id && statusbar->temp_severity > severity)
     return;
-
-  message = gimp_statusbar_vprintf (format, args);
 
   if (statusbar->temp_timeout_id)
     g_source_remove (statusbar->temp_timeout_id);
@@ -1167,38 +1171,13 @@ gimp_statusbar_push_temp_valist (GimpStatusbar       *statusbar,
 
   statusbar->temp_severity = severity;
 
-  if (statusbar->messages)
-    {
-      msg = statusbar->messages->data;
+  gimp_statusbar_add_message (statusbar,
+                              statusbar->temp_context_id,
+                              icon_name, format, args,
+                              /*  move_to_front =  */ TRUE);
 
-      if (msg->context_id == statusbar->temp_context_id)
-        {
-          if (strcmp (msg->text, message) == 0)
-            {
-              g_free (message);
-              return;
-            }
-
-          g_free (msg->stock_id);
-          msg->stock_id = g_strdup (stock_id);
-
-          g_free (msg->text);
-          msg->text = message;
-
-          gimp_statusbar_update (statusbar);
-          return;
-        }
-    }
-
-  msg = g_slice_new (GimpStatusbarMsg);
-
-  msg->context_id = statusbar->temp_context_id;
-  msg->stock_id   = g_strdup (stock_id);
-  msg->text       = message;
-
-  statusbar->messages = g_slist_prepend (statusbar->messages, msg);
-
-  gimp_statusbar_update (statusbar);
+  if (severity >= GIMP_MESSAGE_WARNING)
+    gimp_widget_blink (statusbar->label);
 }
 
 void
@@ -1210,19 +1189,9 @@ gimp_statusbar_pop_temp (GimpStatusbar *statusbar)
     {
       g_source_remove (statusbar->temp_timeout_id);
       statusbar->temp_timeout_id = 0;
-    }
 
-  if (statusbar->messages)
-    {
-      GimpStatusbarMsg *msg = statusbar->messages->data;
-
-      if (msg->context_id == statusbar->temp_context_id)
-        {
-          statusbar->messages = g_slist_remove (statusbar->messages, msg);
-          gimp_statusbar_msg_free (msg);
-
-          gimp_statusbar_update (statusbar);
-        }
+      gimp_statusbar_remove_message (statusbar,
+                                     statusbar->temp_context_id);
     }
 }
 
@@ -1410,16 +1379,20 @@ gimp_statusbar_shell_scaled (GimpDisplayShell *shell,
     }
   else /* show real world units */
     {
+      gint w_digits;
+      gint h_digits;
+
+      w_digits = gimp_unit_get_scaled_digits (shell->unit, image_xres);
+      h_digits = gimp_unit_get_scaled_digits (shell->unit, image_yres);
+
       g_snprintf (statusbar->cursor_format_str,
                   sizeof (statusbar->cursor_format_str),
                   "%%s%%.%df%%s%%.%df%%s",
-                  gimp_unit_get_digits (shell->unit),
-                  gimp_unit_get_digits (shell->unit));
+                  w_digits, h_digits);
       strcpy (statusbar->cursor_format_str_f, statusbar->cursor_format_str);
       g_snprintf (statusbar->length_format_str,
                   sizeof (statusbar->length_format_str),
-                  "%%s%%.%df%%s",
-                  gimp_unit_get_digits (shell->unit));
+                  "%%s%%.%df%%s", MAX (w_digits, h_digits));
     }
 
   gimp_statusbar_update_cursor (statusbar, GIMP_CURSOR_PRECISION_SUBPIXEL,
@@ -1437,6 +1410,32 @@ gimp_statusbar_shell_scaled (GimpDisplayShell *shell,
   gtk_widget_set_size_request (statusbar->cursor_label, width, -1);
 
   gimp_statusbar_clear_cursor (statusbar);
+}
+
+static void
+gimp_statusbar_shell_rotated (GimpDisplayShell *shell,
+                              GimpStatusbar    *statusbar)
+{
+  gchar *text = NULL;
+
+  if (shell->rotate_angle != 0.0)
+    {
+      /* Degree symbol U+00B0. There are no spaces between the value and the
+       * unit for angular rotation. */
+      text = g_strdup_printf (" %.2f\xC2\xB0", shell->rotate_angle);
+    }
+  gtk_label_set_text (GTK_LABEL (statusbar->rotate_label), text);
+  if (text)
+    g_free (text);
+
+  if (shell->flip_horizontally)
+    gtk_widget_show (statusbar->horizontal_flip_icon);
+  else
+    gtk_widget_hide (statusbar->horizontal_flip_icon);
+  if (shell->flip_vertically)
+    gtk_widget_show (statusbar->vertical_flip_icon);
+  else
+    gtk_widget_hide (statusbar->vertical_flip_icon);
 }
 
 static void
@@ -1473,6 +1472,44 @@ gimp_statusbar_scale_activated (GimpScaleComboBox *combo,
   gtk_widget_grab_focus (statusbar->shell->canvas);
 }
 
+static gboolean
+gimp_statusbar_rotate_pressed (GtkWidget     *event_box,
+                               GdkEvent      *event,
+                               GimpStatusbar *statusbar)
+{
+  GimpImageWindow *window = gimp_display_shell_get_window (statusbar->shell);
+  GimpUIManager   *manager = gimp_image_window_get_ui_manager (window);
+
+  gimp_ui_manager_activate_action (manager, "view", "view-rotate-other");
+  return FALSE;
+}
+
+static gboolean
+gimp_statusbar_horiz_flip_pressed (GtkWidget     *event_box,
+                                   GdkEvent      *event,
+                                   GimpStatusbar *statusbar)
+{
+  GimpImageWindow *window = gimp_display_shell_get_window (statusbar->shell);
+  GimpUIManager   *manager = gimp_image_window_get_ui_manager (window);
+
+  gimp_ui_manager_activate_action (manager, "view", "view-flip-horizontally");
+
+  return FALSE;
+}
+
+static gboolean
+gimp_statusbar_vert_flip_pressed (GtkWidget     *event_box,
+                                  GdkEvent      *event,
+                                  GimpStatusbar *statusbar)
+{
+  GimpImageWindow *window = gimp_display_shell_get_window (statusbar->shell);
+  GimpUIManager   *manager = gimp_image_window_get_ui_manager (window);
+
+  gimp_ui_manager_activate_action (manager, "view", "view-flip-vertically");
+
+  return FALSE;
+}
+
 static guint
 gimp_statusbar_get_context_id (GimpStatusbar *statusbar,
                                const gchar   *context)
@@ -1496,15 +1533,120 @@ gimp_statusbar_temp_timeout (GimpStatusbar *statusbar)
 {
   gimp_statusbar_pop_temp (statusbar);
 
-  statusbar->temp_timeout_id = 0;
-
   return FALSE;
+}
+
+static void
+gimp_statusbar_add_message (GimpStatusbar *statusbar,
+                            guint          context_id,
+                            const gchar   *icon_name,
+                            const gchar   *format,
+                            va_list        args,
+                            gboolean       move_to_front)
+{
+  gchar            *message;
+  GSList           *list;
+  GimpStatusbarMsg *msg;
+  gint              position;
+
+  message = gimp_statusbar_vprintf (format, args);
+
+  for (list = statusbar->messages; list; list = g_slist_next (list))
+    {
+      msg = list->data;
+
+      if (msg->context_id == context_id)
+        {
+          gboolean is_front_message = (list == statusbar->messages);
+
+          if ((is_front_message || ! move_to_front) &&
+              strcmp (msg->text, message) == 0      &&
+              g_strcmp0 (msg->icon_name, icon_name) == 0)
+            {
+              g_free (message);
+              return;
+            }
+
+          if (move_to_front)
+            {
+              statusbar->messages = g_slist_remove (statusbar->messages, msg);
+              gimp_statusbar_msg_free (msg);
+
+              break;
+            }
+          else
+            {
+              g_free (msg->icon_name);
+              msg->icon_name = g_strdup (icon_name);
+
+              g_free (msg->text);
+              msg->text = message;
+
+              if (is_front_message)
+                gimp_statusbar_update (statusbar);
+
+              return;
+            }
+        }
+    }
+
+  msg = g_slice_new (GimpStatusbarMsg);
+
+  msg->context_id = context_id;
+  msg->icon_name  = g_strdup (icon_name);
+  msg->text       = message;
+
+  /*  find the position at which to insert the new message  */
+  position = 0;
+  /*  progress messages are always at the front of the list  */
+  if (! (statusbar->progress_active &&
+         context_id == gimp_statusbar_get_context_id (statusbar, "progress")))
+    {
+      if (statusbar->progress_active)
+        position++;
+
+      /*  temporary messages are in front of all other non-progress messages  */
+      if (statusbar->temp_timeout_id &&
+          context_id != statusbar->temp_context_id)
+        position++;
+    }
+
+  statusbar->messages = g_slist_insert (statusbar->messages, msg, position);
+
+  if (position == 0)
+    gimp_statusbar_update (statusbar);
+}
+
+static void
+gimp_statusbar_remove_message (GimpStatusbar *statusbar,
+                               guint          context_id)
+{
+  GSList   *list;
+  gboolean  needs_update = FALSE;
+
+  for (list = statusbar->messages; list; list = g_slist_next (list))
+    {
+      GimpStatusbarMsg *msg = list->data;
+
+      if (msg->context_id == context_id)
+        {
+          needs_update = (list == statusbar->messages);
+
+          statusbar->messages = g_slist_remove (statusbar->messages, msg);
+          gimp_statusbar_msg_free (msg);
+
+          break;
+        }
+    }
+
+  if (needs_update)
+    gimp_statusbar_update (statusbar);
 }
 
 static void
 gimp_statusbar_msg_free (GimpStatusbarMsg *msg)
 {
-  g_free (msg->stock_id);
+  g_free (msg->icon_name);
   g_free (msg->text);
 
   g_slice_free (GimpStatusbarMsg, msg);
@@ -1529,4 +1671,36 @@ gimp_statusbar_vprintf (const gchar *format,
     *newline = '\0';
 
   return message;
+}
+
+static GdkPixbuf *
+gimp_statusbar_load_icon (GimpStatusbar *statusbar,
+                          const gchar   *icon_name)
+{
+  GdkPixbuf *icon;
+
+  if (G_UNLIKELY (! statusbar->icon_hash))
+    {
+      statusbar->icon_hash =
+        g_hash_table_new_full (g_str_hash,
+                               g_str_equal,
+                               (GDestroyNotify) g_free,
+                               (GDestroyNotify) g_object_unref);
+    }
+
+  icon = g_hash_table_lookup (statusbar->icon_hash, icon_name);
+
+  if (icon)
+    return g_object_ref (icon);
+
+  icon = gimp_widget_load_icon (statusbar->label, icon_name, 16);
+
+  /* this is not optimal but so what */
+  if (g_hash_table_size (statusbar->icon_hash) > 16)
+    g_hash_table_remove_all (statusbar->icon_hash);
+
+  g_hash_table_insert (statusbar->icon_hash,
+                       g_strdup (icon_name), g_object_ref (icon));
+
+  return icon;
 }

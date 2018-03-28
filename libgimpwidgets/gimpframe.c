@@ -27,6 +27,7 @@
 
 #include "gimpwidgetstypes.h"
 
+#include "gimp3migration.h"
 #include "gimpframe.h"
 
 
@@ -79,12 +80,14 @@ gimp_frame_class_init (GimpFrameClass *klass)
 
   gtk_widget_class_install_style_property (widget_class,
                                            g_param_spec_boolean ("label-bold",
-                                                                 NULL, NULL,
+                                                                 "Label Bold",
+                                                                 "Whether the frame's label should be bold",
                                                                  DEFAULT_LABEL_BOLD,
                                                                  G_PARAM_READABLE));
   gtk_widget_class_install_style_property (widget_class,
                                            g_param_spec_int ("label-spacing",
-                                                             NULL, NULL,
+                                                             "Label Spacing",
+                                                             "The spacing between the label and the frame content",
                                                              0,
                                                              G_MAXINT,
                                                              DEFAULT_LABEL_SPACING,
@@ -148,6 +151,7 @@ gimp_frame_size_allocate (GtkWidget     *widget,
   GtkWidget     *child        = gtk_bin_get_child (GTK_BIN (widget));
   GtkAllocation  child_allocation;
 
+  /* must not chain up here */
   gtk_widget_set_allocation (widget, allocation);
 
   gimp_frame_child_allocate (frame, &child_allocation);
@@ -257,7 +261,8 @@ gimp_frame_label_widget_notify (GtkFrame *frame)
           label = GTK_LABEL (label_widget);
 
           gtk_frame_get_label_align (frame, &xalign, &yalign);
-          gtk_misc_set_alignment (GTK_MISC (label), xalign, yalign);
+          gtk_label_set_xalign (GTK_LABEL (label), xalign);
+          gtk_label_set_yalign (GTK_LABEL (label), yalign);
         }
       else if (GTK_IS_BIN (label_widget))
         {
@@ -340,7 +345,7 @@ gimp_frame_get_label_spacing (GtkFrame *frame)
  *
  * Return value: a new #GimpFrame widget
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 GtkWidget *
 gimp_frame_new (const gchar *label)

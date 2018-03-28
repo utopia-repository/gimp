@@ -42,8 +42,8 @@ struct _GimpToolInfo
   GType                tool_options_type;
   GimpContextPropMask  context_props;
 
-  gchar               *blurb;
-  gchar               *help;
+  gchar               *label;
+  gchar               *tooltip;
 
   gchar               *menu_label;
   gchar               *menu_accel;
@@ -51,6 +51,7 @@ struct _GimpToolInfo
   gchar               *help_domain;
   gchar               *help_id;
 
+  gboolean             hidden; /* can't be made visible */
   gboolean             visible;
   GimpToolOptions     *tool_options;
   GimpPaintInfo       *paint_info;
@@ -71,21 +72,20 @@ GimpToolInfo * gimp_tool_info_new          (Gimp                *gimp,
                                             GType                tool_options_type,
                                             GimpContextPropMask  context_props,
                                             const gchar         *identifier,
-                                            const gchar         *blurb,
-                                            const gchar         *help,
+                                            const gchar         *label,
+                                            const gchar         *tooltip,
                                             const gchar         *menu_label,
                                             const gchar         *menu_accel,
                                             const gchar         *help_domain,
                                             const gchar         *help_id,
                                             const gchar         *paint_core_name,
-                                            const gchar         *stock_id);
+                                            const gchar         *icon_name);
 
 void           gimp_tool_info_set_standard (Gimp                *gimp,
                                             GimpToolInfo        *tool_info);
 GimpToolInfo * gimp_tool_info_get_standard (Gimp                *gimp);
 
-gchar *
-     gimp_tool_info_build_options_filename (GimpToolInfo        *tool_info,
+GFile    * gimp_tool_info_get_options_file (GimpToolInfo        *tool_info,
                                             const gchar         *suffix);
 
 

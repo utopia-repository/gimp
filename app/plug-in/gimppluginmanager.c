@@ -21,7 +21,8 @@
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpconfig/gimpconfig.h"
@@ -31,7 +32,8 @@
 #include "config/gimpcoreconfig.h"
 
 #include "core/gimp.h"
-#include "core/gimp-utils.h"
+#include "core/gimp-filter-history.h"
+#include "core/gimp-memsize.h"
 #include "core/gimpmarshal.h"
 
 #include "pdb/gimppdb.h"
@@ -44,7 +46,6 @@
 #include "gimppluginmanager.h"
 #include "gimppluginmanager-data.h"
 #include "gimppluginmanager-help-domain.h"
-#include "gimppluginmanager-history.h"
 #include "gimppluginmanager-locale-domain.h"
 #include "gimppluginmanager-menu-branch.h"
 #include "gimppluginshm.h"
@@ -58,12 +59,10 @@ enum
   PLUG_IN_OPENED,
   PLUG_IN_CLOSED,
   MENU_BRANCH_ADDED,
-  HISTORY_CHANGED,
   LAST_SIGNAL
 };
 
 
-static void     gimp_plug_in_manager_dispose     (GObject    *object);
 static void     gimp_plug_in_manager_finalize    (GObject    *object);
 
 static gint64   gimp_plug_in_manager_get_memsize (GimpObject *object,
@@ -112,23 +111,12 @@ gimp_plug_in_manager_class_init (GimpPlugInManagerClass *klass)
                   G_STRUCT_OFFSET (GimpPlugInManagerClass,
                                    menu_branch_added),
                   NULL, NULL,
-                  gimp_marshal_VOID__STRING_STRING_STRING,
+                  gimp_marshal_VOID__OBJECT_STRING_STRING,
                   G_TYPE_NONE, 1,
-                  G_TYPE_STRING,
+                  G_TYPE_FILE,
                   G_TYPE_STRING,
                   G_TYPE_STRING);
 
-  manager_signals[HISTORY_CHANGED] =
-    g_signal_new ("history-changed",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GimpPlugInManagerClass,
-                                   history_changed),
-                  NULL, NULL,
-                  gimp_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
-
-  object_class->dispose          = gimp_plug_in_manager_dispose;
   object_class->finalize         = gimp_plug_in_manager_finalize;
 
   gimp_object_class->get_memsize = gimp_plug_in_manager_get_memsize;
@@ -137,36 +125,6 @@ gimp_plug_in_manager_class_init (GimpPlugInManagerClass *klass)
 static void
 gimp_plug_in_manager_init (GimpPlugInManager *manager)
 {
-  manager->gimp               = NULL;
-
-  manager->plug_in_defs       = NULL;
-  manager->write_pluginrc     = FALSE;
-
-  manager->plug_in_procedures = NULL;
-  manager->load_procs         = NULL;
-  manager->save_procs         = NULL;
-  manager->export_procs       = NULL;
-
-  manager->current_plug_in    = NULL;
-  manager->open_plug_ins      = NULL;
-  manager->plug_in_stack      = NULL;
-  manager->history            = NULL;
-
-  manager->shm                = NULL;
-  manager->interpreter_db     = gimp_interpreter_db_new ();
-  manager->environ_table      = gimp_environ_table_new ();
-  manager->debug              = NULL;
-  manager->data_list          = NULL;
-}
-
-static void
-gimp_plug_in_manager_dispose (GObject *object)
-{
-  GimpPlugInManager *manager = GIMP_PLUG_IN_MANAGER (object);
-
-  gimp_plug_in_manager_history_clear (manager);
-
-  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
@@ -174,23 +132,10 @@ gimp_plug_in_manager_finalize (GObject *object)
 {
   GimpPlugInManager *manager = GIMP_PLUG_IN_MANAGER (object);
 
-  if (manager->load_procs)
-    {
-      g_slist_free (manager->load_procs);
-      manager->load_procs = NULL;
-    }
-
-  if (manager->save_procs)
-    {
-      g_slist_free (manager->save_procs);
-      manager->save_procs = NULL;
-    }
-
-  if (manager->export_procs)
-    {
-      g_slist_free (manager->export_procs);
-      manager->export_procs = NULL;
-    }
+  g_clear_pointer (&manager->load_procs,     g_slist_free);
+  g_clear_pointer (&manager->save_procs,     g_slist_free);
+  g_clear_pointer (&manager->export_procs,   g_slist_free);
+  g_clear_pointer (&manager->raw_load_procs, g_slist_free);
 
   if (manager->plug_in_procedures)
     {
@@ -206,23 +151,10 @@ gimp_plug_in_manager_finalize (GObject *object)
       manager->plug_in_defs = NULL;
     }
 
-  if (manager->environ_table)
-    {
-      g_object_unref (manager->environ_table);
-      manager->environ_table = NULL;
-    }
+  g_clear_object (&manager->environ_table);
+  g_clear_object (&manager->interpreter_db);
 
-  if (manager->interpreter_db)
-    {
-      g_object_unref (manager->interpreter_db);
-      manager->interpreter_db = NULL;
-    }
-
-  if (manager->debug)
-    {
-      gimp_plug_in_debug_free (manager->debug);
-      manager->debug = NULL;
-    }
+  g_clear_pointer (&manager->debug, gimp_plug_in_debug_free);
 
   gimp_plug_in_manager_menu_branch_exit (manager);
   gimp_plug_in_manager_locale_domain_exit (manager);
@@ -258,13 +190,10 @@ gimp_plug_in_manager_get_memsize (GimpObject *object,
                                                gimp_object_get_memsize,
                                                gui_size);
   memsize += gimp_g_slist_get_memsize (manager->plug_in_stack, 0);
-  memsize += gimp_g_slist_get_memsize (manager->history,       0);
 
   memsize += 0; /* FIXME manager->shm */
-  memsize += gimp_object_get_memsize (GIMP_OBJECT (manager->interpreter_db),
-                                      gui_size);
-  memsize += gimp_object_get_memsize (GIMP_OBJECT (manager->environ_table),
-                                      gui_size);
+  memsize += /* FIXME */ gimp_g_object_get_memsize (G_OBJECT (manager->interpreter_db));
+  memsize += /* FIXME */ gimp_g_object_get_memsize (G_OBJECT (manager->environ_table));
   memsize += 0; /* FIXME manager->plug_in_debug */
   memsize += gimp_g_list_get_memsize (manager->data_list, 0 /* FIXME */);
 
@@ -279,7 +208,9 @@ gimp_plug_in_manager_new (Gimp *gimp)
 
   manager = g_object_new (GIMP_TYPE_PLUG_IN_MANAGER, NULL);
 
-  manager->gimp = gimp;
+  manager->gimp           = gimp;
+  manager->interpreter_db = gimp_interpreter_db_new (gimp->be_verbose);
+  manager->environ_table  = gimp_environ_table_new (gimp->be_verbose);
 
   return manager;
 }
@@ -288,24 +219,25 @@ void
 gimp_plug_in_manager_initialize (GimpPlugInManager  *manager,
                                  GimpInitStatusFunc  status_callback)
 {
-  gchar *path;
+  GimpCoreConfig *config;
+  GList          *path;
 
   g_return_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager));
   g_return_if_fail (status_callback != NULL);
 
-  status_callback (NULL, _("Plug-In Interpreters"), 0.8);
+  config = manager->gimp->config;
 
-  path = gimp_config_path_expand (manager->gimp->config->interpreter_path,
-                                  TRUE, NULL);
+  status_callback (NULL, _("Plug-in Interpreters"), 0.8);
+
+  path = gimp_config_path_expand_to_files (config->interpreter_path, NULL);
   gimp_interpreter_db_load (manager->interpreter_db, path);
-  g_free (path);
+  g_list_free_full (path, (GDestroyNotify) g_object_unref);
 
-  status_callback (NULL, _("Plug-In Environment"), 0.9);
+  status_callback (NULL, _("Plug-in Environment"), 0.9);
 
-  path = gimp_config_path_expand (manager->gimp->config->environ_path,
-                                  TRUE, NULL);
+  path = gimp_config_path_expand_to_files (config->environ_path, NULL);
   gimp_environ_table_load (manager->environ_table, path);
-  g_free (path);
+  g_list_free_full (path, (GDestroyNotify) g_object_unref);
 
   /*  allocate a piece of shared memory for use in transporting tiles
    *  to plug-ins. if we can't allocate a piece of shared memory then
@@ -358,7 +290,7 @@ gimp_plug_in_manager_add_procedure (GimpPlugInManager   *manager,
           g_printerr ("Removing duplicate PDB procedure '%s' "
                       "registered by '%s'\n",
                       gimp_object_get_name (tmp_proc),
-                      gimp_filename_to_utf8 (tmp_proc->prog));
+                      gimp_file_get_utf8_name (tmp_proc->file));
 
           /* search the plugin list to see if any plugins had references to
            * the tmp_proc.
@@ -377,7 +309,7 @@ gimp_plug_in_manager_add_procedure (GimpPlugInManager   *manager,
           manager->export_procs = g_slist_remove (manager->export_procs, tmp_proc);
 
           /* and from the history */
-          gimp_plug_in_manager_history_remove (manager, tmp_proc);
+          gimp_filter_history_remove (manager->gimp, GIMP_PROCEDURE (tmp_proc));
 
           g_object_unref (tmp_proc);
 
@@ -412,8 +344,8 @@ gimp_plug_in_manager_remove_temp_proc (GimpPlugInManager      *manager,
   manager->plug_in_procedures = g_slist_remove (manager->plug_in_procedures,
                                                 procedure);
 
-  gimp_plug_in_manager_history_remove (manager,
-                                       GIMP_PLUG_IN_PROCEDURE (procedure));
+  gimp_filter_history_remove (manager->gimp,
+                              GIMP_PROCEDURE (procedure));
 
   gimp_pdb_unregister_procedure (manager->gimp->pdb,
                                  GIMP_PROCEDURE (procedure));
@@ -476,12 +408,4 @@ gimp_plug_in_manager_plug_in_pop (GimpPlugInManager *manager)
     manager->current_plug_in = manager->plug_in_stack->data;
   else
     manager->current_plug_in = NULL;
-}
-
-void
-gimp_plug_in_manager_history_changed (GimpPlugInManager *manager)
-{
-  g_return_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager));
-
-  g_signal_emit (manager, manager_signals[HISTORY_CHANGED], 0);
 }

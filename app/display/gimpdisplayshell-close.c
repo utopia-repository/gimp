@@ -22,6 +22,7 @@
 #include <gegl.h>
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "display-types.h"
@@ -32,8 +33,6 @@
 #include "core/gimpcontainer.h"
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
-
-#include "file/file-utils.h"
 
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpmessagebox.h"
@@ -56,7 +55,7 @@ static void      gimp_display_shell_close_dialog       (GimpDisplayShell *shell,
 static void      gimp_display_shell_close_name_changed (GimpImage        *image,
                                                         GimpMessageBox   *box);
 static void      gimp_display_shell_close_exported     (GimpImage        *image,
-                                                        const gchar      *uri,
+                                                        GFile            *file,
                                                         GimpMessageBox   *box);
 static gboolean  gimp_display_shell_close_time_changed (GimpMessageBox   *box);
 static void      gimp_display_shell_close_response     (GtkWidget        *widget,
@@ -68,7 +67,7 @@ static void      gimp_display_shell_close_accel_marshal(GClosure         *closur
                                                         const GValue     *param_values,
                                                         gpointer          invocation_hint,
                                                         gpointer          marshal_data);
-static void      gimp_time_since                       (guint             then,
+static void      gimp_time_since                       (gint64            then,
                                                         gint             *hours,
                                                         gint             *minutes);
 
@@ -156,7 +155,7 @@ gimp_display_shell_close_dialog (GimpDisplayShell *shell,
   gchar           *accel_string;
   gchar           *hint;
   gchar           *markup;
-  const gchar     *uri;
+  GFile           *file;
 
   if (shell->close_dialog)
     {
@@ -164,28 +163,26 @@ gimp_display_shell_close_dialog (GimpDisplayShell *shell,
       return;
     }
 
-  uri = gimp_image_get_uri (image);
+  file = gimp_image_get_file (image);
 
   title = g_strdup_printf (_("Close %s"), gimp_image_get_display_name (image));
 
   shell->close_dialog =
-    dialog = gimp_message_dialog_new (title, GTK_STOCK_SAVE,
+    dialog = gimp_message_dialog_new (title, GIMP_ICON_DOCUMENT_SAVE,
                                       GTK_WIDGET (shell),
                                       GTK_DIALOG_DESTROY_WITH_PARENT,
                                       gimp_standard_help_func, NULL,
+
+                                      file ?
+                                      _("_Save") :
+                                      _("Save _As"),         RESPONSE_SAVE,
+                                      _("_Cancel"),          GTK_RESPONSE_CANCEL,
+                                      _("_Discard Changes"), GTK_RESPONSE_CLOSE,
                                       NULL);
+
   g_free (title);
 
-  gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-                          _("_Discard Changes"), GTK_RESPONSE_CLOSE,
-                          GTK_STOCK_CANCEL,      GTK_RESPONSE_CANCEL,
-                          (uri ?
-                           GTK_STOCK_SAVE :
-                           GTK_STOCK_SAVE_AS),   RESPONSE_SAVE,
-                          NULL);
-
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL);
-
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
                                            RESPONSE_SAVE,
                                            GTK_RESPONSE_CLOSE,
@@ -219,7 +216,7 @@ gimp_display_shell_close_dialog (GimpDisplayShell *shell,
   markup = g_strdup_printf ("<i><small>%s</small></i>", hint);
 
   label = gtk_label_new (NULL);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_label_set_markup (GTK_LABEL (label), markup);
   gtk_box_pack_start (GTK_BOX (box), label, FALSE, FALSE, 0);
@@ -267,7 +264,7 @@ gimp_display_shell_close_name_changed (GimpImage      *image,
   if (GTK_IS_WINDOW (window))
     {
       gchar *title = g_strdup_printf (_("Close %s"),
-				      gimp_image_get_display_name (image));
+                                      gimp_image_get_display_name (image));
 
       gtk_window_set_title (GTK_WINDOW (window), title);
       g_free (title);
@@ -281,7 +278,7 @@ gimp_display_shell_close_name_changed (GimpImage      *image,
 
 static void
 gimp_display_shell_close_exported (GimpImage      *image,
-                                   const gchar    *uri,
+                                   GFile          *file,
                                    GimpMessageBox *box)
 {
   gimp_display_shell_close_time_changed (box);
@@ -291,7 +288,7 @@ static gboolean
 gimp_display_shell_close_time_changed (GimpMessageBox *box)
 {
   GimpImage   *image       = g_object_get_data (G_OBJECT (box), "gimp-image");
-  gint         dirty_time  = gimp_image_get_dirty_time (image);
+  gint64       dirty_time  = gimp_image_get_dirty_time (image);
   gchar       *time_text   = NULL;
   gchar       *export_text = NULL;
 
@@ -342,19 +339,14 @@ gimp_display_shell_close_time_changed (GimpMessageBox *box)
 
   if (! gimp_image_is_export_dirty (image))
     {
-      const gchar *uri;
-      gchar       *filename;
+      GFile *file;
 
-      uri = gimp_image_get_exported_uri (image);
-      if (! uri)
-        uri = gimp_image_get_imported_uri (image);
-
-      filename = file_utils_uri_to_utf8_filename (uri);
+      file = gimp_image_get_exported_file (image);
+      if (! file)
+        file = gimp_image_get_imported_file (image);
 
       export_text = g_strdup_printf (_("The image has been exported to '%s'."),
-                                     filename);
-
-      g_free (filename);
+                                     gimp_file_get_utf8_name (file));
     }
 
   if (time_text && export_text)
@@ -419,12 +411,12 @@ gimp_display_shell_close_accel_marshal (GClosure     *closure,
 }
 
 static void
-gimp_time_since (guint  then,
+gimp_time_since (gint64 then,
                  gint  *hours,
                  gint  *minutes)
 {
-  guint now  = time (NULL);
-  guint diff = 1 + now - then;
+  gint64 now  = time (NULL);
+  gint64 diff = 1 + now - then;
 
   g_return_if_fail (now >= then);
 

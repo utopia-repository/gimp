@@ -24,7 +24,7 @@
 #include "config/gimpcoreconfig.h"
 
 
-#define GIMP_CONFIG_DEFAULT_IMAGE_TITLE_FORMAT  "%D*%f-%p.%i (%t, %L) %wx%h"
+#define GIMP_CONFIG_DEFAULT_IMAGE_TITLE_FORMAT  "%D*%f-%p.%i (%t, %o, %L) %wx%h"
 #define GIMP_CONFIG_DEFAULT_IMAGE_STATUS_FORMAT "%n (%m)"
 
 
@@ -49,7 +49,6 @@ struct _GimpDisplayConfig
   gboolean            resize_windows_on_resize;
   gboolean            default_dot_for_dot;
   gboolean            initial_zoom_to_fit;
-  gboolean            perfect_mouse;
   GimpCursorMode      cursor_mode;
   gboolean            cursor_updating;
   gboolean            show_brush_outline;
@@ -62,10 +61,6 @@ struct _GimpDisplayConfig
   GimpViewSize        nav_preview_size;
   GimpDisplayOptions *default_view;
   GimpDisplayOptions *default_fullscreen_view;
-  gboolean            default_snap_to_guides;
-  gboolean            default_snap_to_grid;
-  gboolean            default_snap_to_canvas;
-  gboolean            default_snap_to_path;
   gboolean            activate_on_focus;
   GimpSpaceBarAction  space_bar_action;
   GimpZoomQuality     zoom_quality;

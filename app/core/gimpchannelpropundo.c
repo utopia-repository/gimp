@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -62,10 +63,9 @@ gimp_channel_prop_undo_constructed (GObject *object)
   GimpChannelPropUndo *channel_prop_undo = GIMP_CHANNEL_PROP_UNDO (object);
   GimpChannel         *channel;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_CHANNEL (GIMP_ITEM_UNDO (object)->item));
+  gimp_assert (GIMP_IS_CHANNEL (GIMP_ITEM_UNDO (object)->item));
 
   channel = GIMP_CHANNEL (GIMP_ITEM_UNDO (object)->item);
 
@@ -76,7 +76,7 @@ gimp_channel_prop_undo_constructed (GObject *object)
       break;
 
     default:
-      g_assert_not_reached ();
+      g_return_if_reached ();
     }
 }
 
@@ -103,6 +103,6 @@ gimp_channel_prop_undo_pop (GimpUndo            *undo,
       break;
 
     default:
-      g_assert_not_reached ();
+      g_return_if_reached ();
     }
 }

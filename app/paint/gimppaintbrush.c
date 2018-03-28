@@ -19,6 +19,7 @@
 
 #include <cairo.h>
 #include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "libgimpcolor/gimpcolor.h"
 #include "libgimpmath/gimpmath.h"
@@ -26,17 +27,18 @@
 
 #include "paint-types.h"
 
-#include "base/temp-buf.h"
-
-#include "paint-funcs/paint-funcs.h"
+#include "gegl/gimp-gegl-utils.h"
 
 #include "core/gimp.h"
+#include "core/gimp-palettes.h"
 #include "core/gimpbrush.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpdynamics.h"
-#include "core/gimpdynamicsoutput.h"
 #include "core/gimpgradient.h"
 #include "core/gimpimage.h"
+#include "core/gimppickable.h"
+#include "core/gimpsymmetry.h"
+#include "core/gimptempbuf.h"
 
 #include "gimppaintbrush.h"
 #include "gimppaintoptions.h"
@@ -47,7 +49,7 @@
 static void   gimp_paintbrush_paint (GimpPaintCore    *paint_core,
                                      GimpDrawable     *drawable,
                                      GimpPaintOptions *paint_options,
-                                     const GimpCoords *coords,
+                                     GimpSymmetry     *sym,
                                      GimpPaintState    paint_state,
                                      guint32           time);
 
@@ -87,15 +89,35 @@ static void
 gimp_paintbrush_paint (GimpPaintCore    *paint_core,
                        GimpDrawable     *drawable,
                        GimpPaintOptions *paint_options,
-                       const GimpCoords *coords,
+                       GimpSymmetry     *sym,
                        GimpPaintState    paint_state,
                        guint32           time)
 {
   switch (paint_state)
     {
+    case GIMP_PAINT_STATE_INIT:
+      {
+        GimpContext   *context    = GIMP_CONTEXT (paint_options);
+        GimpBrushCore *brush_core = GIMP_BRUSH_CORE (paint_core);
+        GimpDynamics  *dynamics   = gimp_context_get_dynamics (context);
+
+        if (! gimp_dynamics_is_output_enabled (dynamics, GIMP_DYNAMICS_OUTPUT_COLOR) &&
+            (! brush_core->brush || ! gimp_brush_get_pixmap (brush_core->brush)))
+          {
+            /* We don't save gradient color history and pixmap brushes
+             * have no color to save.
+             */
+            GimpRGB foreground;
+
+            gimp_context_get_foreground (context, &foreground);
+            gimp_palettes_add_color_history (context->gimp, &foreground);
+          }
+      }
+      break;
+
     case GIMP_PAINT_STATE_MOTION:
-      _gimp_paintbrush_motion (paint_core, drawable, paint_options, coords,
-                               GIMP_OPACITY_OPAQUE);
+      _gimp_paintbrush_motion (paint_core, drawable, paint_options,
+                               sym, GIMP_OPACITY_OPAQUE);
       break;
 
     default:
@@ -107,119 +129,148 @@ void
 _gimp_paintbrush_motion (GimpPaintCore    *paint_core,
                          GimpDrawable     *drawable,
                          GimpPaintOptions *paint_options,
-                         const GimpCoords *coords,
+                         GimpSymmetry     *sym,
                          gdouble           opacity)
 {
   GimpBrushCore            *brush_core = GIMP_BRUSH_CORE (paint_core);
   GimpContext              *context    = GIMP_CONTEXT (paint_options);
   GimpDynamics             *dynamics   = brush_core->dynamics;
-  GimpDynamicsOutput       *opacity_output;
-  GimpDynamicsOutput       *color_output;
-  GimpDynamicsOutput       *force_output;
   GimpImage                *image;
+  GimpLayerMode             paint_mode;
   GimpRGB                   gradient_color;
-  TempBuf                  *area;
-  guchar                    col[MAX_CHANNELS];
+  GeglBuffer               *paint_buffer;
+  gint                      paint_buffer_x;
+  gint                      paint_buffer_y;
   GimpPaintApplicationMode  paint_appl_mode;
   gdouble                   fade_point;
   gdouble                   grad_point;
   gdouble                   force;
+  const GimpCoords         *coords;
+  GeglNode                 *op;
+  gint                      n_strokes;
+  gint                      i;
 
   image = gimp_item_get_image (GIMP_ITEM (drawable));
-
-  opacity_output = gimp_dynamics_get_output (dynamics,
-                                             GIMP_DYNAMICS_OUTPUT_OPACITY);
 
   fade_point = gimp_paint_options_get_fade (paint_options, image,
                                             paint_core->pixel_dist);
 
-  opacity *= gimp_dynamics_output_get_linear_value (opacity_output,
-                                                    coords,
-                                                    paint_options,
-                                                    fade_point);
+  coords = gimp_symmetry_get_origin (sym);
+  /* Some settings are based on the original stroke. */
+  opacity *= gimp_dynamics_get_linear_value (dynamics,
+                                             GIMP_DYNAMICS_OUTPUT_OPACITY,
+                                             coords,
+                                             paint_options,
+                                             fade_point);
   if (opacity == 0.0)
-    return;
-
-  area = gimp_paint_core_get_paint_area (paint_core, drawable, paint_options,
-                                         coords);
-  if (! area)
     return;
 
   paint_appl_mode = paint_options->application_mode;
 
-  color_output = gimp_dynamics_get_output (dynamics,
-                                           GIMP_DYNAMICS_OUTPUT_COLOR);
+  grad_point = gimp_dynamics_get_linear_value (dynamics,
+                                               GIMP_DYNAMICS_OUTPUT_COLOR,
+                                               coords,
+                                               paint_options,
+                                               fade_point);
 
-  grad_point = gimp_dynamics_output_get_linear_value (color_output,
-                                                      coords,
-                                                      paint_options,
-                                                      fade_point);
 
-  /* optionally take the color from the current gradient */
-  if (gimp_paint_options_get_gradient_color (paint_options, image,
-                                             grad_point,
-                                             paint_core->pixel_dist,
-                                             &gradient_color))
+  if (GIMP_BRUSH_CORE_GET_CLASS (brush_core)->handles_transforming_brush)
     {
-      guchar pixel[MAX_CHANNELS] = { OPAQUE_OPACITY,
-                                     OPAQUE_OPACITY,
-                                     OPAQUE_OPACITY,
-                                     OPAQUE_OPACITY };
-
-      opacity *= gradient_color.a;
-
-      gimp_rgb_get_uchar (&gradient_color,
-                          &col[RED],
-                          &col[GREEN],
-                          &col[BLUE]);
-
-      gimp_image_transform_color (image, gimp_drawable_type (drawable), pixel,
-                                  GIMP_RGB, col);
-
-      color_pixels (temp_buf_get_data (area), pixel,
-                    area->width * area->height,
-                    area->bytes);
-
-      paint_appl_mode = GIMP_PAINT_INCREMENTAL;
-    }
-  /* otherwise check if the brush has a pixmap and use that to color the area */
-  else if (brush_core->brush && brush_core->brush->pixmap)
-    {
-      gimp_brush_core_color_area_with_pixmap (brush_core, drawable,
-                                              coords,
-                                              area,
-                                              gimp_paint_options_get_brush_mode (paint_options));
-
-      paint_appl_mode = GIMP_PAINT_INCREMENTAL;
-    }
-  /* otherwise fill the area with the foreground color */
-  else
-    {
-      gimp_image_get_foreground (image, context, gimp_drawable_type (drawable),
-                                 col);
-
-      col[area->bytes - 1] = OPAQUE_OPACITY;
-
-      color_pixels (temp_buf_get_data (area), col,
-                    area->width * area->height,
-                    area->bytes);
+      gimp_brush_core_eval_transform_dynamics (brush_core,
+                                               drawable,
+                                               paint_options,
+                                               coords);
     }
 
-  force_output = gimp_dynamics_get_output (dynamics,
-                                           GIMP_DYNAMICS_OUTPUT_FORCE);
+  paint_mode = gimp_context_get_paint_mode (context);
 
-  force = gimp_dynamics_output_get_linear_value (force_output,
-                                                 coords,
-                                                 paint_options,
-                                                 fade_point);
+  n_strokes = gimp_symmetry_get_size (sym);
+  for (i = 0; i < n_strokes; i++)
+    {
+      gint paint_width, paint_height;
 
-  /* finally, let the brush core paste the colored area on the canvas */
-  gimp_brush_core_paste_canvas (brush_core, drawable,
-                                coords,
-                                MIN (opacity, GIMP_OPACITY_OPAQUE),
-                                gimp_context_get_opacity (context),
-                                gimp_context_get_paint_mode (context),
-                                gimp_paint_options_get_brush_mode (paint_options),
-                                force,
-                                paint_appl_mode);
+      coords = gimp_symmetry_get_coords (sym, i);
+
+      paint_buffer = gimp_paint_core_get_paint_buffer (paint_core, drawable,
+                                                       paint_options,
+                                                       paint_mode,
+                                                       coords,
+                                                       &paint_buffer_x,
+                                                       &paint_buffer_y,
+                                                       &paint_width,
+                                                       &paint_height);
+      if (! paint_buffer)
+        continue;
+
+      op = gimp_symmetry_get_operation (sym, i,
+                                        paint_width,
+                                        paint_height);
+      if (gimp_paint_options_get_gradient_color (paint_options, image,
+                                                 grad_point,
+                                                 paint_core->pixel_dist,
+                                                 &gradient_color))
+        {
+          /* optionally take the color from the current gradient */
+
+          GeglColor *color;
+
+          opacity *= gradient_color.a;
+          gimp_rgb_set_alpha (&gradient_color, GIMP_OPACITY_OPAQUE);
+
+          color = gimp_gegl_color_new (&gradient_color);
+
+          gegl_buffer_set_color (paint_buffer, NULL, color);
+          g_object_unref (color);
+
+          paint_appl_mode = GIMP_PAINT_INCREMENTAL;
+        }
+      else if (brush_core->brush && gimp_brush_get_pixmap (brush_core->brush))
+        {
+          /* otherwise check if the brush has a pixmap and use that to
+           * color the area
+           */
+          gimp_brush_core_color_area_with_pixmap (brush_core, drawable,
+                                                  coords, op,
+                                                  paint_buffer,
+                                                  paint_buffer_x,
+                                                  paint_buffer_y,
+                                                  gimp_paint_options_get_brush_mode (paint_options));
+
+          paint_appl_mode = GIMP_PAINT_INCREMENTAL;
+        }
+      else
+        {
+          /* otherwise fill the area with the foreground color */
+
+          GimpRGB    foreground;
+          GeglColor *color;
+
+          gimp_context_get_foreground (context, &foreground);
+          gimp_pickable_srgb_to_image_color (GIMP_PICKABLE (drawable),
+                                             &foreground, &foreground);
+          color = gimp_gegl_color_new (&foreground);
+
+          gegl_buffer_set_color (paint_buffer, NULL, color);
+          g_object_unref (color);
+        }
+
+      if (gimp_dynamics_is_output_enabled (dynamics, GIMP_DYNAMICS_OUTPUT_FORCE))
+        force = gimp_dynamics_get_linear_value (dynamics,
+                                                GIMP_DYNAMICS_OUTPUT_FORCE,
+                                                coords,
+                                                paint_options,
+                                                fade_point);
+      else
+        force = paint_options->brush_force;
+
+      /* finally, let the brush core paste the colored area on the canvas */
+      gimp_brush_core_paste_canvas (brush_core, drawable,
+                                    coords,
+                                    MIN (opacity, GIMP_OPACITY_OPAQUE),
+                                    gimp_context_get_opacity (context),
+                                    paint_mode,
+                                    gimp_paint_options_get_brush_mode (paint_options),
+                                    force,
+                                    paint_appl_mode, op);
+    }
 }

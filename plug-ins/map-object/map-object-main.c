@@ -164,7 +164,7 @@ query (void)
     { GIMP_PDB_FLOAT,    "diffuse_intensity",     "Material diffuse intensity (0..1)" },
     { GIMP_PDB_FLOAT,    "diffuse_reflectivity",  "Material diffuse reflectivity (0..1)" },
     { GIMP_PDB_FLOAT,    "specular_reflectivity", "Material specular reflectivity (0..1)" },
-    { GIMP_PDB_FLOAT,    "highlight",             "Material highlight (0..->), note: it's expotential" },
+    { GIMP_PDB_FLOAT,    "highlight",             "Material highlight (0..->), note: it's exponential" },
     { GIMP_PDB_INT32,    "antialiasing",          "Apply antialiasing (TRUE/FALSE)" },
     { GIMP_PDB_INT32,    "tiled",                 "Tile source image (TRUE/FALSE)" },
     { GIMP_PDB_INT32,    "newimage",              "Create a new image (TRUE/FALSE)" },
@@ -253,8 +253,8 @@ run (const gchar      *name,
       case GIMP_RUN_WITH_LAST_VALS:
         gimp_get_data (PLUG_IN_PROC, &mapvals);
         check_drawables (drawable);
-        image_setup (drawable, FALSE);
-        compute_image ();
+        if (image_setup (drawable, FALSE))
+          compute_image ();
         break;
 
       case GIMP_RUN_NONINTERACTIVE:
@@ -311,8 +311,8 @@ run (const gchar      *name,
               mapvals.cylindermap_id[i] = param[47+i].data.d_drawable;
 
             check_drawables (drawable);
-            image_setup (drawable, FALSE);
-            compute_image ();
+            if (image_setup (drawable, FALSE))
+              compute_image ();
           }
         break;
     }

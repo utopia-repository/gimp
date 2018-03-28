@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -46,7 +47,6 @@ struct _CdisplayGamma
   GimpColorDisplay  parent_instance;
 
   gdouble           gamma;
-  guchar            lookup[256];
 };
 
 struct _CdisplayGammaClass
@@ -62,7 +62,7 @@ enum
 };
 
 
-GType              cdisplay_gamma_get_type        (void);
+static GType       cdisplay_gamma_get_type        (void);
 
 static void        cdisplay_gamma_set_property    (GObject            *object,
                                                    guint               property_id,
@@ -73,9 +73,9 @@ static void        cdisplay_gamma_get_property    (GObject            *object,
                                                    GValue             *value,
                                                    GParamSpec         *pspec);
 
-static void        cdisplay_gamma_convert_surface (GimpColorDisplay   *display,
-                                                   cairo_surface_t    *surface);
-static GtkWidget * cdisplay_gamma_configure       (GimpColorDisplay   *display);
+static void        cdisplay_gamma_convert_buffer  (GimpColorDisplay   *display,
+                                                   GeglBuffer         *buffer,
+                                                   GeglRectangle      *area);
 static void        cdisplay_gamma_set_gamma       (CdisplayGamma      *gamma,
                                                    gdouble             value);
 
@@ -89,6 +89,7 @@ static const GimpModuleInfo cdisplay_gamma_info =
   "(c) 1999, released under the GPL",
   "October 14, 2000"
 };
+
 
 G_DEFINE_DYNAMIC_TYPE (CdisplayGamma, cdisplay_gamma,
                        GIMP_TYPE_COLOR_DISPLAY)
@@ -117,17 +118,18 @@ cdisplay_gamma_class_init (CdisplayGammaClass *klass)
   object_class->get_property     = cdisplay_gamma_get_property;
   object_class->set_property     = cdisplay_gamma_set_property;
 
-  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_GAMMA,
-                                   "gamma", NULL,
-                                   0.01, 10.0, DEFAULT_GAMMA,
-                                   0);
+  GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_GAMMA,
+                           "gamma",
+                           _("Gamma"),
+                           NULL,
+                           0.01, 10.0, DEFAULT_GAMMA,
+                           0);
 
   display_class->name            = _("Gamma");
   display_class->help_id         = "gimp-colordisplay-gamma";
-  display_class->stock_id        = GIMP_STOCK_DISPLAY_FILTER_GAMMA;
+  display_class->icon_name       = GIMP_ICON_DISPLAY_FILTER_GAMMA;
 
-  display_class->convert_surface = cdisplay_gamma_convert_surface;
-  display_class->configure       = cdisplay_gamma_configure;
+  display_class->convert_buffer  = cdisplay_gamma_convert_buffer;
 }
 
 static void
@@ -179,73 +181,34 @@ cdisplay_gamma_set_property (GObject      *object,
 }
 
 static void
-cdisplay_gamma_convert_surface (GimpColorDisplay *display,
-                                cairo_surface_t  *surface)
+cdisplay_gamma_convert_buffer (GimpColorDisplay *display,
+                               GeglBuffer       *buffer,
+                               GeglRectangle    *area)
 {
-  CdisplayGamma  *gamma  = CDISPLAY_GAMMA (display);
-  gint            width  = cairo_image_surface_get_width (surface);
-  gint            height = cairo_image_surface_get_height (surface);
-  gint            stride = cairo_image_surface_get_stride (surface);
-  guchar         *buf    = cairo_image_surface_get_data (surface);
-  cairo_format_t  fmt    = cairo_image_surface_get_format (surface);
-  gint            i, j, skip;
-  gint            r, g, b, a;
+  CdisplayGamma      *gamma = CDISPLAY_GAMMA (display);
+  GeglBufferIterator *iter;
+  gdouble             one_over_gamma;
 
-  if (fmt != CAIRO_FORMAT_ARGB32)
-    return;
+  one_over_gamma = 1.0 / gamma->gamma;
 
-  /* You will not be using the entire buffer most of the time.
-   * Hence, the simplistic code for this is as follows:
-   *
-   * for (j = 0; j < height; j++)
-   *   {
-   *     for (i = 0; i < width * bpp; i++)
-   *       buf[i] = lookup[buf[i]];
-   *     buf += bpl;
-   *   }
-   */
+  iter = gegl_buffer_iterator_new (buffer, area, 0,
+                                   babl_format ("R'G'B'A float"),
+                                   GEGL_ACCESS_READWRITE, GEGL_ABYSS_NONE);
 
-  j = height;
-  skip = stride - 4 * width;
-
-  while (j--)
+  while (gegl_buffer_iterator_next (iter))
     {
-      i = width;
-      while (i--)
+      gfloat *data  = iter->data[0];
+      gint    count = iter->length;
+
+      while (count--)
         {
-          GIMP_CAIRO_ARGB32_GET_PIXEL (buf, r, g, b, a);
-          r = gamma->lookup[r];
-          g = gamma->lookup[g];
-          b = gamma->lookup[b];
-          GIMP_CAIRO_ARGB32_SET_PIXEL (buf, r, g, b, a);
-          buf += 4;
+          *data = pow (*data, one_over_gamma); data++;
+          *data = pow (*data, one_over_gamma); data++;
+          *data = pow (*data, one_over_gamma); data++;
+
+          data++;
         }
-      buf += skip;
     }
-}
-
-static GtkWidget *
-cdisplay_gamma_configure (GimpColorDisplay *display)
-{
-  CdisplayGamma *gamma = CDISPLAY_GAMMA (display);
-  GtkWidget     *hbox;
-  GtkWidget     *label;
-  GtkWidget     *spinbutton;
-
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-
-  label = gtk_label_new_with_mnemonic (_("_Gamma:"));
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-  gtk_widget_show (label);
-
-  spinbutton = gimp_prop_spin_button_new (G_OBJECT (gamma), "gamma",
-                                          0.1, 1.0, 3);
-  gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
-  gtk_widget_show (spinbutton);
-
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label), spinbutton);
-
-  return hbox;
 }
 
 static void
@@ -257,17 +220,7 @@ cdisplay_gamma_set_gamma (CdisplayGamma *gamma,
 
   if (value != gamma->gamma)
     {
-      gdouble one_over_gamma = 1.0 / value;
-      gint    i;
-
       gamma->gamma = value;
-
-      for (i = 0; i < 256; i++)
-        {
-          gdouble ind = (gdouble) i / 255.0;
-
-          gamma->lookup[i] = (guchar) (gint) (255 * pow (ind, one_over_gamma));
-        }
 
       g_object_notify (G_OBJECT (gamma), "gamma");
       gimp_color_display_changed (GIMP_COLOR_DISPLAY (gamma));

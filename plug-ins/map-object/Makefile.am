@@ -43,9 +43,10 @@ map_object_SOURCES = \
 	map-object-ui.c		\
 	map-object-ui.h
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir)	\
 	$(GTK_CFLAGS)	\
+	$(GEGL_CFLAGS) \
 	-I$(includedir)
 
 LDADD = \

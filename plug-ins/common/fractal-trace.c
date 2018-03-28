@@ -118,7 +118,7 @@ query (void)
                           "Hirotsuna Mizuno <s1041150@u-aizu.ac.jp>",
                           "Copyright (C) 1997 Hirotsuna Mizuno",
                           PLUG_IN_VERSION,
-                          N_("_Fractal Trace..."),
+                          N_("_Fractal Trace (legacy)..."),
                           "RGB*, GRAY*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
@@ -176,11 +176,21 @@ run (const gchar      *name,
   image.height = gimp_drawable_height (drawable->drawable_id);
   image.bpp    = gimp_drawable_bpp (drawable->drawable_id);
   image.alpha  = gimp_drawable_has_alpha (drawable->drawable_id);
-  gimp_drawable_mask_bounds (drawable->drawable_id,
-                             &selection.x1, &selection.y1,
-                             &selection.x2, &selection.y2);
-  selection.width    = selection.x2 - selection.y1;
-  selection.height   = selection.y2 - selection.y1;
+
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                      &selection.x1, &selection.y1,
+                                      &selection.width, &selection.height))
+    {
+      returns[0].type          = GIMP_PDB_STATUS;
+      returns[0].data.d_status = status;
+      *retc = 1;
+      *rets = returns;
+
+      return;
+    }
+
+  selection.x2       = selection.x1 + selection.width;
+  selection.y2       = selection.y1 + selection.height;
   selection.center_x = selection.x1 + (gdouble) selection.width / 2.0;
   selection.center_y = selection.y1 + (gdouble) selection.height / 2.0;
 
@@ -456,8 +466,14 @@ filter (GimpDrawable *drawable)
   gdouble scale_x, scale_y;
   gdouble cx, cy;
   gdouble px, py;
+  gint h_percent;
 
   gimp_progress_init (_("Fractal Trace"));
+
+  if (selection.width == 0 || selection.height == 0)
+    return;
+
+  h_percent = selection.height / 100;
 
   scale_x = (parameters.x2 - parameters.x1) / selection.width;
   scale_y = (parameters.y2 - parameters.y1) / selection.height;
@@ -503,7 +519,7 @@ filter (GimpDrawable *drawable)
           pixels_set (x, y, &pixel);
         }
 
-      if (((y - selection.y1) % (selection.height / 100)) == 0)
+      if (h_percent == 0 || ((y - selection.y1) % h_percent) == 0)
         gimp_progress_update ((gdouble) (y-selection.y1) / selection.height);
     }
 
@@ -692,8 +708,8 @@ dialog_show (void)
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
                             NULL);
 

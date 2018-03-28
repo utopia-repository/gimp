@@ -17,10 +17,7 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <errno.h>
-
-#include <glib-object.h>
+#include <gio/gio.h>
 
 #include "core/core-types.h"
 
@@ -29,40 +26,27 @@
 
 #include "gimp-intl.h"
 
-/**
- * SECTION:xcf-seek
- * @Short_description:XCF file seeker functions
- *
- * Functions to change the file position in the XCF file
- */
 
-/**
- * xcf_seek_pos:
- * @info:  #XcfInfo structure of the file under work
- * @pos:   new position, relative to the beginning of the file
- * @error: Return location for errors
- *
- * Changes the file position in the input or output stream to the given
- * position.
- *
- * Returns: %TRUE in case of success; %FALSE otherwise
- */
 gboolean
 xcf_seek_pos (XcfInfo  *info,
-              guint     pos,
+              goffset   pos,
               GError  **error)
 {
   if (info->cp != pos)
     {
-      info->cp = pos;
-      if (fseek (info->fp, info->cp, SEEK_SET) == -1)
-        {
-          g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
-                       _("Could not seek in XCF file: %s"),
-                       g_strerror (errno));
+      GError *my_error = NULL;
 
+      info->cp = pos;
+
+      if (! g_seekable_seek (info->seekable, info->cp, G_SEEK_SET,
+                             NULL, &my_error))
+        {
+          g_propagate_prefixed_error (error, my_error,
+                                      _("Could not seek in XCF file: "));
           return FALSE;
         }
+
+      gimp_assert (info->cp == g_seekable_tell (info->seekable));
     }
 
   return TRUE;

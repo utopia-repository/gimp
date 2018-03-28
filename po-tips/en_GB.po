@@ -2,21 +2,24 @@
 # Copyright (C) 2004 Adam Weinberger and the GNOME Foundation
 # This file is distributed under the same license as the gimp tips package.
 # Gareth Owen <gowen72@yahoo.com> 2004
-# Bruce Cowan <bruce@bcowan.me.uk>, 2009, 2010, 2011, 2012.
+# Bruce Cowan <bruce@bcowan.me.uk>, 2009, 2010, 2011.
+# Chris Leonard <cjl@laptop.org>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: gimp\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-05 12:49+0100\n"
-"PO-Revision-Date: 2012-09-05 12:49+0100\n"
-"Last-Translator: Bruce Cowan <bruce@bcowan.me.uk>\n"
-"Language-Team: British English <en@li.org>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=gimp&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-09-10 16:40+0000\n"
+"PO-Revision-Date: 2012-09-10 23:57-0400\n"
+"Last-Translator: Chris Leonard <cjl@laptop.org>\n"
+"Language-Team: Sugar Labs\n"
 "Language: en_GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
+"X-Generator: Virtaal 0.7.0\n"
+"X-Project-Style: gnome\n"
 
 #: ../data/tips/gimp-tips.xml.in.h:1
 msgid ""
@@ -63,8 +66,8 @@ msgid ""
 "in to work on the whole image."
 msgstr ""
 "Most plug-ins work on the current layer of the current image. In some cases, "
-"you will have to merge all layers (Image→Flatten Image) if you want the "
-"plug-in to work on the whole image."
+"you will have to merge all layers (Image→Flatten Image) if you want the plug-"
+"in to work on the whole image."
 
 #: ../data/tips/gimp-tips.xml.in.h:6
 msgid ""

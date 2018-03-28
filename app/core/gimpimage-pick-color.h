@@ -26,9 +26,9 @@ gboolean   gimp_image_pick_color (GimpImage     *image,
                                   gboolean       sample_merged,
                                   gboolean       sample_average,
                                   gdouble        average_radius,
-                                  GimpImageType *sample_type,
-                                  GimpRGB       *color,
-                                  gint          *color_index);
+                                  const Babl   **sample_format,
+                                  gpointer       pixel,
+                                  GimpRGB       *color);
 
 
 #endif  /* __GIMP_IMAGE_PICK_COLOR_H__ */

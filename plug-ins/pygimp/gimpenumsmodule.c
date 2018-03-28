@@ -28,51 +28,51 @@
 
 #include "pygimp-api.h"
 #include "pygimp-util.h"
-
+#include "libgimp/gimpui.h"
 
 static void
 add_misc_enums(PyObject *m)
 {
     PyModule_AddIntConstant(m, "PARASITE_PERSISTENT",
-			    GIMP_PARASITE_PERSISTENT);
+                            GIMP_PARASITE_PERSISTENT);
     PyModule_AddIntConstant(m, "PARASITE_UNDOABLE",
-			    GIMP_PARASITE_UNDOABLE);
+                            GIMP_PARASITE_UNDOABLE);
     PyModule_AddIntConstant(m, "PARASITE_ATTACH_PARENT",
-			    GIMP_PARASITE_ATTACH_PARENT);
+                            GIMP_PARASITE_ATTACH_PARENT);
     PyModule_AddIntConstant(m, "PARASITE_PARENT_PERSISTENT",
-			    GIMP_PARASITE_PARENT_PERSISTENT);
+                            GIMP_PARASITE_PARENT_PERSISTENT);
     PyModule_AddIntConstant(m, "PARASITE_PARENT_UNDOABLE",
-			    GIMP_PARASITE_PARENT_UNDOABLE);
+                            GIMP_PARASITE_PARENT_UNDOABLE);
     PyModule_AddIntConstant(m, "PARASITE_ATTACH_GRANDPARENT",
-			    GIMP_PARASITE_ATTACH_GRANDPARENT);
+                            GIMP_PARASITE_ATTACH_GRANDPARENT);
     PyModule_AddIntConstant(m, "PARASITE_GRANDPARENT_PERSISTENT",
-			    GIMP_PARASITE_GRANDPARENT_PERSISTENT);
+                            GIMP_PARASITE_GRANDPARENT_PERSISTENT);
     PyModule_AddIntConstant(m, "PARASITE_GRANDPARENT_UNDOABLE",
-			    GIMP_PARASITE_GRANDPARENT_UNDOABLE);
+                            GIMP_PARASITE_GRANDPARENT_UNDOABLE);
 
     PyModule_AddIntConstant(m, "UNIT_PIXEL",
-			    GIMP_UNIT_PIXEL);
+                            GIMP_UNIT_PIXEL);
     PyModule_AddIntConstant(m, "UNIT_INCH",
-			    GIMP_UNIT_INCH);
+                            GIMP_UNIT_INCH);
     PyModule_AddIntConstant(m, "UNIT_MM",
-			    GIMP_UNIT_MM);
+                            GIMP_UNIT_MM);
     PyModule_AddIntConstant(m, "UNIT_POINT",
-			    GIMP_UNIT_POINT);
+                            GIMP_UNIT_POINT);
     PyModule_AddIntConstant(m, "UNIT_PICA",
-			    GIMP_UNIT_PICA);
+                            GIMP_UNIT_PICA);
 
     PyModule_AddIntConstant(m, "MIN_IMAGE_SIZE",
-			    GIMP_MIN_IMAGE_SIZE);
+                            GIMP_MIN_IMAGE_SIZE);
     PyModule_AddIntConstant(m, "MAX_IMAGE_SIZE",
-			    GIMP_MAX_IMAGE_SIZE);
+                            GIMP_MAX_IMAGE_SIZE);
 
     PyModule_AddObject(m, "MIN_RESOLUTION",
-		       PyFloat_FromDouble(GIMP_MIN_RESOLUTION));
+                       PyFloat_FromDouble(GIMP_MIN_RESOLUTION));
     PyModule_AddObject(m, "MAX_RESOLUTION",
-		       PyFloat_FromDouble(GIMP_MAX_RESOLUTION));
+                       PyFloat_FromDouble(GIMP_MAX_RESOLUTION));
 
     PyModule_AddObject(m, "MAX_MEMSIZE",
-		       PyLong_FromUnsignedLongLong(GIMP_MAX_MEMSIZE));
+                       PyLong_FromUnsignedLongLong(GIMP_MAX_MEMSIZE));
 
     PyModule_AddIntConstant(m, "PIXEL_FETCHER_EDGE_NONE",
                             GIMP_PIXEL_FETCHER_EDGE_NONE);
@@ -87,25 +87,65 @@ add_misc_enums(PyObject *m)
 }
 
 static void
+add_compat_enums(PyObject *m)
+{
+    PyModule_AddIntConstant(m, "EXPORT_CAN_HANDLE_RGB",
+                            GIMP_EXPORT_CAN_HANDLE_RGB);
+    PyModule_AddIntConstant(m, "EXPORT_CAN_HANDLE_GRAY",
+                            GIMP_EXPORT_CAN_HANDLE_GRAY);
+    PyModule_AddIntConstant(m, "EXPORT_CAN_HANDLE_INDEXED",
+                            GIMP_EXPORT_CAN_HANDLE_INDEXED);
+    PyModule_AddIntConstant(m, "EXPORT_CAN_HANDLE_BITMAP",
+                            GIMP_EXPORT_CAN_HANDLE_BITMAP);
+    PyModule_AddIntConstant(m, "EXPORT_CAN_HANDLE_ALPHA",
+                            GIMP_EXPORT_CAN_HANDLE_ALPHA);
+    PyModule_AddIntConstant(m, "EXPORT_CAN_HANDLE_LAYERS",
+                            GIMP_EXPORT_CAN_HANDLE_LAYERS);
+    PyModule_AddIntConstant(m, "EXPORT_CAN_HANDLE_LAYERS_AS_ANIMATION",
+                            GIMP_EXPORT_CAN_HANDLE_LAYERS_AS_ANIMATION);
+    PyModule_AddIntConstant(m, "EXPORT_CAN_HANDLE_LAYER_MASKS",
+                            GIMP_EXPORT_CAN_HANDLE_LAYER_MASKS);
+    PyModule_AddIntConstant(m, "EXPORT_NEEDS_ALPHA",
+                            GIMP_EXPORT_NEEDS_ALPHA);
+
+    PyModule_AddIntConstant(m, "EXPORT_CANCEL",
+                            GIMP_EXPORT_CANCEL);
+    PyModule_AddIntConstant(m, "EXPORT_IGNORE",
+                            GIMP_EXPORT_IGNORE);
+    PyModule_AddIntConstant(m, "EXPORT_EXPORT",
+                            GIMP_EXPORT_EXPORT);
+}
+
+static void
 add_registered_enums(PyObject *m)
 {
-    int num_names, i;
-    const char **names;
+    gint          num_names, i;
+    const gchar **names;
+    GQuark        quark = g_quark_from_static_string ("gimp-compat-enum");
 
-    names = gimp_enums_get_type_names(&num_names);
+    names = gimp_enums_get_type_names (&num_names);
 
-    pyg_enum_add_constants(m, GIMP_TYPE_CHECK_SIZE, "GIMP_");
-    pyg_enum_add_constants(m, GIMP_TYPE_CHECK_TYPE, "GIMP_");
+    pyg_enum_add_constants (m, GIMP_TYPE_CHECK_SIZE, "GIMP_");
+    pyg_enum_add_constants (m, GIMP_TYPE_CHECK_TYPE, "GIMP_");
 
     for (i = 0; i < num_names; i++)
-	pyg_enum_add_constants(m, g_type_from_name(names[i]), "GIMP_");
+        {
+            GType enum_type = g_type_from_name (names[i]);
+
+            pyg_enum_add_constants (m, enum_type, "GIMP_");
+
+            enum_type = (GType) g_type_get_qdata (enum_type, quark);
+
+            if (enum_type)
+                pyg_enum_add_constants (m, enum_type, "GIMP_");
+        }
 }
 
 
 /* Initialization function for the module (*must* be called initgimpenums) */
 
 static char gimpenums_doc[] =
-"This module provides interfaces to allow you to write gimp plugins"
+"This module provides interfaces to allow you to write gimp plug-ins"
 ;
 
 void init_gimpenums(void);
@@ -125,9 +165,10 @@ init_gimpenums(void)
     m = Py_InitModule3("_gimpenums", NULL, gimpenums_doc);
 
     add_misc_enums(m);
+    add_compat_enums(m);
     add_registered_enums(m);
 
     /* Check for errors */
     if (PyErr_Occurred())
-	Py_FatalError("can't initialize module _gimpenums");
+        Py_FatalError("can't initialize module _gimpenums");
 }

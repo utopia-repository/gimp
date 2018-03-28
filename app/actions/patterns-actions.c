@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -38,42 +39,48 @@
 
 static const GimpActionEntry patterns_actions[] =
 {
-  { "patterns-popup", GIMP_STOCK_PATTERN,
+  { "patterns-popup", GIMP_ICON_PATTERN,
     NC_("patterns-action", "Patterns Menu"), NULL, NULL, NULL,
     GIMP_HELP_PATTERN_DIALOG },
 
-  { "patterns-open-as-image", GTK_STOCK_OPEN,
-    NC_("patterns-action", "_Open Pattern as Image"), "",
+  { "patterns-open-as-image", GIMP_ICON_DOCUMENT_OPEN,
+    NC_("patterns-action", "_Open Pattern as Image"), NULL,
     NC_("patterns-action", "Open this pattern as an image"),
     G_CALLBACK (data_open_as_image_cmd_callback),
     GIMP_HELP_PATTERN_OPEN_AS_IMAGE },
 
-  { "patterns-new", GTK_STOCK_NEW,
-    NC_("patterns-action", "_New Pattern"), "",
+  { "patterns-new", GIMP_ICON_DOCUMENT_NEW,
+    NC_("patterns-action", "_New Pattern"), NULL,
     NC_("patterns-action", "Create a new pattern"),
     G_CALLBACK (data_new_cmd_callback),
     GIMP_HELP_PATTERN_NEW },
 
-  { "patterns-duplicate", GIMP_STOCK_DUPLICATE,
+  { "patterns-duplicate", GIMP_ICON_OBJECT_DUPLICATE,
     NC_("patterns-action", "D_uplicate Pattern"), NULL,
     NC_("patterns-action", "Duplicate this pattern"),
     G_CALLBACK (data_duplicate_cmd_callback),
     GIMP_HELP_PATTERN_DUPLICATE },
 
-  { "patterns-copy-location", GTK_STOCK_COPY,
-    NC_("patterns-action", "Copy Pattern _Location"), "",
+  { "patterns-copy-location", GIMP_ICON_EDIT_COPY,
+    NC_("patterns-action", "Copy Pattern _Location"), NULL,
     NC_("patterns-action", "Copy pattern file location to clipboard"),
     G_CALLBACK (data_copy_location_cmd_callback),
     GIMP_HELP_PATTERN_COPY_LOCATION },
 
-  { "patterns-delete", GTK_STOCK_DELETE,
-    NC_("patterns-action", "_Delete Pattern"), "",
+  { "patterns-show-in-file-manager", GIMP_ICON_FILE_MANAGER,
+    NC_("patterns-action", "Show in _File Manager"), NULL,
+    NC_("patterns-action", "Show pattern file location in the file manager"),
+    G_CALLBACK (data_show_in_file_manager_cmd_callback),
+    GIMP_HELP_PATTERN_SHOW_IN_FILE_MANAGER },
+
+  { "patterns-delete", GIMP_ICON_EDIT_DELETE,
+    NC_("patterns-action", "_Delete Pattern"), NULL,
     NC_("patterns-action", "Delete this pattern"),
     G_CALLBACK (data_delete_cmd_callback),
     GIMP_HELP_PATTERN_DELETE },
 
-  { "patterns-refresh", GTK_STOCK_REFRESH,
-    NC_("patterns-action", "_Refresh Patterns"), "",
+  { "patterns-refresh", GIMP_ICON_VIEW_REFRESH,
+    NC_("patterns-action", "_Refresh Patterns"), NULL,
     NC_("patterns-action", "Refresh patterns"),
     G_CALLBACK (data_refresh_cmd_callback),
     GIMP_HELP_PATTERN_REFRESH }
@@ -81,7 +88,7 @@ static const GimpActionEntry patterns_actions[] =
 
 static const GimpStringActionEntry patterns_edit_actions[] =
 {
-  { "patterns-edit", GTK_STOCK_EDIT,
+  { "patterns-edit", GIMP_ICON_EDIT,
     NC_("patterns-action", "_Edit Pattern..."), NULL,
     NC_("patterns-action", "Edit pattern"),
     "gimp-pattern-editor",
@@ -106,10 +113,10 @@ void
 patterns_actions_update (GimpActionGroup *group,
                          gpointer         user_data)
 {
-  GimpContext *context  = action_data_get_context (user_data);
-  GimpPattern *pattern  = NULL;
-  GimpData    *data     = NULL;
-  const gchar *filename = NULL;
+  GimpContext *context = action_data_get_context (user_data);
+  GimpPattern *pattern = NULL;
+  GimpData    *data    = NULL;
+  GFile       *file    = NULL;
 
   if (context)
     {
@@ -124,18 +131,19 @@ patterns_actions_update (GimpActionGroup *group,
         {
           data = GIMP_DATA (pattern);
 
-          filename = gimp_data_get_filename (data);
+          file = gimp_data_get_file (data);
         }
     }
 
 #define SET_SENSITIVE(action,condition) \
         gimp_action_group_set_action_sensitive (group, action, (condition) != 0)
 
-  SET_SENSITIVE ("patterns-edit",          pattern && FALSE);
-  SET_SENSITIVE ("patterns-open-as-image", pattern && filename);
-  SET_SENSITIVE ("patterns-duplicate",     pattern && GIMP_DATA_GET_CLASS (data)->duplicate);
-  SET_SENSITIVE ("patterns-copy-location", pattern && filename);
-  SET_SENSITIVE ("patterns-delete",        pattern && gimp_data_is_deletable (data));
+  SET_SENSITIVE ("patterns-edit",                 pattern && FALSE);
+  SET_SENSITIVE ("patterns-open-as-image",        file);
+  SET_SENSITIVE ("patterns-duplicate",            pattern && gimp_data_is_duplicatable (data));
+  SET_SENSITIVE ("patterns-copy-location",        file);
+  SET_SENSITIVE ("patterns-show-in-file-manager", file);
+  SET_SENSITIVE ("patterns-delete",               pattern && gimp_data_is_deletable (data));
 
 #undef SET_SENSITIVE
 }

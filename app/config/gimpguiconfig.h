@@ -24,6 +24,10 @@
 #include "config/gimpdisplayconfig.h"
 
 
+#define GIMP_CONFIG_DEFAULT_THEME          "03-Dark"
+#define GIMP_CONFIG_DEFAULT_ICON_THEME     "Symbolic"
+
+
 #define GIMP_TYPE_GUI_CONFIG            (gimp_gui_config_get_type ())
 #define GIMP_GUI_CONFIG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_GUI_CONFIG, GimpGuiConfig))
 #define GIMP_GUI_CONFIG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_GUI_CONFIG, GimpGuiConfigClass))
@@ -38,11 +42,14 @@ struct _GimpGuiConfig
   GimpDisplayConfig    parent_instance;
 
   gboolean             move_tool_changes_active;
-  gint                 image_map_tool_max_recent;
+  gint                 filter_tool_max_recent;
+  gboolean             filter_tool_show_color_options;
   gboolean             trust_dirty_flag;
   gboolean             save_device_status;
+  gboolean             devices_share_tool;
   gboolean             save_session_info;
   gboolean             restore_session;
+  gboolean             restore_monitor;
   gboolean             save_tool_options;
   gboolean             show_tooltips;
   gboolean             tearoff_menus;
@@ -57,30 +64,41 @@ struct _GimpGuiConfig
   gboolean             toolbox_wilber;
   gchar               *theme_path;
   gchar               *theme;
+  gchar               *icon_theme_path;
+  gchar               *icon_theme;
+  GimpIconSize         icon_size;
   gboolean             use_help;
   gboolean             show_help_button;
   gchar               *help_locales;
   GimpHelpBrowserType  help_browser;
-  gchar               *web_browser;
   gboolean             user_manual_online;
   gchar               *user_manual_online_uri;
+  gboolean             search_show_unavailable;
+  gint                 action_history_size;
   GimpWindowHint       dock_window_hint;
-  GimpCursorFormat     cursor_format;
   GimpHandedness       cursor_handedness;
+
+  /* experimental playground */
+  gboolean             playground_npd_tool;
+  gboolean             playground_seamless_clone_tool;
 
   /* saved in sessionrc */
   gboolean             hide_docks;
   gboolean             single_window_mode;
+  GimpPosition         tabs_position;
   gint                 last_tip_shown;
 };
 
 struct _GimpGuiConfigClass
 {
   GimpDisplayConfigClass  parent_class;
+
+  void (* size_changed) (GimpGuiConfig *config);
 };
 
 
 GType  gimp_gui_config_get_type (void) G_GNUC_CONST;
 
+GimpIconSize gimp_gui_config_detect_icon_size (GimpGuiConfig *config);
 
 #endif /* GIMP_GUI_CONFIG_H__ */

@@ -2,12 +2,12 @@
 /* Generated data (by gimp-mkenums) */
 
 #include "config.h"
-#include <glib-object.h>
+#include <gio/gio.h>
 #include "libgimpbase/gimpbase.h"
 #include "text-enums.h"
 #include "gimp-intl.h"
 
-/* enumerations from "./text-enums.h" */
+/* enumerations from "text-enums.h" */
 GType
 gimp_text_box_mode_get_type (void)
 {

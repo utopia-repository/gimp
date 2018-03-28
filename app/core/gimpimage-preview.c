@@ -17,17 +17,24 @@
 
 #include "config.h"
 
+#include <cairo.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
+
+#include "libgimpcolor/gimpcolor.h"
 
 #include "core-types.h"
 
-#include "base/temp-buf.h"
-#include "base/tile-manager-preview.h"
+#include "gegl/gimp-babl.h"
+#include "gegl/gimp-gegl-loops.h"
 
 #include "gimpimage.h"
+#include "gimpimage-color-profile.h"
 #include "gimpimage-preview.h"
-#include "gimpimage-private.h"
+#include "gimppickable.h"
+#include "gimpprojectable.h"
 #include "gimpprojection.h"
+#include "gimptempbuf.h"
 
 
 void
@@ -92,62 +99,103 @@ gimp_image_get_popup_size (GimpViewable *viewable,
   return FALSE;
 }
 
-TempBuf *
-gimp_image_get_preview (GimpViewable *viewable,
-                        GimpContext  *context,
-                        gint          width,
-                        gint          height)
-{
-  GimpImagePrivate *private = GIMP_IMAGE_GET_PRIVATE (viewable);
-
-  if (private->preview                  &&
-      private->preview->width  == width &&
-      private->preview->height == height)
-    {
-      /*  The easy way  */
-      return private->preview;
-    }
-  else
-    {
-      /*  The hard way  */
-      if (private->preview)
-        temp_buf_free (private->preview);
-
-      private->preview = gimp_image_get_new_preview (viewable, context,
-                                                     width, height);
-
-      return private->preview;
-    }
-}
-
-TempBuf *
+GimpTempBuf *
 gimp_image_get_new_preview (GimpViewable *viewable,
                             GimpContext  *context,
                             gint          width,
                             gint          height)
 {
-  GimpImage      *image      = GIMP_IMAGE (viewable);
-  GimpProjection *projection = gimp_image_get_projection (image);
-  TempBuf        *buf;
-  TileManager    *tiles;
-  gdouble         scale_x;
-  gdouble         scale_y;
-  gint            level;
-  gboolean        is_premult;
+  GimpImage   *image = GIMP_IMAGE (viewable);
+  const Babl  *format;
+  gboolean     linear;
+  GimpTempBuf *buf;
+  gdouble      scale_x;
+  gdouble      scale_y;
 
   scale_x = (gdouble) width  / (gdouble) gimp_image_get_width  (image);
   scale_y = (gdouble) height / (gdouble) gimp_image_get_height (image);
 
-  level = gimp_projection_get_level (projection, scale_x, scale_y);
-  tiles = gimp_projection_get_tiles_at_level (projection, level, &is_premult);
+  format = gimp_projectable_get_format (GIMP_PROJECTABLE (image));
+  linear = gimp_babl_format_get_linear (format);
 
-  buf = tile_manager_get_preview (tiles, width, height);
+  format = gimp_babl_format (gimp_babl_format_get_base_type (format),
+                             gimp_babl_precision (GIMP_COMPONENT_TYPE_U8,
+                                                  linear),
+                             babl_format_has_alpha (format));
 
-  /* FIXME: We could avoid this if the view renderer and all other
-   *        preview code would know how to deal with pre-multiply alpha.
-   */
-  if (is_premult)
-    temp_buf_demultiply (buf);
+  buf = gimp_temp_buf_new (width, height, format);
+
+  gegl_buffer_get (gimp_pickable_get_buffer (GIMP_PICKABLE (image)),
+                   GEGL_RECTANGLE (0, 0, width, height),
+                   MIN (scale_x, scale_y),
+                   gimp_temp_buf_get_format (buf),
+                   gimp_temp_buf_get_data (buf),
+                   GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_CLAMP);
 
   return buf;
+}
+
+GdkPixbuf *
+gimp_image_get_new_pixbuf (GimpViewable *viewable,
+                           GimpContext  *context,
+                           gint          width,
+                           gint          height)
+{
+  GimpImage          *image = GIMP_IMAGE (viewable);
+  GdkPixbuf          *pixbuf;
+  gdouble             scale_x;
+  gdouble             scale_y;
+  GimpColorTransform *transform;
+
+  scale_x = (gdouble) width  / (gdouble) gimp_image_get_width  (image);
+  scale_y = (gdouble) height / (gdouble) gimp_image_get_height (image);
+
+  pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8,
+                           width, height);
+
+  transform = gimp_image_get_color_transform_to_srgb_u8 (image);
+
+  if (transform)
+    {
+      GimpTempBuf *temp_buf;
+      GeglBuffer  *src_buf;
+      GeglBuffer  *dest_buf;
+
+      temp_buf = gimp_temp_buf_new (width, height,
+                                    gimp_pickable_get_format (GIMP_PICKABLE (image)));
+
+      gegl_buffer_get (gimp_pickable_get_buffer (GIMP_PICKABLE (image)),
+                       GEGL_RECTANGLE (0, 0, width, height),
+                       MIN (scale_x, scale_y),
+                       gimp_temp_buf_get_format (temp_buf),
+                       gimp_temp_buf_get_data (temp_buf),
+                       GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_CLAMP);
+
+      src_buf  = gimp_temp_buf_create_buffer (temp_buf);
+      dest_buf = gimp_pixbuf_create_buffer (pixbuf);
+
+      gimp_temp_buf_unref (temp_buf);
+
+      gimp_color_transform_process_buffer (transform,
+                                           src_buf,
+                                           GEGL_RECTANGLE (0, 0,
+                                                           width, height),
+                                           dest_buf,
+                                           GEGL_RECTANGLE (0, 0, 0, 0));
+
+      g_object_unref (src_buf);
+      g_object_unref (dest_buf);
+    }
+  else
+    {
+      gegl_buffer_get (gimp_pickable_get_buffer (GIMP_PICKABLE (image)),
+                       GEGL_RECTANGLE (0, 0, width, height),
+                       MIN (scale_x, scale_y),
+                       gimp_pixbuf_get_format (pixbuf),
+                       gdk_pixbuf_get_pixels (pixbuf),
+                       gdk_pixbuf_get_rowstride (pixbuf),
+                       GEGL_ABYSS_CLAMP);
+    }
+
+  return pixbuf;
 }

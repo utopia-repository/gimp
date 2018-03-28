@@ -66,6 +66,13 @@ option "--disable-gtk-doc" to autogen.sh.  This will completely
 disable the support for gtk-doc so you will not be able to generate
 the API documentation.
 
+If you want to use libraries from a non-standard prefix, you should set
+PKG_CONFIG_PATH appropriately. Some libraries do not use pkgconfig, see
+the output of ./configure --help for information on what environment
+variables to set to point the compiler and linker to the correct path.
+Note that you need to do this even if you are installing Gimp itself
+into the same prefix as the library.
+
 
 Git
 ---
@@ -109,7 +116,7 @@ sources. All those files have a short notice about being generated
 somewhere at the top. Among them are the files ending in pdb.[ch] in
 the libgimp directory and the files ending in cmds.c in the app/pdb
 subdirectory. Those are generated from the respective .pdb files in
-tools/pdbgen/pdb.
+pdb/groups.
 
 
 Hackordnung
@@ -123,7 +130,7 @@ style is enforced.  The GIMP coding style is defined as follows:
 
     * Function names are lowercase, words separated by underscores.
 
-    * Macros and enums are all uppercase, words seperated by
+    * Macros and enums are all uppercase, words separated by
       underscores.
 
     * Types are all words capitalized, no separators between words.
@@ -143,6 +150,12 @@ style is enforced.  The GIMP coding style is defined as follows:
         - Function header have the return type on one line, the name
           starting in the first column of the following line. All
           parameters are prototyped and there's a new line for each.
+
+The source tree contains local config files which can be used to set the
+right coding style in common editors: `.dir-locals.el` for Emacs,
+`.kateconfig` for Kate, and `devel-docs/c.vim` for Vim (check the top
+comments to see how to enable it automatically when opening a file in
+the GIMP tree).
 
 Try to make use of GLib's object system as much as possible. Do not
 create wrappers around functions of parent classes. If you end up

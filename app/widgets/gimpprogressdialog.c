@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -44,8 +45,8 @@ static void     gimp_progress_dialog_response           (GtkDialog    *dialog,
 
 static GimpProgress *
                 gimp_progress_dialog_progress_start     (GimpProgress *progress,
-                                                         const gchar  *message,
-                                                         gboolean      cancelable);
+                                                         gboolean      cancellable,
+                                                         const gchar  *message);
 static void     gimp_progress_dialog_progress_end       (GimpProgress *progress);
 static gboolean gimp_progress_dialog_progress_is_active (GimpProgress *progress);
 static void     gimp_progress_dialog_progress_set_text  (GimpProgress *progress,
@@ -87,7 +88,7 @@ gimp_progress_dialog_init (GimpProgressDialog *dialog)
                     &dialog->box);
 
   gtk_dialog_add_button (GTK_DIALOG (dialog),
-                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL);
+                         _("_Cancel"), GTK_RESPONSE_CANCEL);
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL);
 
   gtk_widget_set_size_request (GTK_WIDGET (dialog), PROGRESS_DIALOG_WIDTH, -1);
@@ -111,24 +112,25 @@ gimp_progress_dialog_response (GtkDialog *dialog,
 {
   GimpProgressDialog *progress_dialog = GIMP_PROGRESS_DIALOG (dialog);
 
-  if (GIMP_PROGRESS_BOX (progress_dialog->box)->cancelable)
+  if (GIMP_PROGRESS_BOX (progress_dialog->box)->cancellable)
     gimp_progress_cancel (GIMP_PROGRESS (dialog));
 }
 
 static GimpProgress *
 gimp_progress_dialog_progress_start (GimpProgress *progress,
-                                     const gchar  *message,
-                                     gboolean      cancelable)
+                                     gboolean      cancellable,
+                                     const gchar  *message)
 {
   GimpProgressDialog *dialog = GIMP_PROGRESS_DIALOG (progress);
 
   if (! dialog->box)
     return NULL;
 
-  if (gimp_progress_start (GIMP_PROGRESS (dialog->box), message, cancelable))
+  if (gimp_progress_start (GIMP_PROGRESS (dialog->box), cancellable,
+                           "%s", message))
     {
       gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
-                                         GTK_RESPONSE_CANCEL, cancelable);
+                                         GTK_RESPONSE_CANCEL, cancellable);
 
       gtk_window_present (GTK_WINDOW (dialog));
 
@@ -177,7 +179,7 @@ gimp_progress_dialog_progress_set_text (GimpProgress *progress,
   if (! dialog->box)
     return;
 
-  gimp_progress_set_text (GIMP_PROGRESS (dialog->box), message);
+  gimp_progress_set_text_literal (GIMP_PROGRESS (dialog->box), message);
 }
 
 static void

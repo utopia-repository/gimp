@@ -20,128 +20,77 @@
 
 #include "config.h"
 
+#include <gio/gio.h>
 #include <gegl.h>
 
 #include "gimp-gegl-types.h"
 
-#include "base/tile.h"
+#include "config/gimpgeglconfig.h"
 
-#include "config/gimpbaseconfig.h"
+#include "operations/gimp-operations.h"
 
 #include "core/gimp.h"
 
+#include "gimp-babl.h"
 #include "gimp-gegl.h"
-#include "gimpoperationbrightnesscontrast.h"
-#include "gimpoperationcagecoefcalc.h"
-#include "gimpoperationcagetransform.h"
-#include "gimpoperationcolorbalance.h"
-#include "gimpoperationcolorize.h"
-#include "gimpoperationcurves.h"
-#include "gimpoperationdesaturate.h"
-#include "gimpoperationhuesaturation.h"
-#include "gimpoperationlevels.h"
-#include "gimpoperationposterize.h"
-#include "gimpoperationthreshold.h"
-#include "gimpoperationtilesink.h"
-#include "gimpoperationtilesource.h"
-
-#include "gimpoperationpointlayermode.h"
-#include "gimpoperationdissolvemode.h"
-#include "gimpoperationbehindmode.h"
-#include "gimpoperationmultiplymode.h"
-#include "gimpoperationscreenmode.h"
-#include "gimpoperationoverlaymode.h"
-#include "gimpoperationdifferencemode.h"
-#include "gimpoperationadditionmode.h"
-#include "gimpoperationsubtractmode.h"
-#include "gimpoperationdarkenonlymode.h"
-#include "gimpoperationlightenonlymode.h"
-#include "gimpoperationhuemode.h"
-#include "gimpoperationsaturationmode.h"
-#include "gimpoperationcolormode.h"
-#include "gimpoperationvaluemode.h"
-#include "gimpoperationdividemode.h"
-#include "gimpoperationdodgemode.h"
-#include "gimpoperationburnmode.h"
-#include "gimpoperationhardlightmode.h"
-#include "gimpoperationsoftlightmode.h"
-#include "gimpoperationgrainextractmode.h"
-#include "gimpoperationgrainmergemode.h"
-#include "gimpoperationcolorerasemode.h"
-#include "gimpoperationerasemode.h"
-#include "gimpoperationreplacemode.h"
-#include "gimpoperationantierasemode.h"
 
 
-static void  gimp_gegl_notify_tile_cache_size (GimpBaseConfig *config);
+static void  gimp_gegl_notify_tile_cache_size (GimpGeglConfig *config);
+static void  gimp_gegl_notify_num_processors  (GimpGeglConfig *config);
+static void  gimp_gegl_notify_use_opencl      (GimpGeglConfig *config);
 
+#include <operation/gegl-operation.h>
 
 void
 gimp_gegl_init (Gimp *gimp)
 {
-  GimpBaseConfig *config;
+  GimpGeglConfig *config;
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  config = GIMP_BASE_CONFIG (gimp->config);
+  config = GIMP_GEGL_CONFIG (gimp->config);
 
   g_object_set (gegl_config (),
-                "tile-width",  TILE_WIDTH,
-                "tile-height", TILE_HEIGHT,
-                "cache-size", (gint) MIN (config->tile_cache_size, G_MAXINT),
+                "tile-cache-size", (guint64) config->tile_cache_size,
+                "threads",         config->num_processors,
+                "use-opencl",      config->use_opencl,
                 NULL);
 
   g_signal_connect (config, "notify::tile-cache-size",
                     G_CALLBACK (gimp_gegl_notify_tile_cache_size),
                     NULL);
+  g_signal_connect (config, "notify::num-processors",
+                    G_CALLBACK (gimp_gegl_notify_num_processors),
+                    NULL);
+  g_signal_connect (config, "notify::use-opencl",
+                    G_CALLBACK (gimp_gegl_notify_use_opencl),
+                    NULL);
 
-  g_type_class_ref (GIMP_TYPE_OPERATION_TILE_SINK);
-  g_type_class_ref (GIMP_TYPE_OPERATION_TILE_SOURCE);
+  gimp_babl_init ();
 
-  g_type_class_ref (GIMP_TYPE_OPERATION_BRIGHTNESS_CONTRAST);
-  g_type_class_ref (GIMP_TYPE_OPERATION_CAGE_COEF_CALC);
-  g_type_class_ref (GIMP_TYPE_OPERATION_CAGE_TRANSFORM);
-  g_type_class_ref (GIMP_TYPE_OPERATION_COLOR_BALANCE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_COLORIZE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_CURVES);
-  g_type_class_ref (GIMP_TYPE_OPERATION_DESATURATE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_HUE_SATURATION);
-  g_type_class_ref (GIMP_TYPE_OPERATION_LEVELS);
-  g_type_class_ref (GIMP_TYPE_OPERATION_POSTERIZE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_THRESHOLD);
-
-  g_type_class_ref (GIMP_TYPE_OPERATION_POINT_LAYER_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_DISSOLVE_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_BEHIND_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_MULTIPLY_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_SCREEN_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_OVERLAY_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_DIFFERENCE_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_ADDITION_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_SUBTRACT_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_DARKEN_ONLY_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_LIGHTEN_ONLY_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_HUE_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_SATURATION_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_COLOR_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_VALUE_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_DIVIDE_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_DODGE_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_BURN_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_HARDLIGHT_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_SOFTLIGHT_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_GRAIN_EXTRACT_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_GRAIN_MERGE_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_COLOR_ERASE_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_ERASE_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_REPLACE_MODE);
-  g_type_class_ref (GIMP_TYPE_OPERATION_ANTI_ERASE_MODE);
+  gimp_operations_init (gimp);
 }
 
 static void
-gimp_gegl_notify_tile_cache_size (GimpBaseConfig *config)
+gimp_gegl_notify_tile_cache_size (GimpGeglConfig *config)
 {
   g_object_set (gegl_config (),
-                "cache-size", (gint) MIN (config->tile_cache_size, G_MAXINT),
+                "tile-cache-size", (guint64) config->tile_cache_size,
+                NULL);
+}
+
+static void
+gimp_gegl_notify_num_processors (GimpGeglConfig *config)
+{
+  g_object_set (gegl_config (),
+                "threads", config->num_processors,
+                NULL);
+}
+
+static void
+gimp_gegl_notify_use_opencl (GimpGeglConfig *config)
+{
+  g_object_set (gegl_config (),
+                "use-opencl", config->use_opencl,
                 NULL);
 }

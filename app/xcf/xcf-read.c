@@ -17,48 +17,59 @@
 
 #include "config.h"
 
-#include <stdio.h>
-
-#include <glib-object.h>
+#include <gio/gio.h>
 
 #include "libgimpbase/gimpbase.h"
 
+#include "core/core-types.h"
+
+#include "xcf-private.h"
 #include "xcf-read.h"
 
 #include "gimp-intl.h"
 
-/**
- * SECTION:xcf-read
- * @Short_description:XCF reading functions
- *
- * Low-level XCF reading functions
- */
 
-/**
- * MAX_XCF_STRING_LEN:
-<<<<<<< Upstream, based on origin/osx-build
- *
- * Maximum length of a string in an XCF file ((16L * 1024 * 1024) bytes)
-=======
- * @MAX_XCF_STRING_LEN: maximum length of a string in an XCF file
- * ((16L * 1024 * 1024) bytes)
->>>>>>> 059857a API-doc minor fixes
- */
 #define MAX_XCF_STRING_LEN (16L * 1024 * 1024)
 
-/**
- * xcf_read_int32:
- * @fp:    input file stream
- * @data:  destination data array
- * @count: number of words to read
- *
- * Read @count 4-byte-words from @fp into @data.
- * The functions respects the machine specific byte order.
- *
- * Returns: number of read bytes (not words)
- */
+
 guint
-xcf_read_int32 (FILE    *fp,
+xcf_read_int8 (XcfInfo *info,
+               guint8  *data,
+               gint     count)
+{
+  gsize bytes_read;
+
+  g_input_stream_read_all (info->input, data, count,
+                           &bytes_read, NULL, NULL);
+
+  info->cp += bytes_read;
+
+  return bytes_read;
+}
+
+guint
+xcf_read_int16 (XcfInfo *info,
+                guint16 *data,
+                gint     count)
+{
+  guint total = 0;
+
+  if (count > 0)
+    {
+      total += xcf_read_int8 (info, (guint8 *) data, count * 2);
+
+      while (count--)
+        {
+          *data = g_ntohs (*data);
+          data++;
+        }
+    }
+
+  return total;
+}
+
+guint
+xcf_read_int32 (XcfInfo *info,
                 guint32 *data,
                 gint     count)
 {
@@ -66,7 +77,7 @@ xcf_read_int32 (FILE    *fp,
 
   if (count > 0)
     {
-      total += xcf_read_int8 (fp, (guint8 *) data, count * 4);
+      total += xcf_read_int8 (info, (guint8 *) data, count * 4);
 
       while (count--)
         {
@@ -78,72 +89,76 @@ xcf_read_int32 (FILE    *fp,
   return total;
 }
 
-/**
- * xcf_read_float:
- * @fp:    input file stream
- * @data:  destination data array
- * @count: number of words to read
- *
- * Read @count float values from @fp into @data.
- *
- * Returns: number of read bytes
- */
 guint
-xcf_read_float (FILE   *fp,
-                gfloat *data,
-                gint    count)
-{
-  return xcf_read_int32 (fp, (guint32 *) ((void *) data), count);
-}
-
-/**
- * xcf_read_int8:
- * @fp:    input file stream
- * @data:  destination data array
- * @count: number of bytes to read
- *
- * Read @count bytes from @fp into @data.
- *
- * Returns: number of read bytes
- */
-guint
-xcf_read_int8 (FILE   *fp,
-               guint8 *data,
-               gint    count)
+xcf_read_int64 (XcfInfo *info,
+                guint64 *data,
+                gint     count)
 {
   guint total = 0;
 
-  while (count > 0)
+  if (count > 0)
     {
-      gint bytes = fread ((char *) data, sizeof (char), count, fp);
+      total += xcf_read_int8 (info, (guint8 *) data, count * 8);
 
-      if (bytes <= 0) /* something bad happened */
-        break;
-
-      total += bytes;
-
-      count -= bytes;
-      data += bytes;
+      while (count--)
+        {
+          *data = GINT64_FROM_BE (*data);
+          data++;
+        }
     }
 
   return total;
 }
 
-/**
- * xcf_read_string:
- * @fp:    input file stream
- * @data:  destination data array
- * @count: number of strings to read
- *
- * Read @count bytes from @fp into @data
- * and convert them to UTF8.
- *
- * Returns: number of read bytes
- */
 guint
-xcf_read_string (FILE   *fp,
-                 gchar **data,
-                 gint    count)
+xcf_read_offset (XcfInfo *info,
+                 goffset *data,
+                 gint     count)
+{
+  guint total = 0;
+
+  if (count > 0)
+    {
+      if (info->bytes_per_offset == 4)
+        {
+          gint32 *int_offsets = g_alloca (count * sizeof (gint32));
+
+          total += xcf_read_int8 (info, (guint8 *) int_offsets, count * 4);
+
+          while (count--)
+            {
+              *data = g_ntohl (*int_offsets);
+              int_offsets++;
+              data++;
+            }
+        }
+      else
+        {
+          total += xcf_read_int8 (info, (guint8 *) data, count * 8);
+
+          while (count--)
+            {
+              *data = GINT64_FROM_BE (*data);
+              data++;
+            }
+        }
+    }
+
+  return total;
+}
+
+guint
+xcf_read_float (XcfInfo *info,
+                gfloat  *data,
+                gint     count)
+{
+  return xcf_read_int32 (info, (guint32 *) ((void *) data), count);
+}
+
+guint
+xcf_read_string (XcfInfo  *info,
+                 gchar   **data,
+                 gint      count)
 {
   guint total = 0;
   gint  i;
@@ -152,7 +167,7 @@ xcf_read_string (FILE   *fp,
     {
       guint32 tmp;
 
-      total += xcf_read_int32 (fp, &tmp, 1);
+      total += xcf_read_int32 (info, &tmp, 1);
 
       if (tmp > MAX_XCF_STRING_LEN)
         {
@@ -165,7 +180,7 @@ xcf_read_string (FILE   *fp,
           gchar *str;
 
           str = g_new (gchar, tmp);
-          total += xcf_read_int8 (fp, (guint8*) str, tmp);
+          total += xcf_read_int8 (info, (guint8*) str, tmp);
 
           if (str[tmp - 1] != '\0')
             str[tmp - 1] = '\0';
@@ -182,4 +197,72 @@ xcf_read_string (FILE   *fp,
     }
 
   return total;
+}
+
+guint
+xcf_read_component (XcfInfo *info,
+                    gint     bpc,
+                    guint8  *data,
+                    gint     count)
+{
+  switch (bpc)
+    {
+    case 1:
+      return xcf_read_int8 (info, data, count);
+
+    case 2:
+      return xcf_read_int16 (info, (guint16 *) data, count);
+
+    case 4:
+      return xcf_read_int32 (info, (guint32 *) data, count);
+
+    case 8:
+      return xcf_read_int64 (info, (guint64 *) data, count);
+
+    default:
+      break;
+    }
+
+  return 0;
+}
+
+void
+xcf_read_from_be (gint    bpc,
+                  guint8 *data,
+                  gint    count)
+{
+  gint i;
+
+  switch (bpc)
+    {
+    case 1:
+      break;
+
+    case 2:
+      {
+        guint16 *d = (guint16 *) data;
+
+        for (i = 0; i < count; i++)
+          d[i] = g_ntohs (d[i]);
+      }
+      break;
+
+    case 4:
+      {
+        guint32 *d = (guint32 *) data;
+
+        for (i = 0; i < count; i++)
+          d[i] = g_ntohl (d[i]);
+      }
+      break;
+
+    case 8:
+      {
+        guint64 *d = (guint64 *) data;
+
+        for (i = 0; i < count; i++)
+          d[i] = GINT64_FROM_BE (d[i]);
+      }
+      break;
+    }
 }

@@ -131,7 +131,7 @@ img_new_layer(PyGimpImage *self, PyObject *args, PyObject *kwargs)
     gboolean alpha = TRUE;
     int pos = -1;
     double opacity = 100.0;
-    GimpLayerModeEffects mode = GIMP_NORMAL_MODE;
+    GimpLayerMode mode = GIMP_LAYER_MODE_NORMAL;
     GimpFillType fill_mode = -1;
 
     static char *kwlist[] = { "name", "width", "height", "offset_x", "offset_y",
@@ -167,7 +167,7 @@ img_new_layer(PyGimpImage *self, PyObject *args, PyObject *kwargs)
     }
 
     if (fill_mode == -1)
-        fill_mode = alpha ? GIMP_TRANSPARENT_FILL: GIMP_BACKGROUND_FILL;
+        fill_mode = alpha ? GIMP_FILL_TRANSPARENT: GIMP_FILL_BACKGROUND;
 
 
     layer_id = gimp_layer_new(self->ID, layer_name, width, height,
@@ -732,12 +732,10 @@ img_parasite_list(PyGimpImage *self)
 
     ret = PyTuple_New(num_parasites);
 
-    for (i = 0; i < num_parasites; i++) {
+    for (i = 0; i < num_parasites; i++)
         PyTuple_SetItem(ret, i, PyString_FromString(parasites[i]));
-        g_free(parasites[i]);
-    }
 
-    g_free(parasites);
+    g_strfreev(parasites);
     return ret;
 }
 
@@ -1281,6 +1279,13 @@ img_get_width(PyGimpImage *self, void *closure)
     return PyInt_FromLong(gimp_image_width(self->ID));
 }
 
+
+static PyObject *
+img_get_precision(PyGimpImage *self, void *closure)
+{
+    return PyInt_FromLong(gimp_image_get_precision(self->ID));
+}
+
 static PyObject *
 img_get_resolution(PyGimpImage *self, void *closure)
 {
@@ -1422,6 +1427,7 @@ static PyGetSetDef img_getsets[] = {
     { "height", (getter)img_get_height, (setter)0 },
     { "layers", (getter)img_get_layers, (setter)0 },
     { "name", (getter)img_get_name, (setter)0 },
+    { "precision", (getter)img_get_precision, (setter)0 },
     { "resolution", (getter)img_get_resolution, (setter)img_set_resolution },
     { "selection", (getter)img_get_selection, (setter)0 },
     { "tattoo_state", (getter)img_get_tattoo_state,

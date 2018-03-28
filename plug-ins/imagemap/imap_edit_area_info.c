@@ -25,9 +25,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <gtk/gtk.h>
-
-#include "libgimpwidgets/gimpwidgets.h"
+#include "libgimp/gimp.h"
+#include "libgimp/gimpui.h"
 
 #include "imap_browse.h"
 #include "imap_commands.h"
@@ -178,7 +177,7 @@ append_page (GtkWidget *notebook, GtkWidget *page, const gchar *icon_name,
    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 1);
    gtk_widget_show(hbox);
 
-   icon = gtk_image_new_from_stock (icon_name, GTK_ICON_SIZE_MENU);
+   icon = gtk_image_new_from_icon_name (icon_name, GTK_ICON_SIZE_MENU);
    gtk_box_pack_start (GTK_BOX (hbox), icon, FALSE, FALSE, 0);
    gtk_widget_show (icon);
 
@@ -282,7 +281,7 @@ create_link_tab(AreaInfoDialog_t *dialog, GtkWidget *notebook)
    label = create_label_in_table(table, 9, 0, _("ALT te_xt: (optional)"));
    dialog->comment = create_entry_in_table(table, label, 10, 0);
 
-   append_page (notebook, table, GIMP_STOCK_WEB, _("_Link"));
+   append_page (notebook, table, GIMP_ICON_WEB, _("_Link"));
 }
 
 static void

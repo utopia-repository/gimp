@@ -136,7 +136,7 @@ query (void)
     "values result in more subtle pen strokes and detail everywhere. Small "
     "values for the pct_black make the blend from the color regions to the "
     "black border lines smoother and the lines themselves thinner and less "
-    "noticable; larger values achieve the opposite effect.";
+    "noticeable; larger values achieve the opposite effect.";
 
   gimp_install_procedure (PLUG_IN_PROC,
                           N_("Simulate a cartoon by enhancing edges"),
@@ -144,7 +144,7 @@ query (void)
                           "Spencer Kimball",
                           "Bit Specialists, Inc.",
                           "2001",
-                          N_("Ca_rtoon..."),
+                          N_("Ca_rtoon (legacy)..."),
                           "RGB*, GRAY*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
@@ -810,8 +810,8 @@ cartoon_dialog (GimpDrawable *drawable)
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -828,7 +828,7 @@ cartoon_dialog (GimpDrawable *drawable)
                       main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_drawable_preview_new (drawable, NULL);
+  preview = gimp_drawable_preview_new_from_drawable_id (drawable->drawable_id);
   gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
 

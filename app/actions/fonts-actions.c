@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -39,12 +40,12 @@
 
 static const GimpActionEntry fonts_actions[] =
 {
-  { "fonts-popup", GIMP_STOCK_FONT,
+  { "fonts-popup", GIMP_ICON_FONT,
     NC_("fonts-action", "Fonts Menu"), NULL, NULL, NULL,
     GIMP_HELP_FONT_DIALOG },
 
-  { "fonts-refresh", GTK_STOCK_REFRESH,
-    NC_("fonts-action", "_Rescan Font List"), "",
+  { "fonts-refresh", GIMP_ICON_VIEW_REFRESH,
+    NC_("fonts-action", "_Rescan Font List"), NULL,
     NC_("fonts-action", "Rescan the installed fonts"),
     G_CALLBACK (fonts_refresh_cmd_callback),
     GIMP_HELP_FONT_REFRESH }

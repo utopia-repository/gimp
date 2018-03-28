@@ -120,42 +120,42 @@ gimp_text_buffer_serialize (GtkTextBuffer     *register_buffer,
 
       /* Handle added tags */
       for (tmp = tag_list; tmp; tmp = tmp->next)
-	{
-	  GtkTextTag *tag = tmp->data;
+        {
+          GtkTextTag *tag = tmp->data;
 
           open_tag (GIMP_TEXT_BUFFER (register_buffer), string, tag);
 
-	  active_tags = g_slist_prepend (active_tags, tag);
-	}
+          active_tags = g_slist_prepend (active_tags, tag);
+        }
 
       g_slist_free (tag_list);
       old_iter = iter;
 
       /* Now try to go to either the next tag toggle, or if a pixbuf appears */
       while (TRUE)
-	{
-	  gunichar ch = gtk_text_iter_get_char (&iter);
+        {
+          gunichar ch = gtk_text_iter_get_char (&iter);
 
-	  if (ch == 0xFFFC)
-	    {
-	      /* pixbuf? can't happen! */
-	    }
+          if (ch == 0xFFFC)
+            {
+              /* pixbuf? can't happen! */
+            }
           else if (ch == 0)
             {
               break;
             }
-	  else
+          else
             {
               gtk_text_iter_forward_char (&iter);
             }
 
-	  if (gtk_text_iter_toggles_tag (&iter, NULL))
-	    break;
-	}
+          if (gtk_text_iter_toggles_tag (&iter, NULL))
+            break;
+        }
 
       /* We might have moved too far */
       if (gtk_text_iter_compare (&iter, end) > 0)
-	iter = *end;
+        iter = *end;
 
       /* Append the text */
       tmp_text = gtk_text_iter_get_slice (&old_iter, &iter);
@@ -205,6 +205,13 @@ typedef struct
   gchar  *text;
   GSList *tags;
 } TextSpan;
+
+static void set_error (GError              **err,
+                       GMarkupParseContext  *context,
+                       int                   error_domain,
+                       int                   error_code,
+                       const char           *format,
+                       ...) G_GNUC_PRINTF (5, 6);
 
 static void
 set_error (GError              **err,
@@ -286,9 +293,9 @@ parse_tag_element (GMarkupParseContext  *context,
   const gchar *attribute_name  = NULL;
   const gchar *attribute_value = NULL;
 
-  g_assert (peek_state (info) == STATE_MARKUP ||
-	    peek_state (info) == STATE_TAG    ||
-            peek_state (info) == STATE_UNKNOWN);
+  gimp_assert (peek_state (info) == STATE_MARKUP ||
+               peek_state (info) == STATE_TAG    ||
+               peek_state (info) == STATE_UNKNOWN);
 
   if (attribute_names)
     attribute_name = attribute_names[0];
@@ -314,11 +321,11 @@ parse_tag_element (GMarkupParseContext  *context,
 
 static void
 start_element_handler (GMarkupParseContext  *context,
-		       const gchar          *element_name,
-		       const gchar         **attribute_names,
-		       const gchar         **attribute_values,
-		       gpointer              user_data,
-		       GError              **error)
+                       const gchar          *element_name,
+                       const gchar         **attribute_names,
+                       const gchar         **attribute_values,
+                       gpointer              user_data,
+                       GError              **error)
 {
   ParseInfo *info = user_data;
 
@@ -326,15 +333,15 @@ start_element_handler (GMarkupParseContext  *context,
     {
     case STATE_START:
       if (! strcmp (element_name, "markup"))
-	{
-	  if (! check_no_attributes (context, element_name,
+        {
+          if (! check_no_attributes (context, element_name,
                                      attribute_names, attribute_values,
                                      error))
-	    return;
+            return;
 
-	  push_state (info, STATE_MARKUP);
-	  break;
-	}
+          push_state (info, STATE_MARKUP);
+          break;
+        }
       else
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
@@ -352,16 +359,16 @@ start_element_handler (GMarkupParseContext  *context,
       break;
 
     default:
-      g_assert_not_reached ();
+      gimp_assert_not_reached ();
       break;
     }
 }
 
 static void
 end_element_handler (GMarkupParseContext  *context,
-		     const gchar          *element_name,
-		     gpointer              user_data,
-		     GError              **error)
+                     const gchar          *element_name,
+                     gpointer              user_data,
+                     GError              **error)
 {
   ParseInfo *info = user_data;
 
@@ -369,31 +376,31 @@ end_element_handler (GMarkupParseContext  *context,
     {
     case STATE_UNKNOWN:
       pop_state (info);
-      g_assert (peek_state (info) == STATE_UNKNOWN ||
-                peek_state (info) == STATE_TAG     ||
-		peek_state (info) == STATE_MARKUP);
+      gimp_assert (peek_state (info) == STATE_UNKNOWN ||
+                   peek_state (info) == STATE_TAG     ||
+                   peek_state (info) == STATE_MARKUP);
       break;
 
     case STATE_TAG:
       pop_state (info);
-      g_assert (peek_state (info) == STATE_UNKNOWN ||
-                peek_state (info) == STATE_TAG     ||
-		peek_state (info) == STATE_MARKUP);
+      gimp_assert (peek_state (info) == STATE_UNKNOWN ||
+                   peek_state (info) == STATE_TAG     ||
+                   peek_state (info) == STATE_MARKUP);
 
       /* Pop tag */
       info->tag_stack = g_slist_delete_link (info->tag_stack,
-					     info->tag_stack);
+                                             info->tag_stack);
       break;
 
     case STATE_MARKUP:
       pop_state (info);
-      g_assert (peek_state (info) == STATE_START);
+      gimp_assert (peek_state (info) == STATE_START);
 
       info->spans = g_list_reverse (info->spans);
       break;
 
     default:
-      g_assert_not_reached ();
+      gimp_assert_not_reached ();
       break;
     }
 }
@@ -418,10 +425,10 @@ all_whitespace (const char *text,
 
 static void
 text_handler (GMarkupParseContext  *context,
-	      const gchar          *text,
-	      gsize                 text_len,
-	      gpointer              user_data,
-	      GError              **error)
+              const gchar          *text,
+              gsize                 text_len,
+              gpointer              user_data,
+              GError              **error)
 {
   ParseInfo *info = user_data;
   TextSpan  *span;
@@ -435,14 +442,14 @@ text_handler (GMarkupParseContext  *context,
   switch (peek_state (info))
     {
     case STATE_START:
-      g_assert_not_reached (); /* gmarkup shouldn't do this */
+      gimp_assert_not_reached (); /* gmarkup shouldn't do this */
       break;
 
     case STATE_MARKUP:
     case STATE_TAG:
     case STATE_UNKNOWN:
       if (text_len == 0)
-	return;
+        return;
 
       span = g_new0 (TextSpan, 1);
       span->text = g_strndup (text, text_len);
@@ -452,14 +459,14 @@ text_handler (GMarkupParseContext  *context,
       break;
 
     default:
-      g_assert_not_reached ();
+      gimp_assert_not_reached ();
       break;
     }
 }
 
 static void
 parse_info_init (ParseInfo     *info,
-		 GtkTextBuffer *register_buffer,
+                 GtkTextBuffer *register_buffer,
                  GtkTextBuffer *content_buffer)
 {
   info->states          = g_slist_prepend (NULL, GINT_TO_POINTER (STATE_START));
@@ -488,7 +495,7 @@ parse_info_free (ParseInfo *info)
 
 static void
 insert_text (ParseInfo   *info,
-	     GtkTextIter *iter)
+             GtkTextIter *iter)
 {
   GtkTextIter  start_iter;
   GtkTextMark *mark;
@@ -499,25 +506,25 @@ insert_text (ParseInfo   *info,
 
   mark = gtk_text_buffer_create_mark (info->content_buffer,
                                       "deserialize-insert-point",
-  				      &start_iter, TRUE);
+                                      &start_iter, TRUE);
 
   for (tmp = info->spans; tmp; tmp = tmp->next)
     {
       TextSpan *span = tmp->data;
 
       if (span->text)
-	gtk_text_buffer_insert (info->content_buffer, iter, span->text, -1);
+        gtk_text_buffer_insert (info->content_buffer, iter, span->text, -1);
 
       gtk_text_buffer_get_iter_at_mark (info->content_buffer, &start_iter, mark);
 
       /* Apply tags */
       for (tags = span->tags; tags; tags = tags->next)
-	{
-	  GtkTextTag *tag = tags->data;
+        {
+          GtkTextTag *tag = tags->data;
 
-	  gtk_text_buffer_apply_tag (info->content_buffer, tag,
-				     &start_iter, iter);
-	}
+          gtk_text_buffer_apply_tag (info->content_buffer, tag,
+                                     &start_iter, iter);
+        }
 
       gtk_text_buffer_move_mark (info->content_buffer, mark, iter);
     }

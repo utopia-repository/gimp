@@ -23,7 +23,7 @@
 #include "stdlib.h"
 #include "string.h"
 
-#include <glib-object.h>
+#include <gio/gio.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpbase/gimpbase-private.h"
@@ -68,8 +68,6 @@ main (int   argc,
           g_log_set_always_fatal (fatal_mask);
         }
     }
-
-  g_type_init ();
 
   units_init ();
 
@@ -196,7 +194,7 @@ notify_callback (GObject    *object,
                  GParamSpec *pspec)
 {
   GString *str;
-  GValue   value = { 0, };
+  GValue   value = G_VALUE_INIT;
 
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));

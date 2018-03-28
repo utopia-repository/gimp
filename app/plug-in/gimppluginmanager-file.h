@@ -31,15 +31,40 @@ gboolean   gimp_plug_in_manager_register_save_handler (GimpPlugInManager *manage
                                                        const gchar       *extensions,
                                                        const gchar       *prefixes);
 
-gboolean   gimp_plug_in_manager_register_mime_type    (GimpPlugInManager *manager,
+gboolean   gimp_plug_in_manager_register_mime_types   (GimpPlugInManager *manager,
                                                        const gchar       *name,
-                                                       const gchar       *mime_type);
+                                                       const gchar       *mime_types);
+
+gboolean   gimp_plug_in_manager_register_handles_uri  (GimpPlugInManager *manager,
+                                                       const gchar       *name);
+
+gboolean   gimp_plug_in_manager_register_handles_raw  (GimpPlugInManager *manager,
+                                                       const gchar       *name);
 
 gboolean   gimp_plug_in_manager_register_thumb_loader (GimpPlugInManager *manager,
                                                        const gchar       *load_proc,
                                                        const gchar       *thumb_proc);
-gboolean   gimp_plug_in_manager_uri_has_exporter      (GimpPlugInManager *manager,
-                                                       const gchar       *uri);
+
+GSList   * gimp_plug_in_manager_get_file_procedures   (GimpPlugInManager      *manager,
+                                                       GimpFileProcedureGroup  group);
+
+GimpPlugInProcedure *
+gimp_plug_in_manager_file_procedure_find              (GimpPlugInManager      *manager,
+                                                       GimpFileProcedureGroup  group,
+                                                       GFile                  *file,
+                                                       GError                **error);
+GimpPlugInProcedure *
+gimp_plug_in_manager_file_procedure_find_by_prefix    (GimpPlugInManager      *manager,
+                                                       GimpFileProcedureGroup  group,
+                                                       GFile                  *file);
+GimpPlugInProcedure *
+gimp_plug_in_manager_file_procedure_find_by_extension (GimpPlugInManager      *manager,
+                                                       GimpFileProcedureGroup  group,
+                                                       GFile                  *file);
+GimpPlugInProcedure *
+gimp_plug_in_manager_file_procedure_find_by_mime_type (GimpPlugInManager      *manager,
+                                                       GimpFileProcedureGroup  group,
+                                                       const gchar            *mime_type);
 
 
 #endif /* __GIMP_PLUG_IN_MANAGER_FILE_H__ */

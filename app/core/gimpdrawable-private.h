@@ -20,24 +20,19 @@
 
 struct _GimpDrawablePrivate
 {
-  GimpImageType  type;   /* type of drawable        */
+  GeglBuffer     *buffer; /* buffer for drawable data */
+  GeglBuffer     *shadow; /* shadow buffer            */
 
-  TileManager   *tiles;  /* tiles for drawable data */
-  TileManager   *shadow; /* shadow buffer tiles     */
+  GeglNode       *source_node;
+  GeglNode       *buffer_source_node;
+  GimpContainer  *filter_stack;
 
-  GeglNode      *source_node;
-  GeglNode      *tile_source_node;
+  GimpLayer      *floating_selection;
+  GimpFilter     *fs_filter;
+  GeglNode       *fs_crop_node;
+  GimpApplicator *fs_applicator;
 
-  GimpLayer     *floating_selection;
-  GeglNode      *fs_crop_node;
-  GeglNode      *fs_opacity_node;
-  GeglNode      *fs_offset_node;
-  GeglNode      *fs_mode_node;
-
-  GeglNode      *mode_node;
-
-  GSList        *preview_cache; /* preview caches of the channel */
-  gboolean       preview_valid; /* is the preview valid?         */
+  GeglNode       *mode_node;
 };
 
 #endif /* __GIMP_DRAWABLE_PRIVATE_H__ */

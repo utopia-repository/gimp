@@ -26,6 +26,7 @@
 #include "gimpprotocol.h"
 #include "gimpwire.h"
 
+static GMutex readwrite_mutex;
 
 static void _gp_quit_read                (GIOChannel       *channel,
                                           GimpWireMessage  *msg,
@@ -499,19 +500,19 @@ _gp_config_read (GIOChannel      *channel,
                               user_data))
     goto cleanup;
   if (! _gimp_wire_read_int8 (channel,
-                              (guint8 *) &config->gimp_reserved_5, 1,
+                              (guint8 *) &config->use_opencl, 1,
                               user_data))
     goto cleanup;
   if (! _gimp_wire_read_int8 (channel,
-                              (guint8 *) &config->gimp_reserved_6, 1,
+                              (guint8 *) &config->export_exif, 1,
                               user_data))
     goto cleanup;
   if (! _gimp_wire_read_int8 (channel,
-                              (guint8 *) &config->gimp_reserved_7, 1,
+                              (guint8 *) &config->export_xmp, 1,
                               user_data))
     goto cleanup;
   if (! _gimp_wire_read_int8 (channel,
-                              (guint8 *) &config->gimp_reserved_8, 1,
+                              (guint8 *) &config->export_iptc, 1,
                               user_data))
     goto cleanup;
   if (! _gimp_wire_read_int8 (channel,
@@ -591,19 +592,19 @@ _gp_config_write (GIOChannel      *channel,
                                user_data))
     return;
   if (! _gimp_wire_write_int8 (channel,
-                               (const guint8 *) &config->gimp_reserved_5, 1,
+                               (const guint8 *) &config->use_opencl, 1,
                                user_data))
     return;
   if (! _gimp_wire_write_int8 (channel,
-                               (const guint8 *) &config->gimp_reserved_6, 1,
+                               (const guint8 *) &config->export_exif, 1,
                                user_data))
     return;
   if (! _gimp_wire_write_int8 (channel,
-                               (const guint8 *) &config->gimp_reserved_7, 1,
+                               (const guint8 *) &config->export_xmp, 1,
                                user_data))
     return;
   if (! _gimp_wire_write_int8 (channel,
-                               (const guint8 *) &config->gimp_reserved_8, 1,
+                               (const guint8 *) &config->export_iptc, 1,
                                user_data))
     return;
   if (! _gimp_wire_write_int8 (channel,
@@ -1489,17 +1490,17 @@ _gp_params_read (GIOChannel  *channel,
             goto cleanup;
           break;
 
-	case GIMP_PDB_COLORARRAY:
-	  (*params)[i].data.d_colorarray = g_new (GimpRGB,
+        case GIMP_PDB_COLORARRAY:
+          (*params)[i].data.d_colorarray = g_new (GimpRGB,
                                                   (*params)[i-1].data.d_int32);
-	  if (! _gimp_wire_read_color (channel,
-                                        (*params)[i].data.d_colorarray,
-                                        (*params)[i-1].data.d_int32,
-                                        user_data))
-	    {
-	      g_free ((*params)[i].data.d_colorarray);
-	      goto cleanup;
-	    }
+          if (! _gimp_wire_read_color (channel,
+                                       (*params)[i].data.d_colorarray,
+                                       (*params)[i-1].data.d_int32,
+                                       user_data))
+            {
+              g_free ((*params)[i].data.d_colorarray);
+              goto cleanup;
+            }
           break;
 
         case GIMP_PDB_VECTORS:
@@ -1846,6 +1847,18 @@ gp_params_destroy (GPParam *params,
     }
 
   g_free (params);
+}
+
+void
+gp_lock (void)
+{
+  g_mutex_lock (&readwrite_mutex);
+}
+
+void
+gp_unlock (void)
+{
+  g_mutex_unlock (&readwrite_mutex);
 }
 
 /* has_init */

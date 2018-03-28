@@ -3,17 +3,16 @@
 # Sung-Hyun Nam <namsh@kldp.org>, 1999.
 # Dongsu Jang <iolo@hellocity.net>, 2004.
 # Ji-Hui Choi <like.a.dust@gmail.com>, 2007, 2012.
-# Jihui Choi <jihui.choi@gmail.com>, 2012, 2013.
 # Sebul <sebuls@gmail.com>, 2012.
-# Seong-ho Cho <darkcircle.0426@gmail.com>, 2012, 2013.
+# Seong-ho Cho <darkcircle.0426@gmail.com>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: GIMP 2.8\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gimp&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-12-12 05:17+0000\n"
-"PO-Revision-Date: 2013-11-28 15:25+0900\n"
+"POT-Creation-Date: 2012-09-09 09:01+0000\n"
+"PO-Revision-Date: 2012-09-09 19:18+0900\n"
 "Last-Translator: Seong-ho Cho <darkcircle.0426@gmail.com>\n"
 "Language-Team: \n"
 "Language: ko\n"
@@ -21,8 +20,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-Language: Korean\n"
+"X-Poedit-Country: KOREA, REPUBLIC OF\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.5.5\n"
 
 #: ../app/about.h:23
 msgid "GIMP"
@@ -68,7 +68,7 @@ msgstr ""
 "김프와 함께 GNU 일반 공증 허가서 사본을 받아야 합니다. 만약 그렇지 않다면, 다"
 "음을 참조하시기 바랍니다 http://www.gnu.org/licenses/."
 
-#: ../app/app.c:225
+#: ../app/app.c:224
 #, c-format
 msgid ""
 "Unable to open a test swap file.\n"
@@ -117,7 +117,7 @@ msgstr "사용자 인터페이스 없이 실행합니다"
 
 #: ../app/main.c:178
 msgid "Do not load brushes, gradients, patterns, ..."
-msgstr "무늬, 그라디언트, 색상표, 붓 등을 불러오지 않습니다…"
+msgstr "무늬, 그라디언트, 색상표, 붓 등을 불러오지 않습니다..."
 
 #: ../app/main.c:183
 msgid "Do not load any fonts"
@@ -383,7 +383,7 @@ msgid "Layers"
 msgstr "레이어"
 
 #: ../app/actions/actions.c:193 ../app/dialogs/dialogs.c:400
-#: ../app/widgets/gimppaletteeditor.c:148
+#: ../app/widgets/gimppaletteeditor.c:143
 msgid "Palette Editor"
 msgstr "팔레트 편집기"
 
@@ -432,11 +432,11 @@ msgid "Text Editor"
 msgstr "텍스트 편집기"
 
 #: ../app/actions/actions.c:223 ../app/dialogs/dialogs.c:298
-#: ../app/dialogs/preferences-dialog.c:1854 ../app/gui/gui.c:435
+#: ../app/dialogs/preferences-dialog.c:1854 ../app/gui/gui.c:424
 msgid "Tool Options"
 msgstr "도구 옵션"
 
-#: ../app/actions/actions.c:226 ../app/widgets/gimptoolpalette.c:391
+#: ../app/actions/actions.c:226 ../app/widgets/gimptoolpalette.c:388
 msgid "Tools"
 msgstr "도구"
 
@@ -965,13 +965,13 @@ msgid "Use the composite color of all visible layers"
 msgstr "모든 보이는 레이어의 합성색을 사용합니다"
 
 #: ../app/actions/data-commands.c:89 ../app/actions/documents-commands.c:344
-#: ../app/actions/file-commands.c:201 ../app/dialogs/file-open-dialog.c:232
+#: ../app/actions/file-commands.c:194 ../app/dialogs/file-open-dialog.c:232
 #: ../app/dialogs/file-open-dialog.c:277
 #: ../app/dialogs/file-open-location-dialog.c:213
 #: ../app/dialogs/file-open-location-dialog.c:225
 #: ../app/display/gimpdisplayshell-dnd.c:592
-#: ../app/widgets/gimplayertreeview.c:736 ../app/widgets/gimptoolbox-dnd.c:168
-#: ../app/widgets/gimptoolbox.c:818
+#: ../app/widgets/gimplayertreeview.c:736 ../app/widgets/gimptoolbox-dnd.c:170
+#: ../app/widgets/gimptoolbox.c:833
 #, c-format
 msgid ""
 "Opening '%s' failed:\n"
@@ -1314,7 +1314,7 @@ msgstr "키보드 단축키(_K)"
 #: ../app/actions/dialogs-actions.c:247
 msgctxt "dialogs-action"
 msgid "Open the keyboard shortcuts editor"
-msgstr "키보드 단축키 편집기를 엽니다"
+msgstr "키보드단축키 편집기를 엽니다"
 
 #: ../app/actions/dialogs-actions.c:252
 msgctxt "dialogs-action"
@@ -1347,7 +1347,7 @@ msgid "About GIMP"
 msgstr "김프 정보입니다"
 
 #: ../app/actions/dialogs-actions.c:328
-#: ../app/dialogs/preferences-dialog.c:1944 ../app/widgets/gimptoolbox.c:540
+#: ../app/dialogs/preferences-dialog.c:1944 ../app/widgets/gimptoolbox.c:555
 msgid "Toolbox"
 msgstr "도구상자"
 
@@ -2360,7 +2360,7 @@ msgstr "이 이미지를 저장하고 창을 닫습니다"
 
 #: ../app/actions/file-actions.c:146
 msgctxt "file-action"
-msgid "Export"
+msgid "Export to"
 msgstr "내보내기"
 
 #: ../app/actions/file-actions.c:147
@@ -2380,8 +2380,8 @@ msgstr "이미지를 불러온 파일 형식을 이용하여 해당 파일로 �
 
 #: ../app/actions/file-actions.c:158
 msgctxt "file-action"
-msgid "Export As..."
-msgstr "다른 이름으로 내보내기..."
+msgid "Export..."
+msgstr "내보내기(_X)..."
 
 #: ../app/actions/file-actions.c:159
 msgctxt "file-action"
@@ -2399,53 +2399,52 @@ msgid "Over_write %s"
 msgstr "%s 덮어쓰기(_W)"
 
 #: ../app/actions/file-actions.c:306
-msgid "Export"
+msgid "Export to"
 msgstr "내보내기"
 
-#: ../app/actions/file-commands.c:119 ../app/actions/file-commands.c:496
+#: ../app/actions/file-commands.c:112 ../app/actions/file-commands.c:489
 #: ../app/dialogs/file-open-dialog.c:77
 msgid "Open Image"
 msgstr "이미지 열기"
 
-#: ../app/actions/file-commands.c:140
+#: ../app/actions/file-commands.c:133
 msgid "Open Image as Layers"
 msgstr "이미지를 레이어로 열기"
 
-#: ../app/actions/file-commands.c:272
+#: ../app/actions/file-commands.c:265
 msgid "No changes need to be saved"
 msgstr "저장할 변화가 없습니다"
 
-#: ../app/actions/file-commands.c:279 ../app/actions/file-commands.c:700
-#: ../app/dialogs/file-save-dialog.c:103
+#: ../app/actions/file-commands.c:272 ../app/dialogs/file-save-dialog.c:95
 msgid "Save Image"
 msgstr "이미지 저장"
 
-#: ../app/actions/file-commands.c:285
+#: ../app/actions/file-commands.c:278
 msgid "Save a Copy of the Image"
 msgstr "이미지의 사본을 저장"
 
-#: ../app/actions/file-commands.c:370
+#: ../app/actions/file-commands.c:363
 msgid "Create New Template"
 msgstr "새 양식 만들기"
 
-#: ../app/actions/file-commands.c:374
+#: ../app/actions/file-commands.c:367
 msgid "Enter a name for this template"
 msgstr "이 양식의 이름을 입력하십시오"
 
-#: ../app/actions/file-commands.c:404
+#: ../app/actions/file-commands.c:397
 msgid "Revert failed. No file name associated with this image."
 msgstr "원상 복구 실패. 이 이미지에 해당되는 파일이 없습니다."
 
-#: ../app/actions/file-commands.c:416
+#: ../app/actions/file-commands.c:409
 msgid "Revert Image"
 msgstr "이미지 원상 복구"
 
-#: ../app/actions/file-commands.c:442
+#: ../app/actions/file-commands.c:435
 #, c-format
 msgid "Revert '%s' to '%s'?"
 msgstr "'%s'을(를) '%s'(으)로 되돌리겠습니까?"
 
-#: ../app/actions/file-commands.c:448
+#: ../app/actions/file-commands.c:441
 msgid ""
 "By reverting the image to the state saved on disk, you will lose all "
 "changes, including all undo information."
@@ -2453,11 +2452,11 @@ msgstr ""
 "이미지를 디스크에 저장된 상태로 되돌릴 경우, 실행 취소 정보를 포함한 바꾼 내"
 "용 모두를 잃게 됩니다."
 
-#: ../app/actions/file-commands.c:730
+#: ../app/actions/file-commands.c:652
 msgid "(Unnamed Template)"
 msgstr "(이름 없는 양식)"
 
-#: ../app/actions/file-commands.c:781
+#: ../app/actions/file-commands.c:703
 #, c-format
 msgid ""
 "Reverting to '%s' failed:\n"
@@ -3197,7 +3196,7 @@ msgid "Set Image Canvas Size"
 msgstr "캔버스 크기 지정"
 
 #: ../app/actions/image-commands.c:266 ../app/actions/image-commands.c:290
-#: ../app/actions/image-commands.c:594
+#: ../app/actions/image-commands.c:583
 msgid "Resizing"
 msgstr "크기 바꾸기"
 
@@ -3224,21 +3223,21 @@ msgstr "회전"
 msgid "Cannot crop because the current selection is empty."
 msgstr "선택이 비어 있으므로, 잘라낼 수 없습니다."
 
-#: ../app/actions/image-commands.c:641
+#: ../app/actions/image-commands.c:630
 msgid "Change Print Size"
 msgstr "인쇄 크기 바꾸기"
 
-#: ../app/actions/image-commands.c:682
+#: ../app/actions/image-commands.c:671
 msgid "Scale Image"
 msgstr "이미지 크기 조정"
 
 #. Scaling
-#: ../app/actions/image-commands.c:693 ../app/actions/layers-commands.c:1145
+#: ../app/actions/image-commands.c:682 ../app/actions/layers-commands.c:1145
 #: ../app/dialogs/preferences-dialog.c:1899
 #: ../app/pdb/drawable-transform-cmds.c:783
 #: ../app/pdb/drawable-transform-cmds.c:872 ../app/pdb/image-cmds.c:406
 #: ../app/pdb/image-cmds.c:442 ../app/pdb/item-transform-cmds.c:524
-#: ../app/pdb/layer-cmds.c:330 ../app/pdb/layer-cmds.c:375
+#: ../app/pdb/layer-cmds.c:333 ../app/pdb/layer-cmds.c:378
 #: ../app/pdb/transform-tools-cmds.c:334 ../app/tools/gimpscaletool.c:118
 msgid "Scaling"
 msgstr "비율 조정"
@@ -4585,7 +4584,7 @@ msgstr "텍스트 파일 열기(UTF-8)"
 
 #: ../app/actions/text-editor-commands.c:143
 #: ../app/actions/text-tool-commands.c:226 ../app/config/gimpconfig-file.c:58
-#: ../app/core/gimpbrush-load.c:142 ../app/core/gimpbrush-load.c:443
+#: ../app/core/gimpbrush-load.c:142 ../app/core/gimpbrush-load.c:426
 #: ../app/core/gimpbrushgenerated-load.c:73
 #: ../app/core/gimpbrushpipe-load.c:81 ../app/core/gimpcurve-load.c:54
 #: ../app/core/gimpgradient-load.c:63 ../app/core/gimppalette-load.c:77
@@ -5145,13 +5144,13 @@ msgstr "이 이미지를 새 창으로 보입니다"
 
 #: ../app/actions/view-actions.c:82
 msgctxt "view-action"
-msgid "_Close View"
-msgstr "뷰 닫기(_C)"
+msgid "_Close"
+msgstr "닫기(_C)"
 
 #: ../app/actions/view-actions.c:83
 msgctxt "view-action"
-msgid "Close the active image view"
-msgstr "활성화된 이미지 뷰를 닫습니다"
+msgid "Close this image window"
+msgstr "이미지 창 닫기"
 
 #: ../app/actions/view-actions.c:88
 msgctxt "view-action"
@@ -5582,11 +5581,11 @@ msgstr "기타(_R) (%s)..."
 msgid "_Zoom (%s)"
 msgstr "확대(_Z) (%s)"
 
-#: ../app/actions/view-commands.c:603
+#: ../app/actions/view-commands.c:585
 msgid "Set Canvas Padding Color"
 msgstr "캔버스 채우기 색상 지정"
 
-#: ../app/actions/view-commands.c:605
+#: ../app/actions/view-commands.c:587
 msgid "Set Custom Canvas Padding Color"
 msgstr "캔버스 채우기 색상 지정"
 
@@ -7252,8 +7251,8 @@ msgid "Jitter"
 msgstr "지터(Jitter)"
 
 #: ../app/core/gimp-contexts.c:154 ../app/core/gimptooloptions.c:375
-#: ../app/gui/session.c:408 ../app/menus/menus.c:466
-#: ../app/widgets/gimpdevices.c:208
+#: ../app/gui/session.c:399 ../app/menus/menus.c:464
+#: ../app/widgets/gimpdevices.c:206
 #, c-format
 msgid "Deleting \"%s\" failed: %s"
 msgstr "\"%s\" 삭제 실패: %s"
@@ -7326,7 +7325,7 @@ msgstr "전경색을 투명하게"
 msgid "tags-locale:C"
 msgstr "tags-locale:C"
 
-#: ../app/core/gimp-user-install.c:203
+#: ../app/core/gimp-user-install.c:173
 #, c-format
 msgid ""
 "It seems you have used GIMP %s before.  GIMP will now migrate your user "
@@ -7334,7 +7333,7 @@ msgid ""
 msgstr ""
 "이전에 김프 %s을(를) 사용했습니다. 사용자 설정을 '%s'용으로 변환할 것입니다."
 
-#: ../app/core/gimp-user-install.c:208
+#: ../app/core/gimp-user-install.c:178
 #, c-format
 msgid ""
 "It appears that you are using GIMP for the first time.  GIMP will now create "
@@ -7343,17 +7342,17 @@ msgstr ""
 "이는 김프를 처음 실행할 때 나타나는 화면입니다. 김프는 '%s'(이)라는 폴더를 만"
 "들고, 몇 개의 파일을 복사할 것입니다."
 
-#: ../app/core/gimp-user-install.c:359
+#: ../app/core/gimp-user-install.c:329
 #, c-format
 msgid "Copying file '%s' from '%s'..."
 msgstr "파일 '%s'을(를) '%s'(으)로부터 복사하고 있습니다..."
 
-#: ../app/core/gimp-user-install.c:374 ../app/core/gimp-user-install.c:400
+#: ../app/core/gimp-user-install.c:344 ../app/core/gimp-user-install.c:370
 #, c-format
 msgid "Creating folder '%s'..."
 msgstr "폴더 '%s'을(를) 만들고 있습니다..."
 
-#: ../app/core/gimp-user-install.c:385 ../app/core/gimp-user-install.c:411
+#: ../app/core/gimp-user-install.c:355 ../app/core/gimp-user-install.c:381
 #, c-format
 msgid "Cannot create folder '%s': %s"
 msgstr "폴더 '%s'을(를) 만들 수 없습니다: %s"
@@ -7429,8 +7428,8 @@ msgstr "붓 파일 '%s'에 치명적인 해석 오류: 알 수 없는 깊이 %d.
 msgid "Fatal parse error in brush file '%s': Unknown version %d."
 msgstr "붓 파일 '%s'에 쳐명적인 해석 오류: 알 수 없는 버전 %d."
 
-#: ../app/core/gimpbrush-load.c:273 ../app/core/gimpbrush-load.c:410
-#: ../app/core/gimpbrush-load.c:744
+#: ../app/core/gimpbrush-load.c:273 ../app/core/gimpbrush-load.c:393
+#: ../app/core/gimpbrush-load.c:727
 #, c-format
 msgid "Fatal parse error in brush file '%s': File appears truncated."
 msgstr "붓 파일 '%s'에 치명적인 해석 오류: 파일이 잘린 것 같습니다."
@@ -7447,19 +7446,7 @@ msgstr "붓 파일 '%s'에 잘못된 UTF-8 문자열이 있습니다."
 msgid "Unnamed"
 msgstr "이름없음"
 
-#: ../app/core/gimpbrush-load.c:354
-#, c-format
-msgid ""
-"Fatal parse error in brush file '%s': Unsupported brush depth %d\n"
-"GIMP brushes must be GRAY or RGBA.\n"
-"This might be an obsolete GIMP brush file, try loading it as image and save "
-"it again."
-msgstr ""
-"붓 파일 '%s'에 치명적인 해석 오류: 지원되지 않는 심도 %d입니다\n"
-"김프 붓은 GRAY나 RGBA여야 합니다.\n"
-"오래된 GIMP 붓 파일일 수 있으므로, 이미지로 불러오시고 다시 저장하십시오."
-
-#: ../app/core/gimpbrush-load.c:399
+#: ../app/core/gimpbrush-load.c:382
 #, c-format
 msgid ""
 "Fatal parse error in brush file '%s': Unsupported brush depth %d\n"
@@ -7468,13 +7455,13 @@ msgstr ""
 "붓 파일 '%s'에 치명적인 해석 오류: 지원되지 않는 심도 %d\n"
 "김프 붓은 GRAY나 RGBA여야 합니다."
 
-#: ../app/core/gimpbrush-load.c:471 ../app/core/gimpbrush-load.c:871
+#: ../app/core/gimpbrush-load.c:454 ../app/core/gimpbrush-load.c:854
 #, c-format
 msgid ""
 "Fatal parse error in brush file '%s': unable to decode abr format version %d."
 msgstr "붓 파일 '%s'에 치명적인 해석 오류: 알 수 없는 버전 %d."
 
-#: ../app/core/gimpbrush-load.c:638
+#: ../app/core/gimpbrush-load.c:621
 #, c-format
 msgid "Fatal parse error in brush file '%s': Wide brushes are not supported."
 msgstr ""
@@ -7543,6 +7530,7 @@ msgid "Brush Angle"
 msgstr "붓 각"
 
 #: ../app/core/gimpbrushpipe-load.c:113 ../app/core/gimpbrushpipe-load.c:133
+#: ../app/core/gimpbrushpipe-load.c:224
 #, c-format
 msgid "Fatal parse error in brush file '%s': File is corrupt."
 msgstr "붓 파일 '%s'에 치명적인 해석 오류: 파일이 손상되었습니다."
@@ -7728,7 +7716,7 @@ msgstr "불투명"
 msgid "Paint Mode"
 msgstr "그리기 모드"
 
-#: ../app/core/gimpdata.c:690
+#: ../app/core/gimpdata.c:670
 #, c-format
 msgid "Could not delete '%s': %s"
 msgstr "'%s'을(를) 지울 수 없습니다: %s"
@@ -7874,7 +7862,7 @@ msgid "Posterize"
 msgstr "포스터화"
 
 #: ../app/core/gimpdrawable-stroke.c:272
-#: ../app/paint/gimppaintcore-stroke.c:330 ../app/vectors/gimpvectors.c:556
+#: ../app/paint/gimppaintcore-stroke.c:333 ../app/vectors/gimpvectors.c:556
 msgid "Not enough points to stroke"
 msgstr "따라그릴 점이 더는 없습니다"
 
@@ -7957,7 +7945,7 @@ msgstr ""
 #, c-format
 msgid "Gradient file '%s' is corrupt: Segments do not span the range 0-1."
 msgstr ""
-"그라디언트 파일 '%s'이(가) 손상되었습니다: 구획이 0 과 1 사이에 있지 않습니"
+"그라디언트 파일 '%s'이(가) 손상되었습니다.: 구획이 0 과 1 사이에 있지 않습니"
 "다."
 
 #: ../app/core/gimpgradient-load.c:336
@@ -8054,17 +8042,12 @@ msgctxt "undo-type"
 msgid "Set Colormap"
 msgstr "색상표 설정"
 
-#: ../app/core/gimpimage-colormap.c:210
-msgctxt "undo-type"
-msgid "Unset Colormap"
-msgstr "색상표 설정 해제"
-
-#: ../app/core/gimpimage-colormap.c:263
+#: ../app/core/gimpimage-colormap.c:243
 msgctxt "undo-type"
 msgid "Change Colormap entry"
 msgstr "색상표 항목 바꾸기"
 
-#: ../app/core/gimpimage-colormap.c:291
+#: ../app/core/gimpimage-colormap.c:271
 msgctxt "undo-type"
 msgid "Add Color to Colormap"
 msgstr "색상표로 색상 추가"
@@ -8151,43 +8134,39 @@ msgctxt "undo-type"
 msgid "Merge Visible Layers"
 msgstr "보이는 레이어 합치"
 
-#: ../app/core/gimpimage-merge.c:195
+#: ../app/core/gimpimage-merge.c:178
 msgctxt "undo-type"
 msgid "Flatten Image"
 msgstr "이미지 평탄화"
 
-#: ../app/core/gimpimage-merge.c:217
-msgid "Cannot flatten an image without any visible layer."
-msgstr "보이는 레이어를 제외한 이미지를 평탄화 할 수 없습니다."
-
-#: ../app/core/gimpimage-merge.c:260
+#: ../app/core/gimpimage-merge.c:248
 msgid "Cannot merge down to a layer group."
 msgstr "레이어 그룹을 아래로 합칠 수 없습니다."
 
-#: ../app/core/gimpimage-merge.c:267
+#: ../app/core/gimpimage-merge.c:255
 msgid "The layer to merge down to is locked."
 msgstr "아래로 합친 레이어가 잠겨 있습니다."
 
-#: ../app/core/gimpimage-merge.c:279
+#: ../app/core/gimpimage-merge.c:267
 msgid "There is no visible layer to merge down to."
 msgstr "아래쪽에 합칠 수 있는 보이는 레이어가 없습니다."
 
-#: ../app/core/gimpimage-merge.c:289
+#: ../app/core/gimpimage-merge.c:277
 msgctxt "undo-type"
 msgid "Merge Down"
 msgstr "아래로 합치기"
 
-#: ../app/core/gimpimage-merge.c:317
+#: ../app/core/gimpimage-merge.c:305
 msgctxt "undo-type"
 msgid "Merge Layer Group"
 msgstr "레이어 그룹 합치기"
 
-#: ../app/core/gimpimage-merge.c:370
+#: ../app/core/gimpimage-merge.c:358
 msgctxt "undo-type"
 msgid "Merge Visible Paths"
 msgstr "보이는경로 합치기"
 
-#: ../app/core/gimpimage-merge.c:406
+#: ../app/core/gimpimage-merge.c:394
 msgid "Not enough visible paths for a merge. There must be at least two."
 msgstr "합치려면 두 개 이상의 보이는 경로가 필요합니다."
 
@@ -8220,7 +8199,7 @@ msgctxt "undo-type"
 msgid "Move Sample Point"
 msgstr "표본점 이동"
 
-#: ../app/core/gimpimage-scale.c:88
+#: ../app/core/gimpimage-scale.c:87
 msgctxt "undo-type"
 msgid "Scale Image"
 msgstr "이미지 크기 조절"
@@ -8230,69 +8209,69 @@ msgstr "이미지 크기 조절"
 msgid "Can't undo %s"
 msgstr "%s을(를) 취소할 수 없습니다"
 
-#: ../app/core/gimpimage.c:1784
+#: ../app/core/gimpimage.c:1783
 msgid " (exported)"
 msgstr " (추출됨)"
 
-#: ../app/core/gimpimage.c:1788
+#: ../app/core/gimpimage.c:1787
 msgid " (overwritten)"
 msgstr " (겹쳐써짐)"
 
-#: ../app/core/gimpimage.c:1797
+#: ../app/core/gimpimage.c:1796
 msgid " (imported)"
 msgstr " (가져옴)"
 
-#: ../app/core/gimpimage.c:1922
+#: ../app/core/gimpimage.c:1917
 msgctxt "undo-type"
 msgid "Change Image Resolution"
 msgstr "이미지 해상도 바꾸기"
 
-#: ../app/core/gimpimage.c:1974
+#: ../app/core/gimpimage.c:1969
 msgctxt "undo-type"
 msgid "Change Image Unit"
 msgstr "이미지 단위 바꾸기"
 
-#: ../app/core/gimpimage.c:2987
+#: ../app/core/gimpimage.c:2982
 msgctxt "undo-type"
 msgid "Attach Parasite to Image"
 msgstr "이미지에 기생충 덧붙이기"
 
-#: ../app/core/gimpimage.c:3028
+#: ../app/core/gimpimage.c:3023
 msgctxt "undo-type"
 msgid "Remove Parasite from Image"
 msgstr "이미지에서 기생충 제거"
 
-#: ../app/core/gimpimage.c:3737
+#: ../app/core/gimpimage.c:3732
 msgctxt "undo-type"
 msgid "Add Layer"
 msgstr "레이어 추가"
 
-#: ../app/core/gimpimage.c:3787 ../app/core/gimpimage.c:3807
+#: ../app/core/gimpimage.c:3782 ../app/core/gimpimage.c:3802
 msgctxt "undo-type"
 msgid "Remove Layer"
 msgstr "레이어 제거"
 
-#: ../app/core/gimpimage.c:3801
+#: ../app/core/gimpimage.c:3796
 msgctxt "undo-type"
 msgid "Remove Floating Selection"
 msgstr "뜬 선택 영역 제거"
 
-#: ../app/core/gimpimage.c:3969
+#: ../app/core/gimpimage.c:3964
 msgctxt "undo-type"
 msgid "Add Channel"
 msgstr "채널 추가"
 
-#: ../app/core/gimpimage.c:4007 ../app/core/gimpimage.c:4020
+#: ../app/core/gimpimage.c:4002 ../app/core/gimpimage.c:4015
 msgctxt "undo-type"
 msgid "Remove Channel"
 msgstr "채널 제거"
 
-#: ../app/core/gimpimage.c:4074
+#: ../app/core/gimpimage.c:4069
 msgctxt "undo-type"
 msgid "Add Path"
 msgstr "경로 추가"
 
-#: ../app/core/gimpimage.c:4105
+#: ../app/core/gimpimage.c:4100
 msgctxt "undo-type"
 msgid "Remove Path"
 msgstr "경로 제거"
@@ -8330,7 +8309,7 @@ msgid "(Preview may be out of date)"
 msgstr "(오래된 미리 보기 입니다.)"
 
 #. pixel size
-#: ../app/core/gimpimagefile.c:774 ../app/widgets/gimpimagepropview.c:440
+#: ../app/core/gimpimagefile.c:774 ../app/widgets/gimpimagepropview.c:441
 #: ../app/widgets/gimpsizebox.c:427 ../app/widgets/gimptemplateeditor.c:565
 #, c-format
 msgid "%d × %d pixel"
@@ -8722,7 +8701,7 @@ msgstr ""
 
 #: ../app/core/gimptemplate.c:129
 msgid "The unit used for coordinate display when not in dot-for-dot mode."
-msgstr "점대점 모드가 아닐때 좌표 출력에 사용할 단위입니다."
+msgstr "점대점 모드가 아닐때 좌표 출력에 사용할 단위."
 
 #: ../app/core/gimptemplate.c:136
 msgid "The horizontal image resolution."
@@ -8792,7 +8771,7 @@ msgctxt "plural"
 msgid "percent"
 msgstr "퍼센트"
 
-#: ../app/dialogs/about-dialog.c:114
+#: ../app/dialogs/about-dialog.c:114 ../app/gui/gui.c:493
 msgid "About GIMP"
 msgstr "김프에 대해"
 
@@ -8957,7 +8936,7 @@ msgstr "점점 흐리게 %s"
 msgid "_Fade"
 msgstr "점점 흐리게(_F)"
 
-#: ../app/dialogs/fade-dialog.c:156 ../app/widgets/gimpdeviceinfoeditor.c:346
+#: ../app/dialogs/fade-dialog.c:156 ../app/widgets/gimpdeviceinfoeditor.c:344
 msgid "_Mode:"
 msgstr "모드(_M):"
 
@@ -8977,15 +8956,15 @@ msgstr "위치 열기"
 msgid "Enter location (URI):"
 msgstr "위치 입력(URI):"
 
-#: ../app/dialogs/file-save-dialog.c:113
+#: ../app/dialogs/file-save-dialog.c:105
 msgid "Export Image"
 msgstr "이미지 내보내기"
 
-#: ../app/dialogs/file-save-dialog.c:114
+#: ../app/dialogs/file-save-dialog.c:106
 msgid "_Export"
 msgstr "내보내기(_E)"
 
-#: ../app/dialogs/file-save-dialog.c:458
+#: ../app/dialogs/file-save-dialog.c:432
 msgid ""
 "Saving remote files needs to determine the file format from the file "
 "extension. Please enter a file extension that matches the selected file "
@@ -8994,11 +8973,7 @@ msgstr ""
 "원격 파일 저장은 파일 확장자를 통해 파일 형식을 결정해야 합니다. 선택한 파일"
 "의 형식에 맞는 파일 확장자를 입력하거나 아예 파일 확장자를 입력하지 마십시오."
 
-#: ../app/dialogs/file-save-dialog.c:605
-msgid "The given filename cannot be used for exporting"
-msgstr "지정한 파일 이름을 내보내는데 사용할 수 없습니다"
-
-#: ../app/dialogs/file-save-dialog.c:606
+#: ../app/dialogs/file-save-dialog.c:559
 msgid ""
 "You can use this dialog to export to various file formats. If you want to "
 "save the image to the GIMP XCF format, use File→Save instead."
@@ -9006,15 +8981,7 @@ msgstr ""
 "이 대화 상자를 이용하여 다양한 파일 형식으로 내보낼 수 있습니다. 이미지를 김"
 "프 XCF 형식으로 저장하려면 파일→저장 메뉴를 이용하십시오."
 
-#: ../app/dialogs/file-save-dialog.c:609
-msgid "Take me to the Save dialog"
-msgstr "저장 대화상자를 엽니다"
-
-#: ../app/dialogs/file-save-dialog.c:613
-msgid "The given filename cannot be used for saving"
-msgstr "지정한 파일 이름을 저장하는데 사용할 수 없습니다"
-
-#: ../app/dialogs/file-save-dialog.c:614
+#: ../app/dialogs/file-save-dialog.c:566
 msgid ""
 "You can use this dialog to save to the GIMP XCF format. Use File→Export to "
 "export to other file formats."
@@ -9022,15 +8989,7 @@ msgstr ""
 "이 대화 상자를 이용하여 김프 XCF 형식으로 저장할 수 있습니다. 다른 파일 형식"
 "으로 내보내려면 파일→다른 형식으로 내보내기 메뉴를 이용하십시오."
 
-#: ../app/dialogs/file-save-dialog.c:616
-msgid "Take me to the Export dialog"
-msgstr "내보내기 대화상자를 엽니다"
-
-#: ../app/dialogs/file-save-dialog.c:619 ../app/dialogs/file-save-dialog.c:694
-msgid "Extension Mismatch"
-msgstr "잘못된 확장자"
-
-#: ../app/dialogs/file-save-dialog.c:678
+#: ../app/dialogs/file-save-dialog.c:572
 msgid ""
 "The given filename does not have any known file extension. Please enter a "
 "known file extension or select a file format from the file format list."
@@ -9038,19 +8997,23 @@ msgstr ""
 "확장자명이 빠졌습니다. 확장자명을 입력하거나 파일 형식 목록에서 파일 형식을 "
 "선택하십시오."
 
-#: ../app/dialogs/file-save-dialog.c:710
+#: ../app/dialogs/file-save-dialog.c:586
+msgid "Extension Mismatch"
+msgstr "잘못된 확장자"
+
+#: ../app/dialogs/file-save-dialog.c:602
 msgid "The given file extension does not match the chosen file type."
 msgstr "입력한 파일 확장자명은 선택한 파일의 형식과 일치하지 않습니다."
 
-#: ../app/dialogs/file-save-dialog.c:714
+#: ../app/dialogs/file-save-dialog.c:606
 msgid "Do you want to save the image using this name anyway?"
 msgstr "지금 파일로 이미지를 저장하시겠습니까?"
 
-#: ../app/dialogs/file-save-dialog.c:776
+#: ../app/dialogs/file-save-dialog.c:664
 msgid "Saving canceled"
 msgstr "저장 취소"
 
-#: ../app/dialogs/file-save-dialog.c:784 ../app/widgets/gimpdnd-xds.c:186
+#: ../app/dialogs/file-save-dialog.c:672 ../app/widgets/gimpdnd-xds.c:186
 #, c-format
 msgid ""
 "Saving '%s' failed:\n"
@@ -9251,31 +9214,31 @@ msgstr "바꾼 내용을 반영하려면, 김프를 다시 시작해야 합니�
 msgid "Module"
 msgstr "모듈"
 
-#: ../app/dialogs/module-dialog.c:468
+#: ../app/dialogs/module-dialog.c:465
 msgid "Only in memory"
 msgstr "메모리에만"
 
-#: ../app/dialogs/module-dialog.c:473
+#: ../app/dialogs/module-dialog.c:470
 msgid "No longer available"
 msgstr "더 이상 사용할 수 없음"
 
-#: ../app/dialogs/module-dialog.c:498
+#: ../app/dialogs/module-dialog.c:495
 msgid "Author:"
 msgstr "작성:"
 
-#: ../app/dialogs/module-dialog.c:499
+#: ../app/dialogs/module-dialog.c:496
 msgid "Version:"
 msgstr "버전:"
 
-#: ../app/dialogs/module-dialog.c:500
+#: ../app/dialogs/module-dialog.c:497
 msgid "Date:"
 msgstr "날짜:"
 
-#: ../app/dialogs/module-dialog.c:501
+#: ../app/dialogs/module-dialog.c:498
 msgid "Copyright:"
 msgstr "저작권:"
 
-#: ../app/dialogs/module-dialog.c:502
+#: ../app/dialogs/module-dialog.c:499
 msgid "Location:"
 msgstr "위치:"
 
@@ -9923,7 +9886,7 @@ msgid "Vertical"
 msgstr "위아래로"
 
 #: ../app/dialogs/preferences-dialog.c:2350
-#: ../app/widgets/gimpimagepropview.c:469
+#: ../app/widgets/gimpimagepropview.c:470
 msgid "ppi"
 msgstr "ppi"
 
@@ -10241,57 +10204,31 @@ msgstr "Y축 해상도(_Y):"
 msgid "pixels/%a"
 msgstr "픽셀/%a"
 
-#: ../app/dialogs/quit-dialog.c:144
+#: ../app/dialogs/quit-dialog.c:104
 msgid "Quit GIMP"
 msgstr "김프 종료"
 
-#: ../app/dialogs/quit-dialog.c:144
+#: ../app/dialogs/quit-dialog.c:104
 msgid "Close All Images"
 msgstr "모든 이미지 닫기"
 
-#: ../app/dialogs/quit-dialog.c:212
+#: ../app/dialogs/quit-dialog.c:163
 msgid "If you quit GIMP now, these changes will be lost."
 msgstr "지금 종료할 경우, 바뀐 내용들을 잃게 됩니다."
 
-#: ../app/dialogs/quit-dialog.c:215
+#: ../app/dialogs/quit-dialog.c:166
 msgid "If you close these images now, changes will be lost."
 msgstr "저장하지 않고 이미지를 닫을 경우, 바뀐 내용을 잃게 됩니다."
 
-#: ../app/dialogs/quit-dialog.c:300
+#: ../app/dialogs/quit-dialog.c:213
 #, c-format
 msgid "There is one image with unsaved changes:"
 msgid_plural "There are %d images with unsaved changes:"
 msgstr[0] "저장 안된 이미지가 %d 개 있습니다.:"
 
-#: ../app/dialogs/quit-dialog.c:311
-#, c-format
-msgid "Press %s to quit."
-msgstr "끝내려면 %s 키를 누르십시오."
-
-#: ../app/dialogs/quit-dialog.c:314
-#, c-format
-msgid "Press %s to close all images."
-msgstr "모든 그림을 닫으려면 %s 키를 누르십시오."
-
-#: ../app/dialogs/quit-dialog.c:330
-#, c-format
-msgid "Press %s to discard all changes and quit."
-msgstr "바뀐 모든 내용을 무시하고 끝내려면 %s 키를 누르십시오."
-
-#: ../app/dialogs/quit-dialog.c:333
-#, c-format
-msgid "Press %s to discard all changes and close all images."
-msgstr "바뀐 모든 내용을 무시하고 모든 그림을 닫으려면 %s 키를 누르십시오."
-
-#: ../app/dialogs/quit-dialog.c:341
-#: ../app/display/gimpdisplayshell-close.c:181
+#: ../app/dialogs/quit-dialog.c:235
 msgid "_Discard Changes"
 msgstr "바뀐 내용 버리기(_D)"
-
-#: ../app/dialogs/quit-dialog.c:423
-#, c-format
-msgid "Exported to %s"
-msgstr "%s(으)로 내보냈습니다"
 
 #: ../app/dialogs/resize-dialog.c:119
 msgid "Canvas Size"
@@ -10458,17 +10395,17 @@ msgstr "안내선 없음"
 #: ../app/display/display-enums.c:61
 msgctxt "guides-type"
 msgid "Center lines"
-msgstr "중심선"
+msgstr "가운데 선"
 
 #: ../app/display/display-enums.c:62
 msgctxt "guides-type"
 msgid "Rule of thirds"
-msgstr "1/3의 법칙"
+msgstr "세 번째 규칙"
 
 #: ../app/display/display-enums.c:63
 msgctxt "guides-type"
 msgid "Rule of fifths"
-msgstr "1/5의 법칙"
+msgstr "다섯 번째 규칙"
 
 #: ../app/display/display-enums.c:64
 msgctxt "guides-type"
@@ -10500,7 +10437,7 @@ msgstr "줄 간격"
 #: ../app/display/gimpcursorview.c:790 ../app/display/gimpcursorview.c:791
 #: ../app/widgets/gimpcolorframe.c:633
 msgid "n/a"
-msgstr "없음"
+msgstr "n/a"
 
 #: ../app/display/gimpcursorview.c:219 ../app/display/gimpcursorview.c:244
 #: ../app/display/gimpcursorview.c:269
@@ -10555,37 +10492,36 @@ msgstr "퀵 마스크 전환"
 
 #: ../app/display/gimpdisplayshell.c:674
 msgid "Navigate the image display"
-msgstr "이미지 화면 둘러보기"
+msgstr "이미지 화면을 둘러보기"
 
 #: ../app/display/gimpdisplayshell.c:746
-#: ../app/display/gimpdisplayshell.c:1327 ../app/widgets/gimptoolbox.c:253
+#: ../app/display/gimpdisplayshell.c:1325 ../app/widgets/gimptoolbox.c:256
 msgid "Drop image files here to open them"
 msgstr "이미지를 이곳에 끌어놓으면 이미지가 열립니다."
 
-#: ../app/display/gimpdisplayshell-close.c:170
-#: ../app/display/gimpdisplayshell-close.c:270
+#: ../app/display/gimpdisplayshell-close.c:156
+#: ../app/display/gimpdisplayshell-close.c:229
 #, c-format
 msgid "Close %s"
-msgstr "%s을(를) 닫으시겠습니까?"
+msgstr "%s을(를) 닫습니까?"
 
-#: ../app/display/gimpdisplayshell-close.c:218
-#, c-format
-msgid "Press %s to discard all changes and close the image."
-msgstr "바뀐 모든 내용을 무시하고 그림을 닫으려면 %s 키를 누르십시오."
+#: ../app/display/gimpdisplayshell-close.c:167
+msgid "Close _without Saving"
+msgstr "저장 않고 닫기(_W)"
 
-#: ../app/display/gimpdisplayshell-close.c:278
+#: ../app/display/gimpdisplayshell-close.c:237
 #, c-format
 msgid "Save the changes to image '%s' before closing?"
 msgstr "이미지를 닫기 전에 '%s'을(를) 저장하시겠습니까?"
 
-#: ../app/display/gimpdisplayshell-close.c:311
+#: ../app/display/gimpdisplayshell-close.c:270
 #, c-format
 msgid "If you don't save the image, changes from the last hour will be lost."
 msgid_plural ""
 "If you don't save the image, changes from the last %d hours will be lost."
 msgstr[0] "이미지를 저장하지 않을 경우, %d 시간 이전에 바뀐 내용은 사라집니다."
 
-#: ../app/display/gimpdisplayshell-close.c:322
+#: ../app/display/gimpdisplayshell-close.c:281
 #, c-format
 msgid ""
 "If you don't save the image, changes from the last hour and %d minute will "
@@ -10596,17 +10532,17 @@ msgid_plural ""
 msgstr[0] ""
 "이미지를 저장하지 않을 경우, 한 시간 %d 분 전에 바뀐 내용은 사라집니다."
 
-#: ../app/display/gimpdisplayshell-close.c:334
+#: ../app/display/gimpdisplayshell-close.c:293
 #, c-format
 msgid "If you don't save the image, changes from the last minute will be lost."
 msgid_plural ""
 "If you don't save the image, changes from the last %d minutes will be lost."
 msgstr[0] "이미지를 저장하지 않을 경우, %d 분 이전에 바뀐 내용은 사라집니다."
 
-#: ../app/display/gimpdisplayshell-close.c:355
+#: ../app/display/gimpdisplayshell-close.c:305
 #, c-format
 msgid "The image has been exported to '%s'."
-msgstr "'%s'(으)로 이미지를 내보냈습니다."
+msgstr "이미지가 '%s'(으)로 내보내졌습니다."
 
 #: ../app/display/gimpdisplayshell-dnd.c:246
 #: ../app/display/gimpdisplayshell-dnd.c:649
@@ -10621,7 +10557,6 @@ msgstr "새 경로 끌어서-놓기"
 #: ../app/display/gimpdisplayshell-dnd.c:361
 #: ../app/display/gimpdisplayshell-dnd.c:463 ../app/tools/gimpblendtool.c:173
 #: ../app/tools/gimpbucketfilltool.c:136 ../app/tools/gimpimagemaptool.c:280
-#: ../app/tools/gimpselectiontool.c:427
 msgid "Cannot modify the pixels of layer groups."
 msgstr "레이어 그룹의 픽셀을 바꿀 수 없습니다."
 
@@ -10629,8 +10564,7 @@ msgstr "레이어 그룹의 픽셀을 바꿀 수 없습니다."
 #: ../app/display/gimpdisplayshell-dnd.c:471 ../app/tools/gimpblendtool.c:180
 #: ../app/tools/gimpbucketfilltool.c:143 ../app/tools/gimpcroptool.c:325
 #: ../app/tools/gimpimagemaptool.c:287 ../app/tools/gimppainttool.c:266
-#: ../app/tools/gimpselectiontool.c:432 ../app/tools/gimptransformtool.c:247
-#: ../app/tools/gimptransformtool.c:1070
+#: ../app/tools/gimptransformtool.c:247 ../app/tools/gimptransformtool.c:1067
 msgid "The active layer's pixels are locked."
 msgstr "활성 레이어의 픽셀이 잠겼습니다."
 
@@ -10641,27 +10575,27 @@ msgstr "레이어 삭제"
 
 #: ../app/display/gimpdisplayshell-dnd.c:682
 #: ../app/display/gimpdisplayshell-dnd.c:699
-#: ../app/widgets/gimplayertreeview.c:802 ../app/widgets/gimptoolbox-dnd.c:264
+#: ../app/widgets/gimplayertreeview.c:802 ../app/widgets/gimptoolbox-dnd.c:266
 msgid "Dropped Buffer"
 msgstr "버퍼 삭제"
 
-#: ../app/display/gimpdisplayshell-filter-dialog.c:83
+#: ../app/display/gimpdisplayshell-filter-dialog.c:78
 msgid "Color Display Filters"
 msgstr "화면 색상 표시 필터"
 
-#: ../app/display/gimpdisplayshell-filter-dialog.c:86
+#: ../app/display/gimpdisplayshell-filter-dialog.c:81
 msgid "Configure Color Display Filters"
 msgstr "화면 색상 표시 필터 설정"
 
 #: ../app/display/gimpdisplayshell-handlers.c:796
 #, c-format
 msgid "Image saved to '%s'"
-msgstr "'%s'(으)로 이미지를 저장했습니다."
+msgstr "이미지가 '%s'(으)로 저장되었습니다."
 
 #: ../app/display/gimpdisplayshell-handlers.c:810
 #, c-format
 msgid "Image exported to '%s'"
-msgstr "'%s'(으)로 이미지를 내보냈습니다."
+msgstr "이미지를 '%s'(으)로 내보내었습니다."
 
 #: ../app/display/gimpdisplayshell-layer-select.c:122
 msgid "Layer Select"
@@ -10709,7 +10643,7 @@ msgstr "비정상적인 파일입니다"
 #: ../app/file/file-open.c:188
 #, c-format
 msgid "%s plug-in returned SUCCESS but did not return an image"
-msgstr "%s 플러그인을 성공적으로 적용했습니다."
+msgstr "%s 플러그인이 성공적으로 적용되었습니다."
 
 #: ../app/file/file-open.c:199
 #, c-format
@@ -10720,12 +10654,12 @@ msgstr "%s 플러그인을 이용해 이미지를 열 수 없습니다."
 msgid "Image doesn't contain any layers"
 msgstr "이미지에 레이어가 없습니다."
 
-#: ../app/file/file-open.c:590
+#: ../app/file/file-open.c:583
 #, c-format
 msgid "Opening '%s' failed: %s"
 msgstr "'%s' 열기 실패: %s"
 
-#: ../app/file/file-open.c:700
+#: ../app/file/file-open.c:690
 msgid ""
 "Color management has been disabled. It can be enabled again in the "
 "Preferences dialog."
@@ -10740,14 +10674,14 @@ msgstr "알 수 없는 이미지 유형"
 #: ../app/file/file-save.c:221
 #, c-format
 msgid "%s plug-in could not save image"
-msgstr "%s 플러그인을 사용하여 이미지를 저장할 수 없습니다."
+msgstr "%s 플러그인을 이용해 이미지를 저장할 수 없습니다."
 
-#: ../app/file/file-utils.c:72
+#: ../app/file/file-utils.c:74
 #, c-format
 msgid "'%s:' is not a valid URI scheme"
 msgstr "'%s:'은(는) 정확한 URI 스키마가 아닙니다."
 
-#: ../app/file/file-utils.c:88 ../app/file/file-utils.c:124
+#: ../app/file/file-utils.c:90 ../app/file/file-utils.c:126
 msgid "Invalid character sequence in URI"
 msgstr "URI의 글자 배열이 잘못되었습니다"
 
@@ -10755,34 +10689,34 @@ msgstr "URI의 글자 배열이 잘못되었습니다"
 #: ../app/gegl/gimp-gegl-enums.c:24
 msgctxt "cage-mode"
 msgid "Create or adjust the cage"
-msgstr "틀 만들기 또는 조정하기"
+msgstr "골조 만들기 또는 조정하기"
 
 #: ../app/gegl/gimp-gegl-enums.c:25
 msgctxt "cage-mode"
 msgid "Deform the cage to deform the image"
-msgstr "이미지 변형을 위해 틀 변형하기"
+msgstr "이미지 변형을 위해 골조 변형하기"
 
-#: ../app/gegl/gimpcurvesconfig.c:395
+#: ../app/gegl/gimpcurvesconfig.c:388
 msgid "not a GIMP Curves file"
 msgstr "김프 커브 파일이 아닙니다."
 
-#: ../app/gegl/gimpcurvesconfig.c:410 ../app/gegl/gimplevelsconfig.c:811
+#: ../app/gegl/gimpcurvesconfig.c:403 ../app/gegl/gimplevelsconfig.c:789
 msgid "parse error"
 msgstr "해석 오류"
 
-#: ../app/gegl/gimplevelsconfig.c:764
+#: ../app/gegl/gimplevelsconfig.c:742
 msgid "not a GIMP Levels file"
 msgstr "김프 레벨 파일이 아닙니다."
 
 #: ../app/gegl/gimpoperationcagecoefcalc.c:67
 msgid "Compute a set of coefficient buffer for the GIMP cage tool"
-msgstr "김프 틀 도구를 위한 계수 버퍼 모음 계산하기"
+msgstr "김프 골조 도구를 위한 계수 버퍼 모음 계산하기"
 
 #: ../app/gegl/gimpoperationcagetransform.c:106
 msgid ""
 "Convert a set of coefficient buffer to a coordinate buffer for the GIMP cage "
 "tool"
-msgstr "계수 버퍼 모음을 김프 틀 도구의 계수 버퍼로 변환합니다."
+msgstr "계수 버퍼 모음을 김프 골조 도구의 계수 버퍼로 변환합니다."
 
 # plain color : 단색, 무지(無地)
 #: ../app/gegl/gimpoperationcagetransform.c:128
@@ -10792,20 +10726,10 @@ msgstr "단색으로 채우기"
 #: ../app/gegl/gimpoperationcagetransform.c:129
 #: ../app/tools/gimpcageoptions.c:144
 msgid "Fill the original position of the cage with a plain color"
-msgstr "틀의 원래 위치를 단색으로 채우기"
-
-#. Normally this should have been taken care of during command line
-#. * parsing as a post-parse hook of gtk_get_option_group(), using the
-#. * system locales.
-#. * But user config may have overriden the language, therefore we must
-#. * check the widget directions again.
-#.
-#: ../app/gui/gui.c:207
-msgid "default:LTR"
-msgstr ""
+msgstr "골조의 원래 위치를 단색으로 채우기"
 
 #. initialize the document history
-#: ../app/gui/gui.c:432
+#: ../app/gui/gui.c:421
 msgid "Documents"
 msgstr "문서"
 
@@ -10839,7 +10763,7 @@ msgstr "흐리게 선명하게"
 
 #: ../app/paint/gimpdodgeburn.c:91
 msgid "Dodge/Burn"
-msgstr "닷지/번"
+msgstr "피하기/태우기"
 
 #: ../app/paint/gimperaser.c:63 ../app/tools/gimperasertool.c:65
 msgid "Eraser"
@@ -11054,7 +10978,7 @@ msgstr "떠있는 선택이 아니므로, 레이어를 일반 레이어로 변�
 #: ../app/pdb/gimppdb.c:375
 #, c-format
 msgid "Procedure '%s' not found"
-msgstr "'%s' 프로시져를 찾을 수 없습니다."
+msgstr "프로시져 '%s'을(를) 찾을 수 없습니다."
 
 #: ../app/pdb/gimppdb-utils.c:73
 msgid "Invalid empty brush name"
@@ -11063,17 +10987,17 @@ msgstr "빈 문자열은 붓 이름으로 부적절합니다."
 #: ../app/pdb/gimppdb-utils.c:82
 #, c-format
 msgid "Brush '%s' not found"
-msgstr "'%s' 붓이 없습니다."
+msgstr "붓 '%s'이(가) 없습니다."
 
 #: ../app/pdb/gimppdb-utils.c:87
 #, c-format
 msgid "Brush '%s' is not editable"
-msgstr "'%s' 붓을 수정할 수 없습니다."
+msgstr "붓 '%s'을(를) 수정할 수 없습니다."
 
 #: ../app/pdb/gimppdb-utils.c:113
 #, c-format
 msgid "Brush '%s' is not a generated brush"
-msgstr "'%s' 붓은 생성된 붓이 아닙니다."
+msgstr "붓 '%s'은(는) 생성된 붓이 아닙니다."
 
 #: ../app/pdb/gimppdb-utils.c:134
 msgid "Invalid empty paint dynamics name"
@@ -11082,12 +11006,12 @@ msgstr "타당하지 않은 빈 페인트 동적 요소 이름"
 #: ../app/pdb/gimppdb-utils.c:143
 #, c-format
 msgid "Paint dynamics '%s' not found"
-msgstr "'%s' 페인트 동적 요소를 찾을 수 없습니다."
+msgstr "페인트 동적 요소 '%s'을(를) 찾을 수 없습니다."
 
 #: ../app/pdb/gimppdb-utils.c:148
 #, c-format
 msgid "Paint dynamics '%s' is not editable"
-msgstr "'%s' 페인트 동적 요소를 수정할 수 없습니다."
+msgstr "페인트 동적 요소 '%s'은(는) 수정할 수 없습니다."
 
 #: ../app/pdb/gimppdb-utils.c:168
 msgid "Invalid empty pattern name"
@@ -11096,7 +11020,7 @@ msgstr "빈 문자열은 무늬 이름으로 부적절합니다"
 #: ../app/pdb/gimppdb-utils.c:177
 #, c-format
 msgid "Pattern '%s' not found"
-msgstr "'%s' 무늬를 찾을 수 없습니다."
+msgstr "무늬 '%s'을(를) 찾을 수 없습니다."
 
 #: ../app/pdb/gimppdb-utils.c:197
 msgid "Invalid empty gradient name"
@@ -11105,12 +11029,12 @@ msgstr "빈 문자열은 그라디언트 이름으로 부적절합니다"
 #: ../app/pdb/gimppdb-utils.c:206
 #, c-format
 msgid "Gradient '%s' not found"
-msgstr "'%s' 그라디언트를 찾을 수 없습니다."
+msgstr "그라디언트 '%s'을(를) 찾을 수 없습니다."
 
 #: ../app/pdb/gimppdb-utils.c:211
 #, c-format
 msgid "Gradient '%s' is not editable"
-msgstr "'%s' 그라디언트를 수정할 수 없습니다."
+msgstr "그라디언트 '%s'은(는) 수정할 수 없습니다."
 
 #: ../app/pdb/gimppdb-utils.c:232
 msgid "Invalid empty palette name"
@@ -11119,12 +11043,12 @@ msgstr "빈 문자열은 팔레트 이름으로 부적절합니다."
 #: ../app/pdb/gimppdb-utils.c:241
 #, c-format
 msgid "Palette '%s' not found"
-msgstr "'%s' 팔레트를 찾을 수 없습니다."
+msgstr "팔레트 '%s'을(를) 찾을 수 없습니다."
 
 #: ../app/pdb/gimppdb-utils.c:246
 #, c-format
 msgid "Palette '%s' is not editable"
-msgstr "'%s' 팔레트를 수정할 수 없습니다."
+msgstr "팔레트 '%s'은(는) 수정할 수 없습니다."
 
 #: ../app/pdb/gimppdb-utils.c:266
 msgid "Invalid empty font name"
@@ -11133,7 +11057,7 @@ msgstr "빈 문자열은 글꼴 이름으로 부적절합니다"
 #: ../app/pdb/gimppdb-utils.c:276
 #, c-format
 msgid "Font '%s' not found"
-msgstr "'%s' 글꼴이 없습니다."
+msgstr "글꼴 '%s'이(가) 없습니다."
 
 #: ../app/pdb/gimppdb-utils.c:295
 msgid "Invalid empty buffer name"
@@ -11142,7 +11066,7 @@ msgstr "빈 문자열은 버퍼 이름으로 부적절합니다"
 #: ../app/pdb/gimppdb-utils.c:305
 #, c-format
 msgid "Named buffer '%s' not found"
-msgstr "이름있는 '%s' 버퍼를 찾을 수 없습니다."
+msgstr "이름있는 버퍼 '%s'을(를) 찾을 수 없습니다."
 
 #: ../app/pdb/gimppdb-utils.c:324
 msgid "Invalid empty paint method name"
@@ -11151,7 +11075,7 @@ msgstr "빈 문자열은 칠하기 방법 이름으로 부적절합니다"
 #: ../app/pdb/gimppdb-utils.c:334
 #, c-format
 msgid "Paint method '%s' does not exist"
-msgstr "'%s' 칠하기 방식은 존재하지 않습니다."
+msgstr "칠하기 방법 '%s'은(는) 존재하지 않습니다."
 
 #: ../app/pdb/gimppdb-utils.c:353
 #, c-format
@@ -11177,8 +11101,8 @@ msgid ""
 "Items '%s' (%d) and '%s' (%d) cannot be used because they are not part of "
 "the same item tree"
 msgstr ""
-" '%s' (%d)와 '%s' (%d) 항목은 사용할 수 없다. 왜냐면 같은 항목 트리의 부분이 "
-"아니므로."
+" '%s' (%d) 와 '%s' (%d) 항목은 사용할 수 없다. 왜냐면 같은 항목 트리의 부분"
+"이 아니므로."
 
 #: ../app/pdb/gimppdb-utils.c:445
 #, c-format
@@ -11188,12 +11112,12 @@ msgstr "'%s' (%d)은 '%s' (%d)의 상위 항목이 될 수 없습니다."
 #: ../app/pdb/gimppdb-utils.c:469
 #, c-format
 msgid "Item '%s' (%d) has already been added to an image"
-msgstr "'%s' (%d) 항목을 이미 이미지에 추가했습니다."
+msgstr "'%s' (%d) 항목은 이미 이미지에 추가되었습니다."
 
 #: ../app/pdb/gimppdb-utils.c:477
 #, c-format
 msgid "Trying to add item '%s' (%d) to wrong image"
-msgstr "잘못된 이미지에 '%s' (%d) 항목을 추가하려고 합니다"
+msgstr "잘못된 이미지에 '%s' (%d) 항목을 추가하려는 시도"
 
 #: ../app/pdb/gimppdb-utils.c:496
 #, c-format
@@ -11219,7 +11143,8 @@ msgstr "'%s' (%d) 레이어는 텍스트 레이어가 아니므로 사용할 수
 #, c-format
 msgid "Image '%s' (%d) is of type '%s', but an image of type '%s' is expected"
 msgstr ""
-"'%s' (%d) 이미지는 '%s' 형식입니다.  하지만 '%s'의 이미지 형식이어야 합니다."
+"이미지 '%s' (%d)은(는) '%s' 형식입니다.  하지만 '%s'의 이미지 형식이어야 합니"
+"다."
 
 #: ../app/pdb/gimppdb-utils.c:621
 #, c-format
@@ -11229,7 +11154,7 @@ msgstr "'%s' (%d) 이미지는 이미 '%s' 형식입니다."
 #: ../app/pdb/gimppdb-utils.c:649
 #, c-format
 msgid "Vectors object %d does not contain stroke with ID %d"
-msgstr "벡터 객체 %d은(는) ID %d 스트로크를 포함하고 있지 않습니다."
+msgstr "벡터 개체 %d은(는) ID %d 스트로크를 포함하고 있지 않습니다."
 
 #: ../app/pdb/gimppdb.c:410
 #, c-format
@@ -11257,7 +11182,7 @@ msgid ""
 "Procedure '%s' returned a wrong value type for return value '%s' (#%d). "
 "Expected %s, got %s."
 msgstr ""
-"'%s' 프로시저는 반환값 '%s' (#%d)에 대해 잘못된 형식의 값을 반환하였습니다. "
+"'%s' 프로시저는 반환값 '%s'(#%d)에 대해 잘못된 형식의 값을 반환하였습니다. "
 "%s 값을 기대했지만 , %s 값이 왔습니다."
 
 #: ../app/pdb/gimpprocedure.c:654
@@ -11333,7 +11258,7 @@ msgstr "이미지 해상도가 범위를 넘었으므로, 기본 해상도를 �
 msgid "Free Select"
 msgstr "자유 선택"
 
-#: ../app/pdb/layer-cmds.c:475 ../app/pdb/layer-cmds.c:513
+#: ../app/pdb/layer-cmds.c:478 ../app/pdb/layer-cmds.c:516
 msgid "Move Layer"
 msgstr "레이어 이동"
 
@@ -11361,29 +11286,29 @@ msgstr "경로 스트로크 제거하기"
 msgid "Close path stroke"
 msgstr "경로 스트로크 닫기"
 
-#: ../app/pdb/vectors-cmds.c:401
+#: ../app/pdb/vectors-cmds.c:399
 msgid "Translate path stroke"
 msgstr "경로 스트로크 변환"
 
-#: ../app/pdb/vectors-cmds.c:443
+#: ../app/pdb/vectors-cmds.c:439
 msgid "Scale path stroke"
 msgstr "경로 크기조정"
 
-#: ../app/pdb/vectors-cmds.c:487
+#: ../app/pdb/vectors-cmds.c:481
 msgid "Rotate path stroke"
 msgstr "경로 스트로크 회전"
 
-#: ../app/pdb/vectors-cmds.c:529 ../app/pdb/vectors-cmds.c:575
+#: ../app/pdb/vectors-cmds.c:521 ../app/pdb/vectors-cmds.c:565
 msgid "Flip path stroke"
 msgstr "경로 스트로크 뒤집기"
 
-#: ../app/pdb/vectors-cmds.c:706 ../app/pdb/vectors-cmds.c:829
-#: ../app/pdb/vectors-cmds.c:1055
+#: ../app/pdb/vectors-cmds.c:694 ../app/pdb/vectors-cmds.c:817
+#: ../app/pdb/vectors-cmds.c:1037
 msgid "Add path stroke"
 msgstr "경로 실선 추가"
 
-#: ../app/pdb/vectors-cmds.c:882 ../app/pdb/vectors-cmds.c:937
-#: ../app/pdb/vectors-cmds.c:1000
+#: ../app/pdb/vectors-cmds.c:870 ../app/pdb/vectors-cmds.c:923
+#: ../app/pdb/vectors-cmds.c:984
 msgid "Extend path stroke"
 msgstr "경로 따라 그리기 확장"
 
@@ -11429,7 +11354,7 @@ msgstr ""
 msgid "Cancelled"
 msgstr "취소됨"
 
-#: ../app/plug-in/gimpplugin.c:643
+#: ../app/plug-in/gimpplugin.c:639
 #, c-format
 msgid ""
 "Plug-in crashed: \"%s\"\n"
@@ -11479,7 +11404,7 @@ msgstr "플러그인 해석기"
 msgid "Plug-In Environment"
 msgstr "플러그인 환경"
 
-#: ../app/plug-in/gimppluginprocedure.c:978
+#: ../app/plug-in/gimppluginprocedure.c:980
 #, c-format
 msgid ""
 "Calling error for '%s':\n"
@@ -11488,7 +11413,7 @@ msgstr ""
 "'%s' 호출 오류:\n"
 "%s"
 
-#: ../app/plug-in/gimppluginprocedure.c:990
+#: ../app/plug-in/gimppluginprocedure.c:992
 #, c-format
 msgid ""
 "Execution error for '%s':\n"
@@ -11497,21 +11422,16 @@ msgstr ""
 "'%s' 실행 오류:\n"
 "%s"
 
-#: ../app/plug-in/plug-in-icc-profile.c:74
-#, c-format
-msgid "Can't apply color profile to grayscale image (%s)"
-msgstr "색 프로파일을 흑백 이미지에 적용할 수 없습니다 (%s)"
-
-#: ../app/plug-in/plug-in-icc-profile.c:117
-#: ../app/plug-in/plug-in-icc-profile.c:192
-#: ../app/plug-in/plug-in-icc-profile.c:251
+#: ../app/plug-in/plug-in-icc-profile.c:112
+#: ../app/plug-in/plug-in-icc-profile.c:187
+#: ../app/plug-in/plug-in-icc-profile.c:246
 #, c-format
 msgid "Error running '%s'"
 msgstr "'%s' 실행 오류"
 
-#: ../app/plug-in/plug-in-icc-profile.c:141
-#: ../app/plug-in/plug-in-icc-profile.c:202
-#: ../app/plug-in/plug-in-icc-profile.c:261
+#: ../app/plug-in/plug-in-icc-profile.c:136
+#: ../app/plug-in/plug-in-icc-profile.c:197
+#: ../app/plug-in/plug-in-icc-profile.c:256
 #, c-format
 msgid "Plug-In missing (%s)"
 msgstr "플러그인 없음 (%s)"
@@ -11533,7 +11453,7 @@ msgstr "아이콘 타입에 대한 잘못된 값 '%ld'"
 
 #. This is a so-called pangram; it's supposed to
 #. contain all characters found in the alphabet.
-#: ../app/text/gimpfont.c:45
+#: ../app/text/gimpfont.c:43
 msgid ""
 "Pack my box with\n"
 "five dozen liquor jugs."
@@ -11543,7 +11463,7 @@ msgstr ""
 "무궁화 꽃이 피었습니다.\n"
 "아름답고 고운 우리 말 우리 글!"
 
-#: ../app/text/gimptext-compat.c:105 ../app/tools/gimptexttool.c:1402
+#: ../app/text/gimptext-compat.c:105 ../app/tools/gimptexttool.c:1401
 msgid "Add Text Layer"
 msgstr "텍스트 레이어 추가"
 
@@ -11583,21 +11503,13 @@ msgstr "텍스 레이어 변형"
 msgid "Discard Text Information"
 msgstr "텍스 정보 버리기"
 
-#: ../app/text/gimptextlayer.c:582
+#: ../app/text/gimptextlayer.c:581
 msgid "Due to lack of any fonts, text functionality is not available."
 msgstr "글꼴이 없으므로, 텍스 기능은 사용할 수 없습니다."
 
-#: ../app/text/gimptextlayer.c:640
+#: ../app/text/gimptextlayer.c:634
 msgid "Empty Text Layer"
 msgstr "빈 텍스트 레이어"
-
-#: ../app/text/gimptextlayer.c:696
-msgid ""
-"Your text cannot be rendered. It is likely too big. Please make it shorter "
-"or use a smaller font."
-msgstr ""
-"텍스츠를 표현할 수 없습니다. 텍스트가 너무 큽니다. 글꼴을 짧게 또는 작게 만드"
-"십시오."
 
 #: ../app/text/gimptextlayer-xcf.c:76
 #, c-format
@@ -11608,17 +11520,11 @@ msgid ""
 "Some text properties may be wrong. Unless you want to edit the text layer, "
 "you don't need to worry about this."
 msgstr ""
-"'%s' 레이어의 텍스트 기생(parasite) 해석 오류:\n"
+"레이어 '%s'의 텍스트 기생(parasite) 해석 오류:\n"
 "%s\n"
 "\n"
 "일부 텍스트 등록정보가 틀릴 수 있습니다. 텍스트 레이어를 수정하지 않는다면, "
 "이 문제에 대해 걱정할 필요가 없습니다."
-
-#: ../app/text/gimptextlayout.c:577
-msgid ""
-"The new text layout cannot be generated. Most likely the font size is too "
-"big."
-msgstr "새 텍스트 배치를 만들 수 없습니다. 글꼴 크기가 너무 큽니다."
 
 #: ../app/text/text-enums.c:23
 msgctxt "text-box-mode"
@@ -11685,7 +11591,7 @@ msgstr "대상을 왼쪽 끝으로 정렬"
 
 #: ../app/tools/gimpalignoptions.c:302
 msgid "Align center of target"
-msgstr "대상을 수평방향 가운데로 정렬"
+msgstr "대상을 가운데(수평)로 정렬"
 
 #: ../app/tools/gimpalignoptions.c:306
 msgid "Align right edge of target"
@@ -11697,7 +11603,7 @@ msgstr "대상을 위쪽으로 정렬"
 
 #: ../app/tools/gimpalignoptions.c:318
 msgid "Align middle of target"
-msgstr "대상을 수직방향 가운데로 정렬"
+msgstr "대상을 가운데(수직)로 정렬"
 
 #: ../app/tools/gimpalignoptions.c:322
 msgid "Align bottom of target"
@@ -11713,7 +11619,7 @@ msgstr "대상을 왼쪽 끝으로 배치"
 
 #: ../app/tools/gimpalignoptions.c:342
 msgid "Distribute horizontal centers of targets"
-msgstr "대상을 수평방향 가운데로 배치"
+msgstr "대상을 가운데(수평)로 배치"
 
 #: ../app/tools/gimpalignoptions.c:346
 msgid "Distribute right edges of targets"
@@ -11725,7 +11631,7 @@ msgstr "대상을 위쪽으로 배치"
 
 #: ../app/tools/gimpalignoptions.c:358
 msgid "Distribute vertical centers of targets"
-msgstr "대상을 수직방향 가운데로 배치"
+msgstr "대상을 가운데(수직)로 배치"
 
 #: ../app/tools/gimpalignoptions.c:362
 msgid "Distribute bottoms of targets"
@@ -11737,7 +11643,7 @@ msgstr "오프셋:"
 
 #: ../app/tools/gimpaligntool.c:125
 msgid "Alignment Tool: Align or arrange layers and other objects"
-msgstr "정렬 도구: 레이어나 다른 객체를 정렬하거나 배치합니다."
+msgstr "정렬 도구: 레이어나 다른 오브젝트를 정렬하거나 배치합니다."
 
 #: ../app/tools/gimpaligntool.c:126
 msgid "_Align"
@@ -11812,7 +11718,7 @@ msgstr "혼합 기능은 인덱스 레이어에서는 동작하지 않습니다.
 msgid "No gradient available for use with this tool."
 msgstr "이 도구에서는 가능한 그라디언트 없음."
 
-#: ../app/tools/gimpblendtool.c:452 ../app/tools/gimppainttool.c:624
+#: ../app/tools/gimpblendtool.c:452 ../app/tools/gimppainttool.c:623
 #, c-format
 msgid "%s for constrained angles"
 msgstr "%s(으)로 제한된 각"
@@ -11955,29 +11861,29 @@ msgctxt "command"
 msgid "Select by Color"
 msgstr "색상으로 선택"
 
-#: ../app/tools/gimpcagetool.c:158 ../app/tools/gimpcagetool.c:1123
+#: ../app/tools/gimpcagetool.c:152 ../app/tools/gimpcagetool.c:1155
 msgid "Cage Transform"
-msgstr "틀 변형"
+msgstr "Cage 변형"
 
-#: ../app/tools/gimpcagetool.c:159
+#: ../app/tools/gimpcagetool.c:153
 msgid "Cage Transform: Deform a selection with a cage"
-msgstr "틀 변형: 틀을 활용하여 선택 영역을 변형합니다"
+msgstr "골조 변형: 골조로 선택 영역 변형"
 
-#: ../app/tools/gimpcagetool.c:160
+#: ../app/tools/gimpcagetool.c:154
 msgid "_Cage Transform"
-msgstr "틀 변형(_C)"
+msgstr "_Cage 변형"
 
-#: ../app/tools/gimpcagetool.c:356
+#: ../app/tools/gimpcagetool.c:352
 msgid "Press ENTER to commit the transform"
-msgstr "변형을 승인하려면 엔터키를 누르십시오"
+msgstr "변형을 승인하려면 엔터를 누르십시오."
 
-#: ../app/tools/gimpcagetool.c:1064
+#: ../app/tools/gimpcagetool.c:1096
 msgid "Computing Cage Coefficients"
-msgstr "틀 계수 계산"
+msgstr "Cage 계수 계산"
 
-#: ../app/tools/gimpcagetool.c:1241
+#: ../app/tools/gimpcagetool.c:1273
 msgid "Cage transform"
-msgstr "틀 변형"
+msgstr "Cage 변형"
 
 #: ../app/tools/gimpclonetool.c:61
 msgid "Clone Tool: Selectively copy from an image or pattern, using a brush"
@@ -12087,7 +11993,7 @@ msgstr "휘도 유지(_L)"
 
 #: ../app/tools/gimpcolorizetool.c:90
 msgid "Colorize"
-msgstr "색상화"
+msgstr "컬러화(Colorize)"
 
 #: ../app/tools/gimpcolorizetool.c:91
 msgid "Colorize Tool: Colorize the image"
@@ -12111,7 +12017,7 @@ msgstr "색상화 설정 내보내기"
 
 #: ../app/tools/gimpcolorizetool.c:157
 msgid "Colorize operates only on RGB color layers."
-msgstr "색상화는 RGB 색상 레이어에서만 동작합니다."
+msgstr "컬러화는 RGB 색상 레이어에서만 동작합니다."
 
 #: ../app/tools/gimpcolorizetool.c:224
 msgid "Select Color"
@@ -12188,11 +12094,11 @@ msgstr "색상 추출(_O)"
 msgid "Click in any image to view its color"
 msgstr "해당 색상을 보려면 이미지를 클릭하십시오."
 
-#: ../app/tools/gimpcolorpickertool.c:238 ../app/tools/gimppainttool.c:478
+#: ../app/tools/gimpcolorpickertool.c:238 ../app/tools/gimppainttool.c:477
 msgid "Click in any image to pick the foreground color"
 msgstr "전경색을 바꾸려면 이미지를 클릭하십시오."
 
-#: ../app/tools/gimpcolorpickertool.c:246 ../app/tools/gimppainttool.c:484
+#: ../app/tools/gimpcolorpickertool.c:246 ../app/tools/gimppainttool.c:483
 msgid "Click in any image to pick the background color"
 msgstr "배경색을 바꾸려면 이미지를 클릭하십시오."
 
@@ -12356,7 +12262,7 @@ msgstr "채널(_N):"
 msgid "R_eset Channel"
 msgstr "채널 초기화(_E)"
 
-#: ../app/tools/gimpcurvestool.c:583 ../app/widgets/gimpdeviceinfoeditor.c:461
+#: ../app/tools/gimpcurvestool.c:583 ../app/widgets/gimpdeviceinfoeditor.c:458
 msgid "Curve _type:"
 msgstr "커브 유형(_T):"
 
@@ -12391,48 +12297,49 @@ msgstr "기본으로 사용할 회색 계조를 선택하십시오.:"
 
 #: ../app/tools/gimpdodgeburntool.c:73
 msgid "Dodge / Burn"
-msgstr "닷지 / 번"
+msgstr "닷지(Dodge) / 번(Burn)"
 
 #: ../app/tools/gimpdodgeburntool.c:74
 msgid "Dodge / Burn Tool: Selectively lighten or darken using a brush"
 msgstr ""
-"닷지 / 번 도구: 붓을 이용해 이미지의 일부분을 밝게 만들거나 어둡게 만듭니다."
+"닷지(Dodge)/번(Burn) 도구: 붓을 이용해 이미지의 일부분을 밝게 만들거나 어둡"
+"게 만듭니다."
 
 #: ../app/tools/gimpdodgeburntool.c:75
 msgid "Dod_ge / Burn"
-msgstr "닷지 / 번(_G)"
+msgstr "닷지(Dodge) / 번(Burn)(_G)"
 
 #: ../app/tools/gimpdodgeburntool.c:187
 msgid "Click to dodge"
-msgstr "닷지 하려면 클릭하십시오."
+msgstr "닷지(Dodge)를 하려면 클릭하십시오."
 
 #: ../app/tools/gimpdodgeburntool.c:188
 msgid "Click to dodge the line"
-msgstr "선에 닷지 효과를 적용하려면 클릭하십시오"
+msgstr "선을 닷징(Dodge)하려면 클릭하십시오."
 
 #: ../app/tools/gimpdodgeburntool.c:189
 #, c-format
 msgid "%s to burn"
-msgstr "%s에 번 효과 적용"
+msgstr "%s을(를) 번(Burn)합니다."
 
 #: ../app/tools/gimpdodgeburntool.c:193
 msgid "Click to burn"
-msgstr "번 효과를 적용하려면 클릭하십시오"
+msgstr "번(Burn)하려면 클릭하십시오."
 
 #: ../app/tools/gimpdodgeburntool.c:194
 msgid "Click to burn the line"
-msgstr "선에 번 효과를 적용하려면 클릭하십시오"
+msgstr "선을 버닝(Burn)하려면 클릭하십시오."
 
 #: ../app/tools/gimpdodgeburntool.c:195
 #, c-format
 msgid "%s to dodge"
-msgstr "%s에 닷지 효과 적용"
+msgstr "%s을(를) 닷징(Dodge)합니다."
 
 #. the type (dodge or burn)
 #: ../app/tools/gimpdodgeburntool.c:219
 #, c-format
 msgid "Type  (%s)"
-msgstr "유형(%s)"
+msgstr "유형  (%s)"
 
 #. mode (highlights, midtones, or shadows)
 #: ../app/tools/gimpdodgeburntool.c:230
@@ -12549,7 +12456,7 @@ msgstr "연속된 영역 선택"
 msgid ""
 "Paint over areas to mark color values for inclusion or exclusion from "
 "selection"
-msgstr "선택에 포함된/안 된 색상값 표시를 위해 영역 전체 칠하기"
+msgstr "선택에 포함된/포함 안 된 색상값 표시를 위해 영역 전체 칠하기"
 
 #: ../app/tools/gimpforegroundselectoptions.c:98
 msgid "Size of the brush used for refinements"
@@ -12588,7 +12495,7 @@ msgstr "연속"
 #: ../app/tools/gimpforegroundselectoptions.c:286
 #, c-format
 msgid "Interactive refinement  (%s)"
-msgstr "상호적인 세밀화 작업(%s)"
+msgstr "상호연동적인 세밀 작업 (%s)"
 
 #: ../app/tools/gimpforegroundselectoptions.c:290
 msgid "Mark background"
@@ -12831,7 +12738,7 @@ msgstr "프리셋(_S):"
 #: ../app/tools/gimpimagemaptool-settings.c:223
 #, c-format
 msgid "Settings saved to '%s'"
-msgstr "'%s'(으)로 설정을 저장했습니다"
+msgstr "'%s'(으)로 설정이 저장되었습니다."
 
 #: ../app/tools/gimpimagemaptool.c:363
 msgid "_Preview"
@@ -12875,7 +12782,7 @@ msgstr "모양"
 
 #: ../app/tools/gimpinktool.c:55
 msgid "Ink Tool: Calligraphy-style painting"
-msgstr "잉크 도구: 붓글씨 모양 채색"
+msgstr "잉크 도구: 붓글씨 모양으로 칠을 합니다."
 
 #: ../app/tools/gimpinktool.c:56
 msgid "In_k"
@@ -12992,7 +12899,7 @@ msgstr "레벨 자동 조절"
 
 #: ../app/tools/gimplevelstool.c:686
 msgid "Edit these Settings as Curves"
-msgstr "커브로 설정 편집"
+msgstr "커브로 설정 편집하기"
 
 #: ../app/tools/gimplevelstool.c:829
 msgid "Use _old levels file format"
@@ -13000,7 +12907,7 @@ msgstr "이전 레벨 파일 형식 사용(_O)"
 
 #: ../app/tools/gimpmagnifyoptions.c:79
 msgid "Resize image window to accommodate new zoom level"
-msgstr "새 확대/축소 비율에 맞게 이미지 창 크기 변경"
+msgstr "새 확대/축소 비율에 맞게 이미지 창 크기 변경하기"
 
 #: ../app/tools/gimpmagnifyoptions.c:86
 msgid "Direction of magnification"
@@ -13054,7 +12961,7 @@ msgstr "안내선 추가"
 
 #: ../app/tools/gimpmeasuretool.c:313
 msgid "Drag to create a line"
-msgstr "새 선을 만들려면 드래그하십시오."
+msgstr "새 선을 만들려면 드래그하시오."
 
 #: ../app/tools/gimpmeasuretool.c:560
 msgid "Click to place vertical and horizontal guides"
@@ -13078,7 +12985,7 @@ msgstr "모든 지점을 이동하려면 클릭 후 드래그하십시오."
 
 #: ../app/tools/gimpmeasuretool.c:939 ../app/tools/gimpmeasuretool.c:1084
 #: ../app/tools/gimpmeasuretool.c:1140 ../app/tools/gimpmeasuretool.c:1168
-#: ../app/tools/gimppainttool.c:633
+#: ../app/tools/gimppainttool.c:632
 msgid "pixels"
 msgstr "픽셀"
 
@@ -13131,7 +13038,7 @@ msgstr "이동"
 
 #: ../app/tools/gimpmovetool.c:128
 msgid "Move Tool: Move layers, selections, and other objects"
-msgstr "이동 도구: 레이어, 선택, 그리고 다른 객체를 이동시킵니다."
+msgstr "이동 도구: 레이어, 선택, 그리고 다른 오브젝트들을 이동시킵니다."
 
 #: ../app/tools/gimpmovetool.c:129
 msgid "_Move"
@@ -13249,7 +13156,7 @@ msgstr "%s 색상을 가져옵니다."
 msgid "Cannot paint on layer groups."
 msgstr "레이어 그룹을 칠할 수 없습니다."
 
-#: ../app/tools/gimppainttool.c:679
+#: ../app/tools/gimppainttool.c:678
 #, c-format
 msgid "%s for a straight line"
 msgstr "직선에 대한 %s"
@@ -13709,19 +13616,19 @@ msgstr "텍스트 도구: 텍스트 레이어를 만들거나 편집합니다"
 msgid "Te_xt"
 msgstr "텍스트(_X)"
 
-#: ../app/tools/gimptexttool.c:959
+#: ../app/tools/gimptexttool.c:958
 msgid "Reshape Text Layer"
 msgstr "텍스트 레이어 다시 날카롭게"
 
-#: ../app/tools/gimptexttool.c:1513 ../app/tools/gimptexttool.c:1516
+#: ../app/tools/gimptexttool.c:1512 ../app/tools/gimptexttool.c:1515
 msgid "Confirm Text Editing"
 msgstr "텍스트 편집 확인"
 
-#: ../app/tools/gimptexttool.c:1520
+#: ../app/tools/gimptexttool.c:1519
 msgid "Create _New Layer"
 msgstr "새 레이어 만들기(_N)"
 
-#: ../app/tools/gimptexttool.c:1544
+#: ../app/tools/gimptexttool.c:1543
 msgid ""
 "The layer you selected is a text layer but it has been modified using other "
 "tools. Editing the layer with the text tool will discard these "
@@ -13735,7 +13642,7 @@ msgstr ""
 "해당 레이어를 편집하거나 해당 레이어의 텍스트 속성을 가진 새 텍스트 레이어를 "
 "만들 수 있습니다."
 
-#: ../app/tools/gimptexttool-editor.c:1199
+#: ../app/tools/gimptexttool-editor.c:1180
 msgid "GIMP Text Editor"
 msgstr "김프 텍스트 편집기"
 
@@ -13850,15 +13757,15 @@ msgstr "원본 종횡비 유지"
 msgid "Transforming"
 msgstr "변형 중"
 
-#: ../app/tools/gimptransformtool.c:1069
+#: ../app/tools/gimptransformtool.c:1066
 msgid "There is no layer to transform."
 msgstr "변형할 레이어가 없습니다."
 
-#: ../app/tools/gimptransformtool.c:1082
+#: ../app/tools/gimptransformtool.c:1079
 msgid "There is no path to transform."
 msgstr "변형할 경로가 없습니다."
 
-#: ../app/tools/gimptransformtool.c:1083
+#: ../app/tools/gimptransformtool.c:1080
 msgid "The active path's strokes are locked."
 msgstr "활성 레이어의 스트로크가 잠겨 있습니다."
 
@@ -14241,7 +14148,7 @@ msgstr "단축키"
 msgid "Name"
 msgstr "이름"
 
-#: ../app/widgets/gimpactionview.c:633 ../app/widgets/gimpactionview.c:843
+#: ../app/widgets/gimpactionview.c:633 ../app/widgets/gimpactionview.c:841
 msgid "Changing shortcut failed."
 msgstr "단축키 변경에 실패했습니다."
 
@@ -14263,11 +14170,11 @@ msgstr "단축키 \"%s\"은(는) 이미 \"%s\"(\"%s\" 그룹)에 할당되어 �
 msgid "Reassigning the shortcut will cause it to be removed from \"%s\"."
 msgstr "재설정된 단축키는 \"%s\"에서 제거될 것입니다."
 
-#: ../app/widgets/gimpactionview.c:778
+#: ../app/widgets/gimpactionview.c:776
 msgid "Invalid shortcut."
 msgstr "잘못된 단축키입니다."
 
-#: ../app/widgets/gimpactionview.c:867
+#: ../app/widgets/gimpactionview.c:865
 msgid "Removing shortcut failed."
 msgstr "단축키 제거에 실패했습니다."
 
@@ -14303,37 +14210,37 @@ msgstr "(없음)"
 msgid "Add the current color to the color history"
 msgstr "현재 색상을 색상 이력에 추가"
 
-#: ../app/widgets/gimpcolordisplayeditor.c:157
+#: ../app/widgets/gimpcolordisplayeditor.c:154
 msgid "Available Filters"
 msgstr "가용 필터"
 
-#: ../app/widgets/gimpcolordisplayeditor.c:219
+#: ../app/widgets/gimpcolordisplayeditor.c:216
 msgid "Move the selected filter up"
 msgstr "선택한 필터를 위로 이동"
 
-#: ../app/widgets/gimpcolordisplayeditor.c:228
+#: ../app/widgets/gimpcolordisplayeditor.c:225
 msgid "Move the selected filter down"
 msgstr "선택한 필터를 아래로 이동"
 
-#: ../app/widgets/gimpcolordisplayeditor.c:274
+#: ../app/widgets/gimpcolordisplayeditor.c:271
 msgid "Active Filters"
 msgstr "활성 필터"
 
-#: ../app/widgets/gimpcolordisplayeditor.c:325
+#: ../app/widgets/gimpcolordisplayeditor.c:322
 msgid "Reset the selected filter to default values"
 msgstr "선택한 필터를 기본 값으로 초기화"
 
-#: ../app/widgets/gimpcolordisplayeditor.c:527
+#: ../app/widgets/gimpcolordisplayeditor.c:503
 #, c-format
 msgid "Add '%s' to the list of active filters"
 msgstr "활성 필터 목록에 '%s' 추가"
 
-#: ../app/widgets/gimpcolordisplayeditor.c:564
+#: ../app/widgets/gimpcolordisplayeditor.c:540
 #, c-format
 msgid "Remove '%s' from the list of active filters"
 msgstr "활성 필터 목록에서 '%s' 제거"
 
-#: ../app/widgets/gimpcolordisplayeditor.c:595
+#: ../app/widgets/gimpcolordisplayeditor.c:571
 msgid "No filter selected"
 msgstr "선택한 필터 없음"
 
@@ -14560,7 +14467,7 @@ msgid ""
 "\n"
 "You already have a keyboard controller in your list of active controllers."
 msgstr ""
-"키보드 제어기는 하나만 활성화할 수 있습니다.\n"
+"키보드 제어기는 하나만 활성화시킬 수 있습니다.\n"
 "\n"
 "활성화된 제어기 목록에 키보드 제어기가 이미 있습니다."
 
@@ -14570,7 +14477,7 @@ msgid ""
 "\n"
 "You already have a wheel controller in your list of active controllers."
 msgstr ""
-"마우스 제어기는 하나만 활성화할 수 있습니다.\n"
+"마우스 제어기는 하나만 활성화시킬 수 있습니다.\n"
 "\n"
 "활성화된 제어기 목록에 키보드 제어기가 이미 있습니다."
 
@@ -14599,7 +14506,7 @@ msgstr "제어기 제거"
 #: ../app/widgets/gimpcontrollerlist.c:579
 #, c-format
 msgid "Remove Controller '%s'?"
-msgstr "'%s' 제어기를 제거하시겠습니까?"
+msgstr "제어기 '%s'을(를) 제거하시겠습니까?"
 
 #: ../app/widgets/gimpcontrollerlist.c:583
 msgid ""
@@ -14782,45 +14689,42 @@ msgstr "X 기울기"
 msgid "Y tilt"
 msgstr "Y 기울기"
 
-#. Wheel as in mouse or input device wheel
-#: ../app/widgets/gimpdeviceinfoeditor.c:144
+#: ../app/widgets/gimpdeviceinfoeditor.c:143
 #: ../app/widgets/gimpdynamicseditor.c:145
 #: ../app/widgets/gimpdynamicsoutputeditor.c:73
 msgid "Wheel"
 msgstr "휠"
 
 #. the axes
-#. The axes of an input device
-#: ../app/widgets/gimpdeviceinfoeditor.c:195
+#: ../app/widgets/gimpdeviceinfoeditor.c:193
 msgid "Axes"
 msgstr "축"
 
 #. the keys
-#: ../app/widgets/gimpdeviceinfoeditor.c:269
+#: ../app/widgets/gimpdeviceinfoeditor.c:267
 msgid "Keys"
 msgstr "키"
 
-#: ../app/widgets/gimpdeviceinfoeditor.c:366
-#: ../app/widgets/gimpdeviceinfoeditor.c:585
+#: ../app/widgets/gimpdeviceinfoeditor.c:364
+#: ../app/widgets/gimpdeviceinfoeditor.c:582
 #, c-format
 msgid "none"
 msgstr "없음"
 
-#. e.g. "Pressure Curve" for mapping input device axes
-#: ../app/widgets/gimpdeviceinfoeditor.c:415
+#: ../app/widgets/gimpdeviceinfoeditor.c:412
 #, c-format
 msgid "%s Curve"
 msgstr "%s 커브"
 
-#: ../app/widgets/gimpdeviceinfoeditor.c:474
+#: ../app/widgets/gimpdeviceinfoeditor.c:471
 #: ../app/widgets/gimpdynamicsoutputeditor.c:209
 msgid "_Reset Curve"
-msgstr "커브 초기화(_R)"
+msgstr "_Reset Curve"
 
-#: ../app/widgets/gimpdeviceinfoeditor.c:487
+#: ../app/widgets/gimpdeviceinfoeditor.c:484
 #, c-format
 msgid "The axis '%s' has no curve"
-msgstr " '%s' 축에 곡선이 없습니다"
+msgstr " '%s' 축에는 곡선이 없습니다"
 
 #: ../app/widgets/gimpdevicestatus.c:137
 msgid "Save device status"
@@ -14884,11 +14788,11 @@ msgid "Configure this tab"
 msgstr "탭 설정"
 
 #. Auto button
-#: ../app/widgets/gimpdockwindow.c:386
+#: ../app/widgets/gimpdockwindow.c:382
 msgid "Auto"
 msgstr "자동"
 
-#: ../app/widgets/gimpdockwindow.c:397
+#: ../app/widgets/gimpdockwindow.c:393
 msgid ""
 "When enabled the dialog automatically follows the image you are working on."
 msgstr "대화상자가 자동으로 현재 작업중인 이미지를 반영합니다."
@@ -14924,11 +14828,7 @@ msgstr "너무 많은 오류 메시지가 있습니다!"
 msgid "Messages are redirected to stderr."
 msgstr "메시지는 stderr로 보내집니다."
 
-#. %s is a message domain,
-#. * like "GIMP Message" or
-#. * "PNG Message"
-#.
-#: ../app/widgets/gimperrordialog.c:174
+#: ../app/widgets/gimperrordialog.c:170
 #, c-format
 msgid "%s Message"
 msgstr "%s 메시지"
@@ -14941,23 +14841,23 @@ msgstr "자동 검출"
 msgid "By Extension"
 msgstr "확장자로"
 
-#: ../app/widgets/gimpfiledialog.c:801
+#: ../app/widgets/gimpfiledialog.c:798
 msgid "All files"
 msgstr "모든 파일"
 
-#: ../app/widgets/gimpfiledialog.c:806
+#: ../app/widgets/gimpfiledialog.c:803
 msgid "All images"
 msgstr "모든 이미지"
 
-#: ../app/widgets/gimpfiledialog.c:813
+#: ../app/widgets/gimpfiledialog.c:810
 msgid "All XCF images"
 msgstr "모든 XCF 이미지"
 
-#: ../app/widgets/gimpfiledialog.c:815
+#: ../app/widgets/gimpfiledialog.c:812
 msgid "All export images"
 msgstr "모든 가져온 이미지"
 
-#: ../app/widgets/gimpfiledialog.c:999
+#: ../app/widgets/gimpfiledialog.c:996
 #, c-format
 msgid "Select File _Type (%s)"
 msgstr "파일 유형 선택(_T) (%s)"
@@ -15101,8 +15001,8 @@ msgid ""
 "The GIMP help browser plug-in appears to be missing from your installation. "
 "You may instead use the web browser for reading the help pages."
 msgstr ""
-"김프 도움말 탐색기 플러그인을 설치 과정에서 제외했습니다. 웹 탐색기를 이용해 "
-"도움말 페이지를 볼 수도 있습니다."
+"김프 도움말 탐색기 플러그인이 설치 과정에서 제외되었습니다. 웹 탐색기를 이용"
+"해 도움말 페이지를 볼 수도 있습니다."
 
 #: ../app/widgets/gimphelp.c:336
 msgid "Help browser doesn't start"
@@ -15180,79 +15080,79 @@ msgstr ""
 msgid "Querying..."
 msgstr "요청 중..."
 
-#: ../app/widgets/gimpimagepropview.c:113
+#: ../app/widgets/gimpimagepropview.c:120
 msgid "Size in pixels:"
 msgstr "픽셀 단위 크기:"
 
-#: ../app/widgets/gimpimagepropview.c:116
+#: ../app/widgets/gimpimagepropview.c:123
 msgid "Print size:"
 msgstr "인쇄 크기:"
 
-#: ../app/widgets/gimpimagepropview.c:119
+#: ../app/widgets/gimpimagepropview.c:126
 msgid "Resolution:"
 msgstr "해상도:"
 
-#: ../app/widgets/gimpimagepropview.c:122
+#: ../app/widgets/gimpimagepropview.c:129
 msgid "Color space:"
 msgstr "색상 공간:"
 
-#: ../app/widgets/gimpimagepropview.c:127
+#: ../app/widgets/gimpimagepropview.c:134
 msgid "File Name:"
 msgstr "파일명:"
 
-#: ../app/widgets/gimpimagepropview.c:133
+#: ../app/widgets/gimpimagepropview.c:140
 msgid "File Size:"
 msgstr "파일 크기:"
 
-#: ../app/widgets/gimpimagepropview.c:136
+#: ../app/widgets/gimpimagepropview.c:143
 msgid "File Type:"
 msgstr "파일 타입:"
 
-#: ../app/widgets/gimpimagepropview.c:141
+#: ../app/widgets/gimpimagepropview.c:148
 msgid "Size in memory:"
 msgstr "메모리 내의 크기:"
 
-#: ../app/widgets/gimpimagepropview.c:144
+#: ../app/widgets/gimpimagepropview.c:151
 msgid "Undo steps:"
 msgstr "실행 취소 수:"
 
-#: ../app/widgets/gimpimagepropview.c:147
+#: ../app/widgets/gimpimagepropview.c:154
 msgid "Redo steps:"
 msgstr "재실행 수:"
 
-#: ../app/widgets/gimpimagepropview.c:152
+#: ../app/widgets/gimpimagepropview.c:159
 msgid "Number of pixels:"
 msgstr "픽셀 수:"
 
-#: ../app/widgets/gimpimagepropview.c:155
+#: ../app/widgets/gimpimagepropview.c:162
 msgid "Number of layers:"
 msgstr "레이어 수:"
 
-#: ../app/widgets/gimpimagepropview.c:158
+#: ../app/widgets/gimpimagepropview.c:165
 msgid "Number of channels:"
 msgstr "채널 수:"
 
-#: ../app/widgets/gimpimagepropview.c:161
+#: ../app/widgets/gimpimagepropview.c:168
 msgid "Number of paths:"
 msgstr "경로 수:"
 
 #. no undo (or redo) steps available
-#: ../app/widgets/gimpimagepropview.c:410
+#: ../app/widgets/gimpimagepropview.c:411
 msgid "None"
 msgstr "없음"
 
-#: ../app/widgets/gimpimagepropview.c:464
+#: ../app/widgets/gimpimagepropview.c:465
 #: ../app/widgets/gimptemplateeditor.c:331
 #, c-format
 msgid "pixels/%s"
 msgstr "픽셀/%s"
 
-#: ../app/widgets/gimpimagepropview.c:466
+#: ../app/widgets/gimpimagepropview.c:467
 #, c-format
 msgid "%g × %g %s"
 msgstr "%g × %g %s"
 
-#: ../app/widgets/gimpimagepropview.c:487
+#: ../app/widgets/gimpimagepropview.c:488
 msgid "colors"
 msgstr "색상"
 
@@ -15270,12 +15170,12 @@ msgid "Message repeated once."
 msgid_plural "Message repeated %d times."
 msgstr[0] "메시지를 %d번 반복합니다."
 
-#: ../app/widgets/gimppaletteeditor.c:240
-#: ../app/widgets/gimppaletteeditor.c:715
+#: ../app/widgets/gimppaletteeditor.c:226
+#: ../app/widgets/gimppaletteeditor.c:682
 msgid "Undefined"
 msgstr "정의안됨"
 
-#: ../app/widgets/gimppaletteeditor.c:248
+#: ../app/widgets/gimppaletteeditor.c:234
 msgid "Columns:"
 msgstr "열:"
 
@@ -15298,7 +15198,7 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-"'%s' 파일 이름을 올바른 URI로 변환할 수 없습니다:\n"
+"파일 이름 '%s'을(를) 올바른 URI로 변환할 수 없습니다:\n"
 "\n"
 "%s"
 
@@ -15390,7 +15290,7 @@ msgstr "파선 무늬:"
 
 #: ../app/widgets/gimpstrokeeditor.c:241
 msgid "Dash _preset:"
-msgstr "파선 프리셋(_P):"
+msgstr "대쉬선(線) 프리셋(_P):"
 
 #: ../app/widgets/gimptagentry.c:45
 msgid "filter"
@@ -15447,12 +15347,12 @@ msgstr "%d × %d ppi, %s"
 msgid "%d ppi, %s"
 msgstr "%d ppi, %s"
 
-#: ../app/widgets/gimptextbuffer-serialize.c:344
+#: ../app/widgets/gimptextbuffer-serialize.c:340
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "이 문맥의 <%s> 요소에 \"%s\" 속성은 올바르지 않습니다"
 
-#: ../app/widgets/gimptextbuffer-serialize.c:416
+#: ../app/widgets/gimptextbuffer-serialize.c:412
 #, c-format
 msgid "Outermost element in text must be <markup> not <%s>"
 msgstr "텍스트의 가장 바깥 요소는 <%s>가 아닌 <markup>이어야 합니다."
@@ -15460,7 +15360,7 @@ msgstr "텍스트의 가장 바깥 요소는 <%s>가 아닌 <markup>이어야 �
 #: ../app/widgets/gimptextbuffer.c:1454
 #, c-format
 msgid "Invalid UTF-8 data in file '%s'."
-msgstr "'%s' 파일에 잘못된 UTF-8 데이터가 있습니다."
+msgstr "파일 '%s'에 잘못된 UTF-8 데이터가 있습니다."
 
 #: ../app/widgets/gimptexteditor.c:222
 msgid "_Use selected font"
@@ -15837,26 +15737,26 @@ msgctxt "tab-style"
 msgid "Undefined"
 msgstr "정의 안됨"
 
-#: ../app/xcf/xcf-load.c:339
+#: ../app/xcf/xcf-load.c:336
 msgid ""
 "This XCF file is corrupt!  I have loaded as much of it as I can, but it is "
 "incomplete."
 msgstr "이 XCF 파일은 망가졌습니다. 불러온 파일이 완전하지 않을 수도 있습니다."
 
-#: ../app/xcf/xcf-load.c:350
+#: ../app/xcf/xcf-load.c:347
 msgid ""
 "This XCF file is corrupt!  I could not even salvage any partial image data "
 "from it."
 msgstr "이 XCF 파일은 망가졌습니다. 파일을 불러올 수 없습니다."
 
-#: ../app/xcf/xcf-load.c:423
+#: ../app/xcf/xcf-load.c:420
 msgid ""
 "XCF warning: version 0 of XCF file format\n"
 "did not save indexed colormaps correctly.\n"
 "Substituting grayscale map."
 msgstr ""
-"XCF 경고: XCF 파일 형식 버전 0은\n"
-"인덱싱한 색상표를 정확하게 저장하지 않습니다.\n"
+"XCF 경고: XCF파일 형식중 버전 0은\n"
+"인덱스된 색상표를 정확하게 저장하지 않습니다.\n"
 "그레이스케일 맵으로 대체합니다."
 
 #: ../app/xcf/xcf-read.c:115
@@ -15885,7 +15785,7 @@ msgstr "'%s' 열기"
 #: ../app/xcf/xcf.c:313
 #, c-format
 msgid "XCF error: unsupported XCF file version %d encountered"
-msgstr "XCF 오류: %d XCF 파일 버전은 지원되지 않습니다"
+msgstr "XCF 오류: XCF 파일 버전 %d은(는) 지원되지 않습니다"
 
 #: ../app/xcf/xcf.c:383
 #, c-format
@@ -15906,38 +15806,6 @@ msgstr "둥글게"
 msgid "fuzzy"
 msgstr "퍼지"
 
-#: ../desktop/gimp.appdata.xml.in.h:1
-msgid ""
-"GIMP is an acronym for GNU Image Manipulation Program. It is a freely "
-"distributed program for such tasks as photo retouching, image composition "
-"and image authoring."
-msgstr ""
-"GIMP는 GNU Image Manipulation Program의 약자입니다. 사진 보정, 그림 합성, 그"
-"림 제작과 같은 작업에 사용하는 무료 배포 프로그램입니다."
-
-#: ../desktop/gimp.appdata.xml.in.h:2
-msgid ""
-"It has many capabilities. It can be used as a simple paint program, an "
-"expert quality photo retouching program, an online batch processing system, "
-"a mass production image renderer, an image format converter, etc."
-msgstr ""
-"GIMP는 상당한 기능을 보유하고 있습니다. 간단한 색칠 프로그램, 전문가 수준 사"
-"진 보정 프로그램, 온라인 일괄 처리 시스템, 대규모 이미지 렌더러, 이미지 형식 "
-"변환 프로그램 등의 목적으로 사용할 수 있습니다."
-
-#: ../desktop/gimp.appdata.xml.in.h:3
-msgid ""
-"GIMP is expandable and extensible. It is designed to be augmented with plug-"
-"ins and extensions to do just about anything. The advanced scripting "
-"interface allows everything from the simplest task to the most complex image "
-"manipulation procedures to be easily scripted. GIMP is also available for "
-"Microsoft Windows and OS X."
-msgstr ""
-"GIMP는 규모 및 기능면에서 확장 가능합니다. 어떤 작업이든 수행하는 플러그인과 "
-"확장을 붙일 수 있도록 설계했습니다. 고급 스크립트 인터페이스는 간단한 작업부"
-"터 쉽게 스크립트로 처리 가능한 복잡한 이미지 조작까지 그 모든 일을 가능케 해"
-"줍니다. GIMP는 마이크로소프트 윈도우와 OS X에서도 사용할 수 있습니다."
-
 #: ../desktop/gimp.desktop.in.in.h:2
 msgid "Image Editor"
 msgstr "이미지 편집기"
@@ -15945,13 +15813,3 @@ msgstr "이미지 편집기"
 #: ../desktop/gimp.desktop.in.in.h:3
 msgid "Create images and edit photographs"
 msgstr "이미지를 만들고 사진을 편집합니다"
-
-#~ msgctxt "file-action"
-#~ msgid "Export to"
-#~ msgstr "내보내기"
-
-#~ msgid "Export to"
-#~ msgstr "내보내기"
-
-#~ msgid "Close _without Saving"
-#~ msgstr "저장 않고 닫기(_W)"

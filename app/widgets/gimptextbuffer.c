@@ -21,22 +21,6 @@
 #include "config.h"
 
 #include <stdlib.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <string.h>
-#include <sys/types.h>
-
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
-
-#include <glib/gstdio.h>
-
-#include <glib.h>
-
-#ifdef G_OS_WIN32
-#include "libgimpbase/gimpwin32-io.h"
-#endif
 
 #include <gegl.h>
 #include <gtk/gtk.h>
@@ -54,6 +38,13 @@
 #include "gimp-intl.h"
 
 
+enum
+{
+  COLOR_APPLIED,
+  LAST_SIGNAL
+};
+
+
 /*  local function prototypes  */
 
 static void   gimp_text_buffer_constructed (GObject           *object);
@@ -69,6 +60,8 @@ G_DEFINE_TYPE (GimpTextBuffer, gimp_text_buffer, GTK_TYPE_TEXT_BUFFER)
 
 #define parent_class gimp_text_buffer_parent_class
 
+static guint buffer_signals[LAST_SIGNAL] = { 0, };
+
 
 static void
 gimp_text_buffer_class_init (GimpTextBufferClass *klass)
@@ -81,6 +74,16 @@ gimp_text_buffer_class_init (GimpTextBufferClass *klass)
   object_class->finalize    = gimp_text_buffer_finalize;
 
   buffer_class->mark_set    = gimp_text_buffer_mark_set;
+
+  buffer_signals[COLOR_APPLIED] =
+    g_signal_new ("color-applied",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpTextBufferClass, color_applied),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__BOXED,
+                  G_TYPE_NONE, 1,
+                  GIMP_TYPE_RGB);
 }
 
 static void
@@ -103,8 +106,7 @@ gimp_text_buffer_constructed (GObject *object)
 {
   GimpTextBuffer *buffer = GIMP_TEXT_BUFFER (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   gtk_text_buffer_set_text (GTK_TEXT_BUFFER (buffer), "", -1);
 
@@ -122,6 +124,11 @@ gimp_text_buffer_constructed (GObject *object)
                                                       "underline",
                                                       "underline", PANGO_UNDERLINE_SINGLE,
                                                       NULL);
+
+  buffer->preedit_underline_tag = gtk_text_buffer_create_tag (GTK_TEXT_BUFFER (buffer),
+                                                              "preedit-underline",
+                                                              "underline", PANGO_UNDERLINE_SINGLE,
+                                                              NULL);
 
   buffer->strikethrough_tag = gtk_text_buffer_create_tag (GTK_TEXT_BUFFER (buffer),
                                                           "strikethrough",
@@ -170,6 +177,18 @@ gimp_text_buffer_finalize (GObject *object)
     {
       g_list_free (buffer->color_tags);
       buffer->color_tags = NULL;
+    }
+
+  if (buffer->preedit_color_tags)
+    {
+      g_list_free (buffer->preedit_color_tags);
+      buffer->preedit_color_tags = NULL;
+    }
+
+  if (buffer->preedit_bg_color_tags)
+    {
+      g_list_free (buffer->preedit_bg_color_tags);
+      buffer->preedit_bg_color_tags = NULL;
     }
 
   gimp_text_buffer_clear_insert_tags (buffer);
@@ -928,7 +947,7 @@ gimp_text_buffer_get_iter_color (GimpTextBuffer    *buffer,
       if (gtk_text_iter_has_tag (iter, tag))
         {
           if (color)
-            gimp_text_tag_get_color (tag, color);
+            gimp_text_tag_get_fg_color (tag, color);
 
           return tag;
         }
@@ -956,7 +975,7 @@ gimp_text_buffer_get_color_tag (GimpTextBuffer *buffer,
 
       tag = list->data;
 
-      gimp_text_tag_get_color (tag, &tag_color);
+      gimp_text_tag_get_fg_color (tag, &tag_color);
 
       gimp_rgb_get_uchar (&tag_color, &tag_r, &tag_g, &tag_b);
 
@@ -1014,6 +1033,172 @@ gimp_text_buffer_set_color (GimpTextBuffer    *buffer,
 
       gtk_text_buffer_apply_tag (GTK_TEXT_BUFFER (buffer), tag,
                                  start, end);
+
+      g_signal_emit (buffer, buffer_signals[COLOR_APPLIED], 0, color);
+    }
+
+  gtk_text_buffer_end_user_action (GTK_TEXT_BUFFER (buffer));
+}
+
+GtkTextTag *
+gimp_text_buffer_get_preedit_color_tag (GimpTextBuffer *buffer,
+                                        const GimpRGB  *color)
+{
+  GList      *list;
+  GtkTextTag *tag;
+  gchar       name[256];
+  GdkColor    gdk_color;
+  guchar      r, g, b;
+
+  gimp_rgb_get_uchar (color, &r, &g, &b);
+
+  for (list = buffer->preedit_color_tags; list; list = g_list_next (list))
+    {
+      GimpRGB tag_color;
+      guchar  tag_r, tag_g, tag_b;
+
+      tag = list->data;
+
+      gimp_text_tag_get_fg_color (tag, &tag_color);
+
+      gimp_rgb_get_uchar (&tag_color, &tag_r, &tag_g, &tag_b);
+
+      /* Do not compare the alpha channel, since it's unused */
+      if (tag_r == r &&
+          tag_g == g &&
+          tag_b == b)
+        {
+          return tag;
+        }
+    }
+
+  g_snprintf (name, sizeof (name), "preedit-color-#%02x%02x%02x",
+              r, g, b);
+
+  gimp_rgb_get_gdk_color (color, &gdk_color);
+
+  tag = gtk_text_buffer_create_tag (GTK_TEXT_BUFFER (buffer),
+                                    name,
+                                    "foreground-gdk", &gdk_color,
+                                    "foreground-set", TRUE,
+                                    NULL);
+
+  buffer->preedit_color_tags = g_list_prepend (buffer->preedit_color_tags, tag);
+
+  return tag;
+}
+
+void
+gimp_text_buffer_set_preedit_color (GimpTextBuffer    *buffer,
+                                    const GtkTextIter *start,
+                                    const GtkTextIter *end,
+                                    const GimpRGB     *color)
+{
+  GList *list;
+
+  g_return_if_fail (GIMP_IS_TEXT_BUFFER (buffer));
+  g_return_if_fail (start != NULL);
+  g_return_if_fail (end != NULL);
+
+  if (gtk_text_iter_equal (start, end))
+    return;
+
+  gtk_text_buffer_begin_user_action (GTK_TEXT_BUFFER (buffer));
+
+  for (list = buffer->preedit_color_tags; list; list = g_list_next (list))
+    {
+      gtk_text_buffer_remove_tag (GTK_TEXT_BUFFER (buffer), list->data,
+                                  start, end);
+    }
+
+  if (color)
+    {
+      GtkTextTag *tag = gimp_text_buffer_get_preedit_color_tag (buffer, color);
+
+      gtk_text_buffer_apply_tag (GTK_TEXT_BUFFER (buffer), tag,
+                                 start, end);
+    }
+
+  gtk_text_buffer_end_user_action (GTK_TEXT_BUFFER (buffer));
+}
+
+GtkTextTag *
+gimp_text_buffer_get_preedit_bg_color_tag (GimpTextBuffer *buffer,
+                                           const GimpRGB  *color)
+{
+  GList      *list;
+  GtkTextTag *tag;
+  gchar       name[256];
+  GdkColor    gdk_color;
+  guchar      r, g, b;
+
+  gimp_rgb_get_uchar (color, &r, &g, &b);
+
+  for (list = buffer->preedit_bg_color_tags; list; list = g_list_next (list))
+    {
+      GimpRGB tag_color;
+      guchar  tag_r, tag_g, tag_b;
+
+      tag = list->data;
+
+      gimp_text_tag_get_bg_color (tag, &tag_color);
+
+      gimp_rgb_get_uchar (&tag_color, &tag_r, &tag_g, &tag_b);
+
+      /* Do not compare the alpha channel, since it's unused */
+      if (tag_r == r &&
+          tag_g == g &&
+          tag_b == b)
+        {
+          return tag;
+        }
+    }
+
+  g_snprintf (name, sizeof (name), "bg-color-#%02x%02x%02x",
+              r, g, b);
+
+  gimp_rgb_get_gdk_color (color, &gdk_color);
+
+  tag = gtk_text_buffer_create_tag (GTK_TEXT_BUFFER (buffer),
+                                    name,
+                                    "background-gdk", &gdk_color,
+                                    "background-set", TRUE,
+                                    NULL);
+
+  buffer->preedit_bg_color_tags = g_list_prepend (buffer->preedit_bg_color_tags, tag);
+
+  return tag;
+}
+
+void
+gimp_text_buffer_set_preedit_bg_color (GimpTextBuffer    *buffer,
+                                       const GtkTextIter *start,
+                                       const GtkTextIter *end,
+                                       const GimpRGB     *color)
+{
+  GList *list;
+
+  g_return_if_fail (GIMP_IS_TEXT_BUFFER (buffer));
+  g_return_if_fail (start != NULL);
+  g_return_if_fail (end != NULL);
+
+  if (gtk_text_iter_equal (start, end))
+    return;
+
+  gtk_text_buffer_begin_user_action (GTK_TEXT_BUFFER (buffer));
+
+  for (list = buffer->preedit_bg_color_tags; list; list = g_list_next (list))
+    {
+      gtk_text_buffer_remove_tag (GTK_TEXT_BUFFER (buffer), list->data,
+                                  start, end);
+    }
+
+  if (color)
+    {
+      GtkTextTag *tag = gimp_text_buffer_get_preedit_bg_color_tag (buffer, color);
+
+      gtk_text_buffer_apply_tag (GTK_TEXT_BUFFER (buffer), tag,
+                                 start, end);
     }
 
   gtk_text_buffer_end_user_action (GTK_TEXT_BUFFER (buffer));
@@ -1021,11 +1206,15 @@ gimp_text_buffer_set_color (GimpTextBuffer    *buffer,
 
 /*  Pango markup attribute names  */
 
-#define GIMP_TEXT_ATTR_NAME_SIZE     "size"
-#define GIMP_TEXT_ATTR_NAME_BASELINE "rise"
-#define GIMP_TEXT_ATTR_NAME_KERNING  "letter_spacing"
-#define GIMP_TEXT_ATTR_NAME_FONT     "font"
-#define GIMP_TEXT_ATTR_NAME_COLOR    "foreground"
+#define GIMP_TEXT_ATTR_NAME_SIZE      "size"
+#define GIMP_TEXT_ATTR_NAME_BASELINE  "rise"
+#define GIMP_TEXT_ATTR_NAME_KERNING   "letter_spacing"
+#define GIMP_TEXT_ATTR_NAME_FONT      "font"
+#define GIMP_TEXT_ATTR_NAME_STYLE     "style"
+#define GIMP_TEXT_ATTR_NAME_COLOR     "foreground"
+#define GIMP_TEXT_ATTR_NAME_FG_COLOR  "fgcolor"
+#define GIMP_TEXT_ATTR_NAME_BG_COLOR  "background"
+#define GIMP_TEXT_ATTR_NAME_UNDERLINE "underline"
 
 const gchar *
 gimp_text_buffer_tag_to_name (GimpTextBuffer  *buffer,
@@ -1108,11 +1297,60 @@ gimp_text_buffer_tag_to_name (GimpTextBuffer  *buffer,
           GimpRGB color;
           guchar  r, g, b;
 
-          gimp_text_tag_get_color (tag, &color);
+          gimp_text_tag_get_fg_color (tag, &color);
           gimp_rgb_get_uchar (&color, &r, &g, &b);
 
           *value = g_strdup_printf ("#%02x%02x%02x", r, g, b);
         }
+
+      return "span";
+    }
+  else if (g_list_find (buffer->preedit_color_tags, tag))
+    {
+      /* "foreground" and "fgcolor" attributes are similar, but I use
+       * one or the other as a trick to differentiate the color chosen
+       * from the user and a display color for preedit. */
+      if (attribute)
+        *attribute = GIMP_TEXT_ATTR_NAME_FG_COLOR;
+
+      if (value)
+        {
+          GimpRGB color;
+          guchar  r, g, b;
+
+          gimp_text_tag_get_fg_color (tag, &color);
+          gimp_rgb_get_uchar (&color, &r, &g, &b);
+
+          *value = g_strdup_printf ("#%02x%02x%02x", r, g, b);
+        }
+
+      return "span";
+    }
+  else if (g_list_find (buffer->preedit_bg_color_tags, tag))
+    {
+      if (attribute)
+        *attribute = GIMP_TEXT_ATTR_NAME_BG_COLOR;
+
+      if (value)
+        {
+          GimpRGB color;
+          guchar  r, g, b;
+
+          gimp_text_tag_get_bg_color (tag, &color);
+          gimp_rgb_get_uchar (&color, &r, &g, &b);
+
+          *value = g_strdup_printf ("#%02x%02x%02x", r, g, b);
+        }
+
+      return "span";
+    }
+  else if (tag == buffer->preedit_underline_tag)
+    {
+      if (attribute)
+        *attribute = GIMP_TEXT_ATTR_NAME_UNDERLINE;
+
+      if (value)
+        *value = g_strdup ("single");
 
       return "span";
     }
@@ -1219,6 +1457,7 @@ gimp_text_buffer_insert (GimpTextBuffer *buffer,
   GList       *insert_tags;
   GList       *remove_tags;
   GSList      *tags_off = NULL;
+  GimpRGB      color;
 
   g_return_if_fail (GIMP_IS_TEXT_BUFFER (buffer));
 
@@ -1286,6 +1525,11 @@ gimp_text_buffer_insert (GimpTextBuffer *buffer,
 
   g_list_free (remove_tags);
   g_list_free (insert_tags);
+
+  if (gimp_text_buffer_get_iter_color (buffer, &start, &color))
+    {
+      g_signal_emit (buffer, buffer_signals[COLOR_APPLIED], 0, &color);
+    }
 
   gtk_text_buffer_end_user_action (GTK_TEXT_BUFFER (buffer));
 }
@@ -1407,25 +1651,29 @@ gimp_text_buffer_get_iter_at_index (GimpTextBuffer *buffer,
 
 gboolean
 gimp_text_buffer_load (GimpTextBuffer *buffer,
-                       const gchar    *filename,
+                       GFile          *file,
                        GError        **error)
 {
-  FILE        *file;
-  gchar        buf[2048];
-  gint         remaining = 0;
-  GtkTextIter  iter;
+  GInputStream *input;
+  gchar         buf[2048];
+  gint          to_read;
+  gsize         bytes_read;
+  gsize         total_read = 0;
+  gint          remaining  = 0;
+  GtkTextIter   iter;
+  GError       *my_error = NULL;
 
   g_return_val_if_fail (GIMP_IS_TEXT_BUFFER (buffer), FALSE);
-  g_return_val_if_fail (filename != NULL, FALSE);
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  file = g_fopen (filename, "r");
-
-  if (! file)
+  input = G_INPUT_STREAM (g_file_read (file, NULL, &my_error));
+  if (! input)
     {
-      g_set_error_literal (error, G_FILE_ERROR,
-                           g_file_error_from_errno (errno),
-                           g_strerror (errno));
+      g_set_error (error, my_error->domain, my_error->code,
+                   _("Could not open '%s' for reading: %s"),
+                   gimp_file_get_utf8_name (file), my_error->message);
+      g_clear_error (&my_error);
       return FALSE;
     }
 
@@ -1434,63 +1682,80 @@ gimp_text_buffer_load (GimpTextBuffer *buffer,
   gimp_text_buffer_set_text (buffer, NULL);
   gtk_text_buffer_get_end_iter (GTK_TEXT_BUFFER (buffer), &iter);
 
-  while (! feof (file))
+  do
     {
+      gboolean    success;
       const char *leftover;
-      gint        count;
-      gint        to_read = sizeof (buf) - remaining - 1;
 
-      count = fread (buf + remaining, 1, to_read, file);
-      buf[count + remaining] = '\0';
+      to_read = sizeof (buf) - remaining - 1;
 
-      g_utf8_validate (buf, count + remaining, &leftover);
+      success = g_input_stream_read_all (input, buf + remaining, to_read,
+                                         &bytes_read, NULL, &my_error);
+
+      total_read += bytes_read;
+      buf[bytes_read + remaining] = '\0';
+
+      g_utf8_validate (buf, bytes_read + remaining, &leftover);
 
       gtk_text_buffer_insert (GTK_TEXT_BUFFER (buffer), &iter,
                               buf, leftover - buf);
       gtk_text_buffer_get_end_iter (GTK_TEXT_BUFFER (buffer), &iter);
 
-      remaining = (buf + remaining + count) - leftover;
-      g_memmove (buf, leftover, remaining);
+      remaining = (buf + remaining + bytes_read) - leftover;
+      memmove (buf, leftover, remaining);
 
-      if (remaining > 6 || count < to_read)
-        break;
+      if (! success)
+        {
+          if (total_read > 0)
+            {
+              g_message (_("Input file '%s' appears truncated: %s"),
+                         gimp_file_get_utf8_name (file),
+                         my_error->message);
+              g_clear_error (&my_error);
+              break;
+            }
+
+          gtk_text_buffer_end_user_action (GTK_TEXT_BUFFER (buffer));
+          g_object_unref (input);
+
+          g_propagate_error (error, my_error);
+
+          return FALSE;
+        }
     }
+  while (remaining <= 6 && bytes_read == to_read);
 
   if (remaining)
     g_message (_("Invalid UTF-8 data in file '%s'."),
-               gimp_filename_to_utf8 (filename));
-
-  fclose (file);
+               gimp_file_get_utf8_name (file));
 
   gtk_text_buffer_end_user_action (GTK_TEXT_BUFFER (buffer));
+  g_object_unref (input);
 
   return TRUE;
 }
 
 gboolean
 gimp_text_buffer_save (GimpTextBuffer *buffer,
-                       const gchar    *filename,
+                       GFile          *file,
                        gboolean        selection_only,
                        GError        **error)
 {
-  GtkTextIter  start_iter;
-  GtkTextIter  end_iter;
-  gint         fd;
-  gchar       *text_contents;
+  GOutputStream *output;
+  GtkTextIter    start_iter;
+  GtkTextIter    end_iter;
+  gchar         *text_contents;
+  GError        *my_error = NULL;
 
   g_return_val_if_fail (GIMP_IS_TEXT_BUFFER (buffer), FALSE);
-  g_return_val_if_fail (filename != NULL, FALSE);
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  fd = g_open (filename, O_WRONLY | O_CREAT | O_APPEND, 0666);
-
-  if (fd == -1)
-    {
-      g_set_error_literal (error, G_FILE_ERROR,
-                           g_file_error_from_errno (errno),
-                           g_strerror (errno));
-      return FALSE;
-    }
+  output = G_OUTPUT_STREAM (g_file_replace (file,
+                                            NULL, FALSE, G_FILE_CREATE_NONE,
+                                            NULL, error));
+  if (! output)
+    return FALSE;
 
   if (selection_only)
     gtk_text_buffer_get_selection_bounds (GTK_TEXT_BUFFER (buffer),
@@ -1506,27 +1771,22 @@ gimp_text_buffer_save (GimpTextBuffer *buffer,
     {
       gint text_length = strlen (text_contents);
 
-      if (text_length > 0)
+      if (! g_output_stream_write_all (output, text_contents, text_length,
+                                       NULL, NULL, &my_error))
         {
-          gint bytes_written;
-
-          bytes_written = write (fd, text_contents, text_length);
-
-          if (bytes_written != text_length)
-            {
-              g_free (text_contents);
-              close (fd);
-              g_set_error_literal (error, G_FILE_ERROR,
-                                   g_file_error_from_errno (errno),
-                                   g_strerror (errno));
-              return FALSE;
-            }
+          g_set_error (error, my_error->domain, my_error->code,
+                       _("Writing text file '%s' failed: %s"),
+                       gimp_file_get_utf8_name (file), my_error->message);
+          g_clear_error (&my_error);
+          g_free (text_contents);
+          g_object_unref (output);
+          return FALSE;
         }
 
       g_free (text_contents);
     }
 
-  close (fd);
+  g_object_unref (output);
 
   return TRUE;
 }

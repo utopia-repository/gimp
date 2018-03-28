@@ -21,6 +21,8 @@
 
 #include "config.h"
 
+#include <gegl.h>
+#undef GDK_MULTIHEAD_SAFE /* for gdk_keymap_get_default() */
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -34,17 +36,15 @@
 #include "gimp-intl.h"
 
 
-#define MODIFIER_MASK (GDK_MOD1_MASK | GDK_CONTROL_MASK | GDK_SHIFT_MASK)
-
-
 typedef struct _MouseEvent MouseEvent;
 
 struct _MouseEvent
 {
-  const guint               button;
-  const GdkModifierType     modifiers;
-  const gchar              *name;
-  const gchar              *blurb;
+  const guint      button;
+  const gchar     *modifier_string;
+  GdkModifierType  modifiers;
+  const gchar     *name;
+  const gchar     *blurb;
 };
 
 
@@ -65,129 +65,129 @@ G_DEFINE_TYPE (GimpControllerMouse, gimp_controller_mouse,
 
 static MouseEvent mouse_events[] =
 {
-  { 8, 0,
+  { 8, NULL, 0,
     "8",
     N_("Button 8") },
-  { 8, GDK_SHIFT_MASK,
+  { 8, "<Shift>", 0,
     "8-shift",
     N_("Button 8") },
-  { 8, GDK_CONTROL_MASK,
-    "8-control",
+  { 8, "<Primary>", 0,
+    "8-primary",
     N_("Button 8") },
-  { 8, GDK_MOD1_MASK,
+  { 8, "<Alt>", 0,
     "8-alt",
     N_("Button 8") },
-  { 8, GDK_CONTROL_MASK | GDK_SHIFT_MASK,
-    "8-shift-control",
+  { 8, "<Shift><Primary>", 0,
+    "8-shift-primary",
     N_("Button 8") },
-  { 8, GDK_MOD1_MASK | GDK_SHIFT_MASK,
+  { 8, "<Shift><Alt>", 0,
     "8-shift-alt",
     N_("Button 8") },
-  { 8, GDK_MOD1_MASK | GDK_CONTROL_MASK,
-    "8-control-alt",
+  { 8, "<Primary><Alt>", 0,
+    "8-primary-alt",
     N_("Button 8") },
-  { 8, GDK_MOD1_MASK | GDK_CONTROL_MASK | GDK_SHIFT_MASK,
-    "8-shift-control-alt",
+  { 8, "<Shift><Primary><Alt>", 0,
+    "8-shift-primary-alt",
     N_("Button 8") },
 
-  { 9, 0,
+  { 9, NULL, 0,
     "9",
     N_("Button 9") },
-  { 9, GDK_SHIFT_MASK,
+  { 9, "<Shift>", 0,
     "9-shift",
     N_("Button 9") },
-  { 9, GDK_CONTROL_MASK,
-    "9-control",
+  { 9, "<Primary>", 0,
+    "9-primary",
     N_("Button 9") },
-  { 9, GDK_MOD1_MASK,
+  { 9, "<Alt>", 0,
     "9-alt",
     N_("Button 9") },
-  { 9, GDK_CONTROL_MASK | GDK_SHIFT_MASK,
-    "9-shift-control",
+  { 9, "<Shift><Primary>", 0,
+    "9-shift-primary",
     N_("Button 9") },
-  { 9, GDK_MOD1_MASK | GDK_SHIFT_MASK,
+  { 9, "<Shift><Alt>", 0,
     "9-shift-alt",
     N_("Button 9") },
-  { 9, GDK_MOD1_MASK | GDK_CONTROL_MASK,
-    "9-control-alt",
+  { 9, "<Primary><Alt>", 0,
+    "9-primary-alt",
     N_("Button 9") },
-  { 9, GDK_MOD1_MASK | GDK_CONTROL_MASK | GDK_SHIFT_MASK,
-    "9-shift-control-alt",
+  { 9, "<Shift><Primary><Alt>", 0,
+    "9-shift-primary-alt",
     N_("Button 9") },
 
-  { 10, 0,
+  { 10, NULL, 0,
     "10",
     N_("Button 10") },
-  { 10, GDK_SHIFT_MASK,
+  { 10, "<Shift>", 0,
     "10-shift",
     N_("Button 10") },
-  { 10, GDK_CONTROL_MASK,
-    "10-control",
+  { 10, "<Primary>", 0,
+    "10-primary",
     N_("Button 10") },
-  { 10, GDK_MOD1_MASK,
+  { 10, "<Alt>", 0,
     "10-alt",
     N_("Button 10") },
-  { 10, GDK_CONTROL_MASK | GDK_SHIFT_MASK,
-    "10-shift-control",
+  { 10, "<Shift><Primary>", 0,
+    "10-shift-primary",
     N_("Button 10") },
-  { 10, GDK_MOD1_MASK | GDK_SHIFT_MASK,
+  { 10, "<Shift><Alt>", 0,
     "10-shift-alt",
     N_("Button 10") },
-  { 10, GDK_MOD1_MASK | GDK_CONTROL_MASK,
-    "10-control-alt",
+  { 10, "<Primary><Alt>", 0,
+    "10-primary-alt",
     N_("Button 10") },
-  { 10, GDK_MOD1_MASK | GDK_CONTROL_MASK | GDK_SHIFT_MASK,
-    "10-shift-control-alt",
+  { 10, "<Shift><Primary><Alt>", 0,
+    "10-shift-primary-alt",
     N_("Button 10") },
 
-  { 11, 0,
+  { 11, NULL, 0,
     "11",
     N_("Button 11") },
-  { 11, GDK_SHIFT_MASK,
+  { 11, "<Shift>", 0,
     "11-shift",
     N_("Button 11") },
-  { 11, GDK_CONTROL_MASK,
-    "11-control",
+  { 11, "<Primary>", 0,
+    "11-primary",
     N_("Button 11") },
-  { 11, GDK_MOD1_MASK,
+  { 11, "<Alt>", 0,
     "11-alt",
     N_("Button 11") },
-  { 11, GDK_CONTROL_MASK | GDK_SHIFT_MASK,
-    "11-shift-control",
+  { 11, "<Shift><Primary>", 0,
+    "11-shift-primary",
     N_("Button 11") },
-  { 11, GDK_MOD1_MASK | GDK_SHIFT_MASK,
+  { 11, "<Shift><Alt>", 0,
     "11-shift-alt",
     N_("Button 11") },
-  { 11, GDK_MOD1_MASK | GDK_CONTROL_MASK,
-    "11-control-alt",
+  { 11, "<Primary><Alt>", 0,
+    "11-primary-alt",
     N_("Button 11") },
-  { 11, GDK_MOD1_MASK | GDK_CONTROL_MASK | GDK_SHIFT_MASK,
-    "11-shift-control-alt",
+  { 11, "<Shift><Primary><Alt>", 0,
+    "11-shift-primary-alt",
     N_("Button 11") },
 
-  { 12, 0,
+  { 12, NULL, 0,
     "12",
     N_("Button 12") },
-  { 12, GDK_SHIFT_MASK,
+  { 12, "<Shift>", 0,
     "12-shift",
     N_("Button 12") },
-  { 12, GDK_CONTROL_MASK,
-    "12-control",
+  { 12, "<Primary>", 0,
+    "12-primary",
     N_("Button 12") },
-  { 12, GDK_MOD1_MASK,
+  { 12, "<Alt>", 0,
     "12-alt",
     N_("Button 12") },
-  { 12, GDK_CONTROL_MASK | GDK_SHIFT_MASK,
-    "12-shift-control",
+  { 12, "<Shift><Primary>", 0,
+    "12-shift-primary",
     N_("Button 12") },
-  { 12, GDK_MOD1_MASK | GDK_SHIFT_MASK,
+  { 12, "<Shift><Alt>", 0,
     "12-shift-alt",
     N_("Button 12") },
-  { 12, GDK_MOD1_MASK | GDK_CONTROL_MASK,
-    "12-control-alt",
+  { 12, "<Primary><Alt>", 0,
+    "12-primary-alt",
     N_("Button 12") },
-  { 12, GDK_MOD1_MASK | GDK_CONTROL_MASK | GDK_SHIFT_MASK,
-    "12-shift-control-alt",
+  { 12, "<Shift><Primary><Alt>", 0,
+    "12-shift-primary-alt",
     N_("Button 12") },
 };
 
@@ -202,7 +202,7 @@ gimp_controller_mouse_class_init (GimpControllerMouseClass *klass)
 
   controller_class->name            = _("Mouse Buttons");
   controller_class->help_id         = GIMP_HELP_CONTROLLER_MOUSE;
-  controller_class->stock_id        = GIMP_STOCK_CONTROLLER_MOUSE;
+  controller_class->icon_name       = GIMP_ICON_CONTROLLER_MOUSE;
 
   controller_class->get_n_events    = gimp_controller_mouse_get_n_events;
   controller_class->get_event_name  = gimp_controller_mouse_get_event_name;
@@ -216,17 +216,25 @@ gimp_controller_mouse_init (GimpControllerMouse *mouse)
 
   if (! event_names_initialized)
     {
-      gint i;
+      GdkKeymap *keymap = gdk_keymap_get_default ();
+      gint       i;
 
       for (i = 0; i < G_N_ELEMENTS (mouse_events); i++)
         {
-          MouseEvent *wevent = &mouse_events[i];
+          MouseEvent *mevent = &mouse_events[i];
 
-          if (wevent->modifiers != 0)
+          if (mevent->modifier_string)
             {
-              wevent->blurb =
-                g_strdup_printf ("%s (%s)", gettext (wevent->blurb),
-                                 gimp_get_mod_string (wevent->modifiers));
+              gtk_accelerator_parse (mevent->modifier_string, NULL,
+                                     &mevent->modifiers);
+              gdk_keymap_map_virtual_modifiers (keymap, &mevent->modifiers);
+            }
+
+          if (mevent->modifiers != 0)
+            {
+              mevent->blurb =
+                g_strdup_printf ("%s (%s)", gettext (mevent->blurb),
+                                 gimp_get_mod_string (mevent->modifiers));
             }
         }
 
@@ -237,8 +245,7 @@ gimp_controller_mouse_init (GimpControllerMouse *mouse)
 static void
 gimp_controller_mouse_constructed (GObject *object)
 {
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   g_object_set (object,
                 "name",  _("Mouse Button Events"),
@@ -281,24 +288,26 @@ gimp_controller_mouse_button (GimpControllerMouse  *mouse,
   g_return_val_if_fail (GIMP_IS_CONTROLLER_MOUSE (mouse), FALSE);
   g_return_val_if_fail (bevent != NULL, FALSE);
 
-  for (i = 0; i < G_N_ELEMENTS (mouse_events); i++)
+  /*  start with the last event because the last ones in the
+   *  up,down,left,right groups have the most keyboard modifiers
+   */
+  for (i = G_N_ELEMENTS (mouse_events) - 1; i >= 0; i--)
     {
-      if (mouse_events[i].button == bevent->button)
+      if (mouse_events[i].button == bevent->button &&
+          (mouse_events[i].modifiers & bevent->state) ==
+          mouse_events[i].modifiers)
         {
-          if ((bevent->state & MODIFIER_MASK) == mouse_events[i].modifiers)
-            {
-              GimpControllerEvent         controller_event;
-              GimpControllerEventTrigger *trigger;
+          GimpControllerEvent         controller_event;
+          GimpControllerEventTrigger *trigger;
 
-              trigger = (GimpControllerEventTrigger *) &controller_event;
+          trigger = (GimpControllerEventTrigger *) &controller_event;
 
-              trigger->type     = GIMP_CONTROLLER_EVENT_TRIGGER;
-              trigger->source   = GIMP_CONTROLLER (mouse);
-              trigger->event_id = i;
+          trigger->type     = GIMP_CONTROLLER_EVENT_TRIGGER;
+          trigger->source   = GIMP_CONTROLLER (mouse);
+          trigger->event_id = i;
 
-              return gimp_controller_event (GIMP_CONTROLLER (mouse),
-                                            &controller_event);
-            }
+          return gimp_controller_event (GIMP_CONTROLLER (mouse),
+                                        &controller_event);
         }
     }
 

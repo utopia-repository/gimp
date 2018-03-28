@@ -55,9 +55,9 @@
 #include "buffers-actions.h"
 #include "channels-actions.h"
 #include "colormap-actions.h"
-#include "config-actions.h"
 #include "context-actions.h"
 #include "cursor-info-actions.h"
+#include "dashboard-actions.h"
 #include "debug-actions.h"
 #include "dialogs-actions.h"
 #include "dock-actions.h"
@@ -69,6 +69,7 @@
 #include "edit-actions.h"
 #include "error-console-actions.h"
 #include "file-actions.h"
+#include "filters-actions.h"
 #include "fonts-actions.h"
 #include "gradient-editor-actions.h"
 #include "gradients-actions.h"
@@ -76,6 +77,7 @@
 #include "image-actions.h"
 #include "images-actions.h"
 #include "layers-actions.h"
+#include "mypaint-brushes-actions.h"
 #include "palette-editor-actions.h"
 #include "palettes-actions.h"
 #include "patterns-actions.h"
@@ -106,30 +108,30 @@ GimpActionFactory *global_action_factory = NULL;
 
 static const GimpActionFactoryEntry action_groups[] =
 {
-  { "brush-editor", N_("Brush Editor"), GIMP_STOCK_BRUSH,
+  { "brush-editor", N_("Brush Editor"), GIMP_ICON_BRUSH,
     brush_editor_actions_setup,
     brush_editor_actions_update },
-  { "brushes", N_("Brushes"), GIMP_STOCK_BRUSH,
+  { "brushes", N_("Brushes"), GIMP_ICON_BRUSH,
     brushes_actions_setup,
     brushes_actions_update },
-  { "buffers", N_("Buffers"), GIMP_STOCK_BUFFER,
+  { "buffers", N_("Buffers"), GIMP_ICON_BUFFER,
     buffers_actions_setup,
     buffers_actions_update },
-  { "channels", N_("Channels"), GIMP_STOCK_CHANNEL,
+  { "channels", N_("Channels"), GIMP_ICON_CHANNEL,
     channels_actions_setup,
     channels_actions_update },
-  { "colormap", N_("Colormap"), GIMP_STOCK_COLORMAP,
+  { "colormap", N_("Colormap"), GIMP_ICON_COLORMAP,
     colormap_actions_setup,
     colormap_actions_update },
-  { "config", N_("Configuration"), GTK_STOCK_PREFERENCES,
-    config_actions_setup,
-    config_actions_update },
-  { "context", N_("Context"), GIMP_STOCK_TOOL_OPTIONS /* well... */,
+  { "context", N_("Context"), GIMP_ICON_DIALOG_TOOL_OPTIONS /* well... */,
     context_actions_setup,
     context_actions_update },
   { "cursor-info", N_("Pointer Information"), NULL,
     cursor_info_actions_setup,
     cursor_info_actions_update },
+  { "dashboard", N_("Dashboard"), GIMP_ICON_DIALOG_DASHBOARD,
+    dashboard_actions_setup,
+    dashboard_actions_update },
   { "debug", N_("Debug"), NULL,
     debug_actions_setup,
     debug_actions_update },
@@ -145,91 +147,97 @@ static const GimpActionFactoryEntry action_groups[] =
   { "documents", N_("Document History"), NULL,
     documents_actions_setup,
     documents_actions_update },
-  { "drawable", N_("Drawable"), GIMP_STOCK_LAYER,
+  { "drawable", N_("Drawable"), GIMP_ICON_LAYER,
     drawable_actions_setup,
     drawable_actions_update },
-  { "dynamics", N_("Paint Dynamics"), GIMP_STOCK_DYNAMICS,
+  { "dynamics", N_("Paint Dynamics"), GIMP_ICON_DYNAMICS,
     dynamics_actions_setup,
     dynamics_actions_update },
-  { "dynamics-editor", N_("Paint Dynamics Editor"), GIMP_STOCK_DYNAMICS,
+  { "dynamics-editor", N_("Paint Dynamics Editor"), GIMP_ICON_DYNAMICS,
     dynamics_editor_actions_setup,
     dynamics_editor_actions_update },
-  { "edit", N_("Edit"), GTK_STOCK_EDIT,
+  { "edit", N_("Edit"), GIMP_ICON_EDIT,
     edit_actions_setup,
     edit_actions_update },
-  { "error-console", N_("Error Console"), GIMP_STOCK_WARNING,
+  { "error-console", N_("Error Console"), GIMP_ICON_DIALOG_WARNING,
     error_console_actions_setup,
     error_console_actions_update },
-  { "file", N_("File"), GTK_STOCK_FILE,
+  { "file", N_("File"), "text-x-generic",
     file_actions_setup,
     file_actions_update },
-  { "fonts", N_("Fonts"), GIMP_STOCK_FONT,
+  { "filters", N_("Filters"), GIMP_ICON_GEGL,
+    filters_actions_setup,
+    filters_actions_update },
+  { "fonts", N_("Fonts"), GIMP_ICON_FONT,
     fonts_actions_setup,
     fonts_actions_update },
-  { "gradient-editor", N_("Gradient Editor"), GIMP_STOCK_GRADIENT,
+  { "gradient-editor", N_("Gradient Editor"), GIMP_ICON_GRADIENT,
     gradient_editor_actions_setup,
     gradient_editor_actions_update },
-  { "gradients", N_("Gradients"), GIMP_STOCK_GRADIENT,
+  { "gradients", N_("Gradients"), GIMP_ICON_GRADIENT,
     gradients_actions_setup,
     gradients_actions_update },
-  { "tool-presets", N_("Tool Presets"), GIMP_STOCK_TOOL_PRESET,
+  { "tool-presets", N_("Tool Presets"), GIMP_ICON_TOOL_PRESET,
     tool_presets_actions_setup,
     tool_presets_actions_update },
-  { "tool-preset-editor", N_("Tool Preset Editor"), GIMP_STOCK_TOOL_PRESET,
+  { "tool-preset-editor", N_("Tool Preset Editor"), GIMP_ICON_TOOL_PRESET,
     tool_preset_editor_actions_setup,
     tool_preset_editor_actions_update },
-  { "help", N_("Help"), GTK_STOCK_HELP,
+  { "help", N_("Help"), "help-browser",
     help_actions_setup,
     help_actions_update },
-  { "image", N_("Image"), GIMP_STOCK_IMAGE,
+  { "image", N_("Image"), GIMP_ICON_IMAGE,
     image_actions_setup,
     image_actions_update },
-  { "images", N_("Images"), GIMP_STOCK_IMAGE,
+  { "images", N_("Images"), GIMP_ICON_IMAGE,
     images_actions_setup,
     images_actions_update },
-  { "layers", N_("Layers"), GIMP_STOCK_LAYER,
+  { "layers", N_("Layers"), GIMP_ICON_LAYER,
     layers_actions_setup,
     layers_actions_update },
-  { "palette-editor", N_("Palette Editor"), GIMP_STOCK_PALETTE,
+  { "mypaint-brushes", N_("MyPaint Brushes"), GIMP_ICON_MYPAINT_BRUSH,
+    mypaint_brushes_actions_setup,
+    mypaint_brushes_actions_update },
+  { "palette-editor", N_("Palette Editor"), GIMP_ICON_PALETTE,
     palette_editor_actions_setup,
     palette_editor_actions_update },
-  { "palettes", N_("Palettes"), GIMP_STOCK_PALETTE,
+  { "palettes", N_("Palettes"), GIMP_ICON_PALETTE,
     palettes_actions_setup,
     palettes_actions_update },
-  { "patterns", N_("Patterns"), GIMP_STOCK_PATTERN,
+  { "patterns", N_("Patterns"), GIMP_ICON_PATTERN,
     patterns_actions_setup,
     patterns_actions_update },
-  { "plug-in", N_("Plug-Ins"), GIMP_STOCK_PLUGIN,
+  { "plug-in", N_("Plug-ins"), GIMP_ICON_PLUGIN,
     plug_in_actions_setup,
     plug_in_actions_update },
-  { "quick-mask", N_("Quick Mask"), GIMP_STOCK_QUICK_MASK_ON,
+  { "quick-mask", N_("Quick Mask"), GIMP_ICON_QUICK_MASK_ON,
     quick_mask_actions_setup,
     quick_mask_actions_update },
-  { "sample-points", N_("Sample Points"), GIMP_STOCK_SAMPLE_POINT,
+  { "sample-points", N_("Sample Points"), GIMP_ICON_SAMPLE_POINT,
     sample_points_actions_setup,
     sample_points_actions_update },
-  { "select", N_("Select"), GIMP_STOCK_SELECTION,
+  { "select", N_("Select"), GIMP_ICON_SELECTION,
     select_actions_setup,
     select_actions_update },
-  { "templates", N_("Templates"), GIMP_STOCK_TEMPLATE,
+  { "templates", N_("Templates"), GIMP_ICON_TEMPLATE,
     templates_actions_setup,
     templates_actions_update },
-  { "text-tool", N_("Text Tool"), GTK_STOCK_EDIT,
+  { "text-tool", N_("Text Tool"), GIMP_ICON_EDIT,
     text_tool_actions_setup,
     text_tool_actions_update },
-  { "text-editor", N_("Text Editor"), GTK_STOCK_EDIT,
+  { "text-editor", N_("Text Editor"), GIMP_ICON_EDIT,
     text_editor_actions_setup,
     text_editor_actions_update },
-  { "tool-options", N_("Tool Options"), GIMP_STOCK_TOOL_OPTIONS,
+  { "tool-options", N_("Tool Options"), GIMP_ICON_DIALOG_TOOL_OPTIONS,
     tool_options_actions_setup,
     tool_options_actions_update },
-  { "tools", N_("Tools"), GIMP_STOCK_TOOLS,
+  { "tools", N_("Tools"), GIMP_ICON_DIALOG_TOOLS,
     tools_actions_setup,
     tools_actions_update },
-  { "vectors", N_("Paths"), GIMP_STOCK_PATH,
+  { "vectors", N_("Paths"), GIMP_ICON_PATH,
     vectors_actions_setup,
     vectors_actions_update },
-  { "view", N_("View"), GIMP_STOCK_VISIBLE,
+  { "view", N_("View"), GIMP_ICON_VISIBLE,
     view_actions_setup,
     view_actions_update },
   { "windows", N_("Windows"), NULL,
@@ -254,7 +262,7 @@ actions_init (Gimp *gimp)
     gimp_action_factory_group_register (global_action_factory,
                                         action_groups[i].identifier,
                                         gettext (action_groups[i].label),
-                                        action_groups[i].stock_id,
+                                        action_groups[i].icon_name,
                                         action_groups[i].setup_func,
                                         action_groups[i].update_func);
 }
@@ -266,8 +274,7 @@ actions_exit (Gimp *gimp)
   g_return_if_fail (global_action_factory != NULL);
   g_return_if_fail (global_action_factory->gimp == gimp);
 
-  g_object_unref (global_action_factory);
-  global_action_factory = NULL;
+  g_clear_object (&global_action_factory);
 }
 
 Gimp *
@@ -395,6 +402,8 @@ action_data_get_display (gpointer data)
     context = gimp_dock_get_context ((GimpDock *) data);
   else if (GIMP_IS_DOCK_WINDOW (data))
     context = gimp_dock_window_get_context (((GimpDockWindow *) data));
+  else if (GIMP_IS_IMAGE_EDITOR (data))
+    context = ((GimpImageEditor *) data)->context;
   else if (GIMP_IS_NAVIGATION_EDITOR (data))
     context = ((GimpNavigationEditor *) data)->context;
 
@@ -683,22 +692,22 @@ action_message (GimpDisplay *display,
 {
   GimpDisplayShell *shell     = gimp_display_get_shell (display);
   GimpStatusbar    *statusbar = gimp_display_shell_get_statusbar (shell);
-  const gchar      *stock_id  = NULL;
+  const gchar      *icon_name = NULL;
   va_list           args;
 
   if (GIMP_IS_TOOL_OPTIONS (object))
     {
       GimpToolInfo *tool_info = GIMP_TOOL_OPTIONS (object)->tool_info;
 
-      stock_id = gimp_viewable_get_stock_id (GIMP_VIEWABLE (tool_info));
+      icon_name = gimp_viewable_get_icon_name (GIMP_VIEWABLE (tool_info));
     }
   else if (GIMP_IS_VIEWABLE (object))
     {
-      stock_id = gimp_viewable_get_stock_id (GIMP_VIEWABLE (object));
+      icon_name = gimp_viewable_get_icon_name (GIMP_VIEWABLE (object));
     }
 
   va_start (args, format);
   gimp_statusbar_push_temp_valist (statusbar, GIMP_MESSAGE_INFO,
-                                   stock_id, format, args);
+                                   icon_name, format, args);
   va_end (args);
 }

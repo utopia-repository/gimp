@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpconfig/gimpconfig.h"
@@ -61,12 +62,13 @@ gimp_flip_options_class_init (GimpFlipOptionsClass *klass)
   object_class->set_property = gimp_flip_options_set_property;
   object_class->get_property = gimp_flip_options_get_property;
 
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_FLIP_TYPE,
-                                 "flip-type",
-                                 N_("Direction of flipping"),
-                                 GIMP_TYPE_ORIENTATION_TYPE,
-                                 GIMP_ORIENTATION_HORIZONTAL,
-                                 GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_FLIP_TYPE,
+                         "flip-type",
+                         _("Flip Type"),
+                         _("Direction of flipping"),
+                         GIMP_TYPE_ORIENTATION_TYPE,
+                         GIMP_ORIENTATION_HORIZONTAL,
+                         GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void
@@ -115,14 +117,18 @@ gimp_flip_options_get_property (GObject    *object,
 GtkWidget *
 gimp_flip_options_gui (GimpToolOptions *tool_options)
 {
-  GObject         *config = G_OBJECT (tool_options);
-  GtkWidget       *vbox   = gimp_tool_options_gui (tool_options);
-  GtkWidget       *hbox;
-  GtkWidget       *box;
-  GtkWidget       *label;
-  GtkWidget       *frame;
-  gchar           *str;
-  GdkModifierType  toggle_mask;
+  GObject              *config     = G_OBJECT (tool_options);
+  GimpFlipOptions      *options    = GIMP_FLIP_OPTIONS (tool_options);
+  GimpTransformOptions *tr_options = GIMP_TRANSFORM_OPTIONS (tool_options);
+  GtkWidget            *vbox       = gimp_tool_options_gui (tool_options);
+  GtkWidget            *hbox;
+  GtkWidget            *box;
+  GtkWidget            *label;
+  GtkWidget            *frame;
+  GtkWidget            *combo;
+  gchar                *str;
+  GtkListStore         *clip_model;
+  GdkModifierType       toggle_mask;
 
   toggle_mask = gimp_get_toggle_behavior_mask ();
 
@@ -130,16 +136,16 @@ gimp_flip_options_gui (GimpToolOptions *tool_options)
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
-  label = gtk_label_new (_("Affect:"));
+  label = gtk_label_new (_("Transform:"));
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-  box = gimp_prop_enum_stock_box_new (config, "type", "gimp", 0, 0);
+  box = gimp_prop_enum_icon_box_new (config, "type", "gimp", 0, 0);
   gtk_box_pack_start (GTK_BOX (hbox), box, FALSE, FALSE, 0);
   gtk_widget_show (box);
 
   /*  tool toggle  */
-  str = g_strdup_printf (_("Flip Type  (%s)"),
+  str = g_strdup_printf (_("Direction  (%s)"),
                          gimp_get_mod_string (toggle_mask));
 
   frame = gimp_prop_enum_radio_frame_new (config, "flip-type",
@@ -150,6 +156,23 @@ gimp_flip_options_gui (GimpToolOptions *tool_options)
   gtk_widget_show (frame);
 
   g_free (str);
+
+  options->direction_frame = frame;
+
+  /*  the clipping menu  */
+  clip_model = gimp_enum_store_new_with_range (GIMP_TYPE_TRANSFORM_RESIZE,
+                                               GIMP_TRANSFORM_RESIZE_ADJUST,
+                                               GIMP_TRANSFORM_RESIZE_CLIP);
+
+  combo = gimp_prop_enum_combo_box_new (config, "clip", 0, 0);
+  gtk_combo_box_set_model (GTK_COMBO_BOX (combo), GTK_TREE_MODEL (clip_model));
+  gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (combo), tr_options->clip);
+  gimp_int_combo_box_set_label (GIMP_INT_COMBO_BOX (combo), _("Clipping"));
+  g_object_set (combo, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+  gtk_box_pack_start (GTK_BOX (vbox), combo, FALSE, FALSE, 0);
+  gtk_widget_show (combo);
+
+  g_object_unref (clip_model);
 
   return vbox;
 }

@@ -1,6 +1,8 @@
 EXPORTS
+	gdk_cairo_get_clip_rectangle
 	gdk_event_triggers_context_menu
 	gdk_keymap_get_modifier_mask
+	gdk_screen_get_monitor_workarea
 	gimp_aspect_type_get_type
 	gimp_browser_add_search_types
 	gimp_browser_get_type
@@ -27,15 +29,20 @@ EXPORTS
 	gimp_color_area_has_alpha
 	gimp_color_area_new
 	gimp_color_area_set_color
+	gimp_color_area_set_color_config
 	gimp_color_area_set_draw_border
 	gimp_color_area_set_type
 	gimp_color_area_type_get_type
 	gimp_color_button_get_color
+	gimp_color_button_get_title
 	gimp_color_button_get_type
+	gimp_color_button_get_ui_manager
 	gimp_color_button_get_update
 	gimp_color_button_has_alpha
 	gimp_color_button_new
 	gimp_color_button_set_color
+	gimp_color_button_set_color_config
+	gimp_color_button_set_title
 	gimp_color_button_set_type
 	gimp_color_button_set_update
 	gimp_color_display_changed
@@ -43,6 +50,7 @@ EXPORTS
 	gimp_color_display_configure
 	gimp_color_display_configure_reset
 	gimp_color_display_convert
+	gimp_color_display_convert_buffer
 	gimp_color_display_convert_surface
 	gimp_color_display_get_config
 	gimp_color_display_get_enabled
@@ -56,6 +64,7 @@ EXPORTS
 	gimp_color_display_stack_changed
 	gimp_color_display_stack_clone
 	gimp_color_display_stack_convert
+	gimp_color_display_stack_convert_buffer
 	gimp_color_display_stack_convert_surface
 	gimp_color_display_stack_get_type
 	gimp_color_display_stack_new
@@ -68,21 +77,35 @@ EXPORTS
 	gimp_color_hex_entry_set_color
 	gimp_color_notebook_get_type
 	gimp_color_notebook_set_has_page
+	gimp_color_picker_cursors_get_resource
+	gimp_color_profile_chooser_dialog_get_type
+	gimp_color_profile_chooser_dialog_new
 	gimp_color_profile_combo_box_add
+	gimp_color_profile_combo_box_add_file
 	gimp_color_profile_combo_box_get_active
+	gimp_color_profile_combo_box_get_active_file
 	gimp_color_profile_combo_box_get_type
 	gimp_color_profile_combo_box_new
 	gimp_color_profile_combo_box_new_with_model
 	gimp_color_profile_combo_box_set_active
+	gimp_color_profile_combo_box_set_active_file
 	gimp_color_profile_store_add
+	gimp_color_profile_store_add_file
 	gimp_color_profile_store_get_type
 	gimp_color_profile_store_new
+	gimp_color_profile_view_get_type
+	gimp_color_profile_view_new
+	gimp_color_profile_view_set_error
+	gimp_color_profile_view_set_profile
 	gimp_color_scale_entry_new
 	gimp_color_scale_get_type
 	gimp_color_scale_new
 	gimp_color_scale_set_channel
 	gimp_color_scale_set_color
+	gimp_color_scale_set_color_config
+	gimp_color_scales_get_show_rgb_u8
 	gimp_color_scales_get_type
+	gimp_color_scales_set_show_rgb_u8
 	gimp_color_select_get_type
 	gimp_color_selection_color_changed
 	gimp_color_selection_get_color
@@ -98,11 +121,20 @@ EXPORTS
 	gimp_color_selector_channel_changed
 	gimp_color_selector_channel_get_type
 	gimp_color_selector_color_changed
+	gimp_color_selector_get_channel
+	gimp_color_selector_get_color
+	gimp_color_selector_get_model_visible
+	gimp_color_selector_get_show_alpha
+	gimp_color_selector_get_toggles_sensitive
+	gimp_color_selector_get_toggles_visible
 	gimp_color_selector_get_type
+	gimp_color_selector_model_get_type
+	gimp_color_selector_model_visible_changed
 	gimp_color_selector_new
 	gimp_color_selector_set_channel
 	gimp_color_selector_set_color
 	gimp_color_selector_set_config
+	gimp_color_selector_set_model_visible
 	gimp_color_selector_set_show_alpha
 	gimp_color_selector_set_toggles_sensitive
 	gimp_color_selector_set_toggles_visible
@@ -127,7 +159,11 @@ EXPORTS
 	gimp_enum_combo_box_get_type
 	gimp_enum_combo_box_new
 	gimp_enum_combo_box_new_with_model
+	gimp_enum_combo_box_set_icon_prefix
 	gimp_enum_combo_box_set_stock_prefix
+	gimp_enum_icon_box_new
+	gimp_enum_icon_box_new_with_range
+	gimp_enum_icon_box_set_child_padding
 	gimp_enum_label_get_type
 	gimp_enum_label_new
 	gimp_enum_label_set_value
@@ -143,6 +179,7 @@ EXPORTS
 	gimp_enum_store_new_with_range
 	gimp_enum_store_new_with_values
 	gimp_enum_store_new_with_values_valist
+	gimp_enum_store_set_icon_prefix
 	gimp_enum_store_set_stock_prefix
 	gimp_file_entry_get_filename
 	gimp_file_entry_get_type
@@ -151,6 +188,7 @@ EXPORTS
 	gimp_float_adjustment_update
 	gimp_frame_get_type
 	gimp_frame_new
+	gimp_get_monitor_at_pointer
 	gimp_help_connect
 	gimp_help_disable_tooltips
 	gimp_help_enable_tooltips
@@ -159,16 +197,26 @@ EXPORTS
 	gimp_help_set_help_data_with_markup
 	gimp_hint_box_get_type
 	gimp_hint_box_new
+	gimp_icon_pixbufs_get_resource
+	gimp_icons_init
+	gimp_icons_set_icon_theme
 	gimp_int_adjustment_update
 	gimp_int_combo_box_append
 	gimp_int_combo_box_connect
 	gimp_int_combo_box_get_active
+	gimp_int_combo_box_get_active_user_data
+	gimp_int_combo_box_get_label
+	gimp_int_combo_box_get_layout
 	gimp_int_combo_box_get_type
+	gimp_int_combo_box_layout_get_type
 	gimp_int_combo_box_new
 	gimp_int_combo_box_new_array
 	gimp_int_combo_box_new_valist
 	gimp_int_combo_box_prepend
 	gimp_int_combo_box_set_active
+	gimp_int_combo_box_set_active_by_user_data
+	gimp_int_combo_box_set_label
+	gimp_int_combo_box_set_layout
 	gimp_int_combo_box_set_sensitivity
 	gimp_int_option_menu_new
 	gimp_int_option_menu_set_history
@@ -176,6 +224,7 @@ EXPORTS
 	gimp_int_radio_group_new
 	gimp_int_radio_group_set_active
 	gimp_int_store_get_type
+	gimp_int_store_lookup_by_user_data
 	gimp_int_store_lookup_by_value
 	gimp_int_store_new
 	gimp_label_set_attributes
@@ -247,6 +296,7 @@ EXPORTS
 	gimp_preview_area_mask
 	gimp_preview_area_menu_popup
 	gimp_preview_area_new
+	gimp_preview_area_set_color_config
 	gimp_preview_area_set_colormap
 	gimp_preview_area_set_max_size
 	gimp_preview_area_set_offsets
@@ -273,6 +323,7 @@ EXPORTS
 	gimp_prop_entry_new
 	gimp_prop_enum_check_button_new
 	gimp_prop_enum_combo_box_new
+	gimp_prop_enum_icon_box_new
 	gimp_prop_enum_label_new
 	gimp_prop_enum_radio_box_new
 	gimp_prop_enum_radio_frame_new
@@ -281,11 +332,13 @@ EXPORTS
 	gimp_prop_file_chooser_button_new
 	gimp_prop_file_chooser_button_new_with_dialog
 	gimp_prop_hscale_new
+	gimp_prop_icon_image_new
 	gimp_prop_int_combo_box_new
 	gimp_prop_label_new
 	gimp_prop_memsize_entry_new
 	gimp_prop_opacity_entry_new
 	gimp_prop_path_editor_new
+	gimp_prop_pointer_combo_box_new
 	gimp_prop_scale_entry_new
 	gimp_prop_size_entry_new
 	gimp_prop_spin_button_new
@@ -318,6 +371,7 @@ EXPORTS
 	gimp_scale_entry_new
 	gimp_scale_entry_set_logarithmic
 	gimp_scale_entry_set_sensitive
+	gimp_screen_get_color_profile
 	gimp_scrolled_preview_freeze
 	gimp_scrolled_preview_get_type
 	gimp_scrolled_preview_set_policy
@@ -379,6 +433,10 @@ EXPORTS
 	gimp_unit_store_set_pixel_values
 	gimp_unit_store_set_resolution
 	gimp_unit_store_set_resolutions
+	gimp_widget_get_color_profile
+	gimp_widget_get_color_transform
+	gimp_widget_get_monitor
+	gimp_widget_track_monitor
 	gimp_widgets_error_quark
 	gimp_widgets_init
 	gimp_zoom_button_new
@@ -392,6 +450,10 @@ EXPORTS
 	gimp_zoom_type_get_type
 	gtk_box_new
 	gtk_button_box_new
+	gtk_label_get_xalign
+	gtk_label_get_yalign
+	gtk_label_set_xalign
+	gtk_label_set_yalign
 	gtk_paned_new
 	gtk_scale_new
 	gtk_scrollbar_new

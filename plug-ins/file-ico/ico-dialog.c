@@ -47,7 +47,8 @@ ico_dialog_new (IcoSaveInfo *info)
   GtkWidget *main_vbox;
   GtkWidget *vbox;
   GtkWidget *frame;
-  GtkWidget *scrolledwindow;
+  GtkWidget *scrolled_window;
+  GtkWidget *viewport;
   GtkWidget *warning;
 
   dialog = gimp_export_dialog_new (_("Windows Icon"),
@@ -74,21 +75,24 @@ ico_dialog_new (IcoSaveInfo *info)
   gtk_box_pack_start (GTK_BOX (main_vbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 
-  scrolledwindow = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow),
+  scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-  gtk_container_add (GTK_CONTAINER (frame), scrolledwindow);
-  gtk_widget_show (scrolledwindow);
+  gtk_container_add (GTK_CONTAINER (frame), scrolled_window);
+  gtk_widget_show (scrolled_window);
+
+  viewport = gtk_viewport_new (NULL, NULL);
+  gtk_container_add (GTK_CONTAINER (scrolled_window), viewport);
+  gtk_widget_show (viewport);
 
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
   g_object_set_data (G_OBJECT (dialog), "icons_vbox", vbox);
-  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolledwindow),
-                                         vbox);
+  gtk_container_add (GTK_CONTAINER (viewport), vbox);
   gtk_widget_show (vbox);
 
   warning = g_object_new (GIMP_TYPE_HINT_BOX,
-                          "stock-id", GIMP_STOCK_WARNING,
+                          "icon-name", GIMP_ICON_DIALOG_WARNING,
                           "hint",
                           _("Large icons and compression are not supported "
                             "by all programs. Older applications may not "
@@ -224,25 +228,52 @@ ico_dialog_update_icon_preview (GtkWidget *dialog,
                                 gint32     layer,
                                 gint       bpp)
 {
-  GtkWidget *preview = ico_dialog_get_layer_preview (dialog, layer);
-  GdkPixbuf *pixbuf;
-  gint       w       = gimp_drawable_width (layer);
-  gint       h       = gimp_drawable_height (layer);
+  GtkWidget  *preview = ico_dialog_get_layer_preview (dialog, layer);
+  GdkPixbuf  *pixbuf;
+  const Babl *format;
+  gint        w       = gimp_drawable_width (layer);
+  gint        h       = gimp_drawable_height (layer);
 
   if (! preview)
     return;
 
+  switch (gimp_drawable_type (layer))
+    {
+    case GIMP_RGB_IMAGE:
+      format = babl_format ("R'G'B' u8");
+      break;
+
+    case GIMP_RGBA_IMAGE:
+      format = babl_format ("R'G'B'A u8");
+      break;
+
+    case GIMP_GRAY_IMAGE:
+      format = babl_format ("Y' u8");
+      break;
+
+    case GIMP_GRAYA_IMAGE:
+      format = babl_format ("Y'A u8");
+      break;
+
+    case GIMP_INDEXED_IMAGE:
+    case GIMP_INDEXEDA_IMAGE:
+      format = gimp_drawable_get_format (layer);
+      break;
+
+    default:
+      g_return_if_reached ();
+    }
+
   if (bpp <= 8)
     {
-      GimpDrawable *drawable;
-      GimpDrawable *tmp;
-      GimpPixelRgn  src_pixel_rgn, dst_pixel_rgn;
-      gint32        image;
-      gint32        tmp_image;
-      gint32        tmp_layer;
-      guchar       *buffer;
-      guchar       *cmap;
-      gint          num_colors;
+      GeglBuffer *buffer;
+      GeglBuffer *tmp;
+      gint32      image;
+      gint32      tmp_image;
+      gint32      tmp_layer;
+      guchar     *buf;
+      guchar     *cmap;
+      gint        num_colors;
 
       image = gimp_item_get_image (layer);
 
@@ -258,32 +289,36 @@ ico_dialog_update_icon_preview (GtkWidget *dialog,
 
       tmp_layer = gimp_layer_new (tmp_image, "temporary", w, h,
                                   gimp_drawable_type (layer),
-                                  100, GIMP_NORMAL_MODE);
+                                  100,
+                                  gimp_image_get_default_new_layer_mode (tmp_image));
       gimp_image_insert_layer (tmp_image, tmp_layer, -1, 0);
 
-      drawable = gimp_drawable_get (layer);
-      tmp      = gimp_drawable_get (tmp_layer);
+      buffer = gimp_drawable_get_buffer (layer);
+      tmp    = gimp_drawable_get_buffer (tmp_layer);
 
-      gimp_pixel_rgn_init (&src_pixel_rgn, drawable, 0, 0, w, h, FALSE, FALSE);
-      gimp_pixel_rgn_init (&dst_pixel_rgn, tmp,      0, 0, w, h, TRUE, FALSE);
+      buf = g_malloc (w * h * 4);
 
-      buffer = g_malloc (w * h * 4);
-      gimp_pixel_rgn_get_rect (&src_pixel_rgn, buffer, 0, 0, w, h);
-      gimp_pixel_rgn_set_rect (&dst_pixel_rgn, buffer, 0, 0, w, h);
+      gegl_buffer_get (buffer, GEGL_RECTANGLE (0, 0, w, h), 1.0,
+                       format, buf,
+                       GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
 
-      gimp_drawable_detach (tmp);
-      gimp_drawable_detach (drawable);
+      gegl_buffer_copy (buffer, NULL, GEGL_ABYSS_NONE, tmp, NULL);
+
+      g_object_unref (tmp);
+      g_object_unref (buffer);
 
       if (gimp_drawable_is_indexed (layer))
         gimp_image_convert_rgb (tmp_image);
 
       gimp_image_convert_indexed (tmp_image,
-                                  GIMP_FS_DITHER, GIMP_MAKE_PALETTE,
-                                  1 <<bpp, TRUE, FALSE, "dummy");
+                                  GIMP_CONVERT_DITHER_FS,
+                                  GIMP_CONVERT_PALETTE_GENERATE,
+                                  1 << bpp, TRUE, FALSE, "dummy");
 
       cmap = gimp_image_get_colormap (tmp_image, &num_colors);
-      if ( num_colors == (1 << bpp) &&
-           !ico_cmap_contains_black (cmap, num_colors))
+
+      if (num_colors == (1 << bpp) &&
+          ! ico_cmap_contains_black (cmap, num_colors))
         {
           /* Windows icons with color maps need the color black.
            * We need to eliminate one more color to make room for black.
@@ -303,21 +338,24 @@ ico_dialog_update_icon_preview (GtkWidget *dialog,
               gimp_image_convert_rgb (tmp_image);
             }
 
-          tmp = gimp_drawable_get (tmp_layer);
-          gimp_pixel_rgn_init (&dst_pixel_rgn,
-                               tmp, 0, 0, w, h, TRUE, FALSE);
-          gimp_pixel_rgn_set_rect (&dst_pixel_rgn, buffer, 0, 0, w, h);
-          gimp_drawable_detach (tmp);
+          tmp = gimp_drawable_get_buffer (tmp_layer);
+
+          gegl_buffer_set (tmp, GEGL_RECTANGLE (0, 0, w, h), 0,
+                           format, buf, GEGL_AUTO_ROWSTRIDE);
+
+          g_object_unref (tmp);
 
           if (!gimp_drawable_is_rgb (layer))
             gimp_image_convert_rgb (tmp_image);
 
           gimp_image_convert_indexed (tmp_image,
-                                      GIMP_FS_DITHER, GIMP_MAKE_PALETTE,
-                                      (1<<bpp) - 1, TRUE, FALSE, "dummy");
+                                      GIMP_CONVERT_DITHER_FS,
+                                      GIMP_CONVERT_PALETTE_GENERATE,
+                                      (1 << bpp) - 1, TRUE, FALSE, "dummy");
         }
+
       g_free (cmap);
-      g_free (buffer);
+      g_free (buf);
 
       pixbuf = gimp_drawable_get_thumbnail (tmp_layer,
                                             MIN (w, 128), MIN (h, 128),
@@ -327,15 +365,13 @@ ico_dialog_update_icon_preview (GtkWidget *dialog,
     }
   else if (bpp == 24)
     {
-      GimpDrawable *drawable;
-      GimpDrawable *tmp;
-      GimpPixelRgn  src_pixel_rgn, dst_pixel_rgn;
-      gint32        image;
-      gint32        tmp_image;
-      gint32        tmp_layer;
-      guchar       *buffer;
-      GimpParam    *return_vals;
-      gint          n_return_vals;
+      GeglBuffer *buffer;
+      GeglBuffer *tmp;
+      gint32      image;
+      gint32      tmp_image;
+      gint32      tmp_layer;
+      GimpParam  *return_vals;
+      gint        n_return_vals;
 
       image = gimp_item_get_image (layer);
 
@@ -354,22 +390,17 @@ ico_dialog_update_icon_preview (GtkWidget *dialog,
 
       tmp_layer = gimp_layer_new (tmp_image, "temporary", w, h,
                                   gimp_drawable_type (layer),
-                                  100, GIMP_NORMAL_MODE);
+                                  100,
+                                  gimp_image_get_default_new_layer_mode (tmp_image));
       gimp_image_insert_layer (tmp_image, tmp_layer, -1, 0);
 
-      drawable = gimp_drawable_get (layer);
-      tmp      = gimp_drawable_get (tmp_layer);
+      buffer = gimp_drawable_get_buffer (layer);
+      tmp    = gimp_drawable_get_buffer (tmp_layer);
 
-      gimp_pixel_rgn_init (&src_pixel_rgn, drawable, 0, 0, w, h, FALSE, FALSE);
-      gimp_pixel_rgn_init (&dst_pixel_rgn, tmp,      0, 0, w, h, TRUE, FALSE);
+      gegl_buffer_copy (buffer, NULL, GEGL_ABYSS_NONE, tmp, NULL);
 
-      buffer = g_malloc (w * h * 4);
-      gimp_pixel_rgn_get_rect (&src_pixel_rgn, buffer, 0, 0, w, h);
-      gimp_pixel_rgn_set_rect (&dst_pixel_rgn, buffer, 0, 0, w, h);
-      g_free (buffer);
-
-      gimp_drawable_detach (tmp);
-      gimp_drawable_detach (drawable);
+      g_object_unref (tmp);
+      g_object_unref (buffer);
 
       if (gimp_drawable_is_indexed (layer))
         gimp_image_convert_rgb (tmp_image);

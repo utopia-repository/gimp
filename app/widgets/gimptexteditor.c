@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -117,11 +118,8 @@ gimp_text_editor_finalize (GObject *object)
 {
   GimpTextEditor *editor = GIMP_TEXT_EDITOR (object);
 
-  if (editor->font_name)
-    g_free (editor->font_name);
-
-  if (editor->ui_manager)
-    g_object_unref (editor->ui_manager);
+  g_clear_pointer (&editor->font_name, g_free);
+  g_clear_object (&editor->ui_manager);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -161,7 +159,7 @@ gimp_text_editor_new (const gchar     *title,
                          NULL);
 
   gtk_dialog_add_button (GTK_DIALOG (editor),
-                         GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE);
+                         _("_Close"), GTK_RESPONSE_CLOSE);
 
   g_signal_connect (editor, "response",
                     G_CALLBACK (gtk_widget_destroy),

@@ -22,6 +22,8 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include "gimp.h"
 
 
@@ -45,7 +47,7 @@
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_context_push (void)
@@ -77,7 +79,7 @@ gimp_context_push (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_context_pop (void)
@@ -110,7 +112,7 @@ gimp_context_pop (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_defaults (void)
@@ -142,7 +144,7 @@ gimp_context_set_defaults (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_context_list_paint_methods (gint    *num_paint_methods,
@@ -165,9 +167,12 @@ gimp_context_list_paint_methods (gint    *num_paint_methods,
   if (success)
     {
       *num_paint_methods = return_vals[1].data.d_int32;
-      *paint_methods = g_new (gchar *, *num_paint_methods);
-      for (i = 0; i < *num_paint_methods; i++)
-        (*paint_methods)[i] = g_strdup (return_vals[2].data.d_stringarray[i]);
+      if (*num_paint_methods > 0)
+        {
+          *paint_methods = g_new0 (gchar *, *num_paint_methods + 1);
+          for (i = 0; i < *num_paint_methods; i++)
+            (*paint_methods)[i] = g_strdup (return_vals[2].data.d_stringarray[i]);
+        }
     }
 
   gimp_destroy_params (return_vals, nreturn_vals);
@@ -185,7 +190,7 @@ gimp_context_list_paint_methods (gint    *num_paint_methods,
  *
  * Returns: The name of the active paint method.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gchar *
 gimp_context_get_paint_method (void)
@@ -221,7 +226,7 @@ gimp_context_get_paint_method (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_context_set_paint_method (const gchar *name)
@@ -243,6 +248,69 @@ gimp_context_set_paint_method (const gchar *name)
 }
 
 /**
+ * gimp_context_get_stroke_method:
+ *
+ * Retrieve the currently active stroke method.
+ *
+ * This procedure returns the currently active stroke method.
+ *
+ * Returns: The active stroke method.
+ *
+ * Since: 2.10
+ **/
+GimpStrokeMethod
+gimp_context_get_stroke_method (void)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  GimpStrokeMethod stroke_method = 0;
+
+  return_vals = gimp_run_procedure ("gimp-context-get-stroke-method",
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    stroke_method = return_vals[1].data.d_int32;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return stroke_method;
+}
+
+/**
+ * gimp_context_set_stroke_method:
+ * @stroke_method: The new stroke method.
+ *
+ * Set the specified stroke method as the active stroke method.
+ *
+ * This procedure set the specified stroke method as the active stroke
+ * method. The new method will be used in all subsequent stroke
+ * operations.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_context_set_stroke_method (GimpStrokeMethod stroke_method)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-context-set-stroke-method",
+                                    &nreturn_vals,
+                                    GIMP_PDB_INT32, stroke_method,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
  * gimp_context_get_foreground:
  * @foreground: The foreground color.
  *
@@ -254,7 +322,7 @@ gimp_context_set_paint_method (const gchar *name)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_context_get_foreground (GimpRGB *foreground)
@@ -289,7 +357,7 @@ gimp_context_get_foreground (GimpRGB *foreground)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_context_set_foreground (const GimpRGB *foreground)
@@ -322,7 +390,7 @@ gimp_context_set_foreground (const GimpRGB *foreground)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_context_get_background (GimpRGB *background)
@@ -358,7 +426,7 @@ gimp_context_get_background (GimpRGB *background)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_context_set_background (const GimpRGB *background)
@@ -390,7 +458,7 @@ gimp_context_set_background (const GimpRGB *background)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_context_set_default_colors (void)
@@ -421,7 +489,7 @@ gimp_context_set_default_colors (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_context_swap_colors (void)
@@ -451,7 +519,7 @@ gimp_context_swap_colors (void)
  *
  * Returns: The opacity.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gdouble
 gimp_context_get_opacity (void)
@@ -483,7 +551,7 @@ gimp_context_get_opacity (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_context_set_opacity (gdouble opacity)
@@ -515,14 +583,14 @@ gimp_context_set_opacity (gdouble opacity)
  *
  * Returns: The paint mode.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
-GimpLayerModeEffects
+GimpLayerMode
 gimp_context_get_paint_mode (void)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
-  GimpLayerModeEffects paint_mode = 0;
+  GimpLayerMode paint_mode = 0;
 
   return_vals = gimp_run_procedure ("gimp-context-get-paint-mode",
                                     &nreturn_vals,
@@ -546,10 +614,10 @@ gimp_context_get_paint_mode (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
-gimp_context_set_paint_mode (GimpLayerModeEffects paint_mode)
+gimp_context_set_paint_mode (GimpLayerMode paint_mode)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
@@ -558,6 +626,476 @@ gimp_context_set_paint_mode (GimpLayerModeEffects paint_mode)
   return_vals = gimp_run_procedure ("gimp-context-set-paint-mode",
                                     &nreturn_vals,
                                     GIMP_PDB_INT32, paint_mode,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_context_get_line_width:
+ *
+ * Get the line width setting.
+ *
+ * This procedure returns the line width setting.
+ *
+ * Returns: The line width setting.
+ *
+ * Since: 2.10
+ **/
+gdouble
+gimp_context_get_line_width (void)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gdouble line_width = 0.0;
+
+  return_vals = gimp_run_procedure ("gimp-context-get-line-width",
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    line_width = return_vals[1].data.d_float;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return line_width;
+}
+
+/**
+ * gimp_context_set_line_width:
+ * @line_width: The line width setting.
+ *
+ * Set the line width setting.
+ *
+ * This procedure modifies the line width setting for stroking lines.
+ * This setting affects the following procedures: gimp_edit_stroke(),
+ * gimp_edit_stroke_vectors().
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_context_set_line_width (gdouble line_width)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-context-set-line-width",
+                                    &nreturn_vals,
+                                    GIMP_PDB_FLOAT, line_width,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_context_get_line_width_unit:
+ *
+ * Get the line width unit setting.
+ *
+ * This procedure returns the line width unit setting.
+ *
+ * Returns: The line width unit setting.
+ *
+ * Since: 2.10
+ **/
+GimpUnit
+gimp_context_get_line_width_unit (void)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  GimpUnit line_width_unit = 0;
+
+  return_vals = gimp_run_procedure ("gimp-context-get-line-width-unit",
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    line_width_unit = return_vals[1].data.d_unit;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return line_width_unit;
+}
+
+/**
+ * gimp_context_set_line_width_unit:
+ * @line_width_unit: The line width setting unit.
+ *
+ * Set the line width unit setting.
+ *
+ * This procedure modifies the line width unit setting for stroking
+ * lines.
+ * This setting affects the following procedures: gimp_edit_stroke(),
+ * gimp_edit_stroke_vectors().
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_context_set_line_width_unit (GimpUnit line_width_unit)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-context-set-line-width-unit",
+                                    &nreturn_vals,
+                                    GIMP_PDB_INT32, line_width_unit,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_context_get_line_cap_style:
+ *
+ * Get the line cap style setting.
+ *
+ * This procedure returns the line cap style setting.
+ *
+ * Returns: The line cap style setting.
+ *
+ * Since: 2.10
+ **/
+GimpCapStyle
+gimp_context_get_line_cap_style (void)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  GimpCapStyle cap_style = 0;
+
+  return_vals = gimp_run_procedure ("gimp-context-get-line-cap-style",
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    cap_style = return_vals[1].data.d_int32;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return cap_style;
+}
+
+/**
+ * gimp_context_set_line_cap_style:
+ * @cap_style: The line cap style setting.
+ *
+ * Set the line cap style setting.
+ *
+ * This procedure modifies the line cap style setting for stroking
+ * lines.
+ * This setting affects the following procedures: gimp_edit_stroke(),
+ * gimp_edit_stroke_vectors().
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_context_set_line_cap_style (GimpCapStyle cap_style)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-context-set-line-cap-style",
+                                    &nreturn_vals,
+                                    GIMP_PDB_INT32, cap_style,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_context_get_line_join_style:
+ *
+ * Get the line join style setting.
+ *
+ * This procedure returns the line join style setting.
+ *
+ * Returns: The line join style setting.
+ *
+ * Since: 2.10
+ **/
+GimpJoinStyle
+gimp_context_get_line_join_style (void)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  GimpJoinStyle join_style = 0;
+
+  return_vals = gimp_run_procedure ("gimp-context-get-line-join-style",
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    join_style = return_vals[1].data.d_int32;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return join_style;
+}
+
+/**
+ * gimp_context_set_line_join_style:
+ * @join_style: The line join style setting.
+ *
+ * Set the line join style setting.
+ *
+ * This procedure modifies the line join style setting for stroking
+ * lines.
+ * This setting affects the following procedures: gimp_edit_stroke(),
+ * gimp_edit_stroke_vectors().
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_context_set_line_join_style (GimpJoinStyle join_style)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-context-set-line-join-style",
+                                    &nreturn_vals,
+                                    GIMP_PDB_INT32, join_style,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_context_get_line_miter_limit:
+ *
+ * Get the line miter limit setting.
+ *
+ * This procedure returns the line miter limit setting.
+ *
+ * Returns: The line miter limit setting.
+ *
+ * Since: 2.10
+ **/
+gdouble
+gimp_context_get_line_miter_limit (void)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gdouble miter_limit = 0.0;
+
+  return_vals = gimp_run_procedure ("gimp-context-get-line-miter-limit",
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    miter_limit = return_vals[1].data.d_float;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return miter_limit;
+}
+
+/**
+ * gimp_context_set_line_miter_limit:
+ * @miter_limit: The line miter limit setting.
+ *
+ * Set the line miter limit setting.
+ *
+ * This procedure modifies the line miter limit setting for stroking
+ * lines.
+ * A mitered join is converted to a bevelled join if the miter would
+ * extend to a distance of more than (miter-limit * line-width) from
+ * the actual join point.
+ * This setting affects the following procedures: gimp_edit_stroke(),
+ * gimp_edit_stroke_vectors().
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_context_set_line_miter_limit (gdouble miter_limit)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-context-set-line-miter-limit",
+                                    &nreturn_vals,
+                                    GIMP_PDB_FLOAT, miter_limit,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_context_get_line_dash_offset:
+ *
+ * Get the line dash offset setting.
+ *
+ * This procedure returns the line dash offset setting.
+ *
+ * Returns: The line dash offset setting.
+ *
+ * Since: 2.10
+ **/
+gdouble
+gimp_context_get_line_dash_offset (void)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gdouble dash_offset = 0.0;
+
+  return_vals = gimp_run_procedure ("gimp-context-get-line-dash-offset",
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    dash_offset = return_vals[1].data.d_float;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return dash_offset;
+}
+
+/**
+ * gimp_context_set_line_dash_offset:
+ * @dash_offset: The line dash offset setting.
+ *
+ * Set the line dash offset setting.
+ *
+ * This procedure modifies the line dash offset setting for stroking
+ * lines.
+ * This setting affects the following procedures: gimp_edit_stroke(),
+ * gimp_edit_stroke_vectors().
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_context_set_line_dash_offset (gdouble dash_offset)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-context-set-line-dash-offset",
+                                    &nreturn_vals,
+                                    GIMP_PDB_FLOAT, dash_offset,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_context_get_line_dash_pattern:
+ * @num_dashes: The number of dashes in the dash_pattern array.
+ * @dashes: The line dash pattern setting.
+ *
+ * Get the line dash pattern setting.
+ *
+ * This procedure returns the line dash pattern setting.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_context_get_line_dash_pattern (gint     *num_dashes,
+                                    gdouble **dashes)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-context-get-line-dash-pattern",
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
+
+  *num_dashes = 0;
+  *dashes = NULL;
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  if (success)
+    {
+      *num_dashes = return_vals[1].data.d_int32;
+      *dashes = g_new (gdouble, *num_dashes);
+      memcpy (*dashes,
+              return_vals[2].data.d_floatarray,
+              *num_dashes * sizeof (gdouble));
+    }
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_context_set_line_dash_pattern:
+ * @num_dashes: The number of dashes in the dash_pattern array.
+ * @dashes: The line dash pattern setting.
+ *
+ * Set the line dash pattern setting.
+ *
+ * This procedure modifies the line dash pattern setting for stroking
+ * lines.
+ * The unit of the dash pattern segments is the actual line width used
+ * for the stroke operation, in other words a segment length of 1.0
+ * results in a square segment shape (or gap shape).
+ * This setting affects the following procedures: gimp_edit_stroke(),
+ * gimp_edit_stroke_vectors().
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_context_set_line_dash_pattern (gint           num_dashes,
+                                    const gdouble *dashes)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-context-set-line-dash-pattern",
+                                    &nreturn_vals,
+                                    GIMP_PDB_INT32, num_dashes,
+                                    GIMP_PDB_FLOATARRAY, dashes,
                                     GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
@@ -578,7 +1116,7 @@ gimp_context_set_paint_mode (GimpLayerModeEffects paint_mode)
  *
  * Returns: The name of the active brush.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gchar *
 gimp_context_get_brush (void)
@@ -613,7 +1151,7 @@ gimp_context_get_brush (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_context_set_brush (const gchar *name)
@@ -641,9 +1179,9 @@ gimp_context_set_brush (const gchar *name)
  *
  * Get the brush size in pixels for brush based paint tools.
  *
- * Returns: brush size in pixels.
+ * Returns: Brush size in pixels.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gdouble
 gimp_context_get_brush_size (void)
@@ -666,7 +1204,7 @@ gimp_context_get_brush_size (void)
 
 /**
  * gimp_context_set_brush_size:
- * @size: brush size in pixels.
+ * @size: Brush size in pixels.
  *
  * Set brush size in pixels.
  *
@@ -674,7 +1212,7 @@ gimp_context_get_brush_size (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_brush_size (gdouble size)
@@ -705,7 +1243,7 @@ gimp_context_set_brush_size (gdouble size)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_brush_default_size (void)
@@ -732,9 +1270,9 @@ gimp_context_set_brush_default_size (void)
  *
  * Set the aspect ratio for brush based paint tools.
  *
- * Returns: aspect ratio.
+ * Returns: Aspect ratio.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gdouble
 gimp_context_get_brush_aspect_ratio (void)
@@ -757,7 +1295,7 @@ gimp_context_get_brush_aspect_ratio (void)
 
 /**
  * gimp_context_set_brush_aspect_ratio:
- * @aspect: aspect ratio.
+ * @aspect: Aspect ratio.
  *
  * Set brush aspect ratio.
  *
@@ -765,7 +1303,7 @@ gimp_context_get_brush_aspect_ratio (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_brush_aspect_ratio (gdouble aspect)
@@ -793,9 +1331,9 @@ gimp_context_set_brush_aspect_ratio (gdouble aspect)
  *
  * Set the angle in degrees for brush based paint tools.
  *
- * Returns: angle in degrees.
+ * Returns: Angle in degrees.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gdouble
 gimp_context_get_brush_angle (void)
@@ -818,7 +1356,7 @@ gimp_context_get_brush_angle (void)
 
 /**
  * gimp_context_set_brush_angle:
- * @angle: angle in degrees.
+ * @angle: Angle in degrees.
  *
  * Set brush angle in degrees.
  *
@@ -826,7 +1364,7 @@ gimp_context_get_brush_angle (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_brush_angle (gdouble angle)
@@ -848,6 +1386,251 @@ gimp_context_set_brush_angle (gdouble angle)
 }
 
 /**
+ * gimp_context_get_brush_spacing:
+ *
+ * Get brush spacing as percent of size.
+ *
+ * Get the brush spacing as percent of size for brush based paint
+ * tools.
+ *
+ * Returns: Brush spacing as fraction of size.
+ *
+ * Since: 2.10
+ **/
+gdouble
+gimp_context_get_brush_spacing (void)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gdouble spacing = 0.0;
+
+  return_vals = gimp_run_procedure ("gimp-context-get-brush-spacing",
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    spacing = return_vals[1].data.d_float;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return spacing;
+}
+
+/**
+ * gimp_context_set_brush_spacing:
+ * @spacing: Brush spacing as fraction of size.
+ *
+ * Set brush spacing as percent of size.
+ *
+ * Set the brush spacing as percent of size for brush based paint
+ * tools.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_context_set_brush_spacing (gdouble spacing)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-context-set-brush-spacing",
+                                    &nreturn_vals,
+                                    GIMP_PDB_FLOAT, spacing,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_context_set_brush_default_spacing:
+ *
+ * Set brush spacing to its default.
+ *
+ * Set the brush spacing to the default for paintbrush, airbrush, or
+ * pencil tools.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_context_set_brush_default_spacing (void)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-context-set-brush-default-spacing",
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_context_get_brush_hardness:
+ *
+ * Get brush hardness in paint options.
+ *
+ * Get the brush hardness for brush based paint tools.
+ *
+ * Returns: Brush hardness.
+ *
+ * Since: 2.10
+ **/
+gdouble
+gimp_context_get_brush_hardness (void)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gdouble hardness = 0.0;
+
+  return_vals = gimp_run_procedure ("gimp-context-get-brush-hardness",
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    hardness = return_vals[1].data.d_float;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return hardness;
+}
+
+/**
+ * gimp_context_set_brush_hardness:
+ * @hardness: Brush hardness.
+ *
+ * Set brush hardness.
+ *
+ * Set the brush hardness for brush based paint tools.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_context_set_brush_hardness (gdouble hardness)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-context-set-brush-hardness",
+                                    &nreturn_vals,
+                                    GIMP_PDB_FLOAT, hardness,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_context_set_brush_default_hardness:
+ *
+ * Set brush spacing to its default.
+ *
+ * Set the brush spacing to the default for paintbrush, airbrush, or
+ * pencil tools.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_context_set_brush_default_hardness (void)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-context-set-brush-default-hardness",
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_context_get_brush_force:
+ *
+ * Get brush force in paint options.
+ *
+ * Get the brush application force for brush based paint tools.
+ *
+ * Returns: Brush application force.
+ *
+ * Since: 2.10
+ **/
+gdouble
+gimp_context_get_brush_force (void)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gdouble force = 0.0;
+
+  return_vals = gimp_run_procedure ("gimp-context-get-brush-force",
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    force = return_vals[1].data.d_float;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return force;
+}
+
+/**
+ * gimp_context_set_brush_force:
+ * @force: Brush application force.
+ *
+ * Set brush application force.
+ *
+ * Set the brush application force for brush based paint tools.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_context_set_brush_force (gdouble force)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-context-set-brush-force",
+                                    &nreturn_vals,
+                                    GIMP_PDB_FLOAT, force,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
  * gimp_context_get_dynamics:
  *
  * Retrieve the currently active paint dynamics.
@@ -858,7 +1641,7 @@ gimp_context_set_brush_angle (gdouble angle)
  *
  * Returns: The name of the active paint dynamics.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gchar *
 gimp_context_get_dynamics (void)
@@ -894,7 +1677,7 @@ gimp_context_get_dynamics (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_dynamics (const gchar *name)
@@ -904,6 +1687,73 @@ gimp_context_set_dynamics (const gchar *name)
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-context-set-dynamics",
+                                    &nreturn_vals,
+                                    GIMP_PDB_STRING, name,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_context_get_mypaint_brush:
+ *
+ * Retrieve the currently active MyPaint brush.
+ *
+ * This procedure returns the name of the currently active MyPaint
+ * brush.
+ *
+ * Returns: The name of the active MyPaint brush.
+ *
+ * Since: 2.10
+ **/
+gchar *
+gimp_context_get_mypaint_brush (void)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gchar *name = NULL;
+
+  return_vals = gimp_run_procedure ("gimp-context-get-mypaint-brush",
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    name = g_strdup (return_vals[1].data.d_string);
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return name;
+}
+
+/**
+ * gimp_context_set_mypaint_brush:
+ * @name: The name of the MyPaint brush.
+ *
+ * Set the specified MyPaint brush as the active MyPaint brush.
+ *
+ * This procedure allows the active MyPaint brush to be set by
+ * specifying its name. The name is simply a string which corresponds
+ * to one of the names of the installed MyPaint brushes. If there is no
+ * matching MyPaint brush found, this procedure will return an error.
+ * Otherwise, the specified MyPaint brush becomes active and will be
+ * used in all subsequent MyPaint paint operations.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_context_set_mypaint_brush (const gchar *name)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-context-set-mypaint-brush",
                                     &nreturn_vals,
                                     GIMP_PDB_STRING, name,
                                     GIMP_PDB_END);
@@ -926,7 +1776,7 @@ gimp_context_set_dynamics (const gchar *name)
  *
  * Returns: The name of the active pattern.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gchar *
 gimp_context_get_pattern (void)
@@ -962,7 +1812,7 @@ gimp_context_get_pattern (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_context_set_pattern (const gchar *name)
@@ -992,7 +1842,7 @@ gimp_context_set_pattern (const gchar *name)
  *
  * Returns: The name of the active gradient.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gchar *
 gimp_context_get_gradient (void)
@@ -1028,7 +1878,7 @@ gimp_context_get_gradient (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_context_set_gradient (const gchar *name)
@@ -1058,7 +1908,7 @@ gimp_context_set_gradient (const gchar *name)
  *
  * Returns: The name of the active palette.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gchar *
 gimp_context_get_palette (void)
@@ -1094,7 +1944,7 @@ gimp_context_get_palette (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_context_set_palette (const gchar *name)
@@ -1124,7 +1974,7 @@ gimp_context_set_palette (const gchar *name)
  *
  * Returns: The name of the active font.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gchar *
 gimp_context_get_font (void)
@@ -1159,7 +2009,7 @@ gimp_context_get_font (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_context_set_font (const gchar *name)
@@ -1189,7 +2039,7 @@ gimp_context_set_font (const gchar *name)
  *
  * Returns: The antialias setting.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_get_antialias (void)
@@ -1220,14 +2070,15 @@ gimp_context_get_antialias (void)
  * turned on, the edges of selected region will contain intermediate
  * values which give the appearance of a sharper, less pixelized edge.
  * This should be set as TRUE most of the time unless a binary-only
- * selection is wanted. This settings affects the following procedures:
+ * selection is wanted.
+ * This setting affects the following procedures:
  * gimp_image_select_color(), gimp_image_select_contiguous_color(),
  * gimp_image_select_round_rectangle(), gimp_image_select_ellipse(),
  * gimp_image_select_polygon(), gimp_image_select_item().
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_antialias (gboolean antialias)
@@ -1257,7 +2108,7 @@ gimp_context_set_antialias (gboolean antialias)
  *
  * Returns: The feather setting.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_get_feather (void)
@@ -1287,15 +2138,16 @@ gimp_context_get_feather (void)
  * This procedure modifies the feather setting. If the feather option
  * is enabled, selections will be blurred before combining. The blur is
  * a gaussian blur; its radii can be controlled using
- * gimp_context_set_feather_radius(). This setting affects the
- * following procedures: gimp_image_select_color(),
- * gimp_image_select_contiguous_color(), gimp_image_select_rectangle(),
- * gimp_image_select_round_rectangle(), gimp_image_select_ellipse(),
- * gimp_image_select_polygon(), gimp_image_select_item().
+ * gimp_context_set_feather_radius().
+ * This setting affects the following procedures:
+ * gimp_image_select_color(), gimp_image_select_contiguous_color(),
+ * gimp_image_select_rectangle(), gimp_image_select_round_rectangle(),
+ * gimp_image_select_ellipse(), gimp_image_select_polygon(),
+ * gimp_image_select_item().
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_feather (gboolean feather)
@@ -1327,7 +2179,7 @@ gimp_context_set_feather (gboolean feather)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_get_feather_radius (gdouble *feather_radius_x,
@@ -1364,13 +2216,13 @@ gimp_context_get_feather_radius (gdouble *feather_radius_x,
  *
  * Set the feather radius setting.
  *
- * This procedure modifies the feather radius setting. This setting
- * affects all procedures that are affected by
+ * This procedure modifies the feather radius setting.
+ * This setting affects all procedures that are affected by
  * gimp_context_set_feather().
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_feather_radius (gdouble feather_radius_x,
@@ -1402,7 +2254,7 @@ gimp_context_set_feather_radius (gdouble feather_radius_x,
  *
  * Returns: The sample merged setting.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_get_sample_merged (void)
@@ -1435,12 +2287,13 @@ gimp_context_get_sample_merged (void)
  * the specified drawable is used ('sample-merged' is FALSE), or the
  * pixel data from the composite image ('sample-merged' is TRUE. This
  * is equivalent to sampling for colors after merging all visible
- * layers). This setting affects the following procedures:
+ * layers).
+ * This setting affects the following procedures:
  * gimp_image_select_color(), gimp_image_select_contiguous_color().
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_sample_merged (gboolean sample_merged)
@@ -1470,7 +2323,7 @@ gimp_context_set_sample_merged (gboolean sample_merged)
  *
  * Returns: The sample criterion setting.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 GimpSelectCriterion
 gimp_context_get_sample_criterion (void)
@@ -1501,12 +2354,13 @@ gimp_context_get_sample_criterion (void)
  * operation depends on the colors of the pixels present in a drawable,
  * like when doing a seed fill, this setting controls how color
  * similarity is determined. SELECT_CRITERION_COMPOSITE is the default
- * value. This setting affects the following procedures:
+ * value.
+ * This setting affects the following procedures:
  * gimp_image_select_color(), gimp_image_select_contiguous_color().
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_sample_criterion (GimpSelectCriterion sample_criterion)
@@ -1536,7 +2390,7 @@ gimp_context_set_sample_criterion (GimpSelectCriterion sample_criterion)
  *
  * Returns: The sample threshold setting.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gdouble
 gimp_context_get_sample_threshold (void)
@@ -1568,13 +2422,13 @@ gimp_context_get_sample_threshold (void)
  * like when doing a seed fill, this setting controls what is
  * \"sufficiently close\" to be considered a similar color. If the
  * sample threshold has not been set explicitly, the default threshold
- * set in gimprc will be used. This setting affects the following
- * procedures: gimp_image_select_color(),
- * gimp_image_select_contiguous_color().
+ * set in gimprc will be used.
+ * This setting affects the following procedures:
+ * gimp_image_select_color(), gimp_image_select_contiguous_color().
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_sample_threshold (gdouble sample_threshold)
@@ -1605,7 +2459,7 @@ gimp_context_set_sample_threshold (gdouble sample_threshold)
  *
  * Returns: The sample threshold setting.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gint
 gimp_context_get_sample_threshold_int (void)
@@ -1637,7 +2491,7 @@ gimp_context_get_sample_threshold_int (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_sample_threshold_int (gint sample_threshold)
@@ -1667,7 +2521,7 @@ gimp_context_set_sample_threshold_int (gint sample_threshold)
  *
  * Returns: The sample transparent setting.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_get_sample_transparent (void)
@@ -1704,7 +2558,7 @@ gimp_context_get_sample_transparent (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_sample_transparent (gboolean sample_transparent)
@@ -1716,6 +2570,74 @@ gimp_context_set_sample_transparent (gboolean sample_transparent)
   return_vals = gimp_run_procedure ("gimp-context-set-sample-transparent",
                                     &nreturn_vals,
                                     GIMP_PDB_INT32, sample_transparent,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_context_get_diagonal_neighbors:
+ *
+ * Get the diagonal neighbors setting.
+ *
+ * This procedure returns the diagonal neighbors setting.
+ *
+ * Returns: The diagonal neighbors setting.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_context_get_diagonal_neighbors (void)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean diagonal_neighbors = FALSE;
+
+  return_vals = gimp_run_procedure ("gimp-context-get-diagonal-neighbors",
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    diagonal_neighbors = return_vals[1].data.d_int32;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return diagonal_neighbors;
+}
+
+/**
+ * gimp_context_set_diagonal_neighbors:
+ * @diagonal_neighbors: The diagonal neighbors setting.
+ *
+ * Set the diagonal neighbors setting.
+ *
+ * This procedure modifies the diagonal neighbors setting. If the
+ * affected region of an operation is based on a seed point, like when
+ * doing a seed fill, then, when this setting is TRUE, all eight
+ * neighbors of each pixel are considered when calculating the affected
+ * region; in contrast, when this setting is FALSE, only the four
+ * orthogonal neighbors of each pixel are considered.
+ * This setting affects the following procedures:
+ * gimp_image_select_contiguous_color().
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_context_set_diagonal_neighbors (gboolean diagonal_neighbors)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-context-set-diagonal-neighbors",
+                                    &nreturn_vals,
+                                    GIMP_PDB_INT32, diagonal_neighbors,
                                     GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
@@ -1738,7 +2660,7 @@ gimp_context_set_sample_transparent (gboolean sample_transparent)
  *
  * Returns: The interpolation type.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 GimpInterpolationType
 gimp_context_get_interpolation (void)
@@ -1765,8 +2687,8 @@ gimp_context_get_interpolation (void)
  *
  * Set the interpolation type.
  *
- * This procedure modifies the interpolation setting. This setting
- * affects affects the following procedures:
+ * This procedure modifies the interpolation setting.
+ * This setting affects affects the following procedures:
  * gimp_item_transform_flip(), gimp_item_transform_perspective(),
  * gimp_item_transform_rotate(), gimp_item_transform_scale(),
  * gimp_item_transform_shear(), gimp_item_transform_2d(),
@@ -1775,7 +2697,7 @@ gimp_context_get_interpolation (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_interpolation (GimpInterpolationType interpolation)
@@ -1807,7 +2729,7 @@ gimp_context_set_interpolation (GimpInterpolationType interpolation)
  *
  * Returns: The transform direction.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 GimpTransformDirection
 gimp_context_get_transform_direction (void)
@@ -1834,8 +2756,8 @@ gimp_context_get_transform_direction (void)
  *
  * Set the transform direction.
  *
- * This procedure modifies the transform direction setting. This
- * setting affects affects the following procedures:
+ * This procedure modifies the transform direction setting.
+ * This setting affects affects the following procedures:
  * gimp_item_transform_flip(), gimp_item_transform_perspective(),
  * gimp_item_transform_rotate(), gimp_item_transform_scale(),
  * gimp_item_transform_shear(), gimp_item_transform_2d(),
@@ -1843,7 +2765,7 @@ gimp_context_get_transform_direction (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_transform_direction (GimpTransformDirection transform_direction)
@@ -1875,7 +2797,7 @@ gimp_context_set_transform_direction (GimpTransformDirection transform_direction
  *
  * Returns: The transform resize type.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 GimpTransformResize
 gimp_context_get_transform_resize (void)
@@ -1905,9 +2827,9 @@ gimp_context_get_transform_resize (void)
  * This procedure modifies the transform resize setting. When
  * transforming pixels, if the result of a transform operation has a
  * different size than the original area, this setting determines how
- * the resulting area is sized. This setting affects affects the
- * following procedures: gimp_item_transform_flip(),
- * gimp_item_transform_flip_simple(),
+ * the resulting area is sized.
+ * This setting affects affects the following procedures:
+ * gimp_item_transform_flip(), gimp_item_transform_flip_simple(),
  * gimp_item_transform_perspective(), gimp_item_transform_rotate(),
  * gimp_item_transform_rotate_simple(), gimp_item_transform_scale(),
  * gimp_item_transform_shear(), gimp_item_transform_2d(),
@@ -1915,7 +2837,7 @@ gimp_context_get_transform_resize (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_transform_resize (GimpTransformResize transform_resize)
@@ -1939,13 +2861,9 @@ gimp_context_set_transform_resize (GimpTransformResize transform_resize)
 /**
  * gimp_context_get_transform_recursion:
  *
- * Get the transform supersampling recursion.
+ * Deprecated: There is no replacement for this procedure.
  *
- * This procedure returns the transform supersampling recursion level.
- *
- * Returns: The transform recursion level.
- *
- * Since: GIMP 2.8
+ * Returns: This returns always 3 and is meaningless.
  **/
 gint
 gimp_context_get_transform_recursion (void)
@@ -1968,22 +2886,11 @@ gimp_context_get_transform_recursion (void)
 
 /**
  * gimp_context_set_transform_recursion:
- * @transform_recursion: The transform recursion level.
+ * @transform_recursion: This parameter is ignored.
  *
- * Set the transform supersampling recursion.
- *
- * This procedure modifies the transform supersampling recursion level
- * setting. Whether or not a transformation does supersampling is
- * determined by the interplolation type. The recursion level defaults
- * to 3, which is a nice default value. This setting affects affects
- * the following procedures: gimp_item_transform_flip(),
- * gimp_item_transform_perspective(), gimp_item_transform_rotate(),
- * gimp_item_transform_scale(), gimp_item_transform_shear(),
- * gimp_item_transform_2d(), gimp_item_transform_matrix().
+ * Deprecated: There is no replacement for this procedure.
  *
  * Returns: TRUE on success.
- *
- * Since: GIMP 2.8
  **/
 gboolean
 gimp_context_set_transform_recursion (gint transform_recursion)
@@ -2013,7 +2920,7 @@ gimp_context_set_transform_recursion (gint transform_recursion)
  *
  * Returns: ink blob size in pixels.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gdouble
 gimp_context_get_ink_size (void)
@@ -2044,7 +2951,7 @@ gimp_context_get_ink_size (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_ink_size (gdouble size)
@@ -2074,7 +2981,7 @@ gimp_context_set_ink_size (gdouble size)
  *
  * Returns: ink angle in degrees.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gdouble
 gimp_context_get_ink_angle (void)
@@ -2105,7 +3012,7 @@ gimp_context_get_ink_angle (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_ink_angle (gdouble angle)
@@ -2135,7 +3042,7 @@ gimp_context_set_ink_angle (gdouble angle)
  *
  * Returns: ink size sensitivity.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gdouble
 gimp_context_get_ink_size_sensitivity (void)
@@ -2166,7 +3073,7 @@ gimp_context_get_ink_size_sensitivity (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_ink_size_sensitivity (gdouble size)
@@ -2196,7 +3103,7 @@ gimp_context_set_ink_size_sensitivity (gdouble size)
  *
  * Returns: ink tilt sensitivity.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gdouble
 gimp_context_get_ink_tilt_sensitivity (void)
@@ -2227,7 +3134,7 @@ gimp_context_get_ink_tilt_sensitivity (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_ink_tilt_sensitivity (gdouble tilt)
@@ -2257,7 +3164,7 @@ gimp_context_set_ink_tilt_sensitivity (gdouble tilt)
  *
  * Returns: ink speed sensitivity.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gdouble
 gimp_context_get_ink_speed_sensitivity (void)
@@ -2288,7 +3195,7 @@ gimp_context_get_ink_speed_sensitivity (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_ink_speed_sensitivity (gdouble speed)
@@ -2318,7 +3225,7 @@ gimp_context_set_ink_speed_sensitivity (gdouble speed)
  *
  * Returns: Ink blob type.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 GimpInkBlobType
 gimp_context_get_ink_blob_type (void)
@@ -2349,7 +3256,7 @@ gimp_context_get_ink_blob_type (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_ink_blob_type (GimpInkBlobType type)
@@ -2379,7 +3286,7 @@ gimp_context_set_ink_blob_type (GimpInkBlobType type)
  *
  * Returns: ink blob aspect ratio.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gdouble
 gimp_context_get_ink_blob_aspect_ratio (void)
@@ -2410,7 +3317,7 @@ gimp_context_get_ink_blob_aspect_ratio (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_ink_blob_aspect_ratio (gdouble aspect)
@@ -2440,7 +3347,7 @@ gimp_context_set_ink_blob_aspect_ratio (gdouble aspect)
  *
  * Returns: ink blob angle in degrees.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gdouble
 gimp_context_get_ink_blob_angle (void)
@@ -2471,7 +3378,7 @@ gimp_context_get_ink_blob_angle (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_context_set_ink_blob_angle (gdouble angle)
@@ -2483,6 +3390,71 @@ gimp_context_set_ink_blob_angle (gdouble angle)
   return_vals = gimp_run_procedure ("gimp-context-set-ink-blob-angle",
                                     &nreturn_vals,
                                     GIMP_PDB_FLOAT, angle,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_context_get_distance_metric:
+ *
+ * Get the distance metric used in some computations.
+ *
+ * This procedure returns the distance metric in the current context.
+ * See gimp_context_set_distance_metric() to know more about its usage.
+ *
+ * Returns: The distance metric.
+ *
+ * Since: 2.10
+ **/
+GeglDistanceMetric
+gimp_context_get_distance_metric (void)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  GeglDistanceMetric metric = 0;
+
+  return_vals = gimp_run_procedure ("gimp-context-get-distance-metric",
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    metric = return_vals[1].data.d_int32;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return metric;
+}
+
+/**
+ * gimp_context_set_distance_metric:
+ * @metric: The distance metric.
+ *
+ * Set the distance metric used in some computations.
+ *
+ * This procedure modifies the distance metric used in some
+ * computations, such as gimp_edit_blend(). In particular, it does not
+ * change the metric used in generic distance computation on canvas, as
+ * in the Measure tool.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_context_set_distance_metric (GeglDistanceMetric metric)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-context-set-distance-metric",
+                                    &nreturn_vals,
+                                    GIMP_PDB_INT32, metric,
                                     GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;

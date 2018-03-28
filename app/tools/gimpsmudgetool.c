@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -48,13 +49,14 @@ gimp_smudge_tool_register (GimpToolRegisterCallback  callback,
   (* callback) (GIMP_TYPE_SMUDGE_TOOL,
                 GIMP_TYPE_SMUDGE_OPTIONS,
                 gimp_smudge_options_gui,
-                GIMP_PAINT_OPTIONS_CONTEXT_MASK,
+                GIMP_PAINT_OPTIONS_CONTEXT_MASK |
+                GIMP_CONTEXT_PROP_MASK_GRADIENT,
                 "gimp-smudge-tool",
                 _("Smudge"),
                 _("Smudge Tool: Smudge selectively using a brush"),
                 N_("_Smudge"), "S",
                 NULL, GIMP_HELP_TOOL_SMUDGE,
-                GIMP_STOCK_TOOL_SMUDGE,
+                GIMP_ICON_TOOL_SMUDGE,
                 data);
 }
 
@@ -71,6 +73,9 @@ gimp_smudge_tool_init (GimpSmudgeTool *smudge)
 
   gimp_tool_control_set_tool_cursor (tool->control, GIMP_TOOL_CURSOR_SMUDGE);
 
+  gimp_paint_tool_enable_color_picker (GIMP_PAINT_TOOL (smudge),
+                                       GIMP_COLOR_PICK_MODE_FOREGROUND);
+
   paint_tool->status      = _("Click to smudge");
   paint_tool->status_line = _("Click to smudge the line");
   paint_tool->status_ctrl = NULL;
@@ -85,10 +90,19 @@ gimp_smudge_options_gui (GimpToolOptions *tool_options)
   GObject   *config = G_OBJECT (tool_options);
   GtkWidget *vbox   = gimp_paint_options_gui (tool_options);
   GtkWidget *scale;
+  GtkWidget *button;
+
+  button = gimp_prop_check_button_new (config, "no-erasing", NULL);
+  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  gtk_widget_show (button);
 
   /*  the rate scale  */
-  scale = gimp_prop_spin_scale_new (config, "rate",
-                                    _("Rate"),
+  scale = gimp_prop_spin_scale_new (config, "rate", NULL,
+                                    1.0, 10.0, 1);
+  gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
+  gtk_widget_show (scale);
+
+  scale = gimp_prop_spin_scale_new (config, "flow", NULL,
                                     1.0, 10.0, 1);
   gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
   gtk_widget_show (scale);

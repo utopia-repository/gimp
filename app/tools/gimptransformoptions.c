@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpconfig/gimpconfig.h"
@@ -30,10 +31,12 @@
 #include "core/gimptoolinfo.h"
 
 #include "widgets/gimppropwidgets.h"
+#include "widgets/gimpspinscale.h"
 #include "widgets/gimpwidgets-utils.h"
 
 #include "gimprotatetool.h"
 #include "gimpscaletool.h"
+#include "gimpunifiedtransformtool.h"
 #include "gimptooloptions-gui.h"
 #include "gimptransformoptions.h"
 
@@ -51,9 +54,20 @@ enum
   PROP_PREVIEW_OPACITY,
   PROP_GRID_TYPE,
   PROP_GRID_SIZE,
-  PROP_CONSTRAIN,
+  PROP_CONSTRAIN_MOVE,
+  PROP_CONSTRAIN_SCALE,
+  PROP_CONSTRAIN_ROTATE,
+  PROP_CONSTRAIN_SHEAR,
+  PROP_CONSTRAIN_PERSPECTIVE,
+  PROP_FROMPIVOT_SCALE,
+  PROP_FROMPIVOT_SHEAR,
+  PROP_FROMPIVOT_PERSPECTIVE,
+  PROP_CORNERSNAP,
+  PROP_FIXEDPIVOT,
 };
 
+
+static void     gimp_transform_options_config_iface_init (GimpConfigInterface *config_iface);
 
 static void     gimp_transform_options_set_property (GObject         *object,
                                                      guint            property_id,
@@ -64,7 +78,7 @@ static void     gimp_transform_options_get_property (GObject         *object,
                                                      GValue          *value,
                                                      GParamSpec      *pspec);
 
-static void     gimp_transform_options_reset        (GimpToolOptions *tool_options);
+static void     gimp_transform_options_reset        (GimpConfig      *config);
 
 static gboolean gimp_transform_options_sync_grid    (GBinding        *binding,
                                                      const GValue    *source_value,
@@ -72,78 +86,157 @@ static gboolean gimp_transform_options_sync_grid    (GBinding        *binding,
                                                      gpointer         user_data);
 
 
-G_DEFINE_TYPE (GimpTransformOptions, gimp_transform_options,
-               GIMP_TYPE_TOOL_OPTIONS)
+G_DEFINE_TYPE_WITH_CODE (GimpTransformOptions, gimp_transform_options,
+                         GIMP_TYPE_TOOL_OPTIONS,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG,
+                                                gimp_transform_options_config_iface_init))
 
 #define parent_class gimp_transform_options_parent_class
+
+static GimpConfigInterface *parent_config_iface = NULL;
 
 
 static void
 gimp_transform_options_class_init (GimpTransformOptionsClass *klass)
 {
-  GObjectClass         *object_class  = G_OBJECT_CLASS (klass);
-  GimpToolOptionsClass *options_class = GIMP_TOOL_OPTIONS_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->set_property = gimp_transform_options_set_property;
   object_class->get_property = gimp_transform_options_get_property;
 
-  options_class->reset       = gimp_transform_options_reset;
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_TYPE,
+                         "type",
+                         NULL, NULL,
+                         GIMP_TYPE_TRANSFORM_TYPE,
+                         GIMP_TRANSFORM_TYPE_LAYER,
+                         GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_TYPE,
-                                 "type", NULL,
-                                 GIMP_TYPE_TRANSFORM_TYPE,
-                                 GIMP_TRANSFORM_TYPE_LAYER,
-                                 GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_DIRECTION,
-                                 "direction",
-                                 N_("Direction of transformation"),
-                                 GIMP_TYPE_TRANSFORM_DIRECTION,
-                                 GIMP_TRANSFORM_FORWARD,
-                                 GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_INTERPOLATION,
-                                 "interpolation",
-                                 N_("Interpolation method"),
-                                 GIMP_TYPE_INTERPOLATION_TYPE,
-                                 GIMP_INTERPOLATION_LINEAR,
-                                 GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_CLIP,
-                                 "clip",
-                                 N_("How to clip"),
-                                 GIMP_TYPE_TRANSFORM_RESIZE,
-                                 GIMP_TRANSFORM_RESIZE_ADJUST,
-                                 GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SHOW_PREVIEW,
-                                    "show-preview",
-                                    N_("Show a preview of the transformed image"),
-                                    TRUE,
-                                    GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_PREVIEW_OPACITY,
-                                   "preview-opacity",
-                                   N_("Opacity of the preview image"),
-                                   0.0, 1.0, 1.0,
-                                   GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_GRID_TYPE,
-                                 "grid-type",
-                                 N_("Composition guides such as rule of thirds"),
-                                 GIMP_TYPE_GUIDES_TYPE,
-                                 GIMP_GUIDES_N_LINES,
-                                 GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_GRID_SIZE,
-                                "grid-size",
-                                N_("Size of a grid cell for variable number of composition guides"),
-                                1, 128, 15,
-                                GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_CONSTRAIN,
-                                    "constrain",
-                                    NULL,
-                                    FALSE,
-                                    GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_DIRECTION,
+                         "direction",
+                         _("Direction"),
+                         _("Direction of transformation"),
+                         GIMP_TYPE_TRANSFORM_DIRECTION,
+                         GIMP_TRANSFORM_FORWARD,
+                         GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_INTERPOLATION,
+                         "interpolation",
+                         _("Interpolation"),
+                         _("Interpolation method"),
+                         GIMP_TYPE_INTERPOLATION_TYPE,
+                         GIMP_INTERPOLATION_LINEAR,
+                         GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_CLIP,
+                         "clip",
+                         _("Clipping"),
+                         _("How to clip"),
+                         GIMP_TYPE_TRANSFORM_RESIZE,
+                         GIMP_TRANSFORM_RESIZE_ADJUST,
+                         GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_SHOW_PREVIEW,
+                            "show-preview",
+                            _("Show image preview"),
+                            _("Show a preview of the transformed image"),
+                            TRUE,
+                            GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_PREVIEW_OPACITY,
+                           "preview-opacity",
+                           _("Image opacity"),
+                           _("Opacity of the preview image"),
+                           0.0, 1.0, 1.0,
+                           GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_GRID_TYPE,
+                         "grid-type",
+                         _("Guides"),
+                         _("Composition guides such as rule of thirds"),
+                         GIMP_TYPE_GUIDES_TYPE,
+                         GIMP_GUIDES_NONE,
+                         GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_INT (object_class, PROP_GRID_SIZE,
+                        "grid-size",
+                        NULL,
+                        _("Size of a grid cell for variable number "
+                          "of composition guides"),
+                        1, 128, 15,
+                        GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_CONSTRAIN_MOVE,
+                            "constrain-move",
+                            NULL, NULL,
+                            FALSE,
+                            GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_CONSTRAIN_SCALE,
+                            "constrain-scale",
+                            NULL, NULL,
+                            FALSE,
+                            GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_CONSTRAIN_ROTATE,
+                            "constrain-rotate",
+                            NULL, NULL,
+                            FALSE,
+                            GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_CONSTRAIN_SHEAR,
+                            "constrain-shear",
+                            NULL, NULL,
+                            TRUE,
+                            GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_CONSTRAIN_PERSPECTIVE,
+                            "constrain-perspective",
+                            NULL, NULL,
+                            FALSE,
+                            GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_FROMPIVOT_SCALE,
+                            "frompivot-scale",
+                            NULL, NULL,
+                            FALSE,
+                            GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_FROMPIVOT_SHEAR,
+                            "frompivot-shear",
+                            NULL, NULL,
+                            FALSE,
+                            GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_FROMPIVOT_PERSPECTIVE,
+                            "frompivot-perspective",
+                            NULL, NULL,
+                            FALSE,
+                            GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_CORNERSNAP,
+                            "cornersnap",
+                            NULL, NULL,
+                            FALSE,
+                            GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_FIXEDPIVOT,
+                            "fixedpivot",
+                            NULL, NULL,
+                            FALSE,
+                            GIMP_PARAM_STATIC_STRINGS);
+}
+
+static void
+gimp_transform_options_config_iface_init (GimpConfigInterface *config_iface)
+{
+  parent_config_iface = g_type_interface_peek_parent (config_iface);
+
+  config_iface->reset = gimp_transform_options_reset;
 }
 
 static void
 gimp_transform_options_init (GimpTransformOptions *options)
 {
-  options->recursion_level = 3;
 }
 
 static void
@@ -180,8 +273,35 @@ gimp_transform_options_set_property (GObject      *object,
     case PROP_GRID_SIZE:
       options->grid_size = g_value_get_int (value);
       break;
-    case PROP_CONSTRAIN:
-      options->constrain = g_value_get_boolean (value);
+    case PROP_CONSTRAIN_MOVE:
+      options->constrain_move = g_value_get_boolean (value);
+      break;
+    case PROP_CONSTRAIN_SCALE:
+      options->constrain_scale = g_value_get_boolean (value);
+      break;
+    case PROP_CONSTRAIN_ROTATE:
+      options->constrain_rotate = g_value_get_boolean (value);
+      break;
+    case PROP_CONSTRAIN_SHEAR:
+      options->constrain_shear = g_value_get_boolean (value);
+      break;
+    case PROP_CONSTRAIN_PERSPECTIVE:
+      options->constrain_perspective = g_value_get_boolean (value);
+      break;
+    case PROP_FROMPIVOT_SCALE:
+      options->frompivot_scale = g_value_get_boolean (value);
+      break;
+    case PROP_FROMPIVOT_SHEAR:
+      options->frompivot_shear = g_value_get_boolean (value);
+      break;
+    case PROP_FROMPIVOT_PERSPECTIVE:
+      options->frompivot_perspective = g_value_get_boolean (value);
+      break;
+    case PROP_CORNERSNAP:
+      options->cornersnap = g_value_get_boolean (value);
+      break;
+    case PROP_FIXEDPIVOT:
+      options->fixedpivot = g_value_get_boolean (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -223,8 +343,35 @@ gimp_transform_options_get_property (GObject    *object,
     case PROP_GRID_SIZE:
       g_value_set_int (value, options->grid_size);
       break;
-    case PROP_CONSTRAIN:
-      g_value_set_boolean (value, options->constrain);
+    case PROP_CONSTRAIN_MOVE:
+      g_value_set_boolean (value, options->constrain_move);
+      break;
+    case PROP_CONSTRAIN_SCALE:
+      g_value_set_boolean (value, options->constrain_scale);
+      break;
+    case PROP_CONSTRAIN_ROTATE:
+      g_value_set_boolean (value, options->constrain_rotate);
+      break;
+    case PROP_CONSTRAIN_SHEAR:
+      g_value_set_boolean (value, options->constrain_shear);
+      break;
+    case PROP_CONSTRAIN_PERSPECTIVE:
+      g_value_set_boolean (value, options->constrain_perspective);
+      break;
+    case PROP_FROMPIVOT_SCALE:
+      g_value_set_boolean (value, options->frompivot_scale);
+      break;
+    case PROP_FROMPIVOT_SHEAR:
+      g_value_set_boolean (value, options->frompivot_shear);
+      break;
+    case PROP_FROMPIVOT_PERSPECTIVE:
+      g_value_set_boolean (value, options->frompivot_perspective);
+      break;
+    case PROP_CORNERSNAP:
+      g_value_set_boolean (value, options->cornersnap);
+      break;
+    case PROP_FIXEDPIVOT:
+      g_value_set_boolean (value, options->fixedpivot);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -233,18 +380,19 @@ gimp_transform_options_get_property (GObject    *object,
 }
 
 static void
-gimp_transform_options_reset (GimpToolOptions *tool_options)
+gimp_transform_options_reset (GimpConfig *config)
 {
-  GParamSpec *pspec;
+  GimpToolOptions *tool_options = GIMP_TOOL_OPTIONS (config);
+  GParamSpec      *pspec;
 
-  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (tool_options),
+  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (config),
                                         "interpolation");
 
   if (pspec)
     G_PARAM_SPEC_ENUM (pspec)->default_value =
       tool_options->tool_info->gimp->config->interpolation_type;
 
-  GIMP_TOOL_OPTIONS_CLASS (parent_class)->reset (tool_options);
+  parent_config_iface->reset (config);
 }
 
 /**
@@ -258,17 +406,17 @@ gimp_transform_options_reset (GimpToolOptions *tool_options)
 GtkWidget *
 gimp_transform_options_gui (GimpToolOptions *tool_options)
 {
-  GObject     *config = G_OBJECT (tool_options);
-  GtkWidget   *vbox   = gimp_tool_options_gui (tool_options);
-  GtkWidget   *hbox;
-  GtkWidget   *box;
-  GtkWidget   *label;
-  GtkWidget   *frame;
-  GtkWidget   *combo;
-  GtkWidget   *scale;
-  GtkWidget   *grid_box;
-  const gchar *constrain_label = NULL;
-  const gchar *constrain_tip   = NULL;
+  GObject         *config = G_OBJECT (tool_options);
+  GtkWidget       *vbox   = gimp_tool_options_gui (tool_options);
+  GtkWidget       *hbox;
+  GtkWidget       *box;
+  GtkWidget       *label;
+  GtkWidget       *frame;
+  GtkWidget       *combo;
+  GtkWidget       *scale;
+  GtkWidget       *grid_box;
+  GdkModifierType  extend_mask    = gimp_get_extend_selection_mask ();
+  GdkModifierType  constrain_mask = gimp_get_constrain_behavior_mask ();
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
@@ -278,61 +426,55 @@ gimp_transform_options_gui (GimpToolOptions *tool_options)
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-  box = gimp_prop_enum_stock_box_new (config, "type", "gimp", 0, 0);
+  box = gimp_prop_enum_icon_box_new (config, "type", "gimp", 0, 0);
   gtk_box_pack_start (GTK_BOX (hbox), box, FALSE, FALSE, 0);
   gtk_widget_show (box);
 
-  frame = gimp_prop_enum_radio_frame_new (config, "direction",
-                                          _("Direction"), 0, 0);
+  frame = gimp_prop_enum_radio_frame_new (config, "direction", NULL,
+                                          0, 0);
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
   /*  the interpolation menu  */
-  frame = gimp_frame_new (_("Interpolation:"));
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
-  gtk_widget_show (frame);
-
   combo = gimp_prop_enum_combo_box_new (config, "interpolation", 0, 0);
-  gtk_container_add (GTK_CONTAINER (frame), combo);
+  gimp_int_combo_box_set_label (GIMP_INT_COMBO_BOX (combo), _("Interpolation"));
+  g_object_set (combo, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+  gtk_box_pack_start (GTK_BOX (vbox), combo, FALSE, FALSE, 0);
   gtk_widget_show (combo);
 
   /*  the clipping menu  */
-  frame = gimp_frame_new (_("Clipping:"));
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
-  gtk_widget_show (frame);
-
   combo = gimp_prop_enum_combo_box_new (config, "clip", 0, 0);
-  gtk_container_add (GTK_CONTAINER (frame), combo);
+  gimp_int_combo_box_set_label (GIMP_INT_COMBO_BOX (combo), _("Clipping"));
+  g_object_set (combo, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+  gtk_box_pack_start (GTK_BOX (vbox), combo, FALSE, FALSE, 0);
   gtk_widget_show (combo);
 
   /*  the preview frame  */
-  scale = gimp_prop_opacity_spin_scale_new (config, "preview-opacity",
-                                            _("Image opacity"));
-  frame = gimp_prop_expanding_frame_new (config, "show-preview",
-                                         _("Show image preview"),
+  scale = gimp_prop_spin_scale_new (config, "preview-opacity", NULL,
+                                    0.01, 0.1, 0);
+  gimp_prop_widget_set_factor (scale, 100.0, 0.0, 0.0, 1);
+  frame = gimp_prop_expanding_frame_new (config, "show-preview", NULL,
                                          scale, NULL);
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
   /*  the guides frame  */
-  frame = gimp_frame_new (_("Guides"));
+  frame = gimp_frame_new (NULL);
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  grid_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
-  gtk_container_add (GTK_CONTAINER (frame), grid_box);
-  gtk_widget_show (grid_box);
-
   /*  the guides type menu  */
   combo = gimp_prop_enum_combo_box_new (config, "grid-type", 0, 0);
-  gtk_box_pack_start (GTK_BOX (grid_box), combo, FALSE, FALSE, 0);
+  gimp_int_combo_box_set_label (GIMP_INT_COMBO_BOX (combo), _("Guides"));
+  g_object_set (combo, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+  gtk_frame_set_label_widget (GTK_FRAME (frame), combo);
   gtk_widget_show (combo);
 
   /*  the grid density scale  */
   scale = gimp_prop_spin_scale_new (config, "grid-size", NULL,
                                     1.8, 8.0, 0);
-  gtk_box_pack_start (GTK_BOX (grid_box), scale, FALSE, FALSE, 0);
-  gtk_widget_show (scale);
+  gimp_spin_scale_set_label (GIMP_SPIN_SCALE (scale), NULL);
+  gtk_container_add (GTK_CONTAINER (frame), scale);
 
   g_object_bind_property_full (config, "grid-type",
                                scale,  "visible",
@@ -343,33 +485,136 @@ gimp_transform_options_gui (GimpToolOptions *tool_options)
 
   if (tool_options->tool_info->tool_type == GIMP_TYPE_ROTATE_TOOL)
     {
-      constrain_label = _("15 degrees  (%s)");
-      constrain_tip   = _("Limit rotation steps to 15 degrees");
-    }
-  else if (tool_options->tool_info->tool_type == GIMP_TYPE_SCALE_TOOL)
-    {
-      constrain_label = _("Keep aspect  (%s)");
-      constrain_tip   = _("Keep the original aspect ratio");
-    }
+      GtkWidget *button;
+      gchar     *label;
 
-  if (constrain_label)
-    {
-      GtkWidget       *button;
-      gchar           *label;
-      GdkModifierType  constrain_mask;
+      label = g_strdup_printf (_("15 degrees (%s)"),
+                               gimp_get_mod_string (extend_mask));
 
-      constrain_mask = gimp_get_constrain_behavior_mask ();
-
-      label = g_strdup_printf (constrain_label,
-                               gimp_get_mod_string (constrain_mask));
-
-      button = gimp_prop_check_button_new (config, "constrain", label);
+      button = gimp_prop_check_button_new (config, "constrain-rotate", label);
       gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
       gtk_widget_show (button);
 
-      gimp_help_set_help_data (button, constrain_tip, NULL);
+      gimp_help_set_help_data (button, _("Limit rotation steps to 15 degrees"),
+                               NULL);
 
       g_free (label);
+    }
+  else if (tool_options->tool_info->tool_type == GIMP_TYPE_SCALE_TOOL)
+    {
+      GtkWidget *button;
+      gchar     *label;
+
+      label = g_strdup_printf (_("Keep aspect (%s)"),
+                               gimp_get_mod_string (extend_mask));
+
+      button = gimp_prop_check_button_new (config, "constrain-scale", label);
+      gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+      gtk_widget_show (button);
+
+      gimp_help_set_help_data (button, _("Keep the original aspect ratio"),
+                               NULL);
+
+      g_free (label);
+
+      label = g_strdup_printf (_("Around center (%s)"),
+                               gimp_get_mod_string (constrain_mask));
+
+      button = gimp_prop_check_button_new (config, "frompivot-scale", label);
+      gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+      gtk_widget_show (button);
+
+      gimp_help_set_help_data (button, _("Scale around the center point"),
+                               NULL);
+
+      g_free (label);
+    }
+  else if (tool_options->tool_info->tool_type == GIMP_TYPE_UNIFIED_TRANSFORM_TOOL)
+    {
+      struct
+      {
+        GdkModifierType  mod;
+        gchar           *name;
+        gchar           *desc;
+        gchar           *tip;
+      }
+      opt_list[] =
+      {
+        { extend_mask, NULL, N_("Constrain (%s)") },
+        { extend_mask, "constrain-move", N_("Move"),
+          N_("Constrain movement to 45 degree angles from center (%s)") },
+        { extend_mask, "constrain-scale", N_("Scale"),
+          N_("Maintain aspect ratio when scaling (%s)") },
+        { extend_mask, "constrain-rotate", N_("Rotate"),
+          N_("Constrain rotation to 15 degree increments (%s)") },
+        { extend_mask, "constrain-shear", N_("Shear"),
+          N_("Shear along edge direction only (%s)") },
+        { extend_mask, "constrain-perspective", N_("Perspective"),
+          N_("Constrain perspective handles to move along edges and diagonal (%s)") },
+
+        { constrain_mask, NULL,
+          N_("From pivot  (%s)") },
+        { constrain_mask, "frompivot-scale", N_("Scale"),
+          N_("Scale from pivot point (%s)") },
+        { constrain_mask, "frompivot-shear", N_("Shear"),
+          N_("Shear opposite edge by same amount (%s)") },
+        { constrain_mask, "frompivot-perspective", N_("Perspective"),
+          N_("Maintain position of pivot while changing perspective (%s)") },
+
+        { 0, NULL,
+          N_("Pivot") },
+        { extend_mask, "cornersnap", N_("Snap (%s)"),
+          N_("Snap pivot to corners and center (%s)") },
+        { 0, "fixedpivot", N_("Lock"),
+          N_("Lock pivot position to canvas") },
+      };
+
+      GtkWidget *button;
+      gchar     *label;
+      gint       i;
+
+      frame = NULL;
+
+      for (i = 0; i < G_N_ELEMENTS (opt_list); i++)
+        {
+          if (! opt_list[i].name && ! opt_list[i].desc)
+            {
+              frame = NULL;
+              continue;
+            }
+
+          label = g_strdup_printf (gettext (opt_list[i].desc),
+                                   gimp_get_mod_string (opt_list[i].mod));
+
+          if (opt_list[i].name)
+            {
+              button = gimp_prop_check_button_new (config, opt_list[i].name,
+                                                   label);
+
+              gtk_box_pack_start (GTK_BOX (frame ? grid_box : vbox),
+                                  button, FALSE, FALSE, 0);
+
+              gtk_widget_show (button);
+
+              g_free (label);
+              label = g_strdup_printf (gettext (opt_list[i].tip),
+                                       gimp_get_mod_string (opt_list[i].mod));
+
+              gimp_help_set_help_data (button, label, NULL);
+            }
+          else
+            {
+              frame = gimp_frame_new (label);
+              gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+              gtk_widget_show (frame);
+
+              grid_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
+              gtk_container_add (GTK_CONTAINER (frame), grid_box);
+              gtk_widget_show (grid_box);
+            }
+
+          g_free (label);
+        }
     }
 
   return vbox;
@@ -380,9 +625,8 @@ gimp_transform_options_show_preview (GimpTransformOptions *options)
 {
   g_return_val_if_fail (GIMP_IS_TRANSFORM_OPTIONS (options), FALSE);
 
-  return (options->show_preview                           &&
-          options->type      == GIMP_TRANSFORM_TYPE_LAYER &&
-          options->direction == GIMP_TRANSFORM_FORWARD);
+  return (options->show_preview &&
+          options->type == GIMP_TRANSFORM_TYPE_LAYER);
 }
 
 

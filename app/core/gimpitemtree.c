@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "core-types.h"
@@ -147,13 +148,12 @@ gimp_item_tree_constructed (GObject *object)
   GimpItemTree        *tree    = GIMP_ITEM_TREE (object);
   GimpItemTreePrivate *private = GIMP_ITEM_TREE_GET_PRIVATE (tree);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_IMAGE (private->image));
-  g_assert (g_type_is_a (private->container_type, GIMP_TYPE_ITEM_STACK));
-  g_assert (g_type_is_a (private->item_type,      GIMP_TYPE_ITEM));
-  g_assert (private->item_type != GIMP_TYPE_ITEM);
+  gimp_assert (GIMP_IS_IMAGE (private->image));
+  gimp_assert (g_type_is_a (private->container_type, GIMP_TYPE_ITEM_STACK));
+  gimp_assert (g_type_is_a (private->item_type,      GIMP_TYPE_ITEM));
+  gimp_assert (private->item_type != GIMP_TYPE_ITEM);
 
   tree->container = g_object_new (private->container_type,
                                   "name",          g_type_name (private->item_type),
@@ -168,17 +168,8 @@ gimp_item_tree_finalize (GObject *object)
   GimpItemTree        *tree    = GIMP_ITEM_TREE (object);
   GimpItemTreePrivate *private = GIMP_ITEM_TREE_GET_PRIVATE (tree);
 
-  if (private->name_hash)
-    {
-      g_hash_table_unref (private->name_hash);
-      private->name_hash = NULL;
-    }
-
-  if (tree->container)
-    {
-      g_object_unref (tree->container);
-      tree->container = NULL;
-    }
+  g_clear_pointer (&private->name_hash, g_hash_table_unref);
+  g_clear_object (&tree->container);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -646,35 +637,43 @@ gimp_item_tree_uniquefy_name (GimpItemTree *tree,
       gimp_object_set_name (GIMP_OBJECT (item), new_name);
     }
 
+  /* Remove any trailing whitespace. */
+  if (gimp_object_get_name (item))
+    {
+      gchar *name = g_strchomp (g_strdup (gimp_object_get_name (item)));
+
+      gimp_object_take_name (GIMP_OBJECT (item), name);
+    }
+
   if (g_hash_table_lookup (private->name_hash,
                            gimp_object_get_name (item)))
     {
-      gchar *name     = g_strdup (gimp_object_get_name (item));
-      gchar *ext      = strrchr (name, '#');
-      gchar *new_name = NULL;
-      gint   number   = 0;
+      gchar      *name        = g_strdup (gimp_object_get_name (item));
+      gchar      *new_name    = NULL;
+      gint        number      = 0;
+      gint        precision   = 1;
+      GRegex     *end_numbers = g_regex_new (" ?#([0-9]+)\\s*$", 0, 0, NULL);
+      GMatchInfo *match_info  = NULL;
 
-      if (ext)
+      if (g_regex_match (end_numbers, name, 0, &match_info))
         {
-          gchar ext_str[8];
+          gchar *match;
+          gint   start_pos;
 
-          number = atoi (ext + 1);
-
-          g_snprintf (ext_str, sizeof (ext_str), "%d", number);
-
-          /*  check if the extension really is of the form "#<n>"  */
-          if (! strcmp (ext_str, ext + 1))
+          match  = g_match_info_fetch (match_info, 1);
+          if (match && match[0] == '0')
             {
-              if (ext > name && *(ext - 1) == ' ')
-                ext--;
+              precision = strlen (match);
+            }
+          number = atoi (match);
+          g_free (match);
 
-              *ext = '\0';
-            }
-          else
-            {
-              number = 0;
-            }
+          g_match_info_fetch_pos (match_info, 0,
+                                  &start_pos, NULL);
+          name[start_pos] = '\0';
         }
+      g_match_info_free (match_info);
+      g_regex_unref (end_numbers);
 
       do
         {
@@ -682,7 +681,10 @@ gimp_item_tree_uniquefy_name (GimpItemTree *tree,
 
           g_free (new_name);
 
-          new_name = g_strdup_printf ("%s #%d", name, number);
+          new_name = g_strdup_printf ("%s #%.*d",
+                                      name,
+                                      precision,
+                                      number);
         }
       while (g_hash_table_lookup (private->name_hash, new_name));
 

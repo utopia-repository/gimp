@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -45,13 +46,13 @@ gimp_pencil_tool_register (GimpToolRegisterCallback  callback,
                 GIMP_TYPE_PENCIL_OPTIONS,
                 gimp_paint_options_gui,
                 GIMP_PAINT_OPTIONS_CONTEXT_MASK |
-                GIMP_CONTEXT_GRADIENT_MASK,
+                GIMP_CONTEXT_PROP_MASK_GRADIENT,
                 "gimp-pencil-tool",
                 _("Pencil"),
                 _("Pencil Tool: Hard edge painting using a brush"),
                 N_("Pe_ncil"), "N",
                 NULL, GIMP_HELP_TOOL_PENCIL,
-                GIMP_STOCK_TOOL_PENCIL,
+                GIMP_ICON_TOOL_PENCIL,
                 data);
 }
 

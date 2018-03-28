@@ -68,13 +68,16 @@ struct _GimpContext
   GimpRGB               background;
 
   gdouble               opacity;
-  GimpLayerModeEffects  paint_mode;
+  GimpLayerMode         paint_mode;
 
   GimpBrush            *brush;
   gchar                *brush_name;
 
   GimpDynamics         *dynamics;
   gchar                *dynamics_name;
+
+  GimpMybrush          *mybrush;
+  gchar                *mybrush_name;
 
   GimpPattern          *pattern;
   gchar                *pattern_name;
@@ -122,11 +125,13 @@ struct _GimpContextClass
   void (* opacity_changed)    (GimpContext          *context,
                                gdouble               opacity);
   void (* paint_mode_changed) (GimpContext          *context,
-                               GimpLayerModeEffects  paint_mode);
+                               GimpLayerMode         paint_mode);
   void (* brush_changed)      (GimpContext          *context,
                                GimpBrush            *brush);
   void (* dynamics_changed)   (GimpContext          *context,
                                GimpDynamics         *dynamics);
+  void (* mybrush_changed)    (GimpContext          *context,
+                               GimpMybrush          *brush);
   void (* pattern_changed)    (GimpContext          *context,
                                GimpPattern          *pattern);
   void (* gradient_changed)   (GimpContext          *context,
@@ -143,6 +148,9 @@ struct _GimpContextClass
                                GimpImagefile        *imagefile);
   void (* template_changed)   (GimpContext          *context,
                                GimpTemplate         *template);
+
+  void (* prop_name_changed)  (GimpContext          *context,
+                               GimpContextPropType   prop);
 };
 
 
@@ -152,7 +160,7 @@ GimpContext * gimp_context_new               (Gimp                *gimp,
                                               const gchar         *name,
                                               GimpContext         *template);
 
-GimpContext * gimp_context_get_parent        (const GimpContext   *context);
+GimpContext * gimp_context_get_parent        (GimpContext         *context);
 void          gimp_context_set_parent        (GimpContext         *context,
                                               GimpContext         *parent);
 
@@ -235,19 +243,19 @@ void             gimp_context_paint_info_changed  (GimpContext     *context);
 
 
 /*  foreground color  */
-void             gimp_context_get_foreground      (GimpContext     *context,
-                                                   GimpRGB         *color);
-void             gimp_context_set_foreground      (GimpContext     *context,
-                                                   const GimpRGB   *color);
-void             gimp_context_foreground_changed  (GimpContext     *context);
+void             gimp_context_get_foreground       (GimpContext     *context,
+                                                    GimpRGB         *color);
+void             gimp_context_set_foreground       (GimpContext     *context,
+                                                    const GimpRGB   *color);
+void             gimp_context_foreground_changed   (GimpContext     *context);
 
 
 /*  background color  */
-void             gimp_context_get_background      (GimpContext     *context,
-                                                   GimpRGB         *color);
-void             gimp_context_set_background      (GimpContext     *context,
-                                                   const GimpRGB   *color);
-void             gimp_context_background_changed  (GimpContext     *context);
+void             gimp_context_get_background       (GimpContext     *context,
+                                                    GimpRGB         *color);
+void             gimp_context_set_background       (GimpContext     *context,
+                                                    const GimpRGB   *color);
+void             gimp_context_background_changed   (GimpContext     *context);
 
 
 /*  color utility functions  */
@@ -263,10 +271,9 @@ void             gimp_context_opacity_changed     (GimpContext     *context);
 
 
 /*  paint mode  */
-GimpLayerModeEffects
-                 gimp_context_get_paint_mode      (GimpContext     *context);
+GimpLayerMode    gimp_context_get_paint_mode      (GimpContext     *context);
 void             gimp_context_set_paint_mode      (GimpContext     *context,
-                                              GimpLayerModeEffects  paint_mode);
+                                                   GimpLayerMode    paint_mode);
 void             gimp_context_paint_mode_changed  (GimpContext     *context);
 
 
@@ -282,6 +289,13 @@ GimpDynamics   * gimp_context_get_dynamics        (GimpContext     *context);
 void             gimp_context_set_dynamics        (GimpContext     *context,
                                                    GimpDynamics    *dynamics);
 void             gimp_context_dynamics_changed    (GimpContext     *context);
+
+
+/*  mybrush  */
+GimpMybrush    * gimp_context_get_mybrush         (GimpContext     *context);
+void             gimp_context_set_mybrush         (GimpContext     *context,
+                                                   GimpMybrush     *brush);
+void             gimp_context_mybrush_changed     (GimpContext     *context);
 
 
 /*  pattern  */

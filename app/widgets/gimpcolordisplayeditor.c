@@ -29,6 +29,12 @@
 
 #include "widgets-types.h"
 
+#include "propgui/propgui-types.h"
+
+#include "core/gimp.h"
+
+#include "propgui/gimppropgui.h"
+
 #include "gimpcolordisplayeditor.h"
 #include "gimpeditor.h"
 
@@ -147,6 +153,8 @@ gimp_color_display_editor_init (GimpColorDisplayEditor *editor)
                                     G_TYPE_STRING,
                                     G_TYPE_STRING,
                                     G_TYPE_GTYPE);
+  gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (editor->src),
+                                        SRC_COLUMN_NAME, GTK_SORT_ASCENDING);
   tv = gtk_tree_view_new_with_model (GTK_TREE_MODEL (editor->src));
   g_object_unref (editor->src);
 
@@ -160,7 +168,7 @@ gimp_color_display_editor_init (GimpColorDisplayEditor *editor)
   rend = gtk_cell_renderer_pixbuf_new ();
   gtk_tree_view_column_pack_start (column, rend, FALSE);
   gtk_tree_view_column_set_attributes (column, rend,
-                                       "stock-id", SRC_COLUMN_ICON,
+                                       "icon-name", SRC_COLUMN_ICON,
                                        NULL);
 
   rend = gtk_cell_renderer_text_new ();
@@ -188,7 +196,8 @@ gimp_color_display_editor_init (GimpColorDisplayEditor *editor)
   gtk_widget_set_sensitive (editor->add_button, FALSE);
   gtk_widget_show (editor->add_button);
 
-  image = gtk_image_new_from_stock (GTK_STOCK_GO_FORWARD, GTK_ICON_SIZE_BUTTON);
+  image = gtk_image_new_from_icon_name (GIMP_ICON_GO_NEXT,
+                                        GTK_ICON_SIZE_BUTTON);
   gtk_container_add (GTK_CONTAINER (editor->add_button), image);
   gtk_widget_show (image);
 
@@ -201,7 +210,8 @@ gimp_color_display_editor_init (GimpColorDisplayEditor *editor)
   gtk_widget_set_sensitive (editor->remove_button, FALSE);
   gtk_widget_show (editor->remove_button);
 
-  image = gtk_image_new_from_stock (GTK_STOCK_GO_BACK, GTK_ICON_SIZE_BUTTON);
+  image = gtk_image_new_from_icon_name (GIMP_ICON_GO_PREVIOUS,
+                                        GTK_ICON_SIZE_BUTTON);
   gtk_container_add (GTK_CONTAINER (editor->remove_button), image);
   gtk_widget_show (image);
 
@@ -215,7 +225,7 @@ gimp_color_display_editor_init (GimpColorDisplayEditor *editor)
 
   editor->up_button =
     gimp_editor_add_button (GIMP_EDITOR (ed),
-                            GTK_STOCK_GO_UP,
+                            GIMP_ICON_GO_UP,
                             _("Move the selected filter up"),
                             NULL,
                             G_CALLBACK (gimp_color_display_editor_up_clicked),
@@ -224,7 +234,7 @@ gimp_color_display_editor_init (GimpColorDisplayEditor *editor)
 
   editor->down_button =
     gimp_editor_add_button (GIMP_EDITOR (ed),
-                            GTK_STOCK_GO_DOWN,
+                            GIMP_ICON_GO_DOWN,
                             _("Move the selected filter down"),
                             NULL,
                             G_CALLBACK (gimp_color_display_editor_down_clicked),
@@ -266,7 +276,8 @@ gimp_color_display_editor_init (GimpColorDisplayEditor *editor)
                                                      NULL);
   gtk_tree_view_insert_column (GTK_TREE_VIEW (tv), column, 0);
 
-  image = gtk_image_new_from_stock (GIMP_STOCK_VISIBLE, GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name (GIMP_ICON_VISIBLE,
+                                        GTK_ICON_SIZE_MENU);
   gtk_tree_view_column_set_widget (column, image);
   gtk_widget_show (image);
 
@@ -277,7 +288,7 @@ gimp_color_display_editor_init (GimpColorDisplayEditor *editor)
   rend = gtk_cell_renderer_pixbuf_new ();
   gtk_tree_view_column_pack_start (column, rend, FALSE);
   gtk_tree_view_column_set_attributes (column, rend,
-                                       "stock-id", DEST_COLUMN_ICON,
+                                       "icon-name", DEST_COLUMN_ICON,
                                        NULL);
 
   rend = gtk_cell_renderer_text_new ();
@@ -317,7 +328,7 @@ gimp_color_display_editor_init (GimpColorDisplayEditor *editor)
   gtk_box_pack_end (GTK_BOX (editor->config_box), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
-  editor->reset_button = gtk_button_new_from_stock (GIMP_STOCK_RESET);
+  editor->reset_button = gtk_button_new_from_stock (GIMP_ICON_RESET);
   gtk_box_pack_end (GTK_BOX (hbox), editor->reset_button, FALSE, FALSE, 0);
   gtk_widget_show (editor->reset_button);
 
@@ -344,29 +355,16 @@ gimp_color_display_editor_dispose (GObject *object)
       editor->selected = NULL;
     }
 
-  if (editor->stack)
-    {
-      g_object_unref (editor->stack);
-      editor->stack = NULL;
-    }
-
-  if (editor->config)
-    {
-      g_object_unref (editor->config);
-      editor->config = NULL;
-    }
-
-  if (editor->managed)
-    {
-      g_object_unref (editor->managed);
-      editor->managed = NULL;
-    }
+  g_clear_object (&editor->stack);
+  g_clear_object (&editor->config);
+  g_clear_object (&editor->managed);
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 GtkWidget *
-gimp_color_display_editor_new (GimpColorDisplayStack *stack,
+gimp_color_display_editor_new (Gimp                  *gimp,
+                               GimpColorDisplayStack *stack,
                                GimpColorConfig       *config,
                                GimpColorManaged      *managed)
 {
@@ -376,12 +374,14 @@ gimp_color_display_editor_new (GimpColorDisplayStack *stack,
   gint                    i;
   GList                  *list;
 
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (GIMP_IS_COLOR_DISPLAY_STACK (stack), NULL);
   g_return_val_if_fail (GIMP_IS_COLOR_CONFIG (config), NULL);
   g_return_val_if_fail (GIMP_IS_COLOR_MANAGED (managed), NULL);
 
   editor = g_object_new (GIMP_TYPE_COLOR_DISPLAY_EDITOR, NULL);
 
+  editor->gimp    = gimp;
   editor->stack   = g_object_ref (stack);
   editor->config  = g_object_ref (config);
   editor->managed = g_object_ref (managed);
@@ -398,7 +398,7 @@ gimp_color_display_editor_new (GimpColorDisplayStack *stack,
       gtk_list_store_append (editor->src, &iter);
 
       gtk_list_store_set (editor->src, &iter,
-                          SRC_COLUMN_ICON, display_class->stock_id,
+                          SRC_COLUMN_ICON, display_class->icon_name,
                           SRC_COLUMN_NAME, display_class->name,
                           SRC_COLUMN_TYPE, display_types[i],
                           -1);
@@ -414,18 +414,18 @@ gimp_color_display_editor_new (GimpColorDisplayStack *stack,
       GtkTreeIter       iter;
       gboolean          enabled;
       const gchar      *name;
-      const gchar      *stock_id;
+      const gchar      *icon_name;
 
       enabled = gimp_color_display_get_enabled (display);
 
-      name     = GIMP_COLOR_DISPLAY_GET_CLASS (display)->name;
-      stock_id = GIMP_COLOR_DISPLAY_GET_CLASS (display)->stock_id;
+      name      = GIMP_COLOR_DISPLAY_GET_CLASS (display)->name;
+      icon_name = GIMP_COLOR_DISPLAY_GET_CLASS (display)->icon_name;
 
       gtk_list_store_append (editor->dest, &iter);
 
       gtk_list_store_set (editor->dest, &iter,
                           DEST_COLUMN_ENABLED, enabled,
-                          DEST_COLUMN_ICON,    stock_id,
+                          DEST_COLUMN_ICON,    icon_name,
                           DEST_COLUMN_NAME,    name,
                           DEST_COLUMN_FILTER,  display,
                           -1);
@@ -518,7 +518,7 @@ gimp_color_display_editor_src_changed (GtkTreeSelection       *sel,
 
   if (gtk_tree_selection_get_selected (sel, &model, &iter))
     {
-      GValue val = { 0, };
+      GValue val = G_VALUE_INIT;
 
       gtk_tree_model_get_value (model, &iter, SRC_COLUMN_NAME, &val);
 
@@ -553,7 +553,7 @@ gimp_color_display_editor_dest_changed (GtkTreeSelection       *sel,
 
   if (gtk_tree_selection_get_selected (sel, &model, &iter))
     {
-      GValue val = { 0, };
+      GValue val = G_VALUE_INIT;
 
       gtk_tree_model_get_value (model, &iter, DEST_COLUMN_FILTER, &val);
 
@@ -583,6 +583,16 @@ gimp_color_display_editor_dest_changed (GtkTreeSelection       *sel,
                                  (gpointer) &editor->selected);
 
       editor->config_widget = gimp_color_display_configure (display);
+
+      if (! editor->config_widget)
+        {
+          editor->config_widget =
+            gimp_prop_gui_new (G_OBJECT (display),
+                               G_TYPE_FROM_INSTANCE (display), 0,
+                               NULL,
+                               gimp_get_user_context (editor->gimp),
+                               NULL, NULL, NULL);
+        }
 
       gtk_frame_set_label (GTK_FRAME (editor->config_frame),
                            GIMP_COLOR_DISPLAY_GET_CLASS (display)->name);
@@ -617,18 +627,18 @@ gimp_color_display_editor_added (GimpColorDisplayStack  *stack,
   GtkTreeIter  iter;
   gboolean     enabled;
   const gchar *name;
-  const gchar *stock_id;
+  const gchar *icon_name;
 
   enabled = gimp_color_display_get_enabled (display);
 
-  name     = GIMP_COLOR_DISPLAY_GET_CLASS (display)->name;
-  stock_id = GIMP_COLOR_DISPLAY_GET_CLASS (display)->stock_id;
+  name      = GIMP_COLOR_DISPLAY_GET_CLASS (display)->name;
+  icon_name = GIMP_COLOR_DISPLAY_GET_CLASS (display)->icon_name;
 
   gtk_list_store_insert (editor->dest, &iter, position);
 
   gtk_list_store_set (editor->dest, &iter,
                       DEST_COLUMN_ENABLED, enabled,
-                      DEST_COLUMN_ICON,    stock_id,
+                      DEST_COLUMN_ICON,    icon_name,
                       DEST_COLUMN_NAME,    name,
                       DEST_COLUMN_FILTER,  display,
                       -1);

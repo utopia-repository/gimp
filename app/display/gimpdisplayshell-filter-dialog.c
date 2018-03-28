@@ -25,10 +25,8 @@
 
 #include "display-types.h"
 
-#include "config/gimpcoreconfig.h"
-
 #include "core/gimp.h"
-#include "core/gimpimage.h"
+#include "core/gimpviewable.h"
 
 #include "widgets/gimpcolordisplayeditor.h"
 #include "widgets/gimphelp-ids.h"
@@ -65,15 +63,13 @@ static void gimp_display_shell_filter_dialog_free     (ColorDisplayDialog *cdd);
 GtkWidget *
 gimp_display_shell_filter_dialog_new (GimpDisplayShell *shell)
 {
-  GimpDisplayConfig  *config;
   GimpImage          *image;
   ColorDisplayDialog *cdd;
   GtkWidget          *editor;
 
   g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), NULL);
 
-  config = shell->display->config;
-  image  = gimp_display_get_image (shell->display);
+  image = gimp_display_get_image (shell->display);
 
   cdd = g_slice_new0 (ColorDisplayDialog);
 
@@ -82,14 +78,14 @@ gimp_display_shell_filter_dialog_new (GimpDisplayShell *shell)
                                           gimp_get_user_context (shell->display->gimp),
                                           _("Color Display Filters"),
                                           "gimp-display-filters",
-                                          GIMP_STOCK_DISPLAY_FILTER,
+                                          GIMP_ICON_DISPLAY_FILTER,
                                           _("Configure Color Display Filters"),
                                           GTK_WIDGET (cdd->shell),
                                           gimp_standard_help_func,
                                           GIMP_HELP_DISPLAY_FILTER_DIALOG,
 
-                                          GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                          GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                                          _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                          _("_OK"),     GTK_RESPONSE_OK,
 
                                           NULL);
 
@@ -122,8 +118,9 @@ gimp_display_shell_filter_dialog_new (GimpDisplayShell *shell)
       g_object_unref (stack);
     }
 
-  editor = gimp_color_display_editor_new (shell->filter_stack,
-                                          GIMP_CORE_CONFIG (config)->color_management,
+  editor = gimp_color_display_editor_new (shell->display->gimp,
+                                          shell->filter_stack,
+                                          gimp_display_shell_get_color_config (shell),
                                           GIMP_COLOR_MANAGED (shell));
   gtk_container_set_border_width (GTK_CONTAINER (editor), 12);
   gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (cdd->dialog))),

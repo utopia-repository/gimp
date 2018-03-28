@@ -271,7 +271,7 @@
       <title>GimpData Objects</title>
 
       <para>
-        Object hierarchy of auxilary data objects which share a common
+        Object hierarchy of auxiliary data objects which share a common
         API. Data objects have an on-disk representation and live in a
         <link linkend="GimpDataFactory">GimpDataFactory</link> which
         manages them.
@@ -518,7 +518,7 @@
     </chapter>
 
     <chapter id="app-xcf-lowlevel">
-      <title>Low-level File Access</title>
+      <title>Lowlevel File Access</title>
       <xi:include href="xml/xcf-read.xml" />
       <xi:include href="xml/xcf-write.xml" />
       <xi:include href="xml/xcf-seek.xml" />

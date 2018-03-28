@@ -22,9 +22,9 @@
  *   query()                     - Respond to a plug-in query...
  *   run()                       - Run the plug-in...
  *   load_image()                - Load a PNG image into a new image window.
- *   save_image()                - Save the specified image to a PNG file.
- *   save_ok_callback()          - Destroy the save dialog and save the image.
- *   save_dialog()               - Pop up the save dialog.
+ *   save_image()                - Export the specified image to a PNG file.
+ *   save_ok_callback()          - Destroy the export dialog and export the image.
+ *   save_dialog()               - Pop up the export dialog.
  *
  */
 
@@ -106,9 +106,9 @@ query (void)
   {
     { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",        "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save" },
-    { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
-    { GIMP_PDB_STRING,   "raw-filename", "The name of the file to save the image in" },
+    { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to export" },
+    { GIMP_PDB_STRING,   "filename",     "The name of the file to export the image in" },
+    { GIMP_PDB_STRING,   "raw-filename", "The name of the file to export the image in" },
     { GIMP_PDB_INT32,    "compression",  "Compression level (0 = none, 1 = RLE, 2 = ARLE)" }
   };
 
@@ -133,13 +133,13 @@ query (void)
                                     "0,short,474");
 
   gimp_install_procedure (SAVE_PROC,
-                          "Saves files in SGI image file format",
-                          "This plug-in saves SGI image files.",
+                          "Exports files in SGI image file format",
+                          "This plug-in exports SGI image files.",
                           "Michael Sweet <mike@easysw.com>",
                           "Copyright 1997-1998 by Michael Sweet",
                           PLUG_IN_VERSION,
                           N_("Silicon Graphics IRIS image"),
-                          "RGB*,GRAY*",
+                          "RGB*, GRAY*, INDEXED*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (save_args),
                           0,
@@ -165,14 +165,16 @@ run (const gchar      *name,
   GimpExportReturn   export = GIMP_EXPORT_CANCEL;
   GError            *error  = NULL;
 
+  INIT_I18N ();
+  gegl_init (NULL, NULL);
+
   run_mode = param[0].data.d_int32;
 
   *nreturn_vals = 1;
   *return_vals  = values;
+
   values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
-
-  INIT_I18N ();
 
   if (strcmp (name, LOAD_PROC) == 0)
     {
@@ -202,8 +204,9 @@ run (const gchar      *name,
           gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
           export = gimp_export_image (&image_ID, &drawable_ID, "SGI",
-                                      GIMP_EXPORT_CAN_HANDLE_RGB  |
-                                      GIMP_EXPORT_CAN_HANDLE_GRAY |
+                                      GIMP_EXPORT_CAN_HANDLE_RGB     |
+                                      GIMP_EXPORT_CAN_HANDLE_GRAY    |
+                                      GIMP_EXPORT_CAN_HANDLE_INDEXED |
                                       GIMP_EXPORT_CAN_HANDLE_ALPHA);
 
           if (export == GIMP_EXPORT_CANCEL)
@@ -310,8 +313,7 @@ load_image (const gchar  *filename,
   sgi_t         *sgip;        /* File pointer */
   gint32         image,       /* Image */
                  layer;       /* Layer */
-  GimpDrawable  *drawable;    /* Drawable for layer */
-  GimpPixelRgn   pixel_rgn;   /* Pixel region for layer */
+  GeglBuffer    *buffer;      /* Buffer for layer */
   guchar       **pixels,      /* Pixel rows */
                 *pptr;        /* Current pixel */
   gushort      **rows;        /* SGI image data */
@@ -319,6 +321,9 @@ load_image (const gchar  *filename,
  /*
   * Open the file for reading...
   */
+
+  gimp_progress_init_printf (_("Opening '%s'"),
+                             gimp_filename_to_utf8 (filename));
 
   sgip = sgiOpen (filename, SGI_READ, 0, 0, 0, 0, 0);
   if (sgip == NULL)
@@ -328,9 +333,6 @@ load_image (const gchar  *filename,
                    gimp_filename_to_utf8 (filename));
       return -1;
     };
-
-  gimp_progress_init_printf (_("Opening '%s'"),
-                             gimp_filename_to_utf8 (filename));
 
   /*
    * Get the image dimensions and create the image...
@@ -407,17 +409,16 @@ load_image (const gchar  *filename,
    */
 
   layer = gimp_layer_new (image, _("Background"), sgip->xsize, sgip->ysize,
-                          layer_type, 100, GIMP_NORMAL_MODE);
+                          layer_type,
+                          100,
+                          gimp_image_get_default_new_layer_mode (image));
   gimp_image_insert_layer (image, layer, -1, 0);
 
   /*
    * Get the drawable and set the pixel region for our load...
    */
 
-  drawable = gimp_drawable_get (layer);
-
-  gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, drawable->width,
-                       drawable->height, TRUE, FALSE);
+  buffer = gimp_drawable_get_buffer (layer);
 
   /*
    * Temporary buffers...
@@ -446,8 +447,10 @@ load_image (const gchar  *filename,
     {
       if (count >= tile_height)
         {
-          gimp_pixel_rgn_set_rect (&pixel_rgn, pixels[0],
-                                   0, y - count, drawable->width, count);
+          gegl_buffer_set (buffer, GEGL_RECTANGLE (0, y - count,
+                                                   sgip->xsize, count), 0,
+                           NULL, pixels[0], GEGL_AUTO_ROWSTRIDE);
+
           count = 0;
 
           gimp_progress_update ((double) y / (double) sgip->ysize);
@@ -479,14 +482,14 @@ load_image (const gchar  *filename,
               *pptr = rows[i][x] >> 8;
         }
     }
-  gimp_progress_update (1.0);
 
   /*
    * Do the last n rows (count always > 0)
    */
 
-  gimp_pixel_rgn_set_rect (&pixel_rgn, pixels[0], 0,
-                           y - count, drawable->width, count);
+  gegl_buffer_set (buffer, GEGL_RECTANGLE (0, y - count,
+                                           sgip->xsize, count), 0,
+                   NULL, pixels[0], GEGL_AUTO_ROWSTRIDE);
 
   /*
    * Done with the file...
@@ -499,12 +502,9 @@ load_image (const gchar  *filename,
   g_free (rows[0]);
   g_free (rows);
 
-  /*
-   * Update the display...
-   */
+  g_object_unref (buffer);
 
-  gimp_drawable_flush (drawable);
-  gimp_drawable_detach (drawable);
+  gimp_progress_update (1.0);
 
   return image;
 }
@@ -520,44 +520,55 @@ save_image (const gchar  *filename,
             gint32        drawable_ID,
             GError      **error)
 {
-  gint        i, j,        /* Looping var */
-              x,           /* Current X coordinate */
-              y,           /* Current Y coordinate */
-              tile_height, /* Height of tile in GIMP */
-              count,       /* Count of rows to put in image */
-              zsize;       /* Number of channels in file */
-  sgi_t      *sgip;        /* File pointer */
-  GimpDrawable  *drawable;    /* Drawable for layer */
-  GimpPixelRgn   pixel_rgn;   /* Pixel region for layer */
-  guchar    **pixels,      /* Pixel rows */
-             *pptr;        /* Current pixel */
-  gushort   **rows;        /* SGI image data */
+  gint         i, j,        /* Looping var */
+               x,           /* Current X coordinate */
+               y,           /* Current Y coordinate */
+               width,       /* Drawable width */
+               height,      /* Drawable height */
+               tile_height, /* Height of tile in GIMP */
+               count,       /* Count of rows to put in image */
+               zsize;       /* Number of channels in file */
+  sgi_t       *sgip;        /* File pointer */
+  GeglBuffer  *buffer;      /* Buffer for layer */
+  const Babl  *format;
+  guchar     **pixels,      /* Pixel rows */
+              *pptr;        /* Current pixel */
+  gushort    **rows;        /* SGI image data */
 
   /*
    * Get the drawable for the current image...
    */
 
-  drawable = gimp_drawable_get (drawable_ID);
+  width  = gimp_drawable_width  (drawable_ID);
+  height = gimp_drawable_height (drawable_ID);
 
-  gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, drawable->width,
-                       drawable->height, FALSE, FALSE);
+  buffer = gimp_drawable_get_buffer (drawable_ID);
 
   switch (gimp_drawable_type (drawable_ID))
     {
-    case GIMP_GRAY_IMAGE :
+    case GIMP_GRAY_IMAGE:
       zsize = 1;
+      format = babl_format ("Y' u8");
       break;
-    case GIMP_GRAYA_IMAGE :
+
+    case GIMP_GRAYA_IMAGE:
       zsize = 2;
+      format = babl_format ("Y'A u8");
       break;
-    case GIMP_RGB_IMAGE :
+
+    case GIMP_RGB_IMAGE:
+    case GIMP_INDEXED_IMAGE:
       zsize = 3;
+      format = babl_format ("R'G'B' u8");
       break;
-    case GIMP_RGBA_IMAGE :
+
+    case GIMP_RGBA_IMAGE:
+    case GIMP_INDEXEDA_IMAGE:
+      format = babl_format ("R'G'B'A u8");
       zsize = 4;
       break;
+
     default:
-      g_message (_("Cannot operate on indexed color images."));
       return FALSE;
     }
 
@@ -565,8 +576,11 @@ save_image (const gchar  *filename,
    * Open the file for writing...
    */
 
+  gimp_progress_init_printf (_("Exporting '%s'"),
+                             gimp_filename_to_utf8 (filename));
+
   sgip = sgiOpen (filename, SGI_WRITE, compression, 1,
-                  drawable->width, drawable->height, zsize);
+                  width, height, zsize);
   if (sgip == NULL)
     {
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
@@ -575,19 +589,16 @@ save_image (const gchar  *filename,
       return FALSE;
     };
 
-  gimp_progress_init_printf (_("Saving '%s'"),
-                             gimp_filename_to_utf8 (filename));
-
   /*
    * Allocate memory for "tile_height" rows...
    */
 
   tile_height = gimp_tile_height ();
   pixels      = g_new (guchar *, tile_height);
-  pixels[0]   = g_new (guchar, ((gsize) tile_height) * drawable->width * zsize);
+  pixels[0]   = g_new (guchar, ((gsize) tile_height) * width * zsize);
 
   for (i = 1; i < tile_height; i ++)
-    pixels[i]= pixels[0] + drawable->width * zsize * i;
+    pixels[i]= pixels[0] + width * zsize * i;
 
   rows    = g_new (gushort *, sgip->zsize);
   rows[0] = g_new (gushort, ((gsize) sgip->xsize) * sgip->zsize);
@@ -599,18 +610,20 @@ save_image (const gchar  *filename,
    * Save the image...
    */
 
-  for (y = 0; y < drawable->height; y += count)
+  for (y = 0; y < height; y += count)
     {
       /*
        * Grab more pixel data...
        */
 
-      if ((y + tile_height) >= drawable->height)
-        count = drawable->height - y;
+      if ((y + tile_height) >= height)
+        count = height - y;
       else
         count = tile_height;
 
-      gimp_pixel_rgn_get_rect (&pixel_rgn, pixels[0], 0, y, drawable->width, count);
+      gegl_buffer_get (buffer, GEGL_RECTANGLE (0, y, width, count), 1.0,
+                       format, pixels[0],
+                       GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
 
       /*
        * Convert to shorts and write each color plane separately...
@@ -618,17 +631,16 @@ save_image (const gchar  *filename,
 
       for (i = 0, pptr = pixels[0]; i < count; i ++)
         {
-          for (x = 0; x < drawable->width; x ++)
+          for (x = 0; x < width; x ++)
             for (j = 0; j < zsize; j ++, pptr ++)
               rows[j][x] = *pptr;
 
           for (j = 0; j < zsize; j ++)
-            sgiPutRow (sgip, rows[j], drawable->height - 1 - y - i, j);
+            sgiPutRow (sgip, rows[j], height - 1 - y - i, j);
         };
 
-      gimp_progress_update ((double) y / (double) drawable->height);
+      gimp_progress_update ((double) y / (double) height);
     }
-  gimp_progress_update (1.0);
 
   /*
    * Done with the file...
@@ -640,6 +652,10 @@ save_image (const gchar  *filename,
   g_free (pixels);
   g_free (rows[0]);
   g_free (rows);
+
+  g_object_unref (buffer);
+
+  gimp_progress_update (1.0);
 
   return TRUE;
 }

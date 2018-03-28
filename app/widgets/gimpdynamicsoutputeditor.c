@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -66,13 +67,13 @@ struct
 }
 inputs[] =
 {
-  { "use-pressure",  "pressure-curve",  N_("Pressure"),  { 1.0, 0.0, 0.0, 1.0 } },
-  { "use-velocity",  "velocity-curve",  N_("Velocity"),  { 0.0, 1.0, 0.0, 1.0 } },
-  { "use-direction", "direction-curve", N_("Direction"), { 0.0, 0.0, 1.0, 1.0 } },
-  { "use-tilt",      "tilt-curve",      N_("Tilt"),      { 1.0, 0.5, 0.0, 1.0 } },
-  { "use-wheel",     "wheel-curve",     N_("Wheel"),     { 1.0, 0.0, 1.0, 1.0 } },
-  { "use-random",    "random-curve",    N_("Random"),    { 0.0, 1.0, 1.0, 1.0 } },
-  { "use-fade",      "fade-curve",      N_("Fade"),      { 0.2, 0.2, 0.2, 1.0 } }
+  { "use-pressure",  "pressure-curve",  N_("Pressure"),         { 1.0, 0.0, 0.0, 1.0 } },
+  { "use-velocity",  "velocity-curve",  N_("Velocity"),         { 0.0, 1.0, 0.0, 1.0 } },
+  { "use-direction", "direction-curve", N_("Direction"),        { 0.0, 0.0, 1.0, 1.0 } },
+  { "use-tilt",      "tilt-curve",      N_("Tilt"),             { 1.0, 0.5, 0.0, 1.0 } },
+  { "use-wheel",     "wheel-curve",     N_("Wheel / Rotation"), { 1.0, 0.0, 1.0, 1.0 } },
+  { "use-random",    "random-curve",    N_("Random"),           { 0.0, 1.0, 1.0, 1.0 } },
+  { "use-fade",      "fade-curve",      N_("Fade"),             { 0.2, 0.2, 0.2, 1.0 } }
 };
 
 
@@ -178,10 +179,9 @@ gimp_dynamics_output_editor_constructed (GObject *object)
   editor  = GIMP_DYNAMICS_OUTPUT_EDITOR (object);
   private = GET_PRIVATE (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_DYNAMICS_OUTPUT (private->output));
+  gimp_assert (GIMP_IS_DYNAMICS_OUTPUT (private->output));
 
   private->curve_view = gimp_curve_view_new ();
   g_object_set (private->curve_view,
@@ -295,11 +295,7 @@ gimp_dynamics_output_editor_finalize (GObject *object)
 {
   GimpDynamicsOutputEditorPrivate *private = GET_PRIVATE (object);
 
-  if (private->output)
-    {
-      g_object_unref (private->output);
-      private->output = NULL;
-    }
+  g_clear_object (&private->output);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }

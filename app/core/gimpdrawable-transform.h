@@ -19,39 +19,41 @@
 #define __GIMP_DRAWABLE_TRANSFORM_H__
 
 
-TileManager  * gimp_drawable_transform_tiles_affine (GimpDrawable           *drawable,
+GeglBuffer  * gimp_drawable_transform_buffer_affine (GimpDrawable           *drawable,
                                                      GimpContext            *context,
-                                                     TileManager            *orig_tiles,
+                                                     GeglBuffer             *orig_buffer,
                                                      gint                    orig_offset_x,
                                                      gint                    orig_offset_y,
                                                      const GimpMatrix3      *matrix,
                                                      GimpTransformDirection  direction,
                                                      GimpInterpolationType   interpolation_type,
-                                                     gint                    recursion_level,
                                                      GimpTransformResize     clip_result,
+                                                     GimpColorProfile      **buffer_profile,
                                                      gint                   *new_offset_x,
                                                      gint                   *new_offset_y,
                                                      GimpProgress           *progress);
-TileManager  * gimp_drawable_transform_tiles_flip   (GimpDrawable           *drawable,
+GeglBuffer  * gimp_drawable_transform_buffer_flip   (GimpDrawable           *drawable,
                                                      GimpContext            *context,
-                                                     TileManager            *orig_tiles,
+                                                     GeglBuffer             *orig_buffer,
                                                      gint                    orig_offset_x,
                                                      gint                    orig_offset_y,
                                                      GimpOrientationType     flip_type,
                                                      gdouble                 axis,
                                                      gboolean                clip_result,
+                                                     GimpColorProfile      **buffer_profile,
                                                      gint                   *new_offset_x,
                                                      gint                   *new_offset_y);
 
-TileManager  * gimp_drawable_transform_tiles_rotate (GimpDrawable           *drawable,
+GeglBuffer  * gimp_drawable_transform_buffer_rotate (GimpDrawable           *drawable,
                                                      GimpContext            *context,
-                                                     TileManager            *orig_tiles,
+                                                     GeglBuffer             *buffer,
                                                      gint                    orig_offset_x,
                                                      gint                    orig_offset_y,
                                                      GimpRotationType        rotate_type,
                                                      gdouble                 center_x,
                                                      gdouble                 center_y,
                                                      gboolean                clip_result,
+                                                     GimpColorProfile      **buffer_profile,
                                                      gint                   *new_offset_x,
                                                      gint                   *new_offset_y);
 
@@ -60,7 +62,6 @@ GimpDrawable * gimp_drawable_transform_affine       (GimpDrawable           *dra
                                                      const GimpMatrix3      *matrix,
                                                      GimpTransformDirection  direction,
                                                      GimpInterpolationType   interpolation_type,
-                                                     gint                    recursion_level,
                                                      GimpTransformResize     clip_result,
                                                      GimpProgress           *progress);
 
@@ -77,13 +78,14 @@ GimpDrawable * gimp_drawable_transform_rotate       (GimpDrawable           *dra
                                                      gdouble                 center_y,
                                                      gboolean                clip_result);
 
-TileManager  * gimp_drawable_transform_cut          (GimpDrawable           *drawable,
+GeglBuffer   * gimp_drawable_transform_cut          (GimpDrawable           *drawable,
                                                      GimpContext            *context,
                                                      gint                   *offset_x,
                                                      gint                   *offset_y,
                                                      gboolean               *new_layer);
 GimpDrawable * gimp_drawable_transform_paste        (GimpDrawable           *drawable,
-                                                     TileManager            *tiles,
+                                                     GeglBuffer             *buffer,
+                                                     GimpColorProfile       *buffer_profile,
                                                      gint                    offset_x,
                                                      gint                    offset_y,
                                                      gboolean                new_layer);

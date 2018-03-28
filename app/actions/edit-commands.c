@@ -32,9 +32,10 @@
 #include "core/gimpbuffer.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpdrawable.h"
+#include "core/gimpfilloptions.h"
 #include "core/gimplayer.h"
+#include "core/gimplayer-new.h"
 #include "core/gimpimage.h"
-#include "core/gimpimage-new.h"
 #include "core/gimpimage-undo.h"
 
 #include "vectors/gimpvectors-import.h"
@@ -44,11 +45,14 @@
 #include "widgets/gimpdialogfactory.h"
 #include "widgets/gimpmessagebox.h"
 #include "widgets/gimpmessagedialog.h"
+#include "widgets/gimpwidgets-utils.h"
 #include "widgets/gimpwindowstrategy.h"
 
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
 #include "display/gimpdisplayshell-transform.h"
+
+#include "tools/tool_manager.h"
 
 #include "dialogs/fade-dialog.h"
 
@@ -60,17 +64,18 @@
 
 /*  local function prototypes  */
 
-static void   edit_paste                         (GimpDisplay *display,
-                                                  gboolean     paste_into);
-static void   cut_named_buffer_callback          (GtkWidget   *widget,
-                                                  const gchar *name,
-                                                  gpointer     data);
-static void   copy_named_buffer_callback         (GtkWidget   *widget,
-                                                  const gchar *name,
-                                                  gpointer     data);
-static void   copy_named_visible_buffer_callback (GtkWidget   *widget,
-                                                  const gchar *name,
-                                                  gpointer     data);
+static void   edit_paste                         (GimpDisplay   *display,
+                                                  GimpPasteType  paste_type,
+                                                  gboolean       try_svg);
+static void   cut_named_buffer_callback          (GtkWidget     *widget,
+                                                  const gchar   *name,
+                                                  gpointer       data);
+static void   copy_named_buffer_callback         (GtkWidget     *widget,
+                                                  const gchar   *name,
+                                                  gpointer       data);
+static void   copy_named_visible_buffer_callback (GtkWidget     *widget,
+                                                  const gchar   *name,
+                                                  gpointer       data);
 
 
 /*  public functions  */
@@ -79,22 +84,32 @@ void
 edit_undo_cmd_callback (GtkAction *action,
                         gpointer   data)
 {
-  GimpImage *image;
+  GimpImage   *image;
+  GimpDisplay *display;
   return_if_no_image (image, data);
+  return_if_no_display (display, data);
 
-  if (gimp_image_undo (image))
-    gimp_image_flush (image);
+  if (tool_manager_undo_active (image->gimp, display) ||
+      gimp_image_undo (image))
+    {
+      gimp_image_flush (image);
+    }
 }
 
 void
 edit_redo_cmd_callback (GtkAction *action,
                         gpointer   data)
 {
-  GimpImage *image;
+  GimpImage   *image;
+  GimpDisplay *display;
   return_if_no_image (image, data);
+  return_if_no_display (display, data);
 
-  if (gimp_image_redo (image))
-    gimp_image_flush (image);
+  if (tool_manager_redo_active (image->gimp, display) ||
+      gimp_image_redo (image))
+    {
+      gimp_image_flush (image);
+    }
 }
 
 void
@@ -134,15 +149,16 @@ edit_undo_clear_cmd_callback (GtkAction *action,
   return_if_no_image (image, data);
   return_if_no_widget (widget, data);
 
-  dialog = gimp_message_dialog_new (_("Clear Undo History"), GIMP_STOCK_WARNING,
+  dialog = gimp_message_dialog_new (_("Clear Undo History"),
+                                    GIMP_ICON_DIALOG_WARNING,
                                     widget,
                                     GTK_DIALOG_MODAL |
                                     GTK_DIALOG_DESTROY_WITH_PARENT,
                                     gimp_standard_help_func,
                                     GIMP_HELP_EDIT_UNDO_CLEAR,
 
-                                    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                    GTK_STOCK_CLEAR,  GTK_RESPONSE_OK,
+                                    _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                    _("Cl_ear"),  GTK_RESPONSE_OK,
 
                                     NULL);
 
@@ -188,31 +204,58 @@ edit_undo_clear_cmd_callback (GtkAction *action,
 }
 
 void
+edit_fade_cmd_callback (GtkAction *action,
+                        gpointer   data)
+{
+  GimpImage *image;
+  GtkWidget *widget;
+  GtkWidget *dialog;
+  return_if_no_image (image, data);
+  return_if_no_widget (widget, data);
+
+  dialog = fade_dialog_new (image, widget);
+
+  if (dialog)
+    {
+      g_signal_connect_object (image, "disconnect",
+                               G_CALLBACK (gtk_widget_destroy),
+                               dialog, G_CONNECT_SWAPPED);
+      gtk_widget_show (dialog);
+    }
+}
+
+void
 edit_cut_cmd_callback (GtkAction *action,
                        gpointer   data)
 {
   GimpImage    *image;
   GimpDrawable *drawable;
+  GimpObject   *cut;
   GError       *error = NULL;
   return_if_no_drawable (image, drawable, data);
 
-  if (gimp_edit_cut (image, drawable, action_data_get_context (data), &error))
+  cut = gimp_edit_cut (image, drawable, action_data_get_context (data),
+                       &error);
+
+  if (cut)
     {
       GimpDisplay *display = action_data_get_display (data);
 
       if (display)
         gimp_message_literal (image->gimp,
-			      G_OBJECT (display), GIMP_MESSAGE_INFO,
-			      _("Cut pixels to the clipboard"));
+                              G_OBJECT (display), GIMP_MESSAGE_INFO,
+                              GIMP_IS_IMAGE (cut) ?
+                              _("Cut layer to the clipboard.") :
+                              _("Cut pixels to the clipboard."));
 
       gimp_image_flush (image);
     }
   else
     {
       gimp_message_literal (image->gimp,
-			    G_OBJECT (action_data_get_display (data)),
-			    GIMP_MESSAGE_WARNING,
-			    error->message);
+                            G_OBJECT (action_data_get_display (data)),
+                            GIMP_MESSAGE_WARNING,
+                            error->message);
       g_clear_error (&error);
     }
 }
@@ -223,26 +266,32 @@ edit_copy_cmd_callback (GtkAction *action,
 {
   GimpImage    *image;
   GimpDrawable *drawable;
+  GimpObject   *copy;
   GError       *error = NULL;
   return_if_no_drawable (image, drawable, data);
 
-  if (gimp_edit_copy (image, drawable, action_data_get_context (data), &error))
+  copy = gimp_edit_copy (image, drawable, action_data_get_context (data),
+                         &error);
+
+  if (copy)
     {
       GimpDisplay *display = action_data_get_display (data);
 
       if (display)
         gimp_message_literal (image->gimp,
-			      G_OBJECT (display), GIMP_MESSAGE_INFO,
-			      _("Copied pixels to the clipboard"));
+                              G_OBJECT (display), GIMP_MESSAGE_INFO,
+                              GIMP_IS_IMAGE (copy) ?
+                              _("Copied layer to the clipboard.") :
+                              _("Copied pixels to the clipboard."));
 
       gimp_image_flush (image);
     }
   else
     {
       gimp_message_literal (image->gimp,
-			    G_OBJECT (action_data_get_display (data)),
-			    GIMP_MESSAGE_WARNING,
-			    error->message);
+                            G_OBJECT (action_data_get_display (data)),
+                            GIMP_MESSAGE_WARNING,
+                            error->message);
       g_clear_error (&error);
     }
 }
@@ -261,103 +310,88 @@ edit_copy_visible_cmd_callback (GtkAction *action,
 
       if (display)
         gimp_message_literal (image->gimp,
-			      G_OBJECT (display), GIMP_MESSAGE_INFO,
-			      _("Copied pixels to the clipboard"));
+                              G_OBJECT (display), GIMP_MESSAGE_INFO,
+                              _("Copied pixels to the clipboard."));
 
       gimp_image_flush (image);
     }
   else
     {
       gimp_message_literal (image->gimp,
-			    G_OBJECT (action_data_get_display (data)),
-			    GIMP_MESSAGE_WARNING,
-			    error->message);
+                            G_OBJECT (action_data_get_display (data)),
+                            GIMP_MESSAGE_WARNING,
+                            error->message);
       g_clear_error (&error);
     }
 }
 
 void
 edit_paste_cmd_callback (GtkAction *action,
+                         gint       value,
                          gpointer   data)
 {
-  GimpDisplay *display = action_data_get_display (data);
+  GimpDisplay   *display    = action_data_get_display (data);
+  GimpPasteType  paste_type = (GimpPasteType) value;
 
-  if (display && gimp_display_get_image (display))
-    edit_paste (display, FALSE);
-  else
-    edit_paste_as_new_cmd_callback (action, data);
+  if (paste_type == GIMP_PASTE_TYPE_FLOATING)
+    {
+      if (! display || ! gimp_display_get_image (display))
+        {
+          edit_paste_as_new_image_cmd_callback (action, data);
+          return;
+        }
+    }
+
+  if (! display)
+    return;
+
+  switch (paste_type)
+    {
+    case GIMP_PASTE_TYPE_FLOATING:
+    case GIMP_PASTE_TYPE_FLOATING_IN_PLACE:
+    case GIMP_PASTE_TYPE_FLOATING_INTO:
+    case GIMP_PASTE_TYPE_FLOATING_INTO_IN_PLACE:
+      edit_paste (display, paste_type, TRUE);
+      break;
+
+    case GIMP_PASTE_TYPE_NEW_LAYER:
+    case GIMP_PASTE_TYPE_NEW_LAYER_IN_PLACE:
+      edit_paste (display, paste_type, FALSE);
+      break;
+    }
 }
 
 void
-edit_paste_into_cmd_callback (GtkAction *action,
-                              gpointer   data)
-{
-  GimpDisplay *display;
-  return_if_no_display (display, data);
-
-  edit_paste (display, TRUE);
-}
-
-void
-edit_paste_as_new_cmd_callback (GtkAction *action,
-                                gpointer   data)
+edit_paste_as_new_image_cmd_callback (GtkAction *action,
+                                      gpointer   data)
 {
   Gimp       *gimp;
-  GimpBuffer *buffer;
+  GtkWidget  *widget;
+  GimpObject *paste;
+  GimpImage  *image = NULL;
   return_if_no_gimp (gimp, data);
+  return_if_no_widget (widget, data);
 
-  buffer = gimp_clipboard_get_buffer (gimp);
+  paste = gimp_clipboard_get_object (gimp);
 
-  if (buffer)
+  if (paste)
     {
-      GimpImage *image;
+      image = gimp_edit_paste_as_new_image (gimp, paste);
+      g_object_unref (paste);
+    }
 
-      image = gimp_image_new_from_buffer (gimp, action_data_get_image (data),
-                                          buffer);
-      g_object_unref (buffer);
-
-      gimp_create_display (image->gimp, image, GIMP_UNIT_PIXEL, 1.0);
+  if (image)
+    {
+      gimp_create_display (gimp, image, GIMP_UNIT_PIXEL, 1.0,
+                           G_OBJECT (gtk_widget_get_screen (widget)),
+                           gimp_widget_get_monitor (widget));
       g_object_unref (image);
     }
   else
     {
       gimp_message_literal (gimp, NULL, GIMP_MESSAGE_WARNING,
-			    _("There is no image data in the clipboard to paste."));
-    }
-}
-
-void
-edit_paste_as_new_layer_cmd_callback (GtkAction *action,
-                                      gpointer   data)
-{
-  Gimp       *gimp;
-  GimpImage  *image;
-  GimpBuffer *buffer;
-  return_if_no_gimp (gimp, data);
-  return_if_no_image (image, data);
-
-  buffer = gimp_clipboard_get_buffer (gimp);
-
-  if (buffer)
-    {
-      GimpLayer *layer;
-
-      layer = gimp_layer_new_from_tiles (gimp_buffer_get_tiles (buffer),
-                                         image,
-                                         gimp_image_base_type_with_alpha (image),
-                                         _("Clipboard"),
-                                         GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
-      g_object_unref (buffer);
-
-      gimp_image_add_layer (image, layer,
-                            GIMP_IMAGE_ACTIVE_PARENT, -1, TRUE);
-
-      gimp_image_flush (image);
-    }
-  else
-    {
-      gimp_message_literal (gimp, NULL, GIMP_MESSAGE_WARNING,
-			    _("There is no image data in the clipboard to paste."));
+                            _("There is no image data in the clipboard "
+                              "to paste."));
     }
 }
 
@@ -379,27 +413,6 @@ edit_named_cut_cmd_callback (GtkAction *action,
                                   G_OBJECT (image), "disconnect",
                                   cut_named_buffer_callback, image);
   gtk_widget_show (dialog);
-}
-
-void
-edit_fade_cmd_callback (GtkAction *action,
-                        gpointer   data)
-{
-  GimpImage *image;
-  GtkWidget *widget;
-  GtkWidget *dialog;
-  return_if_no_image (image, data);
-  return_if_no_widget (widget, data);
-
-  dialog = fade_dialog_new (image, widget);
-
-  if (dialog)
-    {
-      g_signal_connect_object (image, "disconnect",
-                               G_CALLBACK (gtk_widget_destroy),
-                               dialog, G_CONNECT_SWAPPED);
-      gtk_widget_show (dialog);
-    }
 }
 
 void
@@ -455,6 +468,7 @@ edit_named_paste_cmd_callback (GtkAction *action,
                                              gimp,
                                              gimp_dialog_factory_get_singleton (),
                                              gtk_widget_get_screen (widget),
+                                             gimp_widget_get_monitor (widget),
                                              "gimp-buffer-list|gimp-buffer-grid");
 }
 
@@ -475,73 +489,115 @@ edit_fill_cmd_callback (GtkAction *action,
                         gint       value,
                         gpointer   data)
 {
-  GimpImage    *image;
-  GimpDrawable *drawable;
-  GimpFillType  fill_type;
+  GimpImage       *image;
+  GimpDrawable    *drawable;
+  GimpFillType     fill_type;
+  GimpFillOptions *options;
+  GError          *error = NULL;
   return_if_no_drawable (image, drawable, data);
 
   fill_type = (GimpFillType) value;
 
-  gimp_edit_fill (image, drawable, action_data_get_context (data),
-                  fill_type);
-  gimp_image_flush (image);
+  options = gimp_fill_options_new (action_data_get_gimp (data), NULL, FALSE);
+
+  if (gimp_fill_options_set_by_fill_type (options,
+                                          action_data_get_context (data),
+                                          fill_type, &error))
+    {
+      gimp_edit_fill (image, drawable, options, NULL);
+      gimp_image_flush (image);
+    }
+  else
+    {
+      gimp_message_literal (image->gimp, NULL, GIMP_MESSAGE_WARNING,
+                            error->message);
+      g_clear_error (&error);
+    }
+
+  g_object_unref (options);
 }
 
 
 /*  private functions  */
 
 static void
-edit_paste (GimpDisplay *display,
-            gboolean     paste_into)
+edit_paste (GimpDisplay   *display,
+            GimpPasteType  paste_type,
+            gboolean       try_svg)
 {
-  GimpImage *image = gimp_display_get_image (display);
-  gchar     *svg;
-  gsize      svg_size;
+  GimpImage  *image = gimp_display_get_image (display);
+  GimpObject *paste;
 
-  svg = gimp_clipboard_get_svg (display->gimp, &svg_size);
-
-  if (svg)
+  if (try_svg)
     {
-      if (gimp_vectors_import_buffer (image, svg, svg_size,
-                                      TRUE, FALSE,
-                                      GIMP_IMAGE_ACTIVE_PARENT, -1,
-                                      NULL, NULL))
+      gchar *svg;
+      gsize  svg_size;
+
+      svg = gimp_clipboard_get_svg (display->gimp, &svg_size);
+
+      if (svg)
         {
-          gimp_image_flush (image);
-        }
-
-      g_free (svg);
-    }
-  else
-    {
-      GimpBuffer *buffer;
-
-      buffer = gimp_clipboard_get_buffer (display->gimp);
-
-      if (buffer)
-        {
-          GimpDisplayShell *shell = gimp_display_get_shell (display);
-          gint              x, y;
-          gint              width, height;
-
-          gimp_display_shell_untransform_viewport (shell,
-                                                   &x, &y, &width, &height);
-
-          if (gimp_edit_paste (image,
-                               gimp_image_get_active_drawable (image),
-                               buffer, paste_into, x, y, width, height))
+          if (gimp_vectors_import_buffer (image, svg, svg_size,
+                                          TRUE, FALSE,
+                                          GIMP_IMAGE_ACTIVE_PARENT, -1,
+                                          NULL, NULL))
             {
               gimp_image_flush (image);
             }
 
-          g_object_unref (buffer);
+          g_free (svg);
+
+          return;
         }
-      else
+    }
+
+  paste = gimp_clipboard_get_object (display->gimp);
+
+  if (paste)
+    {
+      GimpDisplayShell *shell    = gimp_display_get_shell (display);
+      GimpDrawable     *drawable = gimp_image_get_active_drawable (image);
+      gint              x, y;
+      gint              width, height;
+
+      if (drawable                                &&
+          paste_type != GIMP_PASTE_TYPE_NEW_LAYER &&
+          paste_type != GIMP_PASTE_TYPE_NEW_LAYER_IN_PLACE)
         {
-          gimp_message_literal (display->gimp, G_OBJECT (display),
-				GIMP_MESSAGE_WARNING,
-				_("There is no image data in the clipboard to paste."));
+          if (gimp_viewable_get_children (GIMP_VIEWABLE (drawable)))
+            {
+              gimp_message_literal (display->gimp, G_OBJECT (display),
+                                    GIMP_MESSAGE_INFO,
+                                    _("Pasted as new layer because the "
+                                      "target is a layer group."));
+            }
+          else if (gimp_item_is_content_locked (GIMP_ITEM (drawable)))
+            {
+              gimp_message_literal (display->gimp, G_OBJECT (display),
+                                    GIMP_MESSAGE_INFO,
+                                    _("Pasted as new layer because the "
+                                      "target's pixels are locked."));
+            }
+
+          /* the actual paste-type conversion happens in gimp_edit_paste() */
         }
+
+      gimp_display_shell_untransform_viewport (shell, &x, &y, &width, &height);
+
+      if (gimp_edit_paste (image, drawable, paste,
+                           paste_type, x, y, width, height))
+        {
+          gimp_image_flush (image);
+        }
+
+      g_object_unref (paste);
+    }
+  else
+    {
+      gimp_message_literal (display->gimp, G_OBJECT (display),
+                            GIMP_MESSAGE_WARNING,
+                            _("There is no image data in the clipboard "
+                              "to paste."));
     }
 }
 
@@ -557,7 +613,7 @@ cut_named_buffer_callback (GtkWidget   *widget,
   if (! drawable)
     {
       gimp_message_literal (image->gimp, NULL, GIMP_MESSAGE_WARNING,
-			    _("There is no active layer or channel to cut from."));
+                            _("There is no active layer or channel to cut from."));
       return;
     }
 
@@ -572,7 +628,7 @@ cut_named_buffer_callback (GtkWidget   *widget,
   else
     {
       gimp_message_literal (image->gimp, NULL, GIMP_MESSAGE_WARNING,
-			    error->message);
+                            error->message);
       g_clear_error (&error);
     }
 }
@@ -589,7 +645,7 @@ copy_named_buffer_callback (GtkWidget   *widget,
   if (! drawable)
     {
       gimp_message_literal (image->gimp, NULL, GIMP_MESSAGE_WARNING,
-			    _("There is no active layer or channel to copy from."));
+                            _("There is no active layer or channel to copy from."));
       return;
     }
 
@@ -604,7 +660,7 @@ copy_named_buffer_callback (GtkWidget   *widget,
   else
     {
       gimp_message_literal (image->gimp, NULL, GIMP_MESSAGE_WARNING,
-			    error->message);
+                            error->message);
       g_clear_error (&error);
     }
 }
@@ -629,7 +685,7 @@ copy_named_visible_buffer_callback (GtkWidget   *widget,
   else
     {
       gimp_message_literal (image->gimp, NULL, GIMP_MESSAGE_WARNING,
-			    error->message);
+                            error->message);
       g_clear_error (&error);
     }
 }

@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -223,11 +224,10 @@ gimp_container_editor_constructed (GObject *object)
 {
   GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_CONTAINER (editor->priv->container));
-  g_assert (GIMP_IS_CONTEXT (editor->priv->context));
+  gimp_assert (GIMP_IS_CONTAINER (editor->priv->container));
+  gimp_assert (GIMP_IS_CONTEXT (editor->priv->context));
 
   switch (editor->priv->view_type)
     {
@@ -256,7 +256,7 @@ gimp_container_editor_constructed (GObject *object)
       break;
 
     default:
-      g_assert_not_reached ();
+      gimp_assert_not_reached ();
     }
 
   if (GIMP_IS_LIST (editor->priv->container))
@@ -278,9 +278,14 @@ gimp_container_editor_constructed (GObject *object)
                       TRUE, TRUE, 0);
   gtk_widget_show (GTK_WIDGET (editor->view));
 
+  /*  Connect "select-item" with G_CONNECT_AFTER because it's a
+   *  RUN_LAST signal and the default handler selecting the row must
+   *  run before signal connections. See bug #784176.
+   */
   g_signal_connect_object (editor->view, "select-item",
                            G_CALLBACK (gimp_container_editor_select_item),
-                           editor, 0);
+                           editor, G_CONNECT_AFTER);
+
   g_signal_connect_object (editor->view, "activate-item",
                            G_CALLBACK (gimp_container_editor_activate_item),
                            editor, 0);
@@ -303,35 +308,12 @@ gimp_container_editor_dispose (GObject *object)
 {
   GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (object);
 
-  if (editor->priv->container)
-    {
-      g_object_unref (editor->priv->container);
-      editor->priv->container = NULL;
-    }
+  g_clear_object (&editor->priv->container);
+  g_clear_object (&editor->priv->context);
+  g_clear_object (&editor->priv->menu_factory);
 
-  if (editor->priv->context)
-    {
-      g_object_unref (editor->priv->context);
-      editor->priv->context = NULL;
-    }
-
-  if (editor->priv->menu_factory)
-    {
-      g_object_unref (editor->priv->menu_factory);
-      editor->priv->menu_factory = NULL;
-    }
-
-  if (editor->priv->menu_identifier)
-    {
-      g_free (editor->priv->menu_identifier);
-      editor->priv->menu_identifier = NULL;
-    }
-
-  if (editor->priv->ui_path)
-    {
-      g_free (editor->priv->ui_path);
-      editor->priv->ui_path = NULL;
-    }
+  g_clear_pointer (&editor->priv->menu_identifier, g_free);
+  g_clear_pointer (&editor->priv->ui_path,         g_free);
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }

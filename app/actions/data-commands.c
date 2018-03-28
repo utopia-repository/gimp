@@ -17,8 +17,10 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "actions-types.h"
@@ -30,7 +32,6 @@
 #include "core/gimpdatafactory.h"
 
 #include "file/file-open.h"
-#include "file/file-utils.h"
 
 #include "widgets/gimpclipboard.h"
 #include "widgets/gimpcontainerview.h"
@@ -39,7 +40,9 @@
 #include "widgets/gimpdialogfactory.h"
 #include "widgets/gimpmessagebox.h"
 #include "widgets/gimpmessagedialog.h"
+#include "widgets/gimpwidgets-utils.h"
 #include "widgets/gimpwindowstrategy.h"
+#include "widgets/gimpwidgets-utils.h"
 
 #include "dialogs/data-delete-dialog.h"
 
@@ -66,34 +69,27 @@ data_open_as_image_cmd_callback (GtkAction *action,
     gimp_context_get_by_type (context,
                               gimp_data_factory_view_get_children_type (view));
 
-  if (data && gimp_data_get_filename (data))
+  if (data && gimp_data_get_file (data))
     {
-      gchar *uri = g_filename_to_uri (gimp_data_get_filename (data), NULL, NULL);
+      GFile             *file   = gimp_data_get_file (data);
+      GtkWidget         *widget = GTK_WIDGET (view);
+      GimpImage         *image;
+      GimpPDBStatusType  status;
+      GError            *error = NULL;
 
-      if (uri)
+      image = file_open_with_display (context->gimp, context, NULL,
+                                      file, FALSE,
+                                      G_OBJECT (gtk_widget_get_screen (widget)),
+                                      gimp_widget_get_monitor (widget),
+                                      &status, &error);
+
+      if (! image && status != GIMP_PDB_CANCEL)
         {
-          GimpImage         *image;
-          GimpPDBStatusType  status;
-          GError            *error = NULL;
-
-          image = file_open_with_display (context->gimp, context, NULL,
-                                          uri, FALSE,
-                                          &status, &error);
-
-          if (! image && status != GIMP_PDB_CANCEL)
-            {
-              gchar *filename = file_utils_uri_display_name (uri);
-
-              gimp_message (context->gimp, G_OBJECT (view),
-                            GIMP_MESSAGE_ERROR,
-                            _("Opening '%s' failed:\n\n%s"),
-                            filename, error->message);
-              g_clear_error (&error);
-
-              g_free (filename);
-            }
-
-          g_free (uri);
+          gimp_message (context->gimp, G_OBJECT (view),
+                        GIMP_MESSAGE_ERROR,
+                        _("Opening '%s' failed:\n\n%s"),
+                        gimp_file_get_utf8_name (file), error->message);
+          g_clear_error (&error);
         }
     }
 }
@@ -142,8 +138,7 @@ data_duplicate_cmd_callback (GtkAction *action,
     gimp_context_get_by_type (context,
                               gimp_data_factory_view_get_children_type (view));
 
-  if (data && gimp_data_factory_view_have (view,
-                                           GIMP_OBJECT (data)))
+  if (data && gimp_data_factory_view_have (view, GIMP_OBJECT (data)))
     {
       GimpData *new_data;
 
@@ -176,16 +171,47 @@ data_copy_location_cmd_callback (GtkAction *action,
 
   if (data)
     {
-      const gchar *filename = gimp_data_get_filename (data);
+      GFile *file = gimp_data_get_file (data);
 
-      if (filename && *filename)
+      if (file)
         {
-          gchar *uri = g_filename_to_uri (filename, NULL, NULL);
+          gchar *uri = g_file_get_uri (file);
 
-          if (uri)
+          gimp_clipboard_set_text (context->gimp, uri);
+          g_free (uri);
+        }
+    }
+}
+
+void
+data_show_in_file_manager_cmd_callback (GtkAction *action,
+                                        gpointer   user_data)
+{
+  GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
+  GimpContext         *context;
+  GimpData            *data;
+
+  context = gimp_container_view_get_context (GIMP_CONTAINER_EDITOR (view)->view);
+
+  data = (GimpData *)
+    gimp_context_get_by_type (context,
+                              gimp_data_factory_view_get_children_type (view));
+
+  if (data)
+    {
+      GFile *file = gimp_data_get_file (data);
+
+      if (file)
+        {
+          GError *error = NULL;
+
+          if (! gimp_file_show_in_file_manager (file, &error))
             {
-              gimp_clipboard_set_text (context->gimp, uri);
-              g_free (uri);
+              gimp_message (context->gimp, G_OBJECT (view),
+                            GIMP_MESSAGE_ERROR,
+                            _("Can't show file in file manager: %s"),
+                            error->message);
+              g_clear_error (&error);
             }
         }
     }
@@ -208,8 +234,7 @@ data_delete_cmd_callback (GtkAction *action,
 
   if (data                          &&
       gimp_data_is_deletable (data) &&
-      gimp_data_factory_view_have (view,
-                                   GIMP_OBJECT (data)))
+      gimp_data_factory_view_have (view, GIMP_OBJECT (data)))
     {
       GimpDataFactory *factory;
       GtkWidget       *dialog;
@@ -251,10 +276,10 @@ data_edit_cmd_callback (GtkAction   *action,
     gimp_context_get_by_type (context,
                               gimp_data_factory_view_get_children_type (view));
 
-  if (data && gimp_data_factory_view_have (view,
-                                           GIMP_OBJECT (data)))
+  if (data && gimp_data_factory_view_have (view, GIMP_OBJECT (data)))
     {
-      GdkScreen *screen = gtk_widget_get_screen (GTK_WIDGET (view));
+      GdkScreen *screen  = gtk_widget_get_screen (GTK_WIDGET (view));
+      gint       monitor = gimp_widget_get_monitor (GTK_WIDGET (view));
       GtkWidget *dockable;
 
       dockable =
@@ -262,6 +287,7 @@ data_edit_cmd_callback (GtkAction   *action,
                                                    context->gimp,
                                                    gimp_dialog_factory_get_singleton (),
                                                    screen,
+                                                   monitor,
                                                    value);
 
       gimp_data_editor_set_data (GIMP_DATA_EDITOR (gtk_bin_get_child (GTK_BIN (dockable))),

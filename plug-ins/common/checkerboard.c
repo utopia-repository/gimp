@@ -91,7 +91,7 @@ query (void)
                           "Brent Burton & the Edward Blevins",
                           "Brent Burton & the Edward Blevins",
                           "1997",
-                          N_("_Checkerboard..."),
+                          N_("_Checkerboard (legacy)..."),
                           "RGB*, GRAY*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
@@ -347,8 +347,8 @@ checkerboard_dialog (gint32        image_ID,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -365,7 +365,7 @@ checkerboard_dialog (gint32        image_ID,
                       vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
-  preview = gimp_drawable_preview_new (drawable, NULL);
+  preview = gimp_drawable_preview_new_from_drawable_id (drawable->drawable_id);
   gtk_box_pack_start (GTK_BOX (vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
   g_signal_connect_swapped (preview, "invalidated",

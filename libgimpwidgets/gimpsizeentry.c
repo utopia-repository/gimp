@@ -24,6 +24,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -209,10 +210,10 @@ gimp_size_entry_finalize (GObject *object)
  * @unit:              The initial unit.
  * @unit_format:       A printf-like unit-format string as is used with
  *                     gimp_unit_menu_new().
- * @menu_show_pixels:  %TRUE if the unit menu shold contain an item for
+ * @menu_show_pixels:  %TRUE if the unit menu should contain an item for
  *                     GIMP_UNIT_PIXEL (ignored if the @update_policy is not
  *                     GIMP_SIZE_ENTRY_UPDATE_NONE).
- * @menu_show_percent: %TRUE if the unit menu shold contain an item for
+ * @menu_show_percent: %TRUE if the unit menu should contain an item for
  *                     GIMP_UNIT_PERCENT.
  * @show_refval:       %TRUE if you want an extra "reference value"
  *                     spinbutton per input field.
@@ -320,12 +321,14 @@ gimp_size_entry_new (gint                       number_of_fields,
                 gsef->refval_digits : ((unit == GIMP_UNIT_PERCENT) ?
                                        2 : GIMP_SIZE_ENTRY_DIGITS (unit)));
 
-      gsef->value_spinbutton = gimp_spin_button_new ((GtkObject **) &gsef->value_adjustment,
-                                                     gsef->value,
-                                                     gsef->min_value,
-                                                     gsef->max_value,
-                                                     1.0, 10.0, 0.0,
-                                                     1.0, digits);
+      gsef->value_adjustment = (GtkAdjustment *)
+        gtk_adjustment_new (gsef->value,
+                            gsef->min_value, gsef->max_value,
+                            1.0, 10.0, 0.0);
+      gsef->value_spinbutton = gtk_spin_button_new (gsef->value_adjustment,
+                                                    1.0, digits);
+      gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (gsef->value_spinbutton),
+                                   TRUE);
 
       gimp_size_entry_attach_eevl (GTK_SPIN_BUTTON (gsef->value_spinbutton),
                                    gsef);
@@ -351,11 +354,15 @@ gimp_size_entry_new (gint                       number_of_fields,
 
       if (gse->show_refval)
         {
-          gsef->refval_spinbutton =
-            gimp_spin_button_new ((GtkObject **) &gsef->refval_adjustment,
-                                  gsef->refval,
-                                  gsef->min_refval, gsef->max_refval,
-                                  1.0, 10.0, 0.0, 1.0, gsef->refval_digits);
+          gsef->refval_adjustment = (GtkAdjustment *)
+            gtk_adjustment_new (gsef->refval,
+                                gsef->min_refval, gsef->max_refval,
+                                1.0, 10.0, 0.0);
+          gsef->refval_spinbutton = gtk_spin_button_new (gsef->refval_adjustment,
+                                                         1.0,
+                                                         gsef->refval_digits);
+          gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (gsef->refval_spinbutton),
+                                       TRUE);
 
           gtk_widget_set_size_request (gsef->refval_spinbutton,
                                        spinbutton_width, -1);
@@ -553,7 +560,7 @@ gimp_size_entry_attach_label (GimpSizeEntry *gse,
       g_list_free (children);
     }
 
-  gtk_misc_set_alignment (GTK_MISC (label), alignment, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), alignment);
 
   gtk_table_attach (GTK_TABLE (gse), label, column, column+1, row, row+1,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
@@ -1263,6 +1270,7 @@ gimp_size_entry_eevl_input_callback (GtkSpinButton *spinner,
                                      gpointer      *data)
 {
   GimpSizeEntryField *gsef      = (GimpSizeEntryField *) data;
+  GimpEevlOptions     options   = GIMP_EEVL_OPTIONS_INIT;
   gboolean            success   = FALSE;
   const gchar        *error_pos = 0;
   GError             *error     = NULL;
@@ -1271,10 +1279,40 @@ gimp_size_entry_eevl_input_callback (GtkSpinButton *spinner,
   g_return_val_if_fail (GTK_IS_SPIN_BUTTON (spinner), FALSE);
   g_return_val_if_fail (GIMP_IS_SIZE_ENTRY (gsef->gse), FALSE);
 
+  options.unit_resolver_proc = gimp_size_entry_eevl_unit_resolver;
+  options.data               = data;
+
+  /* enable ratio expressions when there are two fields */
+  if (gsef->gse->number_of_fields == 2)
+    {
+      GimpSizeEntryField *other_gsef;
+      GimpEevlQuantity    default_unit_factor;
+
+      options.ratio_expressions = TRUE;
+
+      if (gsef == gsef->gse->fields->data)
+        {
+          other_gsef = gsef->gse->fields->next->data;
+
+          options.ratio_invert = FALSE;
+        }
+      else
+        {
+          other_gsef = gsef->gse->fields->data;
+
+          options.ratio_invert = TRUE;
+        }
+
+      options.unit_resolver_proc (NULL, &default_unit_factor, options.data);
+
+      options.ratio_quantity.value     = other_gsef->value /
+                                         default_unit_factor.value;
+      options.ratio_quantity.dimension = default_unit_factor.dimension;
+    }
+
   success = gimp_eevl_evaluate (gtk_entry_get_text (GTK_ENTRY (spinner)),
-                                gimp_size_entry_eevl_unit_resolver,
+                                &options,
                                 &result,
-                                data,
                                 &error_pos,
                                 &error);
   if (! success)
@@ -1360,7 +1398,7 @@ gimp_size_entry_eevl_unit_resolver (const gchar      *identifier,
   GimpSizeEntryField *gsef                 = (GimpSizeEntryField *) data;
   gboolean            resolve_default_unit = (identifier == NULL);
   GimpUnit            unit;
-  
+
   g_return_val_if_fail (gsef, FALSE);
   g_return_val_if_fail (result != NULL, FALSE);
   g_return_val_if_fail (GIMP_IS_SIZE_ENTRY (gsef->gse), FALSE);
@@ -1430,7 +1468,7 @@ gimp_size_entry_eevl_unit_resolver (const gchar      *identifier,
  * Controls whether a unit menu is shown in the size entry.  If
  * @show is #TRUE, the menu is shown; otherwise it is hidden.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 void
 gimp_size_entry_show_unit_menu (GimpSizeEntry *gse,
@@ -1494,7 +1532,7 @@ gimp_size_entry_grab_focus (GimpSizeEntry *gse)
  * Iterates over all entries in the #GimpSizeEntry and calls
  * gtk_entry_set_activates_default() on them.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 void
 gimp_size_entry_set_activates_default (GimpSizeEntry *gse,

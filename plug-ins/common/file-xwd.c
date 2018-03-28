@@ -31,7 +31,7 @@
  *          2       |    1,...,8   |       8
  *          2       |    1,...,16  |      16
  *          2       |    1,...,24  |      24
- *          2       |    1,...,24  |      32
+ *          2       |    1,...,32  |      32
  */
 /* Event history:
  * PK = Peter Kirchgessner, ME = Mattias Engdegård
@@ -137,95 +137,110 @@ typedef struct
 
 /* Declare some local functions.
  */
-static void   query               (void);
-static void   run                 (const gchar      *name,
-                                   gint              nparams,
-                                   const GimpParam  *param,
-                                   gint             *nreturn_vals,
-                                   GimpParam       **return_vals);
+static void       query               (void);
+static void       run                 (const gchar       *name,
+                                       gint               nparams,
+                                       const GimpParam   *param,
+                                       gint              *nreturn_vals,
+                                       GimpParam        **return_vals);
 
-static gint32 load_image          (const gchar      *filename,
-                                   GError          **error);
-static gint   save_image          (const gchar      *filename,
-                                   gint32            image_ID,
-                                   gint32            drawable_ID,
-                                   GError          **error);
-static gint32 create_new_image    (const gchar      *filename,
-                                   guint             width,
-                                   guint             height,
-                                   GimpImageBaseType type,
-                                   gint32           *layer_ID,
-                                   GimpDrawable    **drawable,
-                                   GimpPixelRgn     *pixel_rgn);
+static gint32     load_image          (const gchar       *filename,
+                                       GError           **error);
+static gboolean   save_image          (GFile             *file,
+                                       gint32             image_ID,
+                                       gint32             drawable_ID,
+                                       GError           **error);
+static gint32     create_new_image    (const gchar       *filename,
+                                       guint              width,
+                                       guint              height,
+                                       GimpImageBaseType  type,
+                                       GimpImageType      gdtype,
+                                       gint32            *layer_ID,
+                                       GeglBuffer       **buffer);
 
-static int      set_pixelmap      (gint,
-                                   L_XWDCOLOR *,
-                                   PIXEL_MAP *);
-static gboolean get_pixelmap      (L_CARD32,
-                                   PIXEL_MAP *,
-                                   guchar *,
-                                   guchar *,
-                                   guchar *);
-static void   set_bw_color_table  (gint32);
-static void   set_color_table     (gint32,
-                                   L_XWDFILEHEADER *,
-                                   L_XWDCOLOR *);
+static int        set_pixelmap        (gint               ncols,
+                                       L_XWDCOLOR        *xwdcol,
+                                       PIXEL_MAP         *pixelmap);
+static gboolean   get_pixelmap        (L_CARD32           pixelval,
+                                       PIXEL_MAP         *pixelmap,
+                                       guchar            *red,
+                                       guchar            *green,
+                                       guchar            *glue);
 
-static gint32 load_xwd_f2_d1_b1   (const gchar *,
-                                   FILE *,
-                                   L_XWDFILEHEADER *,
-                                   L_XWDCOLOR *);
-static gint32 load_xwd_f2_d8_b8   (const gchar *,
-                                   FILE *,
-                                   L_XWDFILEHEADER *,
-                                   L_XWDCOLOR *);
-static gint32 load_xwd_f2_d16_b16 (const gchar *,
-                                   FILE *,
-                                   L_XWDFILEHEADER *,
-                                   L_XWDCOLOR *);
-static gint32 load_xwd_f2_d24_b32 (const gchar *,
-                                   FILE *,
-                                   L_XWDFILEHEADER *,
-                                   L_XWDCOLOR *,
-                                   GError **);
-static gint32 load_xwd_f1_d24_b1  (const gchar *,
-                                   FILE *,
-                                   L_XWDFILEHEADER *,
-                                   L_XWDCOLOR *,
-                                   GError **);
+static void       set_bw_color_table  (gint32             image_ID);
+static void       set_color_table     (gint32             image_ID,
+                                       L_XWDFILEHEADER   *xwdhdr,
+                                       L_XWDCOLOR        *xwdcolmap);
 
-static L_CARD32 read_card32  (FILE *,
-                              gint *);
-static L_CARD16 read_card16  (FILE *,
-                              gint *);
-static L_CARD8  read_card8   (FILE *,
-                              gint *);
+static gint32     load_xwd_f2_d1_b1   (const gchar       *filename,
+                                       FILE              *ifp,
+                                       L_XWDFILEHEADER   *xwdhdr,
+                                       L_XWDCOLOR        *xwdcolmap);
+static gint32     load_xwd_f2_d8_b8   (const gchar       *filename,
+                                       FILE              *ifp,
+                                       L_XWDFILEHEADER   *xwdhdr,
+                                       L_XWDCOLOR        *xwdcolmap);
+static gint32     load_xwd_f2_d16_b16 (const gchar       *filename,
+                                       FILE              *ifp,
+                                       L_XWDFILEHEADER   *xwdhdr,
+                                       L_XWDCOLOR        *xwdcolmap);
+static gint32     load_xwd_f2_d24_b32 (const gchar       *filename,
+                                       FILE              *ifp,
+                                       L_XWDFILEHEADER   *xwdhdr,
+                                       L_XWDCOLOR        *xwdcolmap,
+                                       GError           **error);
+static gint32     load_xwd_f2_d32_b32 (const gchar       *filename,
+                                       FILE              *ifp,
+                                       L_XWDFILEHEADER   *xwdhdr,
+                                       L_XWDCOLOR        *xwdcolmap);
+static gint32     load_xwd_f1_d24_b1  (const gchar       *filename,
+                                       FILE              *ifp,
+                                       L_XWDFILEHEADER   *xwdhdr,
+                                       L_XWDCOLOR        *xwdcolmap,
+                                       GError           **error);
 
-static void write_card32     (FILE *,
-                              L_CARD32);
-static void write_card16     (FILE *,
-                              L_CARD32);
-static void write_card8      (FILE *,
-                              L_CARD32);
+static L_CARD32   read_card32         (FILE              *ifp,
+                                       gint              *err);
+static L_CARD16   read_card16         (FILE              *ifp,
+                                       gint              *err);
+static L_CARD8    read_card8          (FILE              *ifp,
+                                       gint              *err);
 
-static void read_xwd_header  (FILE *,
-                              L_XWDFILEHEADER *);
-static void write_xwd_header (FILE *,
-                              L_XWDFILEHEADER *);
-static void read_xwd_cols    (FILE *,
-                              L_XWDFILEHEADER *,
-                              L_XWDCOLOR *);
-static void write_xwd_cols   (FILE *,
-                              L_XWDFILEHEADER *,
-                              L_XWDCOLOR *);
+static gboolean   write_card32        (GOutputStream     *output,
+                                       L_CARD32           c,
+                                       GError           **error);
+static gboolean   write_card16        (GOutputStream     *output,
+                                       L_CARD32           c,
+                                       GError           **error);
+static gboolean   write_card8         (GOutputStream     *output,
+                                       L_CARD32           c,
+                                       GError           **error);
 
-static gint save_index       (FILE *,
-                              gint32,
-                              gint32,
-                              gint);
-static gint save_rgb         (FILE *,
-                              gint32,
-                              gint32);
+static void       read_xwd_header     (FILE              *ifp,
+                                       L_XWDFILEHEADER   *xwdhdr);
+
+static gboolean   write_xwd_header    (GOutputStream     *output,
+                                       L_XWDFILEHEADER   *xwdhdr,
+                                       GError           **error);
+
+static void       read_xwd_cols       (FILE              *ifp,
+                                       L_XWDFILEHEADER   *xwdhdr,
+                                       L_XWDCOLOR        *xwdcolmap);
+
+static gboolean   write_xwd_cols      (GOutputStream     *output,
+                                       L_XWDFILEHEADER   *xwdhdr,
+                                       L_XWDCOLOR        *colormap,
+                                       GError           **error);
+
+static gint       save_index          (GOutputStream     *output,
+                                       gint32             image_ID,
+                                       gint32             drawable_ID,
+                                       gboolean           gray,
+                                       GError           **error);
+static gint       save_rgb            (GOutputStream     *output,
+                                       gint32             image_ID,
+                                       gint32             drawable_ID,
+                                       GError           **error);
 
 
 const GimpPlugInInfo PLUG_IN_INFO =
@@ -237,16 +252,11 @@ const GimpPlugInInfo PLUG_IN_INFO =
 };
 
 
-/* The run mode */
-static GimpRunMode l_run_mode;
-
-
 MAIN ()
 
 
 static void
 query (void)
-
 {
   static const GimpParamDef load_args[] =
   {
@@ -264,9 +274,9 @@ query (void)
   {
     { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",        "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save" },
-    { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
-    { GIMP_PDB_STRING,   "raw-filename", "The name of the file to save the image in" }
+    { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to export" },
+    { GIMP_PDB_STRING,   "filename",     "The name of the file to export the image in" },
+    { GIMP_PDB_STRING,   "raw-filename", "The name of the file to export the image in" }
   };
 
   gimp_install_procedure (LOAD_PROC,
@@ -291,8 +301,8 @@ query (void)
                                     "4,long,0x00000007");
 
   gimp_install_procedure (SAVE_PROC,
-                          "Saves files in the XWD (X Window Dump) format",
-                          "XWD saving handles all image types except "
+                          "Exports files in the XWD (X Window Dump) format",
+                          "XWD exporting handles all image types except "
                           "those with alpha channels.",
                           "Peter Kirchgessner",
                           "Peter Kirchgessner",
@@ -304,9 +314,9 @@ query (void)
                           save_args, NULL);
 
   gimp_register_file_handler_mime (SAVE_PROC, "image/x-xwindowdump");
+  gimp_register_file_handler_uri (SAVE_PROC);
   gimp_register_save_handler (SAVE_PROC, "xwd", "");
 }
-
 
 static void
 run (const gchar      *name,
@@ -323,9 +333,10 @@ run (const gchar      *name,
   GimpExportReturn   export = GIMP_EXPORT_CANCEL;
   GError            *error  = NULL;
 
-  l_run_mode = run_mode = param[0].data.d_int32;
+  run_mode = param[0].data.d_int32;
 
   INIT_I18N ();
+  gegl_init (NULL, NULL);
 
   *nreturn_vals = 1;
   *return_vals  = values;
@@ -395,11 +406,14 @@ run (const gchar      *name,
 
       if (status == GIMP_PDB_SUCCESS)
         {
-          if (! save_image (param[3].data.d_string, image_ID, drawable_ID,
-                            &error))
+          GFile *file = g_file_new_for_uri (param[3].data.d_string);
+
+          if (! save_image (file, image_ID, drawable_ID, &error))
             {
               status = GIMP_PDB_EXECUTION_ERROR;
             }
+
+          g_object_unref (file);
         }
 
       if (export == GIMP_EXPORT_EXPORT)
@@ -420,6 +434,7 @@ run (const gchar      *name,
   values[0].data.d_status = status;
 }
 
+
 static gint32
 load_image (const gchar  *filename,
             GError      **error)
@@ -429,6 +444,9 @@ load_image (const gchar  *filename,
   gint32           image_ID = -1;
   L_XWDFILEHEADER  xwdhdr;
   L_XWDCOLOR      *xwdcolmap = NULL;
+
+  gimp_progress_init_printf (_("Opening '%s'"),
+                             gimp_filename_to_utf8 (filename));
 
   ifp = g_fopen (filename, "rb");
   if (!ifp)
@@ -531,9 +549,6 @@ load_image (const gchar  *filename,
       goto out;
     }
 
-  gimp_progress_init_printf (_("Opening '%s'"),
-                             gimp_filename_to_utf8 (filename));
-
   depth = xwdhdr.l_pixmap_depth;
   bpp   = xwdhdr.l_bits_per_pixel;
 
@@ -573,6 +588,10 @@ load_image (const gchar  *filename,
           image_ID = load_xwd_f2_d24_b32 (filename, ifp, &xwdhdr, xwdcolmap,
                                           error);
         }
+      else if ((depth <= 32) && (bpp == 32))
+        {
+          image_ID = load_xwd_f2_d32_b32 (filename, ifp, &xwdhdr, xwdcolmap);
+        }
       break;
     }
   gimp_progress_update (1.0);
@@ -598,22 +617,23 @@ out:
   return image_ID;
 }
 
-static gint
-save_image (const gchar  *filename,
-            gint32        image_ID,
-            gint32        drawable_ID,
-            GError      **error)
+static gboolean
+save_image (GFile   *file,
+            gint32   image_ID,
+            gint32   drawable_ID,
+            GError **error)
 {
-  FILE          *ofp;
+  GOutputStream *output;
   GimpImageType  drawable_type;
-  gint           retval;
+  gboolean       success;
 
   drawable_type = gimp_drawable_type (drawable_ID);
 
-  /*  Make sure we're not saving an image with an alpha channel  */
+  /*  Make sure we're not exporting an image with an alpha channel  */
   if (gimp_drawable_has_alpha (drawable_ID))
     {
-      g_message (_("Cannot save images with alpha channels."));
+      g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                           _("Cannot export images with alpha channels."));
       return FALSE;
     }
 
@@ -629,39 +649,50 @@ save_image (const gchar  *filename,
       break;
     }
 
-  /* Open the output file. */
-  ofp = g_fopen (filename, "wb");
-  if (! ofp)
+  gimp_progress_init_printf (_("Exporting '%s'"),
+                             gimp_file_get_utf8_name (file));
+
+  output = G_OUTPUT_STREAM (g_file_replace (file, NULL, FALSE, 0, NULL, error));
+  if (! output)
     {
-      g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
-                   _("Could not open '%s' for writing: %s"),
-                   gimp_filename_to_utf8 (filename), g_strerror (errno));
+      g_prefix_error (error,
+                      _("Could not open '%s' for writing: "),
+                      gimp_file_get_utf8_name (file));
       return FALSE;
     }
-
-  gimp_progress_init_printf (_("Saving '%s'"),
-                             gimp_filename_to_utf8 (filename));
 
   switch (drawable_type)
     {
     case GIMP_INDEXED_IMAGE:
-      retval = save_index (ofp, image_ID, drawable_ID, 0);
+      success = save_index (output, image_ID, drawable_ID, FALSE, error);
       break;
+
     case GIMP_GRAY_IMAGE:
-      retval = save_index (ofp, image_ID, drawable_ID, 1);
+      success = save_index (output, image_ID, drawable_ID, TRUE, error);
       break;
+
     case GIMP_RGB_IMAGE:
-      retval = save_rgb (ofp, image_ID, drawable_ID);
+      success = save_rgb (output, image_ID, drawable_ID, error);
       break;
+
     default:
-      retval = FALSE;
+      success = FALSE;
+      break;
     }
+
+  if (success && ! g_output_stream_close (output, NULL, error))
+    {
+      g_prefix_error (error,
+                      _("Error exporting '%s': "),
+                      gimp_file_get_utf8_name (file));
+      success = FALSE;
+    }
+
+  g_object_unref (output);
 
   gimp_progress_update (1.0);
 
-  fclose (ofp);
-
-  return retval;
+  return success;
 }
 
 
@@ -682,7 +713,6 @@ read_card32 (FILE *ifp,
   return c;
 }
 
-
 static L_CARD16
 read_card16 (FILE *ifp,
              int  *err)
@@ -698,7 +728,6 @@ read_card16 (FILE *ifp,
   return c;
 }
 
-
 static L_CARD8
 read_card8 (FILE *ifp,
             int  *err)
@@ -712,31 +741,48 @@ read_card8 (FILE *ifp,
   return c;
 }
 
-static void
-write_card32 (FILE     *ofp,
-              L_CARD32  c)
+
+static gboolean
+write_card32 (GOutputStream  *output,
+              L_CARD32        c,
+              GError        **error)
 {
-  putc ((int) ((c >> 24) & 0xff), ofp);
-  putc ((int) ((c >> 16) & 0xff), ofp);
-  putc ((int) ((c >> 8) & 0xff), ofp);
-  putc ((int) ((c) & 0xff), ofp);
+  guchar buffer[4];
+
+  buffer[0] = (c >> 24) & 0xff;
+  buffer[1] = (c >> 16) & 0xff;
+  buffer[2] = (c >>  8) & 0xff;
+  buffer[3] = (c)       & 0xff;
+
+  return g_output_stream_write_all (output, buffer, 4,
+                                    NULL, NULL, error);
 }
 
-
-static void
-write_card16 (FILE     *ofp,
-              L_CARD32  c)
+static gboolean
+write_card16 (GOutputStream  *output,
+              L_CARD32        c,
+              GError        **error)
 {
-  putc ((int) ((c >> 8) & 0xff), ofp);
-  putc ((int) ((c) & 0xff), ofp);
+  guchar buffer[2];
+
+  buffer[0] = (c >> 8) & 0xff;
+  buffer[1] = (c)      & 0xff;
+
+  return g_output_stream_write_all (output, buffer, 2,
+                                    NULL, NULL, error);
 }
 
-
-static void
-write_card8 (FILE     *ofp,
-             L_CARD32  c)
+static gboolean
+write_card8 (GOutputStream  *output,
+             L_CARD32        c,
+             GError        **error)
 {
-  putc ((int) ((c) & 0xff), ofp);
+  guchar buffer[1];
+
+  buffer[0] = c & 0xff;
+
+  return g_output_stream_write_all (output, buffer, 1,
+                                    NULL, NULL, error);
 }
 
 
@@ -764,9 +810,10 @@ read_xwd_header (FILE            *ifp,
 
 
 /* Write out an XWD-fileheader. The header size is calculated here */
-static void
-write_xwd_header (FILE            *ofp,
-                  L_XWDFILEHEADER *xwdhdr)
+static gboolean
+write_xwd_header (GOutputStream   *output,
+                  L_XWDFILEHEADER  *xwdhdr,
+                  GError          **error)
 
 {
   gint      j, hdrpad, hdr_entries;
@@ -781,12 +828,16 @@ write_xwd_header (FILE            *ofp,
   /* Write out all 32-bit values of the header and check for byte order */
   for (j = 0; j < sizeof (L_XWDFILEHEADER) / sizeof(xwdhdr->l_file_version); j++)
     {
-      write_card32 (ofp, *(cp++));
+      if (! write_card32 (output, *(cp++), error))
+        return FALSE;
     }
 
   /* Add padding bytes after XWD header */
   for (j = 0; j < hdrpad; j++)
-    write_card8 (ofp, (L_CARD32) 0);
+    if (! write_card8 (output, (L_CARD32) 0, error))
+      return FALSE;
+
+  return TRUE;
 }
 
 
@@ -926,55 +977,65 @@ read_xwd_cols (FILE            *ifp,
     xwdhdr->l_file_version = 0;  /* Not a valid XWD-file */
 }
 
-
-static void
-write_xwd_cols (FILE            *ofp,
-                L_XWDFILEHEADER *xwdhdr,
-                L_XWDCOLOR      *colormap)
-
+static gboolean
+write_xwd_cols (GOutputStream    *output,
+                L_XWDFILEHEADER  *xwdhdr,
+                L_XWDCOLOR       *colormap,
+                GError          **error)
 {
-  int j;
+  gint j;
 
   for (j = 0; j < xwdhdr->l_colormap_entries; j++)
     {
 #ifdef CRAY
-      write_card32 (ofp, (L_CARD32)0);
-      write_card32 (ofp, colormap[j].l_pixel);
-      write_card32 (ofp, (L_CARD32)0);
-      write_card32 (ofp, (L_CARD32)colormap[j].l_red);
-      write_card32 (ofp, (L_CARD32)0);
-      write_card32 (ofp, (L_CARD32)colormap[j].l_green);
-      write_card32 (ofp, (L_CARD32)0);
-      write_card32 (ofp, (L_CARD32)colormap[j].l_blue);
-      write_card8  (ofp, (L_CARD32)colormap[j].l_flags);
-      write_card8  (ofp, (L_CARD32)colormap[j].l_pad);
-      write_card16 (ofp, (L_CARD32)0);
-      write_card32 (ofp, (L_CARD32)0);
+      if (! (write_card32 (output, (L_CARD32)0, error)                   &&
+             write_card32 (output, colormap[j].l_pixel, error)           &&
+             write_card32 (output, (L_CARD32)0, error)                   &&
+             write_card32 (output, (L_CARD32)colormap[j].l_red, error)   &&
+             write_card32 (output, (L_CARD32)0, error)                   &&
+             write_card32 (output, (L_CARD32)colormap[j].l_green, error) &&
+             write_card32 (output, (L_CARD32)0, error)                   &&
+             write_card32 (output, (L_CARD32)colormap[j].l_blue, error)  &&
+             write_card8  (output, (L_CARD32)colormap[j].l_flags, error) &&
+             write_card8  (output, (L_CARD32)colormap[j].l_pad, error)   &&
+             write_card16 (output, (L_CARD32)0, error)                   &&
+             write_card32 (output, (L_CARD32)0, error)))
+        {
+          return FALSE;
+        }
 #else
 #ifdef __alpha
-      write_card32 (ofp, colormap[j].l_pixel);
-      write_card32 (ofp, (L_CARD32)0);
-      write_card16 (ofp, (L_CARD32)colormap[j].l_red);
-      write_card16 (ofp, (L_CARD32)colormap[j].l_green);
-      write_card16 (ofp, (L_CARD32)colormap[j].l_blue);
-      write_card8  (ofp, (L_CARD32)colormap[j].l_flags);
-      write_card8  (ofp, (L_CARD32)colormap[j].l_pad);
+      if (! (write_card32 (output, colormap[j].l_pixel, error)           &&
+             write_card32 (output, (L_CARD32)0, error)                   &&
+             write_card16 (output, (L_CARD32)colormap[j].l_red, error)   &&
+             write_card16 (output, (L_CARD32)colormap[j].l_green, error) &&
+             write_card16 (output, (L_CARD32)colormap[j].l_blue, error)  &&
+             write_card8  (output, (L_CARD32)colormap[j].l_flags, error) &&
+             write_card8  (output, (L_CARD32)colormap[j].l_pad, error)))
+        {
+          return FALSE;
+        }
 #else
-      write_card32 (ofp, colormap[j].l_pixel);
-      write_card16 (ofp, (L_CARD32)colormap[j].l_red);
-      write_card16 (ofp, (L_CARD32)colormap[j].l_green);
-      write_card16 (ofp, (L_CARD32)colormap[j].l_blue);
-      write_card8  (ofp, (L_CARD32)colormap[j].l_flags);
-      write_card8  (ofp, (L_CARD32)colormap[j].l_pad);
+      if (! (write_card32 (output, colormap[j].l_pixel, error)           &&
+             write_card16 (output, (L_CARD32)colormap[j].l_red, error)   &&
+             write_card16 (output, (L_CARD32)colormap[j].l_green, error) &&
+             write_card16 (output, (L_CARD32)colormap[j].l_blue, error)  &&
+             write_card8  (output, (L_CARD32)colormap[j].l_flags, error) &&
+             write_card8  (output, (L_CARD32)colormap[j].l_pad, error)))
+        {
+          return FALSE;
+        }
 #endif
 #endif
     }
+
+  return TRUE;
 }
 
 
-/* Create a map for mapping up to 32 bit pixelvalues to RGB. */
-/* Returns number of colors kept in the map (up to 256) */
-
+/* Create a map for mapping up to 32 bit pixelvalues to RGB.
+ * Returns number of colors kept in the map (up to 256)
+ */
 static gint
 set_pixelmap (int         ncols,
               L_XWDCOLOR *xwdcol,
@@ -1031,9 +1092,9 @@ set_pixelmap (int         ncols,
 }
 
 
-/* Search a pixel value in the pixel map. Returns FALSE if the */
-/* pixelval was not found in map. Returns TRUE if found. */
-
+/* Search a pixel value in the pixel map. Returns FALSE if the
+ * pixelval was not found in map. Returns TRUE if found.
+ */
 static gboolean
 get_pixelmap (L_CARD32   pixelval,
               PIXEL_MAP *pixelmap,
@@ -1200,39 +1261,22 @@ create_new_image (const gchar         *filename,
                   guint                width,
                   guint                height,
                   GimpImageBaseType    type,
+                  GimpImageType        gdtype,
                   gint32              *layer_ID,
-                  GimpDrawable       **drawable,
-                  GimpPixelRgn        *pixel_rgn)
+                  GeglBuffer         **buffer)
 {
-  gint32        image_ID;
-  GimpImageType gdtype;
-
-  switch (type)
-    {
-    case GIMP_GRAY:
-      gdtype = GIMP_GRAY_IMAGE;
-      break;
-    case GIMP_INDEXED:
-      gdtype = GIMP_INDEXED_IMAGE;
-      break;
-    case GIMP_RGB:
-      gdtype = GIMP_RGB_IMAGE;
-      break;
-    default:
-      g_warning ("Unknown image type");
-      return -1;
-    }
+  gint32 image_ID;
 
   image_ID = gimp_image_new (width, height, type);
   gimp_image_set_filename (image_ID, filename);
 
   *layer_ID = gimp_layer_new (image_ID, "Background", width, height,
-                              gdtype, 100, GIMP_NORMAL_MODE);
+                              gdtype,
+                              100,
+                              gimp_image_get_default_new_layer_mode (image_ID));
   gimp_image_insert_layer (image_ID, *layer_ID, -1, 0);
 
-  *drawable = gimp_drawable_get (*layer_ID);
-  gimp_pixel_rgn_init (pixel_rgn, *drawable, 0, 0, (*drawable)->width,
-                       (*drawable)->height, TRUE, FALSE);
+  *buffer = gimp_drawable_get_buffer (*layer_ID);
 
   return image_ID;
 }
@@ -1256,8 +1300,7 @@ load_xwd_f2_d1_b1 (const gchar     *filename,
   guchar          *data, *scanline;
   gint             err = 0;
   gint32           layer_ID, image_ID;
-  GimpPixelRgn     pixel_rgn;
-  GimpDrawable    *drawable;
+  GeglBuffer      *buffer;
 
 #ifdef XWD_DEBUG
   printf ("load_xwd_f2_d1_b1 (%s)\n", filename);
@@ -1267,7 +1310,7 @@ load_xwd_f2_d1_b1 (const gchar     *filename,
   height = xwdhdr->l_pixmap_height;
 
   image_ID = create_new_image (filename, width, height, GIMP_INDEXED,
-                               &layer_ID, &drawable, &pixel_rgn);
+                               GIMP_INDEXED_IMAGE, &layer_ID, &buffer);
 
   tile_height = gimp_tile_height ();
   data = g_malloc (tile_height * width);
@@ -1360,8 +1403,10 @@ load_xwd_f2_d1_b1 (const gchar     *filename,
 
       if ((scan_lines == tile_height) || ((i+1) == height))
         {
-          gimp_pixel_rgn_set_rect (&pixel_rgn, data, 0, i-scan_lines+1,
-                                   width, scan_lines);
+          gegl_buffer_set (buffer, GEGL_RECTANGLE (0, i - scan_lines + 1,
+                                                   width, scan_lines), 0,
+                           NULL, data, GEGL_AUTO_ROWSTRIDE);
+
           scan_lines = 0;
           dest = data;
         }
@@ -1374,7 +1419,7 @@ load_xwd_f2_d1_b1 (const gchar     *filename,
   if (err)
     g_message (_("EOF encountered on reading"));
 
-  gimp_drawable_flush (drawable);
+  g_object_unref (buffer);
 
   return err ? -1 : image_ID;
 }
@@ -1388,14 +1433,13 @@ load_xwd_f2_d8_b8 (const gchar     *filename,
                    L_XWDFILEHEADER *xwdhdr,
                    L_XWDCOLOR      *xwdcolmap)
 {
-  gint          width, height, linepad, tile_height, scan_lines;
-  gint          i, j, ncols;
-  gint          grayscale;
-  guchar       *dest, *data;
-  gint          err = 0;
-  gint32        layer_ID, image_ID;
-  GimpPixelRgn  pixel_rgn;
-  GimpDrawable *drawable;
+  gint        width, height, linepad, tile_height, scan_lines;
+  gint        i, j, ncols;
+  gint        grayscale;
+  guchar     *dest, *data;
+  gint        err = 0;
+  gint32      layer_ID, image_ID;
+  GeglBuffer *buffer;
 
 #ifdef XWD_DEBUG
   printf ("load_xwd_f2_d8_b8 (%s)\n", filename);
@@ -1422,7 +1466,8 @@ load_xwd_f2_d8_b8 (const gchar     *filename,
 
   image_ID = create_new_image (filename, width, height,
                                grayscale ? GIMP_GRAY : GIMP_INDEXED,
-                               &layer_ID, &drawable, &pixel_rgn);
+                               grayscale ? GIMP_GRAY_IMAGE : GIMP_INDEXED_IMAGE,
+                               &layer_ID, &buffer);
 
   tile_height = gimp_tile_height ();
   data = g_malloc (tile_height * width);
@@ -1463,8 +1508,10 @@ load_xwd_f2_d8_b8 (const gchar     *filename,
 
       if ((scan_lines == tile_height) || ((i+1) == height))
         {
-          gimp_pixel_rgn_set_rect (&pixel_rgn, data, 0, i-scan_lines+1,
-                                   width, scan_lines);
+          gegl_buffer_set (buffer, GEGL_RECTANGLE (0, i - scan_lines + 1,
+                                                   width, scan_lines), 0,
+                           NULL, data, GEGL_AUTO_ROWSTRIDE);
+
           scan_lines = 0;
           dest = data;
         }
@@ -1475,7 +1522,7 @@ load_xwd_f2_d8_b8 (const gchar     *filename,
   if (err)
     g_message (_("EOF encountered on reading"));
 
-  gimp_drawable_flush (drawable);
+  g_object_unref (buffer);
 
   return err ? -1 : image_ID;
 }
@@ -1500,8 +1547,7 @@ load_xwd_f2_d16_b16 (const gchar     *filename,
   guchar          *ColorMap, *cm, *data;
   gint             err = 0;
   gint32           layer_ID, image_ID;
-  GimpPixelRgn     pixel_rgn;
-  GimpDrawable    *drawable;
+  GeglBuffer      *buffer;
 
 #ifdef XWD_DEBUG
   printf ("load_xwd_f2_d16_b16 (%s)\n", filename);
@@ -1511,7 +1557,7 @@ load_xwd_f2_d16_b16 (const gchar     *filename,
   height = xwdhdr->l_pixmap_height;
 
   image_ID = create_new_image (filename, width, height, GIMP_RGB,
-                               &layer_ID, &drawable, &pixel_rgn);
+                               GIMP_RGB_IMAGE, &layer_ID, &buffer);
 
   tile_height = gimp_tile_height ();
   data = g_malloc (tile_height * width * 3);
@@ -1621,8 +1667,10 @@ load_xwd_f2_d16_b16 (const gchar     *filename,
 
       if ((scan_lines == tile_height) || ((i+1) == height))
         {
-          gimp_pixel_rgn_set_rect (&pixel_rgn, data, 0, i-scan_lines+1,
-                                   width, scan_lines);
+          gegl_buffer_set (buffer, GEGL_RECTANGLE (0, i - scan_lines + 1,
+                                                   width, scan_lines), 0,
+                           NULL, data, GEGL_AUTO_ROWSTRIDE);
+
           scan_lines = 0;
           dest = data;
         }
@@ -1633,7 +1681,7 @@ load_xwd_f2_d16_b16 (const gchar     *filename,
   if (err)
     g_message (_("EOF encountered on reading"));
 
-  gimp_drawable_flush (drawable);
+  g_object_unref (buffer);
 
   return err ? -1 : image_ID;
 }
@@ -1661,8 +1709,7 @@ load_xwd_f2_d24_b32 (const gchar      *filename,
   PIXEL_MAP        pixel_map;
   gint             err = 0;
   gint32           layer_ID, image_ID;
-  GimpPixelRgn     pixel_rgn;
-  GimpDrawable    *drawable;
+  GeglBuffer      *buffer;
 
 #ifdef XWD_DEBUG
   printf ("load_xwd_f2_d24_b32 (%s)\n", filename);
@@ -1709,7 +1756,7 @@ load_xwd_f2_d24_b32 (const gchar      *filename,
     }
 
   image_ID = create_new_image (filename, width, height, GIMP_RGB,
-                               &layer_ID, &drawable, &pixel_rgn);
+                               GIMP_RGB_IMAGE, &layer_ID, &buffer);
 
   tile_height = gimp_tile_height ();
   data = g_malloc (tile_height * width * 3);
@@ -1782,8 +1829,10 @@ load_xwd_f2_d24_b32 (const gchar      *filename,
 
           if ((scan_lines == tile_height) || ((i+1) == height))
             {
-              gimp_pixel_rgn_set_rect (&pixel_rgn, data, 0, i-scan_lines+1,
-                                       width, scan_lines);
+              gegl_buffer_set (buffer, GEGL_RECTANGLE (0, i - scan_lines + 1,
+                                                       width, scan_lines), 0,
+                               NULL, data, GEGL_AUTO_ROWSTRIDE);
+
               scan_lines = 0;
               dest = data;
             }
@@ -1832,8 +1881,10 @@ load_xwd_f2_d24_b32 (const gchar      *filename,
 
           if ((scan_lines == tile_height) || ((i+1) == height))
             {
-              gimp_pixel_rgn_set_rect (&pixel_rgn, data, 0, i-scan_lines+1,
-                                       width, scan_lines);
+              gegl_buffer_set (buffer, GEGL_RECTANGLE (0, i - scan_lines + 1,
+                                                       width, scan_lines), 0,
+                               NULL, data, GEGL_AUTO_ROWSTRIDE);
+
               scan_lines = 0;
               dest = data;
             }
@@ -1845,11 +1896,168 @@ load_xwd_f2_d24_b32 (const gchar      *filename,
   if (err)
     g_message (_("EOF encountered on reading"));
 
-  gimp_drawable_flush (drawable);
+  g_object_unref (buffer);
 
   return err ? -1 : image_ID;
 }
 
+/* Load XWD with pixmap_format 2, pixmap_depth up to 32, bits_per_pixel 32 */
+
+static gint32
+load_xwd_f2_d32_b32 (const gchar     *filename,
+                     FILE            *ifp,
+                     L_XWDFILEHEADER *xwdhdr,
+                     L_XWDCOLOR      *xwdcolmap)
+{
+  register guchar *dest, lsbyte_first;
+  gint             width, height, linepad, i, j, c0, c1, c2, c3;
+  gint             tile_height, scan_lines;
+  L_CARD32         pixelval;
+  gint             red, green, blue, alpha, ncols;
+  gint             maxred, maxgreen, maxblue, maxalpha;
+  gulong           redmask, greenmask, bluemask, alphamask;
+  guint            redshift, greenshift, blueshift, alphashift;
+  guchar           redmap[256], greenmap[256], bluemap[256], alphamap[256];
+  guchar          *data;
+  PIXEL_MAP        pixel_map;
+  gint             err = 0;
+  gint32           layer_ID, image_ID;
+  GeglBuffer      *buffer;
+
+#ifdef XWD_DEBUG
+  printf ("load_xwd_f2_d32_b32 (%s)\n", filename);
+#endif
+
+  width  = xwdhdr->l_pixmap_width;
+  height = xwdhdr->l_pixmap_height;
+
+  image_ID = create_new_image (filename, width, height, GIMP_RGB,
+                               GIMP_RGBA_IMAGE, &layer_ID, &buffer);
+
+  tile_height = gimp_tile_height ();
+  data = g_malloc (tile_height * width * 4);
+
+  redmask   = xwdhdr->l_red_mask;
+  greenmask = xwdhdr->l_green_mask;
+  bluemask  = xwdhdr->l_blue_mask;
+
+  if (redmask   == 0) redmask   = 0xff0000;
+  if (greenmask == 0) greenmask = 0x00ff00;
+  if (bluemask  == 0) bluemask  = 0x0000ff;
+  alphamask = 0xffffffff & ~(redmask | greenmask | bluemask);
+
+  /* How to shift RGB to be right aligned ? */
+  /* (We rely on the the mask bits are grouped and not mixed) */
+  redshift = greenshift = blueshift = alphashift = 0;
+
+  while (((1 << redshift)   & redmask)   == 0) redshift++;
+  while (((1 << greenshift) & greenmask) == 0) greenshift++;
+  while (((1 << blueshift)  & bluemask)  == 0) blueshift++;
+  while (((1 << alphashift) & alphamask) == 0) alphashift++;
+
+  /* The bits_per_rgb may not be correct. Use redmask instead */
+
+  maxred = 0; while (redmask >> (redshift + maxred)) maxred++;
+  maxred = (1 << maxred) - 1;
+
+  maxgreen = 0; while (greenmask >> (greenshift + maxgreen)) maxgreen++;
+  maxgreen = (1 << maxgreen) - 1;
+
+  maxblue = 0; while (bluemask >> (blueshift + maxblue)) maxblue++;
+  maxblue = (1 << maxblue) - 1;
+
+  maxalpha = 0; while (alphamask >> (alphashift + maxalpha)) maxalpha++;
+  maxalpha = (1 << maxalpha) - 1;
+
+  /* Set map-arrays for red, green, blue */
+  for (red = 0; red <= maxred; red++)
+    redmap[red] = (red * 255) / maxred;
+  for (green = 0; green <= maxgreen; green++)
+    greenmap[green] = (green * 255) / maxgreen;
+  for (blue = 0; blue <= maxblue; blue++)
+    bluemap[blue] = (blue * 255) / maxblue;
+  for (alpha = 0; alpha <= maxalpha; alpha++)
+    alphamap[alpha] = (alpha * 255) / maxalpha;
+
+  ncols = xwdhdr->l_colormap_entries;
+  if (xwdhdr->l_ncolors < ncols)
+    ncols = xwdhdr->l_ncolors;
+
+  set_pixelmap (ncols, xwdcolmap, &pixel_map);
+
+  /* What do we have to consume after a line has finished ? */
+  linepad =   xwdhdr->l_bytes_per_line
+    - (xwdhdr->l_pixmap_width*xwdhdr->l_bits_per_pixel)/8;
+  if (linepad < 0) linepad = 0;
+
+  lsbyte_first = (xwdhdr->l_byte_order == 0);
+
+  dest = data;
+  scan_lines = 0;
+
+  for (i = 0; i < height; i++)
+    {
+      for (j = 0; j < width; j++)
+        {
+          c0 = getc (ifp);
+          c1 = getc (ifp);
+          c2 = getc (ifp);
+          c3 = getc (ifp);
+          if (c3 < 0)
+            {
+              err = 1;
+              break;
+            }
+          if (lsbyte_first)
+            pixelval = c0 | (c1 << 8) | (c2 << 16) | (c3 << 24);
+          else
+            pixelval = (c0 << 24) | (c1 << 16) | (c2 << 8) | c3;
+
+          if (get_pixelmap (pixelval, &pixel_map, dest, dest+1, dest+2))
+            {
+              /* FIXME: is it always transparent or encoded in an unknown way? */
+              *(dest+3) = 0x00;
+              dest += 4;
+            }
+          else
+            {
+              *(dest++) = redmap[(pixelval & redmask) >> redshift];
+              *(dest++) = greenmap[(pixelval & greenmask) >> greenshift];
+              *(dest++) = bluemap[(pixelval & bluemask) >> blueshift];
+              *(dest++) = alphamap[(pixelval & alphamask) >> alphashift];
+            }
+        }
+      scan_lines++;
+
+      if (err)
+        break;
+
+      for (j = 0; j < linepad; j++)
+        getc (ifp);
+
+      if ((i % 20) == 0)
+        gimp_progress_update ((gdouble) (i + 1) / (gdouble) height);
+
+      if ((scan_lines == tile_height) || ((i+1) == height))
+        {
+          gegl_buffer_set (buffer, GEGL_RECTANGLE (0, i - scan_lines + 1,
+                                                   width, scan_lines), 0,
+                           NULL, data, GEGL_AUTO_ROWSTRIDE);
+
+          scan_lines = 0;
+          dest = data;
+        }
+    }
+
+  g_free (data);
+
+  if (err)
+    g_message (_("EOF encountered on reading"));
+
+  g_object_unref (buffer);
+
+  return err ? -1 : image_ID;
+}
 
 /* Load XWD with pixmap_format 1, pixmap_depth up to 24, bits_per_pixel 1 */
 
@@ -1877,8 +2085,7 @@ load_xwd_f1_d24_b1 (const gchar      *filename,
   PIXEL_MAP        pixel_map;
   gint             err = 0;
   gint32           layer_ID, image_ID;
-  GimpPixelRgn     pixel_rgn;
-  GimpDrawable    *drawable;
+  GeglBuffer      *buffer;
 
 #ifdef XWD_DEBUG
   printf ("load_xwd_f1_d24_b1 (%s)\n", filename);
@@ -1957,7 +2164,8 @@ load_xwd_f1_d24_b1 (const gchar      *filename,
 
   image_ID = create_new_image (filename, width, height,
                                indexed ? GIMP_INDEXED : GIMP_RGB,
-                               &layer_ID, &drawable, &pixel_rgn);
+                               indexed ? GIMP_INDEXED_IMAGE : GIMP_RGB_IMAGE,
+                               &layer_ID, &buffer);
 
   tile_height = gimp_tile_height ();
   data = g_malloc (tile_height * width * bytes_per_pixel);
@@ -2098,8 +2306,9 @@ load_xwd_f1_d24_b1 (const gchar      *filename,
 
       gimp_progress_update ((gdouble) tile_end / (gdouble) height);
 
-      gimp_pixel_rgn_set_rect (&pixel_rgn, data, 0, tile_start,
-                               width, tile_end-tile_start+1);
+      gegl_buffer_set (buffer, GEGL_RECTANGLE (0, tile_start,
+                                               width, tile_end-tile_start+1), 0,
+                       NULL, data, GEGL_AUTO_ROWSTRIDE);
     }
 
   g_free (data);
@@ -2108,43 +2317,54 @@ load_xwd_f1_d24_b1 (const gchar      *filename,
   if (err)
     g_message (_("EOF encountered on reading"));
 
-  gimp_drawable_flush (drawable);
+  g_object_unref (buffer);
 
   return err ? -1 : image_ID;
 }
 
 
-static gint
-save_index (FILE    *ofp,
-            gint32   image_ID,
-            gint32   drawable_ID,
-            gint     gray)
+static gboolean
+save_index (GOutputStream  *output,
+            gint32          image_ID,
+            gint32          drawable_ID,
+            gboolean        gray,
+            GError        **error)
 {
-  gint             height, width, linepad, tile_height, i, j;
+  gint             height, width;
+  gint             linepad;
+  gint             tile_height;
+  gint             i, j;
   gint             ncolors, vclass;
   glong            tmp = 0;
   guchar          *data, *src, *cmap;
   L_XWDFILEHEADER  xwdhdr;
   L_XWDCOLOR       xwdcolmap[256];
-  GimpPixelRgn     pixel_rgn;
-  GimpDrawable    *drawable;
+  const Babl      *format;
+  GeglBuffer      *buffer;
+  gboolean         success = TRUE;
 
 #ifdef XWD_DEBUG
   printf ("save_index ()\n");
 #endif
 
-  drawable      = gimp_drawable_get (drawable_ID);
-  width         = drawable->width;
-  height        = drawable->height;
-  tile_height   = gimp_tile_height ();
+  buffer      = gimp_drawable_get_buffer (drawable_ID);
+  width       = gegl_buffer_get_width  (buffer);
+  height      = gegl_buffer_get_height (buffer);
+  tile_height = gimp_tile_height ();
 
-  gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, width, height, FALSE, FALSE);
+  if (gray)
+    format = babl_format ("Y' u8");
+  else
+    format = gegl_buffer_get_format (buffer);
 
   /* allocate a buffer for retrieving information from the pixel region  */
-  src = data = g_new (guchar, tile_height * width * drawable->bpp);
+  src = data = g_new (guchar,
+                      tile_height * width *
+                      babl_format_get_bytes_per_pixel (format));
 
   linepad = width % 4;
-  if (linepad) linepad = 4 - linepad;
+  if (linepad)
+    linepad = 4 - linepad;
 
   /* Fill XWD-color map */
   if (gray)
@@ -2205,8 +2425,10 @@ save_index (FILE    *ofp,
   xwdhdr.l_window_y         = 64;
   xwdhdr.l_window_bdrwidth  = 0;
 
-  write_xwd_header (ofp, &xwdhdr);
-  write_xwd_cols (ofp, &xwdhdr, xwdcolmap);
+  success = (write_xwd_header (output, &xwdhdr, error) &&
+             write_xwd_cols (output, &xwdhdr, xwdcolmap, error));
+  if (! success)
+    goto out;
 
   for (i = 0; i < height; i++)
     {
@@ -2214,14 +2436,25 @@ save_index (FILE    *ofp,
         {
           gint scan_lines = (i + tile_height - 1 < height) ? tile_height : (height - i);
 
-          gimp_pixel_rgn_get_rect (&pixel_rgn, data, 0, i, width, scan_lines);
+          gegl_buffer_get (buffer, GEGL_RECTANGLE (0, i, width, scan_lines), 1.0,
+                           format, data,
+                           GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+
           src = data;
         }
 
-      fwrite (src, width, 1, ofp);
+      success = g_output_stream_write_all (output, src, width,
+                                           NULL, NULL, error);
+      if (! success)
+        goto out;
 
       if (linepad)
-        fwrite ((char *)&tmp, linepad, 1, ofp);
+        {
+          success = g_output_stream_write_all (output, &tmp, linepad,
+                                               NULL, NULL, error);
+          if (! success)
+            goto out;
+        }
 
       src += width;
 
@@ -2229,45 +2462,44 @@ save_index (FILE    *ofp,
         gimp_progress_update ((gdouble) i / (gdouble) height);
     }
 
+ out:
   g_free (data);
+  g_object_unref (buffer);
 
-  gimp_drawable_detach (drawable);
-
-  if (ferror (ofp))
-    {
-      g_message (_("Error during writing indexed/gray image"));
-      return FALSE;
-    }
-
-  return TRUE;
+  return success;
 }
 
-
-static gint
-save_rgb (FILE   *ofp,
-          gint32  image_ID,
-          gint32  drawable_ID)
+static gboolean
+save_rgb (GOutputStream  *output,
+          gint32          image_ID,
+          gint32          drawable_ID,
+          GError        **error)
 {
-  gint             height, width, linepad, tile_height, i;
+  gint             height, width;
+  gint             linepad;
+  gint             tile_height;
+  gint             i;
   glong            tmp = 0;
   guchar          *data, *src;
   L_XWDFILEHEADER  xwdhdr;
-  GimpPixelRgn     pixel_rgn;
-  GimpDrawable    *drawable;
+  const Babl      *format;
+  GeglBuffer      *buffer;
+  gboolean         success = TRUE;
 
 #ifdef XWD_DEBUG
   printf ("save_rgb ()\n");
 #endif
 
-  drawable      = gimp_drawable_get (drawable_ID);
-  width         = drawable->width;
-  height        = drawable->height;
-  tile_height   = gimp_tile_height ();
-
-  gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, width, height, FALSE, FALSE);
+  buffer      = gimp_drawable_get_buffer (drawable_ID);
+  width       = gegl_buffer_get_width  (buffer);
+  height      = gegl_buffer_get_height (buffer);
+  tile_height = gimp_tile_height ();
+  format      = babl_format ("R'G'B' u8");
 
   /* allocate a buffer for retrieving information from the pixel region  */
-  src = data = g_new (guchar, tile_height * width * drawable->bpp);
+  src = data = g_new (guchar,
+                      tile_height * width *
+                      babl_format_get_bytes_per_pixel (format));
 
   linepad = (width * 3) % 4;
   if (linepad)
@@ -2302,7 +2534,9 @@ save_rgb (FILE   *ofp,
   xwdhdr.l_window_y         = 64;
   xwdhdr.l_window_bdrwidth  = 0;
 
-  write_xwd_header (ofp, &xwdhdr);
+  success = write_xwd_header (output, &xwdhdr, error);
+  if (! success)
+    goto out;
 
   for (i = 0; i < height; i++)
     {
@@ -2310,14 +2544,25 @@ save_rgb (FILE   *ofp,
         {
           gint scan_lines = (i + tile_height - 1 < height) ? tile_height : (height - i);
 
-          gimp_pixel_rgn_get_rect (&pixel_rgn, data, 0, i, width, scan_lines);
+          gegl_buffer_get (buffer, GEGL_RECTANGLE (0, i, width, scan_lines), 1.0,
+                           format, data,
+                           GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+
           src = data;
         }
 
-      fwrite (src, width * 3, 1, ofp);
+      success = g_output_stream_write_all (output, src, width * 3,
+                                           NULL, NULL, error);
+      if (! success)
+        goto out;
 
       if (linepad)
-        fwrite ((char *)&tmp, linepad, 1, ofp);
+        {
+          success = g_output_stream_write_all (output, &tmp, linepad,
+                                               NULL, NULL, error);
+          if (! success)
+            goto out;
+        }
 
       src += width * 3;
 
@@ -2325,15 +2570,9 @@ save_rgb (FILE   *ofp,
         gimp_progress_update ((gdouble) i / (gdouble) height);
     }
 
+ out:
   g_free (data);
+  g_object_unref (buffer);
 
-  gimp_drawable_detach (drawable);
-
-  if (ferror (ofp))
-    {
-      g_message (_("Error during writing rgb image"));
-      return FALSE;
-    }
-
-  return TRUE;
+  return success;
 }

@@ -122,7 +122,7 @@ gimp_selection_editor_init (GimpSelectionEditor *editor)
                                          GIMP_VIEW_SIZE_HUGE,
                                          0, TRUE);
   gimp_view_renderer_set_background (GIMP_VIEW (editor->view)->renderer,
-                                     GIMP_STOCK_TEXTURE);
+                                     GIMP_ICON_TEXTURE);
   gtk_widget_set_size_request (editor->view,
                                GIMP_VIEW_SIZE_HUGE, GIMP_VIEW_SIZE_HUGE);
   gimp_view_set_expand (GIMP_VIEW (editor->view), TRUE);
@@ -145,8 +145,7 @@ gimp_selection_editor_constructed (GObject *object)
 {
   GimpSelectionEditor *editor = GIMP_SELECTION_EDITOR (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   editor->all_button =
     gimp_editor_add_action_button (GIMP_EDITOR (editor), "select",
@@ -279,7 +278,7 @@ gimp_selection_view_button_press (GtkWidget           *widget,
                              options->sample_merged,
                              FALSE, 0.0,
                              NULL,
-                             &color, NULL))
+                             NULL, &color))
     {
       gimp_channel_select_by_color (gimp_image_get_mask (image_editor->image),
                                     drawable,

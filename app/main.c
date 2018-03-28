@@ -31,21 +31,24 @@
 
 #include <locale.h>
 
-#include <glib-object.h>
+#include <gio/gio.h>
 
 #ifdef G_OS_WIN32
 #include <io.h> /* get_osfhandle */
-#endif
+
+#endif /* G_OS_WIN32 */
 
 #ifndef GIMP_CONSOLE_COMPILATION
 #include <gdk/gdk.h>
+#else
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #endif
+
+#include <babl/babl.h>
 
 #include "libgimpbase/gimpbase.h"
 
 #include "pdb/pdb-types.h"
-
-#include "base/tile.h"
 
 #include "config/gimpconfig-dump.h"
 
@@ -60,13 +63,14 @@
 #include "sanity.h"
 #include "signals.h"
 #include "unique.h"
-#include "units.h"
-#include "version.h"
 
 #ifdef G_OS_WIN32
 /* To get PROCESS_DEP_* defined we need _WIN32_WINNT at 0x0601. We still
  * use the API optionally only if present, though.
  */
+#ifdef _WIN32_WINNT
+#undef _WIN32_WINNT
+#endif
 #define _WIN32_WINNT 0x0601
 #include <windows.h>
 #include <conio.h>
@@ -74,6 +78,7 @@
 
 #include "gimp-log.h"
 #include "gimp-intl.h"
+#include "gimp-version.h"
 
 
 static gboolean  gimp_option_fatal_warnings   (const gchar  *option_name,
@@ -133,9 +138,11 @@ static gboolean            console_messages  = FALSE;
 static gboolean            use_debug_handler = FALSE;
 
 #ifdef GIMP_UNSTABLE
+static gboolean            show_playground   = TRUE;
 static GimpStackTraceMode  stack_trace_mode  = GIMP_STACK_TRACE_QUERY;
 static GimpPDBCompatMode   pdb_compat_mode   = GIMP_PDB_COMPAT_WARN;
 #else
+static gboolean            show_playground   = FALSE;
 static GimpStackTraceMode  stack_trace_mode  = GIMP_STACK_TRACE_NEVER;
 static GimpPDBCompatMode   pdb_compat_mode   = GIMP_PDB_COMPAT_ON;
 #endif
@@ -190,7 +197,7 @@ static const GOptionEntry main_entries[] =
   {
     "no-shm", 0, G_OPTION_FLAG_REVERSE,
     G_OPTION_ARG_NONE, &use_shm,
-    N_("Do not use shared memory between GIMP and plugins"), NULL
+    N_("Do not use shared memory between GIMP and plug-ins"), NULL
   },
   {
     "no-cpu-accel", 0, G_OPTION_FLAG_REVERSE,
@@ -271,6 +278,11 @@ static const GOptionEntry main_entries[] =
     N_("Output a sorted list of deprecated procedures in the PDB"), NULL
   },
   {
+    "show-playground", 0, G_OPTION_FLAG_HIDDEN,
+    G_OPTION_ARG_NONE, &show_playground,
+    N_("Show a preferences page with experimental features"), NULL
+  },
+  {
     G_OPTION_REMAINING, 0, 0,
     G_OPTION_ARG_FILENAME_ARRAY, &filenames,
     NULL, NULL
@@ -286,6 +298,9 @@ main (int    argc,
   GError         *error = NULL;
   const gchar    *abort_message;
   gchar          *basename;
+  GFile          *system_gimprc_file = NULL;
+  GFile          *user_gimprc_file   = NULL;
+  gchar          *backtrace_file     = NULL;
   gint            i;
 
 #if defined (__GNUC__) && defined (_WIN64)
@@ -298,14 +313,18 @@ main (int    argc,
   argv = __argv;
 #endif
 
+  /* Start signal handlers early. */
+  gimp_init_signal_handlers (&backtrace_file);
+
 #ifdef G_OS_WIN32
   /* Reduce risks */
   {
     typedef BOOL (WINAPI *t_SetDllDirectoryA) (LPCSTR lpPathName);
     t_SetDllDirectoryA p_SetDllDirectoryA;
 
-    p_SetDllDirectoryA = GetProcAddress (GetModuleHandle ("kernel32.dll"),
-					 "SetDllDirectoryA");
+    p_SetDllDirectoryA =
+      (t_SetDllDirectoryA) GetProcAddress (GetModuleHandle ("kernel32.dll"),
+                                           "SetDllDirectoryA");
     if (p_SetDllDirectoryA)
       (*p_SetDllDirectoryA) ("");
   }
@@ -348,15 +367,26 @@ main (int    argc,
     typedef BOOL (WINAPI *t_SetProcessDEPPolicy) (DWORD dwFlags);
     t_SetProcessDEPPolicy p_SetProcessDEPPolicy;
 
-    p_SetProcessDEPPolicy = GetProcAddress (GetModuleHandle ("kernel32.dll"),
-					    "SetProcessDEPPolicy");
+    p_SetProcessDEPPolicy =
+      (t_SetProcessDEPPolicy) GetProcAddress (GetModuleHandle ("kernel32.dll"),
+                                              "SetProcessDEPPolicy");
     if (p_SetProcessDEPPolicy)
       (*p_SetProcessDEPPolicy) (PROCESS_DEP_ENABLE|PROCESS_DEP_DISABLE_ATL_THUNK_EMULATION);
   }
 #endif
-#endif
 
-  g_thread_init (NULL);
+  /* Group all our windows together on the taskbar */
+  {
+    typedef HRESULT (WINAPI *t_SetCurrentProcessExplicitAppUserModelID) (PCWSTR lpPathName);
+    t_SetCurrentProcessExplicitAppUserModelID p_SetCurrentProcessExplicitAppUserModelID;
+
+    p_SetCurrentProcessExplicitAppUserModelID =
+      (t_SetCurrentProcessExplicitAppUserModelID) GetProcAddress (GetModuleHandle ("shell32.dll"),
+                                                                  "SetCurrentProcessExplicitAppUserModelID");
+    if (p_SetCurrentProcessExplicitAppUserModelID)
+      (*p_SetCurrentProcessExplicitAppUserModelID) (L"gimp.GimpApplication");
+  }
+#endif
 
 #ifdef GIMP_UNSTABLE
   gimp_open_console_window ();
@@ -372,12 +402,8 @@ main (int    argc,
 
   g_set_application_name (GIMP_NAME);
 
-#if GLIB_CHECK_VERSION (2, 39, 90)
 #ifdef G_OS_WIN32
   argv = g_win32_get_command_line ();
-#else
-  argv = g_strdupv (argv);
-#endif
 #else
   argv = g_strdupv (argv);
 #endif
@@ -437,11 +463,7 @@ main (int    argc,
 
   app_libs_init (context, no_interface);
 
-#if GLIB_CHECK_VERSION (2, 39, 90)
   if (! g_option_context_parse_strv (context, &argv, &error))
-#else
-  if (! g_option_context_parse (context, &argc, &argv, &error))
-#endif
     {
       if (error)
         {
@@ -470,8 +492,11 @@ main (int    argc,
   if (! new_instance && gimp_unique_open (filenames, as_new))
     {
       if (be_verbose)
-	g_print ("%s\n",
-		 _("Another GIMP instance is already running."));
+        g_print ("%s\n",
+                 _("Another GIMP instance is already running."));
+
+      if (batch_commands)
+        gimp_unique_batch_run (batch_interpreter, batch_commands);
 
       gdk_notify_startup_complete ();
 
@@ -479,16 +504,20 @@ main (int    argc,
     }
 #endif
 
-  abort_message = sanity_check ();
+  abort_message = sanity_check_early ();
   if (abort_message)
     app_abort (no_interface, abort_message);
 
-  gimp_init_signal_handlers (stack_trace_mode);
+  if (system_gimprc)
+    system_gimprc_file = g_file_new_for_commandline_arg (system_gimprc);
+
+  if (user_gimprc)
+    user_gimprc_file = g_file_new_for_commandline_arg (user_gimprc);
 
   app_run (argv[0],
            filenames,
-           system_gimprc,
-           user_gimprc,
+           system_gimprc_file,
+           user_gimprc_file,
            session_name,
            batch_interpreter,
            batch_commands,
@@ -502,8 +531,19 @@ main (int    argc,
            use_cpu_accel,
            console_messages,
            use_debug_handler,
+           show_playground,
            stack_trace_mode,
-           pdb_compat_mode);
+           pdb_compat_mode,
+           backtrace_file);
+
+  if (backtrace_file)
+    g_free (backtrace_file);
+
+  if (system_gimprc_file)
+    g_object_unref (system_gimprc_file);
+
+  if (user_gimprc_file)
+    g_object_unref (user_gimprc_file);
 
   g_strfreev (argv);
 
@@ -645,11 +685,11 @@ gimp_option_dump_gimprc (const gchar  *option_name,
       Gimp     *gimp;
       gboolean  success;
 
+      babl_init ();
       gimp = g_object_new (GIMP_TYPE_GIMP, NULL);
+      gimp_load_config (gimp, NULL, NULL);
 
-      units_init (gimp);
-
-      success = gimp_config_dump (format);
+      success = gimp_config_dump (G_OBJECT (gimp), format);
 
       g_object_unref (gimp);
 
@@ -669,7 +709,9 @@ gimp_option_dump_pdb_procedures_deprecated (const gchar  *option_name,
   GList *deprecated_procs;
   GList *iter;
 
+  babl_init ();
   gimp = g_object_new (GIMP_TYPE_GIMP, NULL);
+  gimp_load_config (gimp, NULL, NULL);
 
   /* Make sure to turn on compatibility mode so deprecated procedures
    * are included
@@ -740,7 +782,9 @@ gimp_init_malloc (void)
    * An alternative to tuning this parameter would be to use
    * malloc_trim(), for example after releasing a large tile-manager.
    */
+#if 0
   mallopt (M_MMAP_THRESHOLD, TILE_WIDTH * TILE_HEIGHT);
+#endif
 #endif
 }
 

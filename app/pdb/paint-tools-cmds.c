@@ -21,8 +21,12 @@
 
 #include <gegl.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
 #include "libgimpconfig/gimpconfig.h"
 #include "libgimpmath/gimpmath.h"
+
+#include "libgimpbase/gimpbase.h"
 
 #include "pdb-types.h"
 
@@ -66,7 +70,7 @@ paint_tools_stroke (Gimp              *gimp,
    *  from the current context
    */
   gimp_context_define_properties (GIMP_CONTEXT (options),
-                                  GIMP_CONTEXT_PAINT_PROPS_MASK,
+                                  GIMP_CONTEXT_PROP_MASK_PAINT,
                                   FALSE);
   gimp_context_set_parent (GIMP_CONTEXT (options), context);
 
@@ -96,13 +100,13 @@ paint_tools_stroke (Gimp              *gimp,
   return retval;
 }
 
-static GValueArray *
-airbrush_invoker (GimpProcedure      *procedure,
-                  Gimp               *gimp,
-                  GimpContext        *context,
-                  GimpProgress       *progress,
-                  const GValueArray  *args,
-                  GError            **error)
+static GimpValueArray *
+airbrush_invoker (GimpProcedure         *procedure,
+                  Gimp                  *gimp,
+                  GimpContext           *context,
+                  GimpProgress          *progress,
+                  const GimpValueArray  *args,
+                  GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -110,10 +114,10 @@ airbrush_invoker (GimpProcedure      *procedure,
   gint32 num_strokes;
   const gdouble *strokes;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  pressure = g_value_get_double (&args->values[1]);
-  num_strokes = g_value_get_int (&args->values[2]);
-  strokes = gimp_value_get_floatarray (&args->values[3]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  pressure = g_value_get_double (gimp_value_array_index (args, 1));
+  num_strokes = g_value_get_int (gimp_value_array_index (args, 2));
+  strokes = gimp_value_get_floatarray (gimp_value_array_index (args, 3));
 
   if (success)
     {
@@ -122,7 +126,8 @@ airbrush_invoker (GimpProcedure      *procedure,
                                             "gimp-airbrush");
 
       if (options &&
-          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           options = gimp_config_duplicate (GIMP_CONFIG (options));
@@ -144,22 +149,22 @@ airbrush_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-airbrush_default_invoker (GimpProcedure      *procedure,
-                          Gimp               *gimp,
-                          GimpContext        *context,
-                          GimpProgress       *progress,
-                          const GValueArray  *args,
-                          GError            **error)
+static GimpValueArray *
+airbrush_default_invoker (GimpProcedure         *procedure,
+                          Gimp                  *gimp,
+                          GimpContext           *context,
+                          GimpProgress          *progress,
+                          const GimpValueArray  *args,
+                          GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 num_strokes;
   const gdouble *strokes;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  num_strokes = g_value_get_int (&args->values[1]);
-  strokes = gimp_value_get_floatarray (&args->values[2]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  num_strokes = g_value_get_int (gimp_value_array_index (args, 1));
+  strokes = gimp_value_get_floatarray (gimp_value_array_index (args, 2));
 
   if (success)
     {
@@ -168,7 +173,8 @@ airbrush_default_invoker (GimpProcedure      *procedure,
                                             "gimp-airbrush");
 
       if (options &&
-          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           options = gimp_config_duplicate (GIMP_CONFIG (options));
@@ -186,13 +192,13 @@ airbrush_default_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-clone_invoker (GimpProcedure      *procedure,
-               Gimp               *gimp,
-               GimpContext        *context,
-               GimpProgress       *progress,
-               const GValueArray  *args,
-               GError            **error)
+static GimpValueArray *
+clone_invoker (GimpProcedure         *procedure,
+               Gimp                  *gimp,
+               GimpContext           *context,
+               GimpProgress          *progress,
+               const GimpValueArray  *args,
+               GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -203,13 +209,13 @@ clone_invoker (GimpProcedure      *procedure,
   gint32 num_strokes;
   const gdouble *strokes;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  src_drawable = gimp_value_get_drawable (&args->values[1], gimp);
-  clone_type = g_value_get_enum (&args->values[2]);
-  src_x = g_value_get_double (&args->values[3]);
-  src_y = g_value_get_double (&args->values[4]);
-  num_strokes = g_value_get_int (&args->values[5]);
-  strokes = gimp_value_get_floatarray (&args->values[6]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  src_drawable = gimp_value_get_drawable (gimp_value_array_index (args, 1), gimp);
+  clone_type = g_value_get_enum (gimp_value_array_index (args, 2));
+  src_x = g_value_get_double (gimp_value_array_index (args, 3));
+  src_y = g_value_get_double (gimp_value_array_index (args, 4));
+  num_strokes = g_value_get_int (gimp_value_array_index (args, 5));
+  strokes = gimp_value_get_floatarray (gimp_value_array_index (args, 6));
 
   if (success)
     {
@@ -218,7 +224,8 @@ clone_invoker (GimpProcedure      *procedure,
                                             "gimp-clone");
 
       if (options &&
-          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           options = gimp_config_duplicate (GIMP_CONFIG (options));
@@ -231,8 +238,8 @@ clone_invoker (GimpProcedure      *procedure,
                                         num_strokes, strokes, error,
                                         "undo-desc",    options->paint_info->blurb,
                                         "src-drawable", src_drawable,
-                                        "src-x",        src_x,
-                                        "src-y",        src_y,
+                                        "src-x",        (gint) floor (src_x),
+                                        "src-y",        (gint) floor (src_y),
                                         NULL);
         }
       else
@@ -243,22 +250,22 @@ clone_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-clone_default_invoker (GimpProcedure      *procedure,
-                       Gimp               *gimp,
-                       GimpContext        *context,
-                       GimpProgress       *progress,
-                       const GValueArray  *args,
-                       GError            **error)
+static GimpValueArray *
+clone_default_invoker (GimpProcedure         *procedure,
+                       Gimp                  *gimp,
+                       GimpContext           *context,
+                       GimpProgress          *progress,
+                       const GimpValueArray  *args,
+                       GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 num_strokes;
   const gdouble *strokes;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  num_strokes = g_value_get_int (&args->values[1]);
-  strokes = gimp_value_get_floatarray (&args->values[2]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  num_strokes = g_value_get_int (gimp_value_array_index (args, 1));
+  strokes = gimp_value_get_floatarray (gimp_value_array_index (args, 2));
 
   if (success)
     {
@@ -267,7 +274,8 @@ clone_default_invoker (GimpProcedure      *procedure,
                                             "gimp-clone");
 
       if (options &&
-          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           options = gimp_config_duplicate (GIMP_CONFIG (options));
@@ -285,13 +293,13 @@ clone_default_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-convolve_invoker (GimpProcedure      *procedure,
-                  Gimp               *gimp,
-                  GimpContext        *context,
-                  GimpProgress       *progress,
-                  const GValueArray  *args,
-                  GError            **error)
+static GimpValueArray *
+convolve_invoker (GimpProcedure         *procedure,
+                  Gimp                  *gimp,
+                  GimpContext           *context,
+                  GimpProgress          *progress,
+                  const GimpValueArray  *args,
+                  GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -300,11 +308,11 @@ convolve_invoker (GimpProcedure      *procedure,
   gint32 num_strokes;
   const gdouble *strokes;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  pressure = g_value_get_double (&args->values[1]);
-  convolve_type = g_value_get_enum (&args->values[2]);
-  num_strokes = g_value_get_int (&args->values[3]);
-  strokes = gimp_value_get_floatarray (&args->values[4]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  pressure = g_value_get_double (gimp_value_array_index (args, 1));
+  convolve_type = g_value_get_enum (gimp_value_array_index (args, 2));
+  num_strokes = g_value_get_int (gimp_value_array_index (args, 3));
+  strokes = gimp_value_get_floatarray (gimp_value_array_index (args, 4));
 
   if (success)
     {
@@ -313,7 +321,8 @@ convolve_invoker (GimpProcedure      *procedure,
                                             "gimp-convolve");
 
       if (options &&
-          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           options = gimp_config_duplicate (GIMP_CONFIG (options));
@@ -336,22 +345,22 @@ convolve_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-convolve_default_invoker (GimpProcedure      *procedure,
-                          Gimp               *gimp,
-                          GimpContext        *context,
-                          GimpProgress       *progress,
-                          const GValueArray  *args,
-                          GError            **error)
+static GimpValueArray *
+convolve_default_invoker (GimpProcedure         *procedure,
+                          Gimp                  *gimp,
+                          GimpContext           *context,
+                          GimpProgress          *progress,
+                          const GimpValueArray  *args,
+                          GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 num_strokes;
   const gdouble *strokes;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  num_strokes = g_value_get_int (&args->values[1]);
-  strokes = gimp_value_get_floatarray (&args->values[2]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  num_strokes = g_value_get_int (gimp_value_array_index (args, 1));
+  strokes = gimp_value_get_floatarray (gimp_value_array_index (args, 2));
 
   if (success)
     {
@@ -360,7 +369,8 @@ convolve_default_invoker (GimpProcedure      *procedure,
                                             "gimp-convolve");
 
       if (options &&
-          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           options = gimp_config_duplicate (GIMP_CONFIG (options));
@@ -378,13 +388,13 @@ convolve_default_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-dodgeburn_invoker (GimpProcedure      *procedure,
-                   Gimp               *gimp,
-                   GimpContext        *context,
-                   GimpProgress       *progress,
-                   const GValueArray  *args,
-                   GError            **error)
+static GimpValueArray *
+dodgeburn_invoker (GimpProcedure         *procedure,
+                   Gimp                  *gimp,
+                   GimpContext           *context,
+                   GimpProgress          *progress,
+                   const GimpValueArray  *args,
+                   GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -394,12 +404,12 @@ dodgeburn_invoker (GimpProcedure      *procedure,
   gint32 num_strokes;
   const gdouble *strokes;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  exposure = g_value_get_double (&args->values[1]);
-  dodgeburn_type = g_value_get_enum (&args->values[2]);
-  dodgeburn_mode = g_value_get_enum (&args->values[3]);
-  num_strokes = g_value_get_int (&args->values[4]);
-  strokes = gimp_value_get_floatarray (&args->values[5]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  exposure = g_value_get_double (gimp_value_array_index (args, 1));
+  dodgeburn_type = g_value_get_enum (gimp_value_array_index (args, 2));
+  dodgeburn_mode = g_value_get_enum (gimp_value_array_index (args, 3));
+  num_strokes = g_value_get_int (gimp_value_array_index (args, 4));
+  strokes = gimp_value_get_floatarray (gimp_value_array_index (args, 5));
 
   if (success)
     {
@@ -408,7 +418,8 @@ dodgeburn_invoker (GimpProcedure      *procedure,
                                             "gimp-dodge-burn");
 
       if (options &&
-          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           options = gimp_config_duplicate (GIMP_CONFIG (options));
@@ -432,22 +443,22 @@ dodgeburn_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-dodgeburn_default_invoker (GimpProcedure      *procedure,
-                           Gimp               *gimp,
-                           GimpContext        *context,
-                           GimpProgress       *progress,
-                           const GValueArray  *args,
-                           GError            **error)
+static GimpValueArray *
+dodgeburn_default_invoker (GimpProcedure         *procedure,
+                           Gimp                  *gimp,
+                           GimpContext           *context,
+                           GimpProgress          *progress,
+                           const GimpValueArray  *args,
+                           GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 num_strokes;
   const gdouble *strokes;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  num_strokes = g_value_get_int (&args->values[1]);
-  strokes = gimp_value_get_floatarray (&args->values[2]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  num_strokes = g_value_get_int (gimp_value_array_index (args, 1));
+  strokes = gimp_value_get_floatarray (gimp_value_array_index (args, 2));
 
   if (success)
     {
@@ -456,7 +467,8 @@ dodgeburn_default_invoker (GimpProcedure      *procedure,
                                             "gimp-dodge-burn");
 
       if (options &&
-          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           options = gimp_config_duplicate (GIMP_CONFIG (options));
@@ -474,13 +486,13 @@ dodgeburn_default_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-eraser_invoker (GimpProcedure      *procedure,
-                Gimp               *gimp,
-                GimpContext        *context,
-                GimpProgress       *progress,
-                const GValueArray  *args,
-                GError            **error)
+static GimpValueArray *
+eraser_invoker (GimpProcedure         *procedure,
+                Gimp                  *gimp,
+                GimpContext           *context,
+                GimpProgress          *progress,
+                const GimpValueArray  *args,
+                GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -489,11 +501,11 @@ eraser_invoker (GimpProcedure      *procedure,
   gint32 hardness;
   gint32 method;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  num_strokes = g_value_get_int (&args->values[1]);
-  strokes = gimp_value_get_floatarray (&args->values[2]);
-  hardness = g_value_get_enum (&args->values[3]);
-  method = g_value_get_enum (&args->values[4]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  num_strokes = g_value_get_int (gimp_value_array_index (args, 1));
+  strokes = gimp_value_get_floatarray (gimp_value_array_index (args, 2));
+  hardness = g_value_get_enum (gimp_value_array_index (args, 3));
+  method = g_value_get_enum (gimp_value_array_index (args, 4));
 
   if (success)
     {
@@ -502,7 +514,8 @@ eraser_invoker (GimpProcedure      *procedure,
                                             "gimp-eraser");
 
       if (options &&
-          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           options = gimp_config_duplicate (GIMP_CONFIG (options));
@@ -525,22 +538,22 @@ eraser_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-eraser_default_invoker (GimpProcedure      *procedure,
-                        Gimp               *gimp,
-                        GimpContext        *context,
-                        GimpProgress       *progress,
-                        const GValueArray  *args,
-                        GError            **error)
+static GimpValueArray *
+eraser_default_invoker (GimpProcedure         *procedure,
+                        Gimp                  *gimp,
+                        GimpContext           *context,
+                        GimpProgress          *progress,
+                        const GimpValueArray  *args,
+                        GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 num_strokes;
   const gdouble *strokes;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  num_strokes = g_value_get_int (&args->values[1]);
-  strokes = gimp_value_get_floatarray (&args->values[2]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  num_strokes = g_value_get_int (gimp_value_array_index (args, 1));
+  strokes = gimp_value_get_floatarray (gimp_value_array_index (args, 2));
 
   if (success)
     {
@@ -549,7 +562,8 @@ eraser_default_invoker (GimpProcedure      *procedure,
                                             "gimp-eraser");
 
       if (options &&
-          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           options = gimp_config_duplicate (GIMP_CONFIG (options));
@@ -567,13 +581,13 @@ eraser_default_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-heal_invoker (GimpProcedure      *procedure,
-              Gimp               *gimp,
-              GimpContext        *context,
-              GimpProgress       *progress,
-              const GValueArray  *args,
-              GError            **error)
+static GimpValueArray *
+heal_invoker (GimpProcedure         *procedure,
+              Gimp                  *gimp,
+              GimpContext           *context,
+              GimpProgress          *progress,
+              const GimpValueArray  *args,
+              GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -583,12 +597,12 @@ heal_invoker (GimpProcedure      *procedure,
   gint32 num_strokes;
   const gdouble *strokes;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  src_drawable = gimp_value_get_drawable (&args->values[1], gimp);
-  src_x = g_value_get_double (&args->values[2]);
-  src_y = g_value_get_double (&args->values[3]);
-  num_strokes = g_value_get_int (&args->values[4]);
-  strokes = gimp_value_get_floatarray (&args->values[5]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  src_drawable = gimp_value_get_drawable (gimp_value_array_index (args, 1), gimp);
+  src_x = g_value_get_double (gimp_value_array_index (args, 2));
+  src_y = g_value_get_double (gimp_value_array_index (args, 3));
+  num_strokes = g_value_get_int (gimp_value_array_index (args, 4));
+  strokes = gimp_value_get_floatarray (gimp_value_array_index (args, 5));
 
   if (success)
     {
@@ -597,7 +611,8 @@ heal_invoker (GimpProcedure      *procedure,
                                             "gimp-heal");
 
       if (options &&
-          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           options = gimp_config_duplicate (GIMP_CONFIG (options));
@@ -606,8 +621,8 @@ heal_invoker (GimpProcedure      *procedure,
                                         num_strokes, strokes, error,
                                         "undo-desc",    options->paint_info->blurb,
                                         "src-drawable", src_drawable,
-                                        "src-x",        src_x,
-                                        "src-y",        src_y,
+                                        "src-x",        (gint) floor (src_x),
+                                        "src-y",        (gint) floor (src_y),
                                         NULL);
         }
       else
@@ -618,22 +633,22 @@ heal_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-heal_default_invoker (GimpProcedure      *procedure,
-                      Gimp               *gimp,
-                      GimpContext        *context,
-                      GimpProgress       *progress,
-                      const GValueArray  *args,
-                      GError            **error)
+static GimpValueArray *
+heal_default_invoker (GimpProcedure         *procedure,
+                      Gimp                  *gimp,
+                      GimpContext           *context,
+                      GimpProgress          *progress,
+                      const GimpValueArray  *args,
+                      GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 num_strokes;
   const gdouble *strokes;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  num_strokes = g_value_get_int (&args->values[1]);
-  strokes = gimp_value_get_floatarray (&args->values[2]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  num_strokes = g_value_get_int (gimp_value_array_index (args, 1));
+  strokes = gimp_value_get_floatarray (gimp_value_array_index (args, 2));
 
   if (success)
     {
@@ -642,7 +657,8 @@ heal_default_invoker (GimpProcedure      *procedure,
                                             "gimp-heal");
 
       if (options &&
-          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           options = gimp_config_duplicate (GIMP_CONFIG (options));
@@ -660,13 +676,13 @@ heal_default_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-paintbrush_invoker (GimpProcedure      *procedure,
-                    Gimp               *gimp,
-                    GimpContext        *context,
-                    GimpProgress       *progress,
-                    const GValueArray  *args,
-                    GError            **error)
+static GimpValueArray *
+paintbrush_invoker (GimpProcedure         *procedure,
+                    Gimp                  *gimp,
+                    GimpContext           *context,
+                    GimpProgress          *progress,
+                    const GimpValueArray  *args,
+                    GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -676,12 +692,12 @@ paintbrush_invoker (GimpProcedure      *procedure,
   gint32 method;
   gdouble gradient_length;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  fade_out = g_value_get_double (&args->values[1]);
-  num_strokes = g_value_get_int (&args->values[2]);
-  strokes = gimp_value_get_floatarray (&args->values[3]);
-  method = g_value_get_enum (&args->values[4]);
-  gradient_length = g_value_get_double (&args->values[5]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  fade_out = g_value_get_double (gimp_value_array_index (args, 1));
+  num_strokes = g_value_get_int (gimp_value_array_index (args, 2));
+  strokes = gimp_value_get_floatarray (gimp_value_array_index (args, 3));
+  method = g_value_get_enum (gimp_value_array_index (args, 4));
+  gradient_length = g_value_get_double (gimp_value_array_index (args, 5));
 
   if (success)
     {
@@ -690,7 +706,8 @@ paintbrush_invoker (GimpProcedure      *procedure,
                                             "gimp-paintbrush");
 
       if (options &&
-          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           GimpDynamics *pdb_dynamics  = GIMP_DYNAMICS (gimp_dynamics_new (context, "pdb"));
@@ -744,22 +761,22 @@ paintbrush_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-paintbrush_default_invoker (GimpProcedure      *procedure,
-                            Gimp               *gimp,
-                            GimpContext        *context,
-                            GimpProgress       *progress,
-                            const GValueArray  *args,
-                            GError            **error)
+static GimpValueArray *
+paintbrush_default_invoker (GimpProcedure         *procedure,
+                            Gimp                  *gimp,
+                            GimpContext           *context,
+                            GimpProgress          *progress,
+                            const GimpValueArray  *args,
+                            GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 num_strokes;
   const gdouble *strokes;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  num_strokes = g_value_get_int (&args->values[1]);
-  strokes = gimp_value_get_floatarray (&args->values[2]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  num_strokes = g_value_get_int (gimp_value_array_index (args, 1));
+  strokes = gimp_value_get_floatarray (gimp_value_array_index (args, 2));
 
   if (success)
     {
@@ -768,7 +785,8 @@ paintbrush_default_invoker (GimpProcedure      *procedure,
                                             "gimp-paintbrush");
 
       if (options &&
-          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           options = gimp_config_duplicate (GIMP_CONFIG (options));
@@ -786,22 +804,22 @@ paintbrush_default_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-pencil_invoker (GimpProcedure      *procedure,
-                Gimp               *gimp,
-                GimpContext        *context,
-                GimpProgress       *progress,
-                const GValueArray  *args,
-                GError            **error)
+static GimpValueArray *
+pencil_invoker (GimpProcedure         *procedure,
+                Gimp                  *gimp,
+                GimpContext           *context,
+                GimpProgress          *progress,
+                const GimpValueArray  *args,
+                GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 num_strokes;
   const gdouble *strokes;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  num_strokes = g_value_get_int (&args->values[1]);
-  strokes = gimp_value_get_floatarray (&args->values[2]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  num_strokes = g_value_get_int (gimp_value_array_index (args, 1));
+  strokes = gimp_value_get_floatarray (gimp_value_array_index (args, 2));
 
   if (success)
     {
@@ -810,7 +828,8 @@ pencil_invoker (GimpProcedure      *procedure,
                                             "gimp-pencil");
 
       if (options &&
-          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           options = gimp_config_duplicate (GIMP_CONFIG (options));
@@ -828,13 +847,13 @@ pencil_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-smudge_invoker (GimpProcedure      *procedure,
-                Gimp               *gimp,
-                GimpContext        *context,
-                GimpProgress       *progress,
-                const GValueArray  *args,
-                GError            **error)
+static GimpValueArray *
+smudge_invoker (GimpProcedure         *procedure,
+                Gimp                  *gimp,
+                GimpContext           *context,
+                GimpProgress          *progress,
+                const GimpValueArray  *args,
+                GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -842,10 +861,10 @@ smudge_invoker (GimpProcedure      *procedure,
   gint32 num_strokes;
   const gdouble *strokes;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  pressure = g_value_get_double (&args->values[1]);
-  num_strokes = g_value_get_int (&args->values[2]);
-  strokes = gimp_value_get_floatarray (&args->values[3]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  pressure = g_value_get_double (gimp_value_array_index (args, 1));
+  num_strokes = g_value_get_int (gimp_value_array_index (args, 2));
+  strokes = gimp_value_get_floatarray (gimp_value_array_index (args, 3));
 
   if (success)
     {
@@ -854,7 +873,8 @@ smudge_invoker (GimpProcedure      *procedure,
                                             "gimp-smudge");
 
       if (options &&
-          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           options = gimp_config_duplicate (GIMP_CONFIG (options));
@@ -876,22 +896,22 @@ smudge_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-smudge_default_invoker (GimpProcedure      *procedure,
-                        Gimp               *gimp,
-                        GimpContext        *context,
-                        GimpProgress       *progress,
-                        const GValueArray  *args,
-                        GError            **error)
+static GimpValueArray *
+smudge_default_invoker (GimpProcedure         *procedure,
+                        Gimp                  *gimp,
+                        GimpContext           *context,
+                        GimpProgress          *progress,
+                        const GimpValueArray  *args,
+                        GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 num_strokes;
   const gdouble *strokes;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  num_strokes = g_value_get_int (&args->values[1]);
-  strokes = gimp_value_get_floatarray (&args->values[2]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  num_strokes = g_value_get_int (gimp_value_array_index (args, 1));
+  strokes = gimp_value_get_floatarray (gimp_value_array_index (args, 2));
 
   if (success)
     {
@@ -900,7 +920,8 @@ smudge_default_invoker (GimpProcedure      *procedure,
                                             "gimp-smudge");
 
       if (options &&
-          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           options = gimp_config_duplicate (GIMP_CONFIG (options));
@@ -1028,7 +1049,7 @@ register_paint_tools_procs (GimpPDB *pdb)
                                                   "clone type",
                                                   "The type of clone",
                                                   GIMP_TYPE_CLONE_TYPE,
-                                                  GIMP_IMAGE_CLONE,
+                                                  GIMP_CLONE_IMAGE,
                                                   GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_double ("src-x",
@@ -1121,7 +1142,7 @@ register_paint_tools_procs (GimpPDB *pdb)
                                                   "convolve type",
                                                   "Convolve type",
                                                   GIMP_TYPE_CONVOLVE_TYPE,
-                                                  GIMP_BLUR_CONVOLVE,
+                                                  GIMP_CONVOLVE_BLUR,
                                                   GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("num-strokes",
@@ -1202,14 +1223,14 @@ register_paint_tools_procs (GimpPDB *pdb)
                                                   "dodgeburn type",
                                                   "The type either dodge or burn",
                                                   GIMP_TYPE_DODGE_BURN_TYPE,
-                                                  GIMP_DODGE,
+                                                  GIMP_DODGE_BURN_TYPE_DODGE,
                                                   GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("dodgeburn-mode",
                                                   "dodgeburn mode",
                                                   "The mode",
                                                   GIMP_TYPE_TRANSFER_MODE,
-                                                  GIMP_SHADOWS,
+                                                  GIMP_TRANSFER_SHADOWS,
                                                   GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("num-strokes",

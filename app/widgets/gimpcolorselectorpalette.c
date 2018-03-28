@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -57,7 +58,7 @@ gimp_color_selector_palette_class_init (GimpColorSelectorPaletteClass *klass)
 
   selector_class->name       = _("Palette");
   selector_class->help_id    = "gimp-colorselector-palette";
-  selector_class->stock_id   = GIMP_STOCK_PALETTE;
+  selector_class->icon_name  = GIMP_ICON_PALETTE;
   selector_class->set_color  = gimp_color_selector_palette_set_color;
   selector_class->set_config = gimp_color_selector_palette_set_config;
 }
@@ -126,8 +127,7 @@ gimp_color_selector_palette_set_config (GimpColorSelector *selector,
       gimp_view_renderer_set_context (GIMP_VIEW (select->view)->renderer,
                                       NULL);
 
-      g_object_unref (select->context);
-      select->context = NULL;
+      g_clear_object (&select->context);
     }
 
   if (config)

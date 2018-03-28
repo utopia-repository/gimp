@@ -20,14 +20,14 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "widgets-types.h"
 
-#include "base/temp-buf.h"
-
 #include "core/gimpbrushpipe.h"
 #include "core/gimpbrushgenerated.h"
+#include "core/gimptempbuf.h"
 
 #include "gimpviewrendererbrush.h"
 
@@ -88,7 +88,11 @@ gimp_view_renderer_brush_render (GimpViewRenderer *renderer,
                                  GtkWidget        *widget)
 {
   GimpViewRendererBrush *renderbrush = GIMP_VIEW_RENDERER_BRUSH (renderer);
-  TempBuf               *temp_buf;
+  GimpTempBuf           *temp_buf;
+  gint                   temp_buf_x = 0;
+  gint                   temp_buf_y = 0;
+  gint                   temp_buf_width;
+  gint                   temp_buf_height;
 
   if (renderbrush->pipe_timeout_id)
     {
@@ -101,22 +105,28 @@ gimp_view_renderer_brush_render (GimpViewRenderer *renderer,
                                             renderer->width,
                                             renderer->height);
 
-  if (temp_buf->width < renderer->width)
-    temp_buf->x = (renderer->width - temp_buf->width) / 2;
+  temp_buf_width  = gimp_temp_buf_get_width  (temp_buf);
+  temp_buf_height = gimp_temp_buf_get_height (temp_buf);
 
-  if (temp_buf->height < renderer->height)
-    temp_buf->y = (renderer->height - temp_buf->height) / 2;
+  if (temp_buf_width < renderer->width)
+    temp_buf_x = (renderer->width - temp_buf_width) / 2;
+
+  if (temp_buf_height < renderer->height)
+    temp_buf_y = (renderer->height - temp_buf_height) / 2;
 
   if (renderer->is_popup)
     {
-      gimp_view_renderer_render_temp_buf (renderer, temp_buf, -1,
+      gimp_view_renderer_render_temp_buf (renderer, widget, temp_buf,
+                                          temp_buf_x, temp_buf_y,
+                                          -1,
                                           GIMP_VIEW_BG_WHITE,
                                           GIMP_VIEW_BG_WHITE);
 
-      temp_buf_free (temp_buf);
+      gimp_temp_buf_unref (temp_buf);
 
       if (GIMP_IS_BRUSH_PIPE (renderer->viewable))
         {
+          renderbrush->widget = widget;
           renderbrush->pipe_animation_index = 0;
           renderbrush->pipe_timeout_id =
             g_timeout_add (300, gimp_view_renderer_brush_render_timeout,
@@ -126,11 +136,13 @@ gimp_view_renderer_brush_render (GimpViewRenderer *renderer,
       return;
     }
 
-  gimp_view_renderer_render_temp_buf (renderer, temp_buf, -1,
+  gimp_view_renderer_render_temp_buf (renderer, widget, temp_buf,
+                                      temp_buf_x, temp_buf_y,
+                                      -1,
                                       GIMP_VIEW_BG_WHITE,
                                       GIMP_VIEW_BG_WHITE);
 
-  temp_buf_free (temp_buf);
+  gimp_temp_buf_unref (temp_buf);
 }
 
 static gboolean
@@ -140,7 +152,11 @@ gimp_view_renderer_brush_render_timeout (gpointer data)
   GimpViewRenderer      *renderer    = GIMP_VIEW_RENDERER (data);
   GimpBrushPipe         *brush_pipe;
   GimpBrush             *brush;
-  TempBuf               *temp_buf;
+  GimpTempBuf           *temp_buf;
+  gint                   temp_buf_x = 0;
+  gint                   temp_buf_y = 0;
+  gint                   temp_buf_width;
+  gint                   temp_buf_height;
 
   if (! renderer->viewable)
     {
@@ -165,17 +181,22 @@ gimp_view_renderer_brush_render_timeout (gpointer data)
                                             renderer->width,
                                             renderer->height);
 
-  if (temp_buf->width < renderer->width)
-    temp_buf->x = (renderer->width - temp_buf->width) / 2;
+  temp_buf_width  = gimp_temp_buf_get_width  (temp_buf);
+  temp_buf_height = gimp_temp_buf_get_height (temp_buf);
 
-  if (temp_buf->height < renderer->height)
-    temp_buf->y = (renderer->height - temp_buf->height) / 2;
+  if (temp_buf_width < renderer->width)
+    temp_buf_x = (renderer->width - temp_buf_width) / 2;
 
-  gimp_view_renderer_render_temp_buf (renderer, temp_buf, -1,
+  if (temp_buf_height < renderer->height)
+    temp_buf_y = (renderer->height - temp_buf_height) / 2;
+
+  gimp_view_renderer_render_temp_buf (renderer, renderbrush->widget, temp_buf,
+                                      temp_buf_x, temp_buf_y,
+                                      -1,
                                       GIMP_VIEW_BG_WHITE,
                                       GIMP_VIEW_BG_WHITE);
 
-  temp_buf_free (temp_buf);
+  gimp_temp_buf_unref (temp_buf);
 
   gimp_view_renderer_update (renderer);
 

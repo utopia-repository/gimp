@@ -53,64 +53,64 @@ struct _GimpDrawableClass
   void          (* alpha_changed)         (GimpDrawable         *drawable);
 
   /*  virtual functions  */
-  gint64        (* estimate_memsize)      (const GimpDrawable   *drawable,
+  gint64        (* estimate_memsize)      (GimpDrawable         *drawable,
+                                           GimpComponentType     component_type,
                                            gint                  width,
                                            gint                  height);
   void          (* invalidate_boundary)   (GimpDrawable         *drawable);
-  void          (* get_active_components) (const GimpDrawable   *drawable,
+  void          (* get_active_components) (GimpDrawable         *drawable,
                                            gboolean             *active);
+  GimpComponentMask (* get_active_mask)   (GimpDrawable         *drawable);
   void          (* convert_type)          (GimpDrawable         *drawable,
                                            GimpImage            *dest_image,
-                                           GimpImageBaseType     new_base_type,
-                                           gboolean              push_undo);
-  void          (* apply_region)          (GimpDrawable         *drawable,
-                                           PixelRegion          *src2PR,
+                                           const Babl           *new_format,
+                                           GimpColorProfile     *dest_profile,
+                                           GeglDitherMethod      layer_dither_type,
+                                           GeglDitherMethod      mask_dither_type,
+                                           gboolean              push_undo,
+                                           GimpProgress         *progress);
+  void          (* apply_buffer)          (GimpDrawable         *drawable,
+                                           GeglBuffer           *buffer,
+                                           const GeglRectangle  *buffer_region,
                                            gboolean              push_undo,
                                            const gchar          *undo_desc,
                                            gdouble               opacity,
-                                           GimpLayerModeEffects  mode,
-                                           TileManager          *src1_tiles,
-                                           PixelRegion          *destPR,
-                                           gint                  x,
-                                           gint                  y);
-  void          (* replace_region)        (GimpDrawable         *drawable,
-                                           PixelRegion          *src2PR,
+                                           GimpLayerMode         mode,
+                                           GimpLayerColorSpace   blend_space,
+                                           GimpLayerColorSpace   composite_space,
+                                           GimpLayerCompositeMode composite_mode,
+                                           GeglBuffer           *base_buffer,
+                                           gint                  base_x,
+                                           gint                  base_y);
+  void          (* replace_buffer)        (GimpDrawable         *drawable,
+                                           GeglBuffer           *buffer,
+                                           const GeglRectangle  *buffer_region,
                                            gboolean              push_undo,
                                            const gchar          *undo_desc,
                                            gdouble               opacity,
-                                           PixelRegion          *maskPR,
+                                           GeglBuffer           *mask,
+                                           const GeglRectangle  *mask_region,
                                            gint                  x,
                                            gint                  y);
-  void           (* project_region)       (GimpDrawable         *drawable,
-                                           gint                  x,
-                                           gint                  y,
-                                           gint                  width,
-                                           gint                  height,
-                                           PixelRegion          *projPR,
-                                           gboolean              combine);
-  TileManager * (* get_tiles)             (GimpDrawable         *drawable);
-  void          (* set_tiles)             (GimpDrawable         *drawable,
+  GeglBuffer  * (* get_buffer)            (GimpDrawable         *drawable);
+  void          (* set_buffer)            (GimpDrawable         *drawable,
                                            gboolean              push_undo,
                                            const gchar          *undo_desc,
-                                           TileManager          *tiles,
-                                           GimpImageType         type,
+                                           GeglBuffer           *buffer,
                                            gint                  offset_x,
                                            gint                  offset_y);
   void          (* push_undo)             (GimpDrawable         *drawable,
                                            const gchar          *undo_desc,
-                                           TileManager          *tiles,
-                                           gboolean              sparse,
+                                           GeglBuffer           *buffer,
                                            gint                  x,
                                            gint                  y,
                                            gint                  width,
                                            gint                  height);
   void          (* swap_pixels)           (GimpDrawable         *drawable,
-                                           TileManager          *tiles,
-                                           gboolean              sparse,
+                                           GeglBuffer           *buffer,
                                            gint                  x,
-                                           gint                  y,
-                                           gint                  width,
-                                           gint                  height);
+                                           gint                  y);
+  GeglNode    * (* get_source_node)       (GimpDrawable         *drawable);
 };
 
 
@@ -123,9 +123,10 @@ GimpDrawable  * gimp_drawable_new                (GType               type,
                                                   gint                offset_y,
                                                   gint                width,
                                                   gint                height,
-                                                  GimpImageType       image_type);
+                                                  const Babl         *format);
 
-gint64          gimp_drawable_estimate_memsize   (const GimpDrawable *drawable,
+gint64          gimp_drawable_estimate_memsize   (GimpDrawable       *drawable,
+                                                  GimpComponentType   component_type,
                                                   gint                width,
                                                   gint                height);
 
@@ -137,105 +138,95 @@ void            gimp_drawable_update             (GimpDrawable       *drawable,
 void            gimp_drawable_alpha_changed      (GimpDrawable       *drawable);
 
 void           gimp_drawable_invalidate_boundary (GimpDrawable       *drawable);
-void         gimp_drawable_get_active_components (const GimpDrawable *drawable,
+void         gimp_drawable_get_active_components (GimpDrawable       *drawable,
                                                   gboolean           *active);
+GimpComponentMask gimp_drawable_get_active_mask  (GimpDrawable       *drawable);
 
 void            gimp_drawable_convert_type       (GimpDrawable       *drawable,
                                                   GimpImage          *dest_image,
                                                   GimpImageBaseType   new_base_type,
-                                                  gboolean            push_undo);
+                                                  GimpPrecision       new_precision,
+                                                  gboolean            new_has_alpha,
+                                                  GimpColorProfile   *dest_profile,
+                                                  GeglDitherMethod    layer_dither_type,
+                                                  GeglDitherMethod    mask_dither_type,
+                                                  gboolean            push_undo,
+                                                  GimpProgress       *progress);
 
-void            gimp_drawable_apply_region       (GimpDrawable       *drawable,
-                                                  PixelRegion        *src2PR,
-                                                  gboolean            push_undo,
-                                                  const gchar        *undo_desc,
-                                                  gdouble             opacity,
-                                                  GimpLayerModeEffects  mode,
-                                                  TileManager        *src1_tiles,
-                                                  PixelRegion        *destPR,
-                                                  gint                x,
-                                                  gint                y);
-void            gimp_drawable_replace_region     (GimpDrawable       *drawable,
-                                                  PixelRegion        *src2PR,
-                                                  gboolean            push_undo,
-                                                  const gchar        *undo_desc,
-                                                  gdouble             opacity,
-                                                  PixelRegion        *maskPR,
-                                                  gint                x,
-                                                  gint                y);
-void            gimp_drawable_project_region     (GimpDrawable       *drawable,
-                                                  gint                x,
-                                                  gint                y,
-                                                  gint                width,
-                                                  gint                height,
-                                                  PixelRegion        *projPR,
-                                                  gboolean            combine);
-void            gimp_drawable_init_src_region    (GimpDrawable       *drawable,
-                                                  PixelRegion        *srcPR,
-                                                  gint                x,
-                                                  gint                y,
-                                                  gint                width,
-                                                  gint                height,
-                                                  TileManager       **temp_tiles);
+void            gimp_drawable_apply_buffer       (GimpDrawable        *drawable,
+                                                  GeglBuffer          *buffer,
+                                                  const GeglRectangle *buffer_rect,
+                                                  gboolean             push_undo,
+                                                  const gchar         *undo_desc,
+                                                  gdouble              opacity,
+                                                  GimpLayerMode        mode,
+                                                  GimpLayerColorSpace  blend_space,
+                                                  GimpLayerColorSpace  composite_space,
+                                                  GimpLayerCompositeMode composite_mode,
+                                                  GeglBuffer          *base_buffer,
+                                                  gint                 base_x,
+                                                  gint                 base_y);
+void            gimp_drawable_replace_buffer     (GimpDrawable        *drawable,
+                                                  GeglBuffer          *buffer,
+                                                  const GeglRectangle *buffer_region,
+                                                  gboolean             push_undo,
+                                                  const gchar         *undo_desc,
+                                                  gdouble              opacity,
+                                                  GeglBuffer          *mask,
+                                                  const GeglRectangle *mask_region,
+                                                  gint                 x,
+                                                  gint                 y);
 
-TileManager   * gimp_drawable_get_tiles          (GimpDrawable       *drawable);
-void            gimp_drawable_set_tiles          (GimpDrawable       *drawable,
+GeglBuffer    * gimp_drawable_get_buffer         (GimpDrawable       *drawable);
+void            gimp_drawable_set_buffer         (GimpDrawable       *drawable,
                                                   gboolean            push_undo,
                                                   const gchar        *undo_desc,
-                                                  TileManager        *tiles,
-                                                  GimpImageType       type);
-void            gimp_drawable_set_tiles_full     (GimpDrawable       *drawable,
+                                                  GeglBuffer         *buffer);
+void            gimp_drawable_set_buffer_full    (GimpDrawable       *drawable,
                                                   gboolean            push_undo,
                                                   const gchar        *undo_desc,
-                                                  TileManager        *tiles,
-                                                  GimpImageType       type,
+                                                  GeglBuffer         *buffer,
                                                   gint                offset_x,
                                                   gint                offset_y);
+
+void            gimp_drawable_steal_buffer       (GimpDrawable       *drawable,
+                                                  GimpDrawable       *src_drawable);
 
 GeglNode      * gimp_drawable_get_source_node    (GimpDrawable       *drawable);
 GeglNode      * gimp_drawable_get_mode_node      (GimpDrawable       *drawable);
 
 void            gimp_drawable_swap_pixels        (GimpDrawable       *drawable,
-                                                  TileManager        *tiles,
-                                                  gboolean            sparse,
+                                                  GeglBuffer         *buffer,
+                                                  gint                x,
+                                                  gint                y);
+
+void            gimp_drawable_push_undo          (GimpDrawable       *drawable,
+                                                  const gchar        *undo_desc,
+                                                  GeglBuffer         *buffer,
                                                   gint                x,
                                                   gint                y,
                                                   gint                width,
                                                   gint                height);
 
-void            gimp_drawable_push_undo          (GimpDrawable       *drawable,
-                                                  const gchar        *undo_desc,
-                                                  gint                x,
-                                                  gint                y,
-                                                  gint                width,
-                                                  gint                height,
-                                                  TileManager        *tiles,
-                                                  gboolean            sparse);
+const Babl      * gimp_drawable_get_format           (GimpDrawable    *drawable);
+const Babl      * gimp_drawable_get_format_with_alpha(GimpDrawable    *drawable);
+const Babl      * gimp_drawable_get_format_without_alpha
+                                                     (GimpDrawable    *drawable);
+gboolean          gimp_drawable_get_linear           (GimpDrawable    *drawable);
+gboolean          gimp_drawable_has_alpha            (GimpDrawable    *drawable);
+GimpImageBaseType gimp_drawable_get_base_type        (GimpDrawable    *drawable);
+GimpComponentType gimp_drawable_get_component_type   (GimpDrawable    *drawable);
+GimpPrecision     gimp_drawable_get_precision        (GimpDrawable    *drawable);
+gboolean          gimp_drawable_is_rgb               (GimpDrawable    *drawable);
+gboolean          gimp_drawable_is_gray              (GimpDrawable    *drawable);
+gboolean          gimp_drawable_is_indexed           (GimpDrawable    *drawable);
 
-void            gimp_drawable_fill               (GimpDrawable       *drawable,
-                                                  const GimpRGB      *color,
-                                                  const GimpPattern  *pattern);
-void            gimp_drawable_fill_by_type       (GimpDrawable       *drawable,
-                                                  GimpContext        *context,
-                                                  GimpFillType        fill_type);
+const Babl      * gimp_drawable_get_component_format (GimpDrawable    *drawable,
+                                                      GimpChannelType  channel);
+gint              gimp_drawable_get_component_index  (GimpDrawable    *drawable,
+                                                      GimpChannelType  channel);
 
-gboolean        gimp_drawable_has_alpha          (const GimpDrawable *drawable);
-GimpImageType   gimp_drawable_type               (const GimpDrawable *drawable);
-GimpImageType   gimp_drawable_type_with_alpha    (const GimpDrawable *drawable);
-GimpImageType   gimp_drawable_type_without_alpha (const GimpDrawable *drawable);
-gboolean        gimp_drawable_is_rgb             (const GimpDrawable *drawable);
-gboolean        gimp_drawable_is_gray            (const GimpDrawable *drawable);
-gboolean        gimp_drawable_is_indexed         (const GimpDrawable *drawable);
-gint            gimp_drawable_bytes              (const GimpDrawable *drawable);
-gint            gimp_drawable_bytes_with_alpha   (const GimpDrawable *drawable);
-gint            gimp_drawable_bytes_without_alpha(const GimpDrawable *drawable);
-
-const guchar  * gimp_drawable_get_colormap       (const GimpDrawable *drawable);
-
-GimpLayer    * gimp_drawable_get_floating_sel    (const GimpDrawable *drawable);
-void           gimp_drawable_attach_floating_sel (GimpDrawable       *drawable,
-                                                  GimpLayer          *floating_sel);
-void           gimp_drawable_detach_floating_sel (GimpDrawable       *drawable);
+const guchar    * gimp_drawable_get_colormap         (GimpDrawable    *drawable);
 
 
 #endif /* __GIMP_DRAWABLE_H__ */

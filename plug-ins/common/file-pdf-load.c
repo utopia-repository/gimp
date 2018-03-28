@@ -36,26 +36,35 @@
 
 
 #define LOAD_PROC       "file-pdf-load"
+#define LOAD2_PROC      "file-pdf-load2"
 #define LOAD_THUMB_PROC "file-pdf-load-thumb"
 #define PLUG_IN_BINARY  "file-pdf-load"
 #define PLUG_IN_ROLE    "gimp-file-pdf-load"
 
 #define THUMBNAIL_SIZE  128
 
+#define GIMP_PLUGIN_PDF_LOAD_ERROR gimp_plugin_pdf_load_error_quark ()
+static GQuark
+gimp_plugin_pdf_load_error_quark (void)
+{
+  return g_quark_from_static_string ("gimp-plugin-pdf-load-error-quark");
+}
 
 /* Structs for the load dialog */
 typedef struct
 {
-  GimpPageSelectorTarget target;
-  gdouble                resolution;
-  gboolean               antialias;
+  GimpPageSelectorTarget  target;
+  gdouble                 resolution;
+  gboolean                antialias;
+  gchar                  *PDF_password;
 } PdfLoadVals;
 
 static PdfLoadVals loadvals =
 {
   GIMP_PAGE_SELECTOR_TARGET_LAYERS,
   100.00,  /* 100 dpi   */
-  TRUE
+  TRUE,
+  NULL
 };
 
 typedef struct
@@ -84,6 +93,8 @@ static GimpPDBStatusType load_dialog       (PopplerDocument        *doc,
                                             PdfSelectedPages       *pages);
 
 static PopplerDocument * open_document     (const gchar            *filename,
+                                            const gchar            *PDF_password,
+                                            GimpRunMode             run_mode,
                                             GError                **error);
 
 static cairo_surface_t * get_thumb_surface (PopplerDocument        *doc,
@@ -95,11 +106,11 @@ static GdkPixbuf *       get_thumb_pixbuf  (PopplerDocument        *doc,
                                             gint                    preferred_size);
 
 static gint32            layer_from_surface (gint32                  image,
-					     const gchar            *layer_name,
-					     gint                    position,
-					     cairo_surface_t        *surface,
-					     gdouble                 progress_start,
-					     gdouble                 progress_scale);
+                                             const gchar            *layer_name,
+                                             gint                    position,
+                                             cairo_surface_t        *surface,
+                                             gdouble                 progress_start,
+                                             gdouble                 progress_scale);
 
 /**
  ** the following was formerly part of
@@ -132,7 +143,7 @@ struct _GimpResolutionEntryField
 
   guint          changed_signal;
 
-  GtkObject     *adjustment;
+  GtkAdjustment *adjustment;
   GtkWidget     *spinbutton;
 
   gdouble        phy_size;
@@ -260,12 +271,19 @@ query (void)
     { GIMP_PDB_INT32,     "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }"     },
     { GIMP_PDB_STRING,    "filename",     "The name of the file to load"     },
     { GIMP_PDB_STRING,    "raw-filename", "The name entered"                 }
+  };
+
+  static const GimpParamDef load2_args[] =
+  {
+    { GIMP_PDB_INT32,     "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
+    { GIMP_PDB_STRING,    "filename",     "The name of the file to load"                                 },
+    { GIMP_PDB_STRING,    "raw-filename", "The name entered"                                             },
+    { GIMP_PDB_STRING,    "pdf-password", "The password to decrypt the encrypted PDF file"               },
+    { GIMP_PDB_INT32,     "n-pages",      "Number of pages to load (0 for all)"                          },
+    { GIMP_PDB_INT32ARRAY,"pages",        "The pages to load in the expected order"                      },
     /* XXX: Nice to have API at some point, but needs work
     { GIMP_PDB_INT32,     "resolution",   "Resolution to rasterize to (dpi)" },
-    { GIMP_PDB_INT32,     "antialiasing", "Use anti-aliasing" },
-    { GIMP_PDB_INT32,     "n-pages",      "Number of pages to load (0 for all)" },
-    { GIMP_PDB_INT32ARRAY,"pages",        "The pages to load"                }
-    */
+    { GIMP_PDB_INT32,     "antialiasing", "Use anti-aliasing" }, */
   };
 
   static const GimpParamDef load_return_vals[] =
@@ -293,7 +311,10 @@ query (void)
                           "Loads files in Adobe's Portable Document Format. "
                           "PDF is designed to be easily processed by a variety "
                           "of different platforms, and is a distant cousin of "
-                          "PostScript.",
+                          "PostScript.\n"
+                          "If the PDF document has multiple pages, only the first "
+                          "page will be loaded. Call file_pdf_load2() to load "
+                          "several pages as layers.",
                           "Nathan Summers",
                           "Nathan Summers",
                           "2005",
@@ -304,8 +325,27 @@ query (void)
                           G_N_ELEMENTS (load_return_vals),
                           load_args, load_return_vals);
 
-  gimp_register_file_handler_mime (LOAD_PROC, "application/pdf");
-  gimp_register_magic_load_handler (LOAD_PROC,
+  gimp_install_procedure (LOAD2_PROC,
+                          "Load file in PDF format",
+                          "Loads files in Adobe's Portable Document Format. "
+                          "PDF is designed to be easily processed by a variety "
+                          "of different platforms, and is a distant cousin of "
+                          "PostScript.\n"
+                          "This procedure adds extra parameters to "
+                          "file-pdf-load to open encrypted PDF and to allow "
+                          "multiple page loading.",
+                          "Nathan Summers, Lionel N.",
+                          "Nathan Summers, Lionel N.",
+                          "2005, 2017",
+                          N_("Portable Document Format"),
+                          NULL,
+                          GIMP_PLUGIN,
+                          G_N_ELEMENTS (load2_args),
+                          G_N_ELEMENTS (load_return_vals),
+                          load2_args, load_return_vals);
+
+  gimp_register_file_handler_mime (LOAD2_PROC, "application/pdf");
+  gimp_register_magic_load_handler (LOAD2_PROC,
                                     "pdf",
                                     "",
                                     "0, string,%PDF-");
@@ -325,7 +365,7 @@ query (void)
                           G_N_ELEMENTS (thumb_return_vals),
                           thumb_args, thumb_return_vals);
 
-  gimp_register_thumbnail_loader (LOAD_PROC, LOAD_THUMB_PROC);
+  gimp_register_thumbnail_loader (LOAD2_PROC, LOAD_THUMB_PROC);
 }
 
 static void
@@ -335,7 +375,7 @@ run (const gchar      *name,
      gint             *nreturn_vals,
      GimpParam       **return_vals)
 {
-  static GimpParam  values[6];
+  static GimpParam  values[7];
   GimpRunMode       run_mode;
   GimpPDBStatusType status   = GIMP_PDB_SUCCESS;
   gint32            image_ID = -1;
@@ -352,10 +392,7 @@ run (const gchar      *name,
   values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 
-  if (! g_thread_supported ())
-    g_thread_init (NULL);
-
-  if (strcmp (name, LOAD_PROC) == 0)
+  if (strcmp (name, LOAD_PROC) == 0 || strcmp (name, LOAD2_PROC) == 0)
     {
       PdfSelectedPages pages = { 0, NULL };
 
@@ -363,9 +400,18 @@ run (const gchar      *name,
         {
         case GIMP_RUN_INTERACTIVE:
           /* Possibly retrieve last settings */
-          gimp_get_data (LOAD_PROC, &loadvals);
-
-          doc = open_document (param[1].data.d_string, &error);
+          if (strcmp (name, LOAD_PROC) == 0)
+            {
+              gimp_get_data (LOAD_PROC, &loadvals);
+            }
+          else if (strcmp (name, LOAD2_PROC) == 0)
+            {
+              gimp_get_data (LOAD2_PROC, &loadvals);
+            }
+          gimp_ui_init (PLUG_IN_BINARY, FALSE);
+          doc = open_document (param[1].data.d_string,
+                               loadvals.PDF_password,
+                               run_mode, &error);
 
           if (!doc)
             {
@@ -375,7 +421,16 @@ run (const gchar      *name,
 
           status = load_dialog (doc, &pages);
           if (status == GIMP_PDB_SUCCESS)
-            gimp_set_data (LOAD_PROC, &loadvals, sizeof(loadvals));
+            {
+              if (strcmp (name, LOAD_PROC) == 0)
+                {
+                  gimp_set_data (LOAD_PROC, &loadvals, sizeof(loadvals));
+                }
+              else if (strcmp (name, LOAD2_PROC) == 0)
+                {
+                  gimp_set_data (LOAD2_PROC, &loadvals, sizeof(loadvals));
+                }
+            }
           break;
 
         case GIMP_RUN_WITH_LAST_VALS:
@@ -384,7 +439,17 @@ run (const gchar      *name,
           break;
 
         case GIMP_RUN_NONINTERACTIVE:
-          doc = open_document (param[1].data.d_string, &error);
+          if (strcmp (name, LOAD_PROC) == 0)
+            {
+              doc = open_document (param[1].data.d_string,
+                                   NULL, run_mode, &error);
+            }
+          else if (strcmp (name, LOAD2_PROC) == 0)
+            {
+              doc = open_document (param[1].data.d_string,
+                                   param[3].data.d_string,
+                                   run_mode, &error);
+            }
 
           if (doc)
             {
@@ -392,11 +457,66 @@ run (const gchar      *name,
 
               if (test_page)
                 {
-                  pages.n_pages = 1;
-                  pages.pages = g_new (gint, 1);
-                  pages.pages[0] = 0;
+                  if (strcmp (name, LOAD2_PROC) != 0)
+                    {
+                      /* For retrocompatibility, file-pdf-load always
+                       * just loads the first page. */
+                      pages.n_pages = 1;
+                      pages.pages = g_new (gint, 1);
+                      pages.pages[0] = 0;
 
-                  g_object_unref (test_page);
+                      g_object_unref (test_page);
+                    }
+                  else
+                    {
+                      gint i;
+                      gint doc_n_pages;
+
+                      doc_n_pages = poppler_document_get_n_pages (doc);
+                      /* The number of imported pages may be bigger than
+                       * the number of pages from the original document.
+                       * Indeed it is possible to duplicate some pages
+                       * by setting the same number several times in the
+                       * "pages" argument.
+                       * Not ceiling this value is *not* an error.
+                       */
+                      pages.n_pages = param[4].data.d_int32;
+                      if (pages.n_pages <= 0)
+                        {
+                          pages.n_pages = doc_n_pages;
+                          pages.pages = g_new (gint, pages.n_pages);
+                          for (i = 0; i < pages.n_pages; i++)
+                            pages.pages[i] = i;
+                        }
+                      else
+                        {
+                          pages.pages = g_new (gint, pages.n_pages);
+                          for (i = 0; i < pages.n_pages; i++)
+                            {
+                              if (param[5].data.d_int32array[i] >= doc_n_pages)
+                                {
+                                  status = GIMP_PDB_EXECUTION_ERROR;
+                                  g_set_error (&error, GIMP_PLUGIN_PDF_LOAD_ERROR, 0,
+                                               /* TRANSLATORS: first argument is file name,
+                                                * second is out-of-range page number, third is
+                                                * number of pages. Specify order as in English if needed.
+                                                */
+                                               ngettext ("PDF document '%1$s' has %3$d page. Page %2$d is out of range.",
+                                                         "PDF document '%1$s' has %3$d pages. Page %2$d is out of range.",
+                                                         doc_n_pages),
+                                               param[1].data.d_string,
+                                               param[5].data.d_int32array[i],
+                                               doc_n_pages);
+                                  break;
+                                }
+                              else
+                                {
+                                  pages.pages[i] = param[5].data.d_int32array[i];
+                                }
+                            }
+                        }
+                      g_object_unref (test_page);
+                    }
                 }
               else
                 {
@@ -453,9 +573,18 @@ run (const gchar      *name,
           cairo_surface_t *surface   = NULL;
 
           /* Possibly retrieve last settings */
-          gimp_get_data (LOAD_PROC, &loadvals);
+          if (strcmp (name, LOAD_PROC) == 0)
+            {
+              gimp_get_data (LOAD_PROC, &loadvals);
+            }
+          else if (strcmp (name, LOAD2_PROC) == 0)
+            {
+              gimp_get_data (LOAD2_PROC, &loadvals);
+            }
 
-          doc = open_document (param[0].data.d_string, &error);
+          doc = open_document (param[0].data.d_string,
+                               loadvals.PDF_password,
+                               run_mode, &error);
 
           if (doc)
             {
@@ -534,6 +663,8 @@ run (const gchar      *name,
 
 static PopplerDocument*
 open_document (const gchar  *filename,
+               const gchar  *PDF_password,
+               GimpRunMode   run_mode,
                GError      **load_error)
 {
   PopplerDocument *doc;
@@ -544,7 +675,7 @@ open_document (const gchar  *filename,
 
   if (! mapped_file)
     {
-      g_set_error (load_error, 0, 0,
+      g_set_error (load_error, GIMP_PLUGIN_PDF_LOAD_ERROR, 0,
                    _("Could not load '%s': %s"),
                    gimp_filename_to_utf8 (filename), error->message);
       g_error_free (error);
@@ -553,14 +684,65 @@ open_document (const gchar  *filename,
 
   doc = poppler_document_new_from_data (g_mapped_file_get_contents (mapped_file),
                                         g_mapped_file_get_length (mapped_file),
-                                        NULL,
+                                        PDF_password,
                                         &error);
+
+  if (run_mode == GIMP_RUN_INTERACTIVE)
+    {
+      GtkWidget *label;
+
+      label = gtk_label_new (_("PDF is password protected, please input the password:"));
+      while (error                          &&
+             error->domain == POPPLER_ERROR &&
+             error->code == POPPLER_ERROR_ENCRYPTED)
+        {
+          GtkWidget *vbox;
+          GtkWidget *dialog;
+          GtkWidget *entry;
+          gint       run;
+
+          dialog = gimp_dialog_new (_("Encrypted PDF"), PLUG_IN_ROLE,
+                                    NULL, 0,
+                                    NULL, NULL,
+                                    _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                    _("_OK"), GTK_RESPONSE_OK,
+                                    NULL);
+          gimp_window_set_transient (GTK_WINDOW (dialog));
+          vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
+          gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
+          gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                              vbox, TRUE, TRUE, 0);
+          entry = gtk_entry_new ();
+          gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
+          gtk_entry_set_activates_default (GTK_ENTRY (entry), TRUE);
+          gtk_container_add (GTK_CONTAINER (vbox), label);
+          gtk_container_add (GTK_CONTAINER (vbox), entry);
+
+          gtk_widget_show_all (dialog);
+
+          run = gimp_dialog_run (GIMP_DIALOG (dialog));
+          if (run == GTK_RESPONSE_OK)
+            {
+              g_clear_error (&error);
+              doc = poppler_document_new_from_data (g_mapped_file_get_contents (mapped_file),
+                                                    g_mapped_file_get_length (mapped_file),
+                                                    gtk_entry_get_text (GTK_ENTRY (entry)),
+                                                    &error);
+            }
+          label = gtk_label_new (_("Wrong password! Please input the right one:"));
+          gtk_widget_destroy (dialog);
+          if (run == GTK_RESPONSE_CANCEL || run == GTK_RESPONSE_DELETE_EVENT)
+            {
+              break;
+            }
+        }
+      gtk_widget_destroy (label);
+    }
 
   /* We can't g_mapped_file_unref(mapped_file) as apparently doc has
    * references to data in there. No big deal, this is just a
    * short-lived plug-in.
    */
-
   if (! doc)
     {
       g_set_error (load_error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
@@ -1083,14 +1265,12 @@ load_dialog (PopplerDocument  *doc,
 
   gboolean    run;
 
-  gimp_ui_init (PLUG_IN_BINARY, FALSE);
-
   dialog = gimp_dialog_new (_("Import from PDF"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, LOAD_PROC,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            _("_Import"),     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_Import"), GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -1148,6 +1328,10 @@ load_dialog (PopplerDocument  *doc,
       g_object_unref (page);
       g_free (label);
     }
+  /* Since selecting none will be equivalent to selecting all, this is
+   * only useful as a feedback for the default behavior of selecting all
+   * pages. */
+  gimp_page_selector_select_all (GIMP_PAGE_SELECTOR (selector));
 
   g_signal_connect_swapped (selector, "activate",
                             G_CALLBACK (gtk_window_activate_default),
@@ -1157,7 +1341,7 @@ load_dialog (PopplerDocument  *doc,
   thread_data.selector          = GIMP_PAGE_SELECTOR (selector);
   thread_data.stop_thumbnailing = FALSE;
 
-  thread = g_thread_create (thumbnail_thread, &thread_data, TRUE, NULL);
+  thread = g_thread_new ("thumbnailer", thumbnail_thread, &thread_data);
 
   /* Resolution */
 
@@ -1376,14 +1560,14 @@ gimp_resolution_entry_field_init (GimpResolutionEntry      *gre,
 
   digits = size ? 0 : MIN (gimp_unit_get_digits (initial_unit), 5) + 1;
 
-  gref->spinbutton = gimp_spin_button_new (&gref->adjustment,
-                                            gref->value,
-                                            gref->min_value,
-                                            gref->max_value,
-                                            1.0, 10.0, 0.0,
-                                            1.0,
-                                            digits);
-
+  gref->adjustment = (GtkAdjustment *)
+    gtk_adjustment_new (gref->value,
+                        gref->min_value,
+                        gref->max_value,
+                        1.0, 10.0, 0.0);
+  gref->spinbutton = gtk_spin_button_new (gref->adjustment,
+                                          1.0, digits);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (gref->spinbutton), TRUE);
 
   if (spinbutton_width > 0)
     {
@@ -1576,7 +1760,7 @@ gimp_resolution_entry_attach_label (GimpResolutionEntry *gre,
       g_list_free (children);
     }
 
-  gtk_misc_set_alignment (GTK_MISC (label), alignment, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), alignment);
 
   gtk_table_attach (GTK_TABLE (gre), label, column, column+1, row, row+1,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
@@ -1646,7 +1830,7 @@ gimp_resolution_entry_update_value (GimpResolutionEntryField *gref,
                                           factor);
     }
 
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (gref->adjustment), value);
+  gtk_adjustment_set_value (gref->adjustment, value);
 
   gref->stop_recursion--;
 

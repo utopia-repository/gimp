@@ -19,24 +19,31 @@
 #define  __GIMP_DRAWABLE_BLEND_H__
 
 
-void   gimp_drawable_blend (GimpDrawable         *drawable,
-                            GimpContext          *context,
-                            GimpBlendMode         blend_mode,
-                            GimpLayerModeEffects  paint_mode,
-                            GimpGradientType      gradient_type,
-                            gdouble               opacity,
-                            gdouble               offset,
-                            GimpRepeatMode        repeat,
-                            gboolean              reverse,
-                            gboolean              supersample,
-                            gint                  max_depth,
-                            gdouble               threshold,
-                            gboolean              dither,
-                            gdouble               startx,
-                            gdouble               starty,
-                            gdouble               endx,
-                            gdouble               endy,
-                            GimpProgress         *progress);
+void   gimp_drawable_blend (GimpDrawable       *drawable,
+                            GimpContext        *context,
+                            GimpGradient       *gradient,
+                            GeglDistanceMetric  metric,
+                            GimpLayerMode       paint_mode,
+                            GimpGradientType    gradient_type,
+                            gdouble             opacity,
+                            gdouble             offset,
+                            GimpRepeatMode      repeat,
+                            gboolean            reverse,
+                            gboolean            supersample,
+                            gint                max_depth,
+                            gdouble             threshold,
+                            gboolean            dither,
+                            gdouble             startx,
+                            gdouble             starty,
+                            gdouble             endx,
+                            gdouble             endy,
+                            GimpProgress       *progress);
+
+GeglBuffer *
+gimp_drawable_blend_shapeburst_distmap (GimpDrawable        *drawable,
+                                        GeglDistanceMetric   metric,
+                                        const GeglRectangle *region,
+                                        GimpProgress        *progress);
 
 
 #endif /* __GIMP_DRAWABLE_BLEND_H__ */

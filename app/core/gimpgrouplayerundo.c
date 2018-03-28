@@ -17,20 +17,27 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "core-types.h"
 
+#include "gimp-memsize.h"
 #include "gimpimage.h"
 #include "gimpgrouplayer.h"
 #include "gimpgrouplayerundo.h"
 
 
-static void   gimp_group_layer_undo_constructed (GObject             *object);
+static void     gimp_group_layer_undo_constructed (GObject             *object);
 
-static void   gimp_group_layer_undo_pop         (GimpUndo            *undo,
-                                                 GimpUndoMode         undo_mode,
-                                                 GimpUndoAccumulator *accum);
+static gint64   gimp_group_layer_undo_get_memsize (GimpObject          *object,
+                                                   gint64              *gui_size);
+
+static void     gimp_group_layer_undo_pop         (GimpUndo            *undo,
+                                                   GimpUndoMode         undo_mode,
+                                                   GimpUndoAccumulator *accum);
+static void     gimp_group_layer_undo_free        (GimpUndo            *undo,
+                                                   GimpUndoMode         undo_mode);
 
 
 G_DEFINE_TYPE (GimpGroupLayerUndo, gimp_group_layer_undo, GIMP_TYPE_ITEM_UNDO)
@@ -41,12 +48,16 @@ G_DEFINE_TYPE (GimpGroupLayerUndo, gimp_group_layer_undo, GIMP_TYPE_ITEM_UNDO)
 static void
 gimp_group_layer_undo_class_init (GimpGroupLayerUndoClass *klass)
 {
-  GObjectClass  *object_class = G_OBJECT_CLASS (klass);
-  GimpUndoClass *undo_class   = GIMP_UNDO_CLASS (klass);
+  GObjectClass    *object_class      = G_OBJECT_CLASS (klass);
+  GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS (klass);
+  GimpUndoClass   *undo_class        = GIMP_UNDO_CLASS (klass);
 
-  object_class->constructed   = gimp_group_layer_undo_constructed;
+  object_class->constructed      = gimp_group_layer_undo_constructed;
 
-  undo_class->pop             = gimp_group_layer_undo_pop;
+  gimp_object_class->get_memsize = gimp_group_layer_undo_get_memsize;
+
+  undo_class->pop                = gimp_group_layer_undo_pop;
+  undo_class->free               = gimp_group_layer_undo_free;
 }
 
 static void
@@ -60,26 +71,52 @@ gimp_group_layer_undo_constructed (GObject *object)
   GimpGroupLayerUndo *group_layer_undo = GIMP_GROUP_LAYER_UNDO (object);
   GimpGroupLayer     *group;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_GROUP_LAYER (GIMP_ITEM_UNDO (object)->item));
+  g_return_if_fail (GIMP_IS_GROUP_LAYER (GIMP_ITEM_UNDO (object)->item));
 
   group = GIMP_GROUP_LAYER (GIMP_ITEM_UNDO (object)->item);
 
   switch (GIMP_UNDO (object)->undo_type)
     {
-    case GIMP_UNDO_GROUP_LAYER_SUSPEND:
-    case GIMP_UNDO_GROUP_LAYER_RESUME:
+    case GIMP_UNDO_GROUP_LAYER_SUSPEND_RESIZE:
+    case GIMP_UNDO_GROUP_LAYER_RESUME_RESIZE:
+    case GIMP_UNDO_GROUP_LAYER_SUSPEND_MASK:
+    case GIMP_UNDO_GROUP_LAYER_START_MOVE:
+    case GIMP_UNDO_GROUP_LAYER_END_MOVE:
+      break;
+
+    case GIMP_UNDO_GROUP_LAYER_RESUME_MASK:
+      group_layer_undo->mask_buffer =
+        _gimp_group_layer_get_suspended_mask(group,
+                                             &group_layer_undo->mask_bounds);
+
+      if (group_layer_undo->mask_buffer)
+        g_object_ref (group_layer_undo->mask_buffer);
       break;
 
     case GIMP_UNDO_GROUP_LAYER_CONVERT:
-      group_layer_undo->prev_type = GIMP_IMAGE_TYPE_BASE_TYPE (gimp_drawable_type (GIMP_DRAWABLE (group)));
+      group_layer_undo->prev_type = gimp_drawable_get_base_type (GIMP_DRAWABLE (group));
+      group_layer_undo->prev_precision = gimp_drawable_get_precision (GIMP_DRAWABLE (group));
+      group_layer_undo->prev_has_alpha = gimp_drawable_has_alpha (GIMP_DRAWABLE (group));
       break;
 
     default:
-      g_assert_not_reached ();
+      g_return_if_reached ();
     }
+}
+
+static gint64
+gimp_group_layer_undo_get_memsize (GimpObject *object,
+                                   gint64     *gui_size)
+{
+  GimpGroupLayerUndo *group_layer_undo = GIMP_GROUP_LAYER_UNDO (object);
+  gint64              memsize       = 0;
+
+  memsize += gimp_gegl_buffer_get_memsize (group_layer_undo->mask_buffer);
+
+  return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
+                                                                  gui_size);
 }
 
 static void
@@ -96,12 +133,12 @@ gimp_group_layer_undo_pop (GimpUndo            *undo,
 
   switch (undo->undo_type)
     {
-    case GIMP_UNDO_GROUP_LAYER_SUSPEND:
-    case GIMP_UNDO_GROUP_LAYER_RESUME:
+    case GIMP_UNDO_GROUP_LAYER_SUSPEND_RESIZE:
+    case GIMP_UNDO_GROUP_LAYER_RESUME_RESIZE:
       if ((undo_mode       == GIMP_UNDO_MODE_UNDO &&
-           undo->undo_type == GIMP_UNDO_GROUP_LAYER_SUSPEND) ||
+           undo->undo_type == GIMP_UNDO_GROUP_LAYER_SUSPEND_RESIZE) ||
           (undo_mode       == GIMP_UNDO_MODE_REDO &&
-           undo->undo_type == GIMP_UNDO_GROUP_LAYER_RESUME))
+           undo->undo_type == GIMP_UNDO_GROUP_LAYER_RESUME_RESIZE))
         {
           /*  resume group layer auto-resizing  */
 
@@ -112,21 +149,105 @@ gimp_group_layer_undo_pop (GimpUndo            *undo,
           /*  suspend group layer auto-resizing  */
 
           gimp_group_layer_suspend_resize (group, FALSE);
+
+          if (undo->undo_type == GIMP_UNDO_GROUP_LAYER_RESUME_RESIZE &&
+              group_layer_undo->mask_buffer)
+            {
+              GimpLayerMask *mask = gimp_layer_get_mask (GIMP_LAYER (group));
+
+              gimp_drawable_set_buffer_full (GIMP_DRAWABLE (mask),
+                                             FALSE, NULL,
+                                             group_layer_undo->mask_buffer,
+                                             group_layer_undo->mask_bounds.x,
+                                             group_layer_undo->mask_bounds.y);
+            }
+        }
+      break;
+
+    case GIMP_UNDO_GROUP_LAYER_SUSPEND_MASK:
+    case GIMP_UNDO_GROUP_LAYER_RESUME_MASK:
+      if ((undo_mode       == GIMP_UNDO_MODE_UNDO &&
+           undo->undo_type == GIMP_UNDO_GROUP_LAYER_SUSPEND_MASK) ||
+          (undo_mode       == GIMP_UNDO_MODE_REDO &&
+           undo->undo_type == GIMP_UNDO_GROUP_LAYER_RESUME_MASK))
+        {
+          /*  resume group layer mask auto-resizing  */
+
+          gimp_group_layer_resume_mask (group, FALSE);
+        }
+      else
+        {
+          /*  suspend group layer mask auto-resizing  */
+
+          gimp_group_layer_suspend_mask (group, FALSE);
+
+          if (undo->undo_type == GIMP_UNDO_GROUP_LAYER_RESUME_MASK &&
+              group_layer_undo->mask_buffer)
+            {
+              _gimp_group_layer_set_suspended_mask (
+                group,
+                group_layer_undo->mask_buffer,
+                &group_layer_undo->mask_bounds);
+            }
+        }
+      break;
+
+    case GIMP_UNDO_GROUP_LAYER_START_MOVE:
+    case GIMP_UNDO_GROUP_LAYER_END_MOVE:
+      if ((undo_mode       == GIMP_UNDO_MODE_UNDO &&
+           undo->undo_type == GIMP_UNDO_GROUP_LAYER_START_MOVE) ||
+          (undo_mode       == GIMP_UNDO_MODE_REDO &&
+           undo->undo_type == GIMP_UNDO_GROUP_LAYER_END_MOVE))
+        {
+          /*  end group layer move operation  */
+
+          _gimp_group_layer_end_move (group, FALSE);
+        }
+      else
+        {
+          /*  start group layer move operation  */
+
+          _gimp_group_layer_start_move (group, FALSE);
         }
       break;
 
     case GIMP_UNDO_GROUP_LAYER_CONVERT:
       {
         GimpImageBaseType type;
+        GimpPrecision     precision;
+        gboolean          has_alpha;
 
-        type = GIMP_IMAGE_TYPE_BASE_TYPE (gimp_drawable_type (GIMP_DRAWABLE (group)));
-        gimp_drawable_convert_type (GIMP_DRAWABLE (group), NULL,
-                                    group_layer_undo->prev_type, FALSE);
-        group_layer_undo->prev_type = type;
+        type      = gimp_drawable_get_base_type (GIMP_DRAWABLE (group));
+        precision = gimp_drawable_get_precision (GIMP_DRAWABLE (group));
+        has_alpha = gimp_drawable_has_alpha (GIMP_DRAWABLE (group));
+
+        gimp_drawable_convert_type (GIMP_DRAWABLE (group),
+                                    gimp_item_get_image (GIMP_ITEM (group)),
+                                    group_layer_undo->prev_type,
+                                    group_layer_undo->prev_precision,
+                                    group_layer_undo->prev_has_alpha,
+                                    NULL,
+                                    0, 0,
+                                    FALSE, NULL);
+
+        group_layer_undo->prev_type      = type;
+        group_layer_undo->prev_precision = precision;
+        group_layer_undo->prev_has_alpha = has_alpha;
       }
       break;
 
     default:
-      g_assert_not_reached ();
+      g_return_if_reached ();
     }
+}
+
+static void
+gimp_group_layer_undo_free (GimpUndo     *undo,
+                            GimpUndoMode  undo_mode)
+{
+  GimpGroupLayerUndo *group_layer_undo = GIMP_GROUP_LAYER_UNDO (undo);
+
+  g_clear_object (&group_layer_undo->mask_buffer);
+
+  GIMP_UNDO_CLASS (parent_class)->free (undo, undo_mode);
 }

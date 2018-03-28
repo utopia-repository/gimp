@@ -77,10 +77,12 @@ gimp_enum_label_class_init (GimpEnumLabelClass *klass)
    *
    * The #GType of the enum.
    *
-   * Since: GIMP 2.8
+   * Since: 2.8
    **/
   g_object_class_install_property (object_class, PROP_ENUM_TYPE,
-                                   g_param_spec_gtype ("enum-type", NULL, NULL,
+                                   g_param_spec_gtype ("enum-type",
+                                                       "Enum Type",
+                                                       "The type of the displayed enum",
                                                        G_TYPE_NONE,
                                                        GIMP_PARAM_READWRITE |
                                                        G_PARAM_CONSTRUCT_ONLY));
@@ -90,10 +92,12 @@ gimp_enum_label_class_init (GimpEnumLabelClass *klass)
    *
    * The value to display.
    *
-   * Since: GIMP 2.8
+   * Since: 2.8
    **/
   g_object_class_install_property (object_class, PROP_ENUM_VALUE,
-                                   g_param_spec_int ("enum-value", NULL, NULL,
+                                   g_param_spec_int ("enum-value",
+                                                     "Enum Value",
+                                                     "The enum value to display",
                                                      G_MININT, G_MAXINT, 0,
                                                      GIMP_PARAM_WRITABLE |
                                                      G_PARAM_CONSTRUCT));
@@ -169,7 +173,7 @@ gimp_enum_label_set_property (GObject      *object,
  *
  * Return value: a new #GimpEnumLabel.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 GtkWidget *
 gimp_enum_label_new (GType enum_type,
@@ -188,7 +192,7 @@ gimp_enum_label_new (GType enum_type,
  * @label: a #GimpEnumLabel
  * @value:
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 void
 gimp_enum_label_set_value (GimpEnumLabel *label,

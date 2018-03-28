@@ -17,9 +17,12 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "core-types.h"
+
+#include "vectors/gimpvectors.h"
 
 #include "gimp.h"
 #include "gimpcontainer.h"
@@ -32,6 +35,8 @@
 #include "gimpimage-undo.h"
 #include "gimpimage-undo-push.h"
 #include "gimpitem.h"
+#include "gimplayer.h"
+#include "gimpobjectqueue.h"
 #include "gimpprogress.h"
 #include "gimpsamplepoint.h"
 
@@ -53,39 +58,28 @@ gimp_image_rotate (GimpImage        *image,
                    GimpRotationType  rotate_type,
                    GimpProgress     *progress)
 {
-  GList    *list;
-  gdouble   center_x;
-  gdouble   center_y;
-  gdouble   progress_max;
-  gdouble   progress_current = 1.0;
-  gint      new_image_width;
-  gint      new_image_height;
-  gint      previous_image_width;
-  gint      previous_image_height;
-  gint      offset_x;
-  gint      offset_y;
-  gboolean  size_changed;
+  GimpObjectQueue *queue;
+  GimpItem        *item;
+  GList           *list;
+  gdouble          center_x;
+  gdouble          center_y;
+  gint             new_image_width;
+  gint             new_image_height;
+  gint             previous_image_width;
+  gint             previous_image_height;
+  gint             offset_x;
+  gint             offset_y;
+  gboolean         size_changed;
 
   g_return_if_fail (GIMP_IS_IMAGE (image));
   g_return_if_fail (GIMP_IS_CONTEXT (context));
   g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
-
-  gimp_set_busy (image->gimp);
 
   previous_image_width  = gimp_image_get_width  (image);
   previous_image_height = gimp_image_get_height (image);
 
   center_x              = previous_image_width  / 2.0;
   center_y              = previous_image_height / 2.0;
-
-  progress_max = (gimp_container_get_n_children (gimp_image_get_channels (image)) +
-                  gimp_container_get_n_children (gimp_image_get_layers (image))   +
-                  gimp_container_get_n_children (gimp_image_get_vectors (image))  +
-                  1 /* selection */);
-
-  g_object_freeze_notify (G_OBJECT (image));
-
-  gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_ROTATE, NULL);
 
   /*  Resize the image (if needed)  */
   switch (rotate_type)
@@ -108,76 +102,54 @@ gimp_image_rotate (GimpImage        *image,
       break;
 
     default:
-      g_assert_not_reached ();
+      g_return_if_reached ();
       return;
     }
 
-  /*  Rotate all channels  */
-  for (list = gimp_image_get_channel_iter (image);
-       list;
-       list = g_list_next (list))
+  gimp_set_busy (image->gimp);
+
+  queue    = gimp_object_queue_new (progress);
+  progress = GIMP_PROGRESS (queue);
+
+  gimp_object_queue_push_container (queue, gimp_image_get_layers (image));
+  gimp_object_queue_push (queue, gimp_image_get_mask (image));
+  gimp_object_queue_push_container (queue, gimp_image_get_channels (image));
+  gimp_object_queue_push_container (queue, gimp_image_get_vectors (image));
+
+  g_object_freeze_notify (G_OBJECT (image));
+
+  gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_ROTATE, NULL);
+
+  /*  Rotate all layers, channels (including selection mask), and vectors  */
+  while ((item = gimp_object_queue_pop (queue)))
     {
-      GimpItem *item = list->data;
-
-      gimp_item_rotate (item, context, rotate_type, center_x, center_y, FALSE);
-
-      gimp_item_set_offset (item, 0, 0);
-
-      if (progress)
-        gimp_progress_set_value (progress, progress_current++ / progress_max);
-    }
-
-  /*  Rotate all vectors  */
-  for (list = gimp_image_get_vectors_iter (image);
-       list;
-       list = g_list_next (list))
-    {
-      GimpItem *item = list->data;
-
-      gimp_item_rotate (item, context, rotate_type, center_x, center_y, FALSE);
-
-      gimp_item_set_offset (item, 0, 0);
-      gimp_item_set_size (item, new_image_width, new_image_height);
-
-      gimp_item_translate (item,
-                           (new_image_width  - gimp_image_get_width  (image)) / 2,
-                           (new_image_height - gimp_image_get_height (image)) / 2,
-                           FALSE);
-
-      if (progress)
-        gimp_progress_set_value (progress, progress_current++ / progress_max);
-    }
-
-  /*  Don't forget the selection mask!  */
-  {
-    GimpChannel *mask = gimp_image_get_mask (image);
-
-    gimp_item_rotate (GIMP_ITEM (mask), context,
-                      rotate_type, center_x, center_y, FALSE);
-
-    gimp_item_set_offset (GIMP_ITEM (mask), 0, 0);
-
-    if (progress)
-      gimp_progress_set_value (progress, progress_current++ / progress_max);
-  }
-
-  /*  Rotate all layers  */
-  for (list = gimp_image_get_layer_iter (image);
-       list;
-       list = g_list_next (list))
-    {
-      GimpItem *item = list->data;
-      gint      off_x;
-      gint      off_y;
+      gint off_x;
+      gint off_y;
 
       gimp_item_get_offset (item, &off_x, &off_y);
 
       gimp_item_rotate (item, context, rotate_type, center_x, center_y, FALSE);
 
-      gimp_image_rotate_item_offset (image, rotate_type, item, off_x, off_y);
+      if (GIMP_IS_LAYER (item))
+        {
+          gimp_image_rotate_item_offset (image, rotate_type, item, off_x, off_y);
+        }
+      else
+        {
+          gimp_item_set_offset (item, 0, 0);
 
-      if (progress)
-        gimp_progress_set_value (progress, progress_current++ / progress_max);
+          if (GIMP_IS_VECTORS (item))
+            {
+              gimp_item_set_size (item, new_image_width, new_image_height);
+
+              gimp_item_translate (item,
+                                   (new_image_width  - gimp_image_get_width  (image)) / 2,
+                                   (new_image_height - gimp_image_get_height (image)) / 2,
+                                   FALSE);
+            }
+        }
+
+      gimp_progress_set_value (progress, 1.0);
     }
 
   /*  Rotate all Guides  */
@@ -228,6 +200,8 @@ gimp_image_rotate (GimpImage        *image,
 
   gimp_image_undo_group_end (image);
 
+  g_object_unref (queue);
+
   if (size_changed)
     gimp_image_size_changed_detailed (image,
                                       -offset_x,
@@ -265,6 +239,9 @@ gimp_image_rotate_item_offset (GimpImage        *image,
 
     case GIMP_ROTATE_180:
       return;
+
+    default:
+      g_return_if_reached ();
     }
 
   gimp_item_get_offset (item, &off_x, &off_y);
@@ -374,24 +351,26 @@ gimp_image_rotate_sample_points (GimpImage        *image,
 
       gimp_image_undo_push_sample_point (image, NULL, sample_point);
 
-      old_x = sample_point->x;
-      old_y = sample_point->y;
+      gimp_sample_point_get_position (sample_point, &old_x, &old_y);
 
       switch (rotate_type)
         {
         case GIMP_ROTATE_90:
-          sample_point->x = gimp_image_get_height (image) - old_y;
-          sample_point->y = old_x;
+          gimp_sample_point_set_position (sample_point,
+                                          gimp_image_get_height (image) - old_y,
+                                          old_x);
           break;
 
         case GIMP_ROTATE_180:
-          sample_point->x = gimp_image_get_width  (image) - old_x;
-          sample_point->y = gimp_image_get_height (image) - old_y;
+          gimp_sample_point_set_position (sample_point,
+                                          gimp_image_get_width  (image) - old_x,
+                                          gimp_image_get_height (image) - old_y);
           break;
 
         case GIMP_ROTATE_270:
-          sample_point->x = old_y;
-          sample_point->y = gimp_image_get_width (image) - old_x;
+          gimp_sample_point_set_position (sample_point,
+                                          old_y,
+                                          gimp_image_get_width (image) - old_x);
           break;
         }
     }

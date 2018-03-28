@@ -15,6 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#if 0
+
 #ifndef __GIMP_FOREGROUND_SELECT_TOOL_UNDO_H__
 #define __GIMP_FOREGROUND_SELECT_TOOL_UNDO_H__
 
@@ -30,6 +32,7 @@
 #define GIMP_FOREGROUND_SELECT_TOOL_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_FOREGROUND_SELECT_TOOL_UNDO, GimpForegroundSelectToolUndoClass))
 
 
+typedef struct _GimpForegroundSelectToolUndo      GimpForegroundSelectToolUndo;
 typedef struct _GimpForegroundSelectToolUndoClass GimpForegroundSelectToolUndoClass;
 
 struct _GimpForegroundSelectToolUndo
@@ -49,3 +52,5 @@ GType   gimp_foreground_select_tool_undo_get_type (void) G_GNUC_CONST;
 
 
 #endif /* __GIMP_FOREGROUND_SELECT_TOOL_UNDO_H__ */
+
+#endif

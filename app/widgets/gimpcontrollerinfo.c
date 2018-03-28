@@ -22,6 +22,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpconfig/gimpconfig.h"
@@ -100,28 +101,39 @@ gimp_controller_info_class_init (GimpControllerInfoClass *klass)
   GObjectClass      *object_class   = G_OBJECT_CLASS (klass);
   GimpViewableClass *viewable_class = GIMP_VIEWABLE_CLASS (klass);
 
-  object_class->finalize           = gimp_controller_info_finalize;
-  object_class->set_property       = gimp_controller_info_set_property;
-  object_class->get_property       = gimp_controller_info_get_property;
+  object_class->finalize            = gimp_controller_info_finalize;
+  object_class->set_property        = gimp_controller_info_set_property;
+  object_class->get_property        = gimp_controller_info_get_property;
 
-  viewable_class->default_stock_id = GIMP_STOCK_CONTROLLER;
+  viewable_class->default_icon_name = GIMP_ICON_CONTROLLER;
 
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_ENABLED,
-                                    "enabled", NULL,
-                                    TRUE,
-                                    GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_DEBUG_EVENTS,
-                                    "debug-events", NULL,
-                                    FALSE,
-                                    GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_CONTROLLER,
-                                   "controller", NULL,
-                                   GIMP_TYPE_CONTROLLER,
-                                   GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_BOXED (object_class, PROP_MAPPING,
-                                  "mapping", NULL,
-                                  G_TYPE_HASH_TABLE,
-                                  GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_ENABLED,
+                            "enabled",
+                            _("Enabled"),
+                            NULL,
+                            TRUE,
+                            GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_DEBUG_EVENTS,
+                            "debug-events",
+                            _("Debug events"),
+                            NULL,
+                            FALSE,
+                            GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_OBJECT (object_class, PROP_CONTROLLER,
+                           "controller",
+                           "Controller",
+                           NULL,
+                           GIMP_TYPE_CONTROLLER,
+                           GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_BOXED (object_class, PROP_MAPPING,
+                          "mapping",
+                          "Mapping",
+                          NULL,
+                          G_TYPE_HASH_TABLE,
+                          GIMP_PARAM_STATIC_STRINGS);
 
   info_signals[EVENT_MAPPED] =
     g_signal_new ("event-mapped",
@@ -158,17 +170,8 @@ gimp_controller_info_finalize (GObject *object)
 {
   GimpControllerInfo *info = GIMP_CONTROLLER_INFO (object);
 
-  if (info->controller)
-    {
-      g_object_unref (info->controller);
-      info->controller = NULL;
-    }
-
-  if (info->mapping)
-    {
-      g_hash_table_unref (info->mapping);
-      info->mapping = NULL;
-    }
+  g_clear_object (&info->controller);
+  g_clear_pointer (&info->mapping, g_hash_table_unref);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -210,8 +213,8 @@ gimp_controller_info_set_property (GObject      *object,
                                    0);
 
           controller_class = GIMP_CONTROLLER_GET_CLASS (info->controller);
-          gimp_viewable_set_stock_id (GIMP_VIEWABLE (info),
-                                      controller_class->stock_id);
+          gimp_viewable_set_icon_name (GIMP_VIEWABLE (info),
+                                       controller_class->icon_name);
         }
       break;
     case PROP_MAPPING:

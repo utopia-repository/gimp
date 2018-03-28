@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -37,33 +38,62 @@
 
 static const GimpActionEntry buffers_actions[] =
 {
-  { "buffers-popup", GIMP_STOCK_BUFFER,
+  { "buffers-popup", GIMP_ICON_BUFFER,
     NC_("buffers-action", "Buffers Menu"), NULL, NULL, NULL,
     GIMP_HELP_BUFFER_DIALOG },
 
-  { "buffers-paste", GTK_STOCK_PASTE,
-    NC_("buffers-action", "_Paste Buffer"), "",
-    NC_("buffers-action", "Paste the selected buffer"),
-    G_CALLBACK (buffers_paste_cmd_callback),
-    GIMP_HELP_BUFFER_PASTE },
-
-  { "buffers-paste-into", GIMP_STOCK_PASTE_INTO,
-    NC_("buffers-action", "Paste Buffer _Into"), NULL,
-    NC_("buffers-action", "Paste the selected buffer into the selection"),
-    G_CALLBACK (buffers_paste_into_cmd_callback),
-    GIMP_HELP_BUFFER_PASTE_INTO },
-
-  { "buffers-paste-as-new", GIMP_STOCK_PASTE_AS_NEW,
-    NC_("buffers-action", "Paste Buffer as _New"), NULL,
+  { "buffers-paste-as-new-image", GIMP_ICON_EDIT_PASTE_AS_NEW,
+    NC_("buffers-action", "Paste Buffer as _New Image"), NULL,
     NC_("buffers-action", "Paste the selected buffer as a new image"),
-    G_CALLBACK (buffers_paste_as_new_cmd_callback),
-    GIMP_HELP_BUFFER_PASTE_AS_NEW },
+    G_CALLBACK (buffers_paste_as_new_image_cmd_callback),
+    GIMP_HELP_BUFFER_PASTE_AS_NEW_IMAGE },
 
-  { "buffers-delete", GTK_STOCK_DELETE,
-    NC_("buffers-action", "_Delete Buffer"), "",
+  { "buffers-delete", GIMP_ICON_EDIT_DELETE,
+    NC_("buffers-action", "_Delete Buffer"), NULL,
     NC_("buffers-action", "Delete the selected buffer"),
     G_CALLBACK (buffers_delete_cmd_callback),
     GIMP_HELP_BUFFER_DELETE }
+};
+
+static const GimpEnumActionEntry buffers_paste_actions[] =
+{
+  { "buffers-paste", GIMP_ICON_EDIT_PASTE,
+    NC_("buffers-action", "_Paste Buffer"), NULL,
+    NC_("buffers-action", "Paste the selected buffer"),
+    GIMP_PASTE_TYPE_FLOATING, FALSE,
+    GIMP_HELP_BUFFER_PASTE },
+
+  { "buffers-paste-in-place", GIMP_ICON_EDIT_PASTE,
+    NC_("buffers-action", "Paste Buffer In Pl_ace"), NULL,
+    NC_("buffers-action", "Paste the selected buffer at its original position"),
+    GIMP_PASTE_TYPE_FLOATING_IN_PLACE, FALSE,
+    GIMP_HELP_BUFFER_PASTE_IN_PLACE },
+
+  { "buffers-paste-into", GIMP_ICON_EDIT_PASTE_INTO,
+    NC_("buffers-action", "Paste Buffer _Into The Selection"), NULL,
+    NC_("buffers-action", "Paste the selected buffer into the selection"),
+    GIMP_PASTE_TYPE_FLOATING_INTO, FALSE,
+    GIMP_HELP_BUFFER_PASTE_INTO },
+
+  { "buffers-paste-into-in-place", GIMP_ICON_EDIT_PASTE_INTO,
+    NC_("buffers-action", "Paste Buffer Into The Selection In Place"), NULL,
+    NC_("buffers-action",
+        "Paste the selected buffer into the selection at its original position"),
+    GIMP_PASTE_TYPE_FLOATING_INTO_IN_PLACE, FALSE,
+    GIMP_HELP_BUFFER_PASTE_INTO_IN_PLACE },
+
+  { "buffers-paste-as-new-layer", GIMP_ICON_EDIT_PASTE_AS_NEW,
+    NC_("buffers-action", "Paste Buffer as New _Layer"), NULL,
+    NC_("buffers-action", "Paste the selected buffer as a new layer"),
+    GIMP_PASTE_TYPE_NEW_LAYER, FALSE,
+    GIMP_HELP_BUFFER_PASTE_AS_NEW_LAYER },
+
+  { "buffers-paste-as-new-layer-in-place", GIMP_ICON_EDIT_PASTE_AS_NEW,
+    NC_("buffers-action", "Paste Buffer as New Layer in Place"), NULL,
+    NC_("buffers-action",
+        "Paste the selected buffer as a new layer at its original position"),
+    GIMP_PASTE_TYPE_NEW_LAYER_IN_PLACE, FALSE,
+    GIMP_HELP_BUFFER_PASTE_AS_NEW_LAYER_IN_PLACE },
 };
 
 
@@ -73,6 +103,11 @@ buffers_actions_setup (GimpActionGroup *group)
   gimp_action_group_add_actions (group, "buffers-action",
                                  buffers_actions,
                                  G_N_ELEMENTS (buffers_actions));
+
+  gimp_action_group_add_enum_actions (group, "buffers-action",
+                                      buffers_paste_actions,
+                                      G_N_ELEMENTS (buffers_paste_actions),
+                                      G_CALLBACK (buffers_paste_cmd_callback));
 }
 
 void
@@ -88,10 +123,14 @@ buffers_actions_update (GimpActionGroup *group,
 #define SET_SENSITIVE(action,condition) \
         gimp_action_group_set_action_sensitive (group, action, (condition) != 0)
 
-  SET_SENSITIVE ("buffers-paste",        buffer);
-  SET_SENSITIVE ("buffers-paste-into",   buffer);
-  SET_SENSITIVE ("buffers-paste-as-new", buffer);
-  SET_SENSITIVE ("buffers-delete",       buffer);
+  SET_SENSITIVE ("buffers-paste",                       buffer);
+  SET_SENSITIVE ("buffers-paste-in-place",              buffer);
+  SET_SENSITIVE ("buffers-paste-into",                  buffer);
+  SET_SENSITIVE ("buffers-paste-into-in-place",         buffer);
+  SET_SENSITIVE ("buffers-paste-as-new-layer",          buffer);
+  SET_SENSITIVE ("buffers-paste-as-new-layer-in-place", buffer);
+  SET_SENSITIVE ("buffers-paste-as-new-image",          buffer);
+  SET_SENSITIVE ("buffers-delete",                      buffer);
 
 #undef SET_SENSITIVE
 }

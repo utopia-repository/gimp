@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -38,7 +39,7 @@
 
 static const GimpActionEntry dynamics_editor_actions[] =
 {
-  { "dynamics-editor-popup", GIMP_STOCK_DYNAMICS,
+  { "dynamics-editor-popup", GIMP_ICON_DYNAMICS,
     NC_("dynamics-editor-action", "Paint Dynamics Editor Menu"), NULL, NULL, NULL,
     GIMP_HELP_BRUSH_EDITOR_DIALOG }
 };
@@ -46,7 +47,7 @@ static const GimpActionEntry dynamics_editor_actions[] =
 
 static const GimpToggleActionEntry dynamics_editor_toggle_actions[] =
 {
-  { "dynamics-editor-edit-active", GIMP_STOCK_LINKED,
+  { "dynamics-editor-edit-active", GIMP_ICON_LINKED,
     NC_("dynamics-editor-action", "Edit Active Dynamics"), NULL, NULL,
     G_CALLBACK (data_editor_edit_active_cmd_callback),
     FALSE,
@@ -72,17 +73,7 @@ dynamics_editor_actions_update (GimpActionGroup *group,
                                 gpointer         user_data)
 {
   GimpDataEditor *data_editor = GIMP_DATA_EDITOR (user_data);
-  GimpData       *data;
-  gboolean        editable    = FALSE;
   gboolean        edit_active = FALSE;
-
-  data = data_editor->data;
-
-  if (data)
-    {
-      if (data_editor->data_editable)
-        editable = TRUE;
-    }
 
   edit_active = gimp_data_editor_get_edit_active (data_editor);
 

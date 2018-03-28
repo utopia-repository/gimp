@@ -397,7 +397,7 @@ iterate (control_point *cp,
           tcos = cos (theta);
           r2 = sqrt (tx * tx + ty * ty);
           r2 = pow (r2, tsin);
-          nx = r2 * tcos;;
+          nx = r2 * tcos;
           ny = r2 * tsin;
           p[0] += v * nx;
           p[1] += v * ny;
@@ -1197,7 +1197,7 @@ random_control_point (control_point *cp,
 /*
  * find a 2d bounding box that does not enclose eps of the fractal density
  * in each compass direction.  works by binary search.
- * this is stupid, it shouldjust use the find nth smallest algorithm.
+ * this is stupid, it should just use the find nth smallest algorithm.
  */
 void
 estimate_bounding_box (control_point *cp,

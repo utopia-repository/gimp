@@ -27,7 +27,6 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -37,15 +36,12 @@
 #include <sys/wait.h>
 #endif
 
-#ifdef HAVE_SYS_TIME_H
-#include <sys/time.h>
-#endif
-
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
 #endif
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #if defined(G_OS_WIN32) || defined(G_WITH_CYGWIN)
 
@@ -79,6 +75,7 @@
 #include "plug-in-types.h"
 
 #include "core/gimp.h"
+#include "core/gimp-spawn.h"
 #include "core/gimpprogress.h"
 
 #include "pdb/gimppdbcontext.h"
@@ -112,11 +109,6 @@ static gboolean   gimp_plug_in_recv_message  (GIOChannel   *channel,
                                               GIOCondition  cond,
                                               gpointer      data);
 
-#if !defined(G_OS_WIN32) && !defined (G_WITH_CYGWIN)
-static void       gimp_plug_in_prep_for_exec (gpointer      data);
-#else
-#define           gimp_plug_in_prep_for_exec  NULL
-#endif
 
 
 G_DEFINE_TYPE (GimpPlugIn, gimp_plug_in, GIMP_TYPE_OBJECT)
@@ -143,7 +135,7 @@ static void
 gimp_plug_in_init (GimpPlugIn *plug_in)
 {
   plug_in->manager            = NULL;
-  plug_in->prog               = NULL;
+  plug_in->file               = NULL;
 
   plug_in->call_mode          = GIMP_PLUG_IN_CALL_NONE;
   plug_in->open               = FALSE;
@@ -172,7 +164,7 @@ gimp_plug_in_finalize (GObject *object)
 {
   GimpPlugIn *plug_in = GIMP_PLUG_IN (object);
 
-  g_free (plug_in->prog);
+  g_clear_object (&plug_in->file);
 
   gimp_plug_in_proc_frame_dispose (&plug_in->main_proc_frame, plug_in);
 
@@ -187,7 +179,7 @@ gimp_plug_in_new (GimpPlugInManager   *manager,
                   GimpContext         *context,
                   GimpProgress        *progress,
                   GimpPlugInProcedure *procedure,
-                  const gchar         *prog)
+                  GFile               *file)
 {
   GimpPlugIn *plug_in;
 
@@ -196,20 +188,20 @@ gimp_plug_in_new (GimpPlugInManager   *manager,
   g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
   g_return_val_if_fail (procedure == NULL ||
                         GIMP_IS_PLUG_IN_PROCEDURE (procedure), NULL);
-  g_return_val_if_fail (prog == NULL || g_path_is_absolute (prog), NULL);
-  g_return_val_if_fail ((procedure != NULL || prog != NULL) &&
-                        ! (procedure != NULL && prog != NULL), NULL);
+  g_return_val_if_fail (file == NULL || G_IS_FILE (file), NULL);
+  g_return_val_if_fail ((procedure != NULL || file != NULL) &&
+                        ! (procedure != NULL && file != NULL), NULL);
 
   plug_in = g_object_new (GIMP_TYPE_PLUG_IN, NULL);
 
-  if (! prog)
-    prog = gimp_plug_in_procedure_get_progname (procedure);
+  if (! file)
+    file = gimp_plug_in_procedure_get_file (procedure);
 
   gimp_object_take_name (GIMP_OBJECT (plug_in),
-                         g_filename_display_basename (prog));
+                         g_path_get_basename (gimp_file_get_utf8_name (file)));
 
   plug_in->manager = manager;
-  plug_in->prog    = g_strdup (prog);
+  plug_in->file    = g_object_ref (file);
 
   gimp_plug_in_proc_frame_init (&plug_in->main_proc_frame,
                                 context, progress, procedure);
@@ -222,6 +214,7 @@ gimp_plug_in_open (GimpPlugIn         *plug_in,
                    GimpPlugInCallMode  call_mode,
                    gboolean            synchronous)
 {
+  gchar        *progname;
   gint          my_read[2];
   gint          my_write[2];
   gchar       **envp;
@@ -229,7 +222,7 @@ gimp_plug_in_open (GimpPlugIn         *plug_in,
   gchar       **argv;
   gint          argc;
   gchar        *interp, *interp_arg;
-  gchar        *read_fd, *write_fd;
+  gchar        *his_read_fd, *his_write_fd;
   const gchar  *mode;
   gchar        *stm;
   GError       *error = NULL;
@@ -247,7 +240,7 @@ gimp_plug_in_open (GimpPlugIn         *plug_in,
       gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
                     "Unable to run plug-in \"%s\"\n(%s)\n\npipe() failed: %s",
                     gimp_object_get_name (plug_in),
-                    gimp_filename_to_utf8 (plug_in->prog),
+                    gimp_file_get_utf8_name (plug_in->file),
                     g_strerror (errno));
       return FALSE;
     }
@@ -260,11 +253,11 @@ gimp_plug_in_open (GimpPlugIn         *plug_in,
   setmode (my_write[1], _O_BINARY);
 #endif
 
-#ifdef G_OS_WIN32
-  /* Prevent the plug-in from inheriting our ends of the pipes */
-  SetHandleInformation ((HANDLE) _get_osfhandle (my_read[0]), HANDLE_FLAG_INHERIT, 0);
-  SetHandleInformation ((HANDLE) _get_osfhandle (my_write[1]), HANDLE_FLAG_INHERIT, 0);
+  /* Prevent the plug-in from inheriting our end of the pipes */
+  gimp_spawn_set_cloexec (my_read[0]);
+  gimp_spawn_set_cloexec (my_write[1]);
 
+#ifdef G_OS_WIN32
   plug_in->my_read   = g_io_channel_win32_new_fd (my_read[0]);
   plug_in->my_write  = g_io_channel_win32_new_fd (my_write[1]);
   plug_in->his_read  = g_io_channel_win32_new_fd (my_write[0]);
@@ -293,10 +286,10 @@ gimp_plug_in_open (GimpPlugIn         *plug_in,
 
   /* Remember the file descriptors for the pipes.
    */
-  read_fd  = g_strdup_printf ("%d",
-                              g_io_channel_unix_get_fd (plug_in->his_read));
-  write_fd = g_strdup_printf ("%d",
-                              g_io_channel_unix_get_fd (plug_in->his_write));
+  his_read_fd  = g_strdup_printf ("%d",
+                                  g_io_channel_unix_get_fd (plug_in->his_read));
+  his_write_fd = g_strdup_printf ("%d",
+                                  g_io_channel_unix_get_fd (plug_in->his_write));
 
   switch (call_mode)
     {
@@ -316,13 +309,15 @@ gimp_plug_in_open (GimpPlugIn         *plug_in,
       break;
 
     default:
-      g_assert_not_reached ();
+      gimp_assert_not_reached ();
     }
 
   stm = g_strdup_printf ("%d", plug_in->manager->gimp->stack_trace_mode);
 
+  progname = g_file_get_path (plug_in->file);
+
   interp = gimp_interpreter_db_resolve (plug_in->manager->interpreter_db,
-                                        plug_in->prog, &interp_arg);
+                                        progname, &interp_arg);
 
   argc = 0;
 
@@ -332,10 +327,10 @@ gimp_plug_in_open (GimpPlugIn         *plug_in,
   if (interp_arg)
     args[argc++] = interp_arg;
 
-  args[argc++] = plug_in->prog;
+  args[argc++] = progname;
   args[argc++] = "-gimp";
-  args[argc++] = read_fd;
-  args[argc++] = write_fd;
+  args[argc++] = his_read_fd;
+  args[argc++] = his_write_fd;
   args[argc++] = mode;
   args[argc++] = stm;
   args[argc++] = NULL;
@@ -351,7 +346,7 @@ gimp_plug_in_open (GimpPlugIn         *plug_in,
   if (plug_in->manager->debug)
     {
       gchar **debug_argv = gimp_plug_in_debug_argv (plug_in->manager->debug,
-                                                    plug_in->prog,
+                                                    progname,
                                                     debug_flag, args);
 
       if (debug_argv)
@@ -365,25 +360,19 @@ gimp_plug_in_open (GimpPlugIn         *plug_in,
   /* Fork another process. We'll remember the process id so that we
    * can later use it to kill the filter if necessary.
    */
-  if (! g_spawn_async (NULL, argv, envp, spawn_flags,
-                       gimp_plug_in_prep_for_exec, plug_in,
-                       &plug_in->pid,
-                       &error))
+  if (! gimp_spawn_async (argv, envp, spawn_flags, &plug_in->pid, &error))
     {
       gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
                     "Unable to run plug-in \"%s\"\n(%s)\n\n%s",
                     gimp_object_get_name (plug_in),
-                    gimp_filename_to_utf8 (plug_in->prog),
+                    gimp_file_get_utf8_name (plug_in->file),
                     error->message);
-      g_error_free (error);
+      g_clear_error (&error);
       goto cleanup;
     }
 
-  g_io_channel_unref (plug_in->his_read);
-  plug_in->his_read = NULL;
-
-  g_io_channel_unref (plug_in->his_write);
-  plug_in->his_write = NULL;
+  g_clear_pointer (&plug_in->his_read,  g_io_channel_unref);
+  g_clear_pointer (&plug_in->his_write, g_io_channel_unref);
 
   if (! synchronous)
     {
@@ -412,11 +401,12 @@ gimp_plug_in_open (GimpPlugIn         *plug_in,
   if (debug)
     g_free (argv);
 
-  g_free (read_fd);
-  g_free (write_fd);
+  g_free (his_read_fd);
+  g_free (his_write_fd);
   g_free (stm);
   g_free (interp);
   g_free (interp_arg);
+  g_free (progname);
 
   return plug_in->open;
 }
@@ -454,7 +444,7 @@ gimp_plug_in_close (GimpPlugIn *plug_in,
         {
           if (plug_in->manager->gimp->be_verbose)
             g_print ("Terminating plug-in: '%s'\n",
-                     gimp_filename_to_utf8 (plug_in->prog));
+                     gimp_file_get_utf8_name (plug_in->file));
 
           /*  If the plug-in opened a process group, kill the group instead
            *  of only the plug-in, so we kill the plug-in's children too
@@ -493,7 +483,7 @@ gimp_plug_in_close (GimpPlugIn *plug_in,
             {
               if (plug_in->manager->gimp->be_verbose)
                 g_print ("Terminating plug-in: '%s'\n",
-                         gimp_filename_to_utf8 (plug_in->prog));
+                         gimp_file_get_utf8_name (plug_in->file));
 
               TerminateProcess ((HANDLE) plug_in->pid, 0);
             }
@@ -513,26 +503,10 @@ gimp_plug_in_close (GimpPlugIn *plug_in,
     }
 
   /* Close the pipes. */
-  if (plug_in->my_read != NULL)
-    {
-      g_io_channel_unref (plug_in->my_read);
-      plug_in->my_read = NULL;
-    }
-  if (plug_in->my_write != NULL)
-    {
-      g_io_channel_unref (plug_in->my_write);
-      plug_in->my_write = NULL;
-    }
-  if (plug_in->his_read != NULL)
-    {
-      g_io_channel_unref (plug_in->his_read);
-      plug_in->his_read = NULL;
-    }
-  if (plug_in->his_write != NULL)
-    {
-      g_io_channel_unref (plug_in->his_write);
-      plug_in->his_write = NULL;
-    }
+  g_clear_pointer (&plug_in->my_read,   g_io_channel_unref);
+  g_clear_pointer (&plug_in->my_write,  g_io_channel_unref);
+  g_clear_pointer (&plug_in->his_read,  g_io_channel_unref);
+  g_clear_pointer (&plug_in->his_write, g_io_channel_unref);
 
   gimp_wire_clear_error ();
 
@@ -650,7 +624,7 @@ gimp_plug_in_recv_message (GIOChannel   *channel,
                       "state. You may want to save your images and restart "
                       "GIMP to be on the safe side."),
                     gimp_object_get_name (plug_in),
-                    gimp_filename_to_utf8 (plug_in->prog));
+                    gimp_file_get_utf8_name (plug_in->file));
     }
 
   g_object_unref (plug_in);
@@ -747,22 +721,6 @@ gimp_plug_in_flush (GIOChannel *channel,
   return TRUE;
 }
 
-#if !defined(G_OS_WIN32) && !defined (G_WITH_CYGWIN)
-
-static void
-gimp_plug_in_prep_for_exec (gpointer data)
-{
-  GimpPlugIn *plug_in = data;
-
-  g_io_channel_unref (plug_in->my_read);
-  plug_in->my_read  = NULL;
-
-  g_io_channel_unref (plug_in->my_write);
-  plug_in->my_write  = NULL;
-}
-
-#endif
-
 GimpPlugInProcFrame *
 gimp_plug_in_get_proc_frame (GimpPlugIn *plug_in)
 {
@@ -830,8 +788,7 @@ gimp_plug_in_main_loop (GimpPlugIn *plug_in)
   g_main_loop_run (proc_frame->main_loop);
   gimp_threads_enter (plug_in->manager->gimp);
 
-  g_main_loop_unref (proc_frame->main_loop);
-  proc_frame->main_loop = NULL;
+  g_clear_pointer (&proc_frame->main_loop, g_main_loop_unref);
 }
 
 void
@@ -859,15 +816,8 @@ gimp_plug_in_get_undo_desc (GimpPlugIn *plug_in)
 
   proc_frame = gimp_plug_in_get_proc_frame (plug_in);
 
-  if (proc_frame)
-    {
-      GimpPlugInProcedure *proc;
-
-      proc = GIMP_PLUG_IN_PROCEDURE (proc_frame->procedure);
-
-      if (proc)
-        undo_desc = gimp_plug_in_procedure_get_label (proc);
-    }
+  if (proc_frame && proc_frame->procedure)
+    undo_desc = gimp_procedure_get_label (proc_frame->procedure);
 
   return undo_desc ? undo_desc : gimp_object_get_name (plug_in);
 }
@@ -901,7 +851,7 @@ gimp_plug_in_menu_register (GimpPlugIn  *plug_in,
                     "It has however not installed that procedure.  This "
                     "is not allowed.",
                     gimp_object_get_name (plug_in),
-                    gimp_filename_to_utf8 (plug_in->prog),
+                    gimp_file_get_utf8_name (plug_in->file),
                     menu_path, proc_name);
 
       return FALSE;
@@ -933,7 +883,7 @@ gimp_plug_in_menu_register (GimpPlugIn  *plug_in,
                     "pass just the menu's label to "
                     "gimp_install_procedure().",
                     gimp_object_get_name (plug_in),
-                    gimp_filename_to_utf8 (plug_in->prog),
+                    gimp_file_get_utf8_name (plug_in->file),
                     menu_path, proc_name);
 
       return FALSE;
@@ -947,15 +897,16 @@ gimp_plug_in_menu_register (GimpPlugIn  *plug_in,
                     "in the menu \"%s\", but the procedure has no label.  "
                     "This is not allowed.",
                     gimp_object_get_name (plug_in),
-                    gimp_filename_to_utf8 (plug_in->prog),
+                    gimp_file_get_utf8_name (plug_in->file),
                     proc_name, menu_path);
 
       return FALSE;
     }
+
   if (! gimp_plug_in_procedure_add_menu_path (proc, menu_path, &error))
     {
       gimp_message_literal (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
-			    error->message);
+                            error->message);
       g_clear_error (&error);
 
       return FALSE;
@@ -1013,10 +964,10 @@ gimp_plug_in_add_temp_proc (GimpPlugIn             *plug_in,
                                    GIMP_TEMPORARY_PROCEDURE (overridden));
 
   locale_domain = gimp_plug_in_manager_get_locale_domain (plug_in->manager,
-                                                          plug_in->prog,
+                                                          plug_in->file,
                                                           NULL);
   help_domain = gimp_plug_in_manager_get_help_domain (plug_in->manager,
-                                                      plug_in->prog,
+                                                      plug_in->file,
                                                       NULL);
 
   gimp_plug_in_procedure_set_locale_domain (GIMP_PLUG_IN_PROCEDURE (proc),
@@ -1040,4 +991,20 @@ gimp_plug_in_remove_temp_proc (GimpPlugIn             *plug_in,
 
   gimp_plug_in_manager_remove_temp_proc (plug_in->manager, proc);
   g_object_unref (proc);
+}
+
+void
+gimp_plug_in_enable_precision (GimpPlugIn *plug_in)
+{
+  g_return_if_fail (GIMP_IS_PLUG_IN (plug_in));
+
+  plug_in->precision = TRUE;
+}
+
+gboolean
+gimp_plug_in_precision_enabled (GimpPlugIn *plug_in)
+{
+  g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), FALSE);
+
+  return plug_in->precision;
 }

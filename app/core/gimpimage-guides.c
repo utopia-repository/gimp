@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "core-types.h"
@@ -113,6 +114,9 @@ gimp_image_remove_guide (GimpImage *image,
 
   private = GIMP_IMAGE_GET_PRIVATE (image);
 
+  if (gimp_guide_is_custom (guide))
+    push_undo = FALSE;
+
   if (push_undo)
     gimp_image_undo_push_guide (image, C_("undo-type", "Remove Guide"), guide);
 
@@ -121,7 +125,7 @@ gimp_image_remove_guide (GimpImage *image,
 
   gimp_image_guide_removed (image, guide);
 
-  gimp_guide_set_position (guide, -1);
+  gimp_guide_set_position (guide, GIMP_GUIDE_POSITION_UNDEFINED);
   g_object_unref (G_OBJECT (guide));
 }
 
@@ -139,6 +143,9 @@ gimp_image_move_guide (GimpImage *image,
     g_return_if_fail (position <= gimp_image_get_height (image));
   else
     g_return_if_fail (position <= gimp_image_get_width (image));
+
+  if (gimp_guide_is_custom (guide))
+    push_undo = FALSE;
 
   if (push_undo)
     gimp_image_undo_push_guide (image, C_("undo-type", "Move Guide"), guide);
@@ -170,8 +177,7 @@ gimp_image_get_guide (GimpImage *image,
     {
       GimpGuide *guide = guides->data;
 
-      if (gimp_guide_get_ID (guide) == id &&
-          gimp_guide_get_position (guide) >= 0)
+      if (gimp_guide_get_ID (guide) == id)
         return guide;
     }
 
@@ -199,9 +205,6 @@ gimp_image_get_next_guide (GimpImage *image,
     {
       GimpGuide *guide = guides->data;
 
-      if (gimp_guide_get_position (guide) < 0)
-        continue;
-
       if (*guide_found) /* this is the first guide after the found one */
         return guide;
 
@@ -210,59 +213,4 @@ gimp_image_get_next_guide (GimpImage *image,
     }
 
   return NULL;
-}
-
-GimpGuide *
-gimp_image_find_guide (GimpImage *image,
-                       gdouble    x,
-                       gdouble    y,
-                       gdouble    epsilon_x,
-                       gdouble    epsilon_y)
-{
-  GList     *list;
-  GimpGuide *ret     = NULL;
-  gdouble    mindist = G_MAXDOUBLE;
-
-  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-  g_return_val_if_fail (epsilon_x > 0 && epsilon_y > 0, NULL);
-
-  for (list = GIMP_IMAGE_GET_PRIVATE (image)->guides;
-       list;
-       list = g_list_next (list))
-    {
-      GimpGuide *guide    = list->data;
-      gint       position = gimp_guide_get_position (guide);
-      gdouble    dist;
-
-      if (position < 0)
-        continue;
-
-      switch (gimp_guide_get_orientation (guide))
-        {
-        case GIMP_ORIENTATION_HORIZONTAL:
-          dist = ABS (position - y);
-          if (dist < MIN (epsilon_y, mindist))
-            {
-              mindist = dist;
-              ret = guide;
-            }
-          break;
-
-        /* mindist always is in vertical resolution to make it comparable */
-        case GIMP_ORIENTATION_VERTICAL:
-          dist = ABS (position - x);
-          if (dist < MIN (epsilon_x, mindist / epsilon_y * epsilon_x))
-            {
-              mindist = dist * epsilon_y / epsilon_x;
-              ret = guide;
-            }
-          break;
-
-        default:
-          continue;
-        }
-
-    }
-
-  return ret;
 }

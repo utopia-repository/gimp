@@ -19,25 +19,46 @@
 #define __XCF_WRITE_H__
 
 
-guint   xcf_write_int32      (FILE           *fp,
-                              const guint32  *data,
-                              gint            count,
-                              GError        **error);
-guint   xcf_write_zero_int32 (FILE           *fp,
-                              gint            count,
-                              GError        **error);
-guint   xcf_write_float      (FILE           *fp,
-                              const gfloat   *data,
-                              gint            count,
-                              GError        **error);
-guint   xcf_write_int8       (FILE           *fp,
-                              const guint8   *data,
-                              gint            count,
-                              GError        **error);
-guint   xcf_write_string     (FILE           *fp,
-                              gchar         **data,
-                              gint            count,
-                              GError        **error);
+guint   xcf_write_int8        (XcfInfo        *info,
+                               const guint8   *data,
+                               gint            count,
+                               GError        **error);
+guint   xcf_write_int16       (XcfInfo        *info,
+                               const guint16  *data,
+                               gint            count,
+                               GError        **error);
+guint   xcf_write_int32       (XcfInfo        *info,
+                               const guint32  *data,
+                               gint            count,
+                               GError        **error);
+guint   xcf_write_int64       (XcfInfo        *info,
+                               const guint64  *data,
+                               gint            count,
+                               GError        **error);
+guint   xcf_write_offset      (XcfInfo        *info,
+                               const goffset  *data,
+                               gint            count,
+                               GError        **error);
+guint   xcf_write_zero_offset (XcfInfo        *info,
+                               gint            count,
+                               GError        **error);
+guint   xcf_write_float       (XcfInfo        *info,
+                               const gfloat   *data,
+                               gint            count,
+                               GError        **error);
+guint   xcf_write_string      (XcfInfo        *info,
+                               gchar         **data,
+                               gint            count,
+                               GError        **error);
+guint   xcf_write_component   (XcfInfo        *info,
+                               gint            bpc,
+                               const guint8   *data,
+                               gint            count,
+                               GError        **error);
+
+void    xcf_write_to_be       (gint            bpc,
+                               guint8         *data,
+                               gint            count);
 
 
 #endif  /* __XCF_WRITE_H__ */

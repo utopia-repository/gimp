@@ -25,6 +25,7 @@
 struct _GimpUndoAccumulator
 {
   gboolean mode_changed;
+  gboolean precision_changed;
 
   gboolean size_changed;
   gint     previous_origin_x;
@@ -58,7 +59,7 @@ struct _GimpUndo
   GimpUndoType      undo_type;      /* undo type                          */
   GimpDirtyMask     dirty_mask;     /* affected parts of the image        */
 
-  TempBuf          *preview;
+  GimpTempBuf      *preview;
   guint             preview_idle_id;
 };
 

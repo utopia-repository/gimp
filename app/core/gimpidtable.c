@@ -20,12 +20,13 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gio/gio.h>
+#include <gegl.h>
 
 #include "core-types.h"
 
+#include "gimp-memsize.h"
 #include "gimpidtable.h"
-#include "gimp-utils.h"
 
 
 #define GIMP_ID_TABLE_START_ID 1
@@ -80,11 +81,7 @@ gimp_id_table_finalize (GObject *object)
 {
   GimpIdTable *id_table = GIMP_ID_TABLE (object);
 
-  if (id_table->priv->id_table)
-    {
-      g_hash_table_unref (id_table->priv->id_table);
-      id_table->priv->id_table = NULL;
-    }
+  g_clear_pointer (&id_table->priv->id_table, g_hash_table_unref);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }

@@ -24,15 +24,6 @@ include $(top_srcdir)/build/windows/gimprc-plug-ins.rule
 twain_RC = twain.rc.o
 endif
 
-if HAVE_MAC_TWAIN
-twain_LDFLAGS = -framework Carbon -framework TWAIN
-
-twainplatform = tw_mac.c
-
-twaindatadir = $(gimpdatadir)/twain
-twaindata_DATA = gimp-twain.png
-endif
-
 
 twain_SOURCES = \
 	tw_func.c	\
@@ -50,12 +41,12 @@ EXTRA_DIST = \
 	gimp-twain.png	\
 	tw_dump.c	\
 	tw_dump.h	\
-	tw_win.c	\
-	tw_mac.c
+	tw_win.c
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir)	\
 	$(GTK_CFLAGS)	\
+	$(GEGL_CFLAGS)	\
 	-I$(includedir)
 
 LDADD = \

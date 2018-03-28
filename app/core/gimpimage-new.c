@@ -17,26 +17,32 @@
 
 #include "config.h"
 
+#include <cairo.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpcolor/gimpcolor.h"
 #include "libgimpconfig/gimpconfig.h"
 
 #include "core-types.h"
 
-#include "base/tile-manager.h"
-
 #include "config/gimpcoreconfig.h"
+
+#include "gegl/gimp-babl.h"
 
 #include "gimp.h"
 #include "gimpbuffer.h"
 #include "gimpchannel.h"
 #include "gimpcontext.h"
+#include "gimpdrawable-fill.h"
 #include "gimpimage.h"
+#include "gimpimage-color-profile.h"
 #include "gimpimage-colormap.h"
 #include "gimpimage-new.h"
 #include "gimpimage-undo.h"
 #include "gimplayer.h"
+#include "gimplayer-new.h"
 #include "gimptemplate.h"
 
 #include "gimp-intl.h"
@@ -84,11 +90,12 @@ gimp_image_new_from_template (Gimp         *gimp,
                               GimpTemplate *template,
                               GimpContext  *context)
 {
-  GimpImage     *image;
-  GimpLayer     *layer;
-  GimpImageType  type;
-  gint           width, height;
-  const gchar   *comment;
+  GimpImage         *image;
+  GimpLayer         *layer;
+  GimpColorProfile  *profile;
+  gint               width, height;
+  gboolean           has_alpha;
+  const gchar       *comment;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (GIMP_IS_TEMPLATE (template), NULL);
@@ -97,7 +104,8 @@ gimp_image_new_from_template (Gimp         *gimp,
   image = gimp_create_image (gimp,
                              gimp_template_get_width (template),
                              gimp_template_get_height (template),
-                             gimp_template_get_image_type (template),
+                             gimp_template_get_base_type (template),
+                             gimp_template_get_precision (template),
                              FALSE);
 
   gimp_image_undo_disable (image);
@@ -121,36 +129,35 @@ gimp_image_new_from_template (Gimp         *gimp,
                              gimp_template_get_resolution_y (template));
   gimp_image_set_unit (image, gimp_template_get_resolution_unit (template));
 
+  gimp_image_set_is_color_managed (image,
+                                   gimp_template_get_color_managed (template),
+                                   FALSE);
+  profile = gimp_template_get_color_profile (template);
+  gimp_image_set_color_profile (image, profile, NULL);
+  if (profile)
+    g_object_unref (profile);
+
   width  = gimp_image_get_width (image);
   height = gimp_image_get_height (image);
 
-  switch (gimp_template_get_fill_type (template))
-    {
-    case GIMP_TRANSPARENT_FILL:
-      type = ((gimp_template_get_image_type (template) == GIMP_RGB) ?
-              GIMP_RGBA_IMAGE : GIMP_GRAYA_IMAGE);
-      break;
-    default:
-      type = ((gimp_template_get_image_type (template) == GIMP_RGB) ?
-              GIMP_RGB_IMAGE : GIMP_GRAY_IMAGE);
-      break;
-    }
+  if (gimp_template_get_fill_type (template) == GIMP_FILL_TRANSPARENT)
+    has_alpha = TRUE;
+  else
+    has_alpha = FALSE;
 
-  layer = gimp_layer_new (image, width, height, type,
+  layer = gimp_layer_new (image, width, height,
+                          gimp_image_get_layer_format (image, has_alpha),
                           _("Background"),
-                          GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
+                          GIMP_OPACITY_OPAQUE,
+                          gimp_image_get_default_new_layer_mode (image));
 
-  gimp_drawable_fill_by_type (GIMP_DRAWABLE (layer),
-                              context, gimp_template_get_fill_type (template));
+  gimp_drawable_fill (GIMP_DRAWABLE (layer),
+                      context, gimp_template_get_fill_type (template));
 
   gimp_image_add_layer (image, layer, NULL, 0, FALSE);
 
   gimp_image_undo_enable (image);
   gimp_image_clean_all (image);
-
-  gimp_create_display (gimp, image, gimp_template_get_unit (template), 1.0);
-
-  g_object_unref (image);
 
   return image;
 }
@@ -168,6 +175,7 @@ gimp_image_new_from_drawable (Gimp         *gimp,
   GimpImageBaseType  type;
   gdouble            xres;
   gdouble            yres;
+  GimpColorProfile  *profile;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
@@ -175,12 +183,14 @@ gimp_image_new_from_drawable (Gimp         *gimp,
   item  = GIMP_ITEM (drawable);
   image = gimp_item_get_image (item);
 
-  type = GIMP_IMAGE_TYPE_BASE_TYPE (gimp_drawable_type (drawable));
+  type = gimp_drawable_get_base_type (drawable);
 
   new_image = gimp_create_image (gimp,
                                  gimp_item_get_width  (item),
                                  gimp_item_get_height (item),
-                                 type, TRUE);
+                                 type,
+                                 gimp_drawable_get_precision (drawable),
+                                 TRUE);
   gimp_image_undo_disable (new_image);
 
   if (type == GIMP_INDEXED)
@@ -192,6 +202,12 @@ gimp_image_new_from_drawable (Gimp         *gimp,
   gimp_image_get_resolution (image, &xres, &yres);
   gimp_image_set_resolution (new_image, xres, yres);
   gimp_image_set_unit (new_image, gimp_image_get_unit (image));
+
+  gimp_image_set_is_color_managed (new_image,
+                                   gimp_image_get_is_color_managed (image),
+                                   FALSE);
+  profile = gimp_color_managed_get_color_profile (GIMP_COLOR_MANAGED (drawable));
+  gimp_image_set_color_profile (new_image, profile, NULL);
 
   if (GIMP_IS_LAYER (drawable))
     new_type = G_TYPE_FROM_INSTANCE (drawable);
@@ -208,9 +224,12 @@ gimp_image_new_from_drawable (Gimp         *gimp,
   gimp_item_translate (GIMP_ITEM (new_layer), -off_x, -off_y, FALSE);
   gimp_item_set_visible (GIMP_ITEM (new_layer), TRUE, FALSE);
   gimp_item_set_linked (GIMP_ITEM (new_layer), FALSE, FALSE);
-  gimp_layer_set_mode (new_layer, GIMP_NORMAL_MODE, FALSE);
+  gimp_layer_set_mode (new_layer,
+                       gimp_image_get_default_new_layer_mode (new_image),
+                       FALSE);
   gimp_layer_set_opacity (new_layer, GIMP_OPACITY_OPAQUE, FALSE);
-  gimp_layer_set_lock_alpha (new_layer, FALSE, FALSE);
+  if (gimp_layer_can_lock_alpha (new_layer))
+    gimp_layer_set_lock_alpha (new_layer, FALSE, FALSE);
 
   gimp_image_add_layer (new_image, new_layer, NULL, 0, TRUE);
 
@@ -237,7 +256,9 @@ gimp_image_new_from_component (Gimp            *gimp,
   new_image = gimp_create_image (gimp,
                                  gimp_image_get_width  (image),
                                  gimp_image_get_height (image),
-                                 GIMP_GRAY, TRUE);
+                                 GIMP_GRAY,
+                                 gimp_image_get_precision (image),
+                                 TRUE);
 
   gimp_image_undo_disable (new_image);
 
@@ -265,49 +286,45 @@ gimp_image_new_from_component (Gimp            *gimp,
 
 GimpImage *
 gimp_image_new_from_buffer (Gimp       *gimp,
-                            GimpImage  *invoke,
-                            GimpBuffer *paste)
+                            GimpBuffer *buffer)
 {
-  GimpImage     *image;
-  GimpLayer     *layer;
-  GimpImageType  type;
+  GimpImage        *image;
+  GimpLayer        *layer;
+  const Babl       *format;
+  gboolean          has_alpha;
+  gdouble           res_x;
+  gdouble           res_y;
+  GimpColorProfile *profile;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
-  g_return_val_if_fail (invoke == NULL || GIMP_IS_IMAGE (invoke), NULL);
-  g_return_val_if_fail (GIMP_IS_BUFFER (paste), NULL);
+  g_return_val_if_fail (GIMP_IS_BUFFER (buffer), NULL);
 
-  switch (tile_manager_bpp (paste->tiles))
-    {
-    case 1: type = GIMP_GRAY_IMAGE;  break;
-    case 2: type = GIMP_GRAYA_IMAGE; break;
-    case 3: type = GIMP_RGB_IMAGE;   break;
-    case 4: type = GIMP_RGBA_IMAGE;  break;
-    default:
-      g_return_val_if_reached (NULL);
-      break;
-    }
+  format    = gimp_buffer_get_format (buffer);
+  has_alpha = babl_format_has_alpha (format);
 
-  /*  create a new image  (always of type GIMP_RGB)  */
   image = gimp_create_image (gimp,
-                             gimp_buffer_get_width  (paste),
-                             gimp_buffer_get_height (paste),
-                             GIMP_IMAGE_TYPE_BASE_TYPE (type),
+                             gimp_buffer_get_width  (buffer),
+                             gimp_buffer_get_height (buffer),
+                             gimp_babl_format_get_base_type (format),
+                             gimp_babl_format_get_precision (format),
                              TRUE);
   gimp_image_undo_disable (image);
 
-  if (invoke)
+  if (gimp_buffer_get_resolution (buffer, &res_x, &res_y))
     {
-      gdouble xres;
-      gdouble yres;
-
-      gimp_image_get_resolution (invoke, &xres, &yres);
-      gimp_image_set_resolution (image, xres, yres);
-      gimp_image_set_unit (image, gimp_image_get_unit (invoke));
+      gimp_image_set_resolution (image, res_x, res_y);
+      gimp_image_set_unit (image, gimp_buffer_get_unit (buffer));
     }
 
-  layer = gimp_layer_new_from_tiles (paste->tiles, image, type,
-                                     _("Pasted Layer"),
-                                     GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
+  profile = gimp_buffer_get_color_profile (buffer);
+  gimp_image_set_color_profile (image, profile, NULL);
+
+  layer = gimp_layer_new_from_buffer (buffer, image,
+                                      gimp_image_get_layer_format (image,
+                                                                   has_alpha),
+                                      _("Pasted Layer"),
+                                      GIMP_OPACITY_OPAQUE,
+                                      gimp_image_get_default_new_layer_mode (image));
 
   gimp_image_add_layer (image, layer, NULL, 0, TRUE);
 
@@ -321,37 +338,52 @@ gimp_image_new_from_pixbuf (Gimp        *gimp,
                             GdkPixbuf   *pixbuf,
                             const gchar *layer_name)
 {
-  GimpImageType  image_type;
-  GimpImage     *new_image;
-  GimpLayer     *layer;
+  GimpImage         *new_image;
+  GimpLayer         *layer;
+  GimpImageBaseType  base_type;
+  gboolean           has_alpha = FALSE;
+  guint8            *icc_data;
+  gsize              icc_len;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
 
   switch (gdk_pixbuf_get_n_channels (pixbuf))
     {
-    case 1: image_type = GIMP_GRAY_IMAGE;  break;
-    case 2: image_type = GIMP_GRAYA_IMAGE; break;
-    case 3: image_type = GIMP_RGB_IMAGE;   break;
-    case 4: image_type = GIMP_RGBA_IMAGE;  break;
+    case 2: has_alpha = TRUE;
+    case 1: base_type = GIMP_GRAY;
+      break;
+
+    case 4: has_alpha = TRUE;
+    case 3: base_type = GIMP_RGB;
       break;
 
     default:
       g_return_val_if_reached (NULL);
-      break;
     }
 
   new_image = gimp_create_image (gimp,
                                  gdk_pixbuf_get_width  (pixbuf),
                                  gdk_pixbuf_get_height (pixbuf),
-                                 GIMP_IMAGE_TYPE_BASE_TYPE (image_type),
+                                 base_type,
+                                 GIMP_PRECISION_U8_GAMMA,
                                  FALSE);
 
   gimp_image_undo_disable (new_image);
 
-  layer = gimp_layer_new_from_pixbuf (pixbuf, new_image, image_type,
+  icc_data = gimp_pixbuf_get_icc_profile (pixbuf, &icc_len);
+  if (icc_data)
+    {
+      gimp_image_set_icc_profile (new_image, icc_data, icc_len, NULL);
+      g_free (icc_data);
+    }
+
+  layer = gimp_layer_new_from_pixbuf (pixbuf, new_image,
+                                      gimp_image_get_layer_format (new_image,
+                                                                   has_alpha),
                                       layer_name,
-                                      GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
+                                      GIMP_OPACITY_OPAQUE,
+                                      gimp_image_get_default_new_layer_mode (new_image));
 
   gimp_image_add_layer (new_image, layer, NULL, 0, TRUE);
 

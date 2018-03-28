@@ -22,6 +22,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
@@ -242,8 +243,7 @@ gimp_tag_entry_dispose (GObject *object)
       g_signal_handlers_disconnect_by_func (entry->container,
                                             gimp_tag_entry_container_changed,
                                             entry);
-      g_object_unref (entry->container);
-      entry->container = NULL;
+      g_clear_object (&entry->container);
     }
 
   if (entry->mask)
@@ -381,7 +381,7 @@ gimp_tag_entry_activate (GtkEntry *entry)
  *
  * Sets tags from @tag_string to @tag_entry. Given tags do not need to
  * be valid as they can be fixed or dropped automatically. Depending on
- * selected #GimpTagEntryMode, appropriate action is peformed.
+ * selected #GimpTagEntryMode, appropriate action is performed.
  **/
 void
 gimp_tag_entry_set_tag_string (GimpTagEntry *entry,
@@ -802,7 +802,7 @@ gimp_tag_entry_assign_tags (GimpTagEntry *tag_entry)
         }
     }
 
-  g_list_free_full (add_list, (GDestroyNotify) g_object_unref);
+  g_list_free_full (add_list,    (GDestroyNotify) g_object_unref);
   g_list_free_full (remove_list, (GDestroyNotify) g_object_unref);
 
   /* common tags list with changes applied. */
@@ -1743,7 +1743,7 @@ gimp_tag_entry_add_to_recent (GimpTagEntry *entry,
 const gchar *
 gimp_tag_entry_get_separator (void)
 {
-  /* Seperator for tags
+  /* Separator for tags
    * IMPORTANT: use only one of Unicode terminal punctuation chars.
    * http://unicode.org/review/pr-23.html
    */

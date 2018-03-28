@@ -50,6 +50,8 @@
 #undef cons
 
 static void     ts_init_constants                (scheme    *sc);
+static void     ts_init_enum                     (scheme    *sc,
+                                                  GType      enum_type);
 static void     ts_init_procedures               (scheme    *sc,
                                                   gboolean   register_scipts);
 static void     convert_string                   (gchar     *str);
@@ -76,7 +78,7 @@ typedef struct
   gint         value;
 } NamedConstant;
 
-static const NamedConstant const script_constants[] =
+static const NamedConstant script_constants[] =
 {
   /* Useful values from libgimpbase/gimplimits.h */
   { "MIN-IMAGE-SIZE", GIMP_MIN_IMAGE_SIZE },
@@ -125,94 +127,13 @@ static const NamedConstant const script_constants[] =
   { NULL, 0 }
 };
 
-/* The following constants are deprecated. They are
- * included to keep backwards compatability with
- * older scripts used with version 2.0 of GIMP.
- */
-static const NamedConstant const old_constants[] =
-{
-  { "NORMAL",               GIMP_NORMAL_MODE       },
-  { "DISSOLVE",             GIMP_DISSOLVE_MODE     },
-  { "BEHIND",               GIMP_BEHIND_MODE       },
-  { "MULTIPLY",             GIMP_MULTIPLY_MODE     },
-  { "SCREEN",               GIMP_SCREEN_MODE       },
-  { "OVERLAY",              GIMP_OVERLAY_MODE      },
-  { "DIFFERENCE",           GIMP_DIFFERENCE_MODE   },
-  { "ADDITION",             GIMP_ADDITION_MODE     },
-  { "SUBTRACT",             GIMP_SUBTRACT_MODE     },
-  { "DARKEN-ONLY",          GIMP_DARKEN_ONLY_MODE  },
-  { "LIGHTEN-ONLY",         GIMP_LIGHTEN_ONLY_MODE },
-  { "HUE",                  GIMP_HUE_MODE          },
-  { "SATURATION",           GIMP_SATURATION_MODE   },
-  { "COLOR",                GIMP_COLOR_MODE        },
-  { "VALUE",                GIMP_VALUE_MODE        },
-  { "DIVIDE",               GIMP_DIVIDE_MODE       },
-
-  { "BLUR",                 GIMP_BLUR_CONVOLVE     },
-  { "SHARPEN",              GIMP_SHARPEN_CONVOLVE  },
-
-  { "WHITE-MASK",           GIMP_ADD_WHITE_MASK     },
-  { "BLACK-MASK",           GIMP_ADD_BLACK_MASK     },
-  { "ALPHA-MASK",           GIMP_ADD_ALPHA_MASK     },
-  { "SELECTION-MASK",       GIMP_ADD_SELECTION_MASK },
-  { "COPY-MASK",            GIMP_ADD_COPY_MASK      },
-
-  { "ADD",                  GIMP_CHANNEL_OP_ADD       },
-  { "SUB",                  GIMP_CHANNEL_OP_SUBTRACT  },
-  { "REPLACE",              GIMP_CHANNEL_OP_REPLACE   },
-  { "INTERSECT",            GIMP_CHANNEL_OP_INTERSECT },
-
-  { "FG-BG-RGB",            GIMP_FG_BG_RGB_MODE       },
-  { "FG-BG-HSV",            GIMP_FG_BG_HSV_MODE       },
-  { "FG-TRANS",             GIMP_FG_TRANSPARENT_MODE  },
-  { "CUSTOM",               GIMP_CUSTOM_MODE          },
-
-  { "FG-IMAGE-FILL",        GIMP_FOREGROUND_FILL  },
-  { "BG-IMAGE-FILL",        GIMP_BACKGROUND_FILL  },
-  { "WHITE-IMAGE-FILL",     GIMP_WHITE_FILL       },
-  { "TRANS-IMAGE-FILL",     GIMP_TRANSPARENT_FILL },
-
-  { "APPLY",                GIMP_MASK_APPLY   },
-  { "DISCARD",              GIMP_MASK_DISCARD },
-
-  { "HARD",                 GIMP_BRUSH_HARD },
-  { "SOFT",                 GIMP_BRUSH_SOFT },
-
-  { "CONTINUOUS",           GIMP_PAINT_CONSTANT    },
-  { "INCREMENTAL",          GIMP_PAINT_INCREMENTAL },
-
-  { "HORIZONTAL",           GIMP_ORIENTATION_HORIZONTAL },
-  { "VERTICAL",             GIMP_ORIENTATION_VERTICAL   },
-  { "UNKNOWN",              GIMP_ORIENTATION_UNKNOWN    },
-
-  { "LINEAR",               GIMP_GRADIENT_LINEAR               },
-  { "BILINEAR",             GIMP_GRADIENT_BILINEAR             },
-  { "RADIAL",               GIMP_GRADIENT_RADIAL               },
-  { "SQUARE",               GIMP_GRADIENT_SQUARE               },
-  { "CONICAL-SYMMETRIC",    GIMP_GRADIENT_CONICAL_SYMMETRIC    },
-  { "CONICAL-ASYMMETRIC",   GIMP_GRADIENT_CONICAL_ASYMMETRIC   },
-  { "SHAPEBURST-ANGULAR",   GIMP_GRADIENT_SHAPEBURST_ANGULAR   },
-  { "SHAPEBURST-SPHERICAL", GIMP_GRADIENT_SHAPEBURST_SPHERICAL },
-  { "SHAPEBURST-DIMPLED",   GIMP_GRADIENT_SHAPEBURST_DIMPLED   },
-  { "SPIRAL-CLOCKWISE",     GIMP_GRADIENT_SPIRAL_CLOCKWISE     },
-  { "SPIRAL-ANTICLOCKWISE", GIMP_GRADIENT_SPIRAL_ANTICLOCKWISE },
-
-  { "VALUE-LUT",            GIMP_HISTOGRAM_VALUE },
-  { "RED-LUT",              GIMP_HISTOGRAM_RED   },
-  { "GREEN-LUT",            GIMP_HISTOGRAM_GREEN },
-  { "BLUE-LUT",             GIMP_HISTOGRAM_BLUE  },
-  { "ALPHA-LUT",            GIMP_HISTOGRAM_ALPHA },
-
-  { NULL, 0 }
-};
-
 
 static scheme sc;
 
 
 void
-tinyscheme_init (const gchar *path,
-                 gboolean     register_scripts)
+tinyscheme_init (GList    *path,
+                 gboolean  register_scripts)
 {
   /* init the interpreter */
   if (! scheme_init (&sc))
@@ -235,31 +156,34 @@ tinyscheme_init (const gchar *path,
 
   if (path)
     {
-      GList *dir_list = gimp_path_parse (path, 256, TRUE, NULL);
       GList *list;
 
-      for (list = dir_list; list; list = g_list_next (list))
+      for (list = path; list; list = g_list_next (list))
         {
-          if (ts_load_file (list->data, "script-fu.init"))
+          gchar *dir = g_file_get_path (list->data);
+
+          if (ts_load_file (dir, "script-fu.init"))
             {
               /*  To improve compatibility with older Script-Fu scripts,
                *  load script-fu-compat.init from the same directory.
                */
-              ts_load_file (list->data, "script-fu-compat.init");
+              ts_load_file (dir, "script-fu-compat.init");
 
               /*  To improve compatibility with older GIMP version,
                *  load plug-in-compat.init from the same directory.
                */
-              ts_load_file (list->data, "plug-in-compat.init");
+              ts_load_file (dir, "plug-in-compat.init");
+
+              g_free (dir);
 
               break;
             }
+
+          g_free (dir);
         }
 
       if (list == NULL)
         g_printerr ("Unable to read initialization file script-fu.init\n");
-
-      gimp_path_free (dir_list);
     }
 }
 
@@ -357,6 +281,7 @@ ts_init_constants (scheme *sc)
   gint          n_enum_type_names;
   gint          i;
   pointer       symbol;
+  GQuark        quark;
 
   symbol = sc->vptr->mk_symbol (sc, "gimp-directory");
   sc->vptr->scheme_define (sc, sc->global_env, symbol,
@@ -384,33 +309,19 @@ ts_init_constants (scheme *sc)
   sc->vptr->setimmutable (symbol);
 
   enum_type_names = gimp_enums_get_type_names (&n_enum_type_names);
+  quark           = g_quark_from_static_string ("gimp-compat-enum");
 
   for (i = 0; i < n_enum_type_names; i++)
     {
       const gchar *enum_name  = enum_type_names[i];
       GType        enum_type  = g_type_from_name (enum_name);
-      GEnumClass  *enum_class = g_type_class_ref (enum_type);
-      GEnumValue  *value;
 
-      for (value = enum_class->values; value->value_name; value++)
-        {
-          if (g_str_has_prefix (value->value_name, "GIMP_"))
-            {
-              gchar *scheme_name;
+      ts_init_enum (sc, enum_type);
 
-              scheme_name = g_strdup (value->value_name + strlen ("GIMP_"));
-              convert_string (scheme_name);
+      enum_type = (GType) g_type_get_qdata (enum_type, quark);
 
-              symbol = sc->vptr->mk_symbol (sc, scheme_name);
-              sc->vptr->scheme_define (sc, sc->global_env, symbol,
-                                       sc->vptr->mk_integer (sc, value->value));
-              sc->vptr->setimmutable (symbol);
-
-              g_free (scheme_name);
-            }
-        }
-
-      g_type_class_unref (enum_class);
+      if (enum_type)
+        ts_init_enum (sc, enum_type);
     }
 
   /* Constants used in the register block of scripts */
@@ -450,15 +361,35 @@ ts_init_constants (scheme *sc)
   sc->vptr->scheme_define (sc, sc->global_env, symbol,
                            sc->vptr->mk_string (sc, gimp_plug_in_directory ()));
   sc->vptr->setimmutable (symbol);
+}
 
-  for (i = 0; old_constants[i].name != NULL; ++i)
+static void
+ts_init_enum (scheme *sc,
+              GType   enum_type)
+{
+  GEnumClass  *enum_class = g_type_class_ref (enum_type);
+  GEnumValue  *value;
+
+  for (value = enum_class->values; value->value_name; value++)
     {
-      symbol = sc->vptr->mk_symbol (sc, old_constants[i].name);
-      sc->vptr->scheme_define (sc, sc->global_env, symbol,
-                               sc->vptr->mk_integer (sc,
-                                                     old_constants[i].value));
-      sc->vptr->setimmutable (symbol);
+      if (g_str_has_prefix (value->value_name, "GIMP_"))
+        {
+          gchar   *scheme_name;
+          pointer  symbol;
+
+          scheme_name = g_strdup (value->value_name + strlen ("GIMP_"));
+          convert_string (scheme_name);
+
+          symbol = sc->vptr->mk_symbol (sc, scheme_name);
+          sc->vptr->scheme_define (sc, sc->global_env, symbol,
+                                   sc->vptr->mk_integer (sc, value->value));
+          sc->vptr->setimmutable (symbol);
+
+          g_free (scheme_name);
+        }
     }
+
+  g_type_class_unref (enum_class);
 }
 
 static void
@@ -566,11 +497,9 @@ ts_init_procedures (scheme   *sc,
           gimp_destroy_paramdefs (params, n_params);
           gimp_destroy_paramdefs (return_vals, n_return_vals);
         }
-
-      g_free (proc_list[i]);
     }
 
-  g_free (proc_list);
+  g_strfreev (proc_list);
 }
 
 static gboolean
@@ -1276,13 +1205,19 @@ script_fu_marshal_procedure_call (scheme  *sc,
 
   if (success)
     {
+      /* refuse to refresh scripts from a script, better than crashing
+       * see bug #575830
+       */
+      if (strcmp (proc_name, "script-fu-refresh-scripts"))
+        {
 #if DEBUG_MARSHALL
-      g_printerr ("    calling %s...", proc_name);
+          g_printerr ("    calling %s...", proc_name);
 #endif
-      values = gimp_run_procedure2 (proc_name, &nvalues, nparams, args);
+          values = gimp_run_procedure2 (proc_name, &nvalues, nparams, args);
 #if DEBUG_MARSHALL
-      g_printerr ("  done.\n");
+          g_printerr ("  done.\n");
 #endif
+        }
     }
   else
     {

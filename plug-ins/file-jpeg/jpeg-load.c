@@ -21,23 +21,14 @@
 #include <errno.h>
 #include <setjmp.h>
 
+#include <gio/gio.h>
 #include <glib/gstdio.h>
+#include <gexiv2/gexiv2.h>
 
 #include <jpeglib.h>
 #include <jerror.h>
 
-#ifdef HAVE_LIBEXIF
-#include <libexif/exif-data.h>
-#endif /* HAVE_LIBEXIF */
-
-#ifdef HAVE_LCMS
-#ifdef HAVE_LCMS1
-#include <lcms.h>
-typedef DWORD cmsUInt32Number;
-#else
 #include <lcms2.h>
-#endif
-#endif
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -48,20 +39,10 @@ typedef DWORD cmsUInt32Number;
 #include "jpeg-icc.h"
 #include "jpeg-settings.h"
 #include "jpeg-load.h"
-#ifdef HAVE_LIBEXIF
-#include "jpeg-exif.h"
-#include "gimpexif.h"
-#endif
 
-
-static void  jpeg_load_resolution           (gint32    image_ID,
+static gboolean  jpeg_load_resolution       (gint32    image_ID,
                                              struct jpeg_decompress_struct
                                                        *cinfo);
-
-#ifdef HAVE_LIBEXIF
-static gboolean  jpeg_load_exif_resolution  (gint32    image_ID,
-                                             ExifData *exif_data);
-#endif
 
 static void      jpeg_load_sanitize_comment (gchar    *comment);
 
@@ -71,20 +52,16 @@ static void      jpeg_load_cmyk_to_rgb      (guchar   *buf,
                                              glong     pixels,
                                              gpointer  transform);
 
-
-GimpDrawable    *drawable_global;
 gint32 volatile  preview_image_ID;
 gint32           preview_layer_ID;
-
 
 gint32
 load_image (const gchar  *filename,
             GimpRunMode   runmode,
             gboolean      preview,
+            gboolean     *resolution_loaded,
             GError      **error)
 {
-  GimpPixelRgn     pixel_rgn;
-  GimpDrawable    *drawable;
   gint32 volatile  image_ID;
   gint32           layer_ID;
   struct jpeg_decompress_struct cinfo;
@@ -93,19 +70,13 @@ load_image (const gchar  *filename,
   FILE            *infile;
   guchar          *buf;
   guchar         **rowbuf;
-  gint             image_type;
-  gint             layer_type;
+  GimpImageBaseType image_type;
+  GimpImageType    layer_type;
+  GeglBuffer      *buffer = NULL;
+  const Babl      *format;
   gint             tile_height;
-  gint             scanlines;
-  gint             i, start, end;
-#ifdef HAVE_LIBEXIF
-  gint             orientation = 0;
-#endif
-#ifdef HAVE_LCMS
+  gint             i;
   cmsHTRANSFORM    cmyk_transform = NULL;
-#else
-  gpointer         cmyk_transform = NULL;
-#endif
 
   /* We set up the normal JPEG error routines. */
   cinfo.err = jpeg_std_error (&jerr.pub);
@@ -114,6 +85,9 @@ load_image (const gchar  *filename,
   if (!preview)
     {
       jerr.pub.output_message = my_output_message;
+
+      gimp_progress_init_printf (_("Opening '%s'"),
+                                 gimp_filename_to_utf8 (filename));
     }
 
   if ((infile = g_fopen (filename, "rb")) == NULL)
@@ -123,10 +97,6 @@ load_image (const gchar  *filename,
                    gimp_filename_to_utf8 (filename), g_strerror (errno));
       return -1;
     }
-
-  if (!preview)
-    gimp_progress_init_printf (_("Opening '%s'"),
-                               gimp_filename_to_utf8 (filename));
 
   image_ID = -1;
 
@@ -146,6 +116,9 @@ load_image (const gchar  *filename,
       if (preview)
         destroy_preview ();
 
+      if (buffer)
+        g_object_unref (buffer);
+
       return -1;
     }
 
@@ -161,7 +134,7 @@ load_image (const gchar  *filename,
       /* - step 2.1: tell the lib to save the comments */
       jpeg_save_markers (&cinfo, JPEG_COM, 0xffff);
 
-      /* - step 2.2: tell the lib to save APP1 data (EXIF or XMP) */
+      /* - step 2.2: tell the lib to save APP1 data (Exif or XMP) */
       jpeg_save_markers (&cinfo, JPEG_APP0 + 1, 0xffff);
 
       /* - step 2.3: tell the lib to save APP2 data (ICC profiles) */
@@ -181,8 +154,11 @@ load_image (const gchar  *filename,
   /* Step 4: set parameters for decompression */
 
   /* In this example, we don't need to change any of the defaults set by
-   * jpeg_read_header(), so we do nothing here.
+   * jpeg_read_header(), so we do nothing here, except set the DCT
+   * method.
    */
+
+  cinfo.dct_method = JDCT_FLOAT;
 
   /* Step 5: Start decompressor */
 
@@ -240,8 +216,10 @@ load_image (const gchar  *filename,
     }
   else
     {
-      image_ID = gimp_image_new (cinfo.output_width, cinfo.output_height,
-                                 image_type);
+      image_ID = gimp_image_new_with_precision (cinfo.output_width,
+                                                cinfo.output_height,
+                                                image_type,
+                                                GIMP_PRECISION_U8_GAMMA);
 
       gimp_image_undo_disable (image_ID);
       gimp_image_set_filename (image_ID, filename);
@@ -252,7 +230,9 @@ load_image (const gchar  *filename,
       preview_layer_ID = gimp_layer_new (preview_image_ID, _("JPEG preview"),
                                          cinfo.output_width,
                                          cinfo.output_height,
-                                         layer_type, 100, GIMP_NORMAL_MODE);
+                                         layer_type,
+                                         100,
+                                         gimp_image_get_default_new_layer_mode (preview_image_ID));
       layer_ID = preview_layer_ID;
     }
   else
@@ -260,26 +240,21 @@ load_image (const gchar  *filename,
       layer_ID = gimp_layer_new (image_ID, _("Background"),
                                  cinfo.output_width,
                                  cinfo.output_height,
-                                 layer_type, 100, GIMP_NORMAL_MODE);
+                                 layer_type,
+                                 100,
+                                 gimp_image_get_default_new_layer_mode (image_ID));
     }
-
-  drawable_global = drawable = gimp_drawable_get (layer_ID);
-  gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0,
-                       drawable->width, drawable->height, TRUE, FALSE);
 
   if (! preview)
     {
-      GString  *comment_buffer = NULL;
-      guint8   *profile        = NULL;
-      guint     profile_size   = 0;
-#ifdef HAVE_LIBEXIF
-      ExifData *exif_data      = NULL;
-#endif
+      GString *comment_buffer = NULL;
+      guint8  *icc_data       = NULL;
+      guint    icc_length     = 0;
 
       /* Step 5.0: save the original JPEG settings in a parasite */
       jpeg_detect_original_settings (&cinfo, image_ID);
 
-      /* Step 5.1: check for comments, or EXIF metadata in APP1 markers */
+      /* Step 5.1: check for comments, or Exif metadata in APP1 markers */
       for (marker = cinfo.marker_list; marker; marker = marker->next)
         {
           const gchar *data = (const gchar *) marker->data;
@@ -308,22 +283,17 @@ load_image (const gchar  *filename,
                    && ! strcmp (JPEG_APP_HEADER_EXIF, data))
             {
 #ifdef GIMP_UNSTABLE
-              g_print ("jpeg-load: found EXIF block (%d bytes)\n",
+              g_print ("jpeg-load: found Exif block (%d bytes)\n",
                        (gint) (len - sizeof (JPEG_APP_HEADER_EXIF)));
-#endif
-#ifdef HAVE_LIBEXIF
-              if (! exif_data)
-                exif_data = exif_data_new ();
-              /* if there are multiple blocks, their data will be merged */
-              exif_data_load_data (exif_data, (unsigned char *) data, len);
 #endif
             }
         }
 
-#ifdef HAVE_LIBEXIF
-      if (!jpeg_load_exif_resolution (image_ID, exif_data))
-#endif
-        jpeg_load_resolution (image_ID, &cinfo);
+      if (jpeg_load_resolution (image_ID, &cinfo))
+        {
+          if (resolution_loaded)
+            *resolution_loaded = TRUE;
+        }
 
       /* if we found any comments, then make a parasite for them */
       if (comment_buffer && comment_buffer->len)
@@ -341,75 +311,28 @@ load_image (const gchar  *filename,
           g_string_free (comment_buffer, TRUE);
         }
 
-#ifdef HAVE_LIBEXIF
-      /* if we found any EXIF block, then attach the metadata to the image */
-      if (exif_data)
-        {
-          gimp_metadata_store_exif (image_ID, exif_data);
-          orientation = jpeg_exif_get_orientation (exif_data);
-          exif_data_unref (exif_data);
-          exif_data = NULL;
-        }
-
-      /* Step 5.2: check for XMP metadata in APP1 markers (after EXIF) */
-      for (marker = cinfo.marker_list; marker; marker = marker->next)
-        {
-          const gchar *data = (const gchar *) marker->data;
-          gsize        len  = marker->data_length;
-
-          if ((marker->marker == JPEG_APP0 + 1)
-              && (len > sizeof (JPEG_APP_HEADER_XMP) + 20)
-              && ! strcmp (JPEG_APP_HEADER_XMP, data))
-            {
-              GimpParam *return_vals;
-              gint       nreturn_vals;
-              gchar     *xmp_packet;
-
-#ifdef GIMP_UNSTABLE
-              g_print ("jpeg-load: found XMP packet (%d bytes)\n",
-                       (gint) (len - sizeof (JPEG_APP_HEADER_XMP)));
-#endif
-              xmp_packet = g_strndup (data + sizeof (JPEG_APP_HEADER_XMP),
-                                      len - sizeof (JPEG_APP_HEADER_XMP));
-
-              /* FIXME: running this through the PDB is not very efficient */
-              return_vals = gimp_run_procedure ("plug-in-metadata-decode-xmp",
-                                                &nreturn_vals,
-                                                GIMP_PDB_IMAGE, image_ID,
-                                                GIMP_PDB_STRING, xmp_packet,
-                                                GIMP_PDB_END);
-
-              if (return_vals[0].data.d_status != GIMP_PDB_SUCCESS)
-                {
-                  g_warning ("JPEG - unable to decode XMP metadata packet");
-                }
-
-              gimp_destroy_params (return_vals, nreturn_vals);
-              g_free (xmp_packet);
-            }
-        }
-#endif
-
       /* Step 5.3: check for an embedded ICC profile in APP2 markers */
-      jpeg_icc_read_profile (&cinfo, &profile, &profile_size);
+      jpeg_icc_read_profile (&cinfo, &icc_data, &icc_length);
 
       if (cinfo.out_color_space == JCS_CMYK)
         {
-          cmyk_transform = jpeg_load_cmyk_transform (profile, profile_size);
+          cmyk_transform = jpeg_load_cmyk_transform (icc_data, icc_length);
         }
-      else if (profile) /* don't attach the profile if we are transforming */
+      else if (icc_data) /* don't attach the profile if we are transforming */
         {
-          GimpParasite *parasite;
+          GimpColorProfile *profile;
 
-          parasite = gimp_parasite_new ("icc-profile",
-                                        GIMP_PARASITE_PERSISTENT |
-                                        GIMP_PARASITE_UNDOABLE,
-                                        profile_size, profile);
-          gimp_image_attach_parasite (image_ID, parasite);
-          gimp_parasite_free (parasite);
+          profile = gimp_color_profile_new_from_icc_profile (icc_data,
+                                                             icc_length,
+                                                             NULL);
+          if (profile)
+            {
+              gimp_image_set_color_profile (image_ID, profile);
+              g_object_unref (profile);
+            }
         }
 
-      g_free (profile);
+      g_free (icc_data);
 
       /* Do not attach the "jpeg-save-options" parasite to the image
        * because this conflicts with the global defaults (bug #75398).
@@ -422,23 +345,52 @@ load_image (const gchar  *filename,
   /* Here we use the library's state variable cinfo.output_scanline as the
    * loop counter, so that we don't have to keep track ourselves.
    */
+
+  buffer = gimp_drawable_get_buffer (layer_ID);
+  format = babl_format (image_type == GIMP_RGB ? "R'G'B' u8" : "Y' u8");
+
   while (cinfo.output_scanline < cinfo.output_height)
     {
+      gint     start, end;
+      gint     scanlines;
+      gboolean image_truncated = FALSE;
+
       start = cinfo.output_scanline;
       end   = cinfo.output_scanline + tile_height;
       end   = MIN (end, cinfo.output_height);
 
       scanlines = end - start;
 
+      /*  in case of error we now jump here, so pertially loaded imaged
+       *  don't get discarded
+       */
+      if (setjmp (jerr.setjmp_buffer))
+        {
+          image_truncated = TRUE;
+
+          goto set_buffer;
+        }
+
       for (i = 0; i < scanlines; i++)
         jpeg_read_scanlines (&cinfo, (JSAMPARRAY) &rowbuf[i], 1);
 
       if (cinfo.out_color_space == JCS_CMYK)
-        jpeg_load_cmyk_to_rgb (buf, drawable->width * scanlines,
+        jpeg_load_cmyk_to_rgb (buf, cinfo.output_width * scanlines,
                                cmyk_transform);
 
-      gimp_pixel_rgn_set_rect (&pixel_rgn, buf,
-                               0, start, drawable->width, scanlines);
+    set_buffer:
+      gegl_buffer_set (buffer,
+                       GEGL_RECTANGLE (0, start, cinfo.output_width, scanlines),
+                       0,
+                       format,
+                       buf,
+                       GEGL_AUTO_ROWSTRIDE);
+
+      if (image_truncated)
+        /*  jumping to finish skips jpeg_finish_decompress(), its state
+         *  might be broken by whatever caused the loading failure
+         */
+        goto finish;
 
       if (! preview && (cinfo.output_scanline % 32) == 0)
         gimp_progress_update ((gdouble) cinfo.output_scanline /
@@ -452,15 +404,17 @@ load_image (const gchar  *filename,
    * with the stdio data source.
    */
 
-#ifdef HAVE_LCMS
+ finish:
+
   if (cmyk_transform)
     cmsDeleteTransform (cmyk_transform);
-#endif
 
   /* Step 8: Release JPEG decompression object */
 
   /* This is an important step since it will release a good deal of memory. */
   jpeg_destroy_decompress (&cinfo);
+
+  g_object_unref (buffer);
 
   /* free up the temporary buffers */
   g_free (rowbuf);
@@ -482,19 +436,14 @@ load_image (const gchar  *filename,
   if (! preview)
     {
       gimp_progress_update (1.0);
-      gimp_drawable_detach (drawable);
     }
 
   gimp_image_insert_layer (image_ID, layer_ID, -1, 0);
 
-#ifdef HAVE_LIBEXIF
-  jpeg_exif_rotate_query (image_ID, orientation);
-#endif
-
   return image_ID;
 }
 
-static void
+static gboolean
 jpeg_load_resolution (gint32                         image_ID,
                       struct jpeg_decompress_struct *cinfo)
 {
@@ -532,55 +481,12 @@ jpeg_load_resolution (gint32                         image_ID,
         }
 
       gimp_image_set_resolution (image_ID, xresolution, yresolution);
+
+      return TRUE;
     }
+
+  return FALSE;
 }
-
-#ifdef HAVE_LIBEXIF
-
-static gboolean
-jpeg_load_exif_resolution (gint32        image_ID,
-                           ExifData     *exif_data)
-{
-  gboolean success;
-  gdouble xresolution;
-  gdouble yresolution;
-  gint    unit;
-
-  if (!exif_data)
-    return FALSE;
-
-  if (!jpeg_exif_get_resolution (exif_data,
-                                 &xresolution,
-                                 &yresolution,
-                                 &unit))
-    return FALSE;
-
-  switch (unit)
-    {
-    case 2:
-      success = TRUE;
-      break;
-    case 3: /* dots per cm */
-      xresolution *= 2.54;
-      yresolution *= 2.54;
-      gimp_image_set_unit (image_ID, GIMP_UNIT_MM);
-      success = TRUE;
-      break;
-    default:
-      g_warning ("Unknown EXIF resolution unit %d; skipping EXIF resolution.",
-                 unit);
-      success = FALSE;
-    }
-
-  if (success)
-    {
-      gimp_image_set_resolution (image_ID, xresolution, yresolution);
-    }
-
-  return success;
-}
-
-#endif /* HAVE_LIBEXIF */
 
 /*
  * A number of JPEG files have comments written in a local character set
@@ -606,299 +512,37 @@ jpeg_load_sanitize_comment (gchar *comment)
     }
 }
 
-
-#ifdef HAVE_LIBEXIF
-
-typedef struct
-{
-  struct jpeg_source_mgr pub;   /* public fields */
-
-  guchar  *buffer;
-  gint     size;
-  JOCTET   terminal[2];
-} my_source_mgr;
-
-typedef my_source_mgr * my_src_ptr;
-
-static void
-init_source (j_decompress_ptr cinfo)
-{
-}
-
-
-static boolean
-fill_input_buffer (j_decompress_ptr cinfo)
-{
-  my_src_ptr src = (my_src_ptr) cinfo->src;
-
-  /* Since we have given all we have got already
-   * we simply fake an end of file
-   */
-
-  src->pub.next_input_byte = src->terminal;
-  src->pub.bytes_in_buffer = 2;
-  src->terminal[0]         = (JOCTET) 0xFF;
-  src->terminal[1]         = (JOCTET) JPEG_EOI;
-
-  return TRUE;
-}
-
-static void
-skip_input_data (j_decompress_ptr cinfo,
-                 long             num_bytes)
-{
-  my_src_ptr src = (my_src_ptr) cinfo->src;
-
-  src->pub.next_input_byte = src->pub.next_input_byte + num_bytes;
-}
-
-static void
-term_source (j_decompress_ptr cinfo)
-{
-}
-
 gint32
-load_thumbnail_image (const gchar  *filename,
-                      gint         *width,
-                      gint         *height,
-                      GError      **error)
+load_thumbnail_image (GFile         *file,
+                      gint          *width,
+                      gint          *height,
+                      GimpImageType *type,
+                      GError       **error)
 {
-  gint32 volatile  image_ID;
-  ExifData        *exif_data;
-  GimpPixelRgn     pixel_rgn;
-  GimpDrawable    *drawable;
-  gint32           layer_ID;
+  gint32 volatile               image_ID = -1;
   struct jpeg_decompress_struct cinfo;
   struct my_error_mgr           jerr;
-  guchar          *buf;
-  guchar         **rowbuf;
-  gint             image_type;
-  gint             layer_type;
-  gint             tile_height;
-  gint             scanlines;
-  gint             i, start, end;
-  gint             orientation;
-  my_src_ptr       src;
-  FILE            *infile;
+  FILE                         *infile   = NULL;
 
-  image_ID = -1;
-  exif_data = jpeg_exif_data_new_from_file (filename, NULL);
+  gimp_progress_init_printf (_("Opening thumbnail for '%s'"),
+                             g_file_get_parse_name (file));
 
-  if (! ((exif_data) && (exif_data->data) && (exif_data->size > 0)))
+  image_ID = gimp_image_metadata_load_thumbnail (file, error);
+  if (image_ID < 1)
     return -1;
-
-  orientation = jpeg_exif_get_orientation (exif_data);
 
   cinfo.err = jpeg_std_error (&jerr.pub);
   jerr.pub.error_exit     = my_error_exit;
   jerr.pub.output_message = my_output_message;
 
-  gimp_progress_init_printf (_("Opening thumbnail for '%s'"),
-                             gimp_filename_to_utf8 (filename));
-
-  /* Establish the setjmp return context for my_error_exit to use. */
-  if (setjmp (jerr.setjmp_buffer))
-    {
-      /* If we get here, the JPEG code has signaled an error.  We
-       * need to clean up the JPEG object, close the input file,
-       * and return.
-       */
-      jpeg_destroy_decompress (&cinfo);
-
-      if (image_ID != -1)
-        gimp_image_delete (image_ID);
-
-      if (exif_data)
-        {
-          exif_data_unref (exif_data);
-          exif_data = NULL;
-        }
-
-      return -1;
-    }
-
-  /* Now we can initialize the JPEG decompression object. */
-  jpeg_create_decompress (&cinfo);
-
-  /* Step 2: specify data source (eg, a file) */
-
-  if (cinfo.src == NULL)
-    cinfo.src = (struct jpeg_source_mgr *)(*cinfo.mem->alloc_small)
-      ((j_common_ptr) &cinfo, JPOOL_PERMANENT,
-       sizeof (my_source_mgr));
-
-  src = (my_src_ptr) cinfo.src;
-
-  src->pub.init_source       = init_source;
-  src->pub.fill_input_buffer = fill_input_buffer;
-  src->pub.skip_input_data   = skip_input_data;
-  src->pub.resync_to_restart = jpeg_resync_to_restart;
-  src->pub.term_source       = term_source;
-
-  src->pub.bytes_in_buffer   = exif_data->size;
-  src->pub.next_input_byte   = exif_data->data;
-
-  src->buffer = exif_data->data;
-  src->size = exif_data->size;
-
-  /* Step 3: read file parameters with jpeg_read_header() */
-
-  jpeg_read_header (&cinfo, TRUE);
-
-  /* Step 4: set parameters for decompression */
-
-  /* In this example, we don't need to change any of the defaults set by
-   * jpeg_read_header(), so we do nothing here.
-   */
-
-  /* Step 5: Start decompressor */
-
-  jpeg_start_decompress (&cinfo);
-
-  /* We may need to do some setup of our own at this point before
-   * reading the data.  After jpeg_start_decompress() we have the
-   * correct scaled output image dimensions available, as well as
-   * the output colormap if we asked for color quantization.  In
-   * this example, we need to make an output work buffer of the
-   * right size.
-   */
-
-  /* temporary buffer */
-  tile_height = gimp_tile_height ();
-  buf = g_new (guchar,
-               tile_height * cinfo.output_width * cinfo.output_components);
-
-  rowbuf = g_new (guchar *, tile_height);
-
-  for (i = 0; i < tile_height; i++)
-    rowbuf[i] = buf + cinfo.output_width * cinfo.output_components * i;
-
-  /* Create a new image of the proper size and associate the
-   * filename with it.
-   */
-  switch (cinfo.output_components)
-    {
-    case 1:
-      image_type = GIMP_GRAY;
-      layer_type = GIMP_GRAY_IMAGE;
-      break;
-
-    case 3:
-      image_type = GIMP_RGB;
-      layer_type = GIMP_RGB_IMAGE;
-      break;
-
-    case 4:
-      if (cinfo.out_color_space == JCS_CMYK)
-        {
-          image_type = GIMP_RGB;
-          layer_type = GIMP_RGB_IMAGE;
-          break;
-        }
-      /*fallthrough*/
-
-    default:
-      g_message ("Don't know how to load JPEG images "
-                 "with %d color channels, using colorspace %d (%d).",
-                 cinfo.output_components, cinfo.out_color_space,
-                 cinfo.jpeg_color_space);
-
-      if (exif_data)
-        {
-          exif_data_unref (exif_data);
-          exif_data = NULL;
-        }
-
-      return -1;
-      break;
-    }
-
-  image_ID = gimp_image_new (cinfo.output_width, cinfo.output_height,
-                             image_type);
-
-  gimp_image_undo_disable (image_ID);
-  gimp_image_set_filename (image_ID, filename);
-
-  jpeg_load_resolution (image_ID, &cinfo);
-
-  layer_ID = gimp_layer_new (image_ID, _("Background"),
-                             cinfo.output_width,
-                             cinfo.output_height,
-                             layer_type, 100, GIMP_NORMAL_MODE);
-
-  drawable_global = drawable = gimp_drawable_get (layer_ID);
-  gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0,
-                       drawable->width, drawable->height, TRUE, FALSE);
-
-  /* Step 6: while (scan lines remain to be read) */
-  /*           jpeg_read_scanlines(...); */
-
-  /* Here we use the library's state variable cinfo.output_scanline as the
-   * loop counter, so that we don't have to keep track ourselves.
-   */
-  while (cinfo.output_scanline < cinfo.output_height)
-    {
-      start = cinfo.output_scanline;
-      end   = cinfo.output_scanline + tile_height;
-      end   = MIN (end, cinfo.output_height);
-      scanlines = end - start;
-
-      for (i = 0; i < scanlines; i++)
-        jpeg_read_scanlines (&cinfo, (JSAMPARRAY) &rowbuf[i], 1);
-
-      if (cinfo.out_color_space == JCS_CMYK)
-        jpeg_load_cmyk_to_rgb (buf, drawable->width * scanlines, NULL);
-
-      gimp_pixel_rgn_set_rect (&pixel_rgn, buf,
-                               0, start, drawable->width, scanlines);
-
-      gimp_progress_update ((gdouble) cinfo.output_scanline /
-                            (gdouble) cinfo.output_height);
-    }
-
-  /* Step 7: Finish decompression */
-
-  jpeg_finish_decompress (&cinfo);
-  /* We can ignore the return value since suspension is not possible
-   * with the stdio data source.
-   */
-
-  /* Step 8: Release JPEG decompression object */
-
-  /* This is an important step since it will release a good deal
-   * of memory.
-   */
-  jpeg_destroy_decompress (&cinfo);
-
-  /* free up the temporary buffers */
-  g_free (rowbuf);
-  g_free (buf);
-
-  /* At this point you may want to check to see whether any
-   * corrupt-data warnings occurred (test whether
-   * jerr.num_warnings is nonzero).
-   */
-  gimp_image_insert_layer (image_ID, layer_ID, -1, 0);
-
-
-  /* NOW to get the dimensions of the actual image to return the
-   * calling app
-   */
-  cinfo.err = jpeg_std_error (&jerr.pub);
-  jerr.pub.error_exit = my_error_exit;
-  jerr.pub.output_message = my_output_message;
-
-  if ((infile = g_fopen (filename, "rb")) == NULL)
+  if ((infile = g_fopen (g_file_get_path (file), "rb")) == NULL)
     {
       g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
                    _("Could not open '%s' for reading: %s"),
-                   gimp_filename_to_utf8 (filename), g_strerror (errno));
+                   g_file_get_parse_name (file), g_strerror (errno));
 
-      if (exif_data)
-        {
-          exif_data_unref (exif_data);
-          exif_data = NULL;
-        }
+      if (image_ID != -1)
+        gimp_image_delete (image_ID);
 
       return -1;
     }
@@ -914,12 +558,6 @@ load_thumbnail_image (const gchar  *filename,
 
       if (image_ID != -1)
         gimp_image_delete (image_ID);
-
-      if (exif_data)
-        {
-          exif_data_unref (exif_data);
-          exif_data = NULL;
-        }
 
       return -1;
     }
@@ -940,6 +578,35 @@ load_thumbnail_image (const gchar  *filename,
   *width  = cinfo.output_width;
   *height = cinfo.output_height;
 
+  switch (cinfo.output_components)
+    {
+    case 1:
+      *type = GIMP_GRAY_IMAGE;
+      break;
+
+    case 3:
+      *type = GIMP_RGB_IMAGE;
+      break;
+
+    case 4:
+      if (cinfo.out_color_space == JCS_CMYK)
+        {
+          *type = GIMP_RGB_IMAGE;
+          break;
+        }
+      /*fallthrough*/
+
+    default:
+      g_message ("Don't know how to load JPEG images "
+                 "with %d color channels, using colorspace %d (%d).",
+                 cinfo.output_components, cinfo.out_color_space,
+                 cinfo.jpeg_color_space);
+
+      gimp_image_delete (image_ID);
+      image_ID = -1;
+      break;
+    }
+
   /* Step 4: Release JPEG decompression object */
 
   /* This is an important step since it will release a good deal
@@ -949,65 +616,38 @@ load_thumbnail_image (const gchar  *filename,
 
   fclose (infile);
 
-  if (exif_data)
-    {
-      exif_data_unref (exif_data);
-      exif_data = NULL;
-    }
-
-  jpeg_exif_rotate (image_ID, orientation);
-
   return image_ID;
 }
-
-#endif /* HAVE_LIBEXIF */
-
 
 static gpointer
 jpeg_load_cmyk_transform (guint8 *profile_data,
                           gsize   profile_len)
 {
-#ifdef HAVE_LCMS
-  GimpColorConfig *config       = gimp_get_color_configuration ();
-  cmsHPROFILE      cmyk_profile = NULL;
-  cmsHPROFILE      rgb_profile  = NULL;
-  cmsUInt32Number  flags        = 0;
-  cmsHTRANSFORM    transform;
+  GimpColorConfig  *config       = gimp_get_color_configuration ();
+  GimpColorProfile *cmyk_profile = NULL;
+  GimpColorProfile *rgb_profile  = NULL;
+  cmsHPROFILE       cmyk_lcms;
+  cmsHPROFILE       rgb_lcms;
+  cmsUInt32Number   flags        = 0;
+  cmsHTRANSFORM     transform;
 
   /*  try to load the embedded CMYK profile  */
   if (profile_data)
     {
-      cmyk_profile = cmsOpenProfileFromMem (profile_data, profile_len);
+      cmyk_profile = gimp_color_profile_new_from_icc_profile (profile_data,
+                                                              profile_len,
+                                                              NULL);
 
-      if (cmyk_profile)
+      if (cmyk_profile && ! gimp_color_profile_is_cmyk (cmyk_profile))
         {
-#ifdef HAVE_LCMS1
-          if (cmsGetColorSpace (cmyk_profile) != icSigCmykData)
-#else
-          if (cmsGetColorSpace (cmyk_profile) != cmsSigCmykData)
-#endif
-            {
-              cmsCloseProfile (cmyk_profile);
-              cmyk_profile = NULL;
-            }
+          g_object_unref (cmyk_profile);
+          cmyk_profile = NULL;
         }
     }
 
   /*  if that fails, try to load the CMYK profile configured in the prefs  */
-  if (! cmyk_profile && config->cmyk_profile)
-    {
-      cmyk_profile = cmsOpenProfileFromFile (config->cmyk_profile, "r");
-
-#ifdef HAVE_LCMS1
-      if (cmyk_profile && cmsGetColorSpace (cmyk_profile) != icSigCmykData)
-#else
-      if (cmyk_profile && cmsGetColorSpace (cmyk_profile) != cmsSigCmykData)
-#endif
-        {
-          cmsCloseProfile (cmyk_profile);
-          cmyk_profile = NULL;
-        }
-    }
+  if (! cmyk_profile)
+    cmyk_profile = gimp_color_config_get_cmyk_color_profile (config, NULL);
 
   /*  bail out if we can't load any CMYK profile  */
   if (! cmyk_profile)
@@ -1016,27 +656,11 @@ jpeg_load_cmyk_transform (guint8 *profile_data,
       return NULL;
     }
 
-  /*  try to load the RGB profile configured in the prefs  */
-  if (config->rgb_profile)
-    {
-      rgb_profile = cmsOpenProfileFromFile (config->rgb_profile, "r");
+  /*  always convert to sRGB  */
+  rgb_profile = gimp_color_profile_new_rgb_srgb ();
 
-#ifdef HAVE_LCMS1
-      if (rgb_profile && cmsGetColorSpace (rgb_profile) != icSigRgbData)
-#else
-      if (rgb_profile && cmsGetColorSpace (rgb_profile) != cmsSigRgbData)
-#endif
-        {
-          cmsCloseProfile (rgb_profile);
-          rgb_profile = NULL;
-        }
-    }
-
-  /*  use the built-in sRGB profile as fallback  */
-  if (! rgb_profile)
-    {
-      rgb_profile = cmsCreate_sRGBProfile ();
-    }
+  cmyk_lcms = gimp_color_profile_get_lcms_profile (cmyk_profile);
+  rgb_lcms  = gimp_color_profile_get_lcms_profile (rgb_profile);
 
   if (config->display_intent ==
       GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC)
@@ -1044,20 +668,17 @@ jpeg_load_cmyk_transform (guint8 *profile_data,
       flags |= cmsFLAGS_BLACKPOINTCOMPENSATION;
     }
 
-  transform = cmsCreateTransform (cmyk_profile, TYPE_CMYK_8_REV,
-                                  rgb_profile,  TYPE_RGB_8,
+  transform = cmsCreateTransform (cmyk_lcms, TYPE_CMYK_8_REV,
+                                  rgb_lcms,  TYPE_RGB_8,
                                   config->display_intent,
                                   flags);
 
-  cmsCloseProfile (cmyk_profile);
-  cmsCloseProfile (rgb_profile);
+  g_object_unref (cmyk_profile);
+  g_object_unref (rgb_profile);
 
   g_object_unref (config);
 
   return transform;
-#else  /* HAVE_LCMS */
-  return NULL;
-#endif
 }
 
 
@@ -1069,13 +690,15 @@ jpeg_load_cmyk_to_rgb (guchar   *buf,
   const guchar *src  = buf;
   guchar       *dest = buf;
 
-#ifdef HAVE_LCMS
   if (transform)
     {
       cmsDoTransform (transform, buf, buf, pixels);
       return;
     }
-#endif
+
+  /* NOTE: The following code assumes inverted CMYK values, even when an
+     APP14 marker doesn't exist. This is the behavior of recent versions
+     of PhotoShop as well. */
 
   while (pixels--)
     {

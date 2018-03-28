@@ -25,9 +25,6 @@
 #include <string.h>
 
 #include "gimp.h"
-#undef GIMP_DISABLE_DEPRECATED
-#undef __GIMP_IMAGE_PDB_H__
-#include "gimpimage_pdb.h"
 
 
 /**
@@ -51,7 +48,7 @@
  *
  * Returns: Whether the image ID is valid.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_image_is_valid (gint32 image_ID)
@@ -81,7 +78,8 @@ gimp_image_is_valid (gint32 image_ID)
  *
  * This procedure returns the list of images currently open in GIMP.
  *
- * Returns: The list of images currently open.
+ * Returns: The list of images currently open. The returned value must
+ * be freed with g_free().
  **/
 gint *
 gimp_image_list (gint *num_images)
@@ -118,12 +116,16 @@ gimp_image_list (gint *num_images)
  *
  * Creates a new image with the specified width, height, and type.
  *
- * Creates a new image, undisplayed with the specified extents and
+ * Creates a new image, undisplayed, with the specified extents and
  * type. A layer should be created and added before this image is
  * displayed, or subsequent calls to gimp_display_new() with this image
  * as an argument will fail. Layers can be created using the
  * gimp_layer_new() commands. They can be added to an image using the
  * gimp_image_insert_layer() command.
+ *
+ * If your image's type if INDEXED, a colormap must also be added with
+ * gimp_image_set_colormap(). An indexed image without a colormap will
+ * output unexpected colors.
  *
  * Returns: The ID of the newly created image.
  **/
@@ -141,6 +143,51 @@ gimp_image_new (gint              width,
                                     GIMP_PDB_INT32, width,
                                     GIMP_PDB_INT32, height,
                                     GIMP_PDB_INT32, type,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    image_ID = return_vals[1].data.d_image;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return image_ID;
+}
+
+/**
+ * gimp_image_new_with_precision:
+ * @width: The width of the image.
+ * @height: The height of the image.
+ * @type: The type of image.
+ * @precision: The precision.
+ *
+ * Creates a new image with the specified width, height, type and
+ * precision.
+ *
+ * Creates a new image, undisplayed with the specified extents, type
+ * and precision. Indexed images can only be created at
+ * GIMP_PRECISION_U8_GAMMA precision. See gimp_image_new() for further
+ * details.
+ *
+ * Returns: The ID of the newly created image.
+ *
+ * Since: 2.10
+ **/
+gint32
+gimp_image_new_with_precision (gint              width,
+                               gint              height,
+                               GimpImageBaseType type,
+                               GimpPrecision     precision)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gint32 image_ID = -1;
+
+  return_vals = gimp_run_procedure ("gimp-image-new-with-precision",
+                                    &nreturn_vals,
+                                    GIMP_PDB_INT32, width,
+                                    GIMP_PDB_INT32, height,
+                                    GIMP_PDB_INT32, type,
+                                    GIMP_PDB_INT32, precision,
                                     GIMP_PDB_END);
 
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
@@ -248,6 +295,70 @@ gimp_image_base_type (gint32 image_ID)
 }
 
 /**
+ * gimp_image_get_precision:
+ * @image_ID: The image.
+ *
+ * Get the precision of the image.
+ *
+ * This procedure returns the image's precision.
+ *
+ * Returns: The image's precision.
+ *
+ * Since: 2.10
+ **/
+GimpPrecision
+gimp_image_get_precision (gint32 image_ID)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  GimpPrecision precision = 0;
+
+  return_vals = gimp_run_procedure ("gimp-image-get-precision",
+                                    &nreturn_vals,
+                                    GIMP_PDB_IMAGE, image_ID,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    precision = return_vals[1].data.d_int32;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return precision;
+}
+
+/**
+ * gimp_image_get_default_new_layer_mode:
+ * @image_ID: The image.
+ *
+ * Get the default mode for newly created layers of this image.
+ *
+ * Returns the default mode for newly created layers of this image.
+ *
+ * Returns: The layer mode.
+ *
+ * Since: 2.10
+ **/
+GimpLayerMode
+gimp_image_get_default_new_layer_mode (gint32 image_ID)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  GimpLayerMode mode = 0;
+
+  return_vals = gimp_run_procedure ("gimp-image-get-default-new-layer-mode",
+                                    &nreturn_vals,
+                                    GIMP_PDB_IMAGE, image_ID,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    mode = return_vals[1].data.d_int32;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return mode;
+}
+
+/**
  * gimp_image_width:
  * @image_ID: The image.
  *
@@ -337,274 +448,6 @@ gimp_image_free_shadow (gint32 image_ID)
 }
 
 /**
- * gimp_image_resize:
- * @image_ID: The image.
- * @new_width: New image width.
- * @new_height: New image height.
- * @offx: x offset between upper left corner of old and new images: (new - old).
- * @offy: y offset between upper left corner of old and new images: (new - old).
- *
- * Resize the image to the specified extents.
- *
- * This procedure resizes the image so that it's new width and height
- * are equal to the supplied parameters. Offsets are also provided
- * which describe the position of the previous image's content. All
- * channels within the image are resized according to the specified
- * parameters; this includes the image selection mask. All layers
- * within the image are repositioned according to the specified
- * offsets.
- *
- * Returns: TRUE on success.
- **/
-gboolean
-gimp_image_resize (gint32 image_ID,
-                   gint   new_width,
-                   gint   new_height,
-                   gint   offx,
-                   gint   offy)
-{
-  GimpParam *return_vals;
-  gint nreturn_vals;
-  gboolean success = TRUE;
-
-  return_vals = gimp_run_procedure ("gimp-image-resize",
-                                    &nreturn_vals,
-                                    GIMP_PDB_IMAGE, image_ID,
-                                    GIMP_PDB_INT32, new_width,
-                                    GIMP_PDB_INT32, new_height,
-                                    GIMP_PDB_INT32, offx,
-                                    GIMP_PDB_INT32, offy,
-                                    GIMP_PDB_END);
-
-  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return success;
-}
-
-/**
- * gimp_image_resize_to_layers:
- * @image_ID: The image.
- *
- * Resize the image to fit all layers.
- *
- * This procedure resizes the image to the bounding box of all layers
- * of the image. All channels within the image are resized to the new
- * size; this includes the image selection mask. All layers within the
- * image are repositioned to the new image area.
- *
- * Returns: TRUE on success.
- *
- * Since: GIMP 2.2
- **/
-gboolean
-gimp_image_resize_to_layers (gint32 image_ID)
-{
-  GimpParam *return_vals;
-  gint nreturn_vals;
-  gboolean success = TRUE;
-
-  return_vals = gimp_run_procedure ("gimp-image-resize-to-layers",
-                                    &nreturn_vals,
-                                    GIMP_PDB_IMAGE, image_ID,
-                                    GIMP_PDB_END);
-
-  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return success;
-}
-
-/**
- * gimp_image_scale:
- * @image_ID: The image.
- * @new_width: New image width.
- * @new_height: New image height.
- *
- * Scale the image using the default interpolation method.
- *
- * This procedure scales the image so that its new width and height are
- * equal to the supplied parameters. All layers and channels within the
- * image are scaled according to the specified parameters; this
- * includes the image selection mask. The interpolation method used can
- * be set with gimp_context_set_interpolation().
- *
- * Returns: TRUE on success.
- **/
-gboolean
-gimp_image_scale (gint32 image_ID,
-                  gint   new_width,
-                  gint   new_height)
-{
-  GimpParam *return_vals;
-  gint nreturn_vals;
-  gboolean success = TRUE;
-
-  return_vals = gimp_run_procedure ("gimp-image-scale",
-                                    &nreturn_vals,
-                                    GIMP_PDB_IMAGE, image_ID,
-                                    GIMP_PDB_INT32, new_width,
-                                    GIMP_PDB_INT32, new_height,
-                                    GIMP_PDB_END);
-
-  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return success;
-}
-
-/**
- * gimp_image_scale_full:
- * @image_ID: The image.
- * @new_width: New image width.
- * @new_height: New image height.
- * @interpolation: Type of interpolation.
- *
- * Deprecated: Use gimp_image_scale() instead.
- *
- * Returns: TRUE on success.
- *
- * Since: GIMP 2.6
- **/
-gboolean
-gimp_image_scale_full (gint32                image_ID,
-                       gint                  new_width,
-                       gint                  new_height,
-                       GimpInterpolationType interpolation)
-{
-  GimpParam *return_vals;
-  gint nreturn_vals;
-  gboolean success = TRUE;
-
-  return_vals = gimp_run_procedure ("gimp-image-scale-full",
-                                    &nreturn_vals,
-                                    GIMP_PDB_IMAGE, image_ID,
-                                    GIMP_PDB_INT32, new_width,
-                                    GIMP_PDB_INT32, new_height,
-                                    GIMP_PDB_INT32, interpolation,
-                                    GIMP_PDB_END);
-
-  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return success;
-}
-
-/**
- * gimp_image_crop:
- * @image_ID: The image.
- * @new_width: New image width: (0 < new_width <= width).
- * @new_height: New image height: (0 < new_height <= height).
- * @offx: X offset: (0 <= offx <= (width - new_width)).
- * @offy: Y offset: (0 <= offy <= (height - new_height)).
- *
- * Crop the image to the specified extents.
- *
- * This procedure crops the image so that it's new width and height are
- * equal to the supplied parameters. Offsets are also provided which
- * describe the position of the previous image's content. All channels
- * and layers within the image are cropped to the new image extents;
- * this includes the image selection mask. If any parameters are out of
- * range, an error is returned.
- *
- * Returns: TRUE on success.
- **/
-gboolean
-gimp_image_crop (gint32 image_ID,
-                 gint   new_width,
-                 gint   new_height,
-                 gint   offx,
-                 gint   offy)
-{
-  GimpParam *return_vals;
-  gint nreturn_vals;
-  gboolean success = TRUE;
-
-  return_vals = gimp_run_procedure ("gimp-image-crop",
-                                    &nreturn_vals,
-                                    GIMP_PDB_IMAGE, image_ID,
-                                    GIMP_PDB_INT32, new_width,
-                                    GIMP_PDB_INT32, new_height,
-                                    GIMP_PDB_INT32, offx,
-                                    GIMP_PDB_INT32, offy,
-                                    GIMP_PDB_END);
-
-  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return success;
-}
-
-/**
- * gimp_image_flip:
- * @image_ID: The image.
- * @flip_type: Type of flip.
- *
- * Flips the image horizontally or vertically.
- *
- * This procedure flips (mirrors) the image.
- *
- * Returns: TRUE on success.
- **/
-gboolean
-gimp_image_flip (gint32              image_ID,
-                 GimpOrientationType flip_type)
-{
-  GimpParam *return_vals;
-  gint nreturn_vals;
-  gboolean success = TRUE;
-
-  return_vals = gimp_run_procedure ("gimp-image-flip",
-                                    &nreturn_vals,
-                                    GIMP_PDB_IMAGE, image_ID,
-                                    GIMP_PDB_INT32, flip_type,
-                                    GIMP_PDB_END);
-
-  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return success;
-}
-
-/**
- * gimp_image_rotate:
- * @image_ID: The image.
- * @rotate_type: Angle of rotation.
- *
- * Rotates the image by the specified degrees.
- *
- * This procedure rotates the image.
- *
- * Returns: TRUE on success.
- **/
-gboolean
-gimp_image_rotate (gint32           image_ID,
-                   GimpRotationType rotate_type)
-{
-  GimpParam *return_vals;
-  gint nreturn_vals;
-  gboolean success = TRUE;
-
-  return_vals = gimp_run_procedure ("gimp-image-rotate",
-                                    &nreturn_vals,
-                                    GIMP_PDB_IMAGE, image_ID,
-                                    GIMP_PDB_INT32, rotate_type,
-                                    GIMP_PDB_END);
-
-  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return success;
-}
-
-/**
  * gimp_image_get_layers:
  * @image_ID: The image.
  * @num_layers: The number of layers contained in the image.
@@ -614,7 +457,8 @@ gimp_image_rotate (gint32           image_ID,
  * This procedure returns the list of layers contained in the specified
  * image. The order of layers is from topmost to bottommost.
  *
- * Returns: The list of layers contained in the image.
+ * Returns: The list of layers contained in the image. The returned
+ * value must be freed with g_free().
  **/
 gint *
 gimp_image_get_layers (gint32  image_ID,
@@ -654,9 +498,12 @@ gimp_image_get_layers (gint32  image_ID,
  *
  * This procedure returns the list of channels contained in the
  * specified image. This does not include the selection mask, or layer
- * masks. The order is from topmost to bottommost.
+ * masks. The order is from topmost to bottommost. Note that
+ * \"channels\" are custom channels and do not include the image's
+ * color components.
  *
- * Returns: The list of channels contained in the image.
+ * Returns: The list of channels contained in the image. The returned
+ * value must be freed with g_free().
  **/
 gint *
 gimp_image_get_channels (gint32  image_ID,
@@ -697,9 +544,10 @@ gimp_image_get_channels (gint32  image_ID,
  * This procedure returns the list of vectors contained in the
  * specified image.
  *
- * Returns: The list of vectors contained in the image.
+ * Returns: The list of vectors contained in the image. The returned
+ * value must be freed with g_free().
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gint *
 gimp_image_get_vectors (gint32  image_ID,
@@ -1276,7 +1124,7 @@ gimp_image_insert_vectors (gint32 image_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_image_remove_vectors (gint32 image_ID,
@@ -1313,7 +1161,7 @@ gimp_image_remove_vectors (gint32 image_ID,
  *
  * Returns: The position of the item in its level in the item tree.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gint
 gimp_image_get_item_position (gint32 image_ID,
@@ -1349,7 +1197,7 @@ gimp_image_get_item_position (gint32 image_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_image_raise_item (gint32 image_ID,
@@ -1384,7 +1232,7 @@ gimp_image_raise_item (gint32 image_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_image_lower_item (gint32 image_ID,
@@ -1419,7 +1267,7 @@ gimp_image_lower_item (gint32 image_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_image_raise_item_to_top (gint32 image_ID,
@@ -1455,7 +1303,7 @@ gimp_image_raise_item_to_top (gint32 image_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_image_lower_item_to_bottom (gint32 image_ID,
@@ -1491,7 +1339,7 @@ gimp_image_lower_item_to_bottom (gint32 image_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_image_reorder_item (gint32 image_ID,
@@ -1644,7 +1492,8 @@ gimp_image_merge_down (gint32        image_ID,
  * 3. If the image is not in Indexed color mode, no colormap is
  * returned.
  *
- * Returns: The image's colormap.
+ * Returns: The image's colormap. The returned value must be freed with
+ * g_free().
  **/
 guint8 *
 _gimp_image_get_colormap (gint32  image_ID,
@@ -1705,6 +1554,68 @@ _gimp_image_set_colormap (gint32        image_ID,
                                     GIMP_PDB_IMAGE, image_ID,
                                     GIMP_PDB_INT32, num_bytes,
                                     GIMP_PDB_INT8ARRAY, colormap,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * _gimp_image_get_metadata:
+ * @image_ID: The image.
+ *
+ * Returns the image's metadata.
+ *
+ * Returns exif/iptc/xmp metadata from the image.
+ *
+ * Returns: The exif/ptc/xmp metadata as a string.
+ **/
+gchar *
+_gimp_image_get_metadata (gint32 image_ID)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gchar *metadata_string = NULL;
+
+  return_vals = gimp_run_procedure ("gimp-image-get-metadata",
+                                    &nreturn_vals,
+                                    GIMP_PDB_IMAGE, image_ID,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    metadata_string = g_strdup (return_vals[1].data.d_string);
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return metadata_string;
+}
+
+/**
+ * _gimp_image_set_metadata:
+ * @image_ID: The image.
+ * @metadata_string: The exif/ptc/xmp metadata as a string.
+ *
+ * Set the image's metadata.
+ *
+ * Sets exif/iptc/xmp metadata on the image.
+ *
+ * Returns: TRUE on success.
+ **/
+gboolean
+_gimp_image_set_metadata (gint32       image_ID,
+                          const gchar *metadata_string)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-image-set-metadata",
+                                    &nreturn_vals,
+                                    GIMP_PDB_IMAGE, image_ID,
+                                    GIMP_PDB_STRING, metadata_string,
                                     GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
@@ -1953,7 +1864,7 @@ gimp_image_get_active_channel (gint32 image_ID)
  * Sets the specified image's active channel.
  *
  * If the channel exists, it is set as the active channel in the image.
- * Any previous active channel or channel is set to inactive. An
+ * Any previous active channel or layer is set to inactive. An
  * exception is a previously existing floating selection, in which case
  * this procedure will return an execution error.
  *
@@ -2234,7 +2145,8 @@ gimp_image_set_component_visible (gint32          image_ID,
  * Otherwise, this function returns %NULL. See also
  * gimp_image_get_uri().
  *
- * Returns: The filename.
+ * Returns: The filename. The returned value must be freed with
+ * g_free().
  **/
 gchar *
 gimp_image_get_filename (gint32 image_ID)
@@ -2303,9 +2215,9 @@ gimp_image_set_filename (gint32       image_ID,
  * and not yet saved, or gimp-image-get-exported-uri if the image has
  * been exported to a non-GIMP file format.
  *
- * Returns: The URI.
+ * Returns: The URI. The returned value must be freed with g_free().
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gchar *
 gimp_image_get_uri (gint32 image_ID)
@@ -2336,9 +2248,10 @@ gimp_image_get_uri (gint32 image_ID)
  * This procedure returns the XCF URI associated with the image. If
  * there is no such URI, this procedure returns %NULL.
  *
- * Returns: The imported URI.
+ * Returns: The imported URI. The returned value must be freed with
+ * g_free().
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gchar *
 gimp_image_get_xcf_uri (gint32 image_ID)
@@ -2371,9 +2284,10 @@ gimp_image_get_xcf_uri (gint32 image_ID)
  * image was not imported, or has since been saved in the native Gimp
  * format, this procedure returns %NULL.
  *
- * Returns: The imported URI.
+ * Returns: The imported URI. The returned value must be freed with
+ * g_free().
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gchar *
 gimp_image_get_imported_uri (gint32 image_ID)
@@ -2405,9 +2319,10 @@ gimp_image_get_imported_uri (gint32 image_ID)
  * if the image was exported a non-native GIMP format. If the image was
  * not exported, this procedure returns %NULL.
  *
- * Returns: The exported URI.
+ * Returns: The exported URI. The returned value must be freed with
+ * g_free().
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gchar *
 gimp_image_get_exported_uri (gint32 image_ID)
@@ -2443,7 +2358,7 @@ gimp_image_get_exported_uri (gint32 image_ID)
  * '(imported)' etc. and should only be used to label user interface
  * elements. Never use it to construct filenames.
  *
- * Returns: The name.
+ * Returns: The name. The returned value must be freed with g_free().
  **/
 gchar *
 gimp_image_get_name (gint32 image_ID)
@@ -2621,7 +2536,7 @@ gimp_image_set_unit (gint32   image_ID,
  * Returns the tattoo state associated with the image.
  *
  * This procedure returns the tattoo state of the image. Use only by
- * save/load plugins that wish to preserve an images tattoo state.
+ * save/load plug-ins that wish to preserve an images tattoo state.
  * Using this function at other times will produce unexpected results.
  *
  * Returns: The tattoo state.
@@ -2654,7 +2569,7 @@ gimp_image_get_tattoo_state (gint32 image_ID)
  * Set the tattoo state associated with the image.
  *
  * This procedure sets the tattoo state of the image. Use only by
- * save/load plugins that wish to preserve an images tattoo state.
+ * save/load plug-ins that wish to preserve an images tattoo state.
  * Using this function at other times will produce unexpected results.
  * A full check of uniqueness of states in layers, channels and paths
  * will be performed by this procedure and a execution failure will be
@@ -2769,7 +2684,7 @@ gimp_image_get_channel_by_tattoo (gint32 image_ID,
  *
  * Returns: The vectors with the specified tattoo.
  *
- * Since: GIMP 2.6
+ * Since: 2.6
  **/
 gint32
 gimp_image_get_vectors_by_tattoo (gint32 image_ID,
@@ -2805,7 +2720,7 @@ gimp_image_get_vectors_by_tattoo (gint32 image_ID,
  *
  * Returns: The layer with the specified name.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gint32
 gimp_image_get_layer_by_name (gint32       image_ID,
@@ -2841,7 +2756,7 @@ gimp_image_get_layer_by_name (gint32       image_ID,
  *
  * Returns: The channel with the specified name.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gint32
 gimp_image_get_channel_by_name (gint32       image_ID,
@@ -2877,7 +2792,7 @@ gimp_image_get_channel_by_name (gint32       image_ID,
  *
  * Returns: The vectors with the specified name.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gint32
 gimp_image_get_vectors_by_name (gint32       image_ID,
@@ -2913,7 +2828,7 @@ gimp_image_get_vectors_by_name (gint32       image_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_image_attach_parasite (gint32              image_ID,
@@ -2948,7 +2863,7 @@ gimp_image_attach_parasite (gint32              image_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_image_detach_parasite (gint32       image_ID,
@@ -2983,7 +2898,7 @@ gimp_image_detach_parasite (gint32       image_ID,
  *
  * Returns: The found parasite.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 GimpParasite *
 gimp_image_get_parasite (gint32       image_ID,
@@ -3016,9 +2931,10 @@ gimp_image_get_parasite (gint32       image_ID,
  *
  * Returns a list of all currently attached parasites.
  *
- * Returns: The names of currently attached parasites.
+ * Returns: The names of currently attached parasites. The returned
+ * value must be freed with g_strfreev().
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gchar **
 gimp_image_get_parasite_list (gint32  image_ID,
@@ -3039,9 +2955,12 @@ gimp_image_get_parasite_list (gint32  image_ID,
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
     {
       *num_parasites = return_vals[1].data.d_int32;
-      parasites = g_new (gchar *, *num_parasites);
-      for (i = 0; i < *num_parasites; i++)
-        parasites[i] = g_strdup (return_vals[2].data.d_stringarray[i]);
+      if (*num_parasites > 0)
+        {
+          parasites = g_new0 (gchar *, *num_parasites + 1);
+          for (i = 0; i < *num_parasites; i++)
+            parasites[i] = g_strdup (return_vals[2].data.d_stringarray[i]);
+        }
     }
 
   gimp_destroy_params (return_vals, nreturn_vals);

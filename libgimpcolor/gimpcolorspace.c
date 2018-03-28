@@ -18,6 +18,7 @@
 
 #include "config.h"
 
+#include <babl/babl.h>
 #include <glib-object.h>
 
 #include "libgimpmath/gimpmath.h"
@@ -1040,7 +1041,7 @@ gimp_hsv_to_rgb4 (guchar  *rgb,
     {
       hue        = value;
       saturation = value;
-      value      = value;
+      /*value      = value;*/
     }
   else
     {

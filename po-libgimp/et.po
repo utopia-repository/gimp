@@ -7,13 +7,12 @@
 #
 # Olle Niit <olle@paalalinn.com>, 2005-2007
 # Priit Laes <amd@store20.com>, 2007
-# Mattias Põldaru <mahfiaz@gmail.com>, 2012-2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: gimp-libgimp\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gimp&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-15 06:11+0000\n"
+"POT-Creation-Date: 2012-12-19 00:04+0000\n"
 "PO-Revision-Date: 2012-12-19 15:57+0300\n"
 "Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
@@ -577,8 +576,8 @@ msgid "Cubic"
 msgstr "Kuubik"
 
 msgctxt "interpolation-type"
-msgid "Sinc (Lanczos3)"
-msgstr "Sinc (Lanczos3 algoritm)"
+msgid "LoHalo"
+msgstr "LoHalo"
 
 msgctxt "paint-application-mode"
 msgid "Constant"
@@ -1258,7 +1257,7 @@ msgid "Wheel"
 msgstr "Ratas"
 
 msgid "DirectX DirectInput event controller"
-msgstr "DirectX DirectInput sündmuste kontroller"
+msgstr "DirectX DirectInput sündmuskontroller"
 
 msgid "Device:"
 msgstr "Seade:"
@@ -1550,6 +1549,10 @@ msgstr "Värvihalduse ekraanifilter kasutab ICC värviprofiile"
 msgid "Color Management"
 msgstr "Värvihaldus"
 
+#. a color profile without a name
+msgid "(unnamed profile)"
+msgstr "(nimetu profiil)"
+
 msgid "None"
 msgstr "Puudub"
 
@@ -1596,11 +1599,8 @@ msgid "_Black Point Compensation"
 msgstr "_Musta punkti kompensatsioon"
 
 #~ msgctxt "interpolation-type"
-#~ msgid "LoHalo"
-#~ msgstr "LoHalo"
-
-#~ msgid "(unnamed profile)"
-#~ msgstr "(nimetu profiil)"
+#~ msgid "Sinc (Lanczos3)"
+#~ msgstr "Sinc (Lanczos3 algoritm)"
 
 #~ msgid "Page 000"
 #~ msgstr "Leht 000"

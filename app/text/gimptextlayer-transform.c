@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "libgimpmath/gimpmath.h"
@@ -143,7 +144,6 @@ gimp_text_layer_transform (GimpItem               *item,
                            GimpTransformDirection  direction,
                            GimpInterpolationType   interpolation_type,
                            gboolean                supersample,
-                           gint                    recursion_level,
                            GimpTransformResize     clip_result,
                            GimpProgress           *progress)
 {

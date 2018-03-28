@@ -17,7 +17,8 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include "libgimpconfig/gimpconfig.h"
 
@@ -25,8 +26,10 @@
 
 #include "gimpconvolveoptions.h"
 
+#include "gimp-intl.h"
 
-#define DEFAULT_CONVOLVE_TYPE  GIMP_BLUR_CONVOLVE
+
+#define DEFAULT_CONVOLVE_TYPE  GIMP_CONVOLVE_BLUR
 #define DEFAULT_CONVOLVE_RATE  50.0
 
 
@@ -60,15 +63,20 @@ gimp_convolve_options_class_init (GimpConvolveOptionsClass *klass)
   object_class->set_property = gimp_convolve_options_set_property;
   object_class->get_property = gimp_convolve_options_get_property;
 
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_TYPE,
-                                 "type", NULL,
-                                 GIMP_TYPE_CONVOLVE_TYPE,
-                                 DEFAULT_CONVOLVE_TYPE,
-                                 GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_RATE,
-                                   "rate", NULL,
-                                   0.0, 100.0, DEFAULT_CONVOLVE_RATE,
-                                   GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_TYPE,
+                         "type",
+                         _("Convolve Type"),
+                         NULL,
+                         GIMP_TYPE_CONVOLVE_TYPE,
+                         DEFAULT_CONVOLVE_TYPE,
+                         GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_RATE,
+                           "rate",
+                           C_("convolve-tool", "Rate"),
+                           NULL,
+                           0.0, 100.0, DEFAULT_CONVOLVE_RATE,
+                           GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void

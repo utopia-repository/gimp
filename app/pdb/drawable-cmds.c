@@ -21,13 +21,16 @@
 
 #include <gegl.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
+#include "libgimpbase/gimpbase.h"
+
 #include "pdb-types.h"
 
-#include "base/temp-buf.h"
-#include "base/tile-manager.h"
-#include "base/tile.h"
 #include "config/gimpcoreconfig.h"
 #include "core/gimp.h"
+#include "core/gimpchannel-select.h"
+#include "core/gimpdrawable-fill.h"
 #include "core/gimpdrawable-foreground-extract.h"
 #include "core/gimpdrawable-offset.h"
 #include "core/gimpdrawable-preview.h"
@@ -35,90 +38,128 @@
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
 #include "core/gimpparamspecs.h"
+#include "core/gimptempbuf.h"
+#include "gegl/gimp-babl-compat.h"
+#include "gegl/gimp-babl.h"
 #include "plug-in/gimpplugin-cleanup.h"
 #include "plug-in/gimpplugin.h"
 #include "plug-in/gimppluginmanager.h"
 
 #include "gimppdb.h"
 #include "gimppdb-utils.h"
+#include "gimppdbcontext.h"
 #include "gimpprocedure.h"
 #include "internal-procs.h"
 
 #include "gimp-intl.h"
 
 
-static GValueArray *
-drawable_type_invoker (GimpProcedure      *procedure,
-                       Gimp               *gimp,
-                       GimpContext        *context,
-                       GimpProgress       *progress,
-                       const GValueArray  *args,
-                       GError            **error)
+static GimpValueArray *
+drawable_get_format_invoker (GimpProcedure         *procedure,
+                             Gimp                  *gimp,
+                             GimpContext           *context,
+                             GimpProgress          *progress,
+                             const GimpValueArray  *args,
+                             GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
+  GimpDrawable *drawable;
+  gchar *format = NULL;
+
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+
+  if (success)
+    {
+      if (gimp->plug_in_manager->current_plug_in)
+        gimp_plug_in_enable_precision (gimp->plug_in_manager->current_plug_in);
+
+      format = g_strdup (babl_get_name (gimp_drawable_get_format (drawable)));
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success,
+                                                  error ? *error : NULL);
+
+  if (success)
+    g_value_take_string (gimp_value_array_index (return_vals, 1), format);
+
+  return return_vals;
+}
+
+static GimpValueArray *
+drawable_type_invoker (GimpProcedure         *procedure,
+                       Gimp                  *gimp,
+                       GimpContext           *context,
+                       GimpProgress          *progress,
+                       const GimpValueArray  *args,
+                       GError               **error)
+{
+  gboolean success = TRUE;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gint32 type = 0;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      type = gimp_drawable_type (drawable);
+      type = gimp_babl_format_get_image_type (gimp_drawable_get_format (drawable));
     }
 
   return_vals = gimp_procedure_get_return_values (procedure, success,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_enum (&return_vals->values[1], type);
+    g_value_set_enum (gimp_value_array_index (return_vals, 1), type);
 
   return return_vals;
 }
 
-static GValueArray *
-drawable_type_with_alpha_invoker (GimpProcedure      *procedure,
-                                  Gimp               *gimp,
-                                  GimpContext        *context,
-                                  GimpProgress       *progress,
-                                  const GValueArray  *args,
-                                  GError            **error)
+static GimpValueArray *
+drawable_type_with_alpha_invoker (GimpProcedure         *procedure,
+                                  Gimp                  *gimp,
+                                  GimpContext           *context,
+                                  GimpProgress          *progress,
+                                  const GimpValueArray  *args,
+                                  GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gint32 type_with_alpha = 0;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      type_with_alpha = gimp_drawable_type_with_alpha (drawable);
+      const Babl *format = gimp_drawable_get_format_with_alpha (drawable);
+
+      type_with_alpha = gimp_babl_format_get_image_type (format);
     }
 
   return_vals = gimp_procedure_get_return_values (procedure, success,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_enum (&return_vals->values[1], type_with_alpha);
+    g_value_set_enum (gimp_value_array_index (return_vals, 1), type_with_alpha);
 
   return return_vals;
 }
 
-static GValueArray *
-drawable_has_alpha_invoker (GimpProcedure      *procedure,
-                            Gimp               *gimp,
-                            GimpContext        *context,
-                            GimpProgress       *progress,
-                            const GValueArray  *args,
-                            GError            **error)
+static GimpValueArray *
+drawable_has_alpha_invoker (GimpProcedure         *procedure,
+                            Gimp                  *gimp,
+                            GimpContext           *context,
+                            GimpProgress          *progress,
+                            const GimpValueArray  *args,
+                            GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gboolean has_alpha = FALSE;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -129,25 +170,25 @@ drawable_has_alpha_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], has_alpha);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), has_alpha);
 
   return return_vals;
 }
 
-static GValueArray *
-drawable_is_rgb_invoker (GimpProcedure      *procedure,
-                         Gimp               *gimp,
-                         GimpContext        *context,
-                         GimpProgress       *progress,
-                         const GValueArray  *args,
-                         GError            **error)
+static GimpValueArray *
+drawable_is_rgb_invoker (GimpProcedure         *procedure,
+                         Gimp                  *gimp,
+                         GimpContext           *context,
+                         GimpProgress          *progress,
+                         const GimpValueArray  *args,
+                         GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gboolean is_rgb = FALSE;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -158,25 +199,25 @@ drawable_is_rgb_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], is_rgb);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), is_rgb);
 
   return return_vals;
 }
 
-static GValueArray *
-drawable_is_gray_invoker (GimpProcedure      *procedure,
-                          Gimp               *gimp,
-                          GimpContext        *context,
-                          GimpProgress       *progress,
-                          const GValueArray  *args,
-                          GError            **error)
+static GimpValueArray *
+drawable_is_gray_invoker (GimpProcedure         *procedure,
+                          Gimp                  *gimp,
+                          GimpContext           *context,
+                          GimpProgress          *progress,
+                          const GimpValueArray  *args,
+                          GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gboolean is_gray = FALSE;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -187,25 +228,25 @@ drawable_is_gray_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], is_gray);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), is_gray);
 
   return return_vals;
 }
 
-static GValueArray *
-drawable_is_indexed_invoker (GimpProcedure      *procedure,
-                             Gimp               *gimp,
-                             GimpContext        *context,
-                             GimpProgress       *progress,
-                             const GValueArray  *args,
-                             GError            **error)
+static GimpValueArray *
+drawable_is_indexed_invoker (GimpProcedure         *procedure,
+                             Gimp                  *gimp,
+                             GimpContext           *context,
+                             GimpProgress          *progress,
+                             const GimpValueArray  *args,
+                             GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gboolean is_indexed = FALSE;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -216,54 +257,62 @@ drawable_is_indexed_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], is_indexed);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), is_indexed);
 
   return return_vals;
 }
 
-static GValueArray *
-drawable_bpp_invoker (GimpProcedure      *procedure,
-                      Gimp               *gimp,
-                      GimpContext        *context,
-                      GimpProgress       *progress,
-                      const GValueArray  *args,
-                      GError            **error)
+static GimpValueArray *
+drawable_bpp_invoker (GimpProcedure         *procedure,
+                      Gimp                  *gimp,
+                      GimpContext           *context,
+                      GimpProgress          *progress,
+                      const GimpValueArray  *args,
+                      GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gint32 bpp = 0;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      bpp = gimp_drawable_bytes (drawable);
+      const Babl *format = gimp_drawable_get_format (drawable);
+
+      if (! gimp->plug_in_manager->current_plug_in ||
+          ! gimp_plug_in_precision_enabled (gimp->plug_in_manager->current_plug_in))
+        {
+          format = gimp_babl_compat_u8_format (format);
+        }
+
+      bpp = babl_format_get_bytes_per_pixel (format);
     }
 
   return_vals = gimp_procedure_get_return_values (procedure, success,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_int (&return_vals->values[1], bpp);
+    g_value_set_int (gimp_value_array_index (return_vals, 1), bpp);
 
   return return_vals;
 }
 
-static GValueArray *
-drawable_width_invoker (GimpProcedure      *procedure,
-                        Gimp               *gimp,
-                        GimpContext        *context,
-                        GimpProgress       *progress,
-                        const GValueArray  *args,
-                        GError            **error)
+static GimpValueArray *
+drawable_width_invoker (GimpProcedure         *procedure,
+                        Gimp                  *gimp,
+                        GimpContext           *context,
+                        GimpProgress          *progress,
+                        const GimpValueArray  *args,
+                        GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gint32 width = 0;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -274,25 +323,25 @@ drawable_width_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_int (&return_vals->values[1], width);
+    g_value_set_int (gimp_value_array_index (return_vals, 1), width);
 
   return return_vals;
 }
 
-static GValueArray *
-drawable_height_invoker (GimpProcedure      *procedure,
-                         Gimp               *gimp,
-                         GimpContext        *context,
-                         GimpProgress       *progress,
-                         const GValueArray  *args,
-                         GError            **error)
+static GimpValueArray *
+drawable_height_invoker (GimpProcedure         *procedure,
+                         Gimp                  *gimp,
+                         GimpContext           *context,
+                         GimpProgress          *progress,
+                         const GimpValueArray  *args,
+                         GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gint32 height = 0;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -303,26 +352,26 @@ drawable_height_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_int (&return_vals->values[1], height);
+    g_value_set_int (gimp_value_array_index (return_vals, 1), height);
 
   return return_vals;
 }
 
-static GValueArray *
-drawable_offsets_invoker (GimpProcedure      *procedure,
-                          Gimp               *gimp,
-                          GimpContext        *context,
-                          GimpProgress       *progress,
-                          const GValueArray  *args,
-                          GError            **error)
+static GimpValueArray *
+drawable_offsets_invoker (GimpProcedure         *procedure,
+                          Gimp                  *gimp,
+                          GimpContext           *context,
+                          GimpProgress          *progress,
+                          const GimpValueArray  *args,
+                          GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gint32 offset_x = 0;
   gint32 offset_y = 0;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -334,27 +383,27 @@ drawable_offsets_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_int (&return_vals->values[1], offset_x);
-      g_value_set_int (&return_vals->values[2], offset_y);
+      g_value_set_int (gimp_value_array_index (return_vals, 1), offset_x);
+      g_value_set_int (gimp_value_array_index (return_vals, 2), offset_y);
     }
 
   return return_vals;
 }
 
-static GValueArray *
-drawable_set_image_invoker (GimpProcedure      *procedure,
-                            Gimp               *gimp,
-                            GimpContext        *context,
-                            GimpProgress       *progress,
-                            const GValueArray  *args,
-                            GError            **error)
+static GimpValueArray *
+drawable_set_image_invoker (GimpProcedure         *procedure,
+                            Gimp                  *gimp,
+                            GimpContext           *context,
+                            GimpProgress          *progress,
+                            const GimpValueArray  *args,
+                            GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   GimpImage *image;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  image = gimp_value_get_image (&args->values[1], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  image = gimp_value_get_image (gimp_value_array_index (args, 1), gimp);
 
   if (success)
     {
@@ -366,16 +415,16 @@ drawable_set_image_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-drawable_mask_bounds_invoker (GimpProcedure      *procedure,
-                              Gimp               *gimp,
-                              GimpContext        *context,
-                              GimpProgress       *progress,
-                              const GValueArray  *args,
-                              GError            **error)
+static GimpValueArray *
+drawable_mask_bounds_invoker (GimpProcedure         *procedure,
+                              Gimp                  *gimp,
+                              GimpContext           *context,
+                              GimpProgress          *progress,
+                              const GimpValueArray  *args,
+                              GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gboolean non_empty = FALSE;
   gint32 x1 = 0;
@@ -383,11 +432,11 @@ drawable_mask_bounds_invoker (GimpProcedure      *procedure,
   gint32 x2 = 0;
   gint32 y2 = 0;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, FALSE, error))
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, 0, error))
         non_empty = gimp_item_mask_bounds (GIMP_ITEM (drawable), &x1, &y1, &x2, &y2);
       else
         success = FALSE;
@@ -398,26 +447,26 @@ drawable_mask_bounds_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_boolean (&return_vals->values[1], non_empty);
-      g_value_set_int (&return_vals->values[2], x1);
-      g_value_set_int (&return_vals->values[3], y1);
-      g_value_set_int (&return_vals->values[4], x2);
-      g_value_set_int (&return_vals->values[5], y2);
+      g_value_set_boolean (gimp_value_array_index (return_vals, 1), non_empty);
+      g_value_set_int (gimp_value_array_index (return_vals, 2), x1);
+      g_value_set_int (gimp_value_array_index (return_vals, 3), y1);
+      g_value_set_int (gimp_value_array_index (return_vals, 4), x2);
+      g_value_set_int (gimp_value_array_index (return_vals, 5), y2);
     }
 
   return return_vals;
 }
 
-static GValueArray *
-drawable_mask_intersect_invoker (GimpProcedure      *procedure,
-                                 Gimp               *gimp,
-                                 GimpContext        *context,
-                                 GimpProgress       *progress,
-                                 const GValueArray  *args,
-                                 GError            **error)
+static GimpValueArray *
+drawable_mask_intersect_invoker (GimpProcedure         *procedure,
+                                 Gimp                  *gimp,
+                                 GimpContext           *context,
+                                 GimpProgress          *progress,
+                                 const GimpValueArray  *args,
+                                 GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gboolean non_empty = FALSE;
   gint32 x = 0;
@@ -425,11 +474,11 @@ drawable_mask_intersect_invoker (GimpProcedure      *procedure,
   gint32 width = 0;
   gint32 height = 0;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, FALSE, error))
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, 0, error))
         non_empty = gimp_item_mask_intersect (GIMP_ITEM (drawable),
                                               &x, &y, &width, &height);
       else
@@ -441,42 +490,43 @@ drawable_mask_intersect_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_boolean (&return_vals->values[1], non_empty);
-      g_value_set_int (&return_vals->values[2], x);
-      g_value_set_int (&return_vals->values[3], y);
-      g_value_set_int (&return_vals->values[4], width);
-      g_value_set_int (&return_vals->values[5], height);
+      g_value_set_boolean (gimp_value_array_index (return_vals, 1), non_empty);
+      g_value_set_int (gimp_value_array_index (return_vals, 2), x);
+      g_value_set_int (gimp_value_array_index (return_vals, 3), y);
+      g_value_set_int (gimp_value_array_index (return_vals, 4), width);
+      g_value_set_int (gimp_value_array_index (return_vals, 5), height);
     }
 
   return return_vals;
 }
 
-static GValueArray *
-drawable_merge_shadow_invoker (GimpProcedure      *procedure,
-                               Gimp               *gimp,
-                               GimpContext        *context,
-                               GimpProgress       *progress,
-                               const GValueArray  *args,
-                               GError            **error)
+static GimpValueArray *
+drawable_merge_shadow_invoker (GimpProcedure         *procedure,
+                               Gimp                  *gimp,
+                               GimpContext           *context,
+                               GimpProgress          *progress,
+                               const GimpValueArray  *args,
+                               GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gboolean undo;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  undo = g_value_get_boolean (&args->values[1]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  undo = g_value_get_boolean (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
-          const gchar *undo_desc = _("Plug-In");
+          const gchar *undo_desc = _("Plug-in");
 
           if (gimp->plug_in_manager->current_plug_in)
             undo_desc = gimp_plug_in_get_undo_desc (gimp->plug_in_manager->current_plug_in);
 
-          gimp_drawable_merge_shadow_tiles (drawable, undo, undo_desc);
+          gimp_drawable_merge_shadow_buffer (drawable, undo, undo_desc);
         }
       else
         success = FALSE;
@@ -486,18 +536,18 @@ drawable_merge_shadow_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-drawable_free_shadow_invoker (GimpProcedure      *procedure,
-                              Gimp               *gimp,
-                              GimpContext        *context,
-                              GimpProgress       *progress,
-                              const GValueArray  *args,
-                              GError            **error)
+static GimpValueArray *
+drawable_free_shadow_invoker (GimpProcedure         *procedure,
+                              Gimp                  *gimp,
+                              GimpContext           *context,
+                              GimpProgress          *progress,
+                              const GimpValueArray  *args,
+                              GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -505,20 +555,20 @@ drawable_free_shadow_invoker (GimpProcedure      *procedure,
         gimp_plug_in_cleanup_remove_shadow (gimp->plug_in_manager->current_plug_in,
                                             drawable);
 
-      gimp_drawable_free_shadow_tiles (drawable);
+      gimp_drawable_free_shadow_buffer (drawable);
     }
 
   return gimp_procedure_get_return_values (procedure, success,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-drawable_update_invoker (GimpProcedure      *procedure,
-                         Gimp               *gimp,
-                         GimpContext        *context,
-                         GimpProgress       *progress,
-                         const GValueArray  *args,
-                         GError            **error)
+static GimpValueArray *
+drawable_update_invoker (GimpProcedure         *procedure,
+                         Gimp                  *gimp,
+                         GimpContext           *context,
+                         GimpProgress          *progress,
+                         const GimpValueArray  *args,
+                         GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -527,11 +577,11 @@ drawable_update_invoker (GimpProcedure      *procedure,
   gint32 width;
   gint32 height;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  x = g_value_get_int (&args->values[1]);
-  y = g_value_get_int (&args->values[2]);
-  width = g_value_get_int (&args->values[3]);
-  height = g_value_get_int (&args->values[4]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  x = g_value_get_int (gimp_value_array_index (args, 1));
+  y = g_value_get_int (gimp_value_array_index (args, 2));
+  width = g_value_get_int (gimp_value_array_index (args, 3));
+  height = g_value_get_int (gimp_value_array_index (args, 4));
 
   if (success)
     {
@@ -542,50 +592,45 @@ drawable_update_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-drawable_get_pixel_invoker (GimpProcedure      *procedure,
-                            Gimp               *gimp,
-                            GimpContext        *context,
-                            GimpProgress       *progress,
-                            const GValueArray  *args,
-                            GError            **error)
+static GimpValueArray *
+drawable_get_pixel_invoker (GimpProcedure         *procedure,
+                            Gimp                  *gimp,
+                            GimpContext           *context,
+                            GimpProgress          *progress,
+                            const GimpValueArray  *args,
+                            GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gint32 x_coord;
   gint32 y_coord;
   gint32 num_channels = 0;
   guint8 *pixel = NULL;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  x_coord = g_value_get_int (&args->values[1]);
-  y_coord = g_value_get_int (&args->values[2]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  x_coord = g_value_get_int (gimp_value_array_index (args, 1));
+  y_coord = g_value_get_int (gimp_value_array_index (args, 2));
 
   if (success)
     {
+      const Babl *format = gimp_drawable_get_format (drawable);
+
+      if (! gimp->plug_in_manager->current_plug_in ||
+          ! gimp_plug_in_precision_enabled (gimp->plug_in_manager->current_plug_in))
+        {
+          format = gimp_babl_compat_u8_format (format);
+        }
+
       if (x_coord < gimp_item_get_width  (GIMP_ITEM (drawable)) &&
           y_coord < gimp_item_get_height (GIMP_ITEM (drawable)))
         {
-          Tile   *tile;
-          guint8 *p;
-          gint    b;
+          num_channels = babl_format_get_bytes_per_pixel (format);
+          pixel = g_new0 (guint8, num_channels);
 
-          num_channels = gimp_drawable_bytes (drawable);
-          pixel = g_new (guint8, num_channels);
-
-          tile = tile_manager_get_tile (gimp_drawable_get_tiles (drawable),
-                                        x_coord, y_coord,
-                                        TRUE, TRUE);
-
-          x_coord %= TILE_WIDTH;
-          y_coord %= TILE_HEIGHT;
-
-          p = tile_data_pointer (tile, x_coord, y_coord);
-          for (b = 0; b < num_channels; b++)
-            pixel[b] = p[b];
-
-          tile_release (tile, FALSE);
+          gegl_buffer_sample (gimp_drawable_get_buffer (drawable),
+                              x_coord, y_coord, NULL, pixel, format,
+                              GEGL_SAMPLER_NEAREST, GEGL_ABYSS_NONE);
         }
       else
         success = FALSE;
@@ -596,20 +641,20 @@ drawable_get_pixel_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_int (&return_vals->values[1], num_channels);
-      gimp_value_take_int8array (&return_vals->values[2], pixel, num_channels);
+      g_value_set_int (gimp_value_array_index (return_vals, 1), num_channels);
+      gimp_value_take_int8array (gimp_value_array_index (return_vals, 2), pixel, num_channels);
     }
 
   return return_vals;
 }
 
-static GValueArray *
-drawable_set_pixel_invoker (GimpProcedure      *procedure,
-                            Gimp               *gimp,
-                            GimpContext        *context,
-                            GimpProgress       *progress,
-                            const GValueArray  *args,
-                            GError            **error)
+static GimpValueArray *
+drawable_set_pixel_invoker (GimpProcedure         *procedure,
+                            Gimp                  *gimp,
+                            GimpContext           *context,
+                            GimpProgress          *progress,
+                            const GimpValueArray  *args,
+                            GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -618,36 +663,32 @@ drawable_set_pixel_invoker (GimpProcedure      *procedure,
   gint32 num_channels;
   const guint8 *pixel;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  x_coord = g_value_get_int (&args->values[1]);
-  y_coord = g_value_get_int (&args->values[2]);
-  num_channels = g_value_get_int (&args->values[3]);
-  pixel = gimp_value_get_int8array (&args->values[4]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  x_coord = g_value_get_int (gimp_value_array_index (args, 1));
+  y_coord = g_value_get_int (gimp_value_array_index (args, 2));
+  num_channels = g_value_get_int (gimp_value_array_index (args, 3));
+  pixel = gimp_value_get_int8array (gimp_value_array_index (args, 4));
 
   if (success)
     {
-      if (gimp_pdb_item_is_writable (GIMP_ITEM (drawable), error) &&
+      const Babl *format = gimp_drawable_get_format (drawable);
+
+      if (! gimp->plug_in_manager->current_plug_in ||
+          ! gimp_plug_in_precision_enabled (gimp->plug_in_manager->current_plug_in))
+        {
+          format = gimp_babl_compat_u8_format (format);
+        }
+
+      if (gimp_pdb_item_is_modifyable (GIMP_ITEM (drawable),
+                                       GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error) &&
           x_coord < gimp_item_get_width  (GIMP_ITEM (drawable)) &&
           y_coord < gimp_item_get_height (GIMP_ITEM (drawable)) &&
-          num_channels == gimp_drawable_bytes (drawable))
+          num_channels == babl_format_get_bytes_per_pixel (format))
         {
-          Tile   *tile;
-          guint8 *p;
-          gint    b;
-
-          tile = tile_manager_get_tile (gimp_drawable_get_tiles (drawable),
-                                        x_coord, y_coord,
-                                        TRUE, TRUE);
-
-          x_coord %= TILE_WIDTH;
-          y_coord %= TILE_HEIGHT;
-
-          p = tile_data_pointer (tile, x_coord, y_coord);
-          for (b = 0; b < num_channels; b++)
-            *p++ = *pixel++;
-
-          tile_release (tile, TRUE);
+          gegl_buffer_set (gimp_drawable_get_buffer (drawable),
+                           GEGL_RECTANGLE (x_coord, y_coord, 1, 1),
+                           0, format, pixel, GEGL_AUTO_ROWSTRIDE);
         }
       else
         success = FALSE;
@@ -657,26 +698,29 @@ drawable_set_pixel_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-drawable_fill_invoker (GimpProcedure      *procedure,
-                       Gimp               *gimp,
-                       GimpContext        *context,
-                       GimpProgress       *progress,
-                       const GValueArray  *args,
-                       GError            **error)
+static GimpValueArray *
+drawable_fill_invoker (GimpProcedure         *procedure,
+                       Gimp                  *gimp,
+                       GimpContext           *context,
+                       GimpProgress          *progress,
+                       const GimpValueArray  *args,
+                       GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 fill_type;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  fill_type = g_value_get_enum (&args->values[1]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  fill_type = g_value_get_enum (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      if (gimp_pdb_item_is_writable (GIMP_ITEM (drawable), error) &&
+      if (gimp_pdb_item_is_modifyable (GIMP_ITEM (drawable),
+                                       GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
-        gimp_drawable_fill_by_type (drawable, context, (GimpFillType) fill_type);
+        {
+          gimp_drawable_fill (drawable, context, (GimpFillType) fill_type);
+        }
       else
         success = FALSE;
     }
@@ -685,13 +729,13 @@ drawable_fill_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-drawable_offset_invoker (GimpProcedure      *procedure,
-                         Gimp               *gimp,
-                         GimpContext        *context,
-                         GimpProgress       *progress,
-                         const GValueArray  *args,
-                         GError            **error)
+static GimpValueArray *
+drawable_offset_invoker (GimpProcedure         *procedure,
+                         Gimp                  *gimp,
+                         GimpContext           *context,
+                         GimpProgress          *progress,
+                         const GimpValueArray  *args,
+                         GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -700,15 +744,16 @@ drawable_offset_invoker (GimpProcedure      *procedure,
   gint32 offset_x;
   gint32 offset_y;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  wrap_around = g_value_get_boolean (&args->values[1]);
-  fill_type = g_value_get_enum (&args->values[2]);
-  offset_x = g_value_get_int (&args->values[3]);
-  offset_y = g_value_get_int (&args->values[4]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  wrap_around = g_value_get_boolean (gimp_value_array_index (args, 1));
+  fill_type = g_value_get_enum (gimp_value_array_index (args, 2));
+  offset_x = g_value_get_int (gimp_value_array_index (args, 3));
+  offset_y = g_value_get_int (gimp_value_array_index (args, 4));
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         gimp_drawable_offset (drawable, context, wrap_around, fill_type,
                               offset_x, offset_y);
@@ -720,16 +765,16 @@ drawable_offset_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-drawable_thumbnail_invoker (GimpProcedure      *procedure,
-                            Gimp               *gimp,
-                            GimpContext        *context,
-                            GimpProgress       *progress,
-                            const GValueArray  *args,
-                            GError            **error)
+static GimpValueArray *
+drawable_thumbnail_invoker (GimpProcedure         *procedure,
+                            Gimp                  *gimp,
+                            GimpContext           *context,
+                            GimpProgress          *progress,
+                            const GimpValueArray  *args,
+                            GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gint32 width;
   gint32 height;
@@ -739,17 +784,17 @@ drawable_thumbnail_invoker (GimpProcedure      *procedure,
   gint32 thumbnail_data_count = 0;
   guint8 *thumbnail_data = NULL;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  width = g_value_get_int (&args->values[1]);
-  height = g_value_get_int (&args->values[2]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  width = g_value_get_int (gimp_value_array_index (args, 1));
+  height = g_value_get_int (gimp_value_array_index (args, 2));
 
   if (success)
     {
-      GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
-      TempBuf   *buf;
-      gint       dwidth, dheight;
+      GimpImage   *image = gimp_item_get_image (GIMP_ITEM (drawable));
+      GimpTempBuf *buf;
+      gint         dwidth, dheight;
 
-      g_assert (GIMP_VIEWABLE_MAX_PREVIEW_SIZE >= 1024);
+      gimp_assert (GIMP_VIEWABLE_MAX_PREVIEW_SIZE >= 1024);
 
       /* Adjust the width/height ratio */
       dwidth  = gimp_item_get_width  (GIMP_ITEM (drawable));
@@ -766,19 +811,18 @@ drawable_thumbnail_invoker (GimpProcedure      *procedure,
       else
         buf = gimp_viewable_get_dummy_preview (GIMP_VIEWABLE (drawable),
                                                width, height,
-                                               gimp_drawable_has_alpha (drawable) ?
-                                               4 : 3);
+                                               gimp_drawable_get_preview_format (drawable));
 
       if (buf)
         {
-          actual_width         = buf->width;
-          actual_height        = buf->height;
-          bpp                  = buf->bytes;
-          thumbnail_data_count = actual_width * actual_height * bpp;
-          thumbnail_data       = g_memdup (temp_buf_get_data (buf),
+          actual_width         = gimp_temp_buf_get_width  (buf);
+          actual_height        = gimp_temp_buf_get_height (buf);
+          bpp                  = babl_format_get_bytes_per_pixel (gimp_temp_buf_get_format (buf));
+          thumbnail_data_count = gimp_temp_buf_get_data_size (buf);
+          thumbnail_data       = g_memdup (gimp_temp_buf_get_data (buf),
                                            thumbnail_data_count);
 
-          temp_buf_free (buf);
+          gimp_temp_buf_unref (buf);
         }
       else
         success = FALSE;
@@ -789,26 +833,26 @@ drawable_thumbnail_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_int (&return_vals->values[1], actual_width);
-      g_value_set_int (&return_vals->values[2], actual_height);
-      g_value_set_int (&return_vals->values[3], bpp);
-      g_value_set_int (&return_vals->values[4], thumbnail_data_count);
-      gimp_value_take_int8array (&return_vals->values[5], thumbnail_data, thumbnail_data_count);
+      g_value_set_int (gimp_value_array_index (return_vals, 1), actual_width);
+      g_value_set_int (gimp_value_array_index (return_vals, 2), actual_height);
+      g_value_set_int (gimp_value_array_index (return_vals, 3), bpp);
+      g_value_set_int (gimp_value_array_index (return_vals, 4), thumbnail_data_count);
+      gimp_value_take_int8array (gimp_value_array_index (return_vals, 5), thumbnail_data, thumbnail_data_count);
     }
 
   return return_vals;
 }
 
-static GValueArray *
-drawable_sub_thumbnail_invoker (GimpProcedure      *procedure,
-                                Gimp               *gimp,
-                                GimpContext        *context,
-                                GimpProgress       *progress,
-                                const GValueArray  *args,
-                                GError            **error)
+static GimpValueArray *
+drawable_sub_thumbnail_invoker (GimpProcedure         *procedure,
+                                Gimp                  *gimp,
+                                GimpContext           *context,
+                                GimpProgress          *progress,
+                                const GimpValueArray  *args,
+                                GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gint32 src_x;
   gint32 src_y;
@@ -822,21 +866,21 @@ drawable_sub_thumbnail_invoker (GimpProcedure      *procedure,
   gint32 thumbnail_data_count = 0;
   guint8 *thumbnail_data = NULL;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  src_x = g_value_get_int (&args->values[1]);
-  src_y = g_value_get_int (&args->values[2]);
-  src_width = g_value_get_int (&args->values[3]);
-  src_height = g_value_get_int (&args->values[4]);
-  dest_width = g_value_get_int (&args->values[5]);
-  dest_height = g_value_get_int (&args->values[6]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  src_x = g_value_get_int (gimp_value_array_index (args, 1));
+  src_y = g_value_get_int (gimp_value_array_index (args, 2));
+  src_width = g_value_get_int (gimp_value_array_index (args, 3));
+  src_height = g_value_get_int (gimp_value_array_index (args, 4));
+  dest_width = g_value_get_int (gimp_value_array_index (args, 5));
+  dest_height = g_value_get_int (gimp_value_array_index (args, 6));
 
   if (success)
     {
       if ((src_x + src_width)  <= gimp_item_get_width  (GIMP_ITEM (drawable)) &&
           (src_y + src_height) <= gimp_item_get_height (GIMP_ITEM (drawable)))
         {
-          GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
-          TempBuf   *buf;
+          GimpImage   *image = gimp_item_get_image (GIMP_ITEM (drawable));
+          GimpTempBuf *buf;
 
           if (image->gimp->config->layer_previews)
             buf = gimp_drawable_get_sub_preview (drawable,
@@ -846,19 +890,18 @@ drawable_sub_thumbnail_invoker (GimpProcedure      *procedure,
           else
             buf = gimp_viewable_get_dummy_preview (GIMP_VIEWABLE (drawable),
                                                    dest_width, dest_height,
-                                                   gimp_drawable_has_alpha (drawable) ?
-                                                   4 : 3);
+                                                   gimp_drawable_get_preview_format (drawable));
 
           if (buf)
             {
-              width                = buf->width;
-              height               = buf->height;
-              bpp                  = buf->bytes;
-              thumbnail_data_count = buf->height * buf->width * buf->bytes;
-              thumbnail_data       = g_memdup (temp_buf_get_data (buf),
+              width                = gimp_temp_buf_get_width  (buf);
+              height               = gimp_temp_buf_get_height (buf);
+              bpp                  = babl_format_get_bytes_per_pixel (gimp_temp_buf_get_format (buf));
+              thumbnail_data_count = gimp_temp_buf_get_data_size (buf);
+              thumbnail_data       = g_memdup (gimp_temp_buf_get_data (buf),
                                                thumbnail_data_count);
 
-              temp_buf_free (buf);
+              gimp_temp_buf_unref (buf);
             }
           else
             success = FALSE;
@@ -872,37 +915,62 @@ drawable_sub_thumbnail_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_int (&return_vals->values[1], width);
-      g_value_set_int (&return_vals->values[2], height);
-      g_value_set_int (&return_vals->values[3], bpp);
-      g_value_set_int (&return_vals->values[4], thumbnail_data_count);
-      gimp_value_take_int8array (&return_vals->values[5], thumbnail_data, thumbnail_data_count);
+      g_value_set_int (gimp_value_array_index (return_vals, 1), width);
+      g_value_set_int (gimp_value_array_index (return_vals, 2), height);
+      g_value_set_int (gimp_value_array_index (return_vals, 3), bpp);
+      g_value_set_int (gimp_value_array_index (return_vals, 4), thumbnail_data_count);
+      gimp_value_take_int8array (gimp_value_array_index (return_vals, 5), thumbnail_data, thumbnail_data_count);
     }
 
   return return_vals;
 }
 
-static GValueArray *
-drawable_foreground_extract_invoker (GimpProcedure      *procedure,
-                                     Gimp               *gimp,
-                                     GimpContext        *context,
-                                     GimpProgress       *progress,
-                                     const GValueArray  *args,
-                                     GError            **error)
+static GimpValueArray *
+drawable_foreground_extract_invoker (GimpProcedure         *procedure,
+                                     Gimp                  *gimp,
+                                     GimpContext           *context,
+                                     GimpProgress          *progress,
+                                     const GimpValueArray  *args,
+                                     GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 mode;
   GimpDrawable *mask;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  mode = g_value_get_enum (&args->values[1]);
-  mask = gimp_value_get_drawable (&args->values[2], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  mode = g_value_get_enum (gimp_value_array_index (args, 1));
+  mask = gimp_value_get_drawable (gimp_value_array_index (args, 2), gimp);
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, FALSE, error))
-        gimp_drawable_foreground_extract (drawable, mode, mask, progress);
+      if (mode == GIMP_FOREGROUND_EXTRACT_MATTING &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, 0, error))
+        {
+          GimpPDBContext *pdb_context = GIMP_PDB_CONTEXT (context);
+          GimpImage      *image       = gimp_item_get_image (GIMP_ITEM (drawable));
+          GeglBuffer     *buffer;
+
+          buffer = gimp_drawable_foreground_extract (drawable,
+                                                     GIMP_MATTING_ENGINE_GLOBAL,
+                                                     2,
+                                                     2,
+                                                     2,
+                                                     gimp_drawable_get_buffer (mask),
+                                                     progress);
+
+          gimp_channel_select_buffer (gimp_image_get_mask (image),
+                                      C_("command", "Foreground Select"),
+                                      buffer,
+                                      0, /* x offset */
+                                      0, /* y offset */
+                                      GIMP_CHANNEL_OP_REPLACE,
+                                      pdb_context->feather,
+                                      pdb_context->feather_radius_x,
+                                      pdb_context->feather_radius_y);
+
+          g_object_unref (buffer);
+        }
       else
         success = FALSE;
     }
@@ -915,6 +983,36 @@ void
 register_drawable_procs (GimpPDB *pdb)
 {
   GimpProcedure *procedure;
+
+  /*
+   * gimp-drawable-get-format
+   */
+  procedure = gimp_procedure_new (drawable_get_format_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure),
+                               "gimp-drawable-get-format");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-get-format",
+                                     "Returns the drawable's Babl format",
+                                     "This procedure returns the drawable's Babl format.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2012",
+                                     NULL);
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            pdb->gimp, FALSE,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("format",
+                                                           "format",
+                                                           "The drawable's Babl format",
+                                                           FALSE, FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure (pdb, procedure);
+  g_object_unref (procedure);
 
   /*
    * gimp-drawable-type
@@ -1107,7 +1205,7 @@ register_drawable_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-drawable-bpp",
                                      "Returns the bytes per pixel.",
-                                     "This procedure returns the number of bytes per pixel (or the number of channels) for the specified drawable.",
+                                     "This procedure returns the number of bytes per pixel, which corresponds to the number of components unless 'gimp-plugin-enable-precision' was called.",
                                      "Spencer Kimball & Peter Mattis",
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
@@ -1258,7 +1356,8 @@ register_drawable_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-drawable-mask-bounds",
                                      "Find the bounding box of the current selection in relation to the specified drawable.",
-                                     "This procedure returns whether there is a selection. If there is one, the upper left and lower right-hand corners of its bounding box are returned. These coordinates are specified relative to the drawable's origin, and bounded by the drawable's extents. Please note that the pixel specified by the lower right-hand coordinate of the bounding box is not part of the selection. The selection ends at the upper left corner of this pixel. This means the width of the selection can be calculated as (x2 - x1), its height as (y2 - y1). Note that the returned boolean does NOT correspond with the returned region being empty or not, it always returns whether the selection is non_empty. See 'gimp-drawable-mask-intersect' for a boolean return value which is more useful in most cases.",
+                                     "This procedure returns whether there is a selection. If there is one, the upper left and lower right-hand corners of its bounding box are returned. These coordinates are specified relative to the drawable's origin, and bounded by the drawable's extents. Please note that the pixel specified by the lower right-hand coordinate of the bounding box is not part of the selection. The selection ends at the upper left corner of this pixel. This means the width of the selection can be calculated as (x2 - x1), its height as (y2 - y1).\n"
+                                     "Note that the returned boolean does NOT correspond with the returned region being empty or not, it always returns whether the selection is non_empty. See 'gimp-drawable-mask-intersect' for a boolean return value which is more useful in most cases.",
                                      "Spencer Kimball & Peter Mattis",
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
@@ -1311,7 +1410,8 @@ register_drawable_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-drawable-mask-intersect",
                                      "Find the bounding box of the current selection in relation to the specified drawable.",
-                                     "This procedure returns whether there is an intersection between the drawable and the selection. Unlike 'gimp-drawable-mask-bounds', the intersection's bounds are returned as x, y, width, height. If there is no selection this function returns TRUE and the returned bounds are the extents of the whole drawable.",
+                                     "This procedure returns whether there is an intersection between the drawable and the selection. Unlike 'gimp-drawable-mask-bounds', the intersection's bounds are returned as x, y, width, height.\n"
+                                     "If there is no selection this function returns TRUE and the returned bounds are the extents of the whole drawable.",
                                      "Michael Natterer <mitch@gimp.org>",
                                      "Michael Natterer",
                                      "2004",
@@ -1555,7 +1655,8 @@ register_drawable_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-drawable-fill",
                                      "Fill the drawable with the specified fill mode.",
-                                     "This procedure fills the drawable. If the fill mode is foreground the current foreground color is used. If the fill mode is background, the current background color is used. If the fill type is white, then white is used. Transparent fill only affects layers with an alpha channel, in which case the alpha channel is set to transparent. If the drawable has no alpha channel, it is filled to white. No fill leaves the drawable's contents undefined. This procedure is unlike 'gimp-edit-fill' or the bucket fill tool because it fills regardless of a selection. Its main purpose is to fill a newly created drawable before adding it to the image. This operation cannot be undone.",
+                                     "This procedure fills the drawable. If the fill mode is foreground the current foreground color is used. If the fill mode is background, the current background color is used. If the fill type is white, then white is used. Transparent fill only affects layers with an alpha channel, in which case the alpha channel is set to transparent. If the drawable has no alpha channel, it is filled to white. No fill leaves the drawable's contents undefined.\n"
+                                     "This procedure is unlike 'gimp-edit-fill' or the bucket fill tool because it fills regardless of a selection. Its main purpose is to fill a newly created drawable before adding it to the image. This operation cannot be undone.",
                                      "Spencer Kimball & Peter Mattis",
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
@@ -1571,7 +1672,7 @@ register_drawable_procs (GimpPDB *pdb)
                                                   "fill type",
                                                   "The type of fill",
                                                   GIMP_TYPE_FILL_TYPE,
-                                                  GIMP_FOREGROUND_FILL,
+                                                  GIMP_FILL_FOREGROUND,
                                                   GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);

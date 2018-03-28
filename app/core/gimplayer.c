@@ -20,37 +20,42 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <cairo.h>
 #include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpcolor/gimpcolor.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpmath/gimpmath.h"
 
 #include "core-types.h"
 
-#include "base/boundary.h"
-#include "base/pixel-region.h"
-#include "base/tile-manager.h"
-#include "base/tile.h"
+#include "operations/layer-modes/gimp-layer-modes.h"
 
-#include "paint-funcs/paint-funcs.h"
+#include "gegl/gimp-babl.h"
+#include "gegl/gimp-gegl-apply-operation.h"
+#include "gegl/gimp-gegl-loops.h"
+#include "gegl/gimp-gegl-nodes.h"
 
-#include "gegl/gimp-gegl-utils.h"
-
+#include "gimpboundary.h"
 #include "gimpchannel-select.h"
 #include "gimpcontext.h"
 #include "gimpcontainer.h"
-#include "gimpdrawable-convert.h"
-#include "gimpdrawable-invert.h"
+#include "gimpdrawable-floating-selection.h"
 #include "gimperror.h"
+#include "gimpgrouplayer.h"
 #include "gimpimage-undo-push.h"
 #include "gimpimage-undo.h"
 #include "gimpimage.h"
-#include "gimplayer-floating-sel.h"
+#include "gimpimage-color-profile.h"
+#include "gimplayer-floating-selection.h"
 #include "gimplayer.h"
-#include "gimplayer-project.h"
 #include "gimplayermask.h"
 #include "gimpmarshal.h"
+#include "gimpobjectqueue.h"
 #include "gimppickable.h"
+#include "gimpprogress.h"
 
 #include "gimp-intl.h"
 
@@ -59,8 +64,16 @@ enum
 {
   OPACITY_CHANGED,
   MODE_CHANGED,
+  BLEND_SPACE_CHANGED,
+  COMPOSITE_SPACE_CHANGED,
+  COMPOSITE_MODE_CHANGED,
+  EFFECTIVE_MODE_CHANGED,
+  EXCLUDES_BACKDROP_CHANGED,
   LOCK_ALPHA_CHANGED,
   MASK_CHANGED,
+  APPLY_MASK_CHANGED,
+  EDIT_MASK_CHANGED,
+  SHOW_MASK_CHANGED,
   LAST_SIGNAL
 };
 
@@ -69,13 +82,18 @@ enum
   PROP_0,
   PROP_OPACITY,
   PROP_MODE,
+  PROP_BLEND_SPACE,
+  PROP_COMPOSITE_SPACE,
+  PROP_COMPOSITE_MODE,
+  PROP_EXCLUDES_BACKDROP,
   PROP_LOCK_ALPHA,
   PROP_MASK,
   PROP_FLOATING_SELECTION
 };
 
 
-static void   gimp_layer_pickable_iface_init (GimpPickableInterface *iface);
+static void       gimp_color_managed_iface_init (GimpColorManagedInterface *iface);
+static void       gimp_pickable_iface_init      (GimpPickableInterface     *iface);
 
 static void       gimp_layer_set_property       (GObject            *object,
                                                  guint               property_id,
@@ -87,6 +105,8 @@ static void       gimp_layer_get_property       (GObject            *object,
                                                  GParamSpec         *pspec);
 static void       gimp_layer_dispose            (GObject            *object);
 static void       gimp_layer_finalize           (GObject            *object);
+static void       gimp_layer_notify             (GObject            *object,
+                                                 GParamSpec         *pspec);
 
 static void       gimp_layer_name_changed       (GimpObject         *object);
 static gint64     gimp_layer_get_memsize        (GimpObject         *object,
@@ -96,18 +116,25 @@ static void       gimp_layer_invalidate_preview (GimpViewable       *viewable);
 static gchar    * gimp_layer_get_description    (GimpViewable       *viewable,
                                                  gchar             **tooltip);
 
+static GeglNode * gimp_layer_get_node           (GimpFilter         *filter);
+
 static void       gimp_layer_removed            (GimpItem           *item);
 static void       gimp_layer_unset_removed      (GimpItem           *item);
-static gboolean   gimp_layer_is_attached        (const GimpItem     *item);
+static gboolean   gimp_layer_is_attached        (GimpItem           *item);
 static GimpItemTree * gimp_layer_get_tree       (GimpItem           *item);
 static GimpItem * gimp_layer_duplicate          (GimpItem           *item,
                                                  GType               new_type);
 static void       gimp_layer_convert            (GimpItem           *item,
-                                                 GimpImage          *dest_image);
+                                                 GimpImage          *dest_image,
+                                                 GType               old_type);
 static gboolean   gimp_layer_rename             (GimpItem           *item,
                                                  const gchar        *new_name,
                                                  const gchar        *undo_desc,
                                                  GError            **error);
+static void       gimp_layer_start_move         (GimpItem           *item,
+                                                 gboolean            push_undo);
+static void       gimp_layer_end_move           (GimpItem           *item,
+                                                 gboolean            push_undo);
 static void       gimp_layer_translate          (GimpItem           *item,
                                                  gint                offset_x,
                                                  gint                offset_y,
@@ -121,6 +148,7 @@ static void       gimp_layer_scale              (GimpItem           *item,
                                                  GimpProgress       *progress);
 static void       gimp_layer_resize             (GimpItem           *item,
                                                  GimpContext        *context,
+                                                 GimpFillType        fill_type,
                                                  gint                new_width,
                                                  gint                new_height,
                                                  gint                offset_x,
@@ -141,7 +169,6 @@ static void       gimp_layer_transform          (GimpItem           *item,
                                                  const GimpMatrix3  *matrix,
                                                  GimpTransformDirection direction,
                                                  GimpInterpolationType  interpolation_type,
-                                                 gint                recursion_level,
                                                  GimpTransformResize clip_result,
                                                  GimpProgress       *progress);
 static void       gimp_layer_to_selection       (GimpItem           *item,
@@ -150,28 +177,97 @@ static void       gimp_layer_to_selection       (GimpItem           *item,
                                                  gboolean            feather,
                                                  gdouble             feather_radius_x,
                                                  gdouble             feather_radius_y);
-static GeglNode * gimp_layer_get_node           (GimpItem           *item);
 
-static gint64  gimp_layer_estimate_memsize      (const GimpDrawable *drawable,
+static void       gimp_layer_alpha_changed      (GimpDrawable       *drawable);
+static gint64     gimp_layer_estimate_memsize   (GimpDrawable       *drawable,
+                                                 GimpComponentType   component_type,
                                                  gint                width,
                                                  gint                height);
-static void    gimp_layer_invalidate_boundary   (GimpDrawable       *drawable);
-static void    gimp_layer_get_active_components (const GimpDrawable *drawable,
-                                                 gboolean           *active);
-static void    gimp_layer_convert_type          (GimpDrawable       *drawable,
+static void       gimp_layer_convert_type       (GimpDrawable       *drawable,
                                                  GimpImage          *dest_image,
-                                                 GimpImageBaseType   new_base_type,
-                                                 gboolean            push_undo);
+                                                 const Babl         *new_format,
+                                                 GimpColorProfile   *dest_profile,
+                                                 GeglDitherMethod    layer_dither_type,
+                                                 GeglDitherMethod    mask_dither_type,
+                                                 gboolean            push_undo,
+                                                 GimpProgress       *progress);
+static void    gimp_layer_invalidate_boundary   (GimpDrawable       *drawable);
+static void    gimp_layer_get_active_components (GimpDrawable       *drawable,
+                                                 gboolean           *active);
+static GimpComponentMask
+               gimp_layer_get_active_mask       (GimpDrawable       *drawable);
+static void    gimp_layer_set_buffer            (GimpDrawable       *drawable,
+                                                 gboolean            push_undo,
+                                                 const gchar        *undo_desc,
+                                                 GeglBuffer         *buffer,
+                                                 gint                offset_x,
+                                                 gint                offset_y);
 
-static gint    gimp_layer_get_opacity_at        (GimpPickable       *pickable,
+static GimpColorProfile *
+               gimp_layer_get_color_profile     (GimpColorManaged   *managed);
+
+static gdouble gimp_layer_get_opacity_at        (GimpPickable       *pickable,
                                                  gint                x,
                                                  gint                y);
+static void    gimp_layer_pixel_to_srgb         (GimpPickable       *pickable,
+                                                 const Babl         *format,
+                                                 gpointer            pixel,
+                                                 GimpRGB            *color);
+static void    gimp_layer_srgb_to_pixel         (GimpPickable       *pickable,
+                                                 const GimpRGB      *color,
+                                                 const Babl         *format,
+                                                 gpointer            pixel);
 
-static void       gimp_layer_transform_color    (GimpImage          *image,
-                                                 PixelRegion        *srcPR,
-                                                 GimpImageType       src_type,
-                                                 PixelRegion        *destPR,
-                                                 GimpImageType       dest_type);
+static void       gimp_layer_real_translate     (GimpLayer          *layer,
+                                                 gint                offset_x,
+                                                 gint                offset_y);
+static void       gimp_layer_real_scale         (GimpLayer          *layer,
+                                                 gint                new_width,
+                                                 gint                new_height,
+                                                 gint                new_offset_x,
+                                                 gint                new_offset_y,
+                                                 GimpInterpolationType  interp_type,
+                                                 GimpProgress       *progress);
+static void       gimp_layer_real_resize        (GimpLayer          *layer,
+                                                 GimpContext        *context,
+                                                 GimpFillType        fill_type,
+                                                 gint                new_width,
+                                                 gint                new_height,
+                                                 gint                offset_x,
+                                                 gint                offset_y);
+static void       gimp_layer_real_flip          (GimpLayer          *layer,
+                                                 GimpContext        *context,
+                                                 GimpOrientationType flip_type,
+                                                 gdouble             axis,
+                                                 gboolean            clip_result);
+static void       gimp_layer_real_rotate        (GimpLayer          *layer,
+                                                 GimpContext        *context,
+                                                 GimpRotationType    rotate_type,
+                                                 gdouble             center_x,
+                                                 gdouble             center_y,
+                                                 gboolean            clip_result);
+static void       gimp_layer_real_transform     (GimpLayer          *layer,
+                                                 GimpContext        *context,
+                                                 const GimpMatrix3  *matrix,
+                                                 GimpTransformDirection direction,
+                                                 GimpInterpolationType  interpolation_type,
+                                                 GimpTransformResize clip_result,
+                                                 GimpProgress       *progress);
+static void       gimp_layer_real_convert_type  (GimpLayer          *layer,
+                                                 GimpImage          *dest_image,
+                                                 const Babl         *new_format,
+                                                 GimpColorProfile   *dest_profile,
+                                                 GeglDitherMethod    layer_dither_type,
+                                                 GeglDitherMethod    mask_dither_type,
+                                                 gboolean            push_undo,
+                                                 GimpProgress       *progress);
+static void  gimp_layer_real_get_effective_mode (GimpLayer          *layer,
+                                                 GimpLayerMode          *mode,
+                                                 GimpLayerColorSpace    *blend_space,
+                                                 GimpLayerColorSpace    *composite_space,
+                                                 GimpLayerCompositeMode *composite_mode);
+static gboolean
+          gimp_layer_real_get_excludes_backdrop (GimpLayer          *layer);
 
 static void       gimp_layer_layer_mask_update  (GimpDrawable       *layer_mask,
                                                  gint                x,
@@ -180,12 +276,12 @@ static void       gimp_layer_layer_mask_update  (GimpDrawable       *layer_mask,
                                                  gint                height,
                                                  GimpLayer          *layer);
 
-static void       gimp_layer_sync_mode_node     (GimpLayer          *layer);
-
 
 G_DEFINE_TYPE_WITH_CODE (GimpLayer, gimp_layer, GIMP_TYPE_DRAWABLE,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_COLOR_MANAGED,
+                                                gimp_color_managed_iface_init)
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_PICKABLE,
-                                                gimp_layer_pickable_iface_init))
+                                                gimp_pickable_iface_init))
 
 #define parent_class gimp_layer_parent_class
 
@@ -198,6 +294,7 @@ gimp_layer_class_init (GimpLayerClass *klass)
   GObjectClass      *object_class      = G_OBJECT_CLASS (klass);
   GimpObjectClass   *gimp_object_class = GIMP_OBJECT_CLASS (klass);
   GimpViewableClass *viewable_class    = GIMP_VIEWABLE_CLASS (klass);
+  GimpFilterClass   *filter_class      = GIMP_FILTER_CLASS (klass);
   GimpItemClass     *item_class        = GIMP_ITEM_CLASS (klass);
   GimpDrawableClass *drawable_class    = GIMP_DRAWABLE_CLASS (klass);
 
@@ -215,6 +312,51 @@ gimp_layer_class_init (GimpLayerClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpLayerClass, mode_changed),
+                  NULL, NULL,
+                  gimp_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  layer_signals[BLEND_SPACE_CHANGED] =
+    g_signal_new ("blend-space-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpLayerClass, blend_space_changed),
+                  NULL, NULL,
+                  gimp_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  layer_signals[COMPOSITE_SPACE_CHANGED] =
+    g_signal_new ("composite-space-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpLayerClass, composite_space_changed),
+                  NULL, NULL,
+                  gimp_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  layer_signals[COMPOSITE_MODE_CHANGED] =
+    g_signal_new ("composite-mode-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpLayerClass, composite_mode_changed),
+                  NULL, NULL,
+                  gimp_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  layer_signals[EFFECTIVE_MODE_CHANGED] =
+    g_signal_new ("effective-mode-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpLayerClass, effective_mode_changed),
+                  NULL, NULL,
+                  gimp_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  layer_signals[EXCLUDES_BACKDROP_CHANGED] =
+    g_signal_new ("excludes-backdrop-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpLayerClass, excludes_backdrop_changed),
                   NULL, NULL,
                   gimp_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
@@ -237,17 +379,47 @@ gimp_layer_class_init (GimpLayerClass *klass)
                   gimp_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  layer_signals[APPLY_MASK_CHANGED] =
+    g_signal_new ("apply-mask-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpLayerClass, apply_mask_changed),
+                  NULL, NULL,
+                  gimp_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  layer_signals[EDIT_MASK_CHANGED] =
+    g_signal_new ("edit-mask-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpLayerClass, edit_mask_changed),
+                  NULL, NULL,
+                  gimp_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  layer_signals[SHOW_MASK_CHANGED] =
+    g_signal_new ("show-mask-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpLayerClass, show_mask_changed),
+                  NULL, NULL,
+                  gimp_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
   object_class->set_property          = gimp_layer_set_property;
   object_class->get_property          = gimp_layer_get_property;
   object_class->dispose               = gimp_layer_dispose;
   object_class->finalize              = gimp_layer_finalize;
+  object_class->notify                = gimp_layer_notify;
 
   gimp_object_class->name_changed     = gimp_layer_name_changed;
   gimp_object_class->get_memsize      = gimp_layer_get_memsize;
 
-  viewable_class->default_stock_id    = "gimp-layer";
+  viewable_class->default_icon_name   = "gimp-layer";
   viewable_class->invalidate_preview  = gimp_layer_invalidate_preview;
   viewable_class->get_description     = gimp_layer_get_description;
+
+  filter_class->get_node              = gimp_layer_get_node;
 
   item_class->removed                 = gimp_layer_removed;
   item_class->unset_removed           = gimp_layer_unset_removed;
@@ -256,6 +428,8 @@ gimp_layer_class_init (GimpLayerClass *klass)
   item_class->duplicate               = gimp_layer_duplicate;
   item_class->convert                 = gimp_layer_convert;
   item_class->rename                  = gimp_layer_rename;
+  item_class->start_move              = gimp_layer_start_move;
+  item_class->end_move                = gimp_layer_end_move;
   item_class->translate               = gimp_layer_translate;
   item_class->scale                   = gimp_layer_scale;
   item_class->resize                  = gimp_layer_resize;
@@ -263,7 +437,6 @@ gimp_layer_class_init (GimpLayerClass *klass)
   item_class->rotate                  = gimp_layer_rotate;
   item_class->transform               = gimp_layer_transform;
   item_class->to_selection            = gimp_layer_to_selection;
-  item_class->get_node                = gimp_layer_get_node;
   item_class->default_name            = _("Layer");
   item_class->rename_desc             = C_("undo-type", "Rename Layer");
   item_class->translate_desc          = C_("undo-type", "Move Layer");
@@ -281,16 +454,34 @@ gimp_layer_class_init (GimpLayerClass *klass)
   item_class->raise_failed            = _("Layer cannot be raised higher.");
   item_class->lower_failed            = _("Layer cannot be lowered more.");
 
+  drawable_class->alpha_changed         = gimp_layer_alpha_changed;
   drawable_class->estimate_memsize      = gimp_layer_estimate_memsize;
+  drawable_class->convert_type          = gimp_layer_convert_type;
   drawable_class->invalidate_boundary   = gimp_layer_invalidate_boundary;
   drawable_class->get_active_components = gimp_layer_get_active_components;
-  drawable_class->convert_type          = gimp_layer_convert_type;
-  drawable_class->project_region        = gimp_layer_project_region;
+  drawable_class->get_active_mask       = gimp_layer_get_active_mask;
+  drawable_class->set_buffer            = gimp_layer_set_buffer;
 
   klass->opacity_changed              = NULL;
   klass->mode_changed                 = NULL;
+  klass->blend_space_changed          = NULL;
+  klass->composite_space_changed      = NULL;
+  klass->composite_mode_changed       = NULL;
+  klass->excludes_backdrop_changed    = NULL;
   klass->lock_alpha_changed           = NULL;
   klass->mask_changed                 = NULL;
+  klass->apply_mask_changed           = NULL;
+  klass->edit_mask_changed            = NULL;
+  klass->show_mask_changed            = NULL;
+  klass->translate                    = gimp_layer_real_translate;
+  klass->scale                        = gimp_layer_real_scale;
+  klass->resize                       = gimp_layer_real_resize;
+  klass->flip                         = gimp_layer_real_flip;
+  klass->rotate                       = gimp_layer_real_rotate;
+  klass->transform                    = gimp_layer_real_transform;
+  klass->convert_type                 = gimp_layer_real_convert_type;
+  klass->get_effective_mode           = gimp_layer_real_get_effective_mode;
+  klass->get_excludes_backdrop        = gimp_layer_real_get_excludes_backdrop;
 
   g_object_class_install_property (object_class, PROP_OPACITY,
                                    g_param_spec_double ("opacity", NULL, NULL,
@@ -301,9 +492,36 @@ gimp_layer_class_init (GimpLayerClass *klass)
 
   g_object_class_install_property (object_class, PROP_MODE,
                                    g_param_spec_enum ("mode", NULL, NULL,
-                                                      GIMP_TYPE_LAYER_MODE_EFFECTS,
-                                                      GIMP_NORMAL_MODE,
+                                                      GIMP_TYPE_LAYER_MODE,
+                                                      GIMP_LAYER_MODE_NORMAL,
                                                       GIMP_PARAM_READABLE));
+
+  g_object_class_install_property (object_class, PROP_BLEND_SPACE,
+                                   g_param_spec_enum ("blend-space",
+                                                      NULL, NULL,
+                                                      GIMP_TYPE_LAYER_COLOR_SPACE,
+                                                      GIMP_LAYER_COLOR_SPACE_AUTO,
+                                                      GIMP_PARAM_READABLE));
+
+  g_object_class_install_property (object_class, PROP_COMPOSITE_SPACE,
+                                   g_param_spec_enum ("composite-space",
+                                                      NULL, NULL,
+                                                      GIMP_TYPE_LAYER_COLOR_SPACE,
+                                                      GIMP_LAYER_COLOR_SPACE_AUTO,
+                                                      GIMP_PARAM_READABLE));
+
+  g_object_class_install_property (object_class, PROP_COMPOSITE_MODE,
+                                   g_param_spec_enum ("composite-mode",
+                                                      NULL, NULL,
+                                                      GIMP_TYPE_LAYER_COMPOSITE_MODE,
+                                                      GIMP_LAYER_COMPOSITE_AUTO,
+                                                      GIMP_PARAM_READABLE));
+
+  g_object_class_install_property (object_class, PROP_EXCLUDES_BACKDROP,
+                                   g_param_spec_boolean ("excludes-backdrop",
+                                                         NULL, NULL,
+                                                         FALSE,
+                                                         GIMP_PARAM_READABLE));
 
   g_object_class_install_property (object_class, PROP_LOCK_ALPHA,
                                    g_param_spec_boolean ("lock-alpha",
@@ -327,11 +545,22 @@ gimp_layer_class_init (GimpLayerClass *klass)
 static void
 gimp_layer_init (GimpLayer *layer)
 {
-  layer->opacity    = GIMP_OPACITY_OPAQUE;
-  layer->mode       = GIMP_NORMAL_MODE;
-  layer->lock_alpha = FALSE;
+  layer->opacity                   = GIMP_OPACITY_OPAQUE;
+  layer->mode                      = GIMP_LAYER_MODE_NORMAL;
+  layer->blend_space               = GIMP_LAYER_COLOR_SPACE_AUTO;
+  layer->composite_space           = GIMP_LAYER_COLOR_SPACE_AUTO;
+  layer->composite_mode            = GIMP_LAYER_COMPOSITE_AUTO;
+  layer->effective_mode            = layer->mode;
+  layer->effective_blend_space     = gimp_layer_get_real_blend_space (layer);
+  layer->effective_composite_space = gimp_layer_get_real_composite_space (layer);
+  layer->effective_composite_mode  = gimp_layer_get_real_composite_mode (layer);
+  layer->excludes_backdrop         = FALSE;
+  layer->lock_alpha                = FALSE;
 
   layer->mask       = NULL;
+  layer->apply_mask = TRUE;
+  layer->edit_mask  = TRUE;
+  layer->show_mask  = FALSE;
 
   /*  floating selection  */
   layer->fs.drawable       = NULL;
@@ -341,9 +570,17 @@ gimp_layer_init (GimpLayer *layer)
 }
 
 static void
-gimp_layer_pickable_iface_init (GimpPickableInterface *iface)
+gimp_color_managed_iface_init (GimpColorManagedInterface *iface)
+{
+  iface->get_color_profile = gimp_layer_get_color_profile;
+}
+
+static void
+gimp_pickable_iface_init (GimpPickableInterface *iface)
 {
   iface->get_opacity_at = gimp_layer_get_opacity_at;
+  iface->pixel_to_srgb  = gimp_layer_pixel_to_srgb;
+  iface->srgb_to_pixel  = gimp_layer_srgb_to_pixel;
 }
 
 static void
@@ -375,6 +612,18 @@ gimp_layer_get_property (GObject    *object,
       break;
     case PROP_MODE:
       g_value_set_enum (value, gimp_layer_get_mode (layer));
+      break;
+    case PROP_BLEND_SPACE:
+      g_value_set_enum (value, gimp_layer_get_blend_space (layer));
+      break;
+    case PROP_COMPOSITE_SPACE:
+      g_value_set_enum (value, gimp_layer_get_composite_space (layer));
+      break;
+    case PROP_COMPOSITE_MODE:
+      g_value_set_enum (value, gimp_layer_get_composite_mode (layer));
+      break;
+    case PROP_EXCLUDES_BACKDROP:
+      g_value_set_boolean (value, gimp_layer_get_excludes_backdrop (layer));
       break;
     case PROP_LOCK_ALPHA:
       g_value_set_boolean (value, gimp_layer_get_lock_alpha (layer));
@@ -411,6 +660,8 @@ gimp_layer_dispose (GObject *object)
        */
       if (gimp_drawable_get_floating_sel (fs_drawable) == layer)
         gimp_drawable_detach_floating_sel (fs_drawable);
+
+      gimp_layer_set_floating_sel_drawable (layer, NULL);
     }
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
@@ -421,20 +672,63 @@ gimp_layer_finalize (GObject *object)
 {
   GimpLayer *layer = GIMP_LAYER (object);
 
-  if (layer->mask)
-    {
-      g_object_unref (layer->mask);
-      layer->mask = NULL;
-    }
-
-  if (layer->fs.segs)
-    {
-      g_free (layer->fs.segs);
-      layer->fs.segs     = NULL;
-      layer->fs.num_segs = 0;
-    }
+  g_clear_object (&layer->mask);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
+}
+
+static void
+gimp_layer_update_mode_node (GimpLayer *layer)
+{
+  GeglNode               *mode_node;
+  GimpLayerMode           visible_mode;
+  GimpLayerColorSpace     visible_blend_space;
+  GimpLayerColorSpace     visible_composite_space;
+  GimpLayerCompositeMode  visible_composite_mode;
+
+  mode_node = gimp_drawable_get_mode_node (GIMP_DRAWABLE (layer));
+
+  if (layer->mask && layer->show_mask)
+    {
+      visible_mode            = GIMP_LAYER_MODE_NORMAL;
+      visible_blend_space     = GIMP_LAYER_COLOR_SPACE_AUTO;
+      visible_composite_space = GIMP_LAYER_COLOR_SPACE_AUTO;
+      visible_composite_mode  = GIMP_LAYER_COMPOSITE_AUTO;
+
+      /* This makes sure that masks of LEGACY-mode layers are
+       * composited in PERCEPTUAL space, and non-LEGACY layers in
+       * LINEAR space, or whatever composite space was chosen in the
+       * layer attributes dialog
+       */
+      visible_composite_space = gimp_layer_get_real_composite_space (layer);
+    }
+  else
+    {
+      visible_mode            = layer->effective_mode;
+      visible_blend_space     = layer->effective_blend_space;
+      visible_composite_space = layer->effective_composite_space;
+      visible_composite_mode  = layer->effective_composite_mode;
+    }
+
+  gimp_gegl_mode_node_set_mode (mode_node,
+                                visible_mode,
+                                visible_blend_space,
+                                visible_composite_space,
+                                visible_composite_mode);
+  gimp_gegl_mode_node_set_opacity (mode_node, layer->opacity);
+}
+
+static void
+gimp_layer_notify (GObject    *object,
+                   GParamSpec *pspec)
+{
+  if (! strcmp (pspec->name, "is-last-node") &&
+      gimp_filter_peek_node (GIMP_FILTER (object)))
+    {
+      gimp_layer_update_mode_node (GIMP_LAYER (object));
+
+      gimp_drawable_update (GIMP_DRAWABLE (object), 0, 0, -1, -1);
+    }
 }
 
 static void
@@ -463,7 +757,7 @@ gimp_layer_get_memsize (GimpObject *object,
 
   memsize += gimp_object_get_memsize (GIMP_OBJECT (layer->mask), gui_size);
 
-  *gui_size += layer->fs.num_segs * sizeof (BoundSeg);
+  *gui_size += layer->fs.num_segs * sizeof (GimpBoundSeg);
 
   return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
                                                                   gui_size);
@@ -494,6 +788,93 @@ gimp_layer_get_description (GimpViewable  *viewable,
                                                               tooltip);
 }
 
+static GeglNode *
+gimp_layer_get_node (GimpFilter *filter)
+{
+  GimpDrawable *drawable = GIMP_DRAWABLE (filter);
+  GimpLayer    *layer    = GIMP_LAYER (filter);
+  GeglNode     *node;
+  GeglNode     *input;
+  GeglNode     *source;
+  GeglNode     *mode_node;
+  gboolean      source_node_hijacked = FALSE;
+
+  node = GIMP_FILTER_CLASS (parent_class)->get_node (filter);
+
+  input = gegl_node_get_input_proxy (node, "input");
+
+  source = gimp_drawable_get_source_node (drawable);
+
+  /* if the source node already has a parent, we are a floating
+   * selection and the source node has been hijacked by the fs'
+   * drawable
+   */
+  if (gegl_node_get_parent (source))
+    source_node_hijacked = TRUE;
+
+  if (! source_node_hijacked)
+    gegl_node_add_child (node, source);
+
+  gegl_node_connect_to (input,  "output",
+                        source, "input");
+
+  g_warn_if_fail (layer->layer_offset_node == NULL);
+  g_warn_if_fail (layer->mask_offset_node == NULL);
+
+  /* the mode node connects it all, and has aux and aux2 inputs for
+   * the layer and its mask
+   */
+  mode_node = gimp_drawable_get_mode_node (drawable);
+  gimp_layer_update_mode_node (layer);
+
+  /* the layer's offset node */
+  layer->layer_offset_node = gegl_node_new_child (node,
+                                                  "operation", "gegl:translate",
+                                                  NULL);
+  gimp_item_add_offset_node (GIMP_ITEM (layer), layer->layer_offset_node);
+
+  /* the layer mask's offset node */
+  layer->mask_offset_node = gegl_node_new_child (node,
+                                                 "operation", "gegl:translate",
+                                                  NULL);
+  gimp_item_add_offset_node (GIMP_ITEM (layer), layer->mask_offset_node);
+
+  if (! source_node_hijacked)
+    {
+      gegl_node_connect_to (source,                   "output",
+                            layer->layer_offset_node, "input");
+    }
+
+  if (! (layer->mask && gimp_layer_get_show_mask (layer)))
+    {
+      gegl_node_connect_to (layer->layer_offset_node, "output",
+                            mode_node,                "aux");
+    }
+
+  if (layer->mask)
+    {
+      GeglNode *mask;
+
+      mask = gimp_drawable_get_source_node (GIMP_DRAWABLE (layer->mask));
+
+      gegl_node_connect_to (mask,                    "output",
+                            layer->mask_offset_node, "input");
+
+      if (gimp_layer_get_show_mask (layer))
+        {
+          gegl_node_connect_to (layer->mask_offset_node, "output",
+                                mode_node,               "aux");
+        }
+      else if (gimp_layer_get_apply_mask (layer))
+        {
+          gegl_node_connect_to (layer->mask_offset_node, "output",
+                                mode_node,               "aux2");
+        }
+    }
+
+  return node;
+}
+
 static void
 gimp_layer_removed (GimpItem *item)
 {
@@ -519,7 +900,7 @@ gimp_layer_unset_removed (GimpItem *item)
 }
 
 static gboolean
-gimp_layer_is_attached (const GimpItem *item)
+gimp_layer_is_attached (GimpItem *item)
 {
   GimpImage *image = gimp_item_get_image (item);
 
@@ -556,8 +937,16 @@ gimp_layer_duplicate (GimpItem *item,
       GimpLayer *layer     = GIMP_LAYER (item);
       GimpLayer *new_layer = GIMP_LAYER (new_item);
 
-      gimp_layer_set_mode    (new_layer, gimp_layer_get_mode (layer),    FALSE);
-      gimp_layer_set_opacity (new_layer, gimp_layer_get_opacity (layer), FALSE);
+      gimp_layer_set_mode            (new_layer,
+                                      gimp_layer_get_mode (layer), FALSE);
+      gimp_layer_set_blend_space     (new_layer,
+                                      gimp_layer_get_blend_space (layer), FALSE);
+      gimp_layer_set_composite_space (new_layer,
+                                      gimp_layer_get_composite_space (layer), FALSE);
+      gimp_layer_set_composite_mode  (new_layer,
+                                      gimp_layer_get_composite_mode (layer), FALSE);
+      gimp_layer_set_opacity         (new_layer,
+                                      gimp_layer_get_opacity (layer), FALSE);
 
       if (gimp_layer_can_lock_alpha (new_layer))
         gimp_layer_set_lock_alpha (new_layer,
@@ -571,6 +960,10 @@ gimp_layer_duplicate (GimpItem *item,
           mask = gimp_item_duplicate (GIMP_ITEM (layer->mask),
                                       G_TYPE_FROM_INSTANCE (layer->mask));
           gimp_layer_add_mask (new_layer, GIMP_LAYER_MASK (mask), FALSE, NULL);
+
+          new_layer->apply_mask = layer->apply_mask;
+          new_layer->edit_mask  = layer->edit_mask;
+          new_layer->show_mask  = layer->show_mask;
         }
     }
 
@@ -579,23 +972,47 @@ gimp_layer_duplicate (GimpItem *item,
 
 static void
 gimp_layer_convert (GimpItem  *item,
-                    GimpImage *dest_image)
+                    GimpImage *dest_image,
+                    GType      old_type)
 {
   GimpLayer         *layer    = GIMP_LAYER (item);
   GimpDrawable      *drawable = GIMP_DRAWABLE (item);
   GimpImageBaseType  old_base_type;
   GimpImageBaseType  new_base_type;
+  GimpPrecision      old_precision;
+  GimpPrecision      new_precision;
+  GimpColorProfile  *dest_profile = NULL;
 
-  old_base_type = GIMP_IMAGE_TYPE_BASE_TYPE (gimp_drawable_type (drawable));
-  new_base_type = gimp_image_base_type (dest_image);
+  old_base_type = gimp_drawable_get_base_type (drawable);
+  new_base_type = gimp_image_get_base_type (dest_image);
 
-  if (old_base_type != new_base_type)
-    gimp_drawable_convert_type (drawable, dest_image, new_base_type, FALSE);
+  old_precision = gimp_drawable_get_precision (drawable);
+  new_precision = gimp_image_get_precision (dest_image);
+
+  if (g_type_is_a (old_type, GIMP_TYPE_LAYER) &&
+      gimp_image_get_is_color_managed (dest_image))
+    {
+      dest_profile =
+        gimp_color_managed_get_color_profile (GIMP_COLOR_MANAGED (dest_image));
+    }
+
+  if (old_base_type != new_base_type ||
+      old_precision != new_precision ||
+      dest_profile)
+    {
+      gimp_drawable_convert_type (drawable, dest_image,
+                                  new_base_type,
+                                  new_precision,
+                                  gimp_drawable_has_alpha (drawable),
+                                  dest_profile,
+                                  GEGL_DITHER_NONE, GEGL_DITHER_NONE,
+                                  FALSE, NULL);
+    }
 
   if (layer->mask)
     gimp_item_set_image (GIMP_ITEM (layer->mask), dest_image);
 
-  GIMP_ITEM_CLASS (parent_class)->convert (item, dest_image);
+  GIMP_ITEM_CLASS (parent_class)->convert (item, dest_image, old_type);
 }
 
 static gboolean
@@ -617,9 +1034,9 @@ gimp_layer_rename (GimpItem     *item,
       if (GIMP_IS_CHANNEL (gimp_layer_get_floating_sel_drawable (layer)))
         {
           g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
-			       _("Cannot create a new layer from the floating "
-				 "selection because it belongs to a layer mask "
-				 "or channel."));
+                               _("Cannot create a new layer from the floating "
+                                 "selection because it belongs to a layer mask "
+                                 "or channel."));
           return FALSE;
         }
 
@@ -642,6 +1059,65 @@ gimp_layer_rename (GimpItem     *item,
 }
 
 static void
+gimp_layer_start_move (GimpItem *item,
+                       gboolean  push_undo)
+{
+  GimpLayer *layer     = GIMP_LAYER (item);
+  GimpLayer *ancestor  = layer;
+  GSList    *ancestors = NULL;
+
+  /* suspend mask cropping for all of the layer's ancestors */
+  while ((ancestor = gimp_layer_get_parent (ancestor)))
+    {
+      gimp_group_layer_suspend_mask (GIMP_GROUP_LAYER (ancestor), push_undo);
+
+      ancestors = g_slist_prepend (ancestors, g_object_ref (ancestor));
+    }
+
+  /* we keep the ancestor list around, so that we can resume mask cropping for
+   * the same set of groups in gimp_layer_end_move().  note that
+   * gimp_image_remove_layer() calls start_move() before removing the layer,
+   * while it's still part of the layer tree, and end_move() afterwards, when
+   * it's no longer part of the layer tree, and hence we can't use get_parent()
+   * in end_move() to get the same set of ancestors.
+   */
+  layer->move_stack = g_slist_prepend (layer->move_stack, ancestors);
+
+  if (GIMP_ITEM_CLASS (parent_class)->start_move)
+    GIMP_ITEM_CLASS (parent_class)->start_move (item, push_undo);
+}
+
+static void
+gimp_layer_end_move (GimpItem *item,
+                     gboolean  push_undo)
+{
+  GimpLayer *layer = GIMP_LAYER (item);
+  GSList    *ancestors;
+  GSList    *iter;
+
+  g_return_if_fail (layer->move_stack != NULL);
+
+  if (GIMP_ITEM_CLASS (parent_class)->end_move)
+    GIMP_ITEM_CLASS (parent_class)->end_move (item, push_undo);
+
+  ancestors = layer->move_stack->data;
+
+  layer->move_stack = g_slist_remove (layer->move_stack, ancestors);
+
+  /* resume mask cropping for all of the layer's ancestors */
+  for (iter = ancestors; iter; iter = g_slist_next (iter))
+    {
+      GimpGroupLayer *ancestor = iter->data;
+
+      gimp_group_layer_resume_mask (ancestor, push_undo);
+
+      g_object_unref (ancestor);
+    }
+
+  g_slist_free (ancestors);
+}
+
+static void
 gimp_layer_translate (GimpItem *item,
                       gint      offset_x,
                       gint      offset_y,
@@ -652,23 +1128,7 @@ gimp_layer_translate (GimpItem *item,
   if (push_undo)
     gimp_image_undo_push_item_displace (gimp_item_get_image (item), NULL, item);
 
-  /*  update the old region  */
-  gimp_drawable_update (GIMP_DRAWABLE (layer),
-                        0, 0,
-                        gimp_item_get_width  (item),
-                        gimp_item_get_height (item));
-
-  /*  invalidate the selection boundary because of a layer modification  */
-  gimp_drawable_invalidate_boundary (GIMP_DRAWABLE (layer));
-
-  GIMP_ITEM_CLASS (parent_class)->translate (item, offset_x, offset_y,
-                                             push_undo);
-
-  /*  update the new region  */
-  gimp_drawable_update (GIMP_DRAWABLE (layer),
-                        0, 0,
-                        gimp_item_get_width  (item),
-                        gimp_item_get_height (item));
+  GIMP_LAYER_GET_CLASS (layer)->translate (layer, offset_x, offset_y);
 
   if (layer->mask)
     {
@@ -690,35 +1150,66 @@ gimp_layer_scale (GimpItem              *item,
                   GimpInterpolationType  interpolation_type,
                   GimpProgress          *progress)
 {
-  GimpLayer *layer = GIMP_LAYER (item);
+  GimpLayer       *layer = GIMP_LAYER (item);
+  GimpObjectQueue *queue = NULL;
 
-  /* scale mask first, see bug 733839 */
+  if (progress && layer->mask)
+    {
+      GimpLayerMask *mask;
+
+      queue    = gimp_object_queue_new (progress);
+      progress = GIMP_PROGRESS (queue);
+
+      /* temporarily set layer->mask to NULL, so that its size won't be counted
+       * when pushing the layer to the queue.
+       */
+      mask        = layer->mask;
+      layer->mask = NULL;
+
+      gimp_object_queue_push (queue, layer);
+      gimp_object_queue_push (queue, mask);
+
+      layer->mask = mask;
+    }
+
+  if (queue)
+    gimp_object_queue_pop (queue);
+
+  GIMP_LAYER_GET_CLASS (layer)->scale (layer, new_width, new_height,
+                                       new_offset_x, new_offset_y,
+                                       interpolation_type, progress);
+
   if (layer->mask)
-    gimp_item_scale (GIMP_ITEM (layer->mask),
-                     new_width, new_height,
-                     new_offset_x, new_offset_y,
-                     interpolation_type, progress);
+    {
+      if (queue)
+        gimp_object_queue_pop (queue);
 
-  GIMP_ITEM_CLASS (parent_class)->scale (item, new_width, new_height,
-                                         new_offset_x, new_offset_y,
-                                         interpolation_type, progress);
+      gimp_item_scale (GIMP_ITEM (layer->mask),
+                       new_width, new_height,
+                       new_offset_x, new_offset_y,
+                       interpolation_type, progress);
+    }
+
+  g_clear_object (&queue);
 }
 
 static void
-gimp_layer_resize (GimpItem    *item,
-                   GimpContext *context,
-                   gint         new_width,
-                   gint         new_height,
-                   gint         offset_x,
-                   gint         offset_y)
+gimp_layer_resize (GimpItem     *item,
+                   GimpContext  *context,
+                   GimpFillType  fill_type,
+                   gint          new_width,
+                   gint          new_height,
+                   gint          offset_x,
+                   gint          offset_y)
 {
   GimpLayer *layer  = GIMP_LAYER (item);
 
-  GIMP_ITEM_CLASS (parent_class)->resize (item, context, new_width, new_height,
-                                          offset_x, offset_y);
+  GIMP_LAYER_GET_CLASS (layer)->resize (layer, context, fill_type,
+                                        new_width, new_height,
+                                        offset_x, offset_y);
 
   if (layer->mask)
-    gimp_item_resize (GIMP_ITEM (layer->mask), context,
+    gimp_item_resize (GIMP_ITEM (layer->mask), context, GIMP_FILL_TRANSPARENT,
                       new_width, new_height, offset_x, offset_y);
 }
 
@@ -731,8 +1222,8 @@ gimp_layer_flip (GimpItem            *item,
 {
   GimpLayer *layer = GIMP_LAYER (item);
 
-  GIMP_ITEM_CLASS (parent_class)->flip (item, context, flip_type, axis,
-                                        clip_result);
+  GIMP_LAYER_GET_CLASS (layer)->flip (layer, context, flip_type, axis,
+                                      clip_result);
 
   if (layer->mask)
     gimp_item_flip (GIMP_ITEM (layer->mask), context,
@@ -749,9 +1240,9 @@ gimp_layer_rotate (GimpItem         *item,
 {
   GimpLayer *layer = GIMP_LAYER (item);
 
-  GIMP_ITEM_CLASS (parent_class)->rotate (item, context,
-                                          rotate_type, center_x, center_y,
-                                          clip_result);
+  GIMP_LAYER_GET_CLASS (layer)->rotate (layer, context,
+                                        rotate_type, center_x, center_y,
+                                        clip_result);
 
   if (layer->mask)
     gimp_item_rotate (GIMP_ITEM (layer->mask), context,
@@ -764,28 +1255,51 @@ gimp_layer_transform (GimpItem               *item,
                       const GimpMatrix3      *matrix,
                       GimpTransformDirection  direction,
                       GimpInterpolationType   interpolation_type,
-                      gint                    recursion_level,
                       GimpTransformResize     clip_result,
                       GimpProgress           *progress)
 {
-  GimpLayer *layer = GIMP_LAYER (item);
+  GimpLayer       *layer = GIMP_LAYER (item);
+  GimpObjectQueue *queue = NULL;
 
-  /* FIXME: make interpolated transformations work on layers without alpha */
-  if (interpolation_type != GIMP_INTERPOLATION_NONE &&
-      ! gimp_drawable_has_alpha (GIMP_DRAWABLE (item)))
-    gimp_layer_add_alpha (layer);
+  if (progress && layer->mask)
+    {
+      GimpLayerMask *mask;
 
-  GIMP_ITEM_CLASS (parent_class)->transform (item, context, matrix, direction,
-                                             interpolation_type,
-                                             recursion_level,
-                                             clip_result,
-                                             progress);
+      queue    = gimp_object_queue_new (progress);
+      progress = GIMP_PROGRESS (queue);
+
+      /* temporarily set layer->mask to NULL, so that its size won't be counted
+       * when pushing the layer to the queue.
+       */
+      mask        = layer->mask;
+      layer->mask = NULL;
+
+      gimp_object_queue_push (queue, layer);
+      gimp_object_queue_push (queue, mask);
+
+      layer->mask = mask;
+    }
+
+  if (queue)
+    gimp_object_queue_pop (queue);
+
+  GIMP_LAYER_GET_CLASS (layer)->transform (layer, context, matrix, direction,
+                                           interpolation_type,
+                                           clip_result,
+                                           progress);
 
   if (layer->mask)
-    gimp_item_transform (GIMP_ITEM (layer->mask), context,
-                         matrix, direction,
-                         interpolation_type, recursion_level,
-                         clip_result, progress);
+    {
+      if (queue)
+        gimp_object_queue_pop (queue);
+
+      gimp_item_transform (GIMP_ITEM (layer->mask), context,
+                           matrix, direction,
+                           interpolation_type,
+                           clip_result, progress);
+    }
+
+  g_clear_object (&queue);
 }
 
 static void
@@ -805,82 +1319,99 @@ gimp_layer_to_selection (GimpItem       *item,
                              feather, feather_radius_x, feather_radius_y);
 }
 
-static GeglNode *
-gimp_layer_get_node (GimpItem *item)
+static void
+gimp_layer_alpha_changed (GimpDrawable *drawable)
 {
-  GimpDrawable *drawable = GIMP_DRAWABLE (item);
-  GimpLayer    *layer    = GIMP_LAYER (item);
-  GeglNode     *node;
-  GeglNode     *offset_node;
-  GeglNode     *source;
-  GeglNode     *mode_node;
-  gboolean      source_node_hijacked = FALSE;
+  if (GIMP_DRAWABLE_CLASS (parent_class)->alpha_changed)
+    GIMP_DRAWABLE_CLASS (parent_class)->alpha_changed (drawable);
 
-  node = GIMP_ITEM_CLASS (parent_class)->get_node (item);
-
-  source = gimp_drawable_get_source_node (drawable);
-
-  /* if the source node already has a parent, we are a floating
-   * selection and the source node has been hijacked by the fs'
-   * drawable
+  /* When we add/remove alpha, whatever cached color transforms in
+   * view renderers need to be recreated because they cache the wrong
+   * lcms formats. See bug 478528.
    */
-  if (gegl_node_get_parent (source))
-    source_node_hijacked = TRUE;
-
-  if (! source_node_hijacked)
-    gegl_node_add_child (node, source);
-
-  g_warn_if_fail (layer->opacity_node == NULL);
-
-  layer->opacity_node = gegl_node_new_child (node,
-                                             "operation", "gegl:opacity",
-                                             "value",     layer->opacity,
-                                             NULL);
-
-  if (! source_node_hijacked)
-    gegl_node_connect_to (source,              "output",
-                          layer->opacity_node, "input");
-
-  if (layer->mask)
-    {
-      GeglNode *mask;
-
-      mask = gimp_drawable_get_source_node (GIMP_DRAWABLE (layer->mask));
-
-      gegl_node_connect_to (mask,                "output",
-                            layer->opacity_node, "aux");
-    }
-
-  offset_node = gimp_item_get_offset_node (GIMP_ITEM (layer));
-
-  gegl_node_connect_to (layer->opacity_node, "output",
-                        offset_node,         "input");
-
-  gimp_layer_sync_mode_node (layer);
-
-  mode_node = gimp_drawable_get_mode_node (drawable);
-
-  gegl_node_connect_to (offset_node, "output",
-                        mode_node,   "aux");
-
-  return node;
+  gimp_color_managed_profile_changed (GIMP_COLOR_MANAGED (drawable));
 }
 
 static gint64
-gimp_layer_estimate_memsize (const GimpDrawable *drawable,
-                             gint                width,
-                             gint                height)
+gimp_layer_estimate_memsize (GimpDrawable      *drawable,
+                             GimpComponentType  component_type,
+                             gint               width,
+                             gint               height)
 {
   GimpLayer *layer   = GIMP_LAYER (drawable);
   gint64     memsize = 0;
 
   if (layer->mask)
     memsize += gimp_drawable_estimate_memsize (GIMP_DRAWABLE (layer->mask),
+                                               component_type,
                                                width, height);
 
-  return memsize + GIMP_DRAWABLE_CLASS (parent_class)->estimate_memsize (drawable,
-                                                                         width,
-                                                                         height);
+  return memsize +
+         GIMP_DRAWABLE_CLASS (parent_class)->estimate_memsize (drawable,
+                                                               component_type,
+                                                               width, height);
+}
+
+static void
+gimp_layer_convert_type (GimpDrawable     *drawable,
+                         GimpImage        *dest_image,
+                         const Babl       *new_format,
+                         GimpColorProfile *dest_profile,
+                         GeglDitherMethod  layer_dither_type,
+                         GeglDitherMethod  mask_dither_type,
+                         gboolean          push_undo,
+                         GimpProgress     *progress)
+{
+  GimpLayer       *layer = GIMP_LAYER (drawable);
+  GimpObjectQueue *queue = NULL;
+  gboolean         convert_mask;
+
+  convert_mask = layer->mask &&
+                 gimp_babl_format_get_precision (new_format) !=
+                 gimp_drawable_get_precision (GIMP_DRAWABLE (layer->mask));
+
+  if (progress && convert_mask)
+    {
+      GimpLayerMask *mask;
+
+      queue    = gimp_object_queue_new (progress);
+      progress = GIMP_PROGRESS (queue);
+
+      /* temporarily set layer->mask to NULL, so that its size won't be counted
+       * when pushing the layer to the queue.
+       */
+      mask        = layer->mask;
+      layer->mask = NULL;
+
+      gimp_object_queue_push (queue, layer);
+      gimp_object_queue_push (queue, mask);
+
+      layer->mask = mask;
+    }
+
+  if (queue)
+    gimp_object_queue_pop (queue);
+
+  GIMP_LAYER_GET_CLASS (layer)->convert_type (layer, dest_image, new_format,
+                                              dest_profile, layer_dither_type,
+                                              mask_dither_type, push_undo,
+                                              progress);
+
+  if (convert_mask)
+    {
+      if (queue)
+        gimp_object_queue_pop (queue);
+
+      gimp_drawable_convert_type (GIMP_DRAWABLE (layer->mask), dest_image,
+                                  GIMP_GRAY,
+                                  gimp_babl_format_get_precision (new_format),
+                                  gimp_drawable_has_alpha (GIMP_DRAWABLE (layer->mask)),
+                                  NULL,
+                                  layer_dither_type, mask_dither_type,
+                                  push_undo, progress);
+    }
+
+  g_clear_object (&queue);
 }
 
 static void
@@ -911,162 +1442,313 @@ gimp_layer_invalidate_boundary (GimpDrawable *drawable)
 }
 
 static void
-gimp_layer_get_active_components (const GimpDrawable *drawable,
-                                  gboolean           *active)
+gimp_layer_get_active_components (GimpDrawable *drawable,
+                                  gboolean     *active)
 {
-  GimpLayer *layer = GIMP_LAYER (drawable);
-  GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
+  GimpLayer  *layer  = GIMP_LAYER (drawable);
+  GimpImage  *image  = gimp_item_get_image (GIMP_ITEM (drawable));
+  const Babl *format = gimp_drawable_get_format (drawable);
 
   /*  first copy the image active channels  */
   gimp_image_get_active_array (image, active);
 
   if (gimp_drawable_has_alpha (drawable) && layer->lock_alpha)
-    active[gimp_drawable_bytes (drawable) - 1] = FALSE;
+    active[babl_format_get_n_components (format) - 1] = FALSE;
+}
+
+static GimpComponentMask
+gimp_layer_get_active_mask (GimpDrawable *drawable)
+{
+  GimpLayer         *layer = GIMP_LAYER (drawable);
+  GimpImage         *image = gimp_item_get_image (GIMP_ITEM (drawable));
+  GimpComponentMask  mask  = gimp_image_get_active_mask (image);
+
+  if (gimp_drawable_has_alpha (drawable) && layer->lock_alpha)
+    mask &= ~GIMP_COMPONENT_MASK_ALPHA;
+
+  return mask;
 }
 
 static void
-gimp_layer_convert_type (GimpDrawable      *drawable,
-                         GimpImage         *dest_image,
-                         GimpImageBaseType  new_base_type,
-                         gboolean           push_undo)
+gimp_layer_set_buffer (GimpDrawable *drawable,
+                       gboolean      push_undo,
+                       const gchar  *undo_desc,
+                       GeglBuffer   *buffer,
+                       gint          offset_x,
+                       gint          offset_y)
 {
-  switch (new_base_type)
+  GeglBuffer *old_buffer = gimp_drawable_get_buffer (drawable);
+  gint        old_linear = -1;
+
+  if (old_buffer)
+    old_linear = gimp_drawable_get_linear (drawable);
+
+  GIMP_DRAWABLE_CLASS (parent_class)->set_buffer (drawable,
+                                                  push_undo, undo_desc,
+                                                  buffer,
+                                                  offset_x, offset_y);
+
+  if (gimp_filter_peek_node (GIMP_FILTER (drawable)))
     {
-    case GIMP_RGB:
-    case GIMP_GRAY:
-      GIMP_DRAWABLE_CLASS (parent_class)->convert_type (drawable, dest_image,
-                                                        new_base_type,
-                                                        push_undo);
-      break;
-
-    case GIMP_INDEXED:
-      {
-        GimpItem      *item = GIMP_ITEM (drawable);
-        TileManager   *new_tiles;
-        GimpImageType  new_type;
-        PixelRegion    layerPR;
-        PixelRegion    newPR;
-
-        new_type = GIMP_IMAGE_TYPE_FROM_BASE_TYPE (new_base_type);
-
-        if (gimp_drawable_has_alpha (drawable))
-          new_type = GIMP_IMAGE_TYPE_WITH_ALPHA (new_type);
-
-        new_tiles = tile_manager_new (gimp_item_get_width  (item),
-                                      gimp_item_get_height (item),
-                                      GIMP_IMAGE_TYPE_BYTES (new_type));
-
-        pixel_region_init (&layerPR, gimp_drawable_get_tiles (drawable),
-                           0, 0,
-                           gimp_item_get_width  (item),
-                           gimp_item_get_height (item),
-                           FALSE);
-        pixel_region_init (&newPR, new_tiles,
-                           0, 0,
-                           gimp_item_get_width  (item),
-                           gimp_item_get_height (item),
-                           TRUE);
-
-        gimp_layer_transform_color (dest_image,
-                                    &layerPR, gimp_drawable_type (drawable),
-                                    &newPR,   new_type);
-
-        gimp_drawable_set_tiles (drawable, push_undo, NULL,
-                                 new_tiles, new_type);
-        tile_manager_unref (new_tiles);
-      }
+      if (gimp_drawable_get_linear (drawable) != old_linear)
+        gimp_layer_update_mode_node (GIMP_LAYER (drawable));
     }
 }
 
-static gint
+static GimpColorProfile *
+gimp_layer_get_color_profile (GimpColorManaged *managed)
+{
+  GimpImage *image = gimp_item_get_image (GIMP_ITEM (managed));
+
+  return gimp_color_managed_get_color_profile (GIMP_COLOR_MANAGED (image));
+}
+
+static gdouble
 gimp_layer_get_opacity_at (GimpPickable *pickable,
                            gint          x,
                            gint          y)
 {
   GimpLayer *layer = GIMP_LAYER (pickable);
-  gint       val   = 0;
+  gdouble    value = GIMP_OPACITY_TRANSPARENT;
 
   if (x >= 0 && x < gimp_item_get_width  (GIMP_ITEM (layer)) &&
       y >= 0 && y < gimp_item_get_height (GIMP_ITEM (layer)) &&
       gimp_item_is_visible (GIMP_ITEM (layer)))
     {
-      GimpLayerMask *mask;
-
       if (! gimp_drawable_has_alpha (GIMP_DRAWABLE (layer)))
         {
-          val = OPAQUE_OPACITY;
+          value = GIMP_OPACITY_OPAQUE;
         }
       else
         {
-          Tile *tile;
-
-          tile = tile_manager_get_tile (gimp_drawable_get_tiles (GIMP_DRAWABLE (layer)),
-                                        x, y, TRUE, FALSE);
-
-          val = * ((const guchar *) tile_data_pointer (tile, x, y) +
-                   tile_bpp (tile) - 1);
-
-          tile_release (tile, FALSE);
+          gegl_buffer_sample (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
+                              x, y, NULL, &value, babl_format ("A double"),
+                              GEGL_SAMPLER_NEAREST, GEGL_ABYSS_NONE);
         }
 
-      if ((mask = gimp_layer_get_mask (layer)) &&
-          gimp_layer_mask_get_apply (mask))
+      if (gimp_layer_get_mask (layer) &&
+          gimp_layer_get_apply_mask (layer))
         {
-          gint mask_val;
+          gdouble mask_value;
 
-          mask_val = gimp_pickable_get_opacity_at (GIMP_PICKABLE (mask),
-                                                   x, y);
+          mask_value = gimp_pickable_get_opacity_at (GIMP_PICKABLE (layer->mask),
+                                                     x, y);
 
-          val = val * mask_val / 255;
+          value *= mask_value;
         }
-
     }
 
-  return val;
+  return value;
 }
 
 static void
-gimp_layer_transform_color (GimpImage     *image,
-                            PixelRegion   *srcPR,
-                            GimpImageType  src_type,
-                            PixelRegion   *destPR,
-                            GimpImageType  dest_type)
+gimp_layer_pixel_to_srgb (GimpPickable *pickable,
+                          const Babl   *format,
+                          gpointer      pixel,
+                          GimpRGB      *color)
 {
-  GimpImageBaseType base_type  = GIMP_IMAGE_TYPE_BASE_TYPE (src_type);
-  gboolean          src_alpha  = GIMP_IMAGE_TYPE_HAS_ALPHA (src_type);
-  gboolean          dest_alpha = GIMP_IMAGE_TYPE_HAS_ALPHA (dest_type);
-  gpointer          pr;
+  GimpImage *image = gimp_item_get_image (GIMP_ITEM (pickable));
 
-  for (pr = pixel_regions_register (2, srcPR, destPR);
-       pr != NULL;
-       pr = pixel_regions_process (pr))
+  gimp_pickable_pixel_to_srgb (GIMP_PICKABLE (image), format, pixel, color);
+}
+
+static void
+gimp_layer_srgb_to_pixel (GimpPickable  *pickable,
+                          const GimpRGB *color,
+                          const Babl    *format,
+                          gpointer       pixel)
+{
+  GimpImage *image = gimp_item_get_image (GIMP_ITEM (pickable));
+
+  gimp_pickable_srgb_to_pixel (GIMP_PICKABLE (image), color, format, pixel);
+}
+
+static void
+gimp_layer_real_translate (GimpLayer *layer,
+                           gint       offset_x,
+                           gint       offset_y)
+{
+  /*  update the old region  */
+  gimp_drawable_update (GIMP_DRAWABLE (layer), 0, 0, -1, -1);
+
+  /*  invalidate the selection boundary because of a layer modification  */
+  gimp_drawable_invalidate_boundary (GIMP_DRAWABLE (layer));
+
+  GIMP_ITEM_CLASS (parent_class)->translate (GIMP_ITEM (layer),
+                                             offset_x, offset_y,
+                                             FALSE);
+
+  /*  update the new region  */
+  gimp_drawable_update (GIMP_DRAWABLE (layer), 0, 0, -1, -1);
+}
+
+static void
+gimp_layer_real_scale (GimpLayer             *layer,
+                       gint                   new_width,
+                       gint                   new_height,
+                       gint                   new_offset_x,
+                       gint                   new_offset_y,
+                       GimpInterpolationType  interpolation_type,
+                       GimpProgress          *progress)
+{
+  GIMP_ITEM_CLASS (parent_class)->scale (GIMP_ITEM (layer),
+                                         new_width, new_height,
+                                         new_offset_x, new_offset_y,
+                                         interpolation_type, progress);
+}
+
+static void
+gimp_layer_real_resize (GimpLayer    *layer,
+                        GimpContext  *context,
+                        GimpFillType  fill_type,
+                        gint          new_width,
+                        gint          new_height,
+                        gint          offset_x,
+                        gint          offset_y)
+{
+  if (fill_type == GIMP_FILL_TRANSPARENT &&
+      ! gimp_drawable_has_alpha (GIMP_DRAWABLE (layer)))
     {
-      const guchar *src  = srcPR->data;
-      guchar       *dest = destPR->data;
-      gint          h    = destPR->h;
-
-      while (h--)
-        {
-          const guchar *s = src;
-          guchar       *d = dest;
-          gint          i;
-
-          for (i = 0; i < destPR->w; i++)
-            {
-              gimp_image_transform_color (image, dest_type, d, base_type, s);
-
-              if (dest_alpha)
-                d[destPR->bytes - 1] = (src_alpha ?
-                                        s[srcPR->bytes - 1] : OPAQUE_OPACITY);
-
-              s += srcPR->bytes;
-              d += destPR->bytes;
-            }
-
-          src  += srcPR->rowstride;
-          dest += destPR->rowstride;
-        }
+      fill_type = GIMP_FILL_BACKGROUND;
     }
+
+  GIMP_ITEM_CLASS (parent_class)->resize (GIMP_ITEM (layer),
+                                          context, fill_type,
+                                          new_width, new_height,
+                                          offset_x, offset_y);
+}
+
+static void
+gimp_layer_real_flip (GimpLayer           *layer,
+                      GimpContext         *context,
+                      GimpOrientationType  flip_type,
+                      gdouble              axis,
+                      gboolean             clip_result)
+{
+  GIMP_ITEM_CLASS (parent_class)->flip (GIMP_ITEM (layer),
+                                        context, flip_type, axis, clip_result);
+}
+
+static void
+gimp_layer_real_rotate (GimpLayer        *layer,
+                        GimpContext      *context,
+                        GimpRotationType  rotate_type,
+                        gdouble           center_x,
+                        gdouble           center_y,
+                        gboolean          clip_result)
+{
+  GIMP_ITEM_CLASS (parent_class)->rotate (GIMP_ITEM (layer),
+                                          context, rotate_type,
+                                          center_x, center_y,
+                                          clip_result);
+}
+
+static void
+gimp_layer_real_transform (GimpLayer              *layer,
+                           GimpContext            *context,
+                           const GimpMatrix3      *matrix,
+                           GimpTransformDirection  direction,
+                           GimpInterpolationType   interpolation_type,
+                           GimpTransformResize     clip_result,
+                           GimpProgress           *progress)
+{
+  /* FIXME: make interpolated transformations work on layers without alpha */
+  if (interpolation_type != GIMP_INTERPOLATION_NONE &&
+      ! gimp_drawable_has_alpha (GIMP_DRAWABLE (layer)))
+    gimp_layer_add_alpha (layer);
+
+  GIMP_ITEM_CLASS (parent_class)->transform (GIMP_ITEM (layer),
+                                             context, matrix, direction,
+                                             interpolation_type,
+                                             clip_result,
+                                             progress);
+}
+
+static void
+gimp_layer_real_convert_type (GimpLayer        *layer,
+                              GimpImage        *dest_image,
+                              const Babl       *new_format,
+                              GimpColorProfile *dest_profile,
+                              GeglDitherMethod  layer_dither_type,
+                              GeglDitherMethod  mask_dither_type,
+                              gboolean          push_undo,
+                              GimpProgress     *progress)
+{
+  GimpDrawable *drawable = GIMP_DRAWABLE (layer);
+  GeglBuffer   *src_buffer;
+  GeglBuffer   *dest_buffer;
+
+  if (layer_dither_type == GEGL_DITHER_NONE)
+    {
+      src_buffer = g_object_ref (gimp_drawable_get_buffer (drawable));
+    }
+  else
+    {
+      gint bits;
+
+      src_buffer =
+        gegl_buffer_new (GEGL_RECTANGLE (0, 0,
+                                         gimp_item_get_width  (GIMP_ITEM (layer)),
+                                         gimp_item_get_height (GIMP_ITEM (layer))),
+                         gimp_drawable_get_format (drawable));
+
+      bits = (babl_format_get_bytes_per_pixel (new_format) * 8 /
+              babl_format_get_n_components (new_format));
+
+      gimp_gegl_apply_dither (gimp_drawable_get_buffer (drawable),
+                              NULL, NULL,
+                              src_buffer, 1 << bits, layer_dither_type);
+    }
+
+  dest_buffer =
+    gegl_buffer_new (GEGL_RECTANGLE (0, 0,
+                                     gimp_item_get_width  (GIMP_ITEM (layer)),
+                                     gimp_item_get_height (GIMP_ITEM (layer))),
+                     new_format);
+
+  if (dest_profile)
+    {
+      GimpColorProfile *src_profile =
+        gimp_color_managed_get_color_profile (GIMP_COLOR_MANAGED (layer));
+
+      gimp_gegl_convert_color_profile (src_buffer,  NULL, src_profile,
+                                       dest_buffer, NULL, dest_profile,
+                                       GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL,
+                                       TRUE, progress);
+    }
+  else
+    {
+      gegl_buffer_copy (src_buffer, NULL, GEGL_ABYSS_NONE, dest_buffer, NULL);
+    }
+
+  gimp_drawable_set_buffer (drawable, push_undo, NULL, dest_buffer);
+
+  g_object_unref (src_buffer);
+  g_object_unref (dest_buffer);
+}
+
+static void
+gimp_layer_real_get_effective_mode (GimpLayer              *layer,
+                                    GimpLayerMode          *mode,
+                                    GimpLayerColorSpace    *blend_space,
+                                    GimpLayerColorSpace    *composite_space,
+                                    GimpLayerCompositeMode *composite_mode)
+{
+  *mode            = gimp_layer_get_mode (layer);
+  *blend_space     = gimp_layer_get_real_blend_space (layer);
+  *composite_space = gimp_layer_get_real_composite_space (layer);
+  *composite_mode  = gimp_layer_get_real_composite_mode (layer);
+}
+
+static gboolean
+gimp_layer_real_get_excludes_backdrop (GimpLayer *layer)
+{
+  GimpLayerCompositeRegion included_region;
+
+  included_region = gimp_layer_mode_get_included_region (layer->mode,
+                                                         layer->effective_composite_mode);
+
+  return ! (included_region & GIMP_LAYER_COMPOSITE_REGION_DESTINATION);
 }
 
 static void
@@ -1077,339 +1759,16 @@ gimp_layer_layer_mask_update (GimpDrawable *drawable,
                               gint          height,
                               GimpLayer    *layer)
 {
-  GimpLayerMask *layer_mask = GIMP_LAYER_MASK (drawable);
-
-  if (gimp_layer_mask_get_apply (layer_mask) ||
-      gimp_layer_mask_get_show (layer_mask))
+  if (gimp_layer_get_apply_mask (layer) ||
+      gimp_layer_get_show_mask (layer))
     {
       gimp_drawable_update (GIMP_DRAWABLE (layer),
                             x, y, width, height);
     }
 }
 
-static void
-gimp_layer_sync_mode_node (GimpLayer *layer)
-{
-  if (layer->opacity_node)
-    {
-      GeglNode *mode_node;
-
-      mode_node = gimp_drawable_get_mode_node (GIMP_DRAWABLE (layer));
-
-      switch (layer->mode)
-        {
-        case GIMP_DISSOLVE_MODE:
-        case GIMP_BEHIND_MODE:
-        case GIMP_MULTIPLY_MODE:
-        case GIMP_SCREEN_MODE:
-        case GIMP_OVERLAY_MODE:
-        case GIMP_DIFFERENCE_MODE:
-        case GIMP_ADDITION_MODE:
-        case GIMP_SUBTRACT_MODE:
-        case GIMP_DARKEN_ONLY_MODE:
-        case GIMP_LIGHTEN_ONLY_MODE:
-        case GIMP_HUE_MODE:
-        case GIMP_SATURATION_MODE:
-        case GIMP_COLOR_MODE:
-        case GIMP_VALUE_MODE:
-        case GIMP_DIVIDE_MODE:
-        case GIMP_DODGE_MODE:
-        case GIMP_BURN_MODE:
-        case GIMP_HARDLIGHT_MODE:
-        case GIMP_SOFTLIGHT_MODE:
-        case GIMP_GRAIN_EXTRACT_MODE:
-        case GIMP_GRAIN_MERGE_MODE:
-        case GIMP_COLOR_ERASE_MODE:
-        case GIMP_ERASE_MODE:
-        case GIMP_REPLACE_MODE:
-        case GIMP_ANTI_ERASE_MODE:
-          gegl_node_set (mode_node,
-                         "operation",  "gimp:point-layer-mode",
-                         "blend-mode", layer->mode,
-                         NULL);
-          break;
-
-        default:
-          gegl_node_set (mode_node,
-                         "operation",
-                         gimp_layer_mode_to_gegl_operation (layer->mode),
-                         NULL);
-          break;
-        }
-    }
-}
-
 
 /*  public functions  */
-
-GimpLayer *
-gimp_layer_new (GimpImage            *image,
-                gint                  width,
-                gint                  height,
-                GimpImageType         type,
-                const gchar          *name,
-                gdouble               opacity,
-                GimpLayerModeEffects  mode)
-{
-  GimpLayer *layer;
-
-  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-  g_return_val_if_fail (width > 0, NULL);
-  g_return_val_if_fail (height > 0, NULL);
-
-  layer = GIMP_LAYER (gimp_drawable_new (GIMP_TYPE_LAYER,
-                                         image, name,
-                                         0, 0, width, height,
-                                         type));
-
-  opacity = CLAMP (opacity, GIMP_OPACITY_TRANSPARENT, GIMP_OPACITY_OPAQUE);
-
-  layer->opacity = opacity;
-  layer->mode    = mode;
-
-  return layer;
-}
-
-/**
- * gimp_layer_new_from_tiles:
- * @tiles:      The buffer to make the new layer from.
- * @dest_image: The image the new layer will be added to.
- * @type:       The #GimpImageType of the new layer.
- * @name:       The new layer's name.
- * @opacity:    The new layer's opacity.
- * @mode:       The new layer's mode.
- *
- * Copies %tiles to a layer taking into consideration the
- * possibility of transforming the contents to meet the requirements
- * of the target image type
- *
- * Return value: The new layer.
- **/
-GimpLayer *
-gimp_layer_new_from_tiles (TileManager          *tiles,
-                           GimpImage            *dest_image,
-                           GimpImageType         type,
-                           const gchar          *name,
-                           gdouble               opacity,
-                           GimpLayerModeEffects  mode)
-{
-  PixelRegion bufPR;
-
-  g_return_val_if_fail (tiles != NULL, NULL);
-  g_return_val_if_fail (GIMP_IS_IMAGE (dest_image), NULL);
-
-  pixel_region_init (&bufPR, tiles,
-                     0, 0,
-                     tile_manager_width (tiles),
-                     tile_manager_height (tiles),
-                     FALSE);
-
-  return gimp_layer_new_from_region (&bufPR, dest_image, type,
-                                     name, opacity, mode);
-}
-
-/**
- * gimp_layer_new_from_pixbuf:
- * @pixbuf:     The pixbuf to make the new layer from.
- * @dest_image: The image the new layer will be added to.
- * @type:       The #GimpImageType of the new layer.
- * @name:       The new layer's name.
- * @opacity:    The new layer's opacity.
- * @mode:       The new layer's mode.
- *
- * Copies %pixbuf to a layer taking into consideration the
- * possibility of transforming the contents to meet the requirements
- * of the target image type
- *
- * Return value: The new layer.
- **/
-GimpLayer *
-gimp_layer_new_from_pixbuf (GdkPixbuf            *pixbuf,
-                            GimpImage            *dest_image,
-                            GimpImageType         type,
-                            const gchar          *name,
-                            gdouble               opacity,
-                            GimpLayerModeEffects  mode)
-{
-  PixelRegion bufPR = { 0, };
-
-  g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
-  g_return_val_if_fail (GIMP_IS_IMAGE (dest_image), NULL);
-  g_return_val_if_fail (GIMP_IMAGE_TYPE_BASE_TYPE (type) ==
-                        gimp_image_base_type (dest_image), NULL);
-
-  pixel_region_init_data (&bufPR, gdk_pixbuf_get_pixels (pixbuf),
-                          gdk_pixbuf_get_n_channels (pixbuf),
-                          gdk_pixbuf_get_rowstride (pixbuf),
-                          0, 0,
-                          gdk_pixbuf_get_width (pixbuf),
-                          gdk_pixbuf_get_height (pixbuf));
-
-  return gimp_layer_new_from_region (&bufPR, dest_image, type,
-                                     name, opacity, mode);
-}
-
-/**
- * gimp_layer_new_from_region:
- * @region:     A readable pixel region.
- * @dest_image: The image the new layer will be added to.
- * @type:       The #GimpImageType of the new layer.
- * @name:       The new layer's name.
- * @opacity:    The new layer's opacity.
- * @mode:       The new layer's mode.
- *
- * Copies %region to a layer taking into consideration the
- * possibility of transforming the contents to meet the requirements
- * of the target image type
- *
- * Return value: The new layer.
- **/
-GimpLayer *
-gimp_layer_new_from_region (PixelRegion          *region,
-                            GimpImage            *dest_image,
-                            GimpImageType         type,
-                            const gchar          *name,
-                            gdouble               opacity,
-                            GimpLayerModeEffects  mode)
-{
-  GimpLayer     *new_layer;
-  PixelRegion    layerPR;
-  GimpImageType  src_type;
-  gint           width;
-  gint           height;
-
-  g_return_val_if_fail (region != NULL, NULL);
-  g_return_val_if_fail (GIMP_IS_IMAGE (dest_image), NULL);
-
-  width  = region->w;
-  height = region->h;
-
-  switch (region->bytes)
-    {
-    case 1: src_type = GIMP_GRAY_IMAGE;  break;
-    case 2: src_type = GIMP_GRAYA_IMAGE; break;
-    case 3: src_type = GIMP_RGB_IMAGE;   break;
-    case 4: src_type = GIMP_RGBA_IMAGE;  break;
-    default:
-      g_return_val_if_reached (NULL);
-      break;
-    }
-
-  new_layer = gimp_layer_new (dest_image, width, height, type, name,
-                              opacity, mode);
-
-  if (! new_layer)
-    {
-      g_warning ("%s: could not allocate new layer", G_STRFUNC);
-      return NULL;
-    }
-
-  pixel_region_init (&layerPR,
-                     gimp_drawable_get_tiles (GIMP_DRAWABLE (new_layer)),
-                     0, 0, width, height,
-                     TRUE);
-
-  switch (type)
-    {
-    case GIMP_RGB_IMAGE:
-      switch (src_type)
-        {
-       case GIMP_RGB_IMAGE:
-          copy_region (region, &layerPR);
-          break;
-
-        default:
-          g_warning ("%s: unhandled type conversion", G_STRFUNC);
-          break;
-         }
-      break;
-
-    case GIMP_RGBA_IMAGE:
-      switch (src_type)
-        {
-        case GIMP_RGBA_IMAGE:
-          copy_region (region, &layerPR);
-          break;
-
-        case GIMP_RGB_IMAGE:
-          add_alpha_region (region, &layerPR);
-          break;
-
-        case GIMP_GRAY_IMAGE:
-        case GIMP_GRAYA_IMAGE:
-          gimp_layer_transform_color (dest_image,
-                                      region,   src_type,
-                                      &layerPR, type);
-          break;
-
-        default:
-          g_warning ("%s: unhandled type conversion", G_STRFUNC);
-          break;
-        }
-      break;
-
-    case GIMP_GRAY_IMAGE:
-      switch (src_type)
-        {
-        case GIMP_GRAY_IMAGE:
-          copy_region (region, &layerPR);
-          break;
-
-        default:
-          g_warning ("%s: unhandled type conversion", G_STRFUNC);
-          break;
-        }
-      break;
-
-    case GIMP_GRAYA_IMAGE:
-      switch (src_type)
-        {
-        case GIMP_RGB_IMAGE:
-        case GIMP_RGBA_IMAGE:
-          gimp_layer_transform_color (dest_image,
-                                      region,   src_type,
-                                      &layerPR, type);
-          break;
-
-        case GIMP_GRAYA_IMAGE:
-          copy_region (region, &layerPR);
-          break;
-
-        case GIMP_GRAY_IMAGE:
-          add_alpha_region (region, &layerPR);
-          break;
-
-        default:
-          g_warning ("%s: unhandled type conversion", G_STRFUNC);
-          break;
-        }
-      break;
-
-    case GIMP_INDEXED_IMAGE:
-      g_warning ("%s: unhandled type conversion", G_STRFUNC);
-      break;
-
-    case GIMP_INDEXEDA_IMAGE:
-      switch (src_type)
-        {
-        case GIMP_RGB_IMAGE:
-        case GIMP_RGBA_IMAGE:
-        case GIMP_GRAY_IMAGE:
-        case GIMP_GRAYA_IMAGE:
-          gimp_layer_transform_color (dest_image,
-                                      region,   src_type,
-                                      &layerPR, type);
-          break;
-
-        default:
-          g_warning ("%s: unhandled type conversion", G_STRFUNC);
-          break;
-        }
-      break;
-    }
-
-  return new_layer;
-}
 
 GimpLayer *
 gimp_layer_get_parent (GimpLayer *layer)
@@ -1420,7 +1779,7 @@ gimp_layer_get_parent (GimpLayer *layer)
 }
 
 GimpLayerMask *
-gimp_layer_get_mask (const GimpLayer *layer)
+gimp_layer_get_mask (GimpLayer *layer)
 {
   g_return_val_if_fail (GIMP_IS_LAYER (layer), NULL);
 
@@ -1449,8 +1808,8 @@ gimp_layer_add_mask (GimpLayer      *layer,
   if (layer->mask)
     {
       g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
-			   _("Unable to add a layer mask since "
-			     "the layer already has one."));
+                           _("Unable to add a layer mask since "
+                             "the layer already has one."));
       return NULL;
     }
 
@@ -1460,8 +1819,8 @@ gimp_layer_add_mask (GimpLayer      *layer,
        gimp_item_get_height (GIMP_ITEM (mask))))
     {
       g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
-			   _("Cannot add layer mask of different "
-			     "dimensions than specified layer."));
+                           _("Cannot add layer mask of different "
+                             "dimensions than specified layer."));
       return NULL;
     }
 
@@ -1470,26 +1829,42 @@ gimp_layer_add_mask (GimpLayer      *layer,
                                          layer, mask);
 
   layer->mask = g_object_ref_sink (mask);
+  layer->apply_mask = TRUE;
+  layer->edit_mask  = TRUE;
+  layer->show_mask  = FALSE;
 
   gimp_layer_mask_set_layer (mask, layer);
 
-  if (layer->opacity_node)
+  if (gimp_filter_peek_node (GIMP_FILTER (layer)))
     {
+      GeglNode *mode_node;
       GeglNode *mask;
+
+      mode_node = gimp_drawable_get_mode_node (GIMP_DRAWABLE (layer));
 
       mask = gimp_drawable_get_source_node (GIMP_DRAWABLE (layer->mask));
 
-      gegl_node_connect_to (mask,                "output",
-                            layer->opacity_node, "aux");
+      gegl_node_connect_to (mask,                    "output",
+                            layer->mask_offset_node, "input");
+
+      if (layer->show_mask)
+        {
+          gegl_node_connect_to (layer->mask_offset_node, "output",
+                                mode_node,               "aux");
+        }
+      else
+        {
+          gegl_node_connect_to (layer->mask_offset_node, "output",
+                                mode_node,               "aux2");
+        }
+
+      gimp_layer_update_mode_node (layer);
     }
 
-  if (gimp_layer_mask_get_apply (mask) ||
-      gimp_layer_mask_get_show (mask))
+  if (gimp_layer_get_apply_mask (layer) ||
+      gimp_layer_get_show_mask (layer))
     {
-      gimp_drawable_update (GIMP_DRAWABLE (layer),
-                            0, 0,
-                            gimp_item_get_width  (GIMP_ITEM (layer)),
-                            gimp_item_get_height (GIMP_ITEM (layer)));
+      gimp_drawable_update (GIMP_DRAWABLE (layer), 0, 0, -1, -1);
     }
 
   g_signal_connect (mask, "update",
@@ -1508,21 +1883,19 @@ gimp_layer_add_mask (GimpLayer      *layer,
 }
 
 GimpLayerMask *
-gimp_layer_create_mask (const GimpLayer *layer,
+gimp_layer_create_mask (GimpLayer       *layer,
                         GimpAddMaskType  add_mask_type,
                         GimpChannel     *channel)
 {
   GimpDrawable  *drawable;
   GimpItem      *item;
-  PixelRegion    srcPR;
-  PixelRegion    destPR;
   GimpLayerMask *mask;
   GimpImage     *image;
   gchar         *mask_name;
   GimpRGB        black = { 0.0, 0.0, 0.0, GIMP_OPACITY_OPAQUE };
 
   g_return_val_if_fail (GIMP_IS_LAYER (layer), NULL);
-  g_return_val_if_fail (add_mask_type != GIMP_ADD_CHANNEL_MASK ||
+  g_return_val_if_fail (add_mask_type != GIMP_ADD_MASK_CHANNEL ||
                         GIMP_IS_CHANNEL (channel), NULL);
 
   drawable = GIMP_DRAWABLE (layer);
@@ -1541,11 +1914,11 @@ gimp_layer_create_mask (const GimpLayer *layer,
 
   switch (add_mask_type)
     {
-    case GIMP_ADD_WHITE_MASK:
+    case GIMP_ADD_MASK_WHITE:
       gimp_channel_all (GIMP_CHANNEL (mask), FALSE);
       return mask;
 
-    case GIMP_ADD_BLACK_MASK:
+    case GIMP_ADD_MASK_BLACK:
       gimp_channel_clear (GIMP_CHANNEL (mask), NULL, FALSE);
       return mask;
 
@@ -1553,81 +1926,56 @@ gimp_layer_create_mask (const GimpLayer *layer,
       break;
     }
 
-  pixel_region_init (&destPR, gimp_drawable_get_tiles (GIMP_DRAWABLE (mask)),
-                     0, 0,
-                     gimp_item_get_width  (GIMP_ITEM (mask)),
-                     gimp_item_get_height (GIMP_ITEM (mask)),
-                     TRUE);
-
   switch (add_mask_type)
     {
-    case GIMP_ADD_WHITE_MASK:
-    case GIMP_ADD_BLACK_MASK:
+    case GIMP_ADD_MASK_WHITE:
+    case GIMP_ADD_MASK_BLACK:
       break;
 
-    case GIMP_ADD_ALPHA_MASK:
-    case GIMP_ADD_ALPHA_TRANSFER_MASK:
+    case GIMP_ADD_MASK_ALPHA:
+    case GIMP_ADD_MASK_ALPHA_TRANSFER:
       if (gimp_drawable_has_alpha (drawable))
         {
-          pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
-                             0, 0,
-                             gimp_item_get_width  (item),
-                             gimp_item_get_height (item),
-                             FALSE);
+          GeglBuffer *dest_buffer;
+          const Babl *component_format;
 
-          extract_alpha_region (&srcPR, NULL, &destPR);
+          dest_buffer = gimp_drawable_get_buffer (GIMP_DRAWABLE (mask));
 
-          if (add_mask_type == GIMP_ADD_ALPHA_TRANSFER_MASK)
+          component_format =
+            gimp_image_get_component_format (image, GIMP_CHANNEL_ALPHA);
+
+          gegl_buffer_set_format (dest_buffer, component_format);
+          gegl_buffer_copy (gimp_drawable_get_buffer (drawable), NULL,
+                            GEGL_ABYSS_NONE,
+                            dest_buffer, NULL);
+          gegl_buffer_set_format (dest_buffer, NULL);
+
+          if (add_mask_type == GIMP_ADD_MASK_ALPHA_TRANSFER)
             {
-              void   *pr;
-              gint    w, h;
-              guchar *alpha_ptr;
-
               gimp_drawable_push_undo (drawable,
                                        C_("undo-type", "Transfer Alpha to Mask"),
+                                       NULL,
                                        0, 0,
                                        gimp_item_get_width  (item),
-                                       gimp_item_get_height (item),
-                                       NULL, FALSE);
+                                       gimp_item_get_height (item));
 
-              pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
-                                 0, 0,
-                                 gimp_item_get_width  (item),
-                                 gimp_item_get_height (item),
-                                 TRUE);
-
-              for (pr = pixel_regions_register (1, &srcPR);
-                   pr != NULL;
-                   pr = pixel_regions_process (pr))
-                {
-                  h = srcPR.h;
-
-                  while (h--)
-                    {
-                      w = srcPR.w;
-                      alpha_ptr = (srcPR.data + h * srcPR.rowstride +
-                                   srcPR.bytes - 1);
-
-                      while (w--)
-                        {
-                          *alpha_ptr = OPAQUE_OPACITY;
-                          alpha_ptr += srcPR.bytes;
-                        }
-                    }
-                }
+              gimp_gegl_apply_set_alpha (gimp_drawable_get_buffer (drawable),
+                                         NULL, NULL,
+                                         gimp_drawable_get_buffer (drawable),
+                                         1.0);
             }
         }
       break;
 
-    case GIMP_ADD_SELECTION_MASK:
-    case GIMP_ADD_CHANNEL_MASK:
+    case GIMP_ADD_MASK_SELECTION:
+    case GIMP_ADD_MASK_CHANNEL:
       {
         gboolean channel_empty;
         gint     offset_x, offset_y;
         gint     copy_x, copy_y;
         gint     copy_width, copy_height;
 
-        if (add_mask_type == GIMP_ADD_SELECTION_MASK)
+        if (add_mask_type == GIMP_ADD_MASK_SELECTION)
           channel = GIMP_CHANNEL (gimp_image_get_mask (image));
 
         channel_empty = gimp_channel_is_empty (channel);
@@ -1650,69 +1998,73 @@ gimp_layer_create_mask (const GimpLayer *layer,
 
         if ((copy_width || copy_height) && ! channel_empty)
           {
-            pixel_region_init (&srcPR,
-                               gimp_drawable_get_tiles (GIMP_DRAWABLE (channel)),
-                               copy_x, copy_y,
-                               copy_width, copy_height,
-                               FALSE);
-            pixel_region_init (&destPR,
-                               gimp_drawable_get_tiles (GIMP_DRAWABLE (mask)),
-                               copy_x - offset_x, copy_y - offset_y,
-                               copy_width, copy_height,
-                               TRUE);
+            GeglBuffer    *src;
+            GeglBuffer    *dest;
 
-            copy_region (&srcPR, &destPR);
+            src  = gimp_drawable_get_buffer (GIMP_DRAWABLE (channel));
+            dest = gimp_drawable_get_buffer (GIMP_DRAWABLE (mask));
+
+            gegl_buffer_copy (src,
+                              GEGL_RECTANGLE (copy_x, copy_y,
+                                              copy_width, copy_height),
+                              GEGL_ABYSS_NONE,
+                              dest,
+                              GEGL_RECTANGLE (copy_x - offset_x,
+                                              copy_y - offset_y,
+                                              0, 0));
 
             GIMP_CHANNEL (mask)->bounds_known = FALSE;
           }
       }
       break;
 
-    case GIMP_ADD_COPY_MASK:
+    case GIMP_ADD_MASK_COPY:
       {
-        TileManager *copy_tiles = NULL;
+        GeglBuffer *src_buffer;
+        GeglBuffer *dest_buffer;
 
         if (! gimp_drawable_is_gray (drawable))
           {
-            GimpImageType copy_type;
+            const Babl *copy_format =
+              gimp_image_get_format (image, GIMP_GRAY,
+                                     gimp_drawable_get_precision (drawable),
+                                     gimp_drawable_has_alpha (drawable));
 
-            copy_type = (gimp_drawable_has_alpha (drawable) ?
-                         GIMP_GRAYA_IMAGE : GIMP_GRAY_IMAGE);
+            src_buffer =
+              gegl_buffer_new (GEGL_RECTANGLE (0, 0,
+                                               gimp_item_get_width  (item),
+                                               gimp_item_get_height (item)),
+                               copy_format);
 
-            copy_tiles = tile_manager_new (gimp_item_get_width  (item),
-                                           gimp_item_get_height (item),
-                                           GIMP_IMAGE_TYPE_BYTES (copy_type));
-
-            gimp_drawable_convert_tiles_grayscale (drawable, copy_tiles);
-
-            pixel_region_init (&srcPR, copy_tiles,
-                               0, 0,
-                               gimp_item_get_width  (item),
-                               gimp_item_get_height (item),
-                               FALSE);
+            gegl_buffer_copy (gimp_drawable_get_buffer (drawable), NULL,
+                              GEGL_ABYSS_NONE,
+                              src_buffer, NULL);
           }
         else
           {
-            pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
-                               0, 0,
-                               gimp_item_get_width  (item),
-                               gimp_item_get_height (item),
-                               FALSE);
+            src_buffer = gimp_drawable_get_buffer (drawable);
+            g_object_ref (src_buffer);
           }
+
+        dest_buffer = gimp_drawable_get_buffer (GIMP_DRAWABLE (mask));
 
         if (gimp_drawable_has_alpha (drawable))
           {
-            guchar black_uchar[] = { 0, 0, 0, 0 };
+            GimpRGB background;
 
-            flatten_region (&srcPR, &destPR, black_uchar);
+            gimp_rgba_set (&background, 0.0, 0.0, 0.0, 0.0);
+
+            gimp_gegl_apply_flatten (src_buffer, NULL, NULL,
+                                     dest_buffer, &background,
+                                     GIMP_LAYER_COLOR_SPACE_RGB_LINEAR);
           }
         else
           {
-            copy_region (&srcPR, &destPR);
+            gegl_buffer_copy (src_buffer, NULL, GEGL_ABYSS_NONE,
+                              dest_buffer, NULL);
           }
 
-        if (copy_tiles)
-          tile_manager_unref (copy_tiles);
+        g_object_unref (src_buffer);
       }
 
       GIMP_CHANNEL (mask)->bounds_known = FALSE;
@@ -1730,7 +2082,6 @@ gimp_layer_apply_mask (GimpLayer         *layer,
   GimpItem      *item;
   GimpImage     *image;
   GimpLayerMask *mask;
-  PixelRegion    srcPR, maskPR;
   gboolean       view_changed = FALSE;
 
   g_return_if_fail (GIMP_IS_LAYER (layer));
@@ -1740,9 +2091,13 @@ gimp_layer_apply_mask (GimpLayer         *layer,
   if (! mask)
     return;
 
+  /*  APPLY can not be done to group layers  */
+  g_return_if_fail (! gimp_viewable_get_children (GIMP_VIEWABLE (layer)) ||
+                    mode == GIMP_MASK_DISCARD);
+
   /*  APPLY can only be done to layers with an alpha channel  */
-  if (! gimp_drawable_has_alpha (GIMP_DRAWABLE (layer)))
-    g_return_if_fail (mode == GIMP_MASK_DISCARD || push_undo == TRUE);
+  g_return_if_fail (gimp_drawable_has_alpha (GIMP_DRAWABLE (layer)) ||
+                    mode == GIMP_MASK_DISCARD || push_undo == TRUE);
 
   item  = GIMP_ITEM (layer);
   image = gimp_item_get_image (item);
@@ -1757,6 +2112,8 @@ gimp_layer_apply_mask (GimpLayer         *layer,
                                    C_("undo-type", "Apply Layer Mask") :
                                    C_("undo-type", "Delete Layer Mask"));
 
+      gimp_image_undo_push_layer_mask_show (image, NULL, layer);
+      gimp_image_undo_push_layer_mask_apply (image, NULL, layer);
       gimp_image_undo_push_layer_mask_remove (image, NULL, layer, mask);
 
       if (mode == GIMP_MASK_APPLY &&
@@ -1767,37 +2124,32 @@ gimp_layer_apply_mask (GimpLayer         *layer,
     }
 
   /*  check if applying the mask changes the projection  */
-  if (gimp_layer_mask_get_show (mask)                                   ||
-      (mode == GIMP_MASK_APPLY   && ! gimp_layer_mask_get_apply (mask)) ||
-      (mode == GIMP_MASK_DISCARD &&   gimp_layer_mask_get_apply (mask)))
+  if (gimp_layer_get_show_mask (layer)                                   ||
+      (mode == GIMP_MASK_APPLY   && ! gimp_layer_get_apply_mask (layer)) ||
+      (mode == GIMP_MASK_DISCARD &&   gimp_layer_get_apply_mask (layer)))
     {
       view_changed = TRUE;
     }
 
   if (mode == GIMP_MASK_APPLY)
     {
+      GeglBuffer *mask_buffer;
+      GeglBuffer *dest_buffer;
+
       if (push_undo)
         gimp_drawable_push_undo (GIMP_DRAWABLE (layer), NULL,
+                                 NULL,
                                  0, 0,
                                  gimp_item_get_width  (item),
-                                 gimp_item_get_height (item),
-                                 NULL, FALSE);
+                                 gimp_item_get_height (item));
 
       /*  Combine the current layer's alpha channel and the mask  */
-      pixel_region_init (&srcPR,
-                         gimp_drawable_get_tiles (GIMP_DRAWABLE (layer)),
-                         0, 0,
-                         gimp_item_get_width  (item),
-                         gimp_item_get_height (item),
-                         TRUE);
-      pixel_region_init (&maskPR,
-                         gimp_drawable_get_tiles (GIMP_DRAWABLE (mask)),
-                         0, 0,
-                         gimp_item_get_width  (item),
-                         gimp_item_get_height (item),
-                         FALSE);
+      mask_buffer = gimp_drawable_get_buffer (GIMP_DRAWABLE (mask));
+      dest_buffer = gimp_drawable_get_buffer (GIMP_DRAWABLE (layer));
 
-      apply_mask_to_region (&srcPR, &maskPR, OPAQUE_OPACITY);
+      gimp_gegl_apply_opacity (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
+                               NULL, NULL, dest_buffer,
+                               mask_buffer, 0, 0, 1.0);
     }
 
   g_signal_handlers_disconnect_by_func (mask,
@@ -1811,16 +2163,29 @@ gimp_layer_apply_mask (GimpLayer         *layer,
   if (push_undo)
     gimp_image_undo_group_end (image);
 
-  if (layer->opacity_node)
-    gegl_node_disconnect (layer->opacity_node, "aux");
+  if (gimp_filter_peek_node (GIMP_FILTER (layer)))
+    {
+      GeglNode *mode_node;
+
+      mode_node = gimp_drawable_get_mode_node (GIMP_DRAWABLE (layer));
+
+      if (layer->show_mask)
+        {
+          gegl_node_connect_to (layer->layer_offset_node, "output",
+                                mode_node,                "aux");
+        }
+      else
+        {
+          gegl_node_disconnect (mode_node, "aux2");
+        }
+
+      gimp_layer_update_mode_node (layer);
+    }
 
   /*  If applying actually changed the view  */
   if (view_changed)
     {
-      gimp_drawable_update (GIMP_DRAWABLE (layer),
-                            0, 0,
-                            gimp_item_get_width  (item),
-                            gimp_item_get_height (item));
+      gimp_drawable_update (GIMP_DRAWABLE (layer), 0, 0, -1, -1);
     }
   else
     {
@@ -1833,13 +2198,151 @@ gimp_layer_apply_mask (GimpLayer         *layer,
 }
 
 void
+gimp_layer_set_apply_mask (GimpLayer *layer,
+                           gboolean   apply,
+                           gboolean   push_undo)
+{
+  g_return_if_fail (GIMP_IS_LAYER (layer));
+  g_return_if_fail (layer->mask != NULL);
+
+  if (layer->apply_mask != apply)
+    {
+      GimpImage *image = gimp_item_get_image (GIMP_ITEM (layer));
+
+      if (push_undo && gimp_item_is_attached (GIMP_ITEM (layer)))
+        gimp_image_undo_push_layer_mask_apply (image,
+                                               apply ?
+                                               C_("undo-type", "Enable Layer Mask") :
+                                               C_("undo-type", "Disable Layer Mask"),
+                                               layer);
+
+      layer->apply_mask = apply ? TRUE : FALSE;
+
+      if (gimp_filter_peek_node (GIMP_FILTER (layer)) &&
+          ! gimp_layer_get_show_mask (layer))
+        {
+          GeglNode *mode_node;
+
+          mode_node = gimp_drawable_get_mode_node (GIMP_DRAWABLE (layer));
+
+          if (layer->apply_mask)
+            {
+              gegl_node_connect_to (layer->mask_offset_node, "output",
+                                    mode_node,               "aux2");
+            }
+          else
+            {
+              gegl_node_disconnect (mode_node, "aux2");
+            }
+        }
+
+      gimp_drawable_update (GIMP_DRAWABLE (layer), 0, 0, -1, -1);
+
+      g_signal_emit (layer, layer_signals[APPLY_MASK_CHANGED], 0);
+    }
+}
+
+gboolean
+gimp_layer_get_apply_mask (GimpLayer *layer)
+{
+  g_return_val_if_fail (GIMP_IS_LAYER (layer), FALSE);
+  g_return_val_if_fail (layer->mask, FALSE);
+
+  return layer->apply_mask;
+}
+
+void
+gimp_layer_set_edit_mask (GimpLayer *layer,
+                          gboolean   edit)
+{
+  g_return_if_fail (GIMP_IS_LAYER (layer));
+  g_return_if_fail (layer->mask != NULL);
+
+  if (layer->edit_mask != edit)
+    {
+      layer->edit_mask = edit ? TRUE : FALSE;
+
+      g_signal_emit (layer, layer_signals[EDIT_MASK_CHANGED], 0);
+    }
+}
+
+gboolean
+gimp_layer_get_edit_mask (GimpLayer *layer)
+{
+  g_return_val_if_fail (GIMP_IS_LAYER (layer), FALSE);
+  g_return_val_if_fail (layer->mask, FALSE);
+
+  return layer->edit_mask;
+}
+
+void
+gimp_layer_set_show_mask (GimpLayer *layer,
+                          gboolean   show,
+                          gboolean   push_undo)
+{
+  g_return_if_fail (GIMP_IS_LAYER (layer));
+  g_return_if_fail (layer->mask != NULL);
+
+  if (layer->show_mask != show)
+    {
+      GimpImage *image = gimp_item_get_image (GIMP_ITEM (layer));
+
+      if (push_undo)
+        gimp_image_undo_push_layer_mask_show (image,
+                                              C_("undo-type", "Show Layer Mask"),
+                                              layer);
+
+      layer->show_mask = show ? TRUE : FALSE;
+
+      if (gimp_filter_peek_node (GIMP_FILTER (layer)))
+        {
+          GeglNode *mode_node;
+
+          mode_node = gimp_drawable_get_mode_node (GIMP_DRAWABLE (layer));
+
+          if (layer->show_mask)
+            {
+              gegl_node_disconnect (mode_node, "aux2");
+
+              gegl_node_connect_to (layer->mask_offset_node, "output",
+                                    mode_node,               "aux");
+            }
+          else
+            {
+              gegl_node_connect_to (layer->layer_offset_node, "output",
+                                    mode_node,                "aux");
+
+              if (gimp_layer_get_apply_mask (layer))
+                {
+                  gegl_node_connect_to (layer->mask_offset_node, "output",
+                                        mode_node,               "aux2");
+                }
+            }
+
+          gimp_layer_update_mode_node (layer);
+        }
+
+      gimp_drawable_update (GIMP_DRAWABLE (layer), 0, 0, -1, -1);
+
+      g_signal_emit (layer, layer_signals[SHOW_MASK_CHANGED], 0);
+    }
+}
+
+gboolean
+gimp_layer_get_show_mask (GimpLayer *layer)
+{
+  g_return_val_if_fail (GIMP_IS_LAYER (layer), FALSE);
+  g_return_val_if_fail (layer->mask, FALSE);
+
+  return layer->show_mask;
+}
+
+void
 gimp_layer_add_alpha (GimpLayer *layer)
 {
-  GimpItem      *item;
-  GimpDrawable  *drawable;
-  PixelRegion    srcPR, destPR;
-  TileManager   *new_tiles;
-  GimpImageType  new_type;
+  GimpItem     *item;
+  GimpDrawable *drawable;
+  GeglBuffer   *new_buffer;
 
   g_return_if_fail (GIMP_IS_LAYER (layer));
 
@@ -1849,46 +2352,27 @@ gimp_layer_add_alpha (GimpLayer *layer)
   item     = GIMP_ITEM (layer);
   drawable = GIMP_DRAWABLE (layer);
 
-  new_type = gimp_drawable_type_with_alpha (drawable);
+  new_buffer = gegl_buffer_new (GEGL_RECTANGLE (0, 0,
+                                                gimp_item_get_width  (item),
+                                                gimp_item_get_height (item)),
+                                gimp_drawable_get_format_with_alpha (drawable));
 
-  /*  Allocate the new tiles  */
-  new_tiles = tile_manager_new (gimp_item_get_width  (item),
-                                gimp_item_get_height (item),
-                                GIMP_IMAGE_TYPE_BYTES (new_type));
+  gegl_buffer_copy (gimp_drawable_get_buffer (drawable), NULL, GEGL_ABYSS_NONE,
+                    new_buffer, NULL);
 
-  /*  Configure the pixel regions  */
-  pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
-                     0, 0,
-                     gimp_item_get_width  (item),
-                     gimp_item_get_height (item),
-                     FALSE);
-  pixel_region_init (&destPR, new_tiles,
-                     0, 0,
-                     gimp_item_get_width  (item),
-                     gimp_item_get_height (item),
-                     TRUE);
-
-  /*  Add an alpha channel  */
-  add_alpha_region (&srcPR, &destPR);
-
-  /*  Set the new tiles  */
-  gimp_drawable_set_tiles (GIMP_DRAWABLE (layer),
-                           gimp_item_is_attached (GIMP_ITEM (layer)),
-                           C_("undo-type", "Add Alpha Channel"),
-                           new_tiles, new_type);
-  tile_manager_unref (new_tiles);
+  gimp_drawable_set_buffer (GIMP_DRAWABLE (layer),
+                            gimp_item_is_attached (GIMP_ITEM (layer)),
+                            C_("undo-type", "Add Alpha Channel"),
+                            new_buffer);
+  g_object_unref (new_buffer);
 }
 
 void
-gimp_layer_flatten (GimpLayer   *layer,
-                    GimpContext *context)
+gimp_layer_remove_alpha (GimpLayer   *layer,
+                         GimpContext *context)
 {
-  GimpItem      *item;
-  GimpDrawable  *drawable;
-  PixelRegion    srcPR, destPR;
-  TileManager   *new_tiles;
-  GimpImageType  new_type;
-  guchar         bg[4];
+  GeglBuffer *new_buffer;
+  GimpRGB     background;
 
   g_return_if_fail (GIMP_IS_LAYER (layer));
   g_return_if_fail (GIMP_IS_CONTEXT (context));
@@ -1896,46 +2380,32 @@ gimp_layer_flatten (GimpLayer   *layer,
   if (! gimp_drawable_has_alpha (GIMP_DRAWABLE (layer)))
     return;
 
-  item     = GIMP_ITEM (layer);
-  drawable = GIMP_DRAWABLE (layer);
+  new_buffer =
+    gegl_buffer_new (GEGL_RECTANGLE (0, 0,
+                                     gimp_item_get_width  (GIMP_ITEM (layer)),
+                                     gimp_item_get_height (GIMP_ITEM (layer))),
+                     gimp_drawable_get_format_without_alpha (GIMP_DRAWABLE (layer)));
 
-  new_type = gimp_drawable_type_without_alpha (drawable);
+  gimp_context_get_background (context, &background);
+  gimp_pickable_srgb_to_image_color (GIMP_PICKABLE (layer),
+                                     &background, &background);
 
-  gimp_image_get_background (gimp_item_get_image (item), context,
-                             gimp_drawable_type (drawable),
-                             bg);
+  gimp_gegl_apply_flatten (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)),
+                           NULL, NULL,
+                           new_buffer, &background,
+                           gimp_layer_get_real_composite_space (layer));
 
-  /*  Allocate the new tiles  */
-  new_tiles = tile_manager_new (gimp_item_get_width  (item),
-                                gimp_item_get_height (item),
-                                GIMP_IMAGE_TYPE_BYTES (new_type));
-
-  /*  Configure the pixel regions  */
-  pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
-                     0, 0,
-                     gimp_item_get_width  (item),
-                     gimp_item_get_height (item),
-                     FALSE);
-  pixel_region_init (&destPR, new_tiles,
-                     0, 0,
-                     gimp_item_get_width  (item),
-                     gimp_item_get_height (item),
-                     TRUE);
-
-  /*  Remove alpha channel  */
-  flatten_region (&srcPR, &destPR, bg);
-
-  /*  Set the new tiles  */
-  gimp_drawable_set_tiles (GIMP_DRAWABLE (layer),
-                           gimp_item_is_attached (GIMP_ITEM (layer)),
-                           C_("undo-type", "Remove Alpha Channel"),
-                           new_tiles, new_type);
-  tile_manager_unref (new_tiles);
+  gimp_drawable_set_buffer (GIMP_DRAWABLE (layer),
+                            gimp_item_is_attached (GIMP_ITEM (layer)),
+                            C_("undo-type", "Remove Alpha Channel"),
+                            new_buffer);
+  g_object_unref (new_buffer);
 }
 
 void
-gimp_layer_resize_to_image (GimpLayer   *layer,
-                            GimpContext *context)
+gimp_layer_resize_to_image (GimpLayer    *layer,
+                            GimpContext  *context,
+                            GimpFillType  fill_type)
 {
   GimpImage *image;
   gint       offset_x;
@@ -1951,7 +2421,7 @@ gimp_layer_resize_to_image (GimpLayer   *layer,
                                C_("undo-type", "Layer to Image Size"));
 
   gimp_item_get_offset (GIMP_ITEM (layer), &offset_x, &offset_y);
-  gimp_item_resize (GIMP_ITEM (layer), context,
+  gimp_item_resize (GIMP_ITEM (layer), context, fill_type,
                     gimp_image_get_width  (image),
                     gimp_image_get_height (image),
                     offset_x, offset_y);
@@ -1964,7 +2434,7 @@ gimp_layer_resize_to_image (GimpLayer   *layer,
 /**********************/
 
 GimpDrawable *
-gimp_layer_get_floating_sel_drawable (const GimpLayer *layer)
+gimp_layer_get_floating_sel_drawable (GimpLayer *layer)
 {
   g_return_val_if_fail (GIMP_IS_LAYER (layer), NULL);
 
@@ -1987,14 +2457,20 @@ gimp_layer_set_floating_sel_drawable (GimpLayer    *layer,
           layer->fs.num_segs = 0;
         }
 
+      if (layer->fs.drawable)
+        g_object_unref (layer->fs.drawable);
+
       layer->fs.drawable = drawable;
+
+      if (layer->fs.drawable)
+        g_object_ref (layer->fs.drawable);
 
       g_object_notify (G_OBJECT (layer), "floating-selection");
     }
 }
 
 gboolean
-gimp_layer_is_floating_sel (const GimpLayer *layer)
+gimp_layer_is_floating_sel (GimpLayer *layer)
 {
   g_return_val_if_fail (GIMP_IS_LAYER (layer), FALSE);
 
@@ -2024,20 +2500,15 @@ gimp_layer_set_opacity (GimpLayer *layer,
       g_signal_emit (layer, layer_signals[OPACITY_CHANGED], 0);
       g_object_notify (G_OBJECT (layer), "opacity");
 
-      if (layer->opacity_node)
-        gegl_node_set (layer->opacity_node,
-                       "value", layer->opacity,
-                       NULL);
+      if (gimp_filter_peek_node (GIMP_FILTER (layer)))
+        gimp_layer_update_mode_node (layer);
 
-      gimp_drawable_update (GIMP_DRAWABLE (layer),
-                            0, 0,
-                            gimp_item_get_width  (GIMP_ITEM (layer)),
-                            gimp_item_get_height (GIMP_ITEM (layer)));
+      gimp_drawable_update (GIMP_DRAWABLE (layer), 0, 0, -1, -1);
     }
 }
 
 gdouble
-gimp_layer_get_opacity (const GimpLayer *layer)
+gimp_layer_get_opacity (GimpLayer *layer)
 {
   g_return_val_if_fail (GIMP_IS_LAYER (layer), GIMP_OPACITY_OPAQUE);
 
@@ -2045,13 +2516,95 @@ gimp_layer_get_opacity (const GimpLayer *layer)
 }
 
 void
-gimp_layer_set_mode (GimpLayer            *layer,
-                     GimpLayerModeEffects  mode,
-                     gboolean              push_undo)
+gimp_layer_set_mode (GimpLayer     *layer,
+                     GimpLayerMode  mode,
+                     gboolean       push_undo)
 {
   g_return_if_fail (GIMP_IS_LAYER (layer));
 
+  if (gimp_viewable_get_children (GIMP_VIEWABLE (layer)) == NULL)
+    {
+      g_return_if_fail (gimp_layer_mode_get_context (mode) &
+                        GIMP_LAYER_MODE_CONTEXT_LAYER);
+    }
+  else
+    {
+      g_return_if_fail (gimp_layer_mode_get_context (mode) &
+                        GIMP_LAYER_MODE_CONTEXT_GROUP);
+    }
+
   if (layer->mode != mode)
+    {
+      if (gimp_item_is_attached (GIMP_ITEM (layer)))
+        {
+          GimpImage *image = gimp_item_get_image (GIMP_ITEM (layer));
+
+          gimp_image_unset_default_new_layer_mode (image);
+
+          if (push_undo)
+            gimp_image_undo_push_layer_mode (image, NULL, layer);
+        }
+
+      g_object_freeze_notify (G_OBJECT (layer));
+
+      layer->mode = mode;
+
+      g_signal_emit (layer, layer_signals[MODE_CHANGED], 0);
+      g_object_notify (G_OBJECT (layer), "mode");
+
+      /*  when changing modes, we always switch to AUTO blend and
+       *  composite in order to avoid confusion
+       */
+      if (layer->blend_space != GIMP_LAYER_COLOR_SPACE_AUTO)
+        {
+          layer->blend_space = GIMP_LAYER_COLOR_SPACE_AUTO;
+
+          g_signal_emit (layer, layer_signals[BLEND_SPACE_CHANGED], 0);
+          g_object_notify (G_OBJECT (layer), "blend-space");
+        }
+
+      if (layer->composite_space != GIMP_LAYER_COLOR_SPACE_AUTO)
+        {
+          layer->composite_space = GIMP_LAYER_COLOR_SPACE_AUTO;
+
+          g_signal_emit (layer, layer_signals[COMPOSITE_SPACE_CHANGED], 0);
+          g_object_notify (G_OBJECT (layer), "composite-space");
+        }
+
+      if (layer->composite_mode != GIMP_LAYER_COMPOSITE_AUTO)
+        {
+          layer->composite_mode = GIMP_LAYER_COMPOSITE_AUTO;
+
+          g_signal_emit (layer, layer_signals[COMPOSITE_MODE_CHANGED], 0);
+          g_object_notify (G_OBJECT (layer), "composite-mode");
+        }
+
+      g_object_thaw_notify (G_OBJECT (layer));
+
+      gimp_layer_update_effective_mode (layer);
+      gimp_layer_update_excludes_backdrop (layer);
+    }
+}
+
+GimpLayerMode
+gimp_layer_get_mode (GimpLayer *layer)
+{
+  g_return_val_if_fail (GIMP_IS_LAYER (layer), GIMP_LAYER_MODE_NORMAL);
+
+  return layer->mode;
+}
+
+void
+gimp_layer_set_blend_space (GimpLayer           *layer,
+                            GimpLayerColorSpace  blend_space,
+                            gboolean             push_undo)
+{
+  g_return_if_fail (GIMP_IS_LAYER (layer));
+
+  if (! gimp_layer_mode_is_blend_space_mutable (layer->mode))
+    return;
+
+  if (layer->blend_space != blend_space)
     {
       if (push_undo && gimp_item_is_attached (GIMP_ITEM (layer)))
         {
@@ -2060,26 +2613,150 @@ gimp_layer_set_mode (GimpLayer            *layer,
           gimp_image_undo_push_layer_mode (image, NULL, layer);
         }
 
-      layer->mode = mode;
+      layer->blend_space = blend_space;
 
-      g_signal_emit (layer, layer_signals[MODE_CHANGED], 0);
-      g_object_notify (G_OBJECT (layer), "mode");
+      g_signal_emit (layer, layer_signals[BLEND_SPACE_CHANGED], 0);
+      g_object_notify (G_OBJECT (layer), "blend-space");
 
-      gimp_layer_sync_mode_node (layer);
-
-      gimp_drawable_update (GIMP_DRAWABLE (layer),
-                            0, 0,
-                            gimp_item_get_width  (GIMP_ITEM (layer)),
-                            gimp_item_get_height (GIMP_ITEM (layer)));
+      gimp_layer_update_effective_mode (layer);
     }
 }
 
-GimpLayerModeEffects
-gimp_layer_get_mode (const GimpLayer *layer)
+GimpLayerColorSpace
+gimp_layer_get_blend_space (GimpLayer *layer)
 {
-  g_return_val_if_fail (GIMP_IS_LAYER (layer), GIMP_NORMAL_MODE);
+  g_return_val_if_fail (GIMP_IS_LAYER (layer), GIMP_LAYER_COLOR_SPACE_AUTO);
 
-  return layer->mode;
+  return layer->blend_space;
+}
+
+GimpLayerColorSpace
+gimp_layer_get_real_blend_space (GimpLayer *layer)
+{
+  g_return_val_if_fail (GIMP_IS_LAYER (layer), GIMP_LAYER_COLOR_SPACE_RGB_LINEAR);
+
+  if (layer->blend_space == GIMP_LAYER_COLOR_SPACE_AUTO)
+    return gimp_layer_mode_get_blend_space (layer->mode);
+  else
+    return layer->blend_space;
+}
+
+void
+gimp_layer_set_composite_space (GimpLayer           *layer,
+                                GimpLayerColorSpace  composite_space,
+                                gboolean             push_undo)
+{
+  g_return_if_fail (GIMP_IS_LAYER (layer));
+
+  if (! gimp_layer_mode_is_composite_space_mutable (layer->mode))
+    return;
+
+  if (layer->composite_space != composite_space)
+    {
+      if (push_undo && gimp_item_is_attached (GIMP_ITEM (layer)))
+        {
+          GimpImage *image = gimp_item_get_image (GIMP_ITEM (layer));
+
+          gimp_image_undo_push_layer_mode (image, NULL, layer);
+        }
+
+      layer->composite_space = composite_space;
+
+      g_signal_emit (layer, layer_signals[COMPOSITE_SPACE_CHANGED], 0);
+      g_object_notify (G_OBJECT (layer), "composite-space");
+
+      gimp_layer_update_effective_mode (layer);
+    }
+}
+
+GimpLayerColorSpace
+gimp_layer_get_composite_space (GimpLayer *layer)
+{
+  g_return_val_if_fail (GIMP_IS_LAYER (layer), GIMP_LAYER_COLOR_SPACE_AUTO);
+
+  return layer->composite_space;
+}
+
+GimpLayerColorSpace
+gimp_layer_get_real_composite_space (GimpLayer *layer)
+{
+  g_return_val_if_fail (GIMP_IS_LAYER (layer), GIMP_LAYER_COLOR_SPACE_RGB_LINEAR);
+
+  if (layer->composite_space == GIMP_LAYER_COLOR_SPACE_AUTO)
+    return gimp_layer_mode_get_composite_space (layer->mode);
+  else
+    return layer->composite_space;
+}
+
+void
+gimp_layer_set_composite_mode (GimpLayer              *layer,
+                               GimpLayerCompositeMode  composite_mode,
+                               gboolean                push_undo)
+{
+  g_return_if_fail (GIMP_IS_LAYER (layer));
+
+  if (! gimp_layer_mode_is_composite_mode_mutable (layer->mode))
+    return;
+
+  if (layer->composite_mode != composite_mode)
+    {
+      if (push_undo && gimp_item_is_attached (GIMP_ITEM (layer)))
+        {
+          GimpImage *image = gimp_item_get_image (GIMP_ITEM (layer));
+
+          gimp_image_undo_push_layer_mode (image, NULL, layer);
+        }
+
+      layer->composite_mode = composite_mode;
+
+      g_signal_emit (layer, layer_signals[COMPOSITE_MODE_CHANGED], 0);
+      g_object_notify (G_OBJECT (layer), "composite-mode");
+
+      gimp_layer_update_effective_mode (layer);
+      gimp_layer_update_excludes_backdrop (layer);
+    }
+}
+
+GimpLayerCompositeMode
+gimp_layer_get_composite_mode (GimpLayer *layer)
+{
+  g_return_val_if_fail (GIMP_IS_LAYER (layer), GIMP_LAYER_COMPOSITE_AUTO);
+
+  return layer->composite_mode;
+}
+
+GimpLayerCompositeMode
+gimp_layer_get_real_composite_mode (GimpLayer *layer)
+{
+  g_return_val_if_fail (GIMP_IS_LAYER (layer), GIMP_LAYER_COMPOSITE_UNION);
+
+  if (layer->composite_mode == GIMP_LAYER_COMPOSITE_AUTO)
+    return gimp_layer_mode_get_composite_mode (layer->mode);
+  else
+    return layer->composite_mode;
+}
+
+void
+gimp_layer_get_effective_mode (GimpLayer              *layer,
+                               GimpLayerMode          *mode,
+                               GimpLayerColorSpace    *blend_space,
+                               GimpLayerColorSpace    *composite_space,
+                               GimpLayerCompositeMode *composite_mode)
+{
+  g_return_if_fail (GIMP_IS_LAYER (layer));
+
+  if (mode)            *mode            = layer->effective_mode;
+  if (blend_space)     *blend_space     = layer->effective_blend_space;
+  if (composite_space) *composite_space = layer->effective_composite_space;
+  if (composite_mode)  *composite_mode  = layer->effective_composite_mode;
+}
+
+gboolean
+gimp_layer_get_excludes_backdrop (GimpLayer *layer)
+{
+  g_return_val_if_fail (GIMP_IS_LAYER (layer), FALSE);
+
+  return layer->excludes_backdrop;
 }
 
 void
@@ -2109,7 +2786,7 @@ gimp_layer_set_lock_alpha (GimpLayer *layer,
 }
 
 gboolean
-gimp_layer_get_lock_alpha (const GimpLayer *layer)
+gimp_layer_get_lock_alpha (GimpLayer *layer)
 {
   g_return_val_if_fail (GIMP_IS_LAYER (layer), FALSE);
 
@@ -2117,7 +2794,7 @@ gimp_layer_get_lock_alpha (const GimpLayer *layer)
 }
 
 gboolean
-gimp_layer_can_lock_alpha (const GimpLayer *layer)
+gimp_layer_can_lock_alpha (GimpLayer *layer)
 {
   g_return_val_if_fail (GIMP_IS_LAYER (layer), FALSE);
 
@@ -2125,4 +2802,61 @@ gimp_layer_can_lock_alpha (const GimpLayer *layer)
     return FALSE;
 
   return TRUE;
+}
+
+
+/*  protected functions  */
+
+void
+gimp_layer_update_effective_mode (GimpLayer *layer)
+{
+  GimpLayerMode          mode;
+  GimpLayerColorSpace    blend_space;
+  GimpLayerColorSpace    composite_space;
+  GimpLayerCompositeMode composite_mode;
+
+  g_return_if_fail (GIMP_IS_LAYER (layer));
+
+  GIMP_LAYER_GET_CLASS (layer)->get_effective_mode (layer,
+                                                    &mode,
+                                                    &blend_space,
+                                                    &composite_space,
+                                                    &composite_mode);
+
+  if (mode            != layer->effective_mode            ||
+      blend_space     != layer->effective_blend_space     ||
+      composite_space != layer->effective_composite_space ||
+      composite_mode  != layer->effective_composite_mode)
+    {
+      layer->effective_mode            = mode;
+      layer->effective_blend_space     = blend_space;
+      layer->effective_composite_space = composite_space;
+      layer->effective_composite_mode  = composite_mode;
+
+      g_signal_emit (layer, layer_signals[EFFECTIVE_MODE_CHANGED], 0);
+
+      if (gimp_filter_peek_node (GIMP_FILTER (layer)))
+        gimp_layer_update_mode_node (layer);
+
+      gimp_drawable_update (GIMP_DRAWABLE (layer), 0, 0, -1, -1);
+    }
+}
+
+void
+gimp_layer_update_excludes_backdrop (GimpLayer *layer)
+{
+  gboolean excludes_backdrop;
+
+  g_return_if_fail (GIMP_IS_LAYER (layer));
+
+  excludes_backdrop =
+    GIMP_LAYER_GET_CLASS (layer)->get_excludes_backdrop (layer);
+
+  if (excludes_backdrop != layer->excludes_backdrop)
+    {
+      layer->excludes_backdrop = excludes_backdrop;
+
+      g_signal_emit (layer, layer_signals[EXCLUDES_BACKDROP_CHANGED], 0);
+      g_object_notify (G_OBJECT (layer), "excludes-backdrop");
+    }
 }

@@ -29,7 +29,7 @@
 #include "core/gimpimage.h"
 #include "core/gimpimage-quick-mask.h"
 
-#include "widgets/gimpcairo.h"
+#include "widgets/gimpcairo-wilber.h"
 #include "widgets/gimpuimanager.h"
 
 #include "gimpcanvasitem.h"
@@ -38,11 +38,18 @@
 #include "gimpdisplayshell-appearance.h"
 #include "gimpdisplayshell-callbacks.h"
 #include "gimpdisplayshell-draw.h"
+#include "gimpdisplayshell-scale.h"
 #include "gimpdisplayshell-scroll.h"
+#include "gimpdisplayshell-scrollbars.h"
 #include "gimpdisplayshell-selection.h"
 #include "gimpdisplayshell-title.h"
+#include "gimpdisplayxfer.h"
 #include "gimpimagewindow.h"
 #include "gimpnavigationeditor.h"
+
+#include "git-version.h"
+
+#include "gimp-intl.h"
 
 
 /*  local function prototypes  */
@@ -61,11 +68,9 @@ static gboolean   gimp_display_shell_hscrollbar_change_value  (GtkRange         
                                                                gdouble           value,
                                                                GimpDisplayShell *shell);
 
-static void       gimp_display_shell_canvas_expose_image      (GimpDisplayShell *shell,
-                                                               GdkEventExpose   *eevent,
+static void       gimp_display_shell_canvas_draw_image        (GimpDisplayShell *shell,
                                                                cairo_t          *cr);
-static void       gimp_display_shell_canvas_expose_drop_zone  (GimpDisplayShell *shell,
-                                                               GdkEventExpose   *eevent,
+static void       gimp_display_shell_canvas_draw_drop_zone    (GimpDisplayShell *shell,
                                                                cairo_t          *cr);
 
 
@@ -109,6 +114,19 @@ gimp_display_shell_canvas_realize (GtkWidget        *canvas,
 
   /*  allow shrinking  */
   gtk_widget_set_size_request (GTK_WIDGET (shell), 0, 0);
+
+  shell->xfer = gimp_display_xfer_realize (GTK_WIDGET(shell));
+
+  /*  HACK: remove with GTK+ 3.x: this unconditionally maps the
+   *  rulers, if configured to be hidden they are never visible to the
+   *  user because they will be hidden again right away.
+   *
+   *  For some obscure reason, having the rulers mapped once prevents
+   *  crashes with tablets and on-canvas dialogs. See bug #784480 and
+   *  all its duplicates.
+   */
+  gtk_widget_show (shell->hrule);
+  gtk_widget_show (shell->vrule);
 }
 
 void
@@ -169,7 +187,7 @@ gimp_display_shell_canvas_size_allocate (GtkWidget        *widget,
           gint     sw;
           gint     sh;
 
-          gimp_display_shell_draw_get_scaled_image_size (shell, &sw, &sh);
+          gimp_display_shell_scale_get_image_size (shell, &sw, &sh);
 
           center_horizontally = sw <= shell->disp_width;
           center_vertically   = sh <= shell->disp_height;
@@ -208,25 +226,6 @@ gimp_display_shell_canvas_size_allocate (GtkWidget        *widget,
     }
 }
 
-static gboolean
-gimp_display_shell_is_double_buffered (GimpDisplayShell *shell)
-{
-  return TRUE; /* FIXME: repair this after cairo tool drawing is done */
-
-  /*  always double-buffer if there are overlay children or a
-   *  transform preview, or they will flicker badly. Also double
-   *  buffer when we are editing paths.
-   */
-#if 0
-  if (GIMP_OVERLAY_BOX (shell->canvas)->children    ||
-      gimp_display_shell_get_show_transform (shell) ||
-      GIMP_IS_VECTOR_TOOL (tool_manager_get_active (shell->display->gimp)))
-    return TRUE;
-#endif
-
-  return FALSE;
-}
-
 gboolean
 gimp_display_shell_canvas_expose (GtkWidget        *widget,
                                   GdkEventExpose   *eevent,
@@ -241,51 +240,20 @@ gimp_display_shell_canvas_expose (GtkWidget        *widget,
     {
       cairo_t *cr;
 
-      if (gimp_display_get_image (shell->display))
-        {
-          if (gimp_display_shell_is_double_buffered (shell))
-            gdk_window_begin_paint_region (eevent->window, eevent->region);
-        }
-
-      /*  create the cairo_t after enabling double buffering, or we
-       *  will get the wrong window destination surface
-       */
       cr = gdk_cairo_create (gtk_widget_get_window (shell->canvas));
       gdk_cairo_region (cr, eevent->region);
       cairo_clip (cr);
 
       if (gimp_display_get_image (shell->display))
         {
-          gimp_display_shell_canvas_expose_image (shell, eevent, cr);
+          gimp_display_shell_canvas_draw_image (shell, cr);
         }
       else
         {
-          gimp_display_shell_canvas_expose_drop_zone (shell, eevent, cr);
+          gimp_display_shell_canvas_draw_drop_zone (shell, cr);
         }
 
       cairo_destroy (cr);
-    }
-
-  return FALSE;
-}
-
-gboolean
-gimp_display_shell_canvas_expose_after (GtkWidget        *widget,
-                                        GdkEventExpose   *eevent,
-                                        GimpDisplayShell *shell)
-{
-  /*  are we in destruction?  */
-  if (! shell->display || ! gimp_display_get_shell (shell->display))
-    return TRUE;
-
-  /*  ignore events on overlays  */
-  if (eevent->window == gtk_widget_get_window (widget))
-    {
-      if (gimp_display_get_image (shell->display))
-        {
-          if (gimp_display_shell_is_double_buffered (shell))
-            gdk_window_end_paint (eevent->window);
-        }
     }
 
   return FALSE;
@@ -349,9 +317,16 @@ gimp_display_shell_quick_mask_toggled (GtkWidget        *widget,
 
   if (active != gimp_image_get_quick_mask_state (image))
     {
-      gimp_image_set_quick_mask_state (image, active);
+      GimpImageWindow *window = gimp_display_shell_get_window (shell);
 
-      gimp_image_flush (image);
+      if (window)
+        {
+          GimpUIManager *manager = gimp_image_window_get_ui_manager (window);
+
+          gimp_ui_manager_toggle_action (manager,
+                                         "quick-mask", "quick-mask-toggle",
+                                         active);
+        }
     }
 }
 
@@ -418,7 +393,7 @@ gimp_display_shell_hscrollbar_change_value (GtkRange         *range,
 
   g_object_freeze_notify (G_OBJECT (shell->hsbdata));
 
-  gimp_display_shell_scroll_setup_hscrollbar (shell, value);
+  gimp_display_shell_scrollbars_setup_horizontal (shell, value);
 
   g_object_thaw_notify (G_OBJECT (shell->hsbdata)); /* emits "changed" */
 
@@ -441,7 +416,7 @@ gimp_display_shell_vscrollbar_change_value (GtkRange         *range,
 
   g_object_freeze_notify (G_OBJECT (shell->vsbdata));
 
-  gimp_display_shell_scroll_setup_vscrollbar (shell, value);
+  gimp_display_shell_scrollbars_setup_vertical (shell, value);
 
   g_object_thaw_notify (G_OBJECT (shell->vsbdata)); /* emits "changed" */
 
@@ -449,115 +424,155 @@ gimp_display_shell_vscrollbar_change_value (GtkRange         *range,
 }
 
 static void
-gimp_display_shell_canvas_expose_image (GimpDisplayShell *shell,
-                                        GdkEventExpose   *eevent,
-                                        cairo_t          *cr)
+gimp_display_shell_canvas_draw_image (GimpDisplayShell *shell,
+                                      cairo_t          *cr)
 {
-  GdkRegion    *clear_region;
-  GdkRegion    *image_region;
-  GdkRectangle  image_rect;
-  GdkRectangle *rects;
-  gint          n_rects;
-  gint          i;
+  cairo_rectangle_list_t *clip_rectangles;
+  cairo_rectangle_int_t   image_rect;
+  cairo_matrix_t          matrix;
+
+  image_rect.x = - shell->offset_x;
+  image_rect.y = - shell->offset_y;
+  gimp_display_shell_scale_get_image_size (shell,
+                                           &image_rect.width,
+                                           &image_rect.height);
+
 
   /*  first, clear the exposed part of the region that is outside the
    *  image, which is the exposed region minus the image rectangle
    */
 
-  clear_region = gdk_region_copy (eevent->region);
+  cairo_save (cr);
 
-  image_rect.x = - shell->offset_x;
-  image_rect.y = - shell->offset_y;
-  gimp_display_shell_draw_get_scaled_image_size (shell,
-                                                 &image_rect.width,
-                                                 &image_rect.height);
-  image_region = gdk_region_rectangle (&image_rect);
+  if (shell->rotate_transform)
+    cairo_transform (cr, shell->rotate_transform);
 
-  gdk_region_subtract (clear_region, image_region);
-  gdk_region_destroy (image_region);
+  cairo_rectangle (cr,
+                   image_rect.x,
+                   image_rect.y,
+                   image_rect.width,
+                   image_rect.height);
 
-  if (! gdk_region_empty (clear_region))
-    {
-      gdk_region_get_rectangles (clear_region, &rects, &n_rects);
+  cairo_set_fill_rule (cr, CAIRO_FILL_RULE_EVEN_ODD);
+  cairo_clip (cr);
 
-      for (i = 0; i < n_rects; i++)
-        gdk_window_clear_area (gtk_widget_get_window (shell->canvas),
-                               rects[i].x,
-                               rects[i].y,
-                               rects[i].width,
-                               rects[i].height);
+  if (gdk_cairo_get_clip_rectangle (cr, NULL))
+    gimp_display_shell_draw_background (shell, cr);
 
-      g_free (rects);
-    }
+  cairo_restore (cr);
+
 
   /*  then, draw the exposed part of the region that is inside the
-   *  image, which is the exposed region minus the region used for
-   *  clearing above
+   *  image
    */
 
-  image_region = gdk_region_copy (eevent->region);
+  cairo_save (cr);
+  clip_rectangles = cairo_copy_clip_rectangle_list (cr);
+  cairo_get_matrix (cr, &matrix);
 
-  gdk_region_subtract (image_region, clear_region);
-  gdk_region_destroy (clear_region);
+  if (shell->rotate_transform)
+    cairo_transform (cr, shell->rotate_transform);
 
-  if (! gdk_region_empty (image_region))
+  cairo_rectangle (cr,
+                   image_rect.x,
+                   image_rect.y,
+                   image_rect.width,
+                   image_rect.height);
+  cairo_clip (cr);
+
+  if (gdk_cairo_get_clip_rectangle (cr, NULL))
     {
-      cairo_save (cr);
-      gimp_display_shell_draw_checkerboard (shell, cr,
-                                            image_rect.x,
-                                            image_rect.y,
-                                            image_rect.width,
-                                            image_rect.height);
-      cairo_restore (cr);
-
+      gint i;
 
       cairo_save (cr);
-      gdk_region_get_rectangles (image_region, &rects, &n_rects);
-
-      for (i = 0; i < n_rects; i++)
-        gimp_display_shell_draw_image (shell, cr,
-                                       rects[i].x,
-                                       rects[i].y,
-                                       rects[i].width,
-                                       rects[i].height);
-
-      g_free (rects);
+      gimp_display_shell_draw_checkerboard (shell, cr);
       cairo_restore (cr);
+
+      cairo_set_matrix (cr, &matrix);
+
+      for (i = 0; i < clip_rectangles->num_rectangles; i++)
+        {
+          cairo_rectangle_t rect = clip_rectangles->rectangles[i];
+
+          gimp_display_shell_draw_image (shell, cr,
+                                         floor (rect.x),
+                                         floor (rect.y),
+                                         ceil (rect.width),
+                                         ceil (rect.height));
+        }
     }
 
-  gdk_region_destroy (image_region);
+  cairo_rectangle_list_destroy (clip_rectangles);
+  cairo_restore (cr);
+
 
   /*  finally, draw all the remaining image window stuff on top
    */
 
   /* draw canvas items */
+  cairo_save (cr);
+
+  if (shell->rotate_transform)
+    cairo_transform (cr, shell->rotate_transform);
+
   gimp_canvas_item_draw (shell->canvas_item, cr);
+
+  cairo_restore (cr);
+
+  gimp_canvas_item_draw (shell->unrotated_item, cr);
 
   /* restart (and recalculate) the selection boundaries */
   gimp_display_shell_selection_restart (shell);
 }
 
 static void
-gimp_display_shell_canvas_expose_drop_zone (GimpDisplayShell *shell,
-                                            GdkEventExpose   *eevent,
-                                            cairo_t          *cr)
+gimp_display_shell_canvas_draw_drop_zone (GimpDisplayShell *shell,
+                                          cairo_t          *cr)
 {
-  GdkRectangle *rects;
-  gint          n_rects;
-  gint          i;
+  cairo_save (cr);
 
-  gdk_region_get_rectangles (eevent->region, &rects, &n_rects);
+  gimp_display_shell_draw_background (shell, cr);
 
-  for (i = 0; i < n_rects; i++)
-    {
-      gdk_window_clear_area (gtk_widget_get_window (shell->canvas),
-                             rects[i].x,
-                             rects[i].y,
-                             rects[i].width,
-                             rects[i].height);
-    }
+  gimp_cairo_draw_drop_wilber (shell->canvas, cr, shell->blink);
 
-  g_free (rects);
+  cairo_restore (cr);
 
-  gimp_cairo_draw_drop_wilber (shell->canvas, cr);
+#ifdef GIMP_UNSTABLE
+  {
+    PangoLayout   *layout;
+    gchar         *msg;
+    GtkAllocation  allocation;
+    gint           width;
+    gint           height;
+    gdouble        scale;
+
+    layout = gtk_widget_create_pango_layout (shell->canvas, NULL);
+
+    msg = g_strdup_printf (_("<big>Unstable Development Version</big>\n\n"
+                             "<small>commit <tt>%s</tt></small>\n\n"
+                             "<small>Please test bugs against "
+                             "latest git master branch\n"
+                             "before reporting them.</small>"),
+                             GIMP_GIT_VERSION_ABBREV);
+    pango_layout_set_markup (layout, msg, -1);
+    g_free (msg);
+    pango_layout_set_alignment (layout, PANGO_ALIGN_CENTER);
+
+    pango_layout_get_pixel_size (layout, &width, &height);
+    gtk_widget_get_allocation (shell->canvas, &allocation);
+
+    scale = MIN (((gdouble) allocation.width  / 2.0) / (gdouble) width,
+                 ((gdouble) allocation.height / 2.0) / (gdouble) height);
+
+    cairo_move_to (cr,
+                   (allocation.width  - (width  * scale)) / 2,
+                   (allocation.height - (height * scale)) / 2);
+
+    cairo_scale (cr, scale, scale);
+
+    pango_cairo_show_layout (cr, layout);
+
+    g_object_unref (layout);
+  }
+#endif /* GIMP_UNSTABLE */
 }

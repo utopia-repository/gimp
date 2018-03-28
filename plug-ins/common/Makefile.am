@@ -42,65 +42,46 @@ EXTRA_DIST = \
 	plugin-defs.pl	\
 	gimprc.common
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir)	\
 	$(GTK_CFLAGS)	\
+	$(GEGL_CFLAGS)	\
 	-I$(includedir)
 
 libexec_PROGRAMS = \
-	alien-map \
 	align-layers \
 	animation-optimize \
 	animation-play \
-	antialias \
-	apply-canvas \
 	blinds \
 	blur \
-	blur-gauss \
-	blur-gauss-selective \
-	blur-motion \
 	border-average \
-	bump-map \
 	cartoon \
-	channel-mixer \
 	checkerboard \
 	cml-explorer \
 	color-cube-analyze \
 	color-enhance \
-	color-exchange \
-	color-to-alpha \
 	colorify \
 	colormap-remap \
 	compose \
 	contrast-normalize \
 	contrast-retinex \
-	contrast-stretch \
-	contrast-stretch-hsv \
-	convolution-matrix \
-	crop-auto \
 	crop-zealous \
-	cubism \
 	curve-bend \
 	decompose \
-	deinterlace \
 	depth-merge \
 	despeckle \
 	destripe \
-	diffraction \
-	displace \
-	edge \
 	edge-dog \
-	edge-laplace \
 	edge-neon \
-	edge-sobel \
 	emboss \
-	engrave \
 	$(FILE_AA) \
 	file-cel \
+	file-compressor \
 	file-csource \
 	file-desktop-link \
 	file-dicom \
 	file-gbr \
+	file-gegl \
 	file-gif-load \
 	file-gif-save \
 	file-gih \
@@ -111,19 +92,17 @@ libexec_PROGRAMS = \
 	$(FILE_MNG) \
 	file-pat \
 	file-pcx \
-	$(FILE_PDF_LOAD) \
+	file-pdf-load \
 	$(FILE_PDF_SAVE) \
 	file-pix \
-	$(FILE_PNG) \
+	file-png \
 	file-pnm \
 	$(FILE_PS) \
-	$(FILE_PSP) \
-	file-raw \
+	file-psp \
+	file-raw-data \
 	file-sunras \
-	$(FILE_SVG) \
+	file-svg \
 	file-tga \
-	$(FILE_TIFF_LOAD) \
-	$(FILE_TIFF_SAVE) \
 	$(FILE_WMF) \
 	file-xbm \
 	$(FILE_XMC) \
@@ -132,86 +111,48 @@ libexec_PROGRAMS = \
 	film \
 	filter-pack \
 	fractal-trace \
+	goat-exercise \
 	gradient-map \
 	grid \
 	guillotine \
 	hot \
-	illusion \
-	iwarp \
 	jigsaw \
-	$(LCMS) \
-	lens-apply \
-	lens-distortion \
-	lens-flare \
 	$(MAIL) \
 	max-rgb \
-	mosaic \
 	newsprint \
 	nl-filter \
-	noise-hsv \
-	noise-randomize \
-	noise-rgb \
-	noise-solid \
-	noise-spread \
-	nova \
 	oilify \
 	photocopy \
-	pixelize \
-	plasma \
 	plugin-browser \
-	polar-coords \
 	procedure-browser \
 	qbist \
-	red-eye-removal \
 	ripple \
-	rotate \
 	sample-colorize \
-	$(SCREENSHOT) \
-	semi-flatten \
 	sharpen \
-	shift \
-	sinus \
 	smooth-palette \
 	softglow \
 	sparkle \
 	sphere-designer \
-	threshold-alpha \
 	tile \
-	tile-glass \
-	tile-paper \
-	tile-seamless \
 	tile-small \
 	unit-editor \
 	unsharp-mask \
-	value-invert \
-	value-propagate \
 	van-gogh-lic \
-	video \
 	warp \
-	waves \
+	wavelet-decompose \
 	web-browser \
-	$(WEB_PAGE) \
-	whirl-pinch \
-	wind
+	$(WEB_PAGE)
 
 EXTRA_PROGRAMS = \
 	file-aa \
 	file-jp2-load \
 	file-mng \
-	file-pdf-load \
 	file-pdf-save \
-	file-png \
 	file-ps \
-	file-psp \
-	file-svg \
-	file-tiff-load \
-	file-tiff-save \
 	file-wmf \
 	file-xmc \
 	file-xpm \
-	lcms \
 	mail \
-	screenshot \
 	web-page
 
 install-%: %
@@ -225,23 +166,6 @@ install-%: %
 	  echo " $(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(INSTALL_PROGRAM) $$p $(DESTDIR)$(libexecdir)/$$f"; \
 	  $(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(INSTALL_PROGRAM) $$p $(DESTDIR)$(libexecdir)/$$f || exit 1; \
 	else :; fi
-
-alien_map_SOURCES = \
-	alien-map.c
-
-alien_map_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(alien_map_RC)
 
 align_layers_SOURCES = \
 	align-layers.c
@@ -288,41 +212,10 @@ animation_play_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(animation_play_RC)
-
-antialias_SOURCES = \
-	antialias.c
-
-antialias_LDADD = \
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(CAIRO_LIBS)		\
-	$(GDK_PIXBUF_LIBS)	\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(antialias_RC)
-
-apply_canvas_SOURCES = \
-	apply-canvas.c
-
-apply_canvas_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(apply_canvas_RC)
 
 blinds_SOURCES = \
 	blinds.c
@@ -356,59 +249,6 @@ blur_LDADD = \
 	$(INTLLIBS)		\
 	$(blur_RC)
 
-blur_gauss_SOURCES = \
-	blur-gauss.c
-
-blur_gauss_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(blur_gauss_RC)
-
-blur_gauss_selective_CFLAGS = $(MMX_EXTRA_CFLAGS)
-
-blur_gauss_selective_SOURCES = \
-	blur-gauss-selective.c
-
-blur_gauss_selective_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(blur_gauss_selective_RC)
-
-blur_motion_SOURCES = \
-	blur-motion.c
-
-blur_motion_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(blur_motion_RC)
-
 border_average_SOURCES = \
 	border-average.c
 
@@ -422,26 +262,10 @@ border_average_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(border_average_RC)
-
-bump_map_SOURCES = \
-	bump-map.c
-
-bump_map_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(bump_map_RC)
 
 cartoon_SOURCES = \
 	cartoon.c
@@ -459,23 +283,6 @@ cartoon_LDADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(cartoon_RC)
-
-channel_mixer_SOURCES = \
-	channel-mixer.c
-
-channel_mixer_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(channel_mixer_RC)
 
 checkerboard_SOURCES = \
 	checkerboard.c
@@ -545,40 +352,6 @@ color_enhance_LDADD = \
 	$(INTLLIBS)		\
 	$(color_enhance_RC)
 
-color_exchange_SOURCES = \
-	color-exchange.c
-
-color_exchange_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(color_exchange_RC)
-
-color_to_alpha_SOURCES = \
-	color-to-alpha.c
-
-color_to_alpha_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(color_to_alpha_RC)
-
 colorify_SOURCES = \
 	colorify.c
 
@@ -609,6 +382,7 @@ colormap_remap_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(colormap_remap_RC)
@@ -626,6 +400,7 @@ compose_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(compose_RC)
@@ -662,68 +437,6 @@ contrast_retinex_LDADD = \
 	$(INTLLIBS)		\
 	$(contrast_retinex_RC)
 
-contrast_stretch_SOURCES = \
-	contrast-stretch.c
-
-contrast_stretch_LDADD = \
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(CAIRO_LIBS)		\
-	$(GDK_PIXBUF_LIBS)	\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(contrast_stretch_RC)
-
-contrast_stretch_hsv_SOURCES = \
-	contrast-stretch-hsv.c
-
-contrast_stretch_hsv_LDADD = \
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(CAIRO_LIBS)		\
-	$(GDK_PIXBUF_LIBS)	\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(contrast_stretch_hsv_RC)
-
-convolution_matrix_SOURCES = \
-	convolution-matrix.c
-
-convolution_matrix_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(convolution_matrix_RC)
-
-crop_auto_SOURCES = \
-	crop-auto.c
-
-crop_auto_LDADD = \
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(CAIRO_LIBS)		\
-	$(GDK_PIXBUF_LIBS)	\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(crop_auto_RC)
-
 crop_zealous_SOURCES = \
 	crop-zealous.c
 
@@ -735,26 +448,10 @@ crop_zealous_LDADD = \
 	$(libgimpbase)		\
 	$(CAIRO_LIBS)		\
 	$(GDK_PIXBUF_LIBS)	\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(crop_zealous_RC)
-
-cubism_SOURCES = \
-	cubism.c
-
-cubism_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(cubism_RC)
 
 curve_bend_SOURCES = \
 	curve-bend.c
@@ -786,26 +483,10 @@ decompose_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(decompose_RC)
-
-deinterlace_SOURCES = \
-	deinterlace.c
-
-deinterlace_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(deinterlace_RC)
 
 depth_merge_SOURCES = \
 	depth-merge.c
@@ -858,57 +539,6 @@ destripe_LDADD = \
 	$(INTLLIBS)		\
 	$(destripe_RC)
 
-diffraction_SOURCES = \
-	diffraction.c
-
-diffraction_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(diffraction_RC)
-
-displace_SOURCES = \
-	displace.c
-
-displace_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(displace_RC)
-
-edge_SOURCES = \
-	edge.c
-
-edge_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(edge_RC)
-
 edge_dog_SOURCES = \
 	edge-dog.c
 
@@ -925,21 +555,6 @@ edge_dog_LDADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(edge_dog_RC)
-
-edge_laplace_SOURCES = \
-	edge-laplace.c
-
-edge_laplace_LDADD = \
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(CAIRO_LIBS)		\
-	$(GDK_PIXBUF_LIBS)	\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(edge_laplace_RC)
 
 edge_neon_SOURCES = \
 	edge-neon.c
@@ -958,23 +573,6 @@ edge_neon_LDADD = \
 	$(INTLLIBS)		\
 	$(edge_neon_RC)
 
-edge_sobel_SOURCES = \
-	edge-sobel.c
-
-edge_sobel_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(edge_sobel_RC)
-
 emboss_SOURCES = \
 	emboss.c
 
@@ -992,23 +590,6 @@ emboss_LDADD = \
 	$(INTLLIBS)		\
 	$(emboss_RC)
 
-engrave_SOURCES = \
-	engrave.c
-
-engrave_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(engrave_RC)
-
 file_aa_SOURCES = \
 	file-aa.c
 
@@ -1022,6 +603,7 @@ file_aa_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(AA_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
@@ -1040,9 +622,31 @@ file_cel_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_cel_RC)
+
+file_compressor_CFLAGS = $(LZMA_CFLAGS)
+
+file_compressor_SOURCES = \
+	file-compressor.c
+
+file_compressor_LDADD = \
+	$(libgimp)		\
+	$(libgimpmath)		\
+	$(libgimpconfig)	\
+	$(libgimpcolor)		\
+	$(libgimpbase)		\
+	$(CAIRO_LIBS)		\
+	$(GDK_PIXBUF_LIBS)	\
+	$(GIO_LIBS)		\
+	$(LZMA_LIBS)		\
+	$(BZIP2_LIBS)		\
+	$(Z_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)		\
+	$(file_compressor_RC)
 
 file_csource_SOURCES = \
 	file-csource.c
@@ -1057,6 +661,7 @@ file_csource_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_csource_RC)
@@ -1091,6 +696,7 @@ file_dicom_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_dicom_RC)
@@ -1108,9 +714,28 @@ file_gbr_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_gbr_RC)
+
+file_gegl_SOURCES = \
+	file-gegl.c
+
+file_gegl_LDADD = \
+	$(libgimpui)		\
+	$(libgimpwidgets)	\
+	$(libgimpmodule)	\
+	$(libgimp)		\
+	$(libgimpmath)		\
+	$(libgimpconfig)	\
+	$(libgimpcolor)		\
+	$(libgimpbase)		\
+	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)		\
+	$(file_gegl_RC)
 
 file_gif_load_SOURCES = \
 	file-gif-load.c
@@ -1123,6 +748,7 @@ file_gif_load_LDADD = \
 	$(libgimpbase)		\
 	$(CAIRO_LIBS)		\
 	$(GDK_PIXBUF_LIBS)	\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_gif_load_RC)
@@ -1140,6 +766,7 @@ file_gif_save_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_gif_save_RC)
@@ -1157,6 +784,7 @@ file_gih_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_gih_RC)
@@ -1189,6 +817,7 @@ file_header_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_header_RC)
@@ -1206,22 +835,28 @@ file_html_table_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_html_table_RC)
+
+file_jp2_load_CFLAGS = $(OPENJPEG_CFLAGS)
 
 file_jp2_load_SOURCES = \
 	file-jp2-load.c
 
 file_jp2_load_LDADD = \
+	$(libgimpui)		\
+	$(libgimpwidgets)	\
+	$(libgimpmodule)	\
 	$(libgimp)		\
 	$(libgimpmath)		\
 	$(libgimpconfig)	\
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
-	$(CAIRO_LIBS)		\
-	$(GDK_PIXBUF_LIBS)	\
-	$(JP2_LIBS)		\
+	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
+	$(OPENJPEG_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_jp2_load_RC)
@@ -1241,6 +876,7 @@ file_mng_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(MNG_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
@@ -1259,6 +895,7 @@ file_pat_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_pat_RC)
@@ -1276,6 +913,7 @@ file_pcx_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_pcx_RC)
@@ -1315,6 +953,7 @@ file_pdf_save_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(CAIRO_PDF_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
@@ -1333,6 +972,7 @@ file_pix_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_pix_RC)
@@ -1352,6 +992,7 @@ file_png_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(PNG_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
@@ -1370,6 +1011,7 @@ file_pnm_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_pnm_RC)
@@ -1387,6 +1029,7 @@ file_ps_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(GS_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
@@ -1405,15 +1048,16 @@ file_psp_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(Z_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_psp_RC)
 
-file_raw_SOURCES = \
-	file-raw.c
+file_raw_data_SOURCES = \
+	file-raw-data.c
 
-file_raw_LDADD = \
+file_raw_data_LDADD = \
 	$(libgimpui)		\
 	$(libgimpwidgets)	\
 	$(libgimpmodule)	\
@@ -1423,9 +1067,10 @@ file_raw_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
-	$(file_raw_RC)
+	$(file_raw_data_RC)
 
 file_sunras_SOURCES = \
 	file-sunras.c
@@ -1440,6 +1085,7 @@ file_sunras_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_sunras_RC)
@@ -1477,45 +1123,10 @@ file_tga_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_tga_RC)
-
-file_tiff_load_SOURCES = \
-	file-tiff-load.c
-
-file_tiff_load_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(TIFF_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(file_tiff_load_RC)
-
-file_tiff_save_SOURCES = \
-	file-tiff-save.c
-
-file_tiff_save_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(TIFF_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(file_tiff_save_RC)
 
 file_wmf_CFLAGS = $(WMF_CFLAGS)
 
@@ -1532,6 +1143,7 @@ file_wmf_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(WMF_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
@@ -1550,6 +1162,7 @@ file_xbm_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_xbm_RC)
@@ -1567,6 +1180,7 @@ file_xmc_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(XMC_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
@@ -1585,6 +1199,7 @@ file_xpm_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(XPM_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
@@ -1603,6 +1218,7 @@ file_xwd_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_xwd_RC)
@@ -1658,6 +1274,22 @@ fractal_trace_LDADD = \
 	$(INTLLIBS)		\
 	$(fractal_trace_RC)
 
+goat_exercise_SOURCES = \
+	goat-exercise.c
+
+goat_exercise_LDADD = \
+	$(libgimp)		\
+	$(libgimpmath)		\
+	$(libgimpconfig)	\
+	$(libgimpcolor)		\
+	$(libgimpbase)		\
+	$(CAIRO_LIBS)		\
+	$(GDK_PIXBUF_LIBS)	\
+	$(GEGL_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)		\
+	$(goat_exercise_RC)
+
 gradient_map_SOURCES = \
 	gradient-map.c
 
@@ -1669,6 +1301,7 @@ gradient_map_LDADD = \
 	$(libgimpbase)		\
 	$(CAIRO_LIBS)		\
 	$(GDK_PIXBUF_LIBS)	\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(gradient_map_RC)
@@ -1722,40 +1355,6 @@ hot_LDADD = \
 	$(INTLLIBS)		\
 	$(hot_RC)
 
-illusion_SOURCES = \
-	illusion.c
-
-illusion_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(illusion_RC)
-
-iwarp_SOURCES = \
-	iwarp.c
-
-iwarp_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(iwarp_RC)
-
 jigsaw_SOURCES = \
 	jigsaw.c
 
@@ -1772,77 +1371,6 @@ jigsaw_LDADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(jigsaw_RC)
-
-lcms_CFLAGS = $(LCMS_CFLAGS)
-
-lcms_SOURCES = \
-	lcms.c
-
-lcms_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(LCMS_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(lcms_RC)
-
-lens_apply_SOURCES = \
-	lens-apply.c
-
-lens_apply_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(lens_apply_RC)
-
-lens_distortion_SOURCES = \
-	lens-distortion.c
-
-lens_distortion_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(lens_distortion_RC)
-
-lens_flare_SOURCES = \
-	lens-flare.c
-
-lens_flare_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(lens_flare_RC)
 
 mail_SOURCES = \
 	mail.c
@@ -1878,23 +1406,6 @@ max_rgb_LDADD = \
 	$(INTLLIBS)		\
 	$(max_rgb_RC)
 
-mosaic_SOURCES = \
-	mosaic.c
-
-mosaic_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(mosaic_RC)
-
 newsprint_SOURCES = \
 	newsprint.c
 
@@ -1928,108 +1439,6 @@ nl_filter_LDADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(nl_filter_RC)
-
-noise_hsv_SOURCES = \
-	noise-hsv.c
-
-noise_hsv_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(noise_hsv_RC)
-
-noise_randomize_SOURCES = \
-	noise-randomize.c
-
-noise_randomize_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(noise_randomize_RC)
-
-noise_rgb_SOURCES = \
-	noise-rgb.c
-
-noise_rgb_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(noise_rgb_RC)
-
-noise_solid_SOURCES = \
-	noise-solid.c
-
-noise_solid_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(noise_solid_RC)
-
-noise_spread_SOURCES = \
-	noise-spread.c
-
-noise_spread_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(noise_spread_RC)
-
-nova_SOURCES = \
-	nova.c
-
-nova_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(nova_RC)
 
 oilify_SOURCES = \
 	oilify.c
@@ -2065,40 +1474,6 @@ photocopy_LDADD = \
 	$(INTLLIBS)		\
 	$(photocopy_RC)
 
-pixelize_SOURCES = \
-	pixelize.c
-
-pixelize_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(pixelize_RC)
-
-plasma_SOURCES = \
-	plasma.c
-
-plasma_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(plasma_RC)
-
 plugin_browser_SOURCES = \
 	plugin-browser.c
 
@@ -2115,23 +1490,6 @@ plugin_browser_LDADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(plugin_browser_RC)
-
-polar_coords_SOURCES = \
-	polar-coords.c
-
-polar_coords_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(polar_coords_RC)
 
 procedure_browser_SOURCES = \
 	procedure-browser.c
@@ -2163,26 +1521,10 @@ qbist_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(qbist_RC)
-
-red_eye_removal_SOURCES = \
-	red-eye-removal.c
-
-red_eye_removal_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(red_eye_removal_RC)
 
 ripple_SOURCES = \
 	ripple.c
@@ -2201,21 +1543,6 @@ ripple_LDADD = \
 	$(INTLLIBS)		\
 	$(ripple_RC)
 
-rotate_SOURCES = \
-	rotate.c
-
-rotate_LDADD = \
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(CAIRO_LIBS)		\
-	$(GDK_PIXBUF_LIBS)	\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(rotate_RC)
-
 sample_colorize_SOURCES = \
 	sample-colorize.c
 
@@ -2232,41 +1559,6 @@ sample_colorize_LDADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(sample_colorize_RC)
-
-screenshot_CFLAGS = $(XFIXES_CFLAGS)
-
-screenshot_SOURCES = \
-	screenshot.c
-
-screenshot_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(SCREENSHOT_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(screenshot_RC)
-
-semi_flatten_SOURCES = \
-	semi-flatten.c
-
-semi_flatten_LDADD = \
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(CAIRO_LIBS)		\
-	$(GDK_PIXBUF_LIBS)	\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(semi_flatten_RC)
 
 sharpen_SOURCES = \
 	sharpen.c
@@ -2285,40 +1577,6 @@ sharpen_LDADD = \
 	$(INTLLIBS)		\
 	$(sharpen_RC)
 
-shift_SOURCES = \
-	shift.c
-
-shift_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(shift_RC)
-
-sinus_SOURCES = \
-	sinus.c
-
-sinus_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(sinus_RC)
-
 smooth_palette_SOURCES = \
 	smooth-palette.c
 
@@ -2332,6 +1590,7 @@ smooth_palette_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(smooth_palette_RC)
@@ -2387,23 +1646,6 @@ sphere_designer_LDADD = \
 	$(INTLLIBS)		\
 	$(sphere_designer_RC)
 
-threshold_alpha_SOURCES = \
-	threshold-alpha.c
-
-threshold_alpha_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(threshold_alpha_RC)
-
 tile_SOURCES = \
 	tile.c
 
@@ -2417,58 +1659,10 @@ tile_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(tile_RC)
-
-tile_glass_SOURCES = \
-	tile-glass.c
-
-tile_glass_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(tile_glass_RC)
-
-tile_paper_SOURCES = \
-	tile-paper.c
-
-tile_paper_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(tile_paper_RC)
-
-tile_seamless_SOURCES = \
-	tile-seamless.c
-
-tile_seamless_LDADD = \
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(CAIRO_LIBS)		\
-	$(GDK_PIXBUF_LIBS)	\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(tile_seamless_RC)
 
 tile_small_SOURCES = \
 	tile-small.c
@@ -2521,38 +1715,6 @@ unsharp_mask_LDADD = \
 	$(INTLLIBS)		\
 	$(unsharp_mask_RC)
 
-value_invert_SOURCES = \
-	value-invert.c
-
-value_invert_LDADD = \
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(CAIRO_LIBS)		\
-	$(GDK_PIXBUF_LIBS)	\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(value_invert_RC)
-
-value_propagate_SOURCES = \
-	value-propagate.c
-
-value_propagate_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(value_propagate_RC)
-
 van_gogh_lic_SOURCES = \
 	van-gogh-lic.c
 
@@ -2569,23 +1731,6 @@ van_gogh_lic_LDADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(van_gogh_lic_RC)
-
-video_SOURCES = \
-	video.c
-
-video_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(video_RC)
 
 warp_SOURCES = \
 	warp.c
@@ -2604,10 +1749,10 @@ warp_LDADD = \
 	$(INTLLIBS)		\
 	$(warp_RC)
 
-waves_SOURCES = \
-	waves.c
+wavelet_decompose_SOURCES = \
+	wavelet-decompose.c
 
-waves_LDADD = \
+wavelet_decompose_LDADD = \
 	$(libgimpui)		\
 	$(libgimpwidgets)	\
 	$(libgimpmodule)	\
@@ -2617,9 +1762,10 @@ waves_LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
-	$(waves_RC)
+	$(wavelet_decompose_RC)
 
 web_browser_LDFLAGS = $(framework_cocoa)
 
@@ -2661,37 +1807,3 @@ web_page_LDADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(web_page_RC)
-
-whirl_pinch_SOURCES = \
-	whirl-pinch.c
-
-whirl_pinch_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(whirl_pinch_RC)
-
-wind_SOURCES = \
-	wind.c
-
-wind_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(wind_RC)

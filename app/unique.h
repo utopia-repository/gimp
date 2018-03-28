@@ -20,7 +20,10 @@
 
 
 gboolean gimp_unique_open (const gchar **filenames,
-			   gboolean      as_new);
+                           gboolean      as_new);
+
+gboolean gimp_unique_batch_run (const gchar  *batch_interpreter,
+                                const gchar **batch_commands);
 
 
 #endif /* __UNIQUE_H__ */

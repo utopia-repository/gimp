@@ -27,9 +27,8 @@
 
 #include "widgets-types.h"
 
-#include "base/base-utils.h"
-
 #include "core/gimp.h"
+#include "core/gimp-utils.h"
 #include "core/gimpbrush.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpcurve.h"
@@ -43,6 +42,8 @@
 #include "core/gimptoolinfo.h"
 
 #include "text/gimpfont.h"
+
+#include "xcf/xcf.h"
 
 #include "gimpselectiondata.h"
 
@@ -327,6 +328,72 @@ gimp_selection_data_get_color (GtkSelectionData *selection,
 }
 
 void
+gimp_selection_data_set_xcf (GtkSelectionData *selection,
+                             GimpImage        *image)
+{
+  GMemoryOutputStream *output;
+
+  g_return_if_fail (selection != NULL);
+  g_return_if_fail (GIMP_IS_IMAGE (image));
+
+  output = G_MEMORY_OUTPUT_STREAM (g_memory_output_stream_new_resizable ());
+
+  xcf_save_stream (image->gimp, image, G_OUTPUT_STREAM (output), NULL,
+                   NULL, NULL);
+
+  gtk_selection_data_set (selection,
+                          gtk_selection_data_get_target (selection),
+                          8,
+                          g_memory_output_stream_get_data (output),
+                          g_memory_output_stream_get_data_size (output));
+
+  g_object_unref (output);
+}
+
+GimpImage *
+gimp_selection_data_get_xcf (GtkSelectionData *selection,
+                             Gimp             *gimp)
+{
+  GInputStream *input;
+  GimpImage    *image;
+  gsize         length;
+  const guchar *data;
+  GError       *error = NULL;
+
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+  g_return_val_if_fail (selection != NULL, NULL);
+
+  length = gtk_selection_data_get_length (selection);
+
+  if (gtk_selection_data_get_format (selection) != 8 || length < 1)
+    {
+      g_warning ("Received invalid data stream!");
+      return NULL;
+    }
+
+  data = gtk_selection_data_get_data (selection);
+
+  input = g_memory_input_stream_new_from_data (data, length, NULL);
+
+  image = xcf_load_stream (gimp, input, NULL, NULL, &error);
+
+  if (image)
+    {
+      /*  don't keep clipboard images in the image list  */
+      gimp_container_remove (gimp->images, GIMP_OBJECT (image));
+    }
+  else
+    {
+      g_warning ("Recieved invalid XCF data: %s", error->message);
+      g_clear_error (&error);
+    }
+
+  g_object_unref (input);
+
+  return image;
+}
+
+void
 gimp_selection_data_set_stream (GtkSelectionData *selection,
                                 const guchar     *stream,
                                 gsize             stream_length)
@@ -424,7 +491,7 @@ gimp_selection_data_set_image (GtkSelectionData *selection,
   g_return_if_fail (selection != NULL);
   g_return_if_fail (GIMP_IS_IMAGE (image));
 
-  str = g_strdup_printf ("%d:%d", get_pid (), gimp_image_get_ID (image));
+  str = g_strdup_printf ("%d:%d", gimp_get_pid (), gimp_image_get_ID (image));
 
   gtk_selection_data_set (selection,
                           gtk_selection_data_get_target (selection),
@@ -450,7 +517,7 @@ gimp_selection_data_get_image (GtkSelectionData *selection,
       gint ID;
 
       if (sscanf (str, "%i:%i", &pid, &ID) == 2 &&
-          pid == get_pid ())
+          pid == gimp_get_pid ())
         {
           return gimp_image_get_by_ID (gimp, ID);
         }
@@ -469,7 +536,7 @@ gimp_selection_data_set_component (GtkSelectionData *selection,
   g_return_if_fail (selection != NULL);
   g_return_if_fail (GIMP_IS_IMAGE (image));
 
-  str = g_strdup_printf ("%d:%d:%d", get_pid (), gimp_image_get_ID (image),
+  str = g_strdup_printf ("%d:%d:%d", gimp_get_pid (), gimp_image_get_ID (image),
                          (gint) channel);
 
   gtk_selection_data_set (selection,
@@ -501,7 +568,7 @@ gimp_selection_data_get_component (GtkSelectionData *selection,
       gint ch;
 
       if (sscanf (str, "%i:%i:%i", &pid, &ID, &ch) == 3 &&
-          pid == get_pid ())
+          pid == gimp_get_pid ())
         {
           GimpImage *image = gimp_image_get_by_ID (gimp, ID);
 
@@ -524,7 +591,7 @@ gimp_selection_data_set_item (GtkSelectionData *selection,
   g_return_if_fail (selection != NULL);
   g_return_if_fail (GIMP_IS_ITEM (item));
 
-  str = g_strdup_printf ("%d:%d", get_pid (), gimp_item_get_ID (item));
+  str = g_strdup_printf ("%d:%d", gimp_get_pid (), gimp_item_get_ID (item));
 
   gtk_selection_data_set (selection,
                           gtk_selection_data_get_target (selection),
@@ -550,7 +617,7 @@ gimp_selection_data_get_item (GtkSelectionData *selection,
       gint ID;
 
       if (sscanf (str, "%i:%i", &pid, &ID) == 2 &&
-          pid == get_pid ())
+          pid == gimp_get_pid ())
         {
           return gimp_item_get_by_ID (gimp, ID);
         }
@@ -574,7 +641,7 @@ gimp_selection_data_set_object (GtkSelectionData *selection,
     {
       gchar *str;
 
-      str = g_strdup_printf ("%d:%p:%s", get_pid (), object, name);
+      str = g_strdup_printf ("%d:%p:%s", gimp_get_pid (), object, name);
 
       gtk_selection_data_set (selection,
                               gtk_selection_data_get_target (selection),
@@ -659,7 +726,7 @@ gimp_selection_data_get_buffer (GtkSelectionData *selection,
   return (GimpBuffer *)
     gimp_selection_data_get_object (selection,
                                     gimp->named_buffers,
-                                    GIMP_OBJECT (gimp->global_buffer));
+                                    GIMP_OBJECT (gimp_get_clipboard_buffer (gimp)));
 }
 
 GimpImagefile *
@@ -745,7 +812,7 @@ gimp_selection_data_get_object (GtkSelectionData *selection,
       gint     name_offset = 0;
 
       if (sscanf (str, "%i:%p:%n", &pid, &object_addr, &name_offset) >= 2 &&
-          pid == get_pid () && name_offset > 0)
+          pid == gimp_get_pid () && name_offset > 0)
         {
           const gchar *name = str + name_offset;
 
@@ -843,7 +910,7 @@ gimp_unescape_uri_string (const char *escaped,
       *out++ = c;
     }
 
-  g_assert (out - result <= len);
+  gimp_assert (out - result <= len);
   *out = '\0';
 
   if (in != in_end)

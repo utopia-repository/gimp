@@ -29,11 +29,10 @@
 #include "display-types.h"
 
 #include "core/gimp-transform-utils.h"
+#include "core/gimp-utils.h"
 
 #include "gimpcanvastransformguides.h"
 #include "gimpdisplayshell.h"
-#include "gimpdisplayshell-transform.h"
-#include "core/gimp-utils.h"
 
 
 #define SQRT5 2.236067977
@@ -48,7 +47,8 @@ enum
   PROP_X2,
   PROP_Y2,
   PROP_TYPE,
-  PROP_N_GUIDES
+  PROP_N_GUIDES,
+  PROP_CLIP
 };
 
 
@@ -61,6 +61,7 @@ struct _GimpCanvasTransformGuidesPrivate
   gdouble        x2, y2;
   GimpGuidesType type;
   gint           n_guides;
+  gboolean       clip;
 };
 
 #define GET_PRIVATE(transform) \
@@ -71,19 +72,17 @@ struct _GimpCanvasTransformGuidesPrivate
 
 /*  local function prototypes  */
 
-static void             gimp_canvas_transform_guides_set_property (GObject          *object,
-                                                                   guint             property_id,
-                                                                   const GValue     *value,
-                                                                   GParamSpec       *pspec);
-static void             gimp_canvas_transform_guides_get_property (GObject          *object,
-                                                                   guint             property_id,
-                                                                   GValue           *value,
-                                                                   GParamSpec       *pspec);
-static void             gimp_canvas_transform_guides_draw         (GimpCanvasItem   *item,
-                                                                   GimpDisplayShell *shell,
-                                                                   cairo_t          *cr);
-static cairo_region_t * gimp_canvas_transform_guides_get_extents  (GimpCanvasItem   *item,
-                                                                   GimpDisplayShell *shell);
+static void             gimp_canvas_transform_guides_set_property (GObject        *object,
+                                                                   guint           property_id,
+                                                                   const GValue   *value,
+                                                                   GParamSpec     *pspec);
+static void             gimp_canvas_transform_guides_get_property (GObject        *object,
+                                                                   guint           property_id,
+                                                                   GValue         *value,
+                                                                   GParamSpec     *pspec);
+static void             gimp_canvas_transform_guides_draw         (GimpCanvasItem *item,
+                                                                   cairo_t        *cr);
+static cairo_region_t * gimp_canvas_transform_guides_get_extents  (GimpCanvasItem *item);
 
 
 G_DEFINE_TYPE (GimpCanvasTransformGuides, gimp_canvas_transform_guides,
@@ -153,6 +152,11 @@ gimp_canvas_transform_guides_class_init (GimpCanvasTransformGuidesClass *klass)
                                                      1, 128, 4,
                                                      GIMP_PARAM_READWRITE));
 
+  g_object_class_install_property (object_class, PROP_CLIP,
+                                   g_param_spec_boolean ("clip", NULL, NULL,
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
+
   g_type_class_add_private (klass, sizeof (GimpCanvasTransformGuidesPrivate));
 }
 
@@ -206,6 +210,10 @@ gimp_canvas_transform_guides_set_property (GObject      *object,
       private->n_guides = g_value_get_int (value);
       break;
 
+    case PROP_CLIP:
+      private->clip = g_value_get_boolean (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -250,6 +258,10 @@ gimp_canvas_transform_guides_get_property (GObject    *object,
       g_value_set_int (value, private->n_guides);
       break;
 
+    case PROP_CLIP:
+      g_value_set_boolean (value, private->clip);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -257,124 +269,161 @@ gimp_canvas_transform_guides_get_property (GObject    *object,
 }
 
 static gboolean
-gimp_canvas_transform_guides_transform (GimpCanvasItem   *item,
-                                        GimpDisplayShell *shell,
-                                        gdouble          *tx1,
-                                        gdouble          *ty1,
-                                        gdouble          *tx2,
-                                        gdouble          *ty2,
-                                        gdouble          *tx3,
-                                        gdouble          *ty3,
-                                        gdouble          *tx4,
-                                        gdouble          *ty4)
+gimp_canvas_transform_guides_transform (GimpCanvasItem *item,
+                                        GimpVector2    *t_vertices,
+                                        gint           *n_t_vertices)
 {
   GimpCanvasTransformGuidesPrivate *private = GET_PRIVATE (item);
+  GimpVector2                       vertices[4];
 
-  gimp_matrix3_transform_point (&private->transform,
-                                private->x1, private->y1,
-                                tx1, ty1);
-  gimp_matrix3_transform_point (&private->transform,
-                                private->x2, private->y1,
-                                tx2, ty2);
-  gimp_matrix3_transform_point (&private->transform,
-                                private->x1, private->y2,
-                                tx3, ty3);
-  gimp_matrix3_transform_point (&private->transform,
-                                private->x2, private->y2,
-                                tx4, ty4);
+  vertices[0] = (GimpVector2) { private->x1, private->y1 };
+  vertices[1] = (GimpVector2) { private->x2, private->y1 };
+  vertices[2] = (GimpVector2) { private->x2, private->y2 };
+  vertices[3] = (GimpVector2) { private->x1, private->y2 };
 
-  return gimp_transform_polygon_is_convex (*tx1, *ty1,
-                                           *tx2, *ty2,
-                                           *tx3, *ty3,
-                                           *tx4, *ty4);
+  if (private->clip)
+    {
+      gimp_transform_polygon (&private->transform, vertices, 4, TRUE,
+                              t_vertices, n_t_vertices);
+
+      return TRUE;
+    }
+  else
+    {
+      gint i;
+
+      for (i = 0; i < 4; i++)
+        {
+          gimp_matrix3_transform_point (&private->transform,
+                                        vertices[i].x,    vertices[i].y,
+                                        &t_vertices[i].x, &t_vertices[i].y);
+        }
+
+      *n_t_vertices = 4;
+
+      return gimp_transform_polygon_is_convex (t_vertices[0].x, t_vertices[0].y,
+                                               t_vertices[1].x, t_vertices[1].y,
+                                               t_vertices[3].x, t_vertices[3].y,
+                                               t_vertices[2].x, t_vertices[2].y);
+    }
 }
 
 static void
-draw_line (cairo_t          *cr,
-           GimpDisplayShell *shell,
-           GimpMatrix3      *transform,
-           gdouble           x1,
-           gdouble           y1,
-           gdouble           x2,
-           gdouble           y2)
-{
-  gimp_matrix3_transform_point (transform, x1, y1, &x1, &y1);
-  gimp_matrix3_transform_point (transform, x2, y2, &x2, &y2);
-
-  gimp_display_shell_transform_xy_f (shell, x1, y1, &x1, &y1);
-  gimp_display_shell_transform_xy_f (shell, x2, y2, &x2, &y2);
-
-  x1 = floor (x1) + 0.5;
-  y1 = floor (y1) + 0.5;
-  x2 = floor (x2) + 0.5;
-  y2 = floor (y2) + 0.5;
-
-  cairo_move_to (cr, x1, y1);
-  cairo_line_to (cr, x2, y2);
-}
-
-static void
-draw_hline (cairo_t          *cr,
-            GimpDisplayShell *shell,
-            GimpMatrix3      *transform,
-            gdouble           x1,
-            gdouble           x2,
-            gdouble           y)
-{
-  draw_line (cr, shell, transform, x1, y, x2, y);
-}
-
-static void
-draw_vline (cairo_t          *cr,
-            GimpDisplayShell *shell,
-            GimpMatrix3      *transform,
-            gdouble           y1,
-            gdouble           y2,
-            gdouble           x)
-{
-  draw_line (cr, shell, transform, x, y1, x, y2);
-}
-
-static void
-gimp_canvas_transform_guides_draw (GimpCanvasItem   *item,
-                                   GimpDisplayShell *shell,
-                                   cairo_t          *cr)
+draw_line (cairo_t        *cr,
+           GimpCanvasItem *item,
+           GimpMatrix3    *transform,
+           gdouble         x1,
+           gdouble         y1,
+           gdouble         x2,
+           gdouble         y2)
 {
   GimpCanvasTransformGuidesPrivate *private = GET_PRIVATE (item);
-  gdouble                           x1, y1;
-  gdouble                           x2, y2;
-  gdouble                           x3, y3;
-  gdouble                           x4, y4;
+  GimpVector2                       vertices[2];
+  GimpVector2                       t_vertices[2];
+  gint                              n_t_vertices;
+
+  vertices[0] = (GimpVector2) { x1, y1 };
+  vertices[1] = (GimpVector2) { x2, y2 };
+
+  if (private->clip)
+    {
+      gimp_transform_polygon (transform, vertices, 2, FALSE,
+                              t_vertices, &n_t_vertices);
+    }
+  else
+    {
+      gint i;
+
+      for (i = 0; i < 2; i++)
+        {
+          gimp_matrix3_transform_point (transform,
+                                        vertices[i].x,    vertices[i].y,
+                                        &t_vertices[i].x, &t_vertices[i].y);
+        }
+
+      n_t_vertices = 2;
+    }
+
+  if (n_t_vertices == 2)
+    {
+      gint i;
+
+      for (i = 0; i < 2; i++)
+        {
+          GimpVector2 v;
+
+          gimp_canvas_item_transform_xy_f (item,
+                                           t_vertices[i].x, t_vertices[i].y,
+                                           &v.x,            &v.y);
+
+          v.x = floor (v.x) + 0.5;
+          v.y = floor (v.y) + 0.5;
+
+          if (i == 0)
+            cairo_move_to (cr, v.x, v.y);
+          else
+            cairo_line_to (cr, v.x, v.y);
+        }
+    }
+}
+
+static void
+draw_hline (cairo_t        *cr,
+            GimpCanvasItem *item,
+            GimpMatrix3    *transform,
+            gdouble         x1,
+            gdouble         x2,
+            gdouble         y)
+{
+  draw_line (cr, item, transform, x1, y, x2, y);
+}
+
+static void
+draw_vline (cairo_t        *cr,
+            GimpCanvasItem *item,
+            GimpMatrix3    *transform,
+            gdouble         y1,
+            gdouble         y2,
+            gdouble         x)
+{
+  draw_line (cr, item, transform, x, y1, x, y2);
+}
+
+static void
+gimp_canvas_transform_guides_draw (GimpCanvasItem *item,
+                                   cairo_t        *cr)
+{
+  GimpCanvasTransformGuidesPrivate *private = GET_PRIVATE (item);
+  GimpVector2                       t_vertices[5];
+  gint                              n_t_vertices;
   gboolean                          convex;
   gint                              i;
 
-  convex = gimp_canvas_transform_guides_transform (item, shell,
-                                                   &x1, &y1,
-                                                   &x2, &y2,
-                                                   &x3, &y3,
-                                                   &x4, &y4);
+  convex = gimp_canvas_transform_guides_transform (item,
+                                                   t_vertices, &n_t_vertices);
 
-  gimp_display_shell_transform_xy_f (shell, x1, y1, &x1, &y1);
-  gimp_display_shell_transform_xy_f (shell, x2, y2, &x2, &y2);
-  gimp_display_shell_transform_xy_f (shell, x3, y3, &x3, &y3);
-  gimp_display_shell_transform_xy_f (shell, x4, y4, &x4, &y4);
+  if (n_t_vertices < 2)
+    return;
 
-  x1 = floor (x1) + 0.5;
-  y1 = floor (y1) + 0.5;
-  x2 = floor (x2) + 0.5;
-  y2 = floor (y2) + 0.5;
-  x3 = floor (x3) + 0.5;
-  y3 = floor (y3) + 0.5;
-  x4 = floor (x4) + 0.5;
-  y4 = floor (y4) + 0.5;
+  for (i = 0; i < n_t_vertices; i++)
+    {
+      GimpVector2 v;
 
-  cairo_move_to (cr, x1, y1);
-  cairo_line_to (cr, x2, y2);
-  cairo_line_to (cr, x4, y4);
-  cairo_line_to (cr, x3, y3);
-  cairo_line_to (cr, x1, y1);
+      gimp_canvas_item_transform_xy_f (item, t_vertices[i].x, t_vertices[i].y,
+                                       &v.x, &v.y);
 
-  if (! convex)
+      v.x = floor (v.x) + 0.5;
+      v.y = floor (v.y) + 0.5;
+
+      if (i == 0)
+        cairo_move_to (cr, v.x, v.y);
+      else
+        cairo_line_to (cr, v.x, v.y);
+    }
+
+  cairo_close_path (cr);
+
+  if (! convex || n_t_vertices < 3)
     {
       _gimp_canvas_item_stroke (item, cr);
       return;
@@ -386,48 +435,48 @@ gimp_canvas_transform_guides_draw (GimpCanvasItem   *item,
       break;
 
     case GIMP_GUIDES_CENTER_LINES:
-      draw_hline (cr, shell, &private->transform,
+      draw_hline (cr, item, &private->transform,
                   private->x1, private->x2, (private->y1 + private->y2) / 2);
-      draw_vline (cr, shell, &private->transform,
+      draw_vline (cr, item, &private->transform,
                   private->y1, private->y2, (private->x1 + private->x2) / 2);
       break;
 
     case GIMP_GUIDES_THIRDS:
-      draw_hline (cr, shell, &private->transform,
+      draw_hline (cr, item, &private->transform,
                   private->x1, private->x2, (2 * private->y1 + private->y2) / 3);
-      draw_hline (cr, shell, &private->transform,
+      draw_hline (cr, item, &private->transform,
                   private->x1, private->x2, (private->y1 + 2 * private->y2) / 3);
 
-      draw_vline (cr, shell, &private->transform,
+      draw_vline (cr, item, &private->transform,
                   private->y1, private->y2, (2 * private->x1 + private->x2) / 3);
-      draw_vline (cr, shell, &private->transform,
+      draw_vline (cr, item, &private->transform,
                   private->y1, private->y2, (private->x1 + 2 * private->x2) / 3);
       break;
 
     case GIMP_GUIDES_FIFTHS:
       for (i = 0; i < 5; i++)
         {
-          draw_hline (cr, shell, &private->transform,
+          draw_hline (cr, item, &private->transform,
                       private->x1, private->x2,
                       private->y1 + i * (private->y2 - private->y1) / 5);
-          draw_vline (cr, shell, &private->transform,
+          draw_vline (cr, item, &private->transform,
                       private->y1, private->y2,
                       private->x1 + i * (private->x2 - private->x1) / 5);
         }
       break;
 
     case GIMP_GUIDES_GOLDEN:
-      draw_hline (cr, shell, &private->transform,
+      draw_hline (cr, item, &private->transform,
                   private->x1, private->x2,
                   (2 * private->y1 + (1 + SQRT5) * private->y2) / (3 + SQRT5));
-      draw_hline (cr, shell, &private->transform,
+      draw_hline (cr, item, &private->transform,
                   private->x1, private->x2,
                   ((1 + SQRT5) * private->y1 + 2 * private->y2) / (3 + SQRT5));
 
-      draw_vline (cr, shell, &private->transform,
+      draw_vline (cr, item, &private->transform,
                   private->y1, private->y2,
                   (2 * private->x1 + (1 + SQRT5) * private->x2) / (3 + SQRT5));
-      draw_vline (cr, shell, &private->transform,
+      draw_vline (cr, item, &private->transform,
                   private->y1, private->y2,
                   ((1 + SQRT5) * private->x1 + 2 * private->x2) / (3 + SQRT5));
       break;
@@ -444,25 +493,25 @@ gimp_canvas_transform_guides_draw (GimpCanvasItem   *item,
                                          private->y2 - private->y1);
 
         /* diagonal from the top-left edge */
-        draw_line (cr, shell, &private->transform,
+        draw_line (cr, item, &private->transform,
                    private->x1, private->y1,
                    private->x1 + square_side,
                    private->y1 + square_side);
 
         /* diagonal from the top-right edge */
-        draw_line (cr, shell, &private->transform,
+        draw_line (cr, item, &private->transform,
                    private->x2, private->y1,
                    private->x2 - square_side,
                    private->y1 + square_side);
 
         /* diagonal from the bottom-left edge */
-        draw_line (cr, shell, &private->transform,
+        draw_line (cr, item, &private->transform,
                    private->x1, private->y2,
                    private->x1 + square_side,
                    private->y2 - square_side);
 
         /* diagonal from the bottom-right edge */
-        draw_line (cr, shell, &private->transform,
+        draw_line (cr, item, &private->transform,
                    private->x2, private->y2,
                    private->x2 - square_side,
                    private->y2 - square_side);
@@ -478,17 +527,27 @@ gimp_canvas_transform_guides_draw (GimpCanvasItem   *item,
         width  = MAX (1, private->x2 - private->x1);
         height = MAX (1, private->y2 - private->y1);
 
+        /*  the MIN() in the code below limits the grid to one line
+         *  every 5 image pixels, see bug 772667.
+         */
+
         if (private->type == GIMP_GUIDES_N_LINES)
           {
             if (width <= height)
               {
                 ngx = private->n_guides;
+                ngx = MIN (ngx, width / 5);
+
                 ngy = ngx * MAX (1, height / width);
+                ngy = MIN (ngy, height / 5);
               }
             else
               {
                 ngy = private->n_guides;
+                ngy = MIN (ngy, height / 5);
+
                 ngx = ngy * MAX (1, width / height);
+                ngx = MIN (ngx, width / 5);
               }
           }
         else /* GIMP_GUIDES_SPACING */
@@ -496,7 +555,10 @@ gimp_canvas_transform_guides_draw (GimpCanvasItem   *item,
             gint grid_size = MAX (2, private->n_guides);
 
             ngx = width  / grid_size;
+            ngx = MIN (ngx, width / 5);
+
             ngy = height / grid_size;
+            ngy = MIN (ngy, height / 5);
           }
 
         for (i = 1; i <= ngx; i++)
@@ -504,7 +566,7 @@ gimp_canvas_transform_guides_draw (GimpCanvasItem   *item,
             gdouble x = private->x1 + (((gdouble) i) / (ngx + 1) *
                                        (private->x2 - private->x1));
 
-            draw_line (cr, shell, &private->transform,
+            draw_line (cr, item, &private->transform,
                        x, private->y1,
                        x, private->y2);
           }
@@ -514,7 +576,7 @@ gimp_canvas_transform_guides_draw (GimpCanvasItem   *item,
             gdouble y = private->y1 + (((gdouble) i) / (ngy + 1) *
                                        (private->y2 - private->y1));
 
-            draw_line (cr, shell, &private->transform,
+            draw_line (cr, item, &private->transform,
                        private->x1, y,
                        private->x2, y);
           }
@@ -525,33 +587,46 @@ gimp_canvas_transform_guides_draw (GimpCanvasItem   *item,
 }
 
 static cairo_region_t *
-gimp_canvas_transform_guides_get_extents (GimpCanvasItem   *item,
-                                          GimpDisplayShell *shell)
+gimp_canvas_transform_guides_get_extents (GimpCanvasItem *item)
 {
-  gdouble               x1, y1;
-  gdouble               x2, y2;
-  gdouble               x3, y3;
-  gdouble               x4, y4;
+  GimpVector2           t_vertices[5];
+  gint                  n_t_vertices;
+  GimpVector2           top_left;
+  GimpVector2           bottom_right;
   cairo_rectangle_int_t extents;
+  gint                  i;
 
-  gimp_canvas_transform_guides_transform (item, shell,
-                                          &x1, &y1,
-                                          &x2, &y2,
-                                          &x3, &y3,
-                                          &x4, &y4);
+  gimp_canvas_transform_guides_transform (item, t_vertices, &n_t_vertices);
 
-  gimp_display_shell_transform_xy_f (shell, x1, y1, &x1, &y1);
-  gimp_display_shell_transform_xy_f (shell, x2, y2, &x2, &y2);
-  gimp_display_shell_transform_xy_f (shell, x3, y3, &x3, &y3);
-  gimp_display_shell_transform_xy_f (shell, x4, y4, &x4, &y4);
+  if (n_t_vertices < 2)
+    return  cairo_region_create ();
 
-  extents.x      = (gint) floor (MIN4 (x1, x2, x3, x4) - 1.5);
-  extents.y      = (gint) floor (MIN4 (y1, y2, y3, y4) - 1.5);
-  extents.width  = (gint) ceil  (MAX4 (x1, x2, x3, x4) + 1.5);
-  extents.height = (gint) ceil  (MAX4 (y1, y2, y3, y4) + 1.5);
+  for (i = 0; i < n_t_vertices; i++)
+    {
+      GimpVector2 v;
 
-  extents.width  -= extents.x;
-  extents.height -= extents.y;
+      gimp_canvas_item_transform_xy_f (item,
+                                       t_vertices[i].x, t_vertices[i].y,
+                                       &v.x,            &v.y);
+
+      if (i == 0)
+        {
+          top_left = bottom_right = v;
+        }
+      else
+        {
+          top_left.x     = MIN (top_left.x,     v.x);
+          top_left.y     = MIN (top_left.y,     v.y);
+
+          bottom_right.x = MAX (bottom_right.x, v.x);
+          bottom_right.y = MAX (bottom_right.y, v.y);
+        }
+    }
+
+  extents.x      = (gint) floor (top_left.x     - 1.5);
+  extents.y      = (gint) floor (top_left.y     - 1.5);
+  extents.width  = (gint) ceil  (bottom_right.x + 1.5) - extents.x;
+  extents.height = (gint) ceil  (bottom_right.y + 1.5) - extents.y;
 
   return cairo_region_create_rectangle (&extents);
 }
@@ -564,7 +639,8 @@ gimp_canvas_transform_guides_new (GimpDisplayShell  *shell,
                                   gdouble            x2,
                                   gdouble            y2,
                                   GimpGuidesType     type,
-                                  gint               n_guides)
+                                  gint               n_guides,
+                                  gboolean           clip)
 {
   g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), NULL);
 
@@ -577,14 +653,20 @@ gimp_canvas_transform_guides_new (GimpDisplayShell  *shell,
                        "y2",        y2,
                        "type",      type,
                        "n-guides",  n_guides,
+                       "clip",      clip,
                        NULL);
 }
 
 void
 gimp_canvas_transform_guides_set (GimpCanvasItem    *guides,
                                   const GimpMatrix3 *transform,
+                                  gdouble            x1,
+                                  gdouble            y1,
+                                  gdouble            x2,
+                                  gdouble            y2,
                                   GimpGuidesType     type,
-                                  gint               n_guides)
+                                  gint               n_guides,
+                                  gboolean           clip)
 {
   g_return_if_fail (GIMP_IS_CANVAS_TRANSFORM_GUIDES (guides));
 
@@ -592,8 +674,13 @@ gimp_canvas_transform_guides_set (GimpCanvasItem    *guides,
 
   g_object_set (guides,
                 "transform", transform,
+                "x1",        x1,
+                "y1",        y1,
+                "x2",        x2,
+                "y2",        y2,
                 "type",      type,
                 "n-guides",  n_guides,
+                "clip",      clip,
                 NULL);
 
   gimp_canvas_item_end_change (guides);

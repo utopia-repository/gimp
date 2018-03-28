@@ -21,8 +21,10 @@
 
 #undef GSEAL_ENABLE
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
@@ -34,9 +36,12 @@
 #include "core/gimpcurve-map.h"
 #include "core/gimpdatafactory.h"
 #include "core/gimpmarshal.h"
+#include "core/gimpparamspecs.h"
 #include "core/gimptoolinfo.h"
 
 #include "gimpdeviceinfo.h"
+
+#include "gimp-intl.h"
 
 
 #define GIMP_DEVICE_INFO_DATA_KEY "gimp-device-info"
@@ -99,12 +104,12 @@ gimp_device_info_class_init (GimpDeviceInfoClass *klass)
                   gimp_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
-  object_class->constructed        = gimp_device_info_constructed;
-  object_class->finalize           = gimp_device_info_finalize;
-  object_class->set_property       = gimp_device_info_set_property;
-  object_class->get_property       = gimp_device_info_get_property;
+  object_class->constructed         = gimp_device_info_constructed;
+  object_class->finalize            = gimp_device_info_finalize;
+  object_class->set_property        = gimp_device_info_set_property;
+  object_class->get_property        = gimp_device_info_get_property;
 
-  viewable_class->default_stock_id = GIMP_STOCK_INPUT_DEVICE;
+  viewable_class->default_icon_name = GIMP_ICON_INPUT_DEVICE;
 
   g_object_class_install_property (object_class, PROP_DEVICE,
                                    g_param_spec_object ("device",
@@ -122,10 +127,13 @@ gimp_device_info_class_init (GimpDeviceInfoClass *klass)
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT));
 
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_MODE, "mode", NULL,
-                                 GDK_TYPE_INPUT_MODE,
-                                 GDK_MODE_DISABLED,
-                                 GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_MODE,
+                         "mode",
+                         _("Mode"),
+                         NULL,
+                         GDK_TYPE_INPUT_MODE,
+                         GDK_MODE_DISABLED,
+                         GIMP_PARAM_STATIC_STRINGS);
 
   param_spec = g_param_spec_enum ("axis",
                                   NULL, NULL,
@@ -133,27 +141,29 @@ gimp_device_info_class_init (GimpDeviceInfoClass *klass)
                                   GDK_AXIS_IGNORE,
                                   GIMP_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_AXES,
-                                   g_param_spec_value_array ("axes",
-                                                             NULL, NULL,
-                                                             param_spec,
-                                                             GIMP_PARAM_STATIC_STRINGS |
-                                                             GIMP_CONFIG_PARAM_FLAGS));
+                                   gimp_param_spec_value_array ("axes",
+                                                                NULL, NULL,
+                                                                param_spec,
+                                                                GIMP_PARAM_STATIC_STRINGS |
+                                                                GIMP_CONFIG_PARAM_FLAGS));
 
   param_spec = g_param_spec_string ("key",
                                     NULL, NULL,
                                     NULL,
                                     GIMP_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_KEYS,
-                                   g_param_spec_value_array ("keys",
-                                                             NULL, NULL,
-                                                             param_spec,
-                                                             GIMP_PARAM_STATIC_STRINGS |
-                                                             GIMP_CONFIG_PARAM_FLAGS));
+                                   gimp_param_spec_value_array ("keys",
+                                                                NULL, NULL,
+                                                                param_spec,
+                                                                GIMP_PARAM_STATIC_STRINGS |
+                                                                GIMP_CONFIG_PARAM_FLAGS));
 
-  GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_PRESSURE_CURVE,
-                                   "pressure-curve", NULL,
-                                   GIMP_TYPE_CURVE,
-                                   GIMP_CONFIG_PARAM_AGGREGATE);
+  GIMP_CONFIG_PROP_OBJECT (object_class, PROP_PRESSURE_CURVE,
+                           "pressure-curve",
+                           _("Pressure curve"),
+                           NULL,
+                           GIMP_TYPE_CURVE,
+                           GIMP_CONFIG_PARAM_AGGREGATE);
 }
 
 static void
@@ -180,11 +190,10 @@ gimp_device_info_constructed (GObject *object)
   GimpDeviceInfo *info = GIMP_DEVICE_INFO (object);
   Gimp           *gimp;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert ((info->device == NULL         && info->display == NULL) ||
-            (GDK_IS_DEVICE (info->device) && GDK_IS_DISPLAY (info->display)));
+  gimp_assert ((info->device == NULL         && info->display == NULL) ||
+               (GDK_IS_DEVICE (info->device) && GDK_IS_DISPLAY (info->display)));
 
   gimp = GIMP_CONTEXT (object)->gimp;
 
@@ -238,23 +247,10 @@ gimp_device_info_finalize (GObject *object)
 {
   GimpDeviceInfo *info = GIMP_DEVICE_INFO (object);
 
-  if (info->axes)
-    {
-      g_free (info->axes);
-      info->axes = NULL;
-    }
+  g_clear_pointer (&info->axes, g_free);
+  g_clear_pointer (&info->keys, g_free);
 
-  if (info->keys)
-    {
-      g_free (info->keys);
-      info->keys = NULL;
-    }
-
-  if (info->pressure_curve)
-    {
-      g_object_unref (info->pressure_curve);
-      info->pressure_curve = NULL;
-    }
+  g_clear_object (&info->pressure_curve);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -286,7 +282,7 @@ gimp_device_info_set_property (GObject      *object,
 
     case PROP_AXES:
       {
-        GValueArray *array = g_value_get_boxed (value);
+        GimpValueArray *array = g_value_get_boxed (value);
 
         if (array)
           {
@@ -295,11 +291,12 @@ gimp_device_info_set_property (GObject      *object,
 
             if (device)
               {
-                n_device_values = MIN (array->n_values, device->num_axes);
+                n_device_values = MIN (gimp_value_array_length (array),
+                                       device->num_axes);
               }
             else
               {
-                n_device_values = array->n_values;
+                n_device_values = gimp_value_array_length (array);
 
                 info->n_axes = n_device_values;
                 info->axes   = g_renew (GdkAxisUse, info->axes, info->n_axes);
@@ -310,7 +307,7 @@ gimp_device_info_set_property (GObject      *object,
               {
                 GdkAxisUse axis_use;
 
-                axis_use = g_value_get_enum (g_value_array_get_nth (array, i));
+                axis_use = g_value_get_enum (gimp_value_array_index (array, i));
 
                 gimp_device_info_set_axis_use (info, i, axis_use);
               }
@@ -320,7 +317,7 @@ gimp_device_info_set_property (GObject      *object,
 
     case PROP_KEYS:
       {
-        GValueArray *array = g_value_get_boxed (value);
+        GimpValueArray *array = g_value_get_boxed (value);
 
         if (array)
           {
@@ -329,11 +326,12 @@ gimp_device_info_set_property (GObject      *object,
 
             if (device)
               {
-                n_device_values = MIN (array->n_values, device->num_keys);
+                n_device_values = MIN (gimp_value_array_length (array),
+                                       device->num_keys);
               }
             else
               {
-                n_device_values = array->n_values;
+                n_device_values = gimp_value_array_length (array);
 
                 info->n_keys = n_device_values;
                 info->keys   = g_renew (GdkDeviceKey, info->keys, info->n_keys);
@@ -346,7 +344,7 @@ gimp_device_info_set_property (GObject      *object,
                 guint            keyval;
                 GdkModifierType  modifiers;
 
-                accel = g_value_get_string (g_value_array_get_nth (array, i));
+                accel = g_value_get_string (gimp_value_array_index (array, i));
 
                 gtk_accelerator_parse (accel, &keyval, &modifiers);
 
@@ -398,12 +396,12 @@ gimp_device_info_get_property (GObject    *object,
 
     case PROP_AXES:
       {
-        GValueArray *array;
-        GValue       enum_value = { 0, };
-        gint         n_axes;
-        gint         i;
+        GimpValueArray *array;
+        GValue          enum_value = G_VALUE_INIT;
+        gint            n_axes;
+        gint            i;
 
-        array = g_value_array_new (6);
+        array = gimp_value_array_new (6);
         g_value_init (&enum_value, GDK_TYPE_AXIS_USE);
 
         n_axes = gimp_device_info_get_n_axes (info);
@@ -413,7 +411,7 @@ gimp_device_info_get_property (GObject    *object,
             g_value_set_enum (&enum_value,
                               gimp_device_info_get_axis_use (info, i));
 
-            g_value_array_append (array, &enum_value);
+            gimp_value_array_append (array, &enum_value);
           }
 
         g_value_unset (&enum_value);
@@ -424,12 +422,12 @@ gimp_device_info_get_property (GObject    *object,
 
     case PROP_KEYS:
       {
-        GValueArray *array;
-        GValue       string_value = { 0, };
-        gint         n_keys;
-        gint         i;
+        GimpValueArray *array;
+        GValue          string_value = G_VALUE_INIT;
+        gint            n_keys;
+        gint            i;
 
-        array = g_value_array_new (32);
+        array = gimp_value_array_new (32);
         g_value_init (&string_value, G_TYPE_STRING);
 
         n_keys = gimp_device_info_get_n_keys (info);
@@ -458,7 +456,7 @@ gimp_device_info_get_property (GObject    *object,
                 g_value_set_string (&string_value, "");
               }
 
-            g_value_array_append (array, &string_value);
+            gimp_value_array_append (array, &string_value);
           }
 
         g_value_unset (&string_value);
@@ -483,24 +481,24 @@ gimp_device_info_guess_icon (GimpDeviceInfo *info)
   GimpViewable *viewable = GIMP_VIEWABLE (info);
 
   if (gimp_object_get_name (viewable) &&
-      ! strcmp (gimp_viewable_get_stock_id (viewable),
-                GIMP_VIEWABLE_GET_CLASS (viewable)->default_stock_id))
+      ! strcmp (gimp_viewable_get_icon_name (viewable),
+                GIMP_VIEWABLE_GET_CLASS (viewable)->default_icon_name))
     {
-      const gchar *stock_id = NULL;
-      gchar       *down     = g_ascii_strdown (gimp_object_get_name (viewable),
-                                               -1);
+      const gchar *icon_name = NULL;
+      gchar       *down      = g_ascii_strdown (gimp_object_get_name (viewable),
+                                                -1);
 
       if (strstr (down, "eraser"))
         {
-          stock_id = GIMP_STOCK_TOOL_ERASER;
+          icon_name = GIMP_ICON_TOOL_ERASER;
         }
       else if (strstr (down, "pen"))
         {
-          stock_id = GIMP_STOCK_TOOL_PAINTBRUSH;
+          icon_name = GIMP_ICON_TOOL_PAINTBRUSH;
         }
       else if (strstr (down, "airbrush"))
         {
-          stock_id = GIMP_STOCK_TOOL_AIRBRUSH;
+          icon_name = GIMP_ICON_TOOL_AIRBRUSH;
         }
       else if (strstr (down, "cursor")   ||
                strstr (down, "mouse")    ||
@@ -508,13 +506,13 @@ gimp_device_info_guess_icon (GimpDeviceInfo *info)
                strstr (down, "touchpad") ||
                strstr (down, "trackpoint"))
         {
-          stock_id = GIMP_STOCK_CURSOR;
+          icon_name = GIMP_ICON_CURSOR;
         }
 
       g_free (down);
 
-      if (stock_id)
-        gimp_viewable_set_stock_id (viewable, stock_id);
+      if (icon_name)
+        gimp_viewable_set_icon_name (viewable, icon_name);
     }
 }
 

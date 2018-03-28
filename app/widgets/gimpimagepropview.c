@@ -37,10 +37,7 @@
 #include "core/gimpundostack.h"
 #include "core/gimp-utils.h"
 
-#include "file/file-procedure.h"
-#include "file/file-utils.h"
-
-#include "plug-in/gimppluginmanager.h"
+#include "plug-in/gimppluginmanager-file.h"
 #include "plug-in/gimppluginprocedure.h"
 
 #include "gimpimagepropview.h"
@@ -104,7 +101,7 @@ gimp_image_prop_view_init (GimpImagePropView *view)
   GtkTable *table = GTK_TABLE (view);
   gint      row = 0;
 
-  gtk_table_resize (table, 14, 2);
+  gtk_table_resize (table, 15, 2);
 
   gtk_table_set_col_spacings (table, 6);
   gtk_table_set_row_spacings (table, 3);
@@ -119,7 +116,10 @@ gimp_image_prop_view_init (GimpImagePropView *view)
     gimp_image_prop_view_add_label (table, row++, _("Resolution:"));
 
   view->colorspace_label =
-    gimp_image_prop_view_add_label (table, row, _("Color space:"));
+    gimp_image_prop_view_add_label (table, row++, _("Color space:"));
+
+  view->precision_label =
+    gimp_image_prop_view_add_label (table, row, _("Precision:"));
 
   gtk_table_set_row_spacing (GTK_TABLE (view), row++, 12);
 
@@ -167,10 +167,9 @@ gimp_image_prop_view_constructed (GObject *object)
 {
   GimpImagePropView *view = GIMP_IMAGE_PROP_VIEW (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (view->image != NULL);
+  gimp_assert (view->image != NULL);
 
   g_signal_connect_object (view->image, "name-changed",
                            G_CALLBACK (gimp_image_prop_view_file_update),
@@ -303,14 +302,12 @@ static void
 gimp_image_prop_view_label_set_filename (GtkWidget *label,
                                          GimpImage *image)
 {
-  const gchar *uri = gimp_image_get_any_uri (image);
+  GFile *file = gimp_image_get_any_file (image);
 
-  if (uri)
+  if (file)
     {
-      gchar *name = file_utils_uri_display_name (uri);
-
-      gtk_label_set_text (GTK_LABEL (label), name);
-      g_free (name);
+      gtk_label_set_text (GTK_LABEL (label),
+                          gimp_file_get_utf8_name (file));
     }
   else
     {
@@ -323,11 +320,7 @@ static void
 gimp_image_prop_view_label_set_filesize (GtkWidget *label,
                                          GimpImage *image)
 {
-  const gchar *uri  = gimp_image_get_any_uri (image);
-  GFile       *file = NULL;
-
-  if (uri)
-    file = g_file_new_for_uri (uri);
+  GFile *file = gimp_image_get_any_file (image);
 
   if (file)
     {
@@ -350,8 +343,6 @@ gimp_image_prop_view_label_set_filesize (GtkWidget *label,
         {
           gtk_label_set_text (GTK_LABEL (label), NULL);
         }
-
-      g_object_unref (file);
     }
   else
     {
@@ -363,27 +354,25 @@ static void
 gimp_image_prop_view_label_set_filetype (GtkWidget *label,
                                          GimpImage *image)
 {
-  GimpPlugInManager   *manager = image->gimp->plug_in_manager;
-  GimpPlugInProcedure *proc;
-
-  proc = gimp_image_get_save_proc (image);
+  GimpPlugInProcedure *proc = gimp_image_get_save_proc (image);
 
   if (! proc)
     proc = gimp_image_get_load_proc (image);
 
   if (! proc)
     {
-      gchar *filename = gimp_image_get_filename (image);
+      GimpPlugInManager *manager = image->gimp->plug_in_manager;
+      GFile             *file    = gimp_image_get_file (image);
 
-      if (filename)
-        {
-          proc = file_procedure_find (manager->load_procs, filename, NULL);
-          g_free (filename);
-        }
+      if (file)
+        proc = gimp_plug_in_manager_file_procedure_find (manager,
+                                                         GIMP_FILE_PROCEDURE_GROUP_OPEN,
+                                                         file, NULL);
     }
 
   gtk_label_set_text (GTK_LABEL (label),
-                      proc ? gimp_plug_in_procedure_get_label (proc) : NULL);
+                      proc ?
+                      gimp_procedure_get_label (GIMP_PROCEDURE (proc)) : NULL);
 }
 
 static void
@@ -425,9 +414,9 @@ gimp_image_prop_view_update (GimpImagePropView *view)
 {
   GimpImage         *image = view->image;
   GimpImageBaseType  type;
+  GimpPrecision      precision;
   GimpUnit           unit;
   gdouble            unit_factor;
-  gint               unit_digits;
   const gchar       *desc;
   gchar              format_buf[32];
   gchar              buf[256];
@@ -447,10 +436,9 @@ gimp_image_prop_view_update (GimpImagePropView *view)
   /*  print size  */
   unit = gimp_get_default_unit ();
 
-  unit_digits = gimp_unit_get_digits (unit);
-
   g_snprintf (format_buf, sizeof (format_buf), "%%.%df × %%.%df %s",
-              unit_digits + 1, unit_digits + 1,
+              gimp_unit_get_scaled_digits (unit, xres),
+              gimp_unit_get_scaled_digits (unit, yres),
               gimp_unit_get_plural (unit));
   g_snprintf (buf, sizeof (buf), format_buf,
               gimp_pixels_to_units (gimp_image_get_width  (image), unit, xres),
@@ -470,7 +458,7 @@ gimp_image_prop_view_update (GimpImagePropView *view)
   gtk_label_set_text (GTK_LABEL (view->resolution_label), buf);
 
   /*  color type  */
-  type = gimp_image_base_type (image);
+  type = gimp_image_get_base_type (image);
 
   gimp_enum_get_value (GIMP_TYPE_IMAGE_BASE_TYPE, type,
                        NULL, NULL, &desc, NULL);
@@ -489,6 +477,14 @@ gimp_image_prop_view_update (GimpImagePropView *view)
     }
 
   gtk_label_set_text (GTK_LABEL (view->colorspace_label), buf);
+
+  /*  precision  */
+  precision = gimp_image_get_precision (image);
+
+  gimp_enum_get_value (GIMP_TYPE_PRECISION, precision,
+                       NULL, NULL, &desc, NULL);
+
+  gtk_label_set_text (GTK_LABEL (view->precision_label), desc);
 
   /*  size in memory  */
   gimp_image_prop_view_label_set_memsize (view->memsize_label,

@@ -46,6 +46,10 @@ struct _GimpTextBuffer
   GList         *font_tags;
   GList         *color_tags;
 
+  GtkTextTag    *preedit_underline_tag;
+  GList         *preedit_color_tags;
+  GList         *preedit_bg_color_tags;
+
   gboolean       insert_tags_set;
   GList         *insert_tags;
   GList         *remove_tags;
@@ -56,6 +60,9 @@ struct _GimpTextBuffer
 struct _GimpTextBufferClass
 {
   GtkTextBufferClass  parent_class;
+
+  void (* color_applied) (GimpTextBuffer *buffer,
+                          const GimpRGB  *color);
 };
 
 
@@ -131,6 +138,19 @@ void             gimp_text_buffer_set_color         (GimpTextBuffer    *buffer,
                                                      const GtkTextIter *end,
                                                      const GimpRGB     *color);
 
+GtkTextTag * gimp_text_buffer_get_preedit_color_tag    (GimpTextBuffer    *buffer,
+                                                        const GimpRGB     *color);
+void         gimp_text_buffer_set_preedit_color        (GimpTextBuffer    *buffer,
+                                                        const GtkTextIter *start,
+                                                        const GtkTextIter *end,
+                                                        const GimpRGB     *color);
+GtkTextTag * gimp_text_buffer_get_preedit_bg_color_tag (GimpTextBuffer    *buffer,
+                                                        const GimpRGB     *color);
+void         gimp_text_buffer_set_preedit_bg_color     (GimpTextBuffer    *buffer,
+                                                        const GtkTextIter *start,
+                                                        const GtkTextIter *end,
+                                                        const GimpRGB     *color);
+
 const gchar    * gimp_text_buffer_tag_to_name       (GimpTextBuffer    *buffer,
                                                      GtkTextTag        *tag,
                                                      const gchar      **attribute,
@@ -156,10 +176,10 @@ void             gimp_text_buffer_get_iter_at_index (GimpTextBuffer    *buffer,
                                                      gboolean           layout_index);
 
 gboolean         gimp_text_buffer_load              (GimpTextBuffer    *buffer,
-                                                     const gchar       *filename,
+                                                     GFile             *file,
                                                      GError           **error);
 gboolean         gimp_text_buffer_save              (GimpTextBuffer    *buffer,
-                                                     const gchar       *filename,
+                                                     GFile             *file,
                                                      gboolean           selection_only,
                                                      GError           **error);
 

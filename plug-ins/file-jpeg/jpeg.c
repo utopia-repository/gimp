@@ -24,10 +24,6 @@
 #include <jpeglib.h>
 #include <jerror.h>
 
-#ifdef HAVE_LIBEXIF
-#include <libexif/exif-data.h>
-#endif /* HAVE_LIBEXIF */
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
@@ -37,11 +33,6 @@
 #include "jpeg-settings.h"
 #include "jpeg-load.h"
 #include "jpeg-save.h"
-#ifdef HAVE_LIBEXIF
-#include "jpeg-exif.h"
-#include "gimpexif.h"
-#endif
-
 
 /* Declare local functions.
  */
@@ -60,15 +51,10 @@ gint32           display_ID;
 JpegSaveVals     jsvals;
 gint32           orig_image_ID_global;
 gint32           drawable_ID_global;
-gboolean         has_metadata;
 gint             orig_quality;
 JpegSubsampling  orig_subsmp;
 gint             num_quant_tables;
 
-
-#ifdef HAVE_LIBEXIF
-ExifData        *exif_data = NULL;
-#endif
 
 const GimpPlugInInfo PLUG_IN_INFO =
 {
@@ -96,8 +82,6 @@ query (void)
     { GIMP_PDB_IMAGE,   "image",         "Output image" }
   };
 
-#ifdef HAVE_LIBEXIF
-
   static const GimpParamDef thumb_args[] =
   {
     { GIMP_PDB_STRING, "filename",     "The name of the file to load"  },
@@ -109,8 +93,6 @@ query (void)
     { GIMP_PDB_INT32,  "image-width",  "Width of full-sized image"     },
     { GIMP_PDB_INT32,  "image-height", "Height of full-sized image"    }
   };
-
-#endif /* HAVE_LIBEXIF */
 
   static const GimpParamDef save_args[] =
   {
@@ -149,8 +131,6 @@ query (void)
                                     "",
                                     "6,string,JFIF,6,string,Exif");
 
-#ifdef HAVE_LIBEXIF
-
   gimp_install_procedure (LOAD_THUMB_PROC,
                           "Loads a thumbnail from a JPEG image",
                           "Loads a thumbnail from a JPEG image (only if it exists)",
@@ -165,8 +145,6 @@ query (void)
                           thumb_args, thumb_return_vals);
 
   gimp_register_thumbnail_loader (LOAD_PROC, LOAD_THUMB_PROC);
-
-#endif /* HAVE_LIBEXIF */
 
   gimp_install_procedure (SAVE_PROC,
                           "saves files in the JPEG file format",
@@ -191,19 +169,18 @@ run (const gchar      *name,
      gint             *nreturn_vals,
      GimpParam       **return_vals)
 {
-  static GimpParam   values[4];
+  static GimpParam   values[6];
   GimpRunMode        run_mode;
   GimpPDBStatusType  status = GIMP_PDB_SUCCESS;
   gint32             image_ID;
   gint32             drawable_ID;
-  gint32             orig_image_ID;
   GimpParasite      *parasite;
-  GimpExportReturn   export = GIMP_EXPORT_CANCEL;
   GError            *error  = NULL;
 
   run_mode = param[0].data.d_int32;
 
   INIT_I18N ();
+  gegl_init (NULL, NULL);
 
   *nreturn_vals = 1;
   *return_vals  = values;
@@ -213,13 +190,14 @@ run (const gchar      *name,
   preview_image_ID = -1;
   preview_layer_ID = -1;
 
-  has_metadata = FALSE;
   orig_quality = 0;
   orig_subsmp = JPEG_SUBSAMPLING_2x2_1x1_1x1;
   num_quant_tables = 0;
 
   if (strcmp (name, LOAD_PROC) == 0)
     {
+      gboolean resolution_loaded = FALSE;
+
       switch (run_mode)
         {
         case GIMP_RUN_INTERACTIVE:
@@ -232,10 +210,33 @@ run (const gchar      *name,
           break;
         }
 
-      image_ID = load_image (param[1].data.d_string, run_mode, FALSE, &error);
+      image_ID = load_image (param[1].data.d_string, run_mode, FALSE,
+                             &resolution_loaded, &error);
 
       if (image_ID != -1)
         {
+          GFile        *file = g_file_new_for_path (param[1].data.d_string);
+          GimpMetadata *metadata;
+
+          metadata = gimp_image_metadata_load_prepare (image_ID, "image/jpeg",
+                                                       file, NULL);
+
+          if (metadata)
+            {
+              GimpMetadataLoadFlags flags = GIMP_METADATA_LOAD_ALL;
+
+              if (resolution_loaded)
+                flags &= ~GIMP_METADATA_LOAD_RESOLUTION;
+
+              gimp_image_metadata_load_finish (image_ID, "image/jpeg",
+                                               metadata, flags,
+                                               load_interactive);
+
+              g_object_unref (metadata);
+            }
+
+          g_object_unref (file);
+
           *nreturn_vals = 2;
           values[1].type         = GIMP_PDB_IMAGE;
           values[1].data.d_image = image_ID;
@@ -244,11 +245,7 @@ run (const gchar      *name,
         {
           status = GIMP_PDB_EXECUTION_ERROR;
         }
-
     }
-
-#ifdef HAVE_LIBEXIF
-
   else if (strcmp (name, LOAD_THUMB_PROC) == 0)
     {
       if (nparams < 2)
@@ -257,21 +254,29 @@ run (const gchar      *name,
         }
       else
         {
-          const gchar *filename = param[0].data.d_string;
-          gint         width    = 0;
-          gint         height   = 0;
+          GFile        *file   = g_file_new_for_path (param[0].data.d_string);
+          gint          width  = 0;
+          gint          height = 0;
+          GimpImageType type   = -1;
 
-          image_ID = load_thumbnail_image (filename, &width, &height, &error);
+          image_ID = load_thumbnail_image (file, &width, &height, &type,
+                                           &error);
+
+          g_object_unref (file);
 
           if (image_ID != -1)
             {
-              *nreturn_vals = 4;
+              *nreturn_vals = 6;
               values[1].type         = GIMP_PDB_IMAGE;
               values[1].data.d_image = image_ID;
               values[2].type         = GIMP_PDB_INT32;
               values[2].data.d_int32 = width;
               values[3].type         = GIMP_PDB_INT32;
               values[3].data.d_int32 = height;
+              values[4].type         = GIMP_PDB_INT32;
+              values[4].data.d_int32 = type;
+              values[5].type         = GIMP_PDB_INT32;
+              values[5].data.d_int32 = 1; /* num_layers */
             }
           else
             {
@@ -279,15 +284,18 @@ run (const gchar      *name,
             }
         }
     }
-
-#endif /* HAVE_LIBEXIF */
-
   else if (strcmp (name, SAVE_PROC) == 0)
     {
-      image_ID = orig_image_ID = param[1].data.d_int32;
+      GimpMetadata          *metadata;
+      GimpMetadataSaveFlags  metadata_flags;
+      gint32                 orig_image_ID;
+      GimpExportReturn       export = GIMP_EXPORT_CANCEL;
+
+      image_ID    = param[1].data.d_int32;
       drawable_ID = param[2].data.d_int32;
 
-       /*  eventually export the image */
+      orig_image_ID = image_ID;
+
       switch (run_mode)
         {
         case GIMP_RUN_INTERACTIVE:
@@ -313,20 +321,32 @@ run (const gchar      *name,
                 display_ID = -1;
               }
               break;
+
             case GIMP_EXPORT_IGNORE:
               break;
+
             case GIMP_EXPORT_CANCEL:
               values[0].data.d_status = GIMP_PDB_CANCEL;
               return;
               break;
             }
           break;
+
         default:
           break;
         }
 
-      g_free (image_comment);
-      image_comment = NULL;
+      /* Initialize with hardcoded defaults */
+      load_defaults ();
+
+      /* Override the defaults with preferences. */
+      metadata = gimp_image_metadata_save_prepare (orig_image_ID,
+                                                   "image/jpeg",
+                                                   &metadata_flags);
+      jsvals.save_exif      = (metadata_flags & GIMP_METADATA_SAVE_EXIF) != 0;
+      jsvals.save_xmp       = (metadata_flags & GIMP_METADATA_SAVE_XMP) != 0;
+      jsvals.save_iptc      = (metadata_flags & GIMP_METADATA_SAVE_IPTC) != 0;
+      jsvals.save_thumbnail = (metadata_flags & GIMP_METADATA_SAVE_THUMBNAIL) != 0;
 
       parasite = gimp_image_get_parasite (orig_image_ID, "gimp-comment");
       if (parasite)
@@ -336,22 +356,8 @@ run (const gchar      *name,
           gimp_parasite_free (parasite);
         }
 
-      parasite = gimp_image_get_parasite (orig_image_ID, "gimp-metadata");
-      if (parasite)
-        {
-          has_metadata = TRUE;
-          gimp_parasite_free (parasite);
-        }
-
-#ifdef HAVE_LIBEXIF
-
-      exif_data = gimp_metadata_generate_exif (orig_image_ID);
-      if (exif_data)
-        jpeg_setup_exif_for_save (exif_data, orig_image_ID);
-
-#endif /* HAVE_LIBEXIF */
-
-      load_defaults ();
+      /* Override preferences from JPG export defaults (if saved). */
+      load_parasite ();
 
       switch (run_mode)
         {
@@ -422,6 +428,7 @@ run (const gchar      *name,
               jsvals.save_exif        = save_vals->save_exif;
               jsvals.save_thumbnail   = save_vals->save_thumbnail;
               jsvals.save_xmp         = save_vals->save_xmp;
+              jsvals.save_iptc        = save_vals->save_iptc;
               jsvals.use_orig_quality = save_vals->use_orig_quality;
 
               gimp_parasite_free (parasite);
@@ -442,14 +449,20 @@ run (const gchar      *name,
               if (orig_quality > jsvals.quality)
                 {
                   jsvals.quality = orig_quality;
-                  jsvals.use_orig_quality = TRUE;
                 }
 
-              if (orig_subsmp == JPEG_SUBSAMPLING_1x1_1x1_1x1 ||
-                  ((gint) orig_subsmp > 0 &&
-                   jsvals.subsmp == JPEG_SUBSAMPLING_1x1_1x1_1x1))
+              /* Skip changing subsampling to original if we alredy have best
+               * setting or if original have worst setting */
+              if (!(jsvals.subsmp == JPEG_SUBSAMPLING_1x1_1x1_1x1 ||
+                    orig_subsmp == JPEG_SUBSAMPLING_2x2_1x1_1x1))
                 {
                   jsvals.subsmp = orig_subsmp;
+                }
+
+              if (orig_quality == jsvals.quality &&
+                  orig_subsmp == jsvals.subsmp)
+                {
+                  jsvals.use_orig_quality = TRUE;
                 }
             }
           break;
@@ -496,19 +509,21 @@ run (const gchar      *name,
       if (export == GIMP_EXPORT_EXPORT)
         {
           /* If the image was exported, delete the new display. */
-          /* This also deletes the image.                       */
+          /* This also deletes the image.
+           */
 
           if (display_ID != -1)
             gimp_display_delete (display_ID);
           else
             gimp_image_delete (image_ID);
-       }
+        }
 
       if (status == GIMP_PDB_SUCCESS)
         {
           /* pw - now we need to change the defaults to be whatever
            * was used to save this image.  Dump the old parasites
-           * and add new ones. */
+           * and add new ones.
+           */
 
           gimp_image_detach_parasite (orig_image_ID, "gimp-comment");
           if (image_comment && strlen (image_comment))
@@ -521,12 +536,50 @@ run (const gchar      *name,
               gimp_parasite_free (parasite);
             }
 
-          gimp_image_detach_parasite (orig_image_ID, "jpeg-save-options");
           parasite = gimp_parasite_new ("jpeg-save-options",
                                         0, sizeof (jsvals), &jsvals);
           gimp_image_attach_parasite (orig_image_ID, parasite);
           gimp_parasite_free (parasite);
+
+          /* write metadata */
+
+          if (metadata)
+            {
+              GFile *file;
+
+              gimp_metadata_set_bits_per_sample (metadata, 8);
+
+              if (jsvals.save_exif)
+                metadata_flags |= GIMP_METADATA_SAVE_EXIF;
+              else
+                metadata_flags &= ~GIMP_METADATA_SAVE_EXIF;
+
+              if (jsvals.save_xmp)
+                metadata_flags |= GIMP_METADATA_SAVE_XMP;
+              else
+                metadata_flags &= ~GIMP_METADATA_SAVE_XMP;
+
+              if (jsvals.save_iptc)
+                metadata_flags |= GIMP_METADATA_SAVE_IPTC;
+              else
+                metadata_flags &= ~GIMP_METADATA_SAVE_IPTC;
+
+              if (jsvals.save_thumbnail)
+                metadata_flags |= GIMP_METADATA_SAVE_THUMBNAIL;
+              else
+                metadata_flags &= ~GIMP_METADATA_SAVE_THUMBNAIL;
+
+              file = g_file_new_for_path (param[3].data.d_string);
+              gimp_image_metadata_save_finish (orig_image_ID,
+                                               "image/jpeg",
+                                               metadata, metadata_flags,
+                                               file, NULL);
+              g_object_unref (file);
+            }
         }
+
+      if (metadata)
+        g_object_unref (metadata);
     }
   else
     {

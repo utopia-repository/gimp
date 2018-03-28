@@ -23,53 +23,30 @@
 
 #include "gimpcursor.h"
 
-#include "cursors/gimp-tool-cursors.h"
+#include "cursors/gimp-tool-cursors.c"
 
 
-#define cursor_none_x_hot 10
-#define cursor_none_y_hot 10
+#define cursor_default_x_hot 10
+#define cursor_default_y_hot 10
+
 #define cursor_mouse_x_hot 3
 #define cursor_mouse_y_hot 2
 #define cursor_crosshair_x_hot 15
 #define cursor_crosshair_y_hot 15
-#define cursor_crosshair_small_x_hot 10
-#define cursor_crosshair_small_y_hot 10
-#define cursor_bad_x_hot 10
-#define cursor_bad_y_hot 10
-#define cursor_move_x_hot 10
-#define cursor_move_y_hot 10
 #define cursor_zoom_x_hot 8
 #define cursor_zoom_y_hot 8
 #define cursor_color_picker_x_hot 1
 #define cursor_color_picker_y_hot 30
-#define cursor_corner_top_left_x_hot 10
-#define cursor_corner_top_left_y_hot 10
-#define cursor_corner_top_right_x_hot 10
-#define cursor_corner_top_right_y_hot 10
-#define cursor_corner_bottom_left_x_hot 10
-#define cursor_corner_bottom_left_y_hot 10
-#define cursor_corner_bottom_right_x_hot 10
-#define cursor_corner_bottom_right_y_hot 10
-#define cursor_side_top_x_hot 10
-#define cursor_side_top_y_hot 10
-#define cursor_side_left_x_hot 10
-#define cursor_side_left_y_hot 10
-#define cursor_side_right_x_hot 10
-#define cursor_side_right_y_hot 10
-#define cursor_side_bottom_x_hot 10
-#define cursor_side_bottom_y_hot 10
 
 
 typedef struct _GimpCursor GimpCursor;
 
 struct _GimpCursor
 {
-  const guint8 *pixbuf_data;
-  const guint8 *pixbuf_data_bw;
-  const gint    x_hot, y_hot;
+  const gchar *resource_name;
+  const gint   x_hot, y_hot;
 
-  GdkPixbuf    *pixbuf;
-  GdkPixbuf    *pixbuf_bw;
+  GdkPixbuf   *pixbuf;
 };
 
 
@@ -78,84 +55,100 @@ static GimpCursor gimp_cursors[] =
   /* these have to match up with enum GimpCursorType in widgets-enums.h */
 
   {
-    cursor_none,
-    cursor_none_bw,
-    cursor_none_x_hot, cursor_none_y_hot
+    "cursor-none.png",
+    cursor_default_x_hot, cursor_default_y_hot
   },
   {
-    cursor_mouse,
-    cursor_mouse_bw,
+    "cursor-mouse.png",
     cursor_mouse_x_hot, cursor_mouse_y_hot
   },
   {
-    cursor_crosshair,
-    cursor_crosshair_bw,
+    "cursor-crosshair.png",
     cursor_crosshair_x_hot, cursor_crosshair_y_hot
   },
   {
-    cursor_crosshair_small,
-    cursor_crosshair_small_bw,
-    cursor_crosshair_small_x_hot, cursor_crosshair_small_y_hot
+    "cursor-crosshair-small.png",
+    cursor_default_x_hot, cursor_default_y_hot
   },
   {
-    cursor_bad,
-    cursor_bad_bw,
-    cursor_bad_x_hot, cursor_bad_y_hot
+    "cursor-bad.png",
+    cursor_default_x_hot, cursor_default_y_hot
   },
   {
-    cursor_move,
-    cursor_move_bw,
-    cursor_move_x_hot, cursor_move_y_hot
+    "cursor-move.png",
+    cursor_default_x_hot, cursor_default_y_hot
   },
   {
-    cursor_zoom,
-    cursor_zoom_bw,
+    "cursor-zoom.png",
     cursor_zoom_x_hot, cursor_zoom_y_hot
   },
   {
-    cursor_color_picker,
-    cursor_color_picker_bw,
+    "cursor-color-picker.png",
     cursor_color_picker_x_hot, cursor_color_picker_y_hot
   },
   {
-    cursor_corner_top_left,
-    cursor_corner_top_left_bw,
-    cursor_corner_top_left_x_hot, cursor_corner_top_left_y_hot
+    "cursor-corner-top.png",
+    cursor_default_x_hot, cursor_default_y_hot
   },
   {
-    cursor_corner_top_right,
-    cursor_corner_top_right_bw,
-    cursor_corner_top_right_x_hot, cursor_corner_top_right_y_hot
+    "cursor-corner-top-right.png",
+    cursor_default_x_hot, cursor_default_y_hot
   },
   {
-    cursor_corner_bottom_left,
-    cursor_corner_bottom_left_bw,
-    cursor_corner_bottom_left_x_hot, cursor_corner_bottom_left_y_hot
+    "cursor-corner-right.png",
+    cursor_default_x_hot, cursor_default_y_hot
   },
   {
-    cursor_corner_bottom_right,
-    cursor_corner_bottom_right_bw,
-    cursor_corner_bottom_right_x_hot, cursor_corner_bottom_right_y_hot
+    "cursor-corner-bottom-right.png",
+    cursor_default_x_hot, cursor_default_y_hot
   },
   {
-    cursor_side_top,
-    cursor_side_top_bw,
-    cursor_side_top_x_hot, cursor_side_top_y_hot
+    "cursor-corner-bottom.png",
+    cursor_default_x_hot, cursor_default_y_hot
   },
   {
-    cursor_side_left,
-    cursor_side_left_bw,
-    cursor_side_left_x_hot, cursor_side_left_y_hot
+    "cursor-corner-bottom-left.png",
+    cursor_default_x_hot, cursor_default_y_hot
   },
   {
-    cursor_side_right,
-    cursor_side_right_bw,
-    cursor_side_right_x_hot, cursor_side_right_y_hot
+    "cursor-corner-left.png",
+    cursor_default_x_hot, cursor_default_y_hot
   },
   {
-    cursor_side_bottom,
-    cursor_side_bottom_bw,
-    cursor_side_bottom_x_hot, cursor_side_bottom_y_hot
+    "cursor-corner-top-left.png",
+    cursor_default_x_hot, cursor_default_y_hot
+  },
+  {
+    "cursor-side-top.png",
+    cursor_default_x_hot, cursor_default_y_hot
+  },
+  {
+    "cursor-side-top-right.png",
+    cursor_default_x_hot, cursor_default_y_hot
+  },
+  {
+    "cursor-side-right.png",
+    cursor_default_x_hot, cursor_default_y_hot
+  },
+  {
+    "cursor-side-bottom-right.png",
+    cursor_default_x_hot, cursor_default_y_hot
+  },
+  {
+    "cursor-side-bottom.png",
+    cursor_default_x_hot, cursor_default_y_hot
+  },
+  {
+    "cursor-side-bottom-left.png",
+    cursor_default_x_hot, cursor_default_y_hot
+  },
+  {
+    "cursor-side-left.png",
+    cursor_default_x_hot, cursor_default_y_hot
+  },
+  {
+    "cursor-side-top-left.png",
+    cursor_default_x_hot, cursor_default_y_hot
   }
 };
 
@@ -164,42 +157,43 @@ static GimpCursor gimp_tool_cursors[] =
   /* these have to match up with enum GimpToolCursorType in widgets-enums.h */
 
   { NULL },
-  { tool_rect_select, tool_rect_select_bw },
-  { tool_ellipse_select, tool_ellipse_select_bw },
-  { tool_free_select, tool_free_select_bw },
-  { tool_polygon_select, tool_polygon_select_bw },
-  { tool_fuzzy_select, tool_fuzzy_select_bw },
-  { tool_paths, tool_paths_bw },
-  { tool_paths_anchor, tool_paths_anchor_bw },
-  { tool_paths_control, tool_paths_control_bw },
-  { tool_paths_segment, tool_paths_segment_bw },
-  { tool_iscissors, tool_iscissors_bw },
-  { tool_move, tool_move_bw },
-  { tool_zoom, tool_zoom_bw },
-  { tool_crop, tool_crop_bw },
-  { tool_resize, tool_resize_bw },
-  { tool_rotate, tool_rotate_bw },
-  { tool_shear, tool_shear_bw },
-  { tool_perspective, tool_perspective_bw },
-  { tool_flip_horizontal, tool_flip_horizontal_bw },
-  { tool_flip_vertical, tool_flip_vertical_bw },
-  { tool_text, tool_text_bw },
-  { tool_color_picker, tool_color_picker_bw },
-  { tool_bucket_fill, tool_bucket_fill_bw },
-  { tool_blend, tool_blend_bw },
-  { tool_pencil, tool_pencil_bw },
-  { tool_paintbrush, tool_paintbrush_bw },
-  { tool_airbrush, tool_airbrush_bw },
-  { tool_ink, tool_ink_bw },
-  { tool_clone, tool_clone_bw },
-  { tool_heal, tool_heal_bw },
-  { tool_eraser, tool_eraser_bw },
-  { tool_smudge, tool_smudge_bw },
-  { tool_blur, tool_blur_bw },
-  { tool_dodge, tool_dodge_bw },
-  { tool_burn, tool_burn_bw },
-  { tool_measure, tool_measure_bw },
-  { tool_hand, tool_hand_bw }
+  { "tool-rect-select.png" },
+  { "tool-ellipse-select.png" },
+  { "tool-free-select.png" },
+  { "tool-polygon-select.png" },
+  { "tool-fuzzy-select.png" },
+  { "tool-paths.png" },
+  { "tool-paths-anchor.png" },
+  { "tool-paths-control.png" },
+  { "tool-paths-segment.png" },
+  { "tool-iscissors.png" },
+  { "tool-move.png" },
+  { "tool-zoom.png" },
+  { "tool-crop.png" },
+  { "tool-resize.png" },
+  { "tool-rotate.png" },
+  { "tool-shear.png" },
+  { "tool-perspective.png" },
+  { "tool-flip-horizontal.png" },
+  { "tool-flip-vertical.png" },
+  { "tool-text.png" },
+  { "tool-color-picker.png" },
+  { "tool-bucket-fill.png" },
+  { "tool-blend.png" },
+  { "tool-pencil.png" },
+  { "tool-paintbrush.png" },
+  { "tool-airbrush.png" },
+  { "tool-ink.png" },
+  { "tool-clone.png" },
+  { "tool-heal.png" },
+  { "tool-eraser.png" },
+  { "tool-smudge.png" },
+  { "tool-blur.png" },
+  { "tool-dodge.png" },
+  { "tool-burn.png" },
+  { "tool-measure.png" },
+  { "tool-warp.png" },
+  { "tool-hand.png" }
 };
 
 static GimpCursor gimp_cursor_modifiers[] =
@@ -207,46 +201,49 @@ static GimpCursor gimp_cursor_modifiers[] =
   /* these have to match up with enum GimpCursorModifier in widgets-enums.h */
 
   { NULL },
-  { modifier_bad, modifier_bad },
-  { modifier_plus, modifier_plus },
-  { modifier_minus, modifier_minus },
-  { modifier_intersect, modifier_intersect },
-  { modifier_move, modifier_move },
-  { modifier_resize, modifier_resize },
-  { modifier_control, modifier_control },
-  { modifier_anchor, modifier_anchor },
-  { modifier_foreground, modifier_foreground },
-  { modifier_background, modifier_background },
-  { modifier_pattern, modifier_pattern },
-  { modifier_join, modifier_join },
-  { modifier_select, modifier_select }
+  { "modifier-bad.png" },
+  { "modifier-plus.png" },
+  { "modifier-minus.png" },
+  { "modifier-intersect.png" },
+  { "modifier-move.png" },
+  { "modifier-resize.png" },
+  { "modifier-control.png" },
+  { "modifier-anchor.png" },
+  { "modifier-foreground.png" },
+  { "modifier-background.png" },
+  { "modifier-pattern.png" },
+  { "modifier-join.png" },
+  { "modifier-select.png" }
 };
 
+
 static const GdkPixbuf *
-get_cursor_pixbuf (GimpCursor *cursor,
-                   gboolean    bw)
+get_cursor_pixbuf (GimpCursor *cursor)
 {
-  GdkPixbuf **pixbuf;
+  if (! cursor->pixbuf)
+    {
+      gchar  *resource_path;
+      GError *error = NULL;
 
-  if (bw)
-    pixbuf = &cursor->pixbuf_bw;
-  else
-    pixbuf = &cursor->pixbuf;
+      resource_path = g_strconcat ("/org/gimp/tool-cursors/",
+                                   cursor->resource_name, NULL);
 
-  if (! *pixbuf)
-    *pixbuf = gdk_pixbuf_new_from_inline (-1,
-                                          bw ?
-                                          cursor->pixbuf_data_bw :
-                                          cursor->pixbuf_data,
-                                          FALSE, NULL);
-  g_return_val_if_fail (*pixbuf != NULL, NULL);
+      cursor->pixbuf = gdk_pixbuf_new_from_resource (resource_path, &error);
 
-  return *pixbuf;
+      if (! cursor->pixbuf)
+        {
+          g_critical ("Failed to create cursor image: %s", error->message);
+          g_clear_error (&error);
+        }
+
+      g_free (resource_path);
+    }
+
+  return cursor->pixbuf;
 }
 
 GdkCursor *
 gimp_cursor_new (GdkDisplay         *display,
-                 GimpCursorFormat    cursor_format,
                  GimpHandedness      cursor_handedness,
                  GimpCursorType      cursor_type,
                  GimpToolCursorType  tool_cursor,
@@ -257,13 +254,12 @@ gimp_cursor_new (GdkDisplay         *display,
   GimpCursor *bmtool     = NULL;
   GdkCursor  *cursor;
   GdkPixbuf  *pixbuf;
-  gboolean    bw;
 
   g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
   g_return_val_if_fail (cursor_type < GIMP_CURSOR_LAST, NULL);
 
   if (cursor_type <= (GimpCursorType) GDK_LAST_CURSOR)
-    return gdk_cursor_new_for_display (display, cursor_type);
+    return gdk_cursor_new_for_display (display, (GdkCursorType) cursor_type);
 
   g_return_val_if_fail (cursor_type >= GIMP_CURSOR_NONE, NULL);
 
@@ -300,29 +296,46 @@ gimp_cursor_new (GdkDisplay         *display,
 
   if (cursor_handedness == GIMP_HANDEDNESS_LEFT)
     {
-      if (cursor_type == GIMP_CURSOR_CORNER_TOP_LEFT)
+      switch (cursor_type)
         {
-          cursor_type = GIMP_CURSOR_CORNER_TOP_RIGHT;
-        }
-      else if (cursor_type == GIMP_CURSOR_CORNER_TOP_RIGHT)
-        {
-          cursor_type = GIMP_CURSOR_CORNER_TOP_LEFT;
-        }
-      else if (cursor_type == GIMP_CURSOR_CORNER_BOTTOM_LEFT)
-        {
-          cursor_type = GIMP_CURSOR_CORNER_BOTTOM_RIGHT;
-        }
-      else if (cursor_type == GIMP_CURSOR_CORNER_BOTTOM_RIGHT)
-        {
-          cursor_type = GIMP_CURSOR_CORNER_BOTTOM_LEFT;
-        }
-      else if (cursor_type == GIMP_CURSOR_SIDE_LEFT)
-        {
-          cursor_type = GIMP_CURSOR_SIDE_RIGHT;
-        }
-      else if (cursor_type == GIMP_CURSOR_SIDE_RIGHT)
-        {
-          cursor_type = GIMP_CURSOR_SIDE_LEFT;
+        case GIMP_CURSOR_CORNER_TOP_LEFT:
+          cursor_type = GIMP_CURSOR_CORNER_TOP_RIGHT; break;
+
+        case GIMP_CURSOR_CORNER_TOP_RIGHT:
+          cursor_type = GIMP_CURSOR_CORNER_TOP_LEFT; break;
+
+        case GIMP_CURSOR_CORNER_LEFT:
+          cursor_type = GIMP_CURSOR_CORNER_RIGHT; break;
+
+        case GIMP_CURSOR_CORNER_RIGHT:
+          cursor_type = GIMP_CURSOR_CORNER_LEFT; break;
+
+        case GIMP_CURSOR_CORNER_BOTTOM_LEFT:
+          cursor_type = GIMP_CURSOR_CORNER_BOTTOM_RIGHT; break;
+
+        case GIMP_CURSOR_CORNER_BOTTOM_RIGHT:
+          cursor_type = GIMP_CURSOR_CORNER_BOTTOM_LEFT; break;
+
+        case GIMP_CURSOR_SIDE_TOP_LEFT:
+          cursor_type = GIMP_CURSOR_SIDE_TOP_RIGHT; break;
+
+        case GIMP_CURSOR_SIDE_TOP_RIGHT:
+          cursor_type = GIMP_CURSOR_SIDE_TOP_LEFT; break;
+
+        case GIMP_CURSOR_SIDE_LEFT:
+          cursor_type = GIMP_CURSOR_SIDE_RIGHT; break;
+
+        case GIMP_CURSOR_SIDE_RIGHT:
+          cursor_type = GIMP_CURSOR_SIDE_LEFT; break;
+
+        case GIMP_CURSOR_SIDE_BOTTOM_LEFT:
+          cursor_type = GIMP_CURSOR_SIDE_BOTTOM_RIGHT; break;
+
+        case GIMP_CURSOR_SIDE_BOTTOM_RIGHT:
+          cursor_type = GIMP_CURSOR_SIDE_BOTTOM_LEFT; break;
+
+        default:
+          break;
         }
     }
 
@@ -347,18 +360,7 @@ gimp_cursor_new (GdkDisplay         *display,
       bmmodifier = &gimp_cursor_modifiers[modifier];
     }
 
-  if (cursor_format != GIMP_CURSOR_FORMAT_BITMAP  &&
-      gdk_display_supports_cursor_alpha (display) &&
-      gdk_display_supports_cursor_color (display))
-    {
-      bw = FALSE;
-    }
-  else
-    {
-      bw = TRUE;
-    }
-
-  pixbuf = gdk_pixbuf_copy (get_cursor_pixbuf (bmcursor, bw));
+  pixbuf = gdk_pixbuf_copy (get_cursor_pixbuf (bmcursor));
 
   if (bmmodifier || bmtool)
     {
@@ -366,16 +368,16 @@ gimp_cursor_new (GdkDisplay         *display,
       gint height = gdk_pixbuf_get_height (pixbuf);
 
       if (bmmodifier)
-        gdk_pixbuf_composite (get_cursor_pixbuf (bmmodifier, bw), pixbuf,
+        gdk_pixbuf_composite (get_cursor_pixbuf (bmmodifier), pixbuf,
                               0, 0, width, height,
                               0.0, 0.0, 1.0, 1.0,
-                              GDK_INTERP_NEAREST, bw ? 255 : 200);
+                              GDK_INTERP_NEAREST, 200);
 
       if (bmtool)
-        gdk_pixbuf_composite (get_cursor_pixbuf (bmtool, bw), pixbuf,
+        gdk_pixbuf_composite (get_cursor_pixbuf (bmtool), pixbuf,
                               0, 0, width, height,
                               0.0, 0.0, 1.0, 1.0,
-                              GDK_INTERP_NEAREST, bw ? 255 : 200);
+                              GDK_INTERP_NEAREST, 200);
     }
 
   /*  flip the cursor if mouse setting is left-handed  */
@@ -404,7 +406,6 @@ gimp_cursor_new (GdkDisplay         *display,
 
 void
 gimp_cursor_set (GtkWidget          *widget,
-                 GimpCursorFormat    cursor_format,
                  GimpHandedness      cursor_handedness,
                  GimpCursorType      cursor_type,
                  GimpToolCursorType  tool_cursor,
@@ -416,11 +417,40 @@ gimp_cursor_set (GtkWidget          *widget,
   g_return_if_fail (gtk_widget_get_realized (widget));
 
   cursor = gimp_cursor_new (gtk_widget_get_display (widget),
-                            cursor_format,
                             cursor_handedness,
                             cursor_type,
                             tool_cursor,
                             modifier);
   gdk_window_set_cursor (gtk_widget_get_window (widget), cursor);
   gdk_cursor_unref (cursor);
+
+  gdk_display_flush (gtk_widget_get_display (widget));
+}
+
+GimpCursorType
+gimp_cursor_rotate (GimpCursorType  cursor,
+                    gdouble         angle)
+{
+  if (cursor >= GIMP_CURSOR_CORNER_TOP &&
+      cursor <= GIMP_CURSOR_SIDE_TOP_LEFT)
+    {
+      gint offset = (gint) (angle / 45 + 0.5);
+
+      if (cursor < GIMP_CURSOR_SIDE_TOP)
+        {
+          cursor += offset;
+
+          if (cursor > GIMP_CURSOR_CORNER_TOP_LEFT)
+            cursor -= 8;
+        }
+      else
+        {
+          cursor += offset;
+
+          if (cursor > GIMP_CURSOR_SIDE_TOP_LEFT)
+            cursor -= 8;
+        }
+   }
+
+  return cursor;
 }

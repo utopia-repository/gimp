@@ -8,7 +8,7 @@
 <link rel="up" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="prev" href="libgimp-gimpfontselect.html" title="gimpfontselect">
 <link rel="next" href="libgimp-gimppaletteselect.html" title="gimppaletteselect">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -27,7 +27,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="libgimp-gimpgradientselect.top_of_page"></a>gimpgradientselect</span></h2>
-<p>gimpgradientselect</p>
+<p>gimpgradientselect — Functions providing a gradient selection dialog.</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -48,7 +48,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<td class="function_type">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimpgradientselect.html#gimp-gradient-select-new" title="gimp_gradient_select_new ()">gimp_gradient_select_new</a> <span class="c_punctuation">()</span>
@@ -64,7 +64,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimpgradientselect.html#gimp-gradients-popup" title="gimp_gradients_popup ()">gimp_gradients_popup</a> <span class="c_punctuation">()</span>
@@ -72,7 +72,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimpgradientselect.html#gimp-gradients-close-popup" title="gimp_gradients_close_popup ()">gimp_gradients_close_popup</a> <span class="c_punctuation">()</span>
@@ -80,7 +80,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimpgradientselect.html#gimp-gradients-set-popup" title="gimp_gradients_set_popup ()">gimp_gradients_set_popup</a> <span class="c_punctuation">()</span>
@@ -91,55 +91,143 @@
 </div>
 <div class="refsect1">
 <a name="libgimp-gimpgradientselect.description"></a><h2>Description</h2>
+<p>Functions providing a gradient selection dialog.</p>
 </div>
 <div class="refsect1">
 <a name="libgimp-gimpgradientselect.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="GimpRunGradientCallback"></a><h3>GimpRunGradientCallback ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-<span class="c_punctuation">(</span>*GimpRunGradientCallback<span class="c_punctuation">)</span> (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_name</code></em>,
-                            <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
-                            <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *grad_data</code></em>,
-                            <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> dialog_closing</code></em>,
-                            <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<span class="c_punctuation">(</span>*GimpRunGradientCallback<span class="c_punctuation">)</span> (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_name</code></em>,
+                            <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                            <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *grad_data</code></em>,
+                            <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> dialog_closing</code></em>,
+                            <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-gradient-select-new"></a><h3>gimp_gradient_select_new ()</h3>
-<pre class="programlisting">const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-gimp_gradient_select_new (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
-                          <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_name</code></em>,
-                          <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a> sample_size</code></em>,
+<pre class="programlisting">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+gimp_gradient_select_new (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                          <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_name</code></em>,
+                          <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> sample_size</code></em>,
                           <em class="parameter"><code><a class="link" href="libgimp-gimpgradientselect.html#GimpRunGradientCallback" title="GimpRunGradientCallback ()"><span class="type">GimpRunGradientCallback</span></a> callback</code></em>,
-                          <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);</pre>
+                          <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-gradient-select-destroy"></a><h3>gimp_gradient_select_destroy ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-gimp_gradient_select_destroy (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_callback</code></em>);</pre>
+gimp_gradient_select_destroy (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_callback</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-gradients-popup"></a><h3>gimp_gradients_popup ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gimp_gradients_popup (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_callback</code></em>,
-                      <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *popup_title</code></em>,
-                      <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *initial_gradient</code></em>,
-                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a> sample_size</code></em>);</pre>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_gradients_popup (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_callback</code></em>,
+                      <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *popup_title</code></em>,
+                      <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *initial_gradient</code></em>,
+                      <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> sample_size</code></em>);</pre>
+<p>Invokes the Gimp gradients selection.</p>
+<p>This procedure opens the gradient selection dialog.</p>
+<div class="refsect3">
+<a name="gimp-gradients-popup.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>gradient_callback</p></td>
+<td class="parameter_description"><p>The callback PDB proc to call when gradient selection is made.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>popup_title</p></td>
+<td class="parameter_description"><p>Title of the gradient selection dialog.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>initial_gradient</p></td>
+<td class="parameter_description"><p>The name of the gradient to set as the first selected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>sample_size</p></td>
+<td class="parameter_description"><p>Size of the sample to return when the gradient is changed.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gimp-gradients-popup.returns"></a><h4>Returns</h4>
+<p> TRUE on success.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-gradients-close-popup"></a><h3>gimp_gradients_close_popup ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gimp_gradients_close_popup (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_callback</code></em>);</pre>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_gradients_close_popup (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_callback</code></em>);</pre>
+<p>Close the gradient selection dialog.</p>
+<p>This procedure closes an opened gradient selection dialog.</p>
+<div class="refsect3">
+<a name="gimp-gradients-close-popup.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>gradient_callback</p></td>
+<td class="parameter_description"><p>The name of the callback registered for this pop-up.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gimp-gradients-close-popup.returns"></a><h4>Returns</h4>
+<p> TRUE on success.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-gradients-set-popup"></a><h3>gimp_gradients_set_popup ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gimp_gradients_set_popup (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_callback</code></em>,
-                          <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_name</code></em>);</pre>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_gradients_set_popup (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_callback</code></em>,
+                          <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_name</code></em>);</pre>
+<p>Sets the current gradient in a gradient selection dialog.</p>
+<p>Sets the current gradient in a gradient selection dialog.</p>
+<div class="refsect3">
+<a name="gimp-gradients-set-popup.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>gradient_callback</p></td>
+<td class="parameter_description"><p>The name of the callback registered for this pop-up.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>gradient_name</p></td>
+<td class="parameter_description"><p>The name of the gradient to set as selected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gimp-gradients-set-popup.returns"></a><h4>Returns</h4>
+<p> TRUE on success.</p>
+</div>
 </div>
 </div>
 <div class="refsect1">
@@ -147,6 +235,6 @@ gimp_gradients_set_popup (<em class="parameter"><code>const <a href="/usr/share/
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.27</div>
 </body>
 </html>

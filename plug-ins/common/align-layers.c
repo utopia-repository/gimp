@@ -575,7 +575,8 @@ align_layers_get_align_offsets (gint32  drawable_id,
                                 gint   *x,
                                 gint   *y)
 {
-  GimpDrawable *layer = gimp_drawable_get (drawable_id);
+  gint width  = gimp_drawable_width  (drawable_id);
+  gint height = gimp_drawable_height (drawable_id);
 
   switch (VALS.h_base)
     {
@@ -583,10 +584,10 @@ align_layers_get_align_offsets (gint32  drawable_id,
       *x = 0;
       break;
     case H_BASE_CENTER:
-      *x = layer->width / 2;
+      *x = width / 2;
       break;
     case H_BASE_RIGHT:
-      *x = layer->width;
+      *x = width;
       break;
     default:
       *x = 0;
@@ -599,17 +600,15 @@ align_layers_get_align_offsets (gint32  drawable_id,
       *y = 0;
       break;
     case V_BASE_CENTER:
-      *y = layer->height / 2;
+      *y = height / 2;
       break;
     case V_BASE_BOTTOM:
-      *y = layer->height;
+      *y = height;
       break;
     default:
       *y = 0;
       break;
     }
-
-  gimp_drawable_detach (layer);
 }
 
 static int
@@ -628,8 +627,8 @@ align_layers_dialog (void)
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
                             NULL);
 

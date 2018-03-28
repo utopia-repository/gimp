@@ -35,6 +35,8 @@
 #include "widgets/gimpchanneltreeview.h"
 #include "widgets/gimpcoloreditor.h"
 #include "widgets/gimpcolormapeditor.h"
+#include "widgets/gimpcriticaldialog.h"
+#include "widgets/gimpdashboard.h"
 #include "widgets/gimpdevicestatus.h"
 #include "widgets/gimpdialogfactory.h"
 #include "widgets/gimpdockwindow.h"
@@ -53,6 +55,7 @@
 #include "widgets/gimppatternfactoryview.h"
 #include "widgets/gimpsamplepointeditor.h"
 #include "widgets/gimpselectioneditor.h"
+#include "widgets/gimpsymmetryeditor.h"
 #include "widgets/gimptemplateview.h"
 #include "widgets/gimptoolbox.h"
 #include "widgets/gimptooloptionseditor.h"
@@ -65,6 +68,7 @@
 #include "display/gimpnavigationeditor.h"
 
 #include "about-dialog.h"
+#include "action-search-dialog.h"
 #include "dialogs.h"
 #include "dialogs-constructors.h"
 #include "file-open-dialog.h"
@@ -195,12 +199,30 @@ dialogs_about_get (GimpDialogFactory *factory,
 }
 
 GtkWidget *
+dialogs_action_search_get (GimpDialogFactory *factory,
+                           GimpContext       *context,
+                           GimpUIManager     *ui_manager,
+                           gint               view_size)
+{
+  return action_search_dialog_create (context->gimp);
+}
+
+GtkWidget *
 dialogs_error_get (GimpDialogFactory *factory,
                    GimpContext       *context,
                    GimpUIManager     *ui_manager,
                    gint               view_size)
 {
   return gimp_error_dialog_new (_("GIMP Message"));
+}
+
+GtkWidget *
+dialogs_critical_get (GimpDialogFactory *factory,
+                      GimpContext       *context,
+                      GimpUIManager     *ui_manager,
+                      gint               view_size)
+{
+  return gimp_critical_dialog_new (_("GIMP Debug"));
 }
 
 GtkWidget *
@@ -243,11 +265,19 @@ dialogs_toolbox_dock_window_new (GimpDialogFactory *factory,
                                  GimpUIManager     *ui_manager,
                                  gint               view_size)
 {
-  return gimp_dock_window_new ("gimp-toolbox",
+  static gint  role_serial = 1;
+  GtkWidget   *dock;
+  gchar       *role;
+
+  role = g_strdup_printf ("gimp-toolbox-%d", role_serial++);
+  dock = gimp_dock_window_new (role,
                                "<Toolbox>",
                                TRUE,
                                factory,
                                context);
+  g_free (role);
+
+  return dock;
 }
 
 GtkWidget *
@@ -265,11 +295,19 @@ dialogs_dock_window_new (GimpDialogFactory *factory,
                          GimpUIManager     *ui_manager,
                          gint               view_size)
 {
-  return gimp_dock_window_new ("gimp-dock",
+  static gint  role_serial = 1;
+  GtkWidget   *dock;
+  gchar       *role;
+
+  role = g_strdup_printf ("gimp-dock-%d", role_serial++);
+  dock = gimp_dock_window_new (role,
                                "<Dock>",
                                FALSE,
                                factory,
                                context);
+  g_free (role);
+
+  return dock;
 }
 
 
@@ -317,6 +355,16 @@ dialogs_cursor_view_new (GimpDialogFactory *factory,
   return gimp_cursor_view_new (gimp_dialog_factory_get_menu_factory (factory));
 }
 
+GtkWidget *
+dialogs_dashboard_new (GimpDialogFactory *factory,
+                       GimpContext       *context,
+                       GimpUIManager     *ui_manager,
+                       gint               view_size)
+{
+  return gimp_dashboard_new (context->gimp,
+                             gimp_dialog_factory_get_menu_factory (factory));
+}
+
 
 /*****  list views  *****/
 
@@ -358,6 +406,22 @@ dialogs_dynamics_list_view_new (GimpDialogFactory *factory,
                                          context,
                                          view_size, 1,
                                          gimp_dialog_factory_get_menu_factory (factory));
+}
+
+GtkWidget *
+dialogs_mypaint_brush_list_view_new (GimpDialogFactory *factory,
+                                     GimpContext       *context,
+                                     GimpUIManager     *ui_manager,
+                                     gint               view_size)
+{
+  return gimp_data_factory_view_new (GIMP_VIEW_TYPE_LIST,
+                                     context->gimp->mybrush_factory,
+                                     context,
+                                     view_size, 1,
+                                     gimp_dialog_factory_get_menu_factory (factory),
+                                     "<MyPaintBrushes>",
+                                     "/mypaint-brushes-popup",
+                                     "mypaint-brushes");
 }
 
 GtkWidget *
@@ -501,6 +565,35 @@ dialogs_brush_grid_view_new (GimpDialogFactory *factory,
 }
 
 GtkWidget *
+dialogs_dynamics_grid_view_new (GimpDialogFactory *factory,
+                                GimpContext       *context,
+                                GimpUIManager     *ui_manager,
+                                gint               view_size)
+{
+  return gimp_dynamics_factory_view_new (GIMP_VIEW_TYPE_GRID,
+                                         context->gimp->dynamics_factory,
+                                         context,
+                                         view_size, 1,
+                                         gimp_dialog_factory_get_menu_factory (factory));
+}
+
+GtkWidget *
+dialogs_mypaint_brush_grid_view_new (GimpDialogFactory *factory,
+                                     GimpContext       *context,
+                                     GimpUIManager     *ui_manager,
+                                     gint               view_size)
+{
+  return gimp_data_factory_view_new (GIMP_VIEW_TYPE_GRID,
+                                     context->gimp->mybrush_factory,
+                                     context,
+                                     view_size, 1,
+                                     gimp_dialog_factory_get_menu_factory (factory),
+                                     "<MyPaintBrushes>",
+                                     "/mypaint-brushes-popup",
+                                     "mypaint-brushes");
+}
+
+GtkWidget *
 dialogs_pattern_grid_view_new (GimpDialogFactory *factory,
                                GimpContext       *context,
                                GimpUIManager     *ui_manager,
@@ -569,6 +662,19 @@ dialogs_buffer_grid_view_new (GimpDialogFactory *factory,
                                context,
                                view_size, 1,
                                gimp_dialog_factory_get_menu_factory (factory));
+}
+
+GtkWidget *
+dialogs_tool_preset_grid_view_new (GimpDialogFactory *factory,
+                                   GimpContext       *context,
+                                   GimpUIManager     *ui_manager,
+                                   gint               view_size)
+{
+  return gimp_tool_preset_factory_view_new (GIMP_VIEW_TYPE_GRID,
+                                            context->gimp->tool_preset_factory,
+                                            context,
+                                            view_size, 1,
+                                            gimp_dialog_factory_get_menu_factory (factory));
 }
 
 GtkWidget *
@@ -676,6 +782,15 @@ dialogs_selection_editor_new (GimpDialogFactory *factory,
                               gint               view_size)
 {
   return gimp_selection_editor_new (gimp_dialog_factory_get_menu_factory (factory));
+}
+
+GtkWidget *
+dialogs_symmetry_editor_new (GimpDialogFactory *factory,
+                             GimpContext       *context,
+                             GimpUIManager     *ui_manager,
+                             gint               view_size)
+{
+  return gimp_symmetry_editor_new (gimp_dialog_factory_get_menu_factory (factory));
 }
 
 GtkWidget *

@@ -32,10 +32,10 @@
 #include <Cocoa/Cocoa.h>
 #endif
 
-#include "libgimpmodule/gimpmodule.h"
-
 #include "gimp.h"
 #include "gimpui.h"
+
+#include "libgimpmodule/gimpmodule.h"
 
 #include "libgimpwidgets/gimpwidgets.h"
 #include "libgimpwidgets/gimpwidgets-private.h"
@@ -93,9 +93,11 @@ void
 gimp_ui_init (const gchar *prog_name,
               gboolean     preview)
 {
-  GdkScreen   *screen;
-  const gchar *display_name;
-  gchar       *themerc;
+  GdkScreen    *screen;
+  const gchar  *display_name;
+  gchar        *themerc;
+  GFileMonitor *rc_monitor;
+  GFile        *file;
 
   g_return_if_fail (prog_name != NULL);
 
@@ -129,13 +131,26 @@ gimp_ui_init (const gchar *prog_name,
   gtk_init (NULL, NULL);
 
   themerc = gimp_personal_rc_file ("themerc");
-  gtk_rc_add_default_file (themerc);
+  gtk_rc_parse (themerc);
+
+  file = g_file_new_for_path (themerc);
   g_free (themerc);
+
+  rc_monitor = g_file_monitor (file, G_FILE_MONITOR_NONE, NULL, NULL);
+  g_object_unref (file);
+
+  g_signal_connect (rc_monitor, "changed",
+                    G_CALLBACK (gtk_rc_reparse_all),
+                    NULL);
 
   gdk_set_program_class (gimp_wm_class ());
 
   screen = gdk_screen_get_default ();
   gtk_widget_set_default_colormap (gdk_screen_get_rgb_colormap (screen));
+
+  file = g_file_new_for_path (gimp_get_icon_theme_dir ());
+  gimp_icons_set_icon_theme (file);
+  g_object_unref (file);
 
   gimp_widgets_init (gimp_ui_help_func,
                      gimp_context_get_foreground,
@@ -185,7 +200,7 @@ gimp_ui_get_foreign_window (guint32 window)
  *               unref the window using g_object_unref() as soon as
  *               you don't need it any longer.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  */
 GdkWindow *
 gimp_ui_get_display_window (guint32 gdisp_ID)
@@ -215,7 +230,7 @@ gimp_ui_get_display_window (guint32 gdisp_ID)
  *               unref the window using g_object_unref() as soon as
  *               you don't need it any longer.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  */
 GdkWindow *
 gimp_ui_get_progress_window (void)
@@ -254,7 +269,7 @@ gimp_window_transient_show (GtkWidget *window)
  * Most of the time you will want to use the convenience function
  * gimp_window_set_transient().
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  */
 void
 gimp_window_set_transient_for_display (GtkWindow *window,
@@ -288,7 +303,7 @@ gimp_window_set_transient_for_display (GtkWindow *window,
  * associated with the GIMP window that the plug-in has been
  * started from. See also gimp_window_set_transient_for_display().
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  */
 void
 gimp_window_set_transient (GtkWindow *window)

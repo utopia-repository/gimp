@@ -42,8 +42,10 @@ struct _GimpNavigationViewClass
   GimpViewClass  parent_class;
 
   void (* marker_changed) (GimpNavigationView *view,
-                           gdouble             x,
-                           gdouble             y);
+                           gdouble             center_x,
+                           gdouble             center_y,
+                           gdouble             width,
+                           gdouble             height);
   void (* zoom)           (GimpNavigationView *view,
                            GimpZoomType        direction);
   void (* scroll)         (GimpNavigationView *view,
@@ -54,18 +56,21 @@ struct _GimpNavigationViewClass
 GType   gimp_navigation_view_get_type     (void) G_GNUC_CONST;
 
 void    gimp_navigation_view_set_marker   (GimpNavigationView *view,
-                                           gdouble             x,
-                                           gdouble             y,
+                                           gdouble             center_x,
+                                           gdouble             center_y,
                                            gdouble             width,
-                                           gdouble             height);
+                                           gdouble             height,
+                                           gboolean            flip_horizontally,
+                                           gboolean            flip_vertically,
+                                           gdouble             rotate_angle);
 void    gimp_navigation_view_set_motion_offset
                                           (GimpNavigationView *view,
                                            gint                motion_offset_x,
                                            gint                motion_offset_y);
 void    gimp_navigation_view_get_local_marker
                                           (GimpNavigationView *view,
-                                           gint               *x,
-                                           gint               *y,
+                                           gint               *center_x,
+                                           gint               *center_y,
                                            gint               *width,
                                            gint               *height);
 void    gimp_navigation_view_grab_pointer (GimpNavigationView *view);

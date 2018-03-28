@@ -22,12 +22,15 @@
 
 #undef GSEAL_ENABLE
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpcolor/gimpcolor.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
+
+#include "config/gimpguiconfig.h"
 
 #include "core/gimp.h"
 #include "core/gimpbrush.h"
@@ -45,6 +48,7 @@
 #include "gimpdialogfactory.h"
 #include "gimppropwidgets.h"
 #include "gimpview.h"
+#include "gimpwidgets-utils.h"
 #include "gimpwindowstrategy.h"
 
 #include "gimp-intl.h"
@@ -65,6 +69,7 @@ struct _GimpDeviceStatusEntry
   GimpDeviceInfo *device_info;
 
   GtkWidget      *ebox;
+  GtkWidget      *options_hbox;
   GtkWidget      *tool;
   GtkWidget      *foreground;
   GtkWidget      *background;
@@ -89,6 +94,9 @@ static void gimp_device_status_device_remove   (GimpContainer         *devices,
                                                 GimpDeviceStatus      *status);
 
 static void gimp_device_status_notify_device   (GimpDeviceManager     *manager,
+                                                const GParamSpec      *pspec,
+                                                GimpDeviceStatus      *status);
+static void gimp_device_status_config_notify   (GimpGuiConfig         *config,
                                                 const GParamSpec      *pspec,
                                                 GimpDeviceStatus      *status);
 static void gimp_device_status_update_entry    (GimpDeviceInfo        *device_info,
@@ -133,7 +141,7 @@ gimp_device_status_init (GimpDeviceStatus *status)
   gtk_widget_show (status->vbox);
 
   status->save_button =
-    gimp_editor_add_button (GIMP_EDITOR (status), GTK_STOCK_SAVE,
+    gimp_editor_add_button (GIMP_EDITOR (status), GIMP_ICON_DOCUMENT_SAVE,
                             _("Save device status"), NULL,
                             G_CALLBACK (gimp_device_status_save_clicked),
                             NULL,
@@ -147,14 +155,13 @@ gimp_device_status_constructed (GObject *object)
   GimpContainer    *devices;
   GList            *list;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_GIMP (status->gimp));
+  gimp_assert (GIMP_IS_GIMP (status->gimp));
 
   devices = GIMP_CONTAINER (gimp_devices_get_manager (status->gimp));
 
-  for (list = GIMP_LIST (devices)->list; list; list = list->next)
+  for (list = GIMP_LIST (devices)->queue->head; list; list = list->next)
     gimp_device_status_device_add (devices, list->data, status);
 
   g_signal_connect_object (devices, "add",
@@ -169,6 +176,13 @@ gimp_device_status_constructed (GObject *object)
                     status);
 
   gimp_device_status_notify_device (GIMP_DEVICE_MANAGER (devices), NULL, status);
+
+  g_signal_connect_object (status->gimp->config, "notify::devices-share-tool",
+                           G_CALLBACK (gimp_device_status_config_notify),
+                           status, 0);
+
+  gimp_device_status_config_notify (GIMP_GUI_CONFIG (status->gimp->config),
+                                    NULL, status);
 }
 
 static void
@@ -273,13 +287,13 @@ gimp_device_status_device_add (GimpContainer    *devices,
   gimp_label_set_attributes (GTK_LABEL (label),
                              PANGO_ATTR_WEIGHT, PANGO_WEIGHT_BOLD,
                              -1);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
   /*  the row of properties  */
 
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
+  hbox = entry->options_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -413,6 +427,24 @@ gimp_device_status_notify_device (GimpDeviceManager *manager,
 }
 
 static void
+gimp_device_status_config_notify (GimpGuiConfig    *config,
+                                  const GParamSpec *pspec,
+                                  GimpDeviceStatus *status)
+{
+  gboolean  show_options;
+  GList    *list;
+
+  show_options = ! GIMP_GUI_CONFIG (status->gimp->config)->devices_share_tool;
+
+  for (list = status->devices; list; list = list->next)
+    {
+      GimpDeviceStatusEntry *entry = list->data;
+
+      gtk_widget_set_visible (entry->options_hbox, show_options);
+    }
+}
+
+static void
 gimp_device_status_update_entry (GimpDeviceInfo        *device_info,
                                  GimpDeviceStatusEntry *entry)
 {
@@ -465,5 +497,6 @@ gimp_device_status_view_clicked (GtkWidget       *widget,
                                              status->gimp,
                                              dialog_factory,
                                              gtk_widget_get_screen (widget),
+                                             gimp_widget_get_monitor (widget),
                                              identifier);
 }

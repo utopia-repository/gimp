@@ -22,8 +22,8 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #undef GSEAL_ENABLE
-
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
@@ -97,7 +97,7 @@ static void       gimp_ui_manager_menu_pos            (GtkMenu        *menu,
                                                        gint           *y,
                                                        gboolean       *push_in,
                                                        gpointer        data);
-static void       gimp_ui_manager_delete_popdown_data (GtkObject      *object,
+static void       gimp_ui_manager_delete_popdown_data (GtkWidget      *widget,
                                                        GimpUIManager  *manager);
 static void       gimp_ui_manager_item_realize        (GtkWidget      *widget,
                                                        GimpUIManager  *manager);
@@ -198,8 +198,7 @@ gimp_ui_manager_constructed (GObject *object)
 {
   GimpUIManager *manager = GIMP_UI_MANAGER (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   if (manager->name)
     {
@@ -523,6 +522,25 @@ gimp_ui_manager_activate_action (GimpUIManager *manager,
   return (action != NULL);
 }
 
+gboolean
+gimp_ui_manager_toggle_action (GimpUIManager *manager,
+                               const gchar   *group_name,
+                               const gchar   *action_name,
+                               gboolean       active)
+{
+  GtkAction *action;
+
+  g_return_val_if_fail (GIMP_IS_UI_MANAGER (manager), FALSE);
+  g_return_val_if_fail (action_name != NULL, FALSE);
+
+  action = gimp_ui_manager_find_action (manager, group_name, action_name);
+
+  if (GTK_IS_TOGGLE_ACTION (action))
+    gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action),
+                                  active ? TRUE : FALSE);
+
+  return GTK_IS_TOGGLE_ACTION (action);
+}
 
 void
 gimp_ui_manager_ui_register (GimpUIManager          *manager,
@@ -814,7 +832,7 @@ gimp_ui_manager_menu_position (GtkMenu  *menu,
                            &screen, &pointer_x, &pointer_y, NULL);
 
   monitor = gdk_screen_get_monitor_at_point (screen, pointer_x, pointer_y);
-  gdk_screen_get_monitor_geometry (screen, monitor, &rect);
+  gdk_screen_get_monitor_workarea (screen, monitor, &rect);
 
   gtk_menu_set_screen (menu, screen);
 
@@ -858,10 +876,10 @@ gimp_ui_manager_menu_pos (GtkMenu  *menu,
 }
 
 static void
-gimp_ui_manager_delete_popdown_data (GtkObject     *object,
+gimp_ui_manager_delete_popdown_data (GtkWidget     *widget,
                                      GimpUIManager *manager)
 {
-  g_signal_handlers_disconnect_by_func (object,
+  g_signal_handlers_disconnect_by_func (widget,
                                         gimp_ui_manager_delete_popdown_data,
                                         manager);
   g_object_set_data (G_OBJECT (manager), "popdown-data", NULL);
@@ -1253,10 +1271,8 @@ find_widget_under_pointer (GdkWindow *window,
     }
 
   /* We return (x, y) relative to the allocation of event_widget. */
-  if (x)
-    *x = child_loc.x;
-  if (y)
-    *y = child_loc.y;
+  *x = child_loc.x;
+  *y = child_loc.y;
 
   return event_widget;
 }

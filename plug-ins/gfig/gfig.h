@@ -115,16 +115,16 @@ struct _GFigObj
 /* this is temp, should be able to get rid of */
 typedef struct BrushDesc
 {
-  gchar                *name;
-  gdouble               opacity;
-  gint                  spacing;
-  GimpLayerModeEffects  paint_mode;
-  gint                  width;
-  gint                  height;
-  guchar               *pv_buf;  /* Buffer where brush placed */
-  gint16                x_off;
-  gint16                y_off;
-  const gchar          *popup;
+  gchar         *name;
+  gdouble        opacity;
+  gint           spacing;
+  GimpLayerMode  paint_mode;
+  gint           width;
+  gint           height;
+  guchar        *pv_buf;  /* Buffer where brush placed */
+  gint16         x_off;
+  gint16         y_off;
+  const gchar   *popup;
 } BrushDesc;
 
 typedef struct
@@ -239,7 +239,6 @@ void       paint_layer_fill        (gdouble x1,
 
 
 extern GtkWidget    *top_level_dlg;
-extern GimpDrawable *gfig_drawable;
 extern GList        *gfig_list;
 extern gdouble       org_scale_x_factor, org_scale_y_factor;
 

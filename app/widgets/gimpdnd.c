@@ -25,6 +25,8 @@
 
 #include "widgets-types.h"
 
+#include "config/gimpcoreconfig.h"
+
 #include "core/gimp.h"
 #include "core/gimpbrush.h"
 #include "core/gimpbuffer.h"
@@ -954,14 +956,15 @@ gimp_dnd_data_source_remove (GimpDndType  data_type,
         {
           GtkTargetList  *new_list;
           GtkTargetEntry *targets;
-          gint            n_targets;
+          gint            n_targets_old;
+          gint            n_targets_new;
           gint            i;
 
-          targets = gtk_target_table_new_from_list (target_list, &n_targets);
+          targets = gtk_target_table_new_from_list (target_list, &n_targets_old);
 
           new_list = gtk_target_list_new (NULL, 0);
 
-          for (i = 0; i < n_targets; i++)
+          for (i = 0; i < n_targets_old; i++)
             {
               if (targets[i].info != data_type)
                 {
@@ -972,14 +975,16 @@ gimp_dnd_data_source_remove (GimpDndType  data_type,
                 }
             }
 
-          gtk_target_table_free (targets, n_targets);
+          gtk_target_table_free (targets, n_targets_old);
 
-          if (g_list_length (target_list->list) !=
-              g_list_length (new_list->list))
+          targets = gtk_target_table_new_from_list (new_list, &n_targets_new);
+          gtk_target_table_free (targets, n_targets_new);
+
+          if (n_targets_old != n_targets_new)
             {
               list_changed = TRUE;
 
-              if (new_list->list)
+              if (n_targets_new > 0)
                 gtk_drag_source_set_target_list (widget, new_list);
               else
                 gtk_drag_source_set_target_list (widget, NULL);
@@ -1333,6 +1338,8 @@ gimp_dnd_get_color_icon (GtkWidget      *widget,
                           (GDestroyNotify) g_free);
 
   color_area = gimp_color_area_new (&color, GIMP_COLOR_AREA_SMALL_CHECKS, 0);
+  gimp_color_area_set_color_config (GIMP_COLOR_AREA (color_area),
+                                    the_dnd_gimp->config->color_management);
   gtk_widget_set_size_request (color_area,
                                DRAG_PREVIEW_SIZE, DRAG_PREVIEW_SIZE);
 
@@ -1440,7 +1447,7 @@ gimp_dnd_get_stream_data (GtkWidget        *widget,
   stream = (* (GimpDndDragStreamFunc) get_stream_func) (widget, &stream_length,
                                                         get_stream_data);
 
-  GIMP_LOG (DND, "stream %p, length %d", stream, stream_length);
+  GIMP_LOG (DND, "stream %p, length %" G_GSIZE_FORMAT, stream, stream_length);
 
   if (stream)
     {
@@ -1462,7 +1469,7 @@ gimp_dnd_set_stream_data (GtkWidget        *widget,
 
   stream = gimp_selection_data_get_stream (selection, &stream_length);
 
-  GIMP_LOG (DND, "stream %p, length %d", stream, stream_length);
+  GIMP_LOG (DND, "stream %p, length %" G_GSIZE_FORMAT, stream, stream_length);
 
   if (! stream)
     return FALSE;

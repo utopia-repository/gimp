@@ -2,12 +2,12 @@
 /* Generated data (by gimp-mkenums) */
 
 #include "config.h"
-#include <glib-object.h>
+#include <gio/gio.h>
 #include "libgimpbase/gimpbase.h"
 #include "paint-enums.h"
 #include "gimp-intl.h"
 
-/* enumerations from "./paint-enums.h" */
+/* enumerations from "paint-enums.h" */
 GType
 gimp_brush_application_mode_get_type (void)
 {
@@ -93,66 +93,6 @@ gimp_source_align_mode_get_type (void)
     {
       type = g_enum_register_static ("GimpSourceAlignMode", values);
       gimp_type_set_translation_context (type, "source-align-mode");
-      gimp_enum_set_value_descriptions (type, descs);
-    }
-
-  return type;
-}
-
-GType
-gimp_convolve_type_get_type (void)
-{
-  static const GEnumValue values[] =
-  {
-    { GIMP_BLUR_CONVOLVE, "GIMP_BLUR_CONVOLVE", "blur-convolve" },
-    { GIMP_SHARPEN_CONVOLVE, "GIMP_SHARPEN_CONVOLVE", "sharpen-convolve" },
-    { 0, NULL, NULL }
-  };
-
-  static const GimpEnumDesc descs[] =
-  {
-    { GIMP_BLUR_CONVOLVE, NC_("convolve-type", "Blur"), NULL },
-    { GIMP_SHARPEN_CONVOLVE, NC_("convolve-type", "Sharpen"), NULL },
-    { 0, NULL, NULL }
-  };
-
-  static GType type = 0;
-
-  if (G_UNLIKELY (! type))
-    {
-      type = g_enum_register_static ("GimpConvolveType", values);
-      gimp_type_set_translation_context (type, "convolve-type");
-      gimp_enum_set_value_descriptions (type, descs);
-    }
-
-  return type;
-}
-
-GType
-gimp_ink_blob_type_get_type (void)
-{
-  static const GEnumValue values[] =
-  {
-    { GIMP_INK_BLOB_TYPE_CIRCLE, "GIMP_INK_BLOB_TYPE_CIRCLE", "circle" },
-    { GIMP_INK_BLOB_TYPE_SQUARE, "GIMP_INK_BLOB_TYPE_SQUARE", "square" },
-    { GIMP_INK_BLOB_TYPE_DIAMOND, "GIMP_INK_BLOB_TYPE_DIAMOND", "diamond" },
-    { 0, NULL, NULL }
-  };
-
-  static const GimpEnumDesc descs[] =
-  {
-    { GIMP_INK_BLOB_TYPE_CIRCLE, NC_("ink-blob-type", "Circle"), NULL },
-    { GIMP_INK_BLOB_TYPE_SQUARE, NC_("ink-blob-type", "Square"), NULL },
-    { GIMP_INK_BLOB_TYPE_DIAMOND, NC_("ink-blob-type", "Diamond"), NULL },
-    { 0, NULL, NULL }
-  };
-
-  static GType type = 0;
-
-  if (G_UNLIKELY (! type))
-    {
-      type = g_enum_register_static ("GimpInkBlobType", values);
-      gimp_type_set_translation_context (type, "ink-blob-type");
       gimp_enum_set_value_descriptions (type, descs);
     }
 

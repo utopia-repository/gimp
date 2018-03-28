@@ -50,18 +50,18 @@ G_BEGIN_DECLS
  * GIMP_MAX_IMAGE_SIZE:
  *
  * The maximum width and height of a GIMP image in pixels. This is a
- * somewhat arbitray value that can be used when an upper value for
+ * somewhat arbitrary value that can be used when an upper value for
  * pixel sizes is needed; for example to give a spin button an upper
  * limit.
  **/
-#define GIMP_MAX_IMAGE_SIZE  262144    /*  2^18  */
+#define GIMP_MAX_IMAGE_SIZE  524288    /*  2^19  */
 
 
 /**
  * GIMP_MIN_RESOLUTION:
  *
  * The minimum resolution of a GIMP image in pixels per inch. This is
- * a somewhat arbitray value that can be used when a lower value for a
+ * a somewhat arbitrary value that can be used when a lower value for a
  * resolution is needed. GIMP will not accept resolutions smaller than
  * this value.
  **/
@@ -71,11 +71,11 @@ G_BEGIN_DECLS
  * GIMP_MAX_RESOLUTION:
  *
  * The maximum resolution of a GIMP image in pixels per inch. This is
- * a somewhat arbitray value that can be used to when an upper value
+ * a somewhat arbitrary value that can be used to when an upper value
  * for a resolution is needed. GIMP will not accept resolutions larger
  * than this value.
  **/
-#define GIMP_MAX_RESOLUTION  65536.0
+#define GIMP_MAX_RESOLUTION  1048576.0
 
 
 /**

@@ -1,16 +1,14 @@
 ## Process this file with automake to produce Makefile.in
 
 AM_CPPFLAGS = \
-	-DG_LOG_DOMAIN=\"Gimp-PDB\"
-
-INCLUDES = \
-	-I$(top_builddir)	\
-	-I$(top_srcdir)		\
-	-I$(top_builddir)/app	\
-	-I$(top_srcdir)/app	\
-	$(CAIRO_CFLAGS)		\
-	$(GEGL_CFLAGS)		\
-	$(GDK_PIXBUF_CFLAGS)	\
+	-DG_LOG_DOMAIN=\"Gimp-PDB\"	\
+	-I$(top_builddir)		\
+	-I$(top_srcdir)			\
+	-I$(top_builddir)/app		\
+	-I$(top_srcdir)/app		\
+	$(CAIRO_CFLAGS)			\
+	$(GEGL_CFLAGS)			\
+	$(GDK_PIXBUF_CFLAGS)		\
 	-I$(includedir)
 
 noinst_LIBRARIES = libapppdb.a libappinternal-procs.a
@@ -43,9 +41,10 @@ libappinternal_procs_a_SOURCES = \
 	channel-cmds.c			\
 	color-cmds.c			\
 	context-cmds.c			\
-	convert-cmds.c			\
+	debug-cmds.c			\
 	display-cmds.c			\
 	drawable-cmds.c			\
+	drawable-color-cmds.c		\
 	drawable-transform-cmds.c	\
 	dynamics-cmds.c			\
 	edit-cmds.c			\
@@ -58,11 +57,16 @@ libappinternal_procs_a_SOURCES = \
 	gradient-cmds.c			\
 	gradient-select-cmds.c		\
 	gradients-cmds.c		\
-	grid-cmds.c			\
-	guides-cmds.c			\
 	help-cmds.c			\
 	image-cmds.c			\
+	image-color-profile-cmds.c	\
+	image-convert-cmds.c		\
+	image-grid-cmds.c		\
+	image-guides-cmds.c		\
+	image-sample-points-cmds.c	\
 	image-select-cmds.c		\
+	image-transform-cmds.c		\
+	image-undo-cmds.c		\
 	item-cmds.c			\
 	item-transform-cmds.c		\
 	layer-cmds.c			\
@@ -76,6 +80,7 @@ libappinternal_procs_a_SOURCES = \
 	pattern-select-cmds.c		\
 	patterns-cmds.c			\
 	plug-in-cmds.c			\
+	plug-in-compat-cmds.c		\
 	procedural-db-cmds.c		\
 	progress-cmds.c			\
 	selection-cmds.c		\
@@ -83,6 +88,5 @@ libappinternal_procs_a_SOURCES = \
 	text-layer-cmds.c		\
 	text-tool-cmds.c		\
 	transform-tools-cmds.c		\
-	undo-cmds.c			\
 	unit-cmds.c			\
 	vectors-cmds.c

@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -74,7 +75,7 @@ gimp_dodge_burn_tool_register (GimpToolRegisterCallback  callback,
                 _("Dodge / Burn Tool: Selectively lighten or darken using a brush"),
                 N_("Dod_ge / Burn"), "<shift>D",
                 NULL, GIMP_HELP_TOOL_DODGE_BURN,
-                GIMP_STOCK_TOOL_DODGE,
+                GIMP_ICON_TOOL_DODGE,
                 data);
 }
 
@@ -98,7 +99,7 @@ gimp_dodge_burn_tool_init (GimpDodgeBurnTool *dodgeburn)
   gimp_tool_control_set_toggle_tool_cursor (tool->control,
                                             GIMP_TOOL_CURSOR_BURN);
 
-  gimp_dodge_burn_tool_status_update (tool, GIMP_BURN);
+  gimp_dodge_burn_tool_status_update (tool, GIMP_DODGE_BURN_TYPE_BURN);
 }
 
 static void
@@ -108,33 +109,32 @@ gimp_dodge_burn_tool_modifier_key (GimpTool        *tool,
                                    GdkModifierType  state,
                                    GimpDisplay     *display)
 {
-  GimpDodgeBurnTool    *dodgeburn = GIMP_DODGE_BURN_TOOL (tool);
-  GimpDodgeBurnOptions *options   = GIMP_DODGE_BURN_TOOL_GET_OPTIONS (tool);
-  GdkModifierType       toggle_mask;
+  GimpDodgeBurnTool    *dodgeburn   = GIMP_DODGE_BURN_TOOL (tool);
+  GimpDodgeBurnOptions *options     = GIMP_DODGE_BURN_TOOL_GET_OPTIONS (tool);
+  GdkModifierType       line_mask   = GIMP_PAINT_TOOL_LINE_MASK;
+  GdkModifierType       toggle_mask = gimp_get_toggle_behavior_mask ();
 
-  toggle_mask = gimp_get_toggle_behavior_mask ();
-
-  if ((key == toggle_mask        &&
-      ! (state & GDK_SHIFT_MASK) && /* leave stuff untouched in line draw mode */
+  if ((key == toggle_mask   &&
+      ! (state & line_mask) && /* leave stuff untouched in line draw mode */
        press != dodgeburn->toggled)
 
       ||
 
-      (key == GDK_SHIFT_MASK && /* toggle back after keypresses CTRL(hold)->  */
-       ! press               && /* SHIFT(hold)->CTRL(release)->SHIFT(release) */
-       dodgeburn->toggled    &&
+      (key == line_mask   && /* toggle back after keypresses CTRL(hold)->  */
+       ! press            && /* SHIFT(hold)->CTRL(release)->SHIFT(release) */
+       dodgeburn->toggled &&
        ! (state & toggle_mask)))
     {
       dodgeburn->toggled = press;
 
       switch (options->type)
         {
-        case GIMP_DODGE:
-          g_object_set (options, "type", GIMP_BURN, NULL);
+        case GIMP_DODGE_BURN_TYPE_DODGE:
+          g_object_set (options, "type", GIMP_DODGE_BURN_TYPE_BURN, NULL);
           break;
 
-        case GIMP_BURN:
-          g_object_set (options, "type", GIMP_DODGE, NULL);
+        case GIMP_DODGE_BURN_TYPE_BURN:
+          g_object_set (options, "type", GIMP_DODGE_BURN_TYPE_DODGE, NULL);
           break;
 
         default:
@@ -154,7 +154,8 @@ gimp_dodge_burn_tool_cursor_update (GimpTool         *tool,
 {
   GimpDodgeBurnOptions *options = GIMP_DODGE_BURN_TOOL_GET_OPTIONS (tool);
 
-  gimp_tool_control_set_toggled (tool->control, (options->type == GIMP_BURN));
+  gimp_tool_control_set_toggled (tool->control,
+                                 options->type == GIMP_DODGE_BURN_TYPE_BURN);
 
   GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords, state,
                                                  display);
@@ -183,13 +184,13 @@ gimp_dodge_burn_tool_status_update (GimpTool          *tool,
 
   switch (type)
     {
-    case GIMP_DODGE:
+    case GIMP_DODGE_BURN_TYPE_DODGE:
       paint_tool->status      = _("Click to dodge");
       paint_tool->status_line = _("Click to dodge the line");
       paint_tool->status_ctrl = _("%s to burn");
       break;
 
-    case GIMP_BURN:
+    case GIMP_DODGE_BURN_TYPE_BURN:
       paint_tool->status      = _("Click to burn");
       paint_tool->status_line = _("Click to burn the line");
       paint_tool->status_ctrl = _("%s to dodge");
@@ -227,13 +228,13 @@ gimp_dodge_burn_options_gui (GimpToolOptions *tool_options)
   g_free (str);
 
   /*  mode (highlights, midtones, or shadows)  */
-  frame = gimp_prop_enum_radio_frame_new (config, "mode", _("Range"), 0, 0);
+  frame = gimp_prop_enum_radio_frame_new (config, "mode", NULL,
+                                          0, 0);
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
   /*  the exposure scale  */
-  scale = gimp_prop_spin_scale_new (config, "exposure",
-                                    _("Exposure"),
+  scale = gimp_prop_spin_scale_new (config, "exposure", NULL,
                                     1.0, 10.0, 1);
   gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
   gtk_widget_show (scale);

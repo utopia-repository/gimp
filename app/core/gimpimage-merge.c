@@ -19,6 +19,7 @@
 
 #include <cairo.h>
 #include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "libgimpcolor/gimpcolor.h"
 #include "libgimpmath/gimpmath.h"
@@ -26,11 +27,10 @@
 
 #include "core-types.h"
 
-#include "base/pixel-region.h"
-#include "base/temp-buf.h"
-#include "base/tile-manager.h"
-
-#include "paint-funcs/paint-funcs.h"
+#include "gegl/gimp-babl-compat.h"
+#include "gegl/gimp-gegl-apply-operation.h"
+#include "gegl/gimp-gegl-nodes.h"
+#include "gegl/gimp-gegl-utils.h"
 
 #include "vectors/gimpvectors.h"
 
@@ -39,17 +39,20 @@
 #include "gimperror.h"
 #include "gimpgrouplayer.h"
 #include "gimpimage.h"
-#include "gimpimage-colorhash.h"
 #include "gimpimage-merge.h"
 #include "gimpimage-undo.h"
 #include "gimpitemstack.h"
-#include "gimplayer-floating-sel.h"
+#include "gimplayer-floating-selection.h"
+#include "gimplayer-new.h"
 #include "gimplayermask.h"
 #include "gimpmarshal.h"
 #include "gimpparasitelist.h"
+#include "gimppickable.h"
+#include "gimpprojectable.h"
 #include "gimpundostack.h"
 
 #include "gimp-intl.h"
+
 
 static GimpLayer * gimp_image_merge_layers (GimpImage     *image,
                                             GimpContainer *container,
@@ -236,6 +239,20 @@ gimp_image_merge_down (GimpImage      *image,
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
+  if (gimp_layer_is_floating_sel (current_layer))
+    {
+      g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+                           _("Cannot merge down a floating selection."));
+      return NULL;
+    }
+
+  if (! gimp_item_get_visible (GIMP_ITEM (current_layer)))
+    {
+      g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+                           _("Cannot merge down an invisible layer."));
+      return NULL;
+    }
+
   for (list = gimp_item_get_container_iter (GIMP_ITEM (current_layer));
        list;
        list = g_list_next (list))
@@ -256,14 +273,14 @@ gimp_image_merge_down (GimpImage      *image,
         {
           if (gimp_viewable_get_children (GIMP_VIEWABLE (layer)))
             {
-              g_set_error_literal (error, 0, 0,
+              g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
                                    _("Cannot merge down to a layer group."));
               return NULL;
             }
 
           if (gimp_item_is_content_locked (GIMP_ITEM (layer)))
             {
-              g_set_error_literal (error, 0, 0,
+              g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
                                    _("The layer to merge down to is locked."));
               return NULL;
             }
@@ -275,7 +292,7 @@ gimp_image_merge_down (GimpImage      *image,
 
   if (! merge_list)
     {
-      g_set_error_literal (error, 0, 0,
+      g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
                            _("There is no visible layer to merge down to."));
       return NULL;
     }
@@ -403,24 +420,14 @@ gimp_image_merge_visible_vectors (GimpImage  *image,
   else
     {
       g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
-			   _("Not enough visible paths for a merge. "
-			     "There must be at least two."));
+                           _("Not enough visible paths for a merge. "
+                             "There must be at least two."));
       return NULL;
     }
 }
 
 
 /*  private functions  */
-
-static CombinationMode
-gimp_image_merge_layers_get_operation (GimpLayer *dest,
-                                       GimpLayer *src)
-{
-  GimpImageType type  = gimp_drawable_type (GIMP_DRAWABLE (dest));
-  gint          bytes = gimp_drawable_bytes (GIMP_DRAWABLE (src));
-
-  return gimp_image_get_combination_mode (type, bytes);
-}
 
 static GimpLayer *
 gimp_image_merge_layers (GimpImage     *image,
@@ -429,37 +436,48 @@ gimp_image_merge_layers (GimpImage     *image,
                          GimpContext   *context,
                          GimpMergeType  merge_type)
 {
-  GList            *list;
-  GSList           *reverse_list = NULL;
-  GSList           *layers;
-  PixelRegion       src1PR, src2PR, maskPR;
-  PixelRegion      *mask;
-  GimpLayer        *merge_layer;
-  GimpLayer        *layer;
-  GimpLayer        *bottom_layer;
-  GimpParasiteList *parasites;
-  gint              count;
-  gint              x1, y1, x2, y2;
-  gint              off_x, off_y;
-  gint              position;
-  gchar            *name;
   GimpLayer        *parent;
+  gint              x1, y1;
+  gint              x2, y2;
+  GSList           *layers;
+  GimpLayer        *layer;
+  GimpLayer        *top_layer;
+  GimpLayer        *bottom_layer;
+  GimpLayer        *merge_layer;
+  gint              position;
+  GeglNode         *node;
+  GeglNode         *source_node;
+  GeglNode         *flatten_node;
+  GeglNode         *offset_node;
+  GeglNode         *last_node;
+  GeglNode         *last_node_source;
+  GimpParasiteList *parasites;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
 
-  layer        = NULL;
-  x1 = y1      = 0;
-  x2 = y2      = 0;
-  bottom_layer = NULL;
+  top_layer = merge_list->data;
+  parent    = gimp_layer_get_parent (top_layer);
 
-  parent = gimp_layer_get_parent (merge_list->data);
+  /*  Make sure the image's graph is constructed, so that top-level layers have
+   *  a parent node.
+   */
+  (void) gimp_projectable_get_graph (GIMP_PROJECTABLE (image));
+
+  /*  Build our graph inside the top-layer's parent node  */
+  source_node = gimp_filter_get_node (GIMP_FILTER (top_layer));
+  node = gegl_node_get_parent (source_node);
+
+  g_return_val_if_fail (node, NULL);
 
   /*  Get the layer extents  */
-  count = 0;
-  while (merge_list)
+  x1 = y1 = 0;
+  x2 = y2 = 0;
+  for (layers = merge_list; layers; layers = g_slist_next (layers))
     {
-      layer = merge_list->data;
+      gint off_x, off_y;
+
+      layer = layers->data;
 
       gimp_item_get_offset (GIMP_ITEM (layer), &off_x, &off_y);
 
@@ -467,7 +485,7 @@ gimp_image_merge_layers (GimpImage     *image,
         {
         case GIMP_EXPAND_AS_NECESSARY:
         case GIMP_CLIP_TO_IMAGE:
-          if (! count)
+          if (layers == merge_list)
             {
               x1 = off_x;
               y1 = off_y;
@@ -496,7 +514,7 @@ gimp_image_merge_layers (GimpImage     *image,
           break;
 
         case GIMP_CLIP_TO_BOTTOM_LAYER:
-          if (merge_list->next == NULL)
+          if (layers->next == NULL)
             {
               x1 = off_x;
               y1 = off_y;
@@ -506,7 +524,7 @@ gimp_image_merge_layers (GimpImage     *image,
           break;
 
         case GIMP_FLATTEN_IMAGE:
-          if (merge_list->next == NULL)
+          if (layers->next == NULL)
             {
               x1 = 0;
               y1 = 0;
@@ -515,52 +533,41 @@ gimp_image_merge_layers (GimpImage     *image,
             }
           break;
         }
-
-      count ++;
-      reverse_list = g_slist_prepend (reverse_list, layer);
-      merge_list = g_slist_next (merge_list);
     }
 
   if ((x2 - x1) == 0 || (y2 - y1) == 0)
     return NULL;
 
-  /*  Start a merge undo group. */
+  bottom_layer = layer;
 
-  name = g_strdup (gimp_object_get_name (layer));
+  flatten_node = NULL;
 
   if (merge_type == GIMP_FLATTEN_IMAGE ||
-      gimp_drawable_type (GIMP_DRAWABLE (layer)) == GIMP_INDEXED_IMAGE)
+      (gimp_drawable_is_indexed (GIMP_DRAWABLE (layer)) &&
+       ! gimp_drawable_has_alpha (GIMP_DRAWABLE (layer))))
     {
-      GimpImageType type;
-      guchar        bg[4] = { 0, 0, 0, 0 };
-
-      type = GIMP_IMAGE_TYPE_FROM_BASE_TYPE (gimp_image_base_type (image));
+      GimpRGB bg;
 
       merge_layer = gimp_layer_new (image, (x2 - x1), (y2 - y1),
-                                    type,
-                                    gimp_object_get_name (layer),
-                                    GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
+                                    gimp_image_get_layer_format (image, FALSE),
+                                    gimp_object_get_name (bottom_layer),
+                                    GIMP_OPACITY_OPAQUE,
+                                    gimp_image_get_default_new_layer_mode (image));
+
       if (! merge_layer)
         {
-          g_warning ("%s: could not allocate merge layer.", G_STRFUNC);
+          g_warning ("%s: could not allocate merge layer", G_STRFUNC);
+
           return NULL;
         }
 
-      gimp_item_set_offset (GIMP_ITEM (merge_layer), x1, y1);
-
       /*  get the background for compositing  */
-      gimp_image_get_background (image, context,
-                                 gimp_drawable_type (GIMP_DRAWABLE (merge_layer)),
-                                 bg);
+      gimp_context_get_background (context, &bg);
+      gimp_pickable_srgb_to_image_color (GIMP_PICKABLE (layer),
+                                         &bg, &bg);
 
-      /*  init the pixel region  */
-      pixel_region_init (&src1PR,
-                         gimp_drawable_get_tiles (GIMP_DRAWABLE (merge_layer)),
-                         0, 0, (x2 - x1), (y2 - y1),
-                         TRUE);
-
-      /*  set the region to the background color  */
-      color_region (&src1PR, bg);
+      flatten_node = gimp_gegl_create_flatten_node (
+        &bg, gimp_layer_get_real_composite_space (bottom_layer));
 
       position = 0;
     }
@@ -573,36 +580,66 @@ gimp_image_merge_layers (GimpImage     *image,
 
       merge_layer =
         gimp_layer_new (image, (x2 - x1), (y2 - y1),
-                        gimp_drawable_type_with_alpha (GIMP_DRAWABLE (layer)),
-                        "merged layer",
-                        GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
+                        gimp_drawable_get_format_with_alpha (GIMP_DRAWABLE (bottom_layer)),
+                        gimp_object_get_name (bottom_layer),
+                        GIMP_OPACITY_OPAQUE,
+                        gimp_image_get_default_new_layer_mode (image));
 
-      if (!merge_layer)
+      if (! merge_layer)
         {
           g_warning ("%s: could not allocate merge layer", G_STRFUNC);
+
           return NULL;
         }
-
-      gimp_item_set_offset (GIMP_ITEM (merge_layer), x1, y1);
-
-      /*  clear the layer  */
-      pixel_region_init (&src1PR,
-                         gimp_drawable_get_tiles (GIMP_DRAWABLE (merge_layer)),
-                         0, 0,
-                         (x2 - x1), (y2 - y1),
-                         TRUE);
-      clear_region (&src1PR);
 
       /*  Find the index in the layer list of the bottom layer--we need this
        *  in order to add the final, merged layer to the layer list correctly
        */
-      layer = reverse_list->data;
       position =
         gimp_container_get_n_children (container) -
-        gimp_container_get_child_index (container, GIMP_OBJECT (layer));
+        gimp_container_get_child_index (container, GIMP_OBJECT (bottom_layer));
     }
 
-  bottom_layer = layer;
+  gimp_item_set_offset (GIMP_ITEM (merge_layer), x1, y1);
+
+  offset_node = gegl_node_new_child (node,
+                                     "operation", "gegl:translate",
+                                     "x",         (gdouble) -x1,
+                                     "y",         (gdouble) -y1,
+                                     NULL);
+
+  if (flatten_node)
+    {
+      gegl_node_add_child (node, flatten_node);
+      g_object_unref (flatten_node);
+
+      gegl_node_link_many (source_node, flatten_node, offset_node, NULL);
+    }
+  else
+    {
+      gegl_node_link_many (source_node, offset_node, NULL);
+    }
+
+  /*  Disconnect the bottom-layer node's input  */
+  last_node        = gimp_filter_get_node (GIMP_FILTER (bottom_layer));
+  last_node_source = gegl_node_get_producer (last_node, "input", NULL);
+
+  gegl_node_disconnect (last_node, "input");
+
+  /*  Render the graph into the merge layer  */
+  gegl_node_blit_buffer (offset_node,
+                         gimp_drawable_get_buffer (GIMP_DRAWABLE (merge_layer)),
+                         NULL, 0, GEGL_ABYSS_NONE);
+
+  /*  Reconnect the bottom-layer node's input  */
+  if (last_node_source)
+    gegl_node_link (last_node_source, last_node);
+
+  /*  Clean up the graph  */
+  gegl_node_remove_child (node, offset_node);
+
+  if (flatten_node)
+    gegl_node_remove_child (node, flatten_node);
 
   /* Copy the tattoo and parasites of the bottom layer to the new layer */
   gimp_item_set_tattoo (GIMP_ITEM (merge_layer),
@@ -613,96 +650,17 @@ gimp_image_merge_layers (GimpImage     *image,
   gimp_item_set_parasites (GIMP_ITEM (merge_layer), parasites);
   g_object_unref (parasites);
 
-  for (layers = reverse_list; layers; layers = g_slist_next (layers))
-    {
-      CombinationMode      operation;
-      GimpLayerModeEffects mode;
-      gint                 x3, y3, x4, y4;
-      gboolean             active[MAX_CHANNELS] = { TRUE, TRUE, TRUE, TRUE };
+  /*  Remove the merged layers from the image  */
+  for (layers = merge_list; layers; layers = g_slist_next (layers))
+    gimp_image_remove_layer (image, layers->data, TRUE, NULL);
 
-      layer = layers->data;
-
-      /*  determine what sort of operation is being attempted and
-       *  if it's actually legal...
-       */
-      operation = gimp_image_merge_layers_get_operation (merge_layer, layer);
-
-      if (operation == -1)
-        {
-          gimp_layer_add_alpha (layer);
-
-          /*  try again ...  */
-          operation = gimp_image_merge_layers_get_operation (merge_layer,
-                                                             layer);
-        }
-
-      if (operation == -1)
-        {
-          g_warning ("%s: attempting to merge incompatible layers.", G_STRFUNC);
-          return NULL;
-        }
-
-      gimp_item_get_offset (GIMP_ITEM (layer), &off_x, &off_y);
-
-      x3 = CLAMP (off_x, x1, x2);
-      y3 = CLAMP (off_y, y1, y2);
-      x4 = CLAMP (off_x + gimp_item_get_width  (GIMP_ITEM (layer)), x1, x2);
-      y4 = CLAMP (off_y + gimp_item_get_height (GIMP_ITEM (layer)), y1, y2);
-
-      /* configure the pixel regions  */
-      pixel_region_init (&src1PR,
-                         gimp_drawable_get_tiles (GIMP_DRAWABLE (merge_layer)),
-                         (x3 - x1), (y3 - y1), (x4 - x3), (y4 - y3),
-                         TRUE);
-      pixel_region_init (&src2PR,
-                         gimp_drawable_get_tiles (GIMP_DRAWABLE (layer)),
-                         (x3 - off_x), (y3 - off_y),
-                         (x4 - x3), (y4 - y3),
-                         FALSE);
-
-      if (gimp_layer_get_mask (layer) &&
-          gimp_layer_mask_get_apply (layer->mask))
-        {
-          TileManager *tiles;
-
-          tiles = gimp_drawable_get_tiles (GIMP_DRAWABLE (layer->mask));
-
-          pixel_region_init (&maskPR, tiles,
-                             (x3 - off_x), (y3 - off_y), (x4 - x3), (y4 - y3),
-                             FALSE);
-          mask = &maskPR;
-        }
-      else
-        {
-          mask = NULL;
-        }
-
-      /* DISSOLVE_MODE is special since it is the only mode that does not
-       *  work on the projection with the lower layer, but only locally on
-       *  the layers alpha channel.
-       */
-      mode = gimp_layer_get_mode (layer);
-      if (layer == bottom_layer && mode != GIMP_DISSOLVE_MODE)
-        mode = GIMP_NORMAL_MODE;
-
-      combine_regions (&src1PR, &src2PR, &src1PR, mask, NULL,
-                       gimp_layer_get_opacity (layer) * 255.999,
-                       mode,
-                       active,
-                       operation);
-
-      gimp_image_remove_layer (image, layer, TRUE, NULL);
-    }
-
-  g_slist_free (reverse_list);
-
-  gimp_object_take_name (GIMP_OBJECT (merge_layer), name);
   gimp_item_set_visible (GIMP_ITEM (merge_layer), TRUE, FALSE);
 
   /*  if the type is flatten, remove all the remaining layers  */
   if (merge_type == GIMP_FLATTEN_IMAGE)
     {
-      list = gimp_image_get_layer_iter (image);
+      GList *list = gimp_image_get_layer_iter (image);
+
       while (list)
         {
           layer = list->data;
@@ -717,17 +675,13 @@ gimp_image_merge_layers (GimpImage     *image,
   else
     {
       /*  Add the layer to the image  */
-
       gimp_image_add_layer (image, merge_layer, parent,
                             gimp_container_get_n_children (container) -
                             position + 1,
                             TRUE);
     }
 
-  gimp_drawable_update (GIMP_DRAWABLE (merge_layer),
-                        0, 0,
-                        gimp_item_get_width  (GIMP_ITEM (merge_layer)),
-                        gimp_item_get_height (GIMP_ITEM (merge_layer)));
+  gimp_drawable_update (GIMP_DRAWABLE (merge_layer), 0, 0, -1, -1);
 
   return merge_layer;
 }

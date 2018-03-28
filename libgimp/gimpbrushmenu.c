@@ -26,10 +26,8 @@
 #include "gimp.h"
 
 #include "gimpuitypes.h"
-#include "gimpbrushselectbutton.h"
-
-#undef GIMP_DISABLE_DEPRECATED
 #include "gimpbrushmenu.h"
+#include "gimpbrushselectbutton.h"
 
 
 /**
@@ -52,7 +50,7 @@ static void compat_callback           (GimpBrushSelectButton *brush_button,
                                        const gchar           *brush_name,
                                        gdouble                opacity,
                                        gint                   spacing,
-                                       GimpLayerModeEffects   paint_mode,
+                                       GimpLayerMode          paint_mode,
                                        gint                   width,
                                        gint                   height,
                                        const guchar          *mask_data,
@@ -69,7 +67,7 @@ static void compat_callback_data_free (CompatCallbackData    *data);
  * @spacing:    Initial spacing. -1 means to use current spacing.
  * @paint_mode: Initial paint mode.  -1 means to use current paint mode.
  * @callback:   A function to call when the selected brush changes.
- * @data:       A pointer to arbitary data to be used in the call to @callback.
+ * @data:       A pointer to arbitrary data to be used in the call to @callback.
  *
  * Creates a new #GtkWidget that completely controls the selection of
  * a #GimpBrush. This widget is suitable for placement in a table in
@@ -82,7 +80,7 @@ gimp_brush_select_widget_new (const gchar          *title,
                               const gchar          *brush_name,
                               gdouble               opacity,
                               gint                  spacing,
-                              GimpLayerModeEffects  paint_mode,
+                              GimpLayerMode         paint_mode,
                               GimpRunBrushCallback  callback,
                               gpointer              data)
 {
@@ -134,11 +132,11 @@ gimp_brush_select_widget_close (GtkWidget *widget)
  * call to gimp_brush_select_widget_new().
  */
 void
-gimp_brush_select_widget_set (GtkWidget            *widget,
-                              const gchar          *brush_name,
-                              gdouble               opacity,
-                              gint                  spacing,
-                              GimpLayerModeEffects  paint_mode)
+gimp_brush_select_widget_set (GtkWidget     *widget,
+                              const gchar   *brush_name,
+                              gdouble        opacity,
+                              gint           spacing,
+                              GimpLayerMode  paint_mode)
 {
   g_return_if_fail (widget != NULL);
 
@@ -152,7 +150,7 @@ compat_callback (GimpBrushSelectButton *brush_button,
                  const gchar           *brush_name,
                  gdouble                opacity,
                  gint                   spacing,
-                 GimpLayerModeEffects   paint_mode,
+                 GimpLayerMode          paint_mode,
                  gint                   width,
                  gint                   height,
                  const guchar          *mask_data,

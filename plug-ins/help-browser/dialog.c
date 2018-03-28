@@ -33,8 +33,6 @@
 
 #include <webkit/webkit.h>
 
-#include "libgimpwidgets/gimpwidgets.h"
-
 #include "libgimp/gimp.h"
 #include "libgimp/gimpui.h"
 
@@ -105,8 +103,6 @@ static void       website_callback        (GtkAction         *action,
                                            gpointer           data);
 
 static void       update_actions          (void);
-
-static void       window_set_icons        (GtkWidget         *window);
 
 static void       row_activated           (GtkTreeView       *tree_view,
                                            GtkTreePath       *path,
@@ -183,14 +179,13 @@ browser_dialog_open (const gchar *plug_in_binary)
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (window), _("GIMP Help Browser"));
   gtk_window_set_role (GTK_WINDOW (window), plug_in_binary);
+  gtk_window_set_icon_name (GTK_WINDOW (window), GIMP_ICON_HELP_USER_MANUAL);
 
   gtk_window_set_default_size (GTK_WINDOW (window), data.width, data.height);
 
   g_signal_connect (window, "destroy",
                     G_CALLBACK (gtk_main_quit),
                     NULL);
-
-  window_set_icons (window);
 
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_container_add (GTK_CONTAINER (window), vbox);
@@ -332,27 +327,6 @@ browser_dialog_load (const gchar *uri)
   select_index (uri);
 
   gtk_window_present (GTK_WINDOW (gtk_widget_get_toplevel (view)));
-}
-
-static void
-window_set_icons (GtkWidget *window)
-{
-  const GtkIconSize sizes[] = { GTK_ICON_SIZE_MENU,
-                                GTK_ICON_SIZE_BUTTON,
-                                GTK_ICON_SIZE_DND,
-                                GTK_ICON_SIZE_DIALOG };
-  GList *list = NULL;
-  gint   i;
-
-  for (i = 0; i < G_N_ELEMENTS (sizes); i++)
-    list = g_list_prepend (list,
-                           gtk_widget_render_icon (window,
-                                                   GIMP_STOCK_USER_MANUAL,
-                                                   sizes[i], NULL));
-
-  gtk_window_set_icon_list (GTK_WINDOW (window), list);
-
-  g_list_free_full (list, (GDestroyNotify) g_object_unref);
 }
 
 static void
@@ -578,53 +552,53 @@ ui_manager_new (GtkWidget *window)
   static const GtkActionEntry actions[] =
   {
     {
-      "back", GTK_STOCK_GO_BACK,
+      "back", GIMP_ICON_GO_PREVIOUS,
       NULL, "<alt>Left", N_("Go back one page"),
       G_CALLBACK (back_callback)
     },
     {
-      "forward", GTK_STOCK_GO_FORWARD,
+      "forward", GIMP_ICON_GO_NEXT,
       NULL, "<alt>Right", N_("Go forward one page"),
       G_CALLBACK (forward_callback)
     },
     {
-      "reload", GTK_STOCK_REFRESH,
+      "reload", GIMP_ICON_VIEW_REFRESH,
        N_("_Reload"), "<control>R", N_("Reload current page"),
       G_CALLBACK (reload_callback)
     },
     {
-      "stop", GTK_STOCK_CANCEL,
+      "stop", GIMP_ICON_PROCESS_STOP,
        N_("_Stop"), "Escape", N_("Stop loading this page"),
       G_CALLBACK (stop_callback)
     },
     {
-      "home", GTK_STOCK_HOME,
+      "home", GIMP_ICON_GO_HOME,
       NULL, "<alt>Home", N_("Go to the index page"),
       G_CALLBACK (home_callback)
     },
     {
-      "copy-location", GTK_STOCK_COPY,
+      "copy-location", GIMP_ICON_EDIT_COPY,
       N_("C_opy location"), "",
       N_("Copy the location of this page to the clipboard"),
       G_CALLBACK (copy_location_callback)
     },
     {
-      "copy-selection", GTK_STOCK_COPY,
+      "copy-selection", GIMP_ICON_EDIT_COPY,
       NULL, "<control>C", NULL,
       G_CALLBACK (copy_selection_callback)
     },
     {
-      "zoom-in", GTK_STOCK_ZOOM_IN,
+      "zoom-in", GIMP_ICON_ZOOM_IN,
       NULL, "<control>plus", NULL,
       G_CALLBACK (zoom_in_callback)
     },
     {
-      "zoom-out", GTK_STOCK_ZOOM_OUT,
+      "zoom-out", GIMP_ICON_ZOOM_OUT,
       NULL, "<control>minus", NULL,
       G_CALLBACK (zoom_out_callback)
     },
     {
-      "find", GTK_STOCK_FIND,
+      "find", GIMP_ICON_EDIT_FIND,
       NULL, "<control>F", N_("Find text in current page"),
       G_CALLBACK (find_callback)
     },
@@ -634,12 +608,12 @@ ui_manager_new (GtkWidget *window)
       G_CALLBACK (find_again_callback)
     },
     {
-      "close", GTK_STOCK_CLOSE,
+      "close", GIMP_ICON_WINDOW_CLOSE,
       NULL, "<control>W", NULL,
       G_CALLBACK (close_callback)
     },
     {
-      "quit", GTK_STOCK_QUIT,
+      "quit", GIMP_ICON_APPLICATION_EXIT,
       NULL, "<control>Q", NULL,
       G_CALLBACK (close_callback)
     }
@@ -672,7 +646,7 @@ ui_manager_new (GtkWidget *window)
   action = gimp_throbber_action_new ("website",
                                      "docs.gimp.org",
                                      _("Visit the GIMP documentation website"),
-                                     GIMP_STOCK_USER_MANUAL);
+                                     GIMP_ICON_HELP_USER_MANUAL);
   g_signal_connect_closure (action, "activate",
                             g_cclosure_new (G_CALLBACK (website_callback),
                                             NULL, NULL),
@@ -1164,7 +1138,6 @@ static GtkWidget *
 build_searchbar (void)
 {
   GtkWidget *button;
-  GtkWidget *image;
   GtkWidget *entry;
   GtkWidget *hbox;
   GtkWidget *label;
@@ -1191,10 +1164,10 @@ build_searchbar (void)
   button = gtk_button_new_with_mnemonic (C_("search", "_Previous"));
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
   gtk_button_set_image (GTK_BUTTON (button),
-                        gtk_image_new_from_stock (GTK_STOCK_GO_BACK,
-                                                  GTK_ICON_SIZE_BUTTON));
-  gtk_widget_show (button);
+                        gtk_image_new_from_icon_name (GIMP_ICON_GO_PREVIOUS,
+                                                      GTK_ICON_SIZE_BUTTON));
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+  gtk_widget_show (button);
 
   g_signal_connect (button, "clicked",
                     G_CALLBACK (search_prev_clicked),
@@ -1203,24 +1176,19 @@ build_searchbar (void)
   button = gtk_button_new_with_mnemonic (C_("search", "_Next"));
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
   gtk_button_set_image (GTK_BUTTON (button),
-                        gtk_image_new_from_stock (GTK_STOCK_GO_FORWARD,
-                                                  GTK_ICON_SIZE_BUTTON));
-  gtk_widget_show (button);
+                        gtk_image_new_from_icon_name (GIMP_ICON_GO_NEXT,
+                                                      GTK_ICON_SIZE_BUTTON));
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+  gtk_widget_show (button);
 
   g_signal_connect (button, "clicked",
                     G_CALLBACK (search_next_clicked),
                     entry);
 
-  button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
+  button = gtk_button_new_with_mnemonic (C_("search", "_Close"));
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-
-  g_object_get (button, "image", &image, NULL);
-  g_object_set (image, "icon-size", GTK_ICON_SIZE_MENU, NULL);
-  g_object_unref (image);
-
-  gtk_widget_show (button);
   gtk_box_pack_end (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+  gtk_widget_show (button);
 
   g_signal_connect (button, "clicked",
                     G_CALLBACK (search_close_clicked),

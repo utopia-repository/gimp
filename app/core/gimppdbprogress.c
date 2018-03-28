@@ -22,7 +22,10 @@
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
+
+#include "libgimpbase/gimpbase.h"
 
 #include "core-types.h"
 
@@ -61,8 +64,8 @@ static void      gimp_pdb_progress_set_property   (GObject            *object,
                                                    GParamSpec         *pspec);
 
 static GimpProgress * gimp_pdb_progress_progress_start   (GimpProgress *progress,
-                                                          const gchar  *message,
-                                                          gboolean      cancelable);
+                                                          gboolean      cancellable,
+                                                          const gchar  *message);
 static void     gimp_pdb_progress_progress_end           (GimpProgress *progress);
 static gboolean gimp_pdb_progress_progress_is_active     (GimpProgress *progress);
 static void     gimp_pdb_progress_progress_set_text      (GimpProgress *progress,
@@ -172,11 +175,10 @@ gimp_pdb_progress_constructed (GObject *object)
 {
   GimpPdbProgress *progress = GIMP_PDB_PROGRESS (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_PDB (progress->pdb));
-  g_assert (GIMP_IS_CONTEXT (progress->context));
+  gimp_assert (GIMP_IS_PDB (progress->pdb));
+  gimp_assert (GIMP_IS_CONTEXT (progress->context));
 }
 
 static void
@@ -194,23 +196,9 @@ gimp_pdb_progress_finalize (GObject *object)
 {
   GimpPdbProgress *progress = GIMP_PDB_PROGRESS (object);
 
-  if (progress->pdb)
-    {
-      g_object_unref (progress->pdb);
-      progress->pdb = NULL;
-    }
-
-  if (progress->context)
-    {
-      g_object_unref (progress->context);
-      progress->context = NULL;
-    }
-
-  if (progress->callback_name)
-    {
-      g_free (progress->callback_name);
-      progress->callback_name = NULL;
-    }
+  g_clear_object (&progress->pdb);
+  g_clear_object (&progress->context);
+  g_clear_pointer (&progress->callback_name, g_free);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -259,7 +247,7 @@ gimp_pdb_progress_run_callback (GimpPdbProgress     *progress,
 
   if (progress->callback_name && ! progress->callback_busy)
     {
-      GValueArray *return_vals;
+      GimpValueArray *return_vals;
 
       progress->callback_busy = TRUE;
 
@@ -273,20 +261,21 @@ gimp_pdb_progress_run_callback (GimpPdbProgress     *progress,
                                             G_TYPE_DOUBLE,   value,
                                             G_TYPE_NONE);
 
-      if (g_value_get_enum (&return_vals->values[0]) != GIMP_PDB_SUCCESS)
+      if (g_value_get_enum (gimp_value_array_index (return_vals, 0)) !=
+          GIMP_PDB_SUCCESS)
         {
           gimp_message (progress->context->gimp, NULL, GIMP_MESSAGE_ERROR,
                         _("Unable to run %s callback. "
                           "The corresponding plug-in may have crashed."),
                         g_type_name (G_TYPE_FROM_INSTANCE (progress)));
         }
-      else if (return_vals->n_values >= 2 &&
-               G_VALUE_HOLDS_DOUBLE (&return_vals->values[1]))
+      else if (gimp_value_array_length (return_vals) >= 2 &&
+               G_VALUE_HOLDS_DOUBLE (gimp_value_array_index (return_vals, 1)))
         {
-          retval = g_value_get_double (&return_vals->values[1]);
+          retval = g_value_get_double (gimp_value_array_index (return_vals, 1));
         }
 
-      g_value_array_free (return_vals);
+      gimp_value_array_unref (return_vals);
 
       progress->callback_busy = FALSE;
     }
@@ -296,8 +285,8 @@ gimp_pdb_progress_run_callback (GimpPdbProgress     *progress,
 
 static GimpProgress *
 gimp_pdb_progress_progress_start (GimpProgress *progress,
-                                  const gchar  *message,
-                                  gboolean      cancelable)
+                                  gboolean      cancellable,
+                                  const gchar  *message)
 {
   GimpPdbProgress *pdb_progress = GIMP_PDB_PROGRESS (progress);
 

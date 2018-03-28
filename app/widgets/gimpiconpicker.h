@@ -3,6 +3,7 @@
  *
  * gimpiconpicker.h
  * Copyright (C) 2011 Michael Natterer <mitch@gimp.org>
+ *               2012 Daniel Sabo
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,13 +44,17 @@ struct _GimpIconPickerClass
 };
 
 
-GType          gimp_icon_picker_get_type    (void) G_GNUC_CONST;
+GType          gimp_icon_picker_get_type       (void) G_GNUC_CONST;
 
-GtkWidget   * gimp_icon_picker_new          (Gimp           *gimp);
+GtkWidget   * gimp_icon_picker_new             (Gimp           *gimp);
 
-const gchar * gimp_icon_picker_get_stock_id (GimpIconPicker *picker);
-void          gimp_icon_picker_set_stock_id (GimpIconPicker *picker,
-                                             const gchar    *stock_id);
+const gchar * gimp_icon_picker_get_icon_name   (GimpIconPicker *picker);
+void          gimp_icon_picker_set_icon_name   (GimpIconPicker *picker,
+                                                const gchar    *stock_id);
+
+GdkPixbuf   * gimp_icon_picker_get_icon_pixbuf (GimpIconPicker *picker);
+void          gimp_icon_picker_set_icon_pixbuf (GimpIconPicker *picker,
+                                                GdkPixbuf      *value);
 
 
 #endif  /*  __GIMP_ICON_PICKER_H__  */

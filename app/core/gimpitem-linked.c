@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "core-types.h"
@@ -34,6 +35,44 @@
 
 
 /*  public functions  */
+
+gboolean
+gimp_item_linked_is_locked (GimpItem *item)
+{
+  GList    *list;
+  GList    *l;
+  gboolean  locked = FALSE;
+
+  g_return_val_if_fail (GIMP_IS_ITEM (item), FALSE);
+  g_return_val_if_fail (gimp_item_get_linked (item) == TRUE, FALSE);
+  g_return_val_if_fail (gimp_item_is_attached (item), FALSE);
+
+  list = gimp_image_item_list_get_list (gimp_item_get_image (item),
+                                        GIMP_ITEM_TYPE_ALL,
+                                        GIMP_ITEM_SET_LINKED);
+
+  list = gimp_image_item_list_filter (list);
+
+  for (l = list; l && ! locked; l = g_list_next (l))
+    {
+      GimpItem *item = l->data;
+
+      /*  temporarily set the item to not being linked, or we will
+       *  run into a recursion because gimp_item_is_position_locked()
+       *  call this function if the item is linked
+       */
+      gimp_item_set_linked (item, FALSE, FALSE);
+
+      if (gimp_item_is_position_locked (item))
+        locked = TRUE;
+
+      gimp_item_set_linked (item, TRUE, FALSE);
+    }
+
+  g_list_free (list);
+
+  return locked;
+}
 
 void
 gimp_item_linked_translate (GimpItem *item,
@@ -142,7 +181,6 @@ gimp_item_linked_transform (GimpItem               *item,
                             const GimpMatrix3      *matrix,
                             GimpTransformDirection  direction,
                             GimpInterpolationType   interpolation_type,
-                            gint                    recursion_level,
                             GimpTransformResize     clip_result,
                             GimpProgress           *progress)
 {
@@ -164,7 +202,7 @@ gimp_item_linked_transform (GimpItem               *item,
 
   gimp_image_item_list_transform (image, items, context,
                                   matrix, direction,
-                                  interpolation_type, recursion_level,
+                                  interpolation_type,
                                   clip_result, progress);
 
   g_list_free (items);

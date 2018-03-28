@@ -25,9 +25,6 @@
 #include <string.h>
 
 #include "gimp.h"
-#undef GIMP_DISABLE_DEPRECATED
-#undef __GIMP_DRAWABLE_PDB_H__
-#include "gimpdrawable_pdb.h"
 
 
 /**
@@ -38,6 +35,38 @@
  * Functions to manipulate drawables.
  **/
 
+
+/**
+ * _gimp_drawable_get_format:
+ * @drawable_ID: The drawable.
+ *
+ * Returns the drawable's Babl format
+ *
+ * This procedure returns the drawable's Babl format.
+ *
+ * Returns: The drawable's Babl format.
+ *
+ * Since: 2.10
+ **/
+gchar *
+_gimp_drawable_get_format (gint32 drawable_ID)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gchar *format = NULL;
+
+  return_vals = gimp_run_procedure ("gimp-drawable-get-format",
+                                    &nreturn_vals,
+                                    GIMP_PDB_DRAWABLE, drawable_ID,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    format = g_strdup (return_vals[1].data.d_string);
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return format;
+}
 
 /**
  * gimp_drawable_type:
@@ -233,8 +262,9 @@ gimp_drawable_is_indexed (gint32 drawable_ID)
  *
  * Returns the bytes per pixel.
  *
- * This procedure returns the number of bytes per pixel (or the number
- * of channels) for the specified drawable.
+ * This procedure returns the number of bytes per pixel, which
+ * corresponds to the number of components unless
+ * gimp_plugin_enable_precision() was called.
  *
  * Returns: Bytes per pixel.
  **/
@@ -461,13 +491,13 @@ gimp_drawable_mask_bounds (gint32  drawable_ID,
  *
  * This procedure returns whether there is an intersection between the
  * drawable and the selection. Unlike gimp_drawable_mask_bounds(), the
- * intersection's bounds are returned as x, y, width, height. If there
- * is no selection this function returns TRUE and the returned bounds
- * are the extents of the whole drawable.
+ * intersection's bounds are returned as x, y, width, height.
+ * If there is no selection this function returns TRUE and the returned
+ * bounds are the extents of the whole drawable.
  *
  * Returns: TRUE if the returned area is not empty.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_drawable_mask_intersect (gint32  drawable_ID,
@@ -547,7 +577,7 @@ gimp_drawable_merge_shadow (gint32   drawable_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.6
+ * Since: 2.6
  **/
 gboolean
 gimp_drawable_free_shadow (gint32 drawable_ID)
@@ -718,11 +748,11 @@ gimp_drawable_set_pixel (gint32        drawable_ID,
  * is white, then white is used. Transparent fill only affects layers
  * with an alpha channel, in which case the alpha channel is set to
  * transparent. If the drawable has no alpha channel, it is filled to
- * white. No fill leaves the drawable's contents undefined. This
- * procedure is unlike gimp_edit_fill() or the bucket fill tool because
- * it fills regardless of a selection. Its main purpose is to fill a
- * newly created drawable before adding it to the image. This operation
- * cannot be undone.
+ * white. No fill leaves the drawable's contents undefined.
+ * This procedure is unlike gimp_edit_fill() or the bucket fill tool
+ * because it fills regardless of a selection. Its main purpose is to
+ * fill a newly created drawable before adding it to the image. This
+ * operation cannot be undone.
  *
  * Returns: TRUE on success.
  **/
@@ -884,7 +914,7 @@ _gimp_drawable_thumbnail (gint32   drawable_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 _gimp_drawable_sub_thumbnail (gint32   drawable_ID,
@@ -953,7 +983,7 @@ _gimp_drawable_sub_thumbnail (gint32   drawable_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_drawable_foreground_extract (gint32                    drawable_ID,

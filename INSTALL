@@ -1,19 +1,19 @@
 --------------------------------------
-Installation instructions for GIMP 2.8
+Installation instructions for GIMP 2.10
 --------------------------------------
 
 There are some basic steps to building and installing GIMP.
 
-GIMP 2.8 replaces earlier GIMP 2.x versions. It is advised that you
-uninstall them before installing GIMP 2.8. If you want to keep your
-older GIMP 2.x installation in parallel to GIMP 2.8, you have to
+GIMP 2.10 replaces earlier GIMP 2.x versions. It is advised that you
+uninstall them before installing GIMP 2.10. If you want to keep your
+older GIMP 2.x installation in parallel to GIMP 2.10, you have to
 choose a separate prefix which is not in your default library search
 path.
 
-GIMP 2.8 is fully backward compatible to all earlier GIMP 2.x version.
-Plug-ins and scripts written for GIMP 2.6 or earlier GIMP 2.x versions
-will continue to work and don't need to be changed nor recompiled to
-be used with GIMP 2.8.
+GIMP 2.10 is fully backward compatible to all earlier GIMP 2.x version.
+Plug-ins and scripts written for GIMP 2.8, 2.6 or earlier GIMP 2.x
+versions will continue to work and don't need to be changed nor
+recompiled to be used with GIMP 2.10.
 
 The most important part is to make sure the requirements for a build
 are fulfilled.  We depend on a number of tools and libraries which are
@@ -29,74 +29,158 @@ header files installed.
   ******************************************************************
 
 
-  1. You need to have installed a recent version of pkg-config available
+  1. You need to have installed a recent version of pkg-config (>= 2.0) available
      from http://www.freedesktop.org/software/pkgconfig/.
 
   2. You need intltool (at least 0.40.1, but preferably a newer version).
      Intltool can be downloaded from
      http://ftp.gnome.org/pub/gnome/sources/intltool/
+     You are recommended to install gettext version 0.19 or over. Earlier gettext had
+     issues with script-fu localization, ending up in incomplete GIMP localization.
 
-  3. You need to have GEGL version 0.2.0 or newer and babl version
-     0.1.10 or newer. You can get them from http://gegl.org/ or clone
+  3. You need to have GEGL version 0.3.30 or newer and babl version
+     0.1.44 or newer. You can get them from http://gegl.org/ or clone
      them from the GNOME git repository:
 
        git://git.gnome.org/babl
        git://git.gnome.org/gegl
 
   4. You need to have installed GTK+ version 2.24.10 or newer.
-     GIMP also need a recent versions of GLib (>= 2.30.2), GDK-Pixbuf
-     (>= 2.24.1), and Pango (>= 1.29.4). Sources for these can be grabbed
+     GIMP also needs a recent version of GLib (>= 2.54.2), GDK-Pixbuf
+     (>= 2.30.8), and Pango (>= 1.29.4). Sources for these can be grabbed
      from ftp://ftp.gtk.org/.
 
-  5. We use cairo >= 1.10.2, which is hosted at
+  5. We use cairo >= 1.12.2, which is hosted at
      http://www.cairographics.org/.
 
   6. We require PangoCairo, a Pango backend using Cairo. Make sure you
      have Cairo, FreeType2 and fontconfig installed before you compile
      Pango. GIMP depends on freetype2 being newer than version 2.1.7
-     and fontconfig 2.2.0 or newer. Older versions are known to have
+     and fontconfig 2.12.4 or newer. Older versions are known to have
      bugs that seriously affect the stability of GIMP.
 
-     On Windows platforms in particular, we recommend fontconfig 2.11.1
+     On Windows platforms in particular, we recommend fontconfig @FONTCONFIG_WIN32_RECOMMENDED_VERSION@
      or newer. Older versions may end up in broken font handling, due to
      inadequate font configuration: font aliases not configured,
      synthetic bold/italic variants unavailable, cache folder in temp
      directory resulting in slow startups, etc.
 
-  7. We use dbus-glib if available. Grab it from
-     http://dbus.freedesktop.org/releases/dbus-glib/
+     We also require HarfBuzz 0.9.19 or newer, an
+     OpenType text shaping tool. As this is a dependency for Pango, you
+     will likely have it installed, but you may have to install a
+     development package for the headers.
 
-  8. Access of remote files is implemented in the URI plug-in. There
-     are several possible implementations for this. The implementation
-     used is determined when you configure GIMP. By default the
-     GIO/GVfs backend is used. If you don't have GVfs support on your
-     target platform, you should pass the '--without-gvfs' option to
-     configure. The configure script will then try to detect another
-     method for accessing remote files.
+  7. The file-compressor plug-in requires zlib, libbzip2, and liblzma to
+     be installed. All these libraries are required dependencies.
 
-  9. You may want to install other third party libraries or programs
+  8. For metadata access GIMP requires the gexiv2 library. It is hosted
+     at https://wiki.gnome.org/Projects/gexiv2 .
+
+  9. libpng, libjpeg, libtiff and lcms are hard dependencies that can
+     not be disabled.
+
+ 10. For MyPaint brushes, brushlib (libmypaint) 1.3.0 is used.
+     The libmypaint repository is hosted at:
+
+        https://github.com/mypaint/libmypaint
+
+     We also need the mypaint-brushes data package with is currently
+     hosted by Jehan, until the MyPaint project takes care of it:
+
+        https://github.com/Jehan/mypaint-brushes
+
+     If installing from repository, install from branch "v1.3.x" or the
+     particular tag "v1.3.0". In particular do not install from master
+     which installs brushes incompatible with GIMP.
+
+     Also this is a data packages and therefore it will install the
+     pkg-config file inside `$PREFIX/share/pkgconfig/`. If you install
+     mypaint-brushes from repository in a non-standard prefix, you will
+     have to make sure your $PKG_CONFIG_PATH environment variable also
+     lists `$PREFIX/share/pkgconfig/`.
+
+ 11. You may want to install other third party libraries or programs
      that are needed for some of the available plug-ins. We recommend
-     to check that the following libraries are installed: lcms,
-     libpng, libjpeg, libpoppler (and poppler-data, optional encoding
-     package, necessary to import PDF with CJK and cyrillic text),
-     libtiff, webkit, libmng, librsvg, libwmf, libz, libbzip2, libgs
-     (Ghostscript), libaa and libjasper.
+     to check that the following libraries are installed: libjasper,
+     webkit, libmng, librsvg, libwmf, libaa and libgs (Ghostscript).
 
- 10. The Python extension requires Python 2 development headers to be
-     present. You will also need PyGTK and the respective development
-     headers.
+ 12. The Python extension requires Python 2 development headers (2.5.0
+     or newer) to be present. You will also need PyGTK and the
+     respective development headers.
 
- 11. Configure GIMP by running the `configure' script. You may want
+ 13. Windows builds can now generate backtrace logs upon a crash.
+     The logs will be available in: %APPDATA%\GIMP\2.10\CrashLog\
+     The feature depends on Dr.MinGW's ExcHndl library:
+
+        https://github.com/jrfonseca/drmingw
+
+ 14. Configure GIMP by running the `configure' script. You may want
      to pass some options to it, see below.
 
- 12. Build GIMP by running `make'. The use of GNU make is recommended.
+ 15. Build GIMP by running `make'. The use of GNU make is recommended.
      If you need to tweak the build to make it work with other flavours
      of make, we'd appreciate if you'd send us a patch with the changes.
 
- 13. Install GIMP by running `make install'. In order to avoid clashes
-     with other versions of GIMP, we install a binary called gimp-2.8.
+ 16. Install GIMP by running `make install'. In order to avoid clashes
+     with other versions of GIMP, we install a binary called gimp-2.10.
      By default there's also a link created so that you can type 'gimp'
-     to start gimp-2.8.
+     to start gimp-2.10.
+
+ 17. Summary of required packages and what version you need:
+
+     Package Name         Version
+
+     ATK                  2.2.0
+     babl                 0.1.44
+     cairo                1.12.2
+     Fontconfig           2.12.4
+     freetype2            2.1.7
+     GDK-PixBuf           2.30.8
+     GEGL                 0.3.30
+     GIO
+     GLib                 2.54.2
+     glib-networking
+     GTK+                 2.24.10
+     HarfBuzz             0.9.19
+     libbzip2
+     libjpeg
+     liblzma              5.0.0
+     libmypaint           1.3.0
+     libpng               1.6.25
+     libpoppler-glib      0.44.0
+     librsvg              2.40.6
+     libtiff
+     Little CMS           2.8
+     mypaint-brushes-1.0
+     pangocairo           1.29.4
+     poppler-data         0.4.7
+     zlib
+
+ 18. Summary of optional packages:
+
+     Package Name        Version        Feature
+
+     cairo-pdf           1.12.2         PDF export
+     ExcHndl             -              Crash logs on Windows with Dr. MinGW
+     gs                  -              ghostscript
+     libaa               -              ASCII art
+     libjasper           -              JPEG 2000
+     libmng              -              MNG
+     libwebp             0.6.0          WebP (built with --enable-libwebpmux and --enable-libwebpdemux)
+     libwmf              0.2.8          WMF
+     libXcursor          -              X11 Mouse Cursor
+     libxpm              -              XPM
+     openexr             1.6.1          OpenEXR
+     python 2            2.5.0          Python plug-ins
+     webkit              1.6.1          Help browser & webpage
+
+ 19. Summary of optional runtime dependencies:
+
+     darktable >= 1.7, with lua support enabled for raw loading
+     RawTherapee >= 5.2 for raw loading
+     xdg-email for sending emails
+     sendmail for sending emails if --with-sendmail enabled
+     gdb or lldb for our new bug-reporting dialog
 
 Please make sure you don't have any old GTK+-2.x, jpeg, etc. libraries
 lying around on your system, otherwise configure may fail to find the
@@ -108,11 +192,11 @@ packages are included below. Here is an illustration of commands that
 might be used to build and install GIMP. The actual configuration,
 compilation and installation output is not shown.
 
-  % tar xvfz gimp-2.8.x.tar.gz   # unpack the sources
-  % cd gimp-2.8.x                # change to the toplevel directory
-  % ./configure                  # run the `configure' script
-  % make                         # build GIMP
-  % make install                 # install GIMP
+  % tar xvfz gimp-2.10.0-RC1.tar.gz   # unpack the sources
+  % cd gimp-2.10.0-RC1                # change to the toplevel directory
+  % ./configure                           # run the `configure' script
+  % make                                  # build GIMP
+  % make install                          # install GIMP
 
 
 The `configure' script examines your system, and adapts GIMP to run on
@@ -121,6 +205,9 @@ generic instructions included at the end of this file. All of the
 options can be listed using the command `./configure --help'. There
 are several special options the GIMP `configure' script recognizes.
 These are:
+
+  --disable-vector-icons.  This option installs raster icons instead of
+     vector icons.
 
   --enable-shared and --disable-shared.  This option affects whether
      shared libraries will be built or not. Shared libraries provide
@@ -133,7 +220,7 @@ These are:
      on. The default is for debugging to be disabled. NOTE: This
      option is intended primarily as a convenience for developers.
 
-  --enable-profile and --disable-profile. This options causes the build
+  --enable-profile and --disable-profile. This option causes the build
      process to compile with execution profiling enabled. The default is
      for profiling to be disabled. NOTE: This option is intended primarily
      as a convenience for developers.
@@ -144,8 +231,10 @@ These are:
      is intended primarily as a convenience for developers.
 
   --with-gimpdir=DIR.  This option changes the default directory
-     GIMP uses to search for its configuration files from ~/.gimp-2.8
-     (the directory .gimp-2.8 in the users home directory) to DIR.
+     GIMP uses to search for its configuration files from
+     ~/.config/GIMP/2.10 (the directory .config/GIMP/2.10
+     in the user's home directory) to ~/.config/DIR/2.10.
+     If DIR is an absolute path, the directory will be changed to DIR.
 
   --enable-binreloc.  When compiled for Linux with this option enabled,
      GIMP will be binary relocatable.  Plug-ins and data files will
@@ -156,17 +245,11 @@ These are:
      how image data is transported between the core and plug-ins. Usually
      the best way to do this is detected automatically.
 
-  --without-libtiff, --without-libjpeg, --without-libpng.  configure
-     will bail out if libtiff, libjpeg or libpng can not be found. You
-     better fix the underlying problem and install these libraries with
-     their header files. If you absolutely want to compile GIMP without
-     support for TIFF, JPEG or PNG you need to explicitly disable
-     them using the options given above.
-
-  --without-libexif.  If libexif is available, the JPEG plug-in will use
-     it to keep EXIF data in your JPEG files intact.  If this is
-     causing any trouble at compile-time, you can build --without-libexif.
-     Get libexif from http://www.sourceforge.net/projects/libexif.
+  --without-libtiff.  configure will bail out if libtiff can not be
+     found. You better fix the underlying problem and install these
+     libraries with their header files. If you absolutely want to
+     compile GIMP without support for TIFF you need to explicitly
+     disable them using this option.
 
   --without-aa.  The AA plug-in needs libaa and configure checks for
      its presence. Use --without-aa if you run into problems.
@@ -191,26 +274,11 @@ These are:
   --without-librsvg.  If for some reason you want to build GIMP without
      SVG support, you can build --without-librsvg.
 
-  --without-lcms.  If for some reason you want to build GIMP without
-     using lcms for color support, you can build with --without-lcms.
-
-  --without-poppler.  If for some reason you don't want to build the PDF
-     Import plug-in that uses libpoppler, you can use --without-poppler.
-
   --without-print.  If for some reason you don't want to build the Print
      plug-in based on the GtkPrint API, you can build with --without-print.
 
-  --without-gvfs.  If you don't want to use GIO/GVfs to access remote
-     files, you can pass --without-gvfs to the configure script.
-
-  --without-libcurl.  If you don't want to use libcurl to access remote
-     files, you can pass --without-libcurl to the configure script.
-
   --without-alsa.  If you don't want to compile ALSA support into the
      MIDI input controller module, you can use the --without-alsa option.
-
-  --without-dbus.  If you want to build without D-Bus support, you can
-     pass --without-dbus to the configure script.
 
   --without-linux-input.  If you don't want to compile the Linux Input
      controller module, you can use the --without-linux-input option.
@@ -241,9 +309,10 @@ These are:
   --disable-mp. This option allows you to disable support for multiple
      processors. It is enabled by default.
 
-  --with-sendmail=[PATH]. This option is used to tell GIMP where to find
-     the sendmail command. Normally this options don't have to be used
-     because configure tries to find it in the usual places.
+  --with-sendmail[=PATH]. This option is used to tell GIMP to send email
+     through sendmail instead of xdg-email. You can optionally indicate
+     where to find the sendmail command. Otherwise sendmail will simply
+     be searched in your $PATH at runtime.
 
   --with-desktop-dir=[PATH]. This option specifies where to install
      desktop files. These files are used by desktop environments that
@@ -253,8 +322,8 @@ These are:
      if you call configure with --without-desktop-dir.
 
   --disable-default-binary. Use this option if you don't want to make
-     gimp-2.8 the default GIMP installation. Otherwise a link called
-     gimp pointing to the gimp-2.8 executable will be installed.
+     gimp-2.10 the default GIMP installation. Otherwise a link called
+     gimp pointing to the gimp-2.10 executable will be installed.
 
   --disable-gimp-console.  Use this option if you don't want the
      gimp-console binary to be built in addition to the standard binary.
@@ -276,7 +345,7 @@ The `make' command builds several things:
  - A bunch of public libraries in the directories starting with 'libgimp'.
  - The plug-in programs in the 'plug-ins' directory.
  - Some modules in the 'modules' subdirectory.
- - The main GIMP program 'gimp-2.8' in `app'.
+ - The main GIMP program 'gimp-2.10' in `app'.
 
 The `make install' commands installs the GIMP header files associated
 with the libgimp libraries, the plug-ins, some data files and the GIMP

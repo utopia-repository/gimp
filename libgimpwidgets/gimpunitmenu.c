@@ -23,6 +23,7 @@
 
 #undef GSEAL_ENABLE
 
+#include <gegl.h>
 /* FIXME: #undef GTK_DISABLE_DEPRECATED */
 #undef GTK_DISABLE_DEPRECATED
 #include <gtk/gtk.h>
@@ -131,11 +132,7 @@ gimp_unit_menu_finalize (GObject *object)
 {
   GimpUnitMenu *menu = GIMP_UNIT_MENU (object);
 
-  if (menu->format)
-    {
-      g_free (menu->format);
-      menu->format = NULL;
-    }
+  g_clear_pointer (&menu->format, g_free);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -394,11 +391,11 @@ gimp_unit_menu_get_unit (GimpUnitMenu *menu)
  * by attached spinbuttons. Please refer to the documentation of
  * gimp_unit_menu_update() to see how this is done.
  *
- * This function allows to specify the number of digits shown for a
- * size in pixels. Usually this is 0 (only full pixels). If you want
- * to allow the user to specify sub-pixel sizes using the attached
- * spinbuttons, specify the number of digits after the decimal point
- * here. You should do this after attaching your spinbuttons.
+ * This function specifies the number of digits shown for a size in
+ * pixels. Usually this is 0 (only full pixels). If you want to allow
+ * the user to specify sub-pixel sizes using the attached spinbuttons,
+ * specify the number of digits after the decimal point here. You
+ * should do this after attaching your spinbuttons.
  **/
 void
 gimp_unit_menu_set_pixel_digits (GimpUnitMenu *menu,
@@ -446,7 +443,7 @@ gimp_unit_menu_selection_response (GtkWidget    *widget,
       if (menu->selection && gtk_tree_selection_get_selected (sel, &model,
                                                               &iter))
         {
-          GValue   val = { 0, };
+          GValue   val = G_VALUE_INIT;
           GimpUnit unit;
 
           gtk_tree_model_get_value (model, &iter, 2, &val);
@@ -492,8 +489,8 @@ gimp_unit_menu_create_selection (GimpUnitMenu *menu)
                                      gimp_standard_help_func,
                                      "gimp-unit-dialog",
 
-                                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                     GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                                     _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                     _("_OK"),     GTK_RESPONSE_OK,
 
                                      NULL);
 

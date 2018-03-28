@@ -33,6 +33,7 @@
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
 
+#include "gimpcontainertreeview.h"
 #include "gimpcontainerview.h"
 #include "gimpbufferview.h"
 #include "gimpdnd.h"
@@ -42,6 +43,7 @@
 #include "gimpview.h"
 #include "gimpviewrendererbuffer.h"
 #include "gimpuimanager.h"
+#include "gimpwidgets-utils.h"
 
 #include "gimp-intl.h"
 
@@ -54,7 +56,7 @@ static void   gimp_buffer_view_set_context       (GimpDocked          *docked,
 static void   gimp_buffer_view_activate_item     (GimpContainerEditor *editor,
                                                   GimpViewable        *viewable);
 
-static void   gimp_buffer_view_buffer_changed    (Gimp                *gimp,
+static void   gimp_buffer_view_clipboard_changed (Gimp                *gimp,
                                                   GimpBufferView      *buffer_view);
 static void   gimp_buffer_view_view_notify       (GimpContainerView   *view,
                                                   GParamSpec          *pspec,
@@ -93,10 +95,6 @@ gimp_buffer_view_docked_iface_init (GimpDockedInterface *iface)
 static void
 gimp_buffer_view_init (GimpBufferView *view)
 {
-  view->paste_button        = NULL;
-  view->paste_into_button   = NULL;
-  view->paste_as_new_button = NULL;
-  view->delete_button       = NULL;
 }
 
 static void
@@ -107,7 +105,7 @@ gimp_buffer_view_set_context (GimpDocked  *docked,
 
   parent_docked_iface->set_context (docked, context);
 
-  gimp_view_renderer_set_context (GIMP_VIEW (view->global_view)->renderer,
+  gimp_view_renderer_set_context (GIMP_VIEW (view->clipboard_view)->renderer,
                                   context);
 }
 
@@ -148,6 +146,17 @@ gimp_buffer_view_new (GimpViewType     view_type,
 
   editor = GIMP_CONTAINER_EDITOR (buffer_view);
 
+  if (GIMP_IS_CONTAINER_TREE_VIEW (editor->view))
+    {
+      GimpContainerTreeView *tree_view;
+
+      tree_view = GIMP_CONTAINER_TREE_VIEW (editor->view);
+
+      gimp_container_tree_view_connect_name_edited (tree_view,
+                                                    G_CALLBACK (gimp_container_tree_view_name_edited),
+                                                    tree_view);
+    }
+
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   gtk_box_pack_start (GTK_BOX (editor), frame, FALSE, FALSE, 0);
@@ -159,15 +168,16 @@ gimp_buffer_view_new (GimpViewType     view_type,
   gtk_container_add (GTK_CONTAINER (frame), hbox);
   gtk_widget_show (hbox);
 
-  buffer_view->global_view =
+  /* FIXME: enable preview of a clipboard image, not just buffer */
+  buffer_view->clipboard_view =
     gimp_view_new_full_by_types (NULL,
                                  GIMP_TYPE_VIEW,
                                  GIMP_TYPE_BUFFER,
                                  view_size, view_size, view_border_width,
                                  FALSE, FALSE, TRUE);
-  gtk_box_pack_start (GTK_BOX (hbox), buffer_view->global_view,
+  gtk_box_pack_start (GTK_BOX (hbox), buffer_view->clipboard_view,
                       FALSE, FALSE, 0);
-  gtk_widget_show (buffer_view->global_view);
+  gtk_widget_show (buffer_view->clipboard_view);
 
   g_signal_connect_object (editor->view, "notify::view-size",
                            G_CALLBACK (gimp_buffer_view_view_notify),
@@ -176,28 +186,41 @@ gimp_buffer_view_new (GimpViewType     view_type,
                            G_CALLBACK (gimp_buffer_view_view_notify),
                            buffer_view, 0);
 
-  buffer_view->global_label = gtk_label_new (_("(None)"));
-  gtk_box_pack_start (GTK_BOX (hbox), buffer_view->global_label,
+  buffer_view->clipboard_label = gtk_label_new (_("(None)"));
+  gtk_box_pack_start (GTK_BOX (hbox), buffer_view->clipboard_label,
                       FALSE, FALSE, 0);
-  gtk_widget_show (buffer_view->global_label);
+  gtk_widget_show (buffer_view->clipboard_label);
 
-  g_signal_connect_object (context->gimp, "buffer-changed",
-                           G_CALLBACK (gimp_buffer_view_buffer_changed),
+  g_signal_connect_object (context->gimp, "clipboard-changed",
+                           G_CALLBACK (gimp_buffer_view_clipboard_changed),
                            G_OBJECT (buffer_view), 0);
 
-  gimp_buffer_view_buffer_changed (context->gimp, buffer_view);
+  gimp_buffer_view_clipboard_changed (context->gimp, buffer_view);
 
   buffer_view->paste_button =
     gimp_editor_add_action_button (GIMP_EDITOR (editor->view), "buffers",
-                                   "buffers-paste", NULL);
+                                   "buffers-paste",
+                                   "buffers-paste-in-place",
+                                   gimp_get_extend_selection_mask (),
+                                   NULL);
 
   buffer_view->paste_into_button =
     gimp_editor_add_action_button (GIMP_EDITOR (editor->view), "buffers",
-                                   "buffers-paste-into", NULL);
+                                   "buffers-paste-into",
+                                   "buffers-paste-into-in-place",
+                                   gimp_get_extend_selection_mask (),
+                                   NULL);
 
-  buffer_view->paste_as_new_button =
+  buffer_view->paste_as_new_layer_button =
     gimp_editor_add_action_button (GIMP_EDITOR (editor->view), "buffers",
-                                   "buffers-paste-as-new", NULL);
+                                   "buffers-paste-as-new-layer",
+                                   "buffers-paste-as-new-layer-in-place",
+                                   gimp_get_extend_selection_mask (),
+                                   NULL);
+
+  buffer_view->paste_as_new_image_button =
+    gimp_editor_add_action_button (GIMP_EDITOR (editor->view), "buffers",
+                                   "buffers-paste-as-new-image", NULL);
 
   buffer_view->delete_button =
     gimp_editor_add_action_button (GIMP_EDITOR (editor->view), "buffers",
@@ -210,7 +233,10 @@ gimp_buffer_view_new (GimpViewType     view_type,
                                   GTK_BUTTON (buffer_view->paste_into_button),
                                   GIMP_TYPE_BUFFER);
   gimp_container_view_enable_dnd (editor->view,
-                                  GTK_BUTTON (buffer_view->paste_as_new_button),
+                                  GTK_BUTTON (buffer_view->paste_as_new_layer_button),
+                                  GIMP_TYPE_BUFFER);
+  gimp_container_view_enable_dnd (editor->view,
+                                  GTK_BUTTON (buffer_view->paste_as_new_image_button),
                                   GIMP_TYPE_BUFFER);
   gimp_container_view_enable_dnd (editor->view,
                                   GTK_BUTTON (buffer_view->delete_button),
@@ -244,24 +270,24 @@ gimp_buffer_view_activate_item (GimpContainerEditor *editor,
 }
 
 static void
-gimp_buffer_view_buffer_changed (Gimp           *gimp,
-                                 GimpBufferView *buffer_view)
+gimp_buffer_view_clipboard_changed (Gimp           *gimp,
+                                    GimpBufferView *buffer_view)
 {
-  gimp_view_set_viewable (GIMP_VIEW (buffer_view->global_view),
-                          (GimpViewable *) gimp->global_buffer);
+  GimpBuffer *buffer = gimp_get_clipboard_buffer (gimp);
 
-  if (gimp->global_buffer)
+  gimp_view_set_viewable (GIMP_VIEW (buffer_view->clipboard_view),
+                          GIMP_VIEWABLE (buffer));
+
+  if (buffer)
     {
-      gchar *desc;
-
-      desc = gimp_viewable_get_description (GIMP_VIEWABLE (gimp->global_buffer),
-                                            NULL);
-      gtk_label_set_text (GTK_LABEL (buffer_view->global_label), desc);
+      gchar *desc = gimp_viewable_get_description (GIMP_VIEWABLE (buffer),
+                                                   NULL);
+      gtk_label_set_text (GTK_LABEL (buffer_view->clipboard_label), desc);
       g_free (desc);
     }
   else
     {
-      gtk_label_set_text (GTK_LABEL (buffer_view->global_label), _("(None)"));
+      gtk_label_set_text (GTK_LABEL (buffer_view->clipboard_label), _("(None)"));
     }
 }
 
@@ -270,7 +296,7 @@ gimp_buffer_view_view_notify (GimpContainerView *container_view,
                               GParamSpec        *pspec,
                               GimpBufferView    *buffer_view)
 {
-  GimpView *view = GIMP_VIEW (buffer_view->global_view);
+  GimpView *view = GIMP_VIEW (buffer_view->clipboard_view);
   gint      view_size;
   gint      view_border_width;
 

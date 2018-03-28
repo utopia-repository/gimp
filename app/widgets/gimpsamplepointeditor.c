@@ -2,7 +2,7 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimpsamplepointeditor.c
- * Copyright (C) 2005 Michael Natterer <mitch@gimp.org>
+ * Copyright (C) 2005-2016 Michael Natterer <mitch@gimp.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,8 @@
 
 #include "widgets-types.h"
 
+#include "config/gimpcoreconfig.h"
+
 #include "core/gimp.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-pick-color.h"
@@ -39,6 +41,9 @@
 #include "gimpwidgets-utils.h"
 
 #include "gimp-intl.h"
+
+
+#define N_POINTS 4
 
 
 enum
@@ -136,7 +141,7 @@ gimp_sample_point_editor_init (GimpSamplePointEditor *editor)
   gtk_box_pack_start (GTK_BOX (editor), editor->table, FALSE, FALSE, 0);
   gtk_widget_show (editor->table);
 
-  for (i = 0; i < 4; i++)
+  for (i = 0; i < N_POINTS; i++)
     {
       GtkWidget *frame;
 
@@ -145,6 +150,7 @@ gimp_sample_point_editor_init (GimpSamplePointEditor *editor)
                             "has-number",     TRUE,
                             "number",         i + 1,
                             "has-color-area", TRUE,
+                            "has-coords",     TRUE,
                             "sensitive",      FALSE,
                             NULL);
 
@@ -168,8 +174,7 @@ gimp_sample_point_editor_init (GimpSamplePointEditor *editor)
 static void
 gimp_sample_point_editor_constructed (GObject *object)
 {
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 }
 
 static void
@@ -247,6 +252,8 @@ gimp_sample_point_editor_set_image (GimpImageEditor *image_editor,
                                     GimpImage       *image)
 {
   GimpSamplePointEditor *editor = GIMP_SAMPLE_POINT_EDITOR (image_editor);
+  GimpColorConfig       *config = NULL;
+  gint                   i;
 
   if (image_editor->image)
     {
@@ -282,6 +289,14 @@ gimp_sample_point_editor_set_image (GimpImageEditor *image_editor,
       g_signal_connect (gimp_image_get_projection (image), "update",
                         G_CALLBACK (gimp_sample_point_editor_proj_update),
                         editor);
+
+      config = image->gimp->config->color_management;
+    }
+
+  for (i = 0; i < N_POINTS; i++)
+    {
+      gimp_color_frame_set_color_config (GIMP_COLOR_FRAME (editor->color_frames[i]),
+                                         config);
     }
 
   gimp_sample_point_editor_points_changed (editor);
@@ -316,7 +331,7 @@ gimp_sample_point_editor_set_sample_merged (GimpSamplePointEditor *editor,
 
       editor->sample_merged = sample_merged;
 
-      for (i = 0; i < 4; i++)
+      for (i = 0; i < N_POINTS; i++)
         editor->dirty[i] = TRUE;
 
       gimp_sample_point_editor_dirty (editor, -1);
@@ -358,7 +373,7 @@ gimp_sample_point_editor_point_moved (GimpImage             *image,
 {
   gint i = g_list_index (gimp_image_get_sample_points (image), sample_point);
 
-  if (i < 4)
+  if (i < N_POINTS)
     gimp_sample_point_editor_dirty (editor, i);
 }
 
@@ -379,16 +394,20 @@ gimp_sample_point_editor_proj_update (GimpImage             *image,
 
   sample_points = gimp_image_get_sample_points (image_editor->image);
 
-  n_points = MIN (4, g_list_length (sample_points));
+  n_points = MIN (N_POINTS, g_list_length (sample_points));
 
   for (i = 0, list = sample_points;
        i < n_points;
        i++, list = g_list_next (list))
     {
       GimpSamplePoint *sample_point = list->data;
+      gint             sp_x;
+      gint             sp_y;
 
-      if (sample_point->x >= x && sample_point->x < (x + width) &&
-          sample_point->y >= y && sample_point->y < (y + height))
+      gimp_sample_point_get_position (sample_point, &sp_x, &sp_y);
+
+      if (sp_x >= x && sp_x < (x + width) &&
+          sp_y >= y && sp_y < (y + height))
         {
           gimp_sample_point_editor_dirty (editor, i);
         }
@@ -406,7 +425,7 @@ gimp_sample_point_editor_points_changed (GimpSamplePointEditor *editor)
   if (image_editor->image)
     {
       sample_points = gimp_image_get_sample_points (image_editor->image);
-      n_points = MIN (4, g_list_length (sample_points));
+      n_points = MIN (N_POINTS, g_list_length (sample_points));
     }
 
   for (i = 0; i < n_points; i++)
@@ -415,7 +434,7 @@ gimp_sample_point_editor_points_changed (GimpSamplePointEditor *editor)
       editor->dirty[i] = TRUE;
     }
 
-  for (i = n_points; i < 4; i++)
+  for (i = n_points; i < N_POINTS; i++)
     {
       gtk_widget_set_sensitive (editor->color_frames[i], FALSE);
       gimp_color_frame_set_invalid (GIMP_COLOR_FRAME (editor->color_frames[i]));
@@ -457,7 +476,7 @@ gimp_sample_point_editor_update (GimpSamplePointEditor *editor)
 
   sample_points = gimp_image_get_sample_points (image_editor->image);
 
-  n_points = MIN (4, g_list_length (sample_points));
+  n_points = MIN (N_POINTS, g_list_length (sample_points));
 
   for (i = 0, list = sample_points;
        i < n_points;
@@ -467,25 +486,29 @@ gimp_sample_point_editor_update (GimpSamplePointEditor *editor)
         {
           GimpSamplePoint *sample_point = list->data;
           GimpColorFrame  *color_frame;
-          GimpImageType    image_type;
+          const Babl      *format;
+          guchar           pixel[32];
           GimpRGB          color;
-          gint             color_index;
+          gint             x;
+          gint             y;
 
           editor->dirty[i] = FALSE;
 
           color_frame = GIMP_COLOR_FRAME (editor->color_frames[i]);
 
+          gimp_sample_point_get_position (sample_point, &x, &y);
+
           if (gimp_image_pick_color (image_editor->image, NULL,
-                                     sample_point->x,
-                                     sample_point->y,
+                                     x, y,
                                      editor->sample_merged,
                                      FALSE, 0.0,
-                                     &image_type,
-                                     &color,
-                                     &color_index))
+                                     &format,
+                                     pixel,
+                                     &color))
             {
-              gimp_color_frame_set_color (color_frame, image_type,
-                                          &color, color_index);
+              gimp_color_frame_set_color (color_frame, FALSE,
+                                          format, pixel, &color,
+                                          x, y);
             }
           else
             {

@@ -19,7 +19,8 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include "plug-in-types.h"
 
@@ -61,7 +62,7 @@ gimp_plug_in_progress_attach (GimpProgress *progress)
   attach_count++;
 
   g_object_set_data (G_OBJECT (progress), "plug-in-progress-attach-count",
-                     GINT_TO_POINTER (attach_count));;
+                     GINT_TO_POINTER (attach_count));
 
   return attach_count;
 }
@@ -80,7 +81,7 @@ gimp_plug_in_progress_detach (GimpProgress *progress)
   attach_count--;
 
   g_object_set_data (G_OBJECT (progress), "plug-in-progress-attach-count",
-                     GINT_TO_POINTER (attach_count));;
+                     GINT_TO_POINTER (attach_count));
 
   return attach_count;
 }
@@ -128,16 +129,15 @@ gimp_plug_in_progress_start (GimpPlugIn  *plug_in,
       if (gimp_progress_is_active (proc_frame->progress))
         {
           if (message)
-            gimp_progress_set_text (proc_frame->progress, message);
+            gimp_progress_set_text_literal (proc_frame->progress, message);
 
           if (gimp_progress_get_value (proc_frame->progress) > 0.0)
             gimp_progress_set_value (proc_frame->progress, 0.0);
         }
       else
         {
-          gimp_progress_start (proc_frame->progress,
-                               message ? message : "",
-                               TRUE);
+          gimp_progress_start (proc_frame->progress, TRUE,
+                               "%s", message ? message : "");
         }
     }
 }
@@ -170,8 +170,7 @@ gimp_plug_in_progress_end (GimpPlugIn          *plug_in,
       if (proc_frame->progress_created)
         {
           gimp_free_progress (plug_in->manager->gimp, proc_frame->progress);
-          g_object_unref (proc_frame->progress);
-          proc_frame->progress = NULL;
+          g_clear_object (&proc_frame->progress);
         }
     }
 }
@@ -187,7 +186,7 @@ gimp_plug_in_progress_set_text (GimpPlugIn  *plug_in,
   proc_frame = gimp_plug_in_get_proc_frame (plug_in);
 
   if (proc_frame->progress)
-    gimp_progress_set_text (proc_frame->progress, message);
+    gimp_progress_set_text_literal (proc_frame->progress, message);
 }
 
 void
@@ -275,11 +274,7 @@ gimp_plug_in_progress_install (GimpPlugIn  *plug_in,
     {
       gimp_plug_in_progress_end (plug_in, proc_frame);
 
-      if (proc_frame->progress)
-        {
-          g_object_unref (proc_frame->progress);
-          proc_frame->progress = NULL;
-        }
+      g_clear_object (&proc_frame->progress);
     }
 
   proc_frame->progress = g_object_new (GIMP_TYPE_PDB_PROGRESS,
@@ -307,8 +302,8 @@ gimp_plug_in_progress_uninstall (GimpPlugIn  *plug_in,
   if (GIMP_IS_PDB_PROGRESS (proc_frame->progress))
     {
       gimp_plug_in_progress_end (plug_in, proc_frame);
-      g_object_unref (proc_frame->progress);
-      proc_frame->progress = NULL;
+
+      g_clear_object (&proc_frame->progress);
 
       return TRUE;
     }
@@ -329,11 +324,11 @@ gimp_plug_in_progress_cancel (GimpPlugIn  *plug_in,
 
 /*  private functions  */
 
-static GValueArray *
+static GimpValueArray *
 get_cancel_return_values (GimpProcedure *procedure)
 {
-  GValueArray *return_vals;
-  GError      *error;
+  GimpValueArray *return_vals;
+  GError         *error;
 
   error = g_error_new_literal (GIMP_PDB_ERROR, GIMP_PDB_ERROR_CANCELLED,
                                _("Cancelled"));

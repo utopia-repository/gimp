@@ -23,8 +23,12 @@
 
 #include <gegl.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
 #include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
+
+#include "libgimpbase/gimpbase.h"
 
 #include "pdb-types.h"
 
@@ -44,16 +48,16 @@
 #include "gimp-intl.h"
 
 
-static GValueArray *
-text_layer_new_invoker (GimpProcedure      *procedure,
-                        Gimp               *gimp,
-                        GimpContext        *context,
-                        GimpProgress       *progress,
-                        const GValueArray  *args,
-                        GError            **error)
+static GimpValueArray *
+text_layer_new_invoker (GimpProcedure         *procedure,
+                        Gimp                  *gimp,
+                        GimpContext           *context,
+                        GimpProgress          *progress,
+                        const GimpValueArray  *args,
+                        GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpImage *image;
   const gchar *text;
   const gchar *fontname;
@@ -61,11 +65,11 @@ text_layer_new_invoker (GimpProcedure      *procedure,
   GimpUnit unit;
   GimpLayer *layer = NULL;
 
-  image = gimp_value_get_image (&args->values[0], gimp);
-  text = g_value_get_string (&args->values[1]);
-  fontname = g_value_get_string (&args->values[2]);
-  size = g_value_get_double (&args->values[3]);
-  unit = g_value_get_int (&args->values[4]);
+  image = gimp_value_get_image (gimp_value_array_index (args, 0), gimp);
+  text = g_value_get_string (gimp_value_array_index (args, 1));
+  fontname = g_value_get_string (gimp_value_array_index (args, 2));
+  size = g_value_get_double (gimp_value_array_index (args, 3));
+  unit = g_value_get_int (gimp_value_array_index (args, 4));
 
   if (success)
     {
@@ -98,29 +102,29 @@ text_layer_new_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_layer (&return_vals->values[1], layer);
+    gimp_value_set_layer (gimp_value_array_index (return_vals, 1), layer);
 
   return return_vals;
 }
 
-static GValueArray *
-text_layer_get_text_invoker (GimpProcedure      *procedure,
-                             Gimp               *gimp,
-                             GimpContext        *context,
-                             GimpProgress       *progress,
-                             const GValueArray  *args,
-                             GError            **error)
+static GimpValueArray *
+text_layer_get_text_invoker (GimpProcedure         *procedure,
+                             Gimp                  *gimp,
+                             GimpContext           *context,
+                             GimpProgress          *progress,
+                             const GimpValueArray  *args,
+                             GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gchar *text = NULL;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, 0, error))
         {
           g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                         "text", &text,
@@ -136,29 +140,29 @@ text_layer_get_text_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_take_string (&return_vals->values[1], text);
+    g_value_take_string (gimp_value_array_index (return_vals, 1), text);
 
   return return_vals;
 }
 
-static GValueArray *
-text_layer_set_text_invoker (GimpProcedure      *procedure,
-                             Gimp               *gimp,
-                             GimpContext        *context,
-                             GimpProgress       *progress,
-                             const GValueArray  *args,
-                             GError            **error)
+static GimpValueArray *
+text_layer_set_text_invoker (GimpProcedure         *procedure,
+                             Gimp                  *gimp,
+                             GimpContext           *context,
+                             GimpProgress          *progress,
+                             const GimpValueArray  *args,
+                             GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   const gchar *text;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  text = g_value_get_string (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  text = g_value_get_string (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, GIMP_PDB_ITEM_CONTENT, error))
         {
           gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                                _("Set text layer attribute"),
@@ -175,24 +179,24 @@ text_layer_set_text_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-text_layer_get_markup_invoker (GimpProcedure      *procedure,
-                               Gimp               *gimp,
-                               GimpContext        *context,
-                               GimpProgress       *progress,
-                               const GValueArray  *args,
-                               GError            **error)
+static GimpValueArray *
+text_layer_get_markup_invoker (GimpProcedure         *procedure,
+                               Gimp                  *gimp,
+                               GimpContext           *context,
+                               GimpProgress          *progress,
+                               const GimpValueArray  *args,
+                               GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gchar *markup = NULL;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, 0, error))
         {
           g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                         "markup", &markup,
@@ -208,29 +212,29 @@ text_layer_get_markup_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_take_string (&return_vals->values[1], markup);
+    g_value_take_string (gimp_value_array_index (return_vals, 1), markup);
 
   return return_vals;
 }
 
-static GValueArray *
-text_layer_get_font_invoker (GimpProcedure      *procedure,
-                             Gimp               *gimp,
-                             GimpContext        *context,
-                             GimpProgress       *progress,
-                             const GValueArray  *args,
-                             GError            **error)
+static GimpValueArray *
+text_layer_get_font_invoker (GimpProcedure         *procedure,
+                             Gimp                  *gimp,
+                             GimpContext           *context,
+                             GimpProgress          *progress,
+                             const GimpValueArray  *args,
+                             GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gchar *font = NULL;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, 0, error))
         {
           g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                         "font", &font,
@@ -246,29 +250,29 @@ text_layer_get_font_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_take_string (&return_vals->values[1], font);
+    g_value_take_string (gimp_value_array_index (return_vals, 1), font);
 
   return return_vals;
 }
 
-static GValueArray *
-text_layer_set_font_invoker (GimpProcedure      *procedure,
-                             Gimp               *gimp,
-                             GimpContext        *context,
-                             GimpProgress       *progress,
-                             const GValueArray  *args,
-                             GError            **error)
+static GimpValueArray *
+text_layer_set_font_invoker (GimpProcedure         *procedure,
+                             Gimp                  *gimp,
+                             GimpContext           *context,
+                             GimpProgress          *progress,
+                             const GimpValueArray  *args,
+                             GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   const gchar *font;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  font = g_value_get_string (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  font = g_value_get_string (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, GIMP_PDB_ITEM_CONTENT, error))
         {
           gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                                _("Set text layer attribute"),
@@ -285,25 +289,25 @@ text_layer_set_font_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-text_layer_get_font_size_invoker (GimpProcedure      *procedure,
-                                  Gimp               *gimp,
-                                  GimpContext        *context,
-                                  GimpProgress       *progress,
-                                  const GValueArray  *args,
-                                  GError            **error)
+static GimpValueArray *
+text_layer_get_font_size_invoker (GimpProcedure         *procedure,
+                                  Gimp                  *gimp,
+                                  GimpContext           *context,
+                                  GimpProgress          *progress,
+                                  const GimpValueArray  *args,
+                                  GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gdouble font_size = 0.0;
   GimpUnit unit = 0;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, 0, error))
         {
           g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                         "font-size",      &font_size,
@@ -321,33 +325,33 @@ text_layer_get_font_size_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_double (&return_vals->values[1], font_size);
-      g_value_set_int (&return_vals->values[2], unit);
+      g_value_set_double (gimp_value_array_index (return_vals, 1), font_size);
+      g_value_set_int (gimp_value_array_index (return_vals, 2), unit);
     }
 
   return return_vals;
 }
 
-static GValueArray *
-text_layer_set_font_size_invoker (GimpProcedure      *procedure,
-                                  Gimp               *gimp,
-                                  GimpContext        *context,
-                                  GimpProgress       *progress,
-                                  const GValueArray  *args,
-                                  GError            **error)
+static GimpValueArray *
+text_layer_set_font_size_invoker (GimpProcedure         *procedure,
+                                  Gimp                  *gimp,
+                                  GimpContext           *context,
+                                  GimpProgress          *progress,
+                                  const GimpValueArray  *args,
+                                  GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gdouble font_size;
   GimpUnit unit;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  font_size = g_value_get_double (&args->values[1]);
-  unit = g_value_get_int (&args->values[2]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  font_size = g_value_get_double (gimp_value_array_index (args, 1));
+  unit = g_value_get_int (gimp_value_array_index (args, 2));
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, GIMP_PDB_ITEM_CONTENT, error))
         {
           gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                                _("Set text layer attribute"),
@@ -365,24 +369,24 @@ text_layer_set_font_size_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-text_layer_get_antialias_invoker (GimpProcedure      *procedure,
-                                  Gimp               *gimp,
-                                  GimpContext        *context,
-                                  GimpProgress       *progress,
-                                  const GValueArray  *args,
-                                  GError            **error)
+static GimpValueArray *
+text_layer_get_antialias_invoker (GimpProcedure         *procedure,
+                                  Gimp                  *gimp,
+                                  GimpContext           *context,
+                                  GimpProgress          *progress,
+                                  const GimpValueArray  *args,
+                                  GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gboolean antialias = FALSE;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, 0, error))
         {
           g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                         "antialias", &antialias,
@@ -398,29 +402,29 @@ text_layer_get_antialias_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], antialias);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), antialias);
 
   return return_vals;
 }
 
-static GValueArray *
-text_layer_set_antialias_invoker (GimpProcedure      *procedure,
-                                  Gimp               *gimp,
-                                  GimpContext        *context,
-                                  GimpProgress       *progress,
-                                  const GValueArray  *args,
-                                  GError            **error)
+static GimpValueArray *
+text_layer_set_antialias_invoker (GimpProcedure         *procedure,
+                                  Gimp                  *gimp,
+                                  GimpContext           *context,
+                                  GimpProgress          *progress,
+                                  const GimpValueArray  *args,
+                                  GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gboolean antialias;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  antialias = g_value_get_boolean (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  antialias = g_value_get_boolean (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, GIMP_PDB_ITEM_CONTENT, error))
         {
           gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                                _("Set text layer attribute"),
@@ -437,24 +441,24 @@ text_layer_set_antialias_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-text_layer_get_hint_style_invoker (GimpProcedure      *procedure,
-                                   Gimp               *gimp,
-                                   GimpContext        *context,
-                                   GimpProgress       *progress,
-                                   const GValueArray  *args,
-                                   GError            **error)
+static GimpValueArray *
+text_layer_get_hint_style_invoker (GimpProcedure         *procedure,
+                                   Gimp                  *gimp,
+                                   GimpContext           *context,
+                                   GimpProgress          *progress,
+                                   const GimpValueArray  *args,
+                                   GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gint32 style = 0;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, 0, error))
         {
           g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                         "hint-style", &style,
@@ -470,29 +474,29 @@ text_layer_get_hint_style_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_enum (&return_vals->values[1], style);
+    g_value_set_enum (gimp_value_array_index (return_vals, 1), style);
 
   return return_vals;
 }
 
-static GValueArray *
-text_layer_set_hint_style_invoker (GimpProcedure      *procedure,
-                                   Gimp               *gimp,
-                                   GimpContext        *context,
-                                   GimpProgress       *progress,
-                                   const GValueArray  *args,
-                                   GError            **error)
+static GimpValueArray *
+text_layer_set_hint_style_invoker (GimpProcedure         *procedure,
+                                   Gimp                  *gimp,
+                                   GimpContext           *context,
+                                   GimpProgress          *progress,
+                                   const GimpValueArray  *args,
+                                   GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gint32 style;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  style = g_value_get_enum (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  style = g_value_get_enum (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, GIMP_PDB_ITEM_CONTENT, error))
         {
           gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                                _("Set text layer attribute"),
@@ -509,24 +513,24 @@ text_layer_set_hint_style_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-text_layer_get_kerning_invoker (GimpProcedure      *procedure,
-                                Gimp               *gimp,
-                                GimpContext        *context,
-                                GimpProgress       *progress,
-                                const GValueArray  *args,
-                                GError            **error)
+static GimpValueArray *
+text_layer_get_kerning_invoker (GimpProcedure         *procedure,
+                                Gimp                  *gimp,
+                                GimpContext           *context,
+                                GimpProgress          *progress,
+                                const GimpValueArray  *args,
+                                GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gboolean kerning = FALSE;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, 0, error))
         {
           g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                         "kerning", &kerning,
@@ -542,29 +546,29 @@ text_layer_get_kerning_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], kerning);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), kerning);
 
   return return_vals;
 }
 
-static GValueArray *
-text_layer_set_kerning_invoker (GimpProcedure      *procedure,
-                                Gimp               *gimp,
-                                GimpContext        *context,
-                                GimpProgress       *progress,
-                                const GValueArray  *args,
-                                GError            **error)
+static GimpValueArray *
+text_layer_set_kerning_invoker (GimpProcedure         *procedure,
+                                Gimp                  *gimp,
+                                GimpContext           *context,
+                                GimpProgress          *progress,
+                                const GimpValueArray  *args,
+                                GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gboolean kerning;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  kerning = g_value_get_boolean (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  kerning = g_value_get_boolean (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, GIMP_PDB_ITEM_CONTENT, error))
         {
           gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                                _("Set text layer attribute"),
@@ -581,24 +585,24 @@ text_layer_set_kerning_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-text_layer_get_language_invoker (GimpProcedure      *procedure,
-                                 Gimp               *gimp,
-                                 GimpContext        *context,
-                                 GimpProgress       *progress,
-                                 const GValueArray  *args,
-                                 GError            **error)
+static GimpValueArray *
+text_layer_get_language_invoker (GimpProcedure         *procedure,
+                                 Gimp                  *gimp,
+                                 GimpContext           *context,
+                                 GimpProgress          *progress,
+                                 const GimpValueArray  *args,
+                                 GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gchar *language = NULL;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, 0, error))
         {
           g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                         "language", &language,
@@ -614,29 +618,29 @@ text_layer_get_language_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_take_string (&return_vals->values[1], language);
+    g_value_take_string (gimp_value_array_index (return_vals, 1), language);
 
   return return_vals;
 }
 
-static GValueArray *
-text_layer_set_language_invoker (GimpProcedure      *procedure,
-                                 Gimp               *gimp,
-                                 GimpContext        *context,
-                                 GimpProgress       *progress,
-                                 const GValueArray  *args,
-                                 GError            **error)
+static GimpValueArray *
+text_layer_set_language_invoker (GimpProcedure         *procedure,
+                                 Gimp                  *gimp,
+                                 GimpContext           *context,
+                                 GimpProgress          *progress,
+                                 const GimpValueArray  *args,
+                                 GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   const gchar *language;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  language = g_value_get_string (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  language = g_value_get_string (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, GIMP_PDB_ITEM_CONTENT, error))
         {
           gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                                _("Set text layer attribute"),
@@ -653,24 +657,24 @@ text_layer_set_language_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-text_layer_get_base_direction_invoker (GimpProcedure      *procedure,
-                                       Gimp               *gimp,
-                                       GimpContext        *context,
-                                       GimpProgress       *progress,
-                                       const GValueArray  *args,
-                                       GError            **error)
+static GimpValueArray *
+text_layer_get_base_direction_invoker (GimpProcedure         *procedure,
+                                       Gimp                  *gimp,
+                                       GimpContext           *context,
+                                       GimpProgress          *progress,
+                                       const GimpValueArray  *args,
+                                       GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gint32 direction = 0;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, 0, error))
         {
           g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                         "base-direction", &direction,
@@ -686,29 +690,29 @@ text_layer_get_base_direction_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_enum (&return_vals->values[1], direction);
+    g_value_set_enum (gimp_value_array_index (return_vals, 1), direction);
 
   return return_vals;
 }
 
-static GValueArray *
-text_layer_set_base_direction_invoker (GimpProcedure      *procedure,
-                                       Gimp               *gimp,
-                                       GimpContext        *context,
-                                       GimpProgress       *progress,
-                                       const GValueArray  *args,
-                                       GError            **error)
+static GimpValueArray *
+text_layer_set_base_direction_invoker (GimpProcedure         *procedure,
+                                       Gimp                  *gimp,
+                                       GimpContext           *context,
+                                       GimpProgress          *progress,
+                                       const GimpValueArray  *args,
+                                       GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gint32 direction;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  direction = g_value_get_enum (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  direction = g_value_get_enum (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, GIMP_PDB_ITEM_CONTENT, error))
         {
           gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                                _("Set text layer attribute"),
@@ -725,24 +729,24 @@ text_layer_set_base_direction_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-text_layer_get_justification_invoker (GimpProcedure      *procedure,
-                                      Gimp               *gimp,
-                                      GimpContext        *context,
-                                      GimpProgress       *progress,
-                                      const GValueArray  *args,
-                                      GError            **error)
+static GimpValueArray *
+text_layer_get_justification_invoker (GimpProcedure         *procedure,
+                                      Gimp                  *gimp,
+                                      GimpContext           *context,
+                                      GimpProgress          *progress,
+                                      const GimpValueArray  *args,
+                                      GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gint32 justify = 0;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, 0, error))
         {
           g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                         "justify", &justify,
@@ -758,29 +762,29 @@ text_layer_get_justification_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_enum (&return_vals->values[1], justify);
+    g_value_set_enum (gimp_value_array_index (return_vals, 1), justify);
 
   return return_vals;
 }
 
-static GValueArray *
-text_layer_set_justification_invoker (GimpProcedure      *procedure,
-                                      Gimp               *gimp,
-                                      GimpContext        *context,
-                                      GimpProgress       *progress,
-                                      const GValueArray  *args,
-                                      GError            **error)
+static GimpValueArray *
+text_layer_set_justification_invoker (GimpProcedure         *procedure,
+                                      Gimp                  *gimp,
+                                      GimpContext           *context,
+                                      GimpProgress          *progress,
+                                      const GimpValueArray  *args,
+                                      GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gint32 justify;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  justify = g_value_get_enum (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  justify = g_value_get_enum (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, GIMP_PDB_ITEM_CONTENT, error))
         {
           gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                                _("Set text layer attribute"),
@@ -797,24 +801,24 @@ text_layer_set_justification_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-text_layer_get_color_invoker (GimpProcedure      *procedure,
-                              Gimp               *gimp,
-                              GimpContext        *context,
-                              GimpProgress       *progress,
-                              const GValueArray  *args,
-                              GError            **error)
+static GimpValueArray *
+text_layer_get_color_invoker (GimpProcedure         *procedure,
+                              Gimp                  *gimp,
+                              GimpContext           *context,
+                              GimpProgress          *progress,
+                              const GimpValueArray  *args,
+                              GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   GimpRGB color = { 0.0, 0.0, 0.0, 1.0 };
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, 0, error))
         {
           color = gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer))->color;
         }
@@ -828,29 +832,29 @@ text_layer_get_color_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_rgb (&return_vals->values[1], &color);
+    gimp_value_set_rgb (gimp_value_array_index (return_vals, 1), &color);
 
   return return_vals;
 }
 
-static GValueArray *
-text_layer_set_color_invoker (GimpProcedure      *procedure,
-                              Gimp               *gimp,
-                              GimpContext        *context,
-                              GimpProgress       *progress,
-                              const GValueArray  *args,
-                              GError            **error)
+static GimpValueArray *
+text_layer_set_color_invoker (GimpProcedure         *procedure,
+                              Gimp                  *gimp,
+                              GimpContext           *context,
+                              GimpProgress          *progress,
+                              const GimpValueArray  *args,
+                              GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   GimpRGB color;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  gimp_value_get_rgb (&args->values[1], &color);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  gimp_value_get_rgb (gimp_value_array_index (args, 1), &color);
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, GIMP_PDB_ITEM_CONTENT, error))
         {
           gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                                _("Set text layer attribute"),
@@ -867,24 +871,24 @@ text_layer_set_color_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-text_layer_get_indent_invoker (GimpProcedure      *procedure,
-                               Gimp               *gimp,
-                               GimpContext        *context,
-                               GimpProgress       *progress,
-                               const GValueArray  *args,
-                               GError            **error)
+static GimpValueArray *
+text_layer_get_indent_invoker (GimpProcedure         *procedure,
+                               Gimp                  *gimp,
+                               GimpContext           *context,
+                               GimpProgress          *progress,
+                               const GimpValueArray  *args,
+                               GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gdouble indent = 0.0;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, 0, error))
         {
           g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                         "indent", &indent,
@@ -900,29 +904,29 @@ text_layer_get_indent_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_double (&return_vals->values[1], indent);
+    g_value_set_double (gimp_value_array_index (return_vals, 1), indent);
 
   return return_vals;
 }
 
-static GValueArray *
-text_layer_set_indent_invoker (GimpProcedure      *procedure,
-                               Gimp               *gimp,
-                               GimpContext        *context,
-                               GimpProgress       *progress,
-                               const GValueArray  *args,
-                               GError            **error)
+static GimpValueArray *
+text_layer_set_indent_invoker (GimpProcedure         *procedure,
+                               Gimp                  *gimp,
+                               GimpContext           *context,
+                               GimpProgress          *progress,
+                               const GimpValueArray  *args,
+                               GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gdouble indent;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  indent = g_value_get_double (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  indent = g_value_get_double (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, GIMP_PDB_ITEM_CONTENT, error))
         {
           gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                                _("Set text layer attribute"),
@@ -939,24 +943,24 @@ text_layer_set_indent_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-text_layer_get_line_spacing_invoker (GimpProcedure      *procedure,
-                                     Gimp               *gimp,
-                                     GimpContext        *context,
-                                     GimpProgress       *progress,
-                                     const GValueArray  *args,
-                                     GError            **error)
+static GimpValueArray *
+text_layer_get_line_spacing_invoker (GimpProcedure         *procedure,
+                                     Gimp                  *gimp,
+                                     GimpContext           *context,
+                                     GimpProgress          *progress,
+                                     const GimpValueArray  *args,
+                                     GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gdouble line_spacing = 0.0;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, 0, error))
         {
           g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                         "line-spacing", &line_spacing,
@@ -972,29 +976,29 @@ text_layer_get_line_spacing_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_double (&return_vals->values[1], line_spacing);
+    g_value_set_double (gimp_value_array_index (return_vals, 1), line_spacing);
 
   return return_vals;
 }
 
-static GValueArray *
-text_layer_set_line_spacing_invoker (GimpProcedure      *procedure,
-                                     Gimp               *gimp,
-                                     GimpContext        *context,
-                                     GimpProgress       *progress,
-                                     const GValueArray  *args,
-                                     GError            **error)
+static GimpValueArray *
+text_layer_set_line_spacing_invoker (GimpProcedure         *procedure,
+                                     Gimp                  *gimp,
+                                     GimpContext           *context,
+                                     GimpProgress          *progress,
+                                     const GimpValueArray  *args,
+                                     GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gdouble line_spacing;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  line_spacing = g_value_get_double (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  line_spacing = g_value_get_double (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, GIMP_PDB_ITEM_CONTENT, error))
         {
           gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                                _("Set text layer attribute"),
@@ -1011,24 +1015,24 @@ text_layer_set_line_spacing_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-text_layer_get_letter_spacing_invoker (GimpProcedure      *procedure,
-                                       Gimp               *gimp,
-                                       GimpContext        *context,
-                                       GimpProgress       *progress,
-                                       const GValueArray  *args,
-                                       GError            **error)
+static GimpValueArray *
+text_layer_get_letter_spacing_invoker (GimpProcedure         *procedure,
+                                       Gimp                  *gimp,
+                                       GimpContext           *context,
+                                       GimpProgress          *progress,
+                                       const GimpValueArray  *args,
+                                       GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gdouble letter_spacing = 0.0;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, 0, error))
         {
           g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                         "letter-spacing", &letter_spacing,
@@ -1044,29 +1048,29 @@ text_layer_get_letter_spacing_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_double (&return_vals->values[1], letter_spacing);
+    g_value_set_double (gimp_value_array_index (return_vals, 1), letter_spacing);
 
   return return_vals;
 }
 
-static GValueArray *
-text_layer_set_letter_spacing_invoker (GimpProcedure      *procedure,
-                                       Gimp               *gimp,
-                                       GimpContext        *context,
-                                       GimpProgress       *progress,
-                                       const GValueArray  *args,
-                                       GError            **error)
+static GimpValueArray *
+text_layer_set_letter_spacing_invoker (GimpProcedure         *procedure,
+                                       Gimp                  *gimp,
+                                       GimpContext           *context,
+                                       GimpProgress          *progress,
+                                       const GimpValueArray  *args,
+                                       GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gdouble letter_spacing;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  letter_spacing = g_value_get_double (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  letter_spacing = g_value_get_double (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, GIMP_PDB_ITEM_CONTENT, error))
         {
           gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                                _("Set text layer attribute"),
@@ -1083,26 +1087,26 @@ text_layer_set_letter_spacing_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-text_layer_resize_invoker (GimpProcedure      *procedure,
-                           Gimp               *gimp,
-                           GimpContext        *context,
-                           GimpProgress       *progress,
-                           const GValueArray  *args,
-                           GError            **error)
+static GimpValueArray *
+text_layer_resize_invoker (GimpProcedure         *procedure,
+                           Gimp                  *gimp,
+                           GimpContext           *context,
+                           GimpProgress          *progress,
+                           const GimpValueArray  *args,
+                           GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gdouble width;
   gdouble height;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  width = g_value_get_double (&args->values[1]);
-  height = g_value_get_double (&args->values[2]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  width = g_value_get_double (gimp_value_array_index (args, 1));
+  height = g_value_get_double (gimp_value_array_index (args, 2));
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, GIMP_PDB_ITEM_CONTENT, error))
         {
           GimpText *text = gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer));
           gdouble   xres, yres;
@@ -1131,25 +1135,25 @@ text_layer_resize_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-text_layer_get_hinting_invoker (GimpProcedure      *procedure,
-                                Gimp               *gimp,
-                                GimpContext        *context,
-                                GimpProgress       *progress,
-                                const GValueArray  *args,
-                                GError            **error)
+static GimpValueArray *
+text_layer_get_hinting_invoker (GimpProcedure         *procedure,
+                                Gimp                  *gimp,
+                                GimpContext           *context,
+                                GimpProgress          *progress,
+                                const GimpValueArray  *args,
+                                GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpLayer *layer;
   gboolean hinting = FALSE;
   gboolean autohint = FALSE;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, 0, error))
         {
           g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                         "hinting", &hinting,
@@ -1166,31 +1170,31 @@ text_layer_get_hinting_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_boolean (&return_vals->values[1], hinting);
-      g_value_set_boolean (&return_vals->values[2], autohint);
+      g_value_set_boolean (gimp_value_array_index (return_vals, 1), hinting);
+      g_value_set_boolean (gimp_value_array_index (return_vals, 2), autohint);
     }
 
   return return_vals;
 }
 
-static GValueArray *
-text_layer_set_hinting_invoker (GimpProcedure      *procedure,
-                                Gimp               *gimp,
-                                GimpContext        *context,
-                                GimpProgress       *progress,
-                                const GValueArray  *args,
-                                GError            **error)
+static GimpValueArray *
+text_layer_set_hinting_invoker (GimpProcedure         *procedure,
+                                Gimp                  *gimp,
+                                GimpContext           *context,
+                                GimpProgress          *progress,
+                                const GimpValueArray  *args,
+                                GError               **error)
 {
   gboolean success = TRUE;
   GimpLayer *layer;
   gboolean hinting;
 
-  layer = gimp_value_get_layer (&args->values[0], gimp);
-  hinting = g_value_get_boolean (&args->values[1]);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 0), gimp);
+  hinting = g_value_get_boolean (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, GIMP_PDB_ITEM_CONTENT, error))
         {
           gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                                _("Set text layer attribute"),
@@ -2034,7 +2038,7 @@ register_text_layer_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-text-layer-get-letter-spacing",
                                      "Get the letter spacing used in a text layer.",
-                                     "This procedure returns the additional spacing between the single glyps in a text layer.",
+                                     "This procedure returns the additional spacing between the single glyphs in a text layer.",
                                      "Marcus Heese <heese@cip.ifi.lmu.de>",
                                      "Marcus Heese",
                                      "2008",

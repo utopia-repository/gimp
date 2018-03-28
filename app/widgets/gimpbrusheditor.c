@@ -22,6 +22,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpmath/gimpmath.h"
@@ -140,18 +141,18 @@ gimp_brush_editor_init (GimpBrushEditor *editor)
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-  box = gimp_enum_stock_box_new (GIMP_TYPE_BRUSH_GENERATED_SHAPE,
-                                 "gimp-shape",
-                                 GTK_ICON_SIZE_MENU,
-                                 G_CALLBACK (gimp_brush_editor_update_shape),
-                                 editor,
-                                 &editor->shape_group);
+  box = gimp_enum_icon_box_new (GIMP_TYPE_BRUSH_GENERATED_SHAPE,
+                                "gimp-shape",
+                                GTK_ICON_SIZE_MENU,
+                                G_CALLBACK (gimp_brush_editor_update_shape),
+                                editor,
+                                &editor->shape_group);
   gtk_box_pack_start (GTK_BOX (hbox), box, FALSE, FALSE, 0);
   gtk_widget_show (box);
 
   /*  brush radius scale  */
   editor->radius_data =
-    GTK_ADJUSTMENT (gtk_adjustment_new (0.0, 0.1, 1000.0, 0.1, 1.0, 0.0));
+    GTK_ADJUSTMENT (gtk_adjustment_new (0.0, 0.1, 1000.0, 1.0, 10.0, 0.0));
   scale = gimp_spin_scale_new (editor->radius_data, _("Radius"), 1);
   gtk_box_pack_start (GTK_BOX (editor->options_box), scale, FALSE, FALSE, 0);
   gtk_widget_show (scale);
@@ -222,8 +223,7 @@ gimp_brush_editor_init (GimpBrushEditor *editor)
 static void
 gimp_brush_editor_constructed (GObject *object)
 {
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   gimp_docked_set_show_button_bar (GIMP_DOCKED (object), FALSE);
 }
@@ -325,53 +325,53 @@ gimp_brush_editor_update_brush (GtkAdjustment   *adjustment,
                                 GimpBrushEditor *editor)
 {
   GimpBrushGenerated *brush;
-  gdouble             radius;
-  gint                spikes;
-  gdouble             hardness;
-  gdouble             ratio;
-  gdouble             angle;
-  gdouble             spacing;
+  gdouble             value;
 
   if (! GIMP_IS_BRUSH_GENERATED (GIMP_DATA_EDITOR (editor)->data))
     return;
 
   brush = GIMP_BRUSH_GENERATED (GIMP_DATA_EDITOR (editor)->data);
 
-  radius   = gtk_adjustment_get_value (editor->radius_data);
-  spikes   = ROUND (gtk_adjustment_get_value (editor->spikes_data));
-  hardness = gtk_adjustment_get_value (editor->hardness_data);
-  ratio    = gtk_adjustment_get_value (editor->aspect_ratio_data);
-  angle    = gtk_adjustment_get_value (editor->angle_data);
-  spacing  = gtk_adjustment_get_value (editor->spacing_data);
+  g_signal_handlers_block_by_func (brush,
+                                   gimp_brush_editor_notify_brush,
+                                   editor);
 
-  if (radius   != gimp_brush_generated_get_radius       (brush) ||
-      spikes   != gimp_brush_generated_get_spikes       (brush) ||
-      hardness != gimp_brush_generated_get_hardness     (brush) ||
-      ratio    != gimp_brush_generated_get_aspect_ratio (brush) ||
-      angle    != gimp_brush_generated_get_angle        (brush) ||
-      spacing  != gimp_brush_get_spacing                (GIMP_BRUSH (brush)))
+  value = gtk_adjustment_get_value (adjustment);
+
+  if (adjustment == editor->radius_data)
     {
-      g_signal_handlers_block_by_func (brush,
-                                       gimp_brush_editor_notify_brush,
-                                       editor);
-
-      gimp_data_freeze (GIMP_DATA (brush));
-      g_object_freeze_notify (G_OBJECT (brush));
-
-      gimp_brush_generated_set_radius       (brush, radius);
-      gimp_brush_generated_set_spikes       (brush, spikes);
-      gimp_brush_generated_set_hardness     (brush, hardness);
-      gimp_brush_generated_set_aspect_ratio (brush, ratio);
-      gimp_brush_generated_set_angle        (brush, angle);
-      gimp_brush_set_spacing                (GIMP_BRUSH (brush), spacing);
-
-      g_object_thaw_notify (G_OBJECT (brush));
-      gimp_data_thaw (GIMP_DATA (brush));
-
-      g_signal_handlers_unblock_by_func (brush,
-                                         gimp_brush_editor_notify_brush,
-                                         editor);
+      if (value != gimp_brush_generated_get_radius (brush))
+        gimp_brush_generated_set_radius (brush, value);
     }
+  else if (adjustment == editor->spikes_data)
+    {
+      if (ROUND (value) != gimp_brush_generated_get_spikes (brush))
+        gimp_brush_generated_set_spikes (brush, ROUND (value));
+    }
+  else if (adjustment == editor->hardness_data)
+    {
+      if (value != gimp_brush_generated_get_hardness (brush))
+        gimp_brush_generated_set_hardness (brush, value);
+    }
+  else if (adjustment == editor->aspect_ratio_data)
+    {
+      if (value != gimp_brush_generated_get_aspect_ratio (brush))
+        gimp_brush_generated_set_aspect_ratio (brush, value);
+    }
+  else if (adjustment == editor->angle_data)
+    {
+      if (value != gimp_brush_generated_get_angle (brush))
+        gimp_brush_generated_set_angle (brush, value);
+    }
+  else if (adjustment == editor->spacing_data)
+    {
+      if (value != gimp_brush_get_spacing (GIMP_BRUSH (brush)))
+        gimp_brush_set_spacing (GIMP_BRUSH (brush), value);
+    }
+
+  g_signal_handlers_unblock_by_func (brush,
+                                     gimp_brush_editor_notify_brush,
+                                     editor);
 }
 
 static void
@@ -398,9 +398,9 @@ gimp_brush_editor_update_shape (GtkWidget       *widget,
 }
 
 static void
-gimp_brush_editor_notify_brush (GimpBrushGenerated   *brush,
-                                GParamSpec           *pspec,
-                                GimpBrushEditor      *editor)
+gimp_brush_editor_notify_brush (GimpBrushGenerated *brush,
+                                GParamSpec         *pspec,
+                                GimpBrushEditor    *editor)
 {
   GtkAdjustment *adj   = NULL;
   gdouble        value = 0.0;
@@ -417,39 +417,36 @@ gimp_brush_editor_notify_brush (GimpBrushGenerated   *brush,
       g_signal_handlers_unblock_by_func (editor->shape_group,
                                          gimp_brush_editor_update_shape,
                                          editor);
-
-      adj   = editor->radius_data;
-      value = brush->radius;
     }
   else if (! strcmp (pspec->name, "radius"))
     {
       adj   = editor->radius_data;
-      value = brush->radius;
+      value = gimp_brush_generated_get_radius (brush);
     }
   else if (! strcmp (pspec->name, "spikes"))
     {
       adj   = editor->spikes_data;
-      value = brush->spikes;
+      value = gimp_brush_generated_get_spikes (brush);
     }
   else if (! strcmp (pspec->name, "hardness"))
     {
       adj   = editor->hardness_data;
-      value = brush->hardness;
+      value = gimp_brush_generated_get_hardness (brush);
     }
   else if (! strcmp (pspec->name, "angle"))
     {
       adj   = editor->angle_data;
-      value = brush->angle;
+      value = gimp_brush_generated_get_angle (brush);
     }
   else if (! strcmp (pspec->name, "aspect-ratio"))
     {
       adj   = editor->aspect_ratio_data;
-      value = brush->aspect_ratio;
+      value = gimp_brush_generated_get_aspect_ratio (brush);
     }
   else if (! strcmp (pspec->name, "spacing"))
     {
       adj   = editor->spacing_data;
-      value = GIMP_BRUSH (brush)->spacing;
+      value = gimp_brush_get_spacing (GIMP_BRUSH (brush));
     }
 
   if (adj)

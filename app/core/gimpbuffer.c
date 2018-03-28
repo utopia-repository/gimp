@@ -17,49 +17,69 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <cairo.h>
+#include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
-#include "libgimpmath/gimpmath.h"
+#include "libgimpbase/gimpbase.h"
+#include "libgimpcolor/gimpcolor.h"
 
 #include "core-types.h"
 
-#include "base/pixel-region.h"
-#include "base/tile-manager.h"
-#include "base/tile-manager-preview.h"
-#include "base/temp-buf.h"
+#include "gegl/gimp-babl.h"
+#include "gegl/gimp-gegl-loops.h"
 
+#include "gimp-memsize.h"
 #include "gimpbuffer.h"
+#include "gimpimage.h"
+#include "gimptempbuf.h"
 
 
-static void      gimp_buffer_finalize         (GObject       *object);
+static void          gimp_color_managed_iface_init (GimpColorManagedInterface *iface);
 
-static gint64    gimp_buffer_get_memsize      (GimpObject    *object,
-                                               gint64        *gui_size);
+static void          gimp_buffer_finalize          (GObject           *object);
 
-static gboolean  gimp_buffer_get_size         (GimpViewable  *viewable,
-                                               gint          *width,
-                                               gint          *height);
-static void      gimp_buffer_get_preview_size (GimpViewable  *viewable,
-                                               gint           size,
-                                               gboolean       is_popup,
-                                               gboolean       dot_for_dot,
-                                               gint          *popup_width,
-                                               gint          *popup_height);
-static gboolean  gimp_buffer_get_popup_size   (GimpViewable  *viewable,
-                                               gint           width,
-                                               gint           height,
-                                               gboolean       dot_for_dot,
-                                               gint          *popup_width,
-                                               gint          *popup_height);
-static TempBuf * gimp_buffer_get_new_preview  (GimpViewable  *viewable,
-                                               GimpContext   *context,
-                                               gint           width,
-                                               gint           height);
-static gchar   * gimp_buffer_get_description  (GimpViewable  *viewable,
-                                               gchar        **tooltip);
+static gint64        gimp_buffer_get_memsize       (GimpObject        *object,
+                                                    gint64            *gui_size);
+
+static gboolean      gimp_buffer_get_size          (GimpViewable      *viewable,
+                                                    gint              *width,
+                                                    gint              *height);
+static void          gimp_buffer_get_preview_size  (GimpViewable      *viewable,
+                                                    gint               size,
+                                                    gboolean           is_popup,
+                                                    gboolean           dot_for_dot,
+                                                    gint              *popup_width,
+                                                    gint              *popup_height);
+static gboolean      gimp_buffer_get_popup_size    (GimpViewable      *viewable,
+                                                    gint               width,
+                                                    gint               height,
+                                                    gboolean           dot_for_dot,
+                                                    gint              *popup_width,
+                                                    gint              *popup_height);
+static GimpTempBuf * gimp_buffer_get_new_preview   (GimpViewable      *viewable,
+                                                    GimpContext       *context,
+                                                    gint               width,
+                                                    gint               height);
+static GdkPixbuf   * gimp_buffer_get_new_pixbuf    (GimpViewable      *viewable,
+                                                    GimpContext       *context,
+                                                    gint               width,
+                                                    gint               height);
+static gchar       * gimp_buffer_get_description   (GimpViewable      *viewable,
+                                                    gchar            **tooltip);
+
+static const guint8 *
+       gimp_buffer_color_managed_get_icc_profile   (GimpColorManaged  *managed,
+                                                    gsize             *len);
+static GimpColorProfile *
+       gimp_buffer_color_managed_get_color_profile (GimpColorManaged  *managed);
+static void
+       gimp_buffer_color_managed_profile_changed   (GimpColorManaged  *managed);
 
 
-G_DEFINE_TYPE (GimpBuffer, gimp_buffer, GIMP_TYPE_VIEWABLE)
+G_DEFINE_TYPE_WITH_CODE (GimpBuffer, gimp_buffer, GIMP_TYPE_VIEWABLE,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_COLOR_MANAGED,
+                                                gimp_color_managed_iface_init))
 
 #define parent_class gimp_buffer_parent_class
 
@@ -71,22 +91,31 @@ gimp_buffer_class_init (GimpBufferClass *klass)
   GimpObjectClass   *gimp_object_class = GIMP_OBJECT_CLASS (klass);
   GimpViewableClass *viewable_class    = GIMP_VIEWABLE_CLASS (klass);
 
-  object_class->finalize           = gimp_buffer_finalize;
+  object_class->finalize            = gimp_buffer_finalize;
 
-  gimp_object_class->get_memsize   = gimp_buffer_get_memsize;
+  gimp_object_class->get_memsize    = gimp_buffer_get_memsize;
 
-  viewable_class->default_stock_id = "gtk-paste";
-  viewable_class->get_size         = gimp_buffer_get_size;
-  viewable_class->get_preview_size = gimp_buffer_get_preview_size;
-  viewable_class->get_popup_size   = gimp_buffer_get_popup_size;
-  viewable_class->get_new_preview  = gimp_buffer_get_new_preview;
-  viewable_class->get_description  = gimp_buffer_get_description;
+  viewable_class->default_icon_name = "edit-paste";
+  viewable_class->name_editable     = TRUE;
+  viewable_class->get_size          = gimp_buffer_get_size;
+  viewable_class->get_preview_size  = gimp_buffer_get_preview_size;
+  viewable_class->get_popup_size    = gimp_buffer_get_popup_size;
+  viewable_class->get_new_preview   = gimp_buffer_get_new_preview;
+  viewable_class->get_new_pixbuf    = gimp_buffer_get_new_pixbuf;
+  viewable_class->get_description   = gimp_buffer_get_description;
+}
+
+static void
+gimp_color_managed_iface_init (GimpColorManagedInterface *iface)
+{
+  iface->get_icc_profile   = gimp_buffer_color_managed_get_icc_profile;
+  iface->get_color_profile = gimp_buffer_color_managed_get_color_profile;
+  iface->profile_changed   = gimp_buffer_color_managed_profile_changed;
 }
 
 static void
 gimp_buffer_init (GimpBuffer *buffer)
 {
-  buffer->tiles = NULL;
 }
 
 static void
@@ -94,11 +123,9 @@ gimp_buffer_finalize (GObject *object)
 {
   GimpBuffer *buffer = GIMP_BUFFER (object);
 
-  if (buffer->tiles)
-    {
-      tile_manager_unref (buffer->tiles);
-      buffer->tiles = NULL;
-    }
+  g_clear_object (&buffer->buffer);
+
+  gimp_buffer_set_color_profile (buffer, NULL);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -110,7 +137,8 @@ gimp_buffer_get_memsize (GimpObject *object,
   GimpBuffer *buffer  = GIMP_BUFFER (object);
   gint64      memsize = 0;
 
-  memsize += tile_manager_get_memsize (buffer->tiles, FALSE);
+  memsize += gimp_gegl_buffer_get_memsize (buffer->buffer);
+  memsize += gimp_g_object_get_memsize (G_OBJECT (buffer->color_profile));
 
   return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
                                                                   gui_size);
@@ -190,15 +218,104 @@ gimp_buffer_get_popup_size (GimpViewable *viewable,
   return FALSE;
 }
 
-static TempBuf *
+static GimpTempBuf *
 gimp_buffer_get_new_preview (GimpViewable *viewable,
                              GimpContext  *context,
                              gint          width,
                              gint          height)
 {
-  GimpBuffer *buffer = GIMP_BUFFER (viewable);
+  GimpBuffer  *buffer = GIMP_BUFFER (viewable);
+  const Babl  *format = gimp_buffer_get_format (buffer);
+  GimpTempBuf *preview;
 
-  return tile_manager_get_preview (buffer->tiles, width, height);
+  if (babl_format_is_palette (format))
+    format = gimp_babl_format (GIMP_RGB, GIMP_PRECISION_U8_GAMMA,
+                               babl_format_has_alpha (format));
+  else
+    format = gimp_babl_format (gimp_babl_format_get_base_type (format),
+                               gimp_babl_precision (GIMP_COMPONENT_TYPE_U8,
+                                                    gimp_babl_format_get_linear (format)),
+                               babl_format_has_alpha (format));
+
+  preview = gimp_temp_buf_new (width, height, format);
+
+  gegl_buffer_get (buffer->buffer, GEGL_RECTANGLE (0, 0, width, height),
+                   MIN ((gdouble) width  / (gdouble) gimp_buffer_get_width (buffer),
+                        (gdouble) height / (gdouble) gimp_buffer_get_height (buffer)),
+                   format,
+                   gimp_temp_buf_get_data (preview),
+                   GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+
+  return preview;
+}
+
+static GdkPixbuf *
+gimp_buffer_get_new_pixbuf (GimpViewable *viewable,
+                            GimpContext  *context,
+                            gint          width,
+                            gint          height)
+{
+  GimpBuffer *buffer = GIMP_BUFFER (viewable);
+  GdkPixbuf  *pixbuf;
+  gdouble     scale;
+
+  pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8,
+                           width, height);
+
+  scale = MIN ((gdouble) width  / (gdouble) gimp_buffer_get_width (buffer),
+               (gdouble) height / (gdouble) gimp_buffer_get_height (buffer));
+
+  if (buffer->color_profile)
+    {
+      GimpColorProfile *srgb_profile;
+      GimpTempBuf      *temp_buf;
+      GeglBuffer       *src_buf;
+      GeglBuffer       *dest_buf;
+
+      srgb_profile = gimp_color_profile_new_rgb_srgb ();
+
+      temp_buf = gimp_temp_buf_new (width, height,
+                                    gimp_buffer_get_format (buffer));
+
+      gegl_buffer_get (buffer->buffer,
+                       GEGL_RECTANGLE (0, 0, width, height),
+                       scale,
+                       gimp_temp_buf_get_format (temp_buf),
+                       gimp_temp_buf_get_data (temp_buf),
+                       GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_CLAMP);
+
+      src_buf  = gimp_temp_buf_create_buffer (temp_buf);
+      dest_buf = gimp_pixbuf_create_buffer (pixbuf);
+
+      gimp_temp_buf_unref (temp_buf);
+
+      gimp_gegl_convert_color_profile (src_buf,
+                                       GEGL_RECTANGLE (0, 0, width, height),
+                                       buffer->color_profile,
+                                       dest_buf,
+                                       GEGL_RECTANGLE (0, 0, 0, 0),
+                                       srgb_profile,
+                                       GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL,
+                                       TRUE,
+                                       NULL);
+
+      g_object_unref (src_buf);
+      g_object_unref (dest_buf);
+
+      g_object_unref (srgb_profile);
+    }
+  else
+    {
+      gegl_buffer_get (buffer->buffer,
+                       GEGL_RECTANGLE (0, 0, width, height),
+                       scale,
+                       gimp_pixbuf_get_format (pixbuf),
+                       gdk_pixbuf_get_pixels (pixbuf),
+                       gdk_pixbuf_get_rowstride (pixbuf),
+                       GEGL_ABYSS_CLAMP);
+    }
+
+  return pixbuf;
 }
 
 static gchar *
@@ -213,31 +330,63 @@ gimp_buffer_get_description (GimpViewable  *viewable,
                           gimp_buffer_get_height (buffer));
 }
 
-GimpBuffer *
-gimp_buffer_new (TileManager *tiles,
-                 const gchar *name,
-                 gint         offset_x,
-                 gint         offset_y,
-                 gboolean     copy_pixels)
+static const guint8 *
+gimp_buffer_color_managed_get_icc_profile (GimpColorManaged *managed,
+                             gsize            *len)
 {
-  GimpBuffer *buffer;
+  GimpBuffer *buffer = GIMP_BUFFER (managed);
 
-  g_return_val_if_fail (tiles != NULL, NULL);
+  if (buffer->color_profile)
+    return gimp_color_profile_get_icc_profile (buffer->color_profile, len);
+
+  return NULL;
+}
+
+static GimpColorProfile *
+gimp_buffer_color_managed_get_color_profile (GimpColorManaged *managed)
+{
+  GimpBuffer *buffer = GIMP_BUFFER (managed);
+
+  if (buffer->color_profile)
+    return buffer->color_profile;
+
+  return gimp_babl_format_get_color_profile (gimp_buffer_get_format (buffer));
+}
+
+static void
+gimp_buffer_color_managed_profile_changed (GimpColorManaged *managed)
+{
+  gimp_viewable_invalidate_preview (GIMP_VIEWABLE (managed));
+}
+
+
+/*  public functions  */
+
+GimpBuffer *
+gimp_buffer_new (GeglBuffer    *buffer,
+                 const gchar   *name,
+                 gint           offset_x,
+                 gint           offset_y,
+                 gboolean       copy_pixels)
+{
+  GimpBuffer *gimp_buffer;
+
+  g_return_val_if_fail (GEGL_IS_BUFFER (buffer), NULL);
   g_return_val_if_fail (name != NULL, NULL);
 
-  buffer = g_object_new (GIMP_TYPE_BUFFER,
-                         "name", name,
-                         NULL);
+  gimp_buffer = g_object_new (GIMP_TYPE_BUFFER,
+                              "name", name,
+                              NULL);
 
   if (copy_pixels)
-    buffer->tiles = tile_manager_duplicate (tiles);
+    gimp_buffer->buffer = gegl_buffer_dup (buffer);
   else
-    buffer->tiles = tile_manager_ref (tiles);
+    gimp_buffer->buffer = g_object_ref (buffer);
 
-  buffer->offset_x = offset_x;
-  buffer->offset_y = offset_y;
+  gimp_buffer->offset_x = offset_x;
+  gimp_buffer->offset_y = offset_y;
 
-  return buffer;
+  return gimp_buffer;
 }
 
 GimpBuffer *
@@ -246,86 +395,146 @@ gimp_buffer_new_from_pixbuf (GdkPixbuf   *pixbuf,
                              gint         offset_x,
                              gint         offset_y)
 {
-  GimpBuffer  *buffer;
-  TileManager *tiles;
-  guchar      *pixels;
-  PixelRegion  destPR;
-  gint         width;
-  gint         height;
-  gint         rowstride;
-  gint         channels;
-  gint         y;
+  GimpBuffer       *gimp_buffer;
+  GeglBuffer       *buffer;
+  guint8           *icc_data;
+  gsize             icc_len;
+  GimpColorProfile *profile = NULL;
 
   g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
   g_return_val_if_fail (name != NULL, NULL);
 
-  width     = gdk_pixbuf_get_width (pixbuf);
-  height    = gdk_pixbuf_get_height (pixbuf);
-  rowstride = gdk_pixbuf_get_rowstride (pixbuf);
-  channels  = gdk_pixbuf_get_n_channels (pixbuf);
+  buffer = gimp_pixbuf_create_buffer (pixbuf);
 
-  tiles = tile_manager_new (width, height, channels);
+  gimp_buffer = gimp_buffer_new (buffer, name,
+                                 offset_x, offset_y, FALSE);
 
-  pixel_region_init (&destPR, tiles, 0, 0, width, height, TRUE);
-
-  for (y = 0, pixels = gdk_pixbuf_get_pixels (pixbuf);
-       y < height;
-       y++, pixels += rowstride)
+  icc_data = gimp_pixbuf_get_icc_profile (pixbuf, &icc_len);
+  if (icc_data)
     {
-      pixel_region_set_row (&destPR, 0, y, width, pixels);
-   }
-
-  buffer = gimp_buffer_new (tiles, name, offset_x, offset_y, FALSE);
-
-  tile_manager_unref (tiles);
-
-  return buffer;
-}
-
-gint
-gimp_buffer_get_width (const GimpBuffer *buffer)
-{
-  g_return_val_if_fail (GIMP_IS_BUFFER (buffer), 0);
-
-  return tile_manager_width (buffer->tiles);
-}
-
-gint
-gimp_buffer_get_height (const GimpBuffer *buffer)
-{
-  g_return_val_if_fail (GIMP_IS_BUFFER (buffer), 0);
-
-  return tile_manager_height (buffer->tiles);
-}
-
-gint
-gimp_buffer_get_bytes (const GimpBuffer *buffer)
-{
-  g_return_val_if_fail (GIMP_IS_BUFFER (buffer), 0);
-
-  return tile_manager_bpp (buffer->tiles);
-}
-
-GimpImageType
-gimp_buffer_get_image_type (const GimpBuffer *buffer)
-{
-  g_return_val_if_fail (GIMP_IS_BUFFER (buffer), 0);
-
-  switch (tile_manager_bpp (buffer->tiles))
-    {
-    case 1: return GIMP_GRAY_IMAGE;
-    case 2: return GIMP_GRAYA_IMAGE;
-    case 3: return GIMP_RGB_IMAGE;
-    case 4: return GIMP_RGBA_IMAGE;
+      profile = gimp_color_profile_new_from_icc_profile (icc_data, icc_len,
+                                                         NULL);
+      g_free (icc_data);
     }
 
-  return 0;
+  if (! profile && gdk_pixbuf_get_colorspace (pixbuf) == GDK_COLORSPACE_RGB)
+    {
+      profile = gimp_color_profile_new_rgb_srgb ();
+    }
+
+  if (profile)
+    {
+      gimp_buffer_set_color_profile (gimp_buffer, profile);
+      g_object_unref (profile);
+    }
+
+  g_object_unref (buffer);
+
+  return gimp_buffer;
 }
 
-TileManager *
-gimp_buffer_get_tiles (const GimpBuffer *buffer)
+gint
+gimp_buffer_get_width (GimpBuffer *buffer)
+{
+  g_return_val_if_fail (GIMP_IS_BUFFER (buffer), 0);
+
+  return gegl_buffer_get_width (buffer->buffer);
+}
+
+gint
+gimp_buffer_get_height (GimpBuffer *buffer)
+{
+  g_return_val_if_fail (GIMP_IS_BUFFER (buffer), 0);
+
+  return gegl_buffer_get_height (buffer->buffer);
+}
+
+const Babl *
+gimp_buffer_get_format (GimpBuffer *buffer)
 {
   g_return_val_if_fail (GIMP_IS_BUFFER (buffer), NULL);
 
-  return buffer->tiles;
+  return gegl_buffer_get_format (buffer->buffer);
+}
+
+GeglBuffer *
+gimp_buffer_get_buffer (GimpBuffer *buffer)
+{
+  g_return_val_if_fail (GIMP_IS_BUFFER (buffer), NULL);
+
+  return buffer->buffer;
+}
+
+void
+gimp_buffer_set_resolution (GimpBuffer *buffer,
+                            gdouble     resolution_x,
+                            gdouble     resolution_y)
+{
+  g_return_if_fail (GIMP_IS_BUFFER (buffer));
+  g_return_if_fail (resolution_x >= 0.0 && resolution_x <= GIMP_MAX_RESOLUTION);
+  g_return_if_fail (resolution_y >= 0.0 && resolution_y <= GIMP_MAX_RESOLUTION);
+
+  buffer->resolution_x = resolution_x;
+  buffer->resolution_y = resolution_y;
+}
+
+gboolean
+gimp_buffer_get_resolution (GimpBuffer *buffer,
+                            gdouble    *resolution_x,
+                            gdouble    *resolution_y)
+{
+  g_return_val_if_fail (GIMP_IS_BUFFER (buffer), FALSE);
+
+  if (buffer->resolution_x > 0.0 &&
+      buffer->resolution_y > 0.0)
+    {
+      if (resolution_x) *resolution_x = buffer->resolution_x;
+      if (resolution_y) *resolution_y = buffer->resolution_y;
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+void
+gimp_buffer_set_unit (GimpBuffer *buffer,
+                      GimpUnit    unit)
+{
+  g_return_if_fail (GIMP_IS_BUFFER (buffer));
+  g_return_if_fail (unit > GIMP_UNIT_PIXEL);
+
+  buffer->unit = unit;
+}
+
+GimpUnit
+gimp_buffer_get_unit (GimpBuffer *buffer)
+{
+  g_return_val_if_fail (GIMP_IS_BUFFER (buffer), GIMP_UNIT_PIXEL);
+
+  return buffer->unit;
+}
+
+void
+gimp_buffer_set_color_profile (GimpBuffer       *buffer,
+                               GimpColorProfile *profile)
+{
+  g_return_if_fail (GIMP_IS_BUFFER (buffer));
+  g_return_if_fail (profile == NULL || GIMP_IS_COLOR_PROFILE (profile));
+
+  if (profile != buffer->color_profile)
+    {
+      g_clear_object (&buffer->color_profile);
+
+      if (profile)
+        buffer->color_profile = g_object_ref (profile);
+    }
+}
+
+GimpColorProfile *
+gimp_buffer_get_color_profile (GimpBuffer *buffer)
+{
+  g_return_val_if_fail (GIMP_IS_BUFFER (buffer), NULL);
+
+  return buffer->color_profile;
 }

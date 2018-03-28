@@ -19,7 +19,6 @@
 
 #include <string.h>
 
-#include <glib/gprintf.h>
 #include <gegl.h>
 #include <gtk/gtk.h>
 
@@ -27,27 +26,22 @@
 
 #include "actions-types.h"
 
-#include "base/tile-manager.h"
-#include "base/tile.h"
-
 #include "core/gimp.h"
 #include "core/gimp-utils.h"
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
-#include "core/gimplayer.h"
-#include "core/gimppickable.h"
 #include "core/gimpprojectable.h"
 #include "core/gimpprojection.h"
 
 #include "gegl/gimp-gegl-utils.h"
 
-#include "display/gimpdisplay.h"
-#include "display/gimpdisplayshell.h"
-#include "display/gimpimagewindow.h"
-
 #include "widgets/gimpaction.h"
 #include "widgets/gimpmenufactory.h"
 #include "widgets/gimpuimanager.h"
+
+#include "display/gimpdisplay.h"
+#include "display/gimpdisplayshell.h"
+#include "display/gimpimagewindow.h"
 
 #include "menus/menus.h"
 
@@ -59,7 +53,7 @@
 
 /*  local function prototypes  */
 
-static gboolean  debug_benchmark_projection    (GimpImage   *image);
+static gboolean  debug_benchmark_projection    (GimpDisplay *display);
 static gboolean  debug_show_image_graph        (GimpImage   *source_image);
 
 static void      debug_dump_menus_recurse_menu (GtkWidget   *menu,
@@ -97,10 +91,10 @@ void
 debug_benchmark_projection_cmd_callback (GtkAction *action,
                                          gpointer   data)
 {
-  GimpImage *image;
-  return_if_no_image (image, data);
+  GimpDisplay *display;
+  return_if_no_display (display, data);
 
-  g_idle_add ((GSourceFunc) debug_benchmark_projection, g_object_ref (image));
+  g_idle_add ((GSourceFunc) debug_benchmark_projection, g_object_ref (display));
 }
 
 void
@@ -172,7 +166,7 @@ debug_dump_managers_cmd_callback (GtkAction *action,
       if (managers)
         {
           g_print ("\n\n"
-		   "========================================\n"
+                   "========================================\n"
                    "UI Manager: %s\n"
                    "========================================\n\n",
                    entry->identifier);
@@ -286,35 +280,28 @@ debug_dump_attached_data_cmd_callback (GtkAction *action,
 /*  private functions  */
 
 static gboolean
-debug_benchmark_projection (GimpImage *image)
+debug_benchmark_projection (GimpDisplay *display)
 {
-  GimpProjection *projection = gimp_image_get_projection (image);
-  TileManager    *tiles;
-  gint            x, y;
+  GimpImage *image = gimp_display_get_image (display);
 
-  gimp_image_invalidate (image,
-                         0, 0,
-                         gimp_image_get_width  (image),
-                         gimp_image_get_height (image));
-  gimp_projection_flush_now (projection);
-
-  tiles = gimp_pickable_get_tiles (GIMP_PICKABLE (projection));
-
-  GIMP_TIMER_START ();
-
-  for (x = 0; x < tile_manager_width (tiles); x += TILE_WIDTH)
+  if (image)
     {
-      for (y = 0; y < tile_manager_height (tiles); y += TILE_HEIGHT)
-        {
-          Tile *tile = tile_manager_get_tile (tiles, x, y, TRUE, FALSE);
+      GimpProjection *projection = gimp_image_get_projection (image);
 
-          tile_release (tile, FALSE);
-        }
+      GIMP_TIMER_START ();
+
+      gimp_image_invalidate (image,
+                             0, 0,
+                             gimp_image_get_width  (image),
+                             gimp_image_get_height (image));
+      gimp_projection_flush_now (projection);
+
+      gimp_display_flush_now (display);
+
+      GIMP_TIMER_END ("Validation of the entire projection");
+
+      g_object_unref (display);
     }
-
-  GIMP_TIMER_END ("Validation of the entire projection");
-
-  g_object_unref (image);
 
   return FALSE;
 }
@@ -322,19 +309,18 @@ debug_benchmark_projection (GimpImage *image)
 static gboolean
 debug_show_image_graph (GimpImage *source_image)
 {
-  Gimp            *gimp        = source_image->gimp;
-  GimpProjectable *projectable = GIMP_PROJECTABLE (source_image);
-  GeglNode        *image_graph = gimp_projectable_get_graph (projectable);
-  GeglNode        *output_node = gegl_node_get_output_proxy (image_graph, "output");
-  GimpImage       *new_image   = NULL;
-  TileManager     *tiles       = NULL;
-  GimpLayer       *layer       = NULL;
-  GeglNode        *introspect  = NULL;
-  GeglNode        *sink        = NULL;
-  GeglBuffer      *buffer      = NULL;
-  gchar           *new_name    = NULL;
+  GeglNode   *image_graph;
+  GeglNode   *output_node;
+  GimpImage  *new_image;
+  GeglNode   *introspect;
+  GeglNode   *sink;
+  GeglBuffer *buffer;
+  gchar      *new_name;
 
-  /* Setup and process the introspection graph */
+  image_graph = gimp_projectable_get_graph (GIMP_PROJECTABLE (source_image));
+
+  output_node = gegl_node_get_output_proxy (image_graph, "output");
+
   introspect = gegl_node_new_child (NULL,
                                     "operation", "gegl:introspect",
                                     "node",      output_node,
@@ -343,35 +329,24 @@ debug_show_image_graph (GimpImage *source_image)
                               "operation", "gegl:buffer-sink",
                               "buffer",    &buffer,
                               NULL);
+
   gegl_node_link_many (introspect, sink, NULL);
   gegl_node_process (sink);
 
-  /* Create a new image of the result */
-  tiles = gimp_buffer_to_tiles (buffer);
   new_name = g_strdup_printf ("%s GEGL graph",
                               gimp_image_get_display_name (source_image));
-  new_image = gimp_create_image (gimp,
-                                 tile_manager_width (tiles),
-                                 tile_manager_height (tiles),
-                                 GIMP_RGB,
-                                 FALSE);
-  gimp_image_set_uri (new_image, new_name);
-  layer = gimp_layer_new_from_tiles (tiles,
-                                     new_image,
-                                     GIMP_RGBA_IMAGE,
-                                     new_name,
-                                     1.0,
-                                     GIMP_NORMAL_MODE);
-  gimp_image_add_layer (new_image, layer, NULL, 0, FALSE);
-  gimp_create_display (gimp, new_image, GIMP_UNIT_PIXEL, 1.0);
 
-  /* Cleanup */
-  g_object_unref (new_image);
+  new_image = gimp_create_image_from_buffer (source_image->gimp,
+                                             buffer, new_name);
+  gimp_image_set_file (new_image, g_file_new_for_uri (new_name));
+
   g_free (new_name);
-  tile_manager_unref (tiles);
+
   g_object_unref (buffer);
+
   g_object_unref (sink);
   g_object_unref (introspect);
+
   g_object_unref (source_image);
 
   return FALSE;

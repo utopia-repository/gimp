@@ -17,17 +17,14 @@
 
 #include "config.h"
 
-#include <string.h>
-
 #include <cairo.h>
 #include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
 
 #include "core-types.h"
-
-#include "base/pixel-region.h"
 
 #include "gimpchannel.h"
 #include "gimpcontainer.h"
@@ -208,7 +205,11 @@ gimp_palette_import_create_image_palette (gpointer data,
   if (gimp_palette_get_n_colors (palette) >= n_colors)
     return;
 
-  lab = g_strdup_printf ("%s (occurs %u)", _("Untitled"), color_tab->count);
+  /* TRANSLATORS: the "%s" is an item title and "%u" is the number of
+     occurrences for this item. */
+  lab = g_strdup_printf (_("%s (occurs %u)"),
+                         _("Untitled"),
+                         color_tab->count);
 
   /* Adjust the colors to the mean of the the sample */
   gimp_rgba_set_uchar
@@ -275,83 +276,72 @@ gimp_palette_import_extract (GimpImage     *image,
                              gint           n_colors,
                              gint           threshold)
 {
-  TileManager   *tiles;
-  GimpImageType  type;
-  PixelRegion    region;
-  PixelRegion    mask_region;
-  PixelRegion   *maskPR = NULL;
-  gpointer       pr;
-  GHashTable    *colors = NULL;
+  GeglBuffer         *buffer;
+  GeglBufferIterator *iter;
+  GeglRectangle      *mask_roi = NULL;
+  GeglRectangle       rect     = { x, y, width, height };
+  GHashTable         *colors   = NULL;
+  const Babl         *format;
+  gint                bpp;
+  gint                mask_bpp = 0;
 
-  tiles = gimp_pickable_get_tiles (pickable);
-  type  = gimp_pickable_get_image_type (pickable);
+  buffer = gimp_pickable_get_buffer (pickable);
+  format = babl_format ("R'G'B'A u8");
 
-  pixel_region_init (&region, tiles, x, y, width, height, FALSE);
+  iter = gegl_buffer_iterator_new (buffer, &rect, 0, format,
+                                   GEGL_ACCESS_READ, GEGL_ABYSS_NONE);
+  bpp = babl_format_get_bytes_per_pixel (format);
 
   if (selection_only &&
       ! gimp_channel_is_empty (gimp_image_get_mask (image)))
     {
       GimpDrawable *mask = GIMP_DRAWABLE (gimp_image_get_mask (image));
 
-      pixel_region_init (&mask_region, gimp_drawable_get_tiles (mask),
-                         x + pickable_off_x, y + pickable_off_y,
-                         width, height,
-                         FALSE);
+      rect.x = x + pickable_off_x;
+      rect.y = y + pickable_off_y;
 
-      maskPR = &mask_region;
+      buffer = gimp_drawable_get_buffer (mask);
+      format = babl_format ("Y u8");
+
+      gegl_buffer_iterator_add (iter, buffer, &rect, 0, format,
+                                GEGL_ACCESS_READ, GEGL_ABYSS_NONE);
+      mask_roi = &iter->roi[1];
+      mask_bpp = babl_format_get_bytes_per_pixel (format);
     }
 
-  for (pr = pixel_regions_register (maskPR ? 2 : 1, &region, maskPR);
-       pr != NULL;
-       pr = pixel_regions_process (pr))
+  while (gegl_buffer_iterator_next (iter))
     {
-      const guchar *data      = region.data;
+      const guchar *data      = iter->data[0];
       const guchar *mask_data = NULL;
-      gint          i, j;
+      gint          length    = iter->length;
 
-      if (maskPR)
-        mask_data = maskPR->data;
+      if (mask_roi)
+        mask_data = iter->data[1];
 
-      for (i = 0; i < region.h; i++)
+      while (length--)
         {
-          const guchar *idata = data;
-          const guchar *mdata = mask_data;
-
-          for (j = 0; j < region.w; j++)
+          /*  ignore unselected, and completely transparent pixels  */
+          if ((! mask_data || *mask_data) && data[ALPHA])
             {
-              if (! mdata || *mdata)
-                {
-                  guchar rgba[MAX_CHANNELS];
+              guchar rgba[MAX_CHANNELS]     = { 0, };
+              guchar rgb_real[MAX_CHANNELS] = { 0, };
 
-                  gimp_image_get_color (image, type, idata, rgba);
+              memcpy (rgba, data, 4);
+              memcpy (rgb_real, rgba, 4);
 
-                  /*  ignore completely transparent pixels  */
-                  if (rgba[ALPHA])
-                    {
-                      guchar rgb_real[MAX_CHANNELS];
+              rgba[0] = (rgba[0] / threshold) * threshold;
+              rgba[1] = (rgba[1] / threshold) * threshold;
+              rgba[2] = (rgba[2] / threshold) * threshold;
 
-                      memcpy (rgb_real, rgba, MAX_CHANNELS);
-
-                      rgba[0] = (rgba[0] / threshold) * threshold;
-                      rgba[1] = (rgba[1] / threshold) * threshold;
-                      rgba[2] = (rgba[2] / threshold) * threshold;
-
-                      colors = gimp_palette_import_store_colors (colors,
-                                                                 rgba, rgb_real,
-                                                                 n_colors);
-                    }
-                }
-
-              idata += region.bytes;
-
-              if (mdata)
-                mdata += maskPR->bytes;
+              colors = gimp_palette_import_store_colors (colors,
+                                                         rgba, rgb_real,
+                                                         n_colors);
             }
 
-          data += region.rowstride;
+          data += bpp;
 
           if (mask_data)
-            mask_data += maskPR->rowstride;
+            mask_data += mask_bpp;
         }
     }
 
@@ -366,10 +356,9 @@ gimp_palette_import_from_image (GimpImage   *image,
                                 gint         threshold,
                                 gboolean     selection_only)
 {
-  GimpProjection *projection;
-  GHashTable     *colors;
-  gint            x, y;
-  gint            width, height;
+  GHashTable *colors;
+  gint        x, y;
+  gint        width, height;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
@@ -377,17 +366,12 @@ gimp_palette_import_from_image (GimpImage   *image,
   g_return_val_if_fail (n_colors > 1, NULL);
   g_return_val_if_fail (threshold > 0, NULL);
 
-  projection = gimp_image_get_projection (image);
-
-  gimp_pickable_flush (GIMP_PICKABLE (projection));
+  gimp_pickable_flush (GIMP_PICKABLE (image));
 
   if (selection_only)
     {
-      gimp_channel_bounds (gimp_image_get_mask (image),
-                           &x, &y, &width, &height);
-
-      width  -= x;
-      height -= y;
+      gimp_item_bounds (GIMP_ITEM (gimp_image_get_mask (image)),
+                        &x, &y, &width, &height);
     }
   else
     {
@@ -398,7 +382,7 @@ gimp_palette_import_from_image (GimpImage   *image,
     }
 
   colors = gimp_palette_import_extract (image,
-                                        GIMP_PICKABLE (projection),
+                                        GIMP_PICKABLE (image),
                                         0, 0,
                                         selection_only,
                                         x, y, width, height,
@@ -424,7 +408,7 @@ gimp_palette_import_from_indexed_image (GimpImage   *image,
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
-  g_return_val_if_fail (gimp_image_base_type (image) == GIMP_INDEXED, NULL);
+  g_return_val_if_fail (gimp_image_get_base_type (image) == GIMP_INDEXED, NULL);
   g_return_val_if_fail (palette_name != NULL, NULL);
 
   palette = GIMP_PALETTE (gimp_palette_new (context, palette_name));
@@ -506,50 +490,64 @@ gimp_palette_import_from_drawable (GimpDrawable *drawable,
 
 GimpPalette *
 gimp_palette_import_from_file (GimpContext  *context,
-                               const gchar  *filename,
+                               GFile        *file,
                                const gchar  *palette_name,
                                GError      **error)
 {
-  GList *palette_list = NULL;
+  GList        *palette_list = NULL;
+  GInputStream *input;
+  GError       *my_error = NULL;
 
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
-  g_return_val_if_fail (filename != NULL, NULL);
+  g_return_val_if_fail (G_IS_FILE (file), NULL);
   g_return_val_if_fail (palette_name != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  switch (gimp_palette_load_detect_format (filename))
+  input = G_INPUT_STREAM (g_file_read (file, NULL, &my_error));
+  if (! input)
+    {
+      g_set_error (error, GIMP_DATA_ERROR, GIMP_DATA_ERROR_OPEN,
+                   _("Could not open '%s' for reading: %s"),
+                   gimp_file_get_utf8_name (file), my_error->message);
+      g_clear_error (&my_error);
+      return NULL;
+    }
+
+  switch (gimp_palette_load_detect_format (file, input))
     {
     case GIMP_PALETTE_FILE_FORMAT_GPL:
-      palette_list = gimp_palette_load (context, filename, error);
+      palette_list = gimp_palette_load (context, file, input, error);
       break;
 
     case GIMP_PALETTE_FILE_FORMAT_ACT:
-      palette_list = gimp_palette_load_act (context, filename, error);
+      palette_list = gimp_palette_load_act (context, file, input, error);
       break;
 
     case GIMP_PALETTE_FILE_FORMAT_RIFF_PAL:
-      palette_list = gimp_palette_load_riff (context, filename, error);
+      palette_list = gimp_palette_load_riff (context, file, input, error);
       break;
 
     case GIMP_PALETTE_FILE_FORMAT_PSP_PAL:
-      palette_list = gimp_palette_load_psp (context, filename, error);
+      palette_list = gimp_palette_load_psp (context, file, input, error);
       break;
 
     case GIMP_PALETTE_FILE_FORMAT_ACO:
-      palette_list = gimp_palette_load_aco (context, filename, error);
+      palette_list = gimp_palette_load_aco (context, file, input, error);
       break;
 
     case GIMP_PALETTE_FILE_FORMAT_CSS:
-      palette_list = gimp_palette_load_css (context, filename, error);
+      palette_list = gimp_palette_load_css (context, file, input, error);
       break;
 
     default:
       g_set_error (error,
                    GIMP_DATA_ERROR, GIMP_DATA_ERROR_READ,
                    _("Unknown type of palette file: %s"),
-                   gimp_filename_to_utf8 (filename));
+                   gimp_file_get_utf8_name (file));
       break;
     }
+
+  g_object_unref (input);
 
   if (palette_list)
     {

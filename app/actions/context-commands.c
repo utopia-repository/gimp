@@ -19,6 +19,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -26,6 +27,8 @@
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "actions-types.h"
+
+#include "operations/layer-modes/gimp-layer-modes.h"
 
 #include "core/gimp.h"
 #include "core/gimpbrushgenerated.h"
@@ -47,40 +50,14 @@
 #include "gimp-intl.h"
 
 
-static const GimpLayerModeEffects paint_modes[] =
-{
-  GIMP_NORMAL_MODE,
-  GIMP_DISSOLVE_MODE,
-  GIMP_BEHIND_MODE,
-  GIMP_COLOR_ERASE_MODE,
-  GIMP_MULTIPLY_MODE,
-  GIMP_DIVIDE_MODE,
-  GIMP_SCREEN_MODE,
-  GIMP_OVERLAY_MODE,
-  GIMP_DODGE_MODE,
-  GIMP_BURN_MODE,
-  GIMP_HARDLIGHT_MODE,
-  GIMP_SOFTLIGHT_MODE,
-  GIMP_GRAIN_EXTRACT_MODE,
-  GIMP_GRAIN_MERGE_MODE,
-  GIMP_DIFFERENCE_MODE,
-  GIMP_ADDITION_MODE,
-  GIMP_SUBTRACT_MODE,
-  GIMP_DARKEN_ONLY_MODE,
-  GIMP_LIGHTEN_ONLY_MODE,
-  GIMP_HUE_MODE,
-  GIMP_SATURATION_MODE,
-  GIMP_COLOR_MODE,
-  GIMP_VALUE_MODE
-};
-
-
 /*  local function prototypes  */
 
 static void     context_select_object    (GimpActionSelectType  select_type,
                                           GimpContext          *context,
                                           GimpContainer        *container);
-static gint     context_paint_mode_index (GimpLayerModeEffects  paint_mode);
+static gint     context_paint_mode_index (GimpLayerMode         paint_mode,
+                                          const GimpLayerMode  *modes,
+                                          gint                  n_modes);
 
 static void     context_select_color     (GimpActionSelectType  select_type,
                                           GimpRGB              *color,
@@ -394,19 +371,27 @@ context_paint_mode_cmd_callback (GtkAction *action,
                                  gint       value,
                                  gpointer   data)
 {
-  GimpContext          *context;
-  GimpToolInfo         *tool_info;
-  GimpLayerModeEffects  paint_mode;
-  gint                  index;
+  GimpContext   *context;
+  GimpToolInfo  *tool_info;
+  GimpLayerMode *modes;
+  gint           n_modes;
+  GimpLayerMode  paint_mode;
+  gint           index;
   return_if_no_context (context, data);
 
   paint_mode = gimp_context_get_paint_mode (context);
 
+  modes = gimp_layer_mode_get_context_array (paint_mode,
+                                             GIMP_LAYER_MODE_CONTEXT_PAINT,
+                                             &n_modes);
+  index = context_paint_mode_index (paint_mode, modes, n_modes);
   index = action_select_value ((GimpActionSelectType) value,
-                               context_paint_mode_index (paint_mode),
-                               0, G_N_ELEMENTS (paint_modes) - 1, 0,
+                               index, 0, n_modes - 1, 0,
                                0.0, 1.0, 1.0, 0.0, FALSE);
-  gimp_context_set_paint_mode (context, paint_modes[index]);
+  paint_mode = modes[index];
+  g_free (modes);
+
+  gimp_context_set_paint_mode (context, paint_mode);
 
   tool_info = gimp_context_get_tool (context);
 
@@ -415,7 +400,7 @@ context_paint_mode_cmd_callback (GtkAction *action,
       GimpDisplay *display;
       const char  *value_desc;
 
-      gimp_enum_get_value (GIMP_TYPE_LAYER_MODE_EFFECTS, index,
+      gimp_enum_get_value (GIMP_TYPE_LAYER_MODE, paint_mode,
                            NULL, NULL, &value_desc, NULL);
 
       display = action_data_get_display (data);
@@ -743,11 +728,13 @@ context_select_object (GimpActionSelectType  select_type,
 }
 
 static gint
-context_paint_mode_index (GimpLayerModeEffects paint_mode)
+context_paint_mode_index (GimpLayerMode        paint_mode,
+                          const GimpLayerMode *modes,
+                          gint                 n_modes)
 {
   gint i = 0;
 
-  while (i < (G_N_ELEMENTS (paint_modes) - 1) && paint_modes[i] != paint_mode)
+  while (i < (n_modes - 1) && modes[i] != paint_mode)
     i++;
 
   return i;

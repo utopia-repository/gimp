@@ -28,8 +28,6 @@
 
 #include "config.h"
 
-#define _GNU_SOURCE  /* need PATH_MAX */
-
 #include <string.h>
 #include <limits.h>
 
@@ -40,15 +38,6 @@
 
 #include "libgimp/stdplugins-intl.h"
 
-#if ! defined PATH_MAX
-#  if defined _MAX_PATH
-#    define PATH_MAX _MAX_PATH
-#  elif defined MAXPATHLEN
-#    define PATH_MAX MAXPATHLEN
-#  else
-#    define PATH_MAX 1024
-#  endif
-#endif
 
 /** qbist renderer ***********************************************************/
 
@@ -68,15 +57,15 @@ typedef gfloat vreg[3];
 
 typedef enum
 {
- PROJECTION,
- SHIFT,
- SHIFTBACK,
- ROTATE,
- ROTATE2,
- MULTIPLY,
- SINE,
- CONDITIONAL,
- COMPLEMENT
+  PROJECTION,
+  SHIFT,
+  SHIFTBACK,
+  ROTATE,
+  ROTATE2,
+  MULTIPLY,
+  SINE,
+  CONDITIONAL,
+  COMPLEMENT
 } TransformType;
 
 #define NUM_TRANSFORMS  (COMPLEMENT + 1)
@@ -88,34 +77,32 @@ typedef struct
   gint          source[MAX_TRANSFORMS];
   gint          control[MAX_TRANSFORMS];
   gint          dest[MAX_TRANSFORMS];
-}
-ExpInfo;
+} ExpInfo;
 
 typedef struct
 {
   ExpInfo  info;
   gint     oversampling;
   gchar    path[PATH_MAX];
-}
-QbistInfo;
+} QbistInfo;
 
 
 /** prototypes **************************************************************/
 
-static void query (void);
-static void run   (const gchar      *name,
-                   gint              nparams,
-                   const GimpParam  *param,
-                   gint             *nreturn_vals,
-                   GimpParam       **return_vals);
+static void      query                  (void);
+static void      run                    (const gchar      *name,
+                                         gint              nparams,
+                                         const GimpParam  *param,
+                                         gint             *nreturn_vals,
+                                         GimpParam       **return_vals);
 
 static gboolean  dialog_run             (void);
-static void      dialog_new_variations  (GtkWidget *widget,
-                                         gpointer   data);
-static void      dialog_update_previews (GtkWidget *widget,
-                                         gpointer   data);
-static void      dialog_select_preview  (GtkWidget *widget,
-                                         ExpInfo   *n_info);
+static void      dialog_new_variations  (GtkWidget        *widget,
+                                         gpointer          data);
+static void      dialog_update_previews (GtkWidget        *widget,
+                                         gpointer          data);
+static void      dialog_select_preview  (GtkWidget        *widget,
+                                         ExpInfo          *n_info);
 
 static QbistInfo  qbist_info;
 static GRand     *gr = NULL;
@@ -226,13 +213,12 @@ optimize (ExpInfo *info)
 
 static void
 qbist (ExpInfo *info,
-       guchar  *buffer,
+       gfloat  *buffer,
        gint     xp,
        gint     yp,
        gint     num,
        gint     width,
        gint     height,
-       gint     bpp,
        gint     oversampling)
 {
   gint gx;
@@ -241,11 +227,12 @@ qbist (ExpInfo *info,
 
   for (gx = 0; gx < num; gx++)
     {
-      gint accum[3], yy, i;
+      gfloat accum[3];
+      gint   yy, i;
 
       for (i = 0; i < 3; i++)
         {
-          accum[i] = 0;
+          accum[i] = 0.0;
         }
 
       for (yy = 0; yy < oversampling; yy++)
@@ -358,27 +345,19 @@ qbist (ExpInfo *info,
                         break;
                       }
                 }
-              for (i = 0; i < 3; i++)
-                {
-                  accum[i] += (unsigned char) (reg[0][i] * 255.0 + 0.5);
-                }
+
+              accum[0] += reg[0][0];
+              accum[1] += reg[0][1];
+              accum[2] += reg[0][2];
             }
         }
 
-      for (i = 0; i < bpp; i++)
-        {
-          if (i < 3)
-            {
-              buffer[i] = (guchar) (((gfloat) accum[i] /
-                                     (gfloat) (oversampling * oversampling)) + 0.5);
-            }
-          else
-            {
-              buffer[i] = 255;
-            }
-        }
+      buffer[0] = accum[0] / (gfloat) (oversampling * oversampling);
+      buffer[1] = accum[1] / (gfloat) (oversampling * oversampling);
+      buffer[2] = accum[2] / (gfloat) (oversampling * oversampling);
+      buffer[3] = 1.0;
 
-      buffer += bpp;
+      buffer += 4;
     }
 }
 
@@ -429,12 +408,11 @@ run (const gchar      *name,
      gint             *nreturn_vals,
      GimpParam       **return_vals)
 {
-  static GimpParam values[1];
-  gint sel_x1, sel_y1, sel_x2, sel_y2;
-  gint img_height, img_width;
-
-  GimpDrawable      *drawable;
+  static GimpParam   values[1];
+  gint               sel_x1, sel_y1, sel_width, sel_height;
+  gint               img_height, img_width;
   GimpRunMode        run_mode;
+  gint32             drawable_id;
   GimpPDBStatusType  status;
 
   *nreturn_vals = 1;
@@ -447,19 +425,28 @@ run (const gchar      *name,
   run_mode = param[0].data.d_int32;
 
   INIT_I18N ();
+  gegl_init (NULL, NULL);
 
   if (param[2].type != GIMP_PDB_DRAWABLE)
     status = GIMP_PDB_CALLING_ERROR;
 
-  drawable = gimp_drawable_get (param[2].data.d_drawable);
+  drawable_id = param[2].data.d_drawable;
 
-  img_width = gimp_drawable_width (drawable->drawable_id);
-  img_height = gimp_drawable_height (drawable->drawable_id);
-  gimp_drawable_mask_bounds (drawable->drawable_id,
-                             &sel_x1, &sel_y1, &sel_x2, &sel_y2);
+  img_width = gimp_drawable_width (drawable_id);
+  img_height = gimp_drawable_height (drawable_id);
 
-  if (!gimp_drawable_is_rgb (drawable->drawable_id))
+  if (! gimp_drawable_is_rgb (drawable_id))
     status = GIMP_PDB_CALLING_ERROR;
+
+  if (! gimp_drawable_mask_intersect (drawable_id,
+                                      &sel_x1, &sel_y1,
+                                      &sel_width, &sel_height))
+    {
+      values[0].type          = GIMP_PDB_STATUS;
+      values[0].data.d_status = status;
+
+      return;
+    }
 
   if (status == GIMP_PDB_SUCCESS)
     {
@@ -502,47 +489,55 @@ run (const gchar      *name,
 
       if (status == GIMP_PDB_SUCCESS)
         {
-          GimpPixelRgn imagePR;
-          gpointer     pr;
+          GeglBuffer         *buffer;
+          GeglBufferIterator *iter;
+          gint                total_pixels = img_width * img_height;
+          gint                done_pixels  = 0;
 
-          gimp_tile_cache_ntiles ((drawable->width + gimp_tile_width () - 1) /
-                                  gimp_tile_width ());
-          gimp_pixel_rgn_init (&imagePR, drawable,
-                               0, 0, img_width, img_height, TRUE, TRUE);
+          buffer = gimp_drawable_get_shadow_buffer (drawable_id);
+
+          iter = gegl_buffer_iterator_new (buffer,
+                                           GEGL_RECTANGLE (0, 0,
+                                                           img_width, img_height),
+                                           0, babl_format ("R'G'B'A float"),
+                                           GEGL_ACCESS_READWRITE,
+                                           GEGL_ABYSS_NONE);
 
           optimize (&qbist_info.info);
 
           gimp_progress_init (_("Qbist"));
 
-          for (pr = gimp_pixel_rgns_register (1, &imagePR);
-               pr != NULL;
-               pr = gimp_pixel_rgns_process (pr))
+          while (gegl_buffer_iterator_next (iter))
             {
-              gint row;
+              gfloat        *data = iter->data[0];
+              GeglRectangle  roi  = iter->roi[0];
+              gint           row;
 
-              for (row = 0; row < imagePR.h; row++)
+              for (row = 0; row < roi.height; row++)
                 {
                   qbist (&qbist_info.info,
-                         imagePR.data + row * imagePR.rowstride,
-                         imagePR.x,
-                         imagePR.y + row,
-                         imagePR.w,
-                         sel_x2 - sel_x1,
-                         sel_y2 - sel_y1,
-                         imagePR.bpp,
+                         data + row * roi.width * 4,
+                         roi.x,
+                         roi.y + row,
+                         roi.width,
+                         sel_width,
+                         sel_height,
                          qbist_info.oversampling);
                 }
 
-              gimp_progress_update ((gfloat) (imagePR.y - sel_y1) /
-                                    (gfloat) (sel_y2 - sel_y1));
+              done_pixels += roi.width * roi.height;
+
+              gimp_progress_update ((gdouble) done_pixels /
+                                    (gdouble) total_pixels);
             }
 
+          g_object_unref (buffer);
+
           gimp_progress_update (1.0);
-          gimp_drawable_flush (drawable);
-          gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
-          gimp_drawable_update (drawable->drawable_id,
-                                sel_x1, sel_y1,
-                                (sel_x2 - sel_x1), (sel_y2 - sel_y1));
+
+          gimp_drawable_merge_shadow (drawable_id, TRUE);
+          gimp_drawable_update (drawable_id, sel_x1, sel_y1,
+                                sel_width, sel_height);
 
           gimp_displays_flush ();
         }
@@ -552,8 +547,6 @@ run (const gchar      *name,
 
   values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = status;
-
-  gimp_drawable_detach (drawable);
 }
 
 /** User interface ***********************************************************/
@@ -576,22 +569,33 @@ static void
 dialog_update_previews (GtkWidget *widget,
                         gpointer   data)
 {
-  gint i, j;
-  guchar buf[PREVIEW_SIZE * PREVIEW_SIZE * 3];
+  static const Babl *fish = NULL;
+
+  gfloat buf[PREVIEW_SIZE * PREVIEW_SIZE * 4];
+  guchar u8_buf[PREVIEW_SIZE * PREVIEW_SIZE * 4];
+  gint   i, j;
+
+  if (! fish)
+    fish = babl_fish (babl_format ("R'G'B'A float"),
+                      babl_format ("R'G'B'A u8"));
 
   for (j = 0; j < 9; j++)
     {
       optimize (&info[(j + 5) % 9]);
+
       for (i = 0; i < PREVIEW_SIZE; i++)
         {
-          qbist (&info[(j + 5) % 9], buf + i * PREVIEW_SIZE * 3,
-                 0, i, PREVIEW_SIZE, PREVIEW_SIZE, PREVIEW_SIZE, 3, 1);
+          qbist (&info[(j + 5) % 9], buf + i * PREVIEW_SIZE * 4,
+                 0, i, PREVIEW_SIZE, PREVIEW_SIZE, PREVIEW_SIZE, 1);
         }
+
+      babl_process (fish, buf, u8_buf, PREVIEW_SIZE * PREVIEW_SIZE);
+
       gimp_preview_area_draw (GIMP_PREVIEW_AREA (preview[j]),
                               0, 0, PREVIEW_SIZE, PREVIEW_SIZE,
-                              GIMP_RGB_IMAGE,
-                              buf,
-                              PREVIEW_SIZE *3);
+                              GIMP_RGBA_IMAGE,
+                              u8_buf,
+                              PREVIEW_SIZE * 4);
     }
 }
 
@@ -713,8 +717,8 @@ dialog_load (GtkWidget *widget,
                                         GTK_WINDOW (parent),
                                         GTK_FILE_CHOOSER_ACTION_OPEN,
 
-                                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                        GTK_STOCK_OPEN,   GTK_RESPONSE_OK,
+                                        _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                        _("_Open"),   GTK_RESPONSE_OK,
 
                                         NULL);
 
@@ -755,8 +759,8 @@ dialog_save (GtkWidget *widget,
                                         GTK_WINDOW (parent),
                                         GTK_FILE_CHOOSER_ACTION_SAVE,
 
-                                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                        GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
+                                        _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                        _("_Save"),   GTK_RESPONSE_OK,
 
                                         NULL);
 
@@ -809,8 +813,8 @@ dialog_run (void)
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -870,7 +874,7 @@ dialog_run (void)
   gtk_box_pack_start (GTK_BOX (vbox), bbox, FALSE, FALSE, 0);
   gtk_widget_show (bbox);
 
-  button = gtk_button_new_from_stock (GTK_STOCK_UNDO);
+  button = gtk_button_new_with_mnemonic (_("_Undo"));
   gtk_container_add (GTK_CONTAINER (bbox), button);
   gtk_widget_show (button);
 
@@ -878,7 +882,7 @@ dialog_run (void)
                     G_CALLBACK (dialog_undo),
                     NULL);
 
-  button = gtk_button_new_from_stock (GTK_STOCK_OPEN);
+  button = gtk_button_new_with_mnemonic (_("_Open"));
   gtk_container_add (GTK_CONTAINER (bbox), button);
   gtk_widget_show (button);
 
@@ -886,7 +890,7 @@ dialog_run (void)
                     G_CALLBACK (dialog_load),
                     NULL);
 
-  button = gtk_button_new_from_stock (GTK_STOCK_SAVE);
+  button = gtk_button_new_with_mnemonic (_("_Save"));
   gtk_container_add (GTK_CONTAINER (bbox), button);
   gtk_widget_show (button);
 

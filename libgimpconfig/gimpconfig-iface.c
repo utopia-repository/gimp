@@ -23,7 +23,7 @@
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <gio/gio.h>
 
 #include "libgimpbase/gimpbase.h"
 
@@ -140,14 +140,16 @@ gimp_config_iface_duplicate (GimpConfig *config)
   GObjectClass  *klass  = G_OBJECT_GET_CLASS (object);
   GParamSpec   **property_specs;
   guint          n_property_specs;
-  GParameter    *construct_params   = NULL;
-  gint           n_construct_params = 0;
+  gint           n_construct_properties = 0;
+  const gchar  **construct_names        = NULL;
+  GValue        *construct_values       = NULL;
   guint          i;
   GObject       *dup;
 
   property_specs = g_object_class_list_properties (klass, &n_property_specs);
 
-  construct_params = g_new0 (GParameter, n_property_specs);
+  construct_names  = g_new0 (const gchar *, n_property_specs);
+  construct_values = g_new0 (GValue,        n_property_specs);
 
   for (i = 0; i < n_property_specs; i++)
     {
@@ -157,27 +159,29 @@ gimp_config_iface_duplicate (GimpConfig *config)
           (prop_spec->flags & G_PARAM_WRITABLE) &&
           (prop_spec->flags & G_PARAM_CONSTRUCT_ONLY))
         {
-          GParameter *construct_param;
+          construct_names[n_construct_properties] = prop_spec->name;
 
-          construct_param = &construct_params[n_construct_params++];
+          g_value_init (&construct_values[n_construct_properties],
+                        prop_spec->value_type);
+          g_object_get_property (object, prop_spec->name,
+                                 &construct_values[n_construct_properties]);
 
-          construct_param->name = prop_spec->name;
-
-          g_value_init (&construct_param->value, prop_spec->value_type);
-          g_object_get_property (object,
-                                 prop_spec->name, &construct_param->value);
+          n_construct_properties++;
         }
     }
 
   g_free (property_specs);
 
-  dup = g_object_newv (G_TYPE_FROM_INSTANCE (object),
-                       n_construct_params, construct_params);
+  dup = g_object_new_with_properties (G_TYPE_FROM_INSTANCE (object),
+                                      n_construct_properties,
+                                      (const gchar **) construct_names,
+                                      (const GValue *) construct_values);
 
-  for (i = 0; i < n_construct_params; i++)
-    g_value_unset (&construct_params[i].value);
+  for (i = 0; i < n_construct_properties; i++)
+    g_value_unset (&construct_values[i]);
 
-  g_free (construct_params);
+  g_free (construct_names);
+  g_free (construct_values);
 
   gimp_config_copy (config, GIMP_CONFIG (dup), 0);
 
@@ -201,8 +205,8 @@ gimp_config_iface_equal (GimpConfig *a,
   for (i = 0; equal && i < n_property_specs; i++)
     {
       GParamSpec  *prop_spec;
-      GValue       a_value = { 0, };
-      GValue       b_value = { 0, };
+      GValue       a_value = G_VALUE_INIT;
+      GValue       b_value = G_VALUE_INIT;
 
       prop_spec = property_specs[i];
 
@@ -272,7 +276,7 @@ gimp_config_iface_copy (GimpConfig  *src,
  *
  * Return value: %TRUE if serialization succeeded, %FALSE otherwise.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_config_serialize_to_file (GimpConfig   *config,
@@ -298,6 +302,86 @@ gimp_config_serialize_to_file (GimpConfig   *config,
 }
 
 /**
+ * gimp_config_serialize_to_gfile:
+ * @config: a #GObject that implements the #GimpConfigInterface.
+ * @file:   the #GFile to write the configuration to.
+ * @header: optional file header (must be ASCII only)
+ * @footer: optional file footer (must be ASCII only)
+ * @data: user data passed to the serialize implementation.
+ * @error: return location for a possible error
+ *
+ * Serializes the object properties of @config to the file specified
+ * by @file. If a file with that name already exists, it is
+ * overwritten. Basically this function opens @file for you and calls
+ * the serialize function of the @config's #GimpConfigInterface.
+ *
+ * Return value: %TRUE if serialization succeeded, %FALSE otherwise.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_config_serialize_to_gfile (GimpConfig   *config,
+                                GFile        *file,
+                                const gchar  *header,
+                                const gchar  *footer,
+                                gpointer      data,
+                                GError      **error)
+{
+  GimpConfigWriter *writer;
+
+  g_return_val_if_fail (GIMP_IS_CONFIG (config), FALSE);
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  writer = gimp_config_writer_new_gfile (file, TRUE, header, error);
+  if (!writer)
+    return FALSE;
+
+  GIMP_CONFIG_GET_INTERFACE (config)->serialize (config, writer, data);
+
+  return gimp_config_writer_finish (writer, footer, error);
+}
+
+/**
+ * gimp_config_serialize_to_stream:
+ * @config: a #GObject that implements the #GimpConfigInterface.
+ * @output: the #GOutputStream to write the configuration to.
+ * @header: optional file header (must be ASCII only)
+ * @footer: optional file footer (must be ASCII only)
+ * @data: user data passed to the serialize implementation.
+ * @error: return location for a possible error
+ *
+ * Serializes the object properties of @config to the stream specified
+ * by @output.
+ *
+ * Return value: %TRUE if serialization succeeded, %FALSE otherwise.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_config_serialize_to_stream (GimpConfig     *config,
+                                 GOutputStream  *output,
+                                 const gchar    *header,
+                                 const gchar    *footer,
+                                 gpointer        data,
+                                 GError        **error)
+{
+  GimpConfigWriter *writer;
+
+  g_return_val_if_fail (GIMP_IS_CONFIG (config), FALSE);
+  g_return_val_if_fail (G_IS_OUTPUT_STREAM (output), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  writer = gimp_config_writer_new_stream (output, header, error);
+  if (!writer)
+    return FALSE;
+
+  GIMP_CONFIG_GET_INTERFACE (config)->serialize (config, writer, data);
+
+  return gimp_config_writer_finish (writer, footer, error);
+}
+
+/**
  * gimp_config_serialize_to_fd:
  * @config: a #GObject that implements the #GimpConfigInterface.
  * @fd: a file descriptor, opened for writing
@@ -308,7 +392,7 @@ gimp_config_serialize_to_file (GimpConfig   *config,
  *
  * Return value: %TRUE if serialization succeeded, %FALSE otherwise.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_config_serialize_to_fd (GimpConfig *config,
@@ -338,7 +422,7 @@ gimp_config_serialize_to_fd (GimpConfig *config,
  *
  * Return value: a newly allocated NUL-terminated string.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gchar *
 gimp_config_serialize_to_string (GimpConfig *config,
@@ -373,7 +457,7 @@ gimp_config_serialize_to_string (GimpConfig *config,
  *
  * Return value: %TRUE if deserialization succeeded, %FALSE otherwise.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_config_deserialize_file (GimpConfig   *config,
@@ -408,6 +492,102 @@ gimp_config_deserialize_file (GimpConfig   *config,
 }
 
 /**
+ * gimp_config_deserialize_gfile:
+ * @config: a #GObject that implements the #GimpConfigInterface.
+ * @file: the #GFile to read configuration from.
+ * @data: user data passed to the deserialize implementation.
+ * @error: return location for a possible error
+ *
+ * Opens the file specified by @file, reads configuration data from it
+ * and configures @config accordingly. Basically this function creates
+ * a properly configured #GScanner for you and calls the deserialize
+ * function of the @config's #GimpConfigInterface.
+ *
+ * Return value: %TRUE if deserialization succeeded, %FALSE otherwise.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_config_deserialize_gfile (GimpConfig  *config,
+                               GFile       *file,
+                               gpointer     data,
+                               GError     **error)
+{
+  GScanner *scanner;
+  gboolean  success;
+
+  g_return_val_if_fail (GIMP_IS_CONFIG (config), FALSE);
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  scanner = gimp_scanner_new_gfile (file, error);
+  if (! scanner)
+    return FALSE;
+
+  g_object_freeze_notify (G_OBJECT (config));
+
+  success = GIMP_CONFIG_GET_INTERFACE (config)->deserialize (config,
+                                                             scanner, 0, data);
+
+  g_object_thaw_notify (G_OBJECT (config));
+
+  gimp_scanner_destroy (scanner);
+
+  if (! success)
+    g_assert (error == NULL || *error != NULL);
+
+  return success;
+}
+
+/**
+ * gimp_config_deserialize_stream:
+ * @config: a #GObject that implements the #GimpConfigInterface.
+ * @input: the #GInputStream to read configuration from.
+ * @data: user data passed to the deserialize implementation.
+ * @error: return location for a possible error
+ *
+ * Reads configuration data from @input and configures @config
+ * accordingly. Basically this function creates a properly configured
+ * #GScanner for you and calls the deserialize function of the
+ * @config's #GimpConfigInterface.
+ *
+ * Return value: %TRUE if deserialization succeeded, %FALSE otherwise.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_config_deserialize_stream (GimpConfig    *config,
+                                GInputStream  *input,
+                                gpointer       data,
+                                GError       **error)
+{
+  GScanner *scanner;
+  gboolean  success;
+
+  g_return_val_if_fail (GIMP_IS_CONFIG (config), FALSE);
+  g_return_val_if_fail (G_IS_INPUT_STREAM (input), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  scanner = gimp_scanner_new_stream (input, error);
+  if (! scanner)
+    return FALSE;
+
+  g_object_freeze_notify (G_OBJECT (config));
+
+  success = GIMP_CONFIG_GET_INTERFACE (config)->deserialize (config,
+                                                             scanner, 0, data);
+
+  g_object_thaw_notify (G_OBJECT (config));
+
+  gimp_scanner_destroy (scanner);
+
+  if (! success)
+    g_assert (error == NULL || *error != NULL);
+
+  return success;
+}
+
+/**
  * gimp_config_deserialize_string:
  * @config:   a #GObject that implements the #GimpConfigInterface.
  * @text:     string to deserialize (in UTF-8 encoding)
@@ -421,7 +601,7 @@ gimp_config_deserialize_file (GimpConfig   *config,
  *
  * Returns: %TRUE if deserialization succeeded, %FALSE otherwise.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_config_deserialize_string (GimpConfig      *config,
@@ -458,11 +638,11 @@ gimp_config_deserialize_string (GimpConfig      *config,
  * gimp_config_deserialize_return:
  * @scanner:        a #GScanner
  * @expected_token: the expected token
- * @nest_level:     the next level
+ * @nest_level:     the nest level
  *
  * Returns:
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_config_deserialize_return (GScanner     *scanner,
@@ -511,7 +691,7 @@ gimp_config_deserialize_return (GScanner     *scanner,
  *
  * Returns: %TRUE if serialization succeeded, %FALSE otherwise.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_config_serialize (GimpConfig       *config,
@@ -536,7 +716,7 @@ gimp_config_serialize (GimpConfig       *config,
  *
  * Returns: %TRUE if deserialization succeeded, %FALSE otherwise.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_config_deserialize (GimpConfig *config,
@@ -563,7 +743,7 @@ gimp_config_deserialize (GimpConfig *config,
  *
  * Return value: the duplicated #GimpConfig object
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gpointer
 gimp_config_duplicate (GimpConfig *config)
@@ -585,7 +765,7 @@ gimp_config_duplicate (GimpConfig *config)
  *
  * Return value: %TRUE if the two objects are equal.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_config_is_equal_to (GimpConfig *a,
@@ -607,7 +787,7 @@ gimp_config_is_equal_to (GimpConfig *a,
  * #GimpConfigInterface only works for objects that are completely defined by
  * their properties.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 void
 gimp_config_reset (GimpConfig *config)
@@ -635,7 +815,7 @@ gimp_config_reset (GimpConfig *config)
  *
  * Return value: %TRUE if @dest was modified, %FALSE otherwise
  *
- * Since: GIMP 2.6
+ * Since: 2.6
  **/
 gboolean
 gimp_config_copy (GimpConfig  *src,

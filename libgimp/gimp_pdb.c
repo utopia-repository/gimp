@@ -72,7 +72,7 @@ gimp_version (void)
  *
  * Returns: The PID.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gint
 gimp_getpid (void)
@@ -103,7 +103,7 @@ gimp_getpid (void)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_attach_parasite (const GimpParasite *parasite)
@@ -135,7 +135,7 @@ gimp_attach_parasite (const GimpParasite *parasite)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gboolean
 gimp_detach_parasite (const gchar *name)
@@ -166,7 +166,7 @@ gimp_detach_parasite (const gchar *name)
  *
  * Returns: The found parasite.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 GimpParasite *
 gimp_get_parasite (const gchar *name)
@@ -196,9 +196,10 @@ gimp_get_parasite (const gchar *name)
  *
  * Returns a list of all currently attached global parasites.
  *
- * Returns: The names of currently attached parasites.
+ * Returns: The names of currently attached parasites. The returned
+ * value must be freed with g_strfreev().
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gchar **
 gimp_get_parasite_list (gint *num_parasites)
@@ -217,12 +218,46 @@ gimp_get_parasite_list (gint *num_parasites)
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
     {
       *num_parasites = return_vals[1].data.d_int32;
-      parasites = g_new (gchar *, *num_parasites);
-      for (i = 0; i < *num_parasites; i++)
-        parasites[i] = g_strdup (return_vals[2].data.d_stringarray[i]);
+      if (*num_parasites > 0)
+        {
+          parasites = g_new0 (gchar *, *num_parasites + 1);
+          for (i = 0; i < *num_parasites; i++)
+            parasites[i] = g_strdup (return_vals[2].data.d_stringarray[i]);
+        }
     }
 
   gimp_destroy_params (return_vals, nreturn_vals);
 
   return parasites;
+}
+
+/**
+ * gimp_temp_name:
+ * @extension: The extension the file will have.
+ *
+ * Generates a unique filename.
+ *
+ * Generates a unique filename using the temp path supplied in the
+ * user's gimprc.
+ *
+ * Returns: The new temp filename.
+ **/
+gchar *
+gimp_temp_name (const gchar *extension)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gchar *name = NULL;
+
+  return_vals = gimp_run_procedure ("gimp-temp-name",
+                                    &nreturn_vals,
+                                    GIMP_PDB_STRING, extension,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    name = g_strdup (return_vals[1].data.d_string);
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return name;
 }

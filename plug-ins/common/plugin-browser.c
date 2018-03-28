@@ -132,8 +132,8 @@ query (void)
 
   gimp_install_procedure (PLUG_IN_PROC,
                           N_("Display information about plug-ins"),
-                          "Allows to browse the plug-in menus system. You can "
-                          "search for plug-in names, sort by name or menu "
+                          "Allows one to browse the plug-in menus system. You "
+                          "can search for plug-in names, sort by name or menu "
                           "location and you can view a tree representation "
                           "of the plug-in menus. Can also be of help to find "
                           "where new plug-ins have installed themselves in "
@@ -141,15 +141,15 @@ query (void)
                           "Andy Thomas",
                           "Andy Thomas",
                           "1999",
-                          N_("_Plug-In Browser"),
+                          N_("_Plug-in Browser"),
                           "",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
   gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Help/Programming");
-  gimp_plugin_icon_register (PLUG_IN_PROC, GIMP_ICON_TYPE_STOCK_ID,
-                             (const guint8 *) GIMP_STOCK_PLUGIN);
+  gimp_plugin_icon_register (PLUG_IN_PROC, GIMP_ICON_TYPE_ICON_NAME,
+                             (const guint8 *) GIMP_ICON_PLUGIN);
 }
 
 static void
@@ -543,11 +543,11 @@ browser_dialog_new (void)
 
   browser = g_new0 (PluginBrowser, 1);
 
-  browser->dialog = gimp_dialog_new (_("Plug-In Browser"), PLUG_IN_ROLE,
+  browser->dialog = gimp_dialog_new (_("Plug-in Browser"), PLUG_IN_ROLE,
                                      NULL, 0,
                                      gimp_standard_help_func, PLUG_IN_PROC,
 
-                                     GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
+                                     _("_Close"), GTK_RESPONSE_CLOSE,
 
                                      NULL);
 

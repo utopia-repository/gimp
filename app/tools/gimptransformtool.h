@@ -22,22 +22,11 @@
 #include "gimpdrawtool.h"
 
 
-#define TRANS_INFO_SIZE  8
-
-typedef enum
-{
-  TRANSFORM_CREATING,
-  TRANSFORM_HANDLE_NONE,
-  TRANSFORM_HANDLE_NW, /* north west */
-  TRANSFORM_HANDLE_NE, /* north east */
-  TRANSFORM_HANDLE_SW, /* south west */
-  TRANSFORM_HANDLE_SE, /* south east */
-  TRANSFORM_HANDLE_N,  /* north      */
-  TRANSFORM_HANDLE_S,  /* south      */
-  TRANSFORM_HANDLE_E,  /* east       */
-  TRANSFORM_HANDLE_W,  /* west       */
-  TRANSFORM_HANDLE_CENTER
-} TransformAction;
+/* This is not the number of items in the enum above, but the max size
+ * of the enums at the top of each transformation tool, stored in
+ * trans_info and related
+ */
+#define TRANS_INFO_SIZE 17
 
 typedef gdouble TransInfo[TRANS_INFO_SIZE];
 
@@ -58,40 +47,33 @@ struct _GimpTransformTool
 {
   GimpDrawTool    parent_instance;
 
-  gdouble         curx;            /*  current x coord                   */
-  gdouble         cury;            /*  current y coord                   */
+  gint            x1, y1;             /*  upper left hand coordinate         */
+  gint            x2, y2;             /*  lower right hand coords            */
 
-  gdouble         lastx;           /*  last x coord                      */
-  gdouble         lasty;           /*  last y coord                      */
+  GimpMatrix3     transform;          /*  transformation matrix              */
+  gboolean        transform_valid;    /*  whether the matrix is valid        */
+  TransInfo       trans_info;         /*  transformation info                */
+  TransInfo      *old_trans_info;     /*  for resetting everything           */
+  TransInfo      *prev_trans_info;    /*  the current finished state         */
+  GList          *undo_list;          /*  list of all states,
+                                          head is current == prev_trans_info,
+                                          tail is original == old_trans_info */
+  GList          *redo_list;          /*  list of all undone states,
+                                          NULL when nothing undone */
 
-  gint            x1, y1;          /*  upper left hand coordinate        */
-  gint            x2, y2;          /*  lower right hand coords           */
-  gdouble         cx, cy;          /*  center point (for rotation)       */
-  gdouble         aspect;          /*  original aspect ratio             */
+  GimpItem       *hidden_item;        /*  the item that was hidden during
+                                          the transform                      */
 
-  gdouble         tx1, ty1;        /*  transformed handle coords         */
-  gdouble         tx2, ty2;
-  gdouble         tx3, ty3;
-  gdouble         tx4, ty4;
-  gdouble         tcx, tcy;
-
-  GimpMatrix3     transform;       /*  transformation matrix             */
-  TransInfo       trans_info;      /*  transformation info               */
-  TransInfo       old_trans_info;  /*  for resetting everything          */
-  TransInfo       prev_trans_info; /*  for cancelling a drag operation   */
-
-  TransformAction function;        /*  current tool activity             */
-
-  gboolean        use_grid;        /*  does the tool use the grid        */
-  gboolean        use_handles;     /*  uses the corner handles           */
-  gboolean        use_center;      /*  uses the center handle            */
-  gboolean        use_mid_handles; /*  use handles at midpoints of edges */
-
-  GimpCanvasItem *handles[TRANSFORM_HANDLE_CENTER + 1];
+  GimpToolWidget *widget;
+  GimpToolWidget *grab_widget;
+  GimpCanvasItem *preview;
+  GimpCanvasItem *boundary_in;
+  GimpCanvasItem *boundary_out;
+  GPtrArray      *strokes;
 
   const gchar    *progress_text;
 
-  GtkWidget      *dialog;
+  GimpToolGui    *gui;
 };
 
 struct _GimpTransformToolClass
@@ -99,25 +81,31 @@ struct _GimpTransformToolClass
   GimpDrawToolClass  parent_class;
 
   /*  virtual functions  */
-  void          (* dialog)        (GimpTransformTool *tool);
-  void          (* dialog_update) (GimpTransformTool *tool);
-  void          (* prepare)       (GimpTransformTool *tool);
-  void          (* motion)        (GimpTransformTool *tool);
-  void          (* recalc_matrix) (GimpTransformTool *tool);
-  gchar       * (* get_undo_desc) (GimpTransformTool *tool);
-  TileManager * (* transform)     (GimpTransformTool *tool,
-                                   GimpItem          *item,
-                                   TileManager       *orig_tiles,
-                                   gint               orig_offset_x,
-                                   gint               orig_offset_y,
-                                   gint              *new_offset_x,
-                                   gint              *new_offset_y);
+  void             (* dialog)        (GimpTransformTool *tool);
+  void             (* dialog_update) (GimpTransformTool *tool);
+  void             (* prepare)       (GimpTransformTool *tool);
+  GimpToolWidget * (* get_widget)    (GimpTransformTool *tool);
+  void             (* recalc_matrix) (GimpTransformTool *tool,
+                                      GimpToolWidget    *widget);
+  gchar          * (* get_undo_desc) (GimpTransformTool *tool);
+  GeglBuffer     * (* transform)     (GimpTransformTool *tool,
+                                      GimpItem          *item,
+                                      GeglBuffer        *orig_buffer,
+                                      gint               orig_offset_x,
+                                      gint               orig_offset_y,
+                                      GimpColorProfile **buffer_profile,
+                                      gint              *new_offset_x,
+                                      gint              *new_offset_y);
+
+  const gchar *ok_button_label;
 };
 
 
-GType   gimp_transform_tool_get_type      (void) G_GNUC_CONST;
+GType   gimp_transform_tool_get_type           (void) G_GNUC_CONST;
 
-void    gimp_transform_tool_recalc_matrix (GimpTransformTool *tr_tool);
+void    gimp_transform_tool_recalc_matrix      (GimpTransformTool *tr_tool,
+                                                GimpToolWidget    *widget);
+void    gimp_transform_tool_push_internal_undo (GimpTransformTool *tr_tool);
 
 
 #endif  /*  __GIMP_TRANSFORM_TOOL_H__  */

@@ -22,7 +22,10 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
+
+#include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
 
@@ -51,7 +54,7 @@ static void     gimp_combo_tag_entry_icon_press        (GtkWidget            *wi
                                                         GdkEvent             *event,
                                                         gpointer              user_data);
 
-static void     gimp_combo_tag_entry_popup_destroy     (GtkObject            *object,
+static void     gimp_combo_tag_entry_popup_destroy     (GtkWidget            *widget,
                                                         GimpComboTagEntry    *entry);
 
 static void     gimp_combo_tag_entry_tag_count_changed (GimpTaggedContainer  *container,
@@ -89,9 +92,9 @@ gimp_combo_tag_entry_init (GimpComboTagEntry *entry)
                          GDK_BUTTON_PRESS_MASK |
                          GDK_POINTER_MOTION_MASK);
 
-  gtk_entry_set_icon_from_stock (GTK_ENTRY (entry),
-                                 GTK_ENTRY_ICON_SECONDARY,
-                                 GTK_STOCK_GO_DOWN);
+  gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry),
+                                     GTK_ENTRY_ICON_SECONDARY,
+                                     GIMP_ICON_GO_DOWN);
 
   g_signal_connect (entry, "icon-press",
                     G_CALLBACK (gimp_combo_tag_entry_icon_press),
@@ -103,8 +106,7 @@ gimp_combo_tag_entry_constructed (GObject *object)
 {
   GimpComboTagEntry *entry = GIMP_COMBO_TAG_ENTRY (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   g_signal_connect_object (GIMP_TAG_ENTRY (entry)->container,
                            "tag-count-changed",
@@ -117,11 +119,7 @@ gimp_combo_tag_entry_dispose (GObject *object)
 {
   GimpComboTagEntry *combo_entry = GIMP_COMBO_TAG_ENTRY (object);
 
-  if (combo_entry->arrow_pixbuf)
-    {
-      g_object_unref (combo_entry->arrow_pixbuf);
-      combo_entry->arrow_pixbuf = NULL;
-    }
+  g_clear_object (&combo_entry->arrow_pixbuf);
 
   if (combo_entry->normal_item_attr)
     {
@@ -231,11 +229,7 @@ gimp_combo_tag_entry_style_set (GtkWidget *widget,
 
   entry->selected_item_color = style->base[GTK_STATE_SELECTED];
 
-  if (entry->arrow_pixbuf)
-    {
-      g_object_unref (entry->arrow_pixbuf);
-      entry->arrow_pixbuf = NULL;
-    }
+  g_clear_object (&entry->arrow_pixbuf);
 }
 
 /**
@@ -291,7 +285,7 @@ gimp_combo_tag_entry_icon_press (GtkWidget            *widget,
 }
 
 static void
-gimp_combo_tag_entry_popup_destroy (GtkObject         *object,
+gimp_combo_tag_entry_popup_destroy (GtkWidget         *widget,
                                     GimpComboTagEntry *entry)
 {
   entry->popup = NULL;

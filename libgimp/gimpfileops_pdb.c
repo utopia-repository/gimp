@@ -30,9 +30,9 @@
 /**
  * SECTION: gimpfileops
  * @title: gimpfileops
- * @short_description: File operations (load, save, etc.)
+ * @short_description: Image file operations (load, save, etc.)
  *
- * File operations (load, save, etc.)
+ * Image file operations (load, save, etc.)
  **/
 
 
@@ -50,7 +50,7 @@
  * the name entered is what the user actually typed before prepending a
  * directory path. The reason for this is that if the user types
  * http://www.xcf/~gimp/ he wants to fetch a URL, and the full pathname
- * will not look like a URL.\"
+ * will not look like a URL.
  *
  * Returns: The output image.
  **/
@@ -93,7 +93,7 @@ gimp_file_load (GimpRunMode  run_mode,
  *
  * Returns: The layer created when loading the image file.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gint32
 gimp_file_load_layer (GimpRunMode  run_mode,
@@ -135,7 +135,7 @@ gimp_file_load_layer (GimpRunMode  run_mode,
  *
  * Returns: The list of loaded layers.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gint *
 gimp_file_load_layers (GimpRunMode  run_mode,
@@ -228,7 +228,7 @@ gimp_file_save (GimpRunMode  run_mode,
  * so that it belongs to the file with the given filename. This means
  * you have to save the image under this name first, otherwise this
  * procedure will fail. This procedure may become useful if you want to
- * explicitely save a thumbnail with a file.
+ * explicitly save a thumbnail with a file.
  *
  * Returns: TRUE on success.
  **/
@@ -251,37 +251,6 @@ gimp_file_save_thumbnail (gint32       image_ID,
   gimp_destroy_params (return_vals, nreturn_vals);
 
   return success;
-}
-
-/**
- * gimp_temp_name:
- * @extension: The extension the file will have.
- *
- * Generates a unique filename.
- *
- * Generates a unique filename using the temp path supplied in the
- * user's gimprc.
- *
- * Returns: The new temp filename.
- **/
-gchar *
-gimp_temp_name (const gchar *extension)
-{
-  GimpParam *return_vals;
-  gint nreturn_vals;
-  gchar *name = NULL;
-
-  return_vals = gimp_run_procedure ("gimp-temp-name",
-                                    &nreturn_vals,
-                                    GIMP_PDB_STRING, extension,
-                                    GIMP_PDB_END);
-
-  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
-    name = g_strdup (return_vals[1].data.d_string);
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return name;
 }
 
 /**
@@ -398,21 +367,24 @@ gimp_register_save_handler (const gchar *procedure_name,
 /**
  * gimp_register_file_handler_mime:
  * @procedure_name: The name of the procedure to associate a MIME type with.
- * @mime_type: A single MIME type, like for example \"image/jpeg\".
+ * @mime_types: A comma-separated list of MIME types, such as \"image/jpeg\".
  *
- * Associates a MIME type with a file handler procedure.
+ * Associates MIME types with a file handler procedure.
  *
- * Registers a MIME type for a file handler procedure. This allows GIMP
+ * Registers MIME types for a file handler procedure. This allows GIMP
  * to determine the MIME type of the file opened or saved using this
+ * procedure. It is recommended that only one MIME type is registered
+ * per file procedure; when registering more than one MIME type, GIMP
+ * will associate the first one with files opened or saved with this
  * procedure.
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_register_file_handler_mime (const gchar *procedure_name,
-                                 const gchar *mime_type)
+                                 const gchar *mime_types)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
@@ -421,7 +393,75 @@ gimp_register_file_handler_mime (const gchar *procedure_name,
   return_vals = gimp_run_procedure ("gimp-register-file-handler-mime",
                                     &nreturn_vals,
                                     GIMP_PDB_STRING, procedure_name,
-                                    GIMP_PDB_STRING, mime_type,
+                                    GIMP_PDB_STRING, mime_types,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_register_file_handler_uri:
+ * @procedure_name: The name of the procedure to enable URIs for.
+ *
+ * Registers a file handler procedure as capable of handling URIs.
+ *
+ * Registers a file handler procedure as capable of handling URIs. This
+ * allows GIMP to call the procecure directly for all kinds of URIs,
+ * and the 'filename' traditionally passed to file procesures turns
+ * into an URI.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_register_file_handler_uri (const gchar *procedure_name)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-register-file-handler-uri",
+                                    &nreturn_vals,
+                                    GIMP_PDB_STRING, procedure_name,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_register_file_handler_raw:
+ * @procedure_name: The name of the procedure to enable raw handling for.
+ *
+ * Registers a file handler procedure as capable of handling raw camera
+ * files.
+ *
+ * Registers a file handler procedure as capable of handling raw
+ * digital camera files. Use this procedure only to register raw load
+ * handlers, calling it on a save handler will generate an error.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_register_file_handler_raw (const gchar *procedure_name)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-register-file-handler-raw",
+                                    &nreturn_vals,
+                                    GIMP_PDB_STRING, procedure_name,
                                     GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
@@ -447,7 +487,7 @@ gimp_register_file_handler_mime (const gchar *procedure_name,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_register_thumbnail_loader (const gchar *load_proc,

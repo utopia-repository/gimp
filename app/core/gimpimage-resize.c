@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -25,7 +26,6 @@
 
 #include "gimp.h"
 #include "gimpcontainer.h"
-#include "gimpchannel.h"
 #include "gimpcontext.h"
 #include "gimpguide.h"
 #include "gimpimage.h"
@@ -36,8 +36,11 @@
 #include "gimpimage-undo.h"
 #include "gimpimage-undo-push.h"
 #include "gimplayer.h"
+#include "gimpobjectqueue.h"
 #include "gimpprogress.h"
 #include "gimpsamplepoint.h"
+
+#include "text/gimptextlayer.h"
 
 #include "gimp-intl.h"
 
@@ -51,27 +54,29 @@ gimp_image_resize (GimpImage    *image,
                    gint          offset_y,
                    GimpProgress *progress)
 {
-  gimp_image_resize_with_layers (image, context,
+  gimp_image_resize_with_layers (image, context, GIMP_FILL_TRANSPARENT,
                                  new_width, new_height, offset_x, offset_y,
-                                 GIMP_ITEM_SET_NONE,
+                                 GIMP_ITEM_SET_NONE, TRUE,
                                  progress);
 }
 
 void
 gimp_image_resize_with_layers (GimpImage    *image,
                                GimpContext  *context,
+                               GimpFillType  fill_type,
                                gint          new_width,
                                gint          new_height,
                                gint          offset_x,
                                gint          offset_y,
                                GimpItemSet   layer_set,
+                               gboolean      resize_text_layers,
                                GimpProgress *progress)
 {
-  GList   *list;
-  GList   *resize_layers;
-  gdouble  progress_max;
-  gdouble  progress_current = 1.0;
-  gint     old_width, old_height;
+  GimpObjectQueue *queue;
+  GList           *resize_layers;
+  GList           *list;
+  GimpItem        *item;
+  gint             old_width, old_height;
 
   g_return_if_fail (GIMP_IS_IMAGE (image));
   g_return_if_fail (GIMP_IS_CONTEXT (context));
@@ -89,63 +94,19 @@ gimp_image_resize_with_layers (GimpImage    *image,
                                                  GIMP_ITEM_TYPE_LAYERS,
                                                  layer_set);
 
-  progress_max = (gimp_container_get_n_children (gimp_image_get_layers (image))   +
-                  gimp_container_get_n_children (gimp_image_get_channels (image)) +
-                  gimp_container_get_n_children (gimp_image_get_vectors (image))  +
-                  g_list_length (resize_layers)                   +
-                  1 /* selection */);
-
   old_width  = gimp_image_get_width  (image);
   old_height = gimp_image_get_height (image);
 
   /*  Push the image size to the stack  */
-  gimp_image_undo_push_image_size (image,
-                                   NULL,
-                                   -offset_x,
-                                   -offset_y,
-                                   new_width,
-                                   new_height);
+  gimp_image_undo_push_image_size (image, NULL,
+                                   -offset_x, -offset_y,
+                                   new_width, new_height);
 
   /*  Set the new width and height  */
   g_object_set (image,
                 "width",  new_width,
                 "height", new_height,
                 NULL);
-
-  /*  Resize all channels  */
-  for (list = gimp_image_get_channel_iter (image);
-       list;
-       list = g_list_next (list))
-    {
-      GimpItem *item = list->data;
-
-      gimp_item_resize (item, context,
-                        new_width, new_height, offset_x, offset_y);
-
-      if (progress)
-        gimp_progress_set_value (progress, progress_current++ / progress_max);
-    }
-
-  /*  Resize all vectors  */
-  for (list = gimp_image_get_vectors_iter (image);
-       list;
-       list = g_list_next (list))
-    {
-      GimpItem *item = list->data;
-
-      gimp_item_resize (item, context,
-                        new_width, new_height, offset_x, offset_y);
-
-      if (progress)
-        gimp_progress_set_value (progress, progress_current++ / progress_max);
-    }
-
-  /*  Don't forget the selection mask!  */
-  gimp_item_resize (GIMP_ITEM (gimp_image_get_mask (image)), context,
-                    new_width, new_height, offset_x, offset_y);
-
-  if (progress)
-    gimp_progress_set_value (progress, progress_current++ / progress_max);
 
   /*  Reposition all layers  */
   for (list = gimp_image_get_layer_iter (image);
@@ -155,33 +116,57 @@ gimp_image_resize_with_layers (GimpImage    *image,
       GimpItem *item = list->data;
 
       gimp_item_translate (item, offset_x, offset_y, TRUE);
-
-      if (progress)
-        gimp_progress_set_value (progress, progress_current++ / progress_max);
     }
 
-  /*  Resize all resize_layers to image size  */
+  queue    = gimp_object_queue_new (progress);
+  progress = GIMP_PROGRESS (queue);
+
   for (list = resize_layers; list; list = g_list_next (list))
     {
       GimpItem *item = list->data;
-      gint      old_offset_x;
-      gint      old_offset_y;
 
       /*  group layers can't be resized here  */
       if (gimp_viewable_get_children (GIMP_VIEWABLE (item)))
         continue;
 
-      gimp_item_get_offset (item, &old_offset_x, &old_offset_y);
+      if (! resize_text_layers && gimp_item_is_text_layer (item))
+        continue;
 
-      gimp_item_resize (item, context,
-                        new_width, new_height,
-                        old_offset_x, old_offset_y);
+      gimp_item_start_move (item, TRUE);
 
-      if (progress)
-        gimp_progress_set_value (progress, progress_current++ / progress_max);
+      gimp_object_queue_push (queue, item);
     }
 
   g_list_free (resize_layers);
+  
+  gimp_object_queue_push (queue, gimp_image_get_mask (image));
+  gimp_object_queue_push_container (queue, gimp_image_get_channels (image));
+  gimp_object_queue_push_container (queue, gimp_image_get_vectors (image));
+
+  /*  Resize all resize_layers, channels (including selection mask), and
+   *  vectors
+   */
+  while ((item = gimp_object_queue_pop (queue)))
+    {
+      if (GIMP_IS_LAYER (item))
+        {
+          gint old_offset_x;
+          gint old_offset_y;
+
+          gimp_item_get_offset (item, &old_offset_x, &old_offset_y);
+
+          gimp_item_resize (item, context, fill_type,
+                            new_width, new_height,
+                            old_offset_x, old_offset_y);
+
+          gimp_item_end_move (item, TRUE);
+        }
+      else
+        {
+          gimp_item_resize (item, context, GIMP_FILL_TRANSPARENT,
+                            new_width, new_height, offset_x, offset_y);
+        }
+    }
 
   /*  Reposition or remove all guides  */
   list = gimp_image_get_guides (image);
@@ -225,33 +210,37 @@ gimp_image_resize_with_layers (GimpImage    *image,
     {
       GimpSamplePoint *sample_point        = list->data;
       gboolean         remove_sample_point = FALSE;
-      gint             new_x               = sample_point->x;
-      gint             new_y               = sample_point->y;
+      gint             old_x;
+      gint             old_y;
+      gint             new_x;
+      gint             new_y;
 
       list = g_list_next (list);
 
-      new_y += offset_y;
-      if ((sample_point->y < 0) || (sample_point->y > new_height))
+      gimp_sample_point_get_position (sample_point, &old_x, &old_y);
+
+      new_y = old_y + offset_y;
+      if ((new_y < 0) || (new_y > new_height))
         remove_sample_point = TRUE;
 
-      new_x += offset_x;
-      if ((sample_point->x < 0) || (sample_point->x > new_width))
+      new_x = old_x + offset_x;
+      if ((new_x < 0) || (new_x > new_width))
         remove_sample_point = TRUE;
 
       if (remove_sample_point)
         gimp_image_remove_sample_point (image, sample_point, TRUE);
-      else if (new_x != sample_point->x || new_y != sample_point->y)
+      else if (new_x != old_x || new_y != old_y)
         gimp_image_move_sample_point (image, sample_point,
                                       new_x, new_y, TRUE);
     }
 
+  g_object_unref (queue);
+
   gimp_image_undo_group_end (image);
 
   gimp_image_size_changed_detailed (image,
-                                    offset_x,
-                                    offset_y,
-                                    old_width,
-                                    old_height);
+                                    offset_x, offset_y,
+                                    old_width, old_height);
 
   g_object_thaw_notify (G_OBJECT (image));
 
@@ -311,16 +300,12 @@ gimp_image_resize_to_selection (GimpImage    *image,
                                 GimpProgress *progress)
 {
   GimpChannel *selection = gimp_image_get_mask (image);
-  gint         x1, y1;
-  gint         x2, y2;
+  gint         x, y, w, h;
 
-  if (gimp_channel_is_empty (selection))
-    return;
-
-  gimp_channel_bounds (selection, &x1, &y1, &x2, &y2);
-
-  gimp_image_resize (image, context,
-                     x2 - x1, y2 - y1,
-                     - x1, - y1,
-                     progress);
+  if (gimp_item_bounds (GIMP_ITEM (selection), &x, &y, &w, &h))
+    {
+      gimp_image_resize (image, context,
+                         w, h, -x, -y,
+                         progress);
+    }
 }

@@ -30,9 +30,9 @@
 #include "tools-types.h"
 
 #include "core/gimpimage.h"
-#include "core/gimpimage-contiguous-region.h"
 #include "core/gimpitem.h"
 #include "core/gimppickable.h"
+#include "core/gimppickable-contiguous-region.h"
 
 #include "widgets/gimphelp-ids.h"
 
@@ -45,8 +45,8 @@
 #include "gimp-intl.h"
 
 
-static GimpChannel * gimp_by_color_select_tool_get_mask (GimpRegionSelectTool *region_select,
-                                                         GimpDisplay          *display);
+static GeglBuffer * gimp_by_color_select_tool_get_mask (GimpRegionSelectTool *region_select,
+                                                        GimpDisplay          *display);
 
 
 G_DEFINE_TYPE (GimpByColorSelectTool, gimp_by_color_select_tool,
@@ -68,7 +68,7 @@ gimp_by_color_select_tool_register (GimpToolRegisterCallback  callback,
                 _("Select by Color Tool: Select regions with similar colors"),
                 N_("_By Color Select"), "<shift>O",
                 NULL, GIMP_HELP_TOOL_BY_COLOR_SELECT,
-                GIMP_STOCK_TOOL_BY_COLOR_SELECT,
+                GIMP_ICON_TOOL_BY_COLOR_SELECT,
                 data);
 }
 
@@ -91,7 +91,7 @@ gimp_by_color_select_tool_init (GimpByColorSelectTool *by_color_select)
   gimp_tool_control_set_tool_cursor (tool->control, GIMP_TOOL_CURSOR_HAND);
 }
 
-static GimpChannel *
+static GeglBuffer *
 gimp_by_color_select_tool_get_mask (GimpRegionSelectTool *region_select,
                                     GimpDisplay          *display)
 {
@@ -101,7 +101,7 @@ gimp_by_color_select_tool_get_mask (GimpRegionSelectTool *region_select,
   GimpImage               *image       = gimp_display_get_image (display);
   GimpDrawable            *drawable    = gimp_image_get_active_drawable (image);
   GimpPickable            *pickable;
-  GimpRGB                  color;
+  GimpRGB                  srgb;
   gint                     x, y;
 
   x = region_select->x;
@@ -120,19 +120,24 @@ gimp_by_color_select_tool_get_mask (GimpRegionSelectTool *region_select,
     }
   else
     {
-      pickable = GIMP_PICKABLE (gimp_image_get_projection (image));
+      pickable = GIMP_PICKABLE (image);
     }
 
   gimp_pickable_flush (pickable);
 
-  if (gimp_pickable_get_color_at (pickable, x, y, &color))
-    return gimp_image_contiguous_region_by_color (image, drawable,
-                                                  options->sample_merged,
-                                                  sel_options->antialias,
-                                                  options->threshold,
-                                                  options->select_transparent,
-                                                  options->select_criterion,
-                                                  &color);
+  if (gimp_pickable_get_color_at (pickable, x, y, &srgb))
+    {
+      GimpRGB color;
+
+      gimp_pickable_srgb_to_image_color (pickable, &srgb, &color);
+
+      return gimp_pickable_contiguous_region_by_color (pickable,
+                                                       sel_options->antialias,
+                                                       options->threshold / 255.0,
+                                                       options->select_transparent,
+                                                       options->select_criterion,
+                                                       &color);
+    }
 
   return NULL;
 }

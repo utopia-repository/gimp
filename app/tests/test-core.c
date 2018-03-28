@@ -26,8 +26,9 @@
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
 #include "core/gimplayer.h"
+#include "core/gimplayer-new.h"
 
-#include "gegl/gimplevelsconfig.h"
+#include "operations/gimplevelsconfig.h"
 
 #include "tests.h"
 
@@ -81,7 +82,8 @@ gimp_test_image_setup (GimpTestFixture *fixture,
   fixture->image = gimp_image_new (gimp,
                                    GIMP_TEST_IMAGE_SIZE,
                                    GIMP_TEST_IMAGE_SIZE,
-                                   GIMP_RGB);
+                                   GIMP_RGB,
+                                   GIMP_PRECISION_FLOAT_LINEAR);
 }
 
 /**
@@ -122,10 +124,10 @@ rotate_non_overlapping (GimpTestFixture *fixture,
   layer = gimp_layer_new (image,
                           GIMP_TEST_IMAGE_SIZE,
                           GIMP_TEST_IMAGE_SIZE,
-                          GIMP_RGBA_IMAGE,
+                          babl_format ("R'G'B'A u8"),
                           "Test Layer",
-                          1.0,
-                          GIMP_NORMAL_MODE);
+                          GIMP_OPACITY_OPAQUE,
+                          GIMP_LAYER_MODE_NORMAL);
 
   g_assert_cmpint (GIMP_IS_LAYER (layer), ==, TRUE);
 
@@ -162,10 +164,10 @@ add_layer (GimpTestFixture *fixture,
   layer = gimp_layer_new (image,
                           GIMP_TEST_IMAGE_SIZE,
                           GIMP_TEST_IMAGE_SIZE,
-                          GIMP_RGBA_IMAGE,
+                          babl_format ("R'G'B'A u8"),
                           "Test Layer",
-                          1.0,
-                          GIMP_NORMAL_MODE);
+                          GIMP_OPACITY_OPAQUE,
+                          GIMP_LAYER_MODE_NORMAL);
 
   g_assert_cmpint (GIMP_IS_LAYER (layer), ==, TRUE);
 
@@ -199,10 +201,10 @@ remove_layer (GimpTestFixture *fixture,
   layer = gimp_layer_new (image,
                           GIMP_TEST_IMAGE_SIZE,
                           GIMP_TEST_IMAGE_SIZE,
-                          GIMP_RGBA_IMAGE,
+                          babl_format ("R'G'B'A u8"),
                           "Test Layer",
-                          1.0,
-                          GIMP_NORMAL_MODE);
+                          GIMP_OPACITY_OPAQUE,
+                          GIMP_LAYER_MODE_NORMAL);
 
   g_assert_cmpint (GIMP_IS_LAYER (layer), ==, TRUE);
 
@@ -263,8 +265,6 @@ main (int    argc,
   Gimp *gimp;
   int   result;
 
-  g_thread_init (NULL);
-  g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
   gimp_test_utils_set_gimp2_directory ("GIMP_TESTING_ABS_TOP_SRCDIR",

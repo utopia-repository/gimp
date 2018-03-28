@@ -34,6 +34,17 @@ typedef enum
 } GimpActiveColor;
 
 
+#define GIMP_TYPE_CIRCLE_BACKGROUND (gimp_circle_background_get_type ())
+
+GType gimp_circle_background_get_type (void) G_GNUC_CONST;
+
+typedef enum
+{
+  GIMP_CIRCLE_BACKGROUND_PLAIN, /*< desc="Plain" >*/
+  GIMP_CIRCLE_BACKGROUND_HSV    /*< desc="HSV"   >*/
+} GimpCircleBackground;
+
+
 #define GIMP_TYPE_COLOR_DIALOG_STATE (gimp_color_dialog_state_get_type ())
 
 GType gimp_color_dialog_state_get_type (void) G_GNUC_CONST;
@@ -52,10 +63,13 @@ GType gimp_color_frame_mode_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_COLOR_FRAME_MODE_PIXEL,  /*< desc="Pixel" >*/
-  GIMP_COLOR_FRAME_MODE_RGB,    /*< desc="RGB"   >*/
-  GIMP_COLOR_FRAME_MODE_HSV,    /*< desc="HSV"   >*/
-  GIMP_COLOR_FRAME_MODE_CMYK    /*< desc="CMYK"  >*/
+  GIMP_COLOR_FRAME_MODE_PIXEL,       /*< desc="Pixel"        >*/
+  GIMP_COLOR_FRAME_MODE_RGB_PERCENT, /*< desc="RGB (%)"      >*/
+  GIMP_COLOR_FRAME_MODE_RGB_U8,      /*< desc="RGB (0..255)" >*/
+  GIMP_COLOR_FRAME_MODE_HSV,         /*< desc="HSV"          >*/
+  GIMP_COLOR_FRAME_MODE_LCH,         /*< desc="CIE LCH"      >*/
+  GIMP_COLOR_FRAME_MODE_LAB,         /*< desc="CIE LAB"      >*/
+  GIMP_COLOR_FRAME_MODE_CMYK         /*< desc="CMYK"         >*/
 } GimpColorFrameMode;
 
 
@@ -78,8 +92,9 @@ GType gimp_color_pick_state_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_COLOR_PICK_STATE_NEW,
-  GIMP_COLOR_PICK_STATE_UPDATE
+  GIMP_COLOR_PICK_STATE_START,
+  GIMP_COLOR_PICK_STATE_UPDATE,
+  GIMP_COLOR_PICK_STATE_END
 } GimpColorPickState;
 
 
@@ -190,14 +205,22 @@ typedef enum  /*< skip >*/
   GIMP_CURSOR_MOVE,
   GIMP_CURSOR_ZOOM,
   GIMP_CURSOR_COLOR_PICKER,
-  GIMP_CURSOR_CORNER_TOP_LEFT,
+  GIMP_CURSOR_CORNER_TOP,
   GIMP_CURSOR_CORNER_TOP_RIGHT,
-  GIMP_CURSOR_CORNER_BOTTOM_LEFT,
+  GIMP_CURSOR_CORNER_RIGHT,
   GIMP_CURSOR_CORNER_BOTTOM_RIGHT,
+  GIMP_CURSOR_CORNER_BOTTOM,
+  GIMP_CURSOR_CORNER_BOTTOM_LEFT,
+  GIMP_CURSOR_CORNER_LEFT,
+  GIMP_CURSOR_CORNER_TOP_LEFT,
   GIMP_CURSOR_SIDE_TOP,
-  GIMP_CURSOR_SIDE_LEFT,
+  GIMP_CURSOR_SIDE_TOP_RIGHT,
   GIMP_CURSOR_SIDE_RIGHT,
+  GIMP_CURSOR_SIDE_BOTTOM_RIGHT,
   GIMP_CURSOR_SIDE_BOTTOM,
+  GIMP_CURSOR_SIDE_BOTTOM_LEFT,
+  GIMP_CURSOR_SIDE_LEFT,
+  GIMP_CURSOR_SIDE_TOP_LEFT,
   GIMP_CURSOR_LAST
 } GimpCursorType;
 
@@ -239,6 +262,7 @@ typedef enum  /*< skip >*/
   GIMP_TOOL_CURSOR_DODGE,
   GIMP_TOOL_CURSOR_BURN,
   GIMP_TOOL_CURSOR_MEASURE,
+  GIMP_TOOL_CURSOR_WARP,
   GIMP_TOOL_CURSOR_HAND,
   GIMP_TOOL_CURSOR_LAST
 } GimpToolCursorType;
@@ -277,17 +301,28 @@ typedef enum  /*< skip >*/
 
 typedef enum  /*< skip >*/
 {
-  GIMP_FILE_CHOOSER_ACTION_OPEN,
-  GIMP_FILE_CHOOSER_ACTION_SAVE,
-  GIMP_FILE_CHOOSER_ACTION_EXPORT
-} GimpFileChooserAction;
-
-typedef enum  /*< skip >*/
-{
   GIMP_DIALOGS_SHOWN,
   GIMP_DIALOGS_HIDDEN_EXPLICITLY,  /* user used the Tab key to hide dialogs */
   GIMP_DIALOGS_HIDDEN_WITH_DISPLAY /* dialogs are hidden with the display   */
 } GimpDialogsState;
+
+typedef enum  /*< skip >*/
+{
+  GIMP_DASHBOARD_UPDATE_INTERVAL_0_25_SEC =    250,
+  GIMP_DASHBOARD_UPDATE_INTERVAL_0_5_SEC  =    500,
+  GIMP_DASHBOARD_UPDATE_INTERVAL_1_SEC    =   1000,
+  GIMP_DASHBOARD_UPDATE_INTERVAL_2_SEC    =   2000,
+  GIMP_DASHBOARD_UPDATE_INTERVAL_4_SEC    =   4000
+} GimpDashboardUpdateInteval;
+
+typedef enum  /*< skip >*/
+{
+  GIMP_DASHBOARD_HISTORY_DURATION_15_SEC  =  15000,
+  GIMP_DASHBOARD_HISTORY_DURATION_30_SEC  =  30000,
+  GIMP_DASHBOARD_HISTORY_DURATION_60_SEC  =  60000,
+  GIMP_DASHBOARD_HISTORY_DURATION_120_SEC = 120000,
+  GIMP_DASHBOARD_HISTORY_DURATION_240_SEC = 240000
+} GimpDashboardHistoryDuration;
 
 
 #endif /* __WIDGETS_ENUMS_H__ */

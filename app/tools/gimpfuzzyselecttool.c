@@ -29,8 +29,9 @@
 #include "tools-types.h"
 
 #include "core/gimpimage.h"
-#include "core/gimpimage-contiguous-region.h"
 #include "core/gimpitem.h"
+#include "core/gimppickable.h"
+#include "core/gimppickable-contiguous-region.h"
 
 #include "widgets/gimphelp-ids.h"
 
@@ -43,8 +44,8 @@
 #include "gimp-intl.h"
 
 
-static GimpChannel * gimp_fuzzy_select_tool_get_mask (GimpRegionSelectTool *region_select,
-                                                      GimpDisplay          *display);
+static GeglBuffer * gimp_fuzzy_select_tool_get_mask (GimpRegionSelectTool *region_select,
+                                                     GimpDisplay          *display);
 
 
 G_DEFINE_TYPE (GimpFuzzySelectTool, gimp_fuzzy_select_tool,
@@ -66,7 +67,7 @@ gimp_fuzzy_select_tool_register (GimpToolRegisterCallback  callback,
                 _("Fuzzy Select Tool: Select a contiguous region on the basis of color"),
                 N_("Fu_zzy Select"), "U",
                 NULL, GIMP_HELP_TOOL_FUZZY_SELECT,
-                GIMP_STOCK_TOOL_FUZZY_SELECT,
+                GIMP_ICON_TOOL_FUZZY_SELECT,
                 data);
 }
 
@@ -90,7 +91,7 @@ gimp_fuzzy_select_tool_init (GimpFuzzySelectTool *fuzzy_select)
                                      GIMP_TOOL_CURSOR_FUZZY_SELECT);
 }
 
-static GimpChannel *
+static GeglBuffer *
 gimp_fuzzy_select_tool_get_mask (GimpRegionSelectTool *region_select,
                                  GimpDisplay          *display)
 {
@@ -99,6 +100,7 @@ gimp_fuzzy_select_tool_get_mask (GimpRegionSelectTool *region_select,
   GimpRegionSelectOptions *options     = GIMP_REGION_SELECT_TOOL_GET_OPTIONS (tool);
   GimpImage               *image       = gimp_display_get_image (display);
   GimpDrawable            *drawable    = gimp_image_get_active_drawable (image);
+  GimpPickable            *pickable;
   gint                     x, y;
 
   x = region_select->x;
@@ -112,13 +114,19 @@ gimp_fuzzy_select_tool_get_mask (GimpRegionSelectTool *region_select,
 
       x -= off_x;
       y -= off_y;
+
+      pickable = GIMP_PICKABLE (drawable);
+    }
+  else
+    {
+      pickable = GIMP_PICKABLE (image);
     }
 
-  return gimp_image_contiguous_region_by_seed (image, drawable,
-                                               options->sample_merged,
-                                               sel_options->antialias,
-                                               options->threshold,
-                                               options->select_transparent,
-                                               options->select_criterion,
-                                               x, y);
+  return gimp_pickable_contiguous_region_by_seed (pickable,
+                                                  sel_options->antialias,
+                                                  options->threshold / 255.0,
+                                                  options->select_transparent,
+                                                  options->select_criterion,
+                                                  options->diagonal_neighbors,
+                                                  x, y);
 }

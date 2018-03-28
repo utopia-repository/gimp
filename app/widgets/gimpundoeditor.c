@@ -128,8 +128,7 @@ gimp_undo_editor_constructed (GObject *object)
 {
   GimpUndoEditor *undo_editor = GIMP_UNDO_EDITOR (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   undo_editor->view = gimp_container_tree_view_new (NULL, NULL,
                                                     undo_editor->view_size,
@@ -262,19 +261,18 @@ gimp_undo_editor_fill (GimpUndoEditor *editor)
                                     "name",  _("[ Base Image ]"),
                                     NULL);
 
-  /*  the list prepends its items, so first add the redo items...  */
-  for (list = GIMP_LIST (redo_stack->undos)->list;
+  /*  the list prepends its items, so first add the redo items in
+   *  reverse (ascending) order...
+   */
+  for (list = GIMP_LIST (redo_stack->undos)->queue->tail;
        list;
-       list = g_list_next (list))
+       list = g_list_previous (list))
     {
       gimp_container_add (editor->container, GIMP_OBJECT (list->data));
     }
 
-  /*  ...reverse the list so the redo items are in ascending order...  */
-  gimp_list_reverse (GIMP_LIST (editor->container));
-
   /*  ...then add the undo items in descending order...  */
-  for (list = GIMP_LIST (undo_stack->undos)->list;
+  for (list = GIMP_LIST (undo_stack->undos)->queue->head;
        list;
        list = g_list_next (list))
     {
@@ -329,15 +327,10 @@ gimp_undo_editor_clear (GimpUndoEditor *editor)
     {
       gimp_container_view_set_container (GIMP_CONTAINER_VIEW (editor->view),
                                          NULL);
-      g_object_unref (editor->container);
-      editor->container = NULL;
+      g_clear_object (&editor->container);
     }
 
-  if (editor->base_item)
-    {
-      g_object_unref (editor->base_item);
-      editor->base_item = NULL;
-    }
+  g_clear_object (&editor->base_item);
 }
 
 static void

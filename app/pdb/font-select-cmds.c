@@ -21,6 +21,10 @@
 
 #include <gegl.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
+#include "libgimpbase/gimpbase.h"
+
 #include "pdb-types.h"
 
 #include "core/gimp.h"
@@ -31,22 +35,22 @@
 #include "internal-procs.h"
 
 
-static GValueArray *
-fonts_popup_invoker (GimpProcedure      *procedure,
-                     Gimp               *gimp,
-                     GimpContext        *context,
-                     GimpProgress       *progress,
-                     const GValueArray  *args,
-                     GError            **error)
+static GimpValueArray *
+fonts_popup_invoker (GimpProcedure         *procedure,
+                     Gimp                  *gimp,
+                     GimpContext           *context,
+                     GimpProgress          *progress,
+                     const GimpValueArray  *args,
+                     GError               **error)
 {
   gboolean success = TRUE;
   const gchar *font_callback;
   const gchar *popup_title;
   const gchar *initial_font;
 
-  font_callback = g_value_get_string (&args->values[0]);
-  popup_title = g_value_get_string (&args->values[1]);
-  initial_font = g_value_get_string (&args->values[2]);
+  font_callback = g_value_get_string (gimp_value_array_index (args, 0));
+  popup_title = g_value_get_string (gimp_value_array_index (args, 1));
+  initial_font = g_value_get_string (gimp_value_array_index (args, 2));
 
   if (success)
     {
@@ -62,18 +66,18 @@ fonts_popup_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-fonts_close_popup_invoker (GimpProcedure      *procedure,
-                           Gimp               *gimp,
-                           GimpContext        *context,
-                           GimpProgress       *progress,
-                           const GValueArray  *args,
-                           GError            **error)
+static GimpValueArray *
+fonts_close_popup_invoker (GimpProcedure         *procedure,
+                           Gimp                  *gimp,
+                           GimpContext           *context,
+                           GimpProgress          *progress,
+                           const GimpValueArray  *args,
+                           GError               **error)
 {
   gboolean success = TRUE;
   const gchar *font_callback;
 
-  font_callback = g_value_get_string (&args->values[0]);
+  font_callback = g_value_get_string (gimp_value_array_index (args, 0));
 
   if (success)
     {
@@ -87,20 +91,20 @@ fonts_close_popup_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-fonts_set_popup_invoker (GimpProcedure      *procedure,
-                         Gimp               *gimp,
-                         GimpContext        *context,
-                         GimpProgress       *progress,
-                         const GValueArray  *args,
-                         GError            **error)
+static GimpValueArray *
+fonts_set_popup_invoker (GimpProcedure         *procedure,
+                         Gimp                  *gimp,
+                         GimpContext           *context,
+                         GimpProgress          *progress,
+                         const GimpValueArray  *args,
+                         GError               **error)
 {
   gboolean success = TRUE;
   const gchar *font_callback;
   const gchar *font_name;
 
-  font_callback = g_value_get_string (&args->values[0]);
-  font_name = g_value_get_string (&args->values[1]);
+  font_callback = g_value_get_string (gimp_value_array_index (args, 0));
+  font_name = g_value_get_string (gimp_value_array_index (args, 1));
 
   if (success)
     {

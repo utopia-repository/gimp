@@ -22,12 +22,16 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
 
+#include "config/gimpguiconfig.h"
+
+#include "core/gimp.h"
 #include "core/gimpcontext.h"
 #include "core/gimpmarshal.h"
 
@@ -157,7 +161,7 @@ static gboolean     gimp_dockbook_tab_drag_drop               (GtkWidget      *w
                                                                gint            x,
                                                                gint            y,
                                                                guint           time);
-static GimpTabStyle gimp_dockbook_tab_style_to_prefered       (GimpTabStyle    tab_style,
+static GimpTabStyle gimp_dockbook_tab_style_to_preferred       (GimpTabStyle    tab_style,
                                                                GimpDockable   *dockable);
 static void         gimp_dockbook_refresh_tab_layout_lut      (GimpDockbook   *dockbook);
 static void         gimp_dockbook_update_automatic_tab_style  (GimpDockbook   *dockbook);
@@ -166,6 +170,7 @@ static GtkWidget *  gimp_dockable_create_event_box_tab_widget (GimpDockable   *d
                                                                GimpTabStyle    tab_style,
                                                                GtkIconSize     size);
 static GtkIconSize  gimp_dockbook_get_tab_icon_size           (GimpDockbook   *dockbook);
+static gint         gimp_dockbook_get_tab_border              (GimpDockbook   *dockbook);
 static void         gimp_dockbook_add_tab_timeout             (GimpDockbook   *dockbook,
                                                                GimpDockable   *dockable);
 static void         gimp_dockbook_remove_tab_timeout          (GimpDockbook   *dockbook);
@@ -176,6 +181,9 @@ static void         gimp_dockbook_tab_locked_notify           (GimpDockable   *d
 static void         gimp_dockbook_help_func                   (const gchar    *help_id,
                                                                gpointer        help_data);
 static const gchar *gimp_dockbook_get_tab_style_name          (GimpTabStyle    tab_style);
+
+static void         gimp_dockbook_config_size_changed         (GimpGuiConfig   *config,
+                                                               GimpDockbook    *dockbook);
 
 
 G_DEFINE_TYPE (GimpDockbook, gimp_dockbook, GTK_TYPE_NOTEBOOK)
@@ -284,7 +292,11 @@ gimp_dockbook_init (GimpDockbook *dockbook)
                                   GTK_PACK_END);
   gtk_widget_show (dockbook->p->menu_button);
 
-  image = gtk_image_new_from_stock (GIMP_STOCK_MENU_LEFT, GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name (GIMP_ICON_MENU_LEFT,
+                                        GTK_ICON_SIZE_MENU);
+  gtk_image_set_pixel_size (GTK_IMAGE (image), 12);
+  gtk_image_set_from_icon_name (GTK_IMAGE (image), GIMP_ICON_MENU_LEFT,
+                                GTK_ICON_SIZE_MENU);
   gtk_container_add (GTK_CONTAINER (dockbook->p->menu_button), image);
   gtk_widget_show (image);
 
@@ -321,10 +333,14 @@ gimp_dockbook_finalize (GObject *object)
 {
   GimpDockbook *dockbook = GIMP_DOCKBOOK (object);
 
-  if (dockbook->p->ui_manager)
+  g_clear_object (&dockbook->p->ui_manager);
+
+  if (dockbook->p->dock)
     {
-      g_object_unref (dockbook->p->ui_manager);
-      dockbook->p->ui_manager = NULL;
+      g_signal_handlers_disconnect_by_func (gimp_dock_get_context (dockbook->p->dock)->gimp->config,
+                                            gimp_dockbook_config_size_changed,
+                                            dockbook);
+      dockbook->p->dock = NULL;
     }
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -346,8 +362,6 @@ static void
 gimp_dockbook_style_set (GtkWidget *widget,
                          GtkStyle  *prev_style)
 {
-  gint tab_border;
-
   GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
 
   /* Don't attempt to construct widgets that require a GimpContext if
@@ -358,14 +372,6 @@ gimp_dockbook_style_set (GtkWidget *widget,
    */
   if (! gtk_widget_is_toplevel (gtk_widget_get_toplevel (widget)))
     return;
-
-  gtk_widget_style_get (widget,
-                        "tab-border", &tab_border,
-                        NULL);
-
-  g_object_set (widget,
-                "tab-border", tab_border,
-                NULL);
 
   gimp_dockbook_recreate_tab_widgets (GIMP_DOCKBOOK (widget),
                                       FALSE /*only_auto*/);
@@ -514,7 +520,7 @@ gimp_dockbook_show_menu (GimpDockbook *dockbook)
 
       if (! child_menu_widget)
         {
-          g_warning ("%s: UI manager '%s' has now widget at path '%s'",
+          g_warning ("%s: UI manager '%s' has no widget at path '%s'",
                      G_STRFUNC, dialog_ui_manager->name, dialog_ui_path);
           return FALSE;
         }
@@ -535,22 +541,12 @@ gimp_dockbook_show_menu (GimpDockbook *dockbook)
                     NULL);
 
       g_object_set (parent_menu_action,
-                    "label",    label,
-                    "stock-id", gimp_dockable_get_stock_id (dockable),
-                    "visible",  TRUE,
+                    "label",     label,
+                    "icon-name", gimp_dockable_get_icon_name (dockable),
+                    "visible",   TRUE,
                     NULL);
 
       g_free (label);
-
-      if (gimp_dockable_get_stock_id (dockable))
-        {
-          if (gtk_icon_theme_has_icon (gtk_icon_theme_get_default (),
-                                       gimp_dockable_get_stock_id (dockable)))
-            {
-              gtk_action_set_icon_name (parent_menu_action,
-                                        gimp_dockable_get_stock_id (dockable));
-            }
-        }
 
       if (! GTK_IS_MENU (child_menu_widget))
         {
@@ -565,6 +561,8 @@ gimp_dockbook_show_menu (GimpDockbook *dockbook)
 
         gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (parent_menu_widget),
                                        image);
+        gtk_image_menu_item_set_always_show_image (GTK_IMAGE_MENU_ITEM (parent_menu_widget),
+                                                   TRUE);
         gtk_widget_show (image);
       }
 
@@ -672,7 +670,7 @@ gimp_dockbook_get_dockable_tab_width (GimpDockbook *dockbook,
 }
 
 /**
- * gimp_dockbook_tab_style_to_prefered:
+ * gimp_dockbook_tab_style_to_preferred:
  * @tab_style:
  * @dockable:
  *
@@ -686,7 +684,7 @@ gimp_dockbook_get_dockable_tab_width (GimpDockbook *dockbook,
  *          in automatic mode.
  **/
 static GimpTabStyle
-gimp_dockbook_tab_style_to_prefered (GimpTabStyle  tab_style,
+gimp_dockbook_tab_style_to_preferred (GimpTabStyle  tab_style,
                                      GimpDockable *dockable)
 {
   GimpDocked *docked = GIMP_DOCKED (gtk_bin_get_child (GTK_BIN (dockable)));
@@ -740,7 +738,7 @@ gimp_dockbook_refresh_tab_layout_lut (GimpDockbook *dockbook)
           GimpDockable *dockable = GIMP_DOCKABLE (iter->data);
           GimpTabStyle  style_to_use;
 
-          style_to_use = gimp_dockbook_tab_style_to_prefered (candidate,
+          style_to_use = gimp_dockbook_tab_style_to_preferred (candidate,
                                                               dockable);
           size_with_candidate +=
             gimp_dockbook_get_dockable_tab_width (dockbook,
@@ -859,7 +857,7 @@ gimp_dockbook_update_automatic_tab_style (GimpDockbook *dockbook)
       if (gimp_dockable_get_tab_style (dockable) != GIMP_TAB_STYLE_AUTOMATIC)
         continue;
 
-      actual_tab_style = gimp_dockbook_tab_style_to_prefered (tab_style,
+      actual_tab_style = gimp_dockbook_tab_style_to_preferred (tab_style,
                                                               dockable);
 
       if (gimp_dockable_set_actual_tab_style (dockable, actual_tab_style))
@@ -881,9 +879,9 @@ gimp_dockbook_new (GimpMenuFactory *menu_factory)
   dockbook = g_object_new (GIMP_TYPE_DOCKBOOK, NULL);
 
   dockbook->p->ui_manager = gimp_menu_factory_manager_new (menu_factory,
-                                                        "<Dockable>",
-                                                        dockbook,
-                                                        FALSE);
+                                                           "<Dockable>",
+                                                           dockbook,
+                                                           FALSE);
 
   gimp_help_connect (GTK_WIDGET (dockbook), gimp_dockbook_help_func,
                      GIMP_HELP_DOCK, dockbook);
@@ -906,7 +904,16 @@ gimp_dockbook_set_dock (GimpDockbook *dockbook,
   g_return_if_fail (GIMP_IS_DOCKBOOK (dockbook));
   g_return_if_fail (dock == NULL || GIMP_IS_DOCK (dock));
 
+  if (dockbook->p->dock && gimp_dock_get_context (dockbook->p->dock))
+    g_signal_handlers_disconnect_by_func (gimp_dock_get_context (dockbook->p->dock)->gimp->config,
+                                          G_CALLBACK (gimp_dockbook_config_size_changed),
+                                          dockbook);
   dockbook->p->dock = dock;
+  if (dock)
+    g_signal_connect (gimp_dock_get_context (dockbook->p->dock)->gimp->config,
+                      "size-changed",
+                      G_CALLBACK (gimp_dockbook_config_size_changed),
+                      dockbook);
 }
 
 GimpUIManager *
@@ -939,7 +946,7 @@ gimp_dockbook_add (GimpDockbook *dockbook,
                                           dockable,
                                           position);
 
-  gimp_dockbook_update_auto_tab_style (dockbook);  
+  gimp_dockbook_update_auto_tab_style (dockbook);
 
   /* Create the new tab widget, it will get the correct tab style now */
   tab_widget = gimp_dockbook_create_tab_widget (dockbook, dockable);
@@ -1276,7 +1283,7 @@ gimp_dockbook_set_drag_handler (GimpDockbook *dockbook,
  * @drag_source: A drag-and-drop source widget
  *
  * Gets the dockable associated with a drag-and-drop source. If
- * successfull, the function will also cleanup the dockable.
+ * successful, the function will also cleanup the dockable.
  *
  * Returns: The dockable
  **/
@@ -1306,13 +1313,17 @@ gimp_dockbook_recreate_tab_widgets (GimpDockbook *dockbook,
   GList *dockables = gtk_container_get_children (GTK_CONTAINER (dockbook));
   GList *iter      = NULL;
 
+  g_object_set (dockbook,
+                "tab-border", gimp_dockbook_get_tab_border (dockbook),
+                NULL);
+
   for (iter = dockables; iter; iter = g_list_next (iter))
     {
       GimpDockable *dockable = GIMP_DOCKABLE (iter->data);
       GtkWidget *tab_widget;
 
       if (only_auto &&
-          ! gimp_dockable_get_tab_style (dockable) == GIMP_TAB_STYLE_AUTOMATIC)
+          ! (gimp_dockable_get_tab_style (dockable) == GIMP_TAB_STYLE_AUTOMATIC))
         continue;
 
       tab_widget = gimp_dockbook_create_tab_widget (dockbook, dockable);
@@ -1591,13 +1602,71 @@ gimp_dockable_create_event_box_tab_widget (GimpDockable *dockable,
 static GtkIconSize
 gimp_dockbook_get_tab_icon_size (GimpDockbook *dockbook)
 {
-  GtkIconSize tab_size = DEFAULT_TAB_ICON_SIZE;
+  Gimp        *gimp;
+  GimpIconSize size;
+  GtkIconSize  tab_size = DEFAULT_TAB_ICON_SIZE;
 
-  gtk_widget_style_get (GTK_WIDGET (dockbook),
-                        "tab-icon-size", &tab_size,
-                        NULL);
+  gimp = gimp_dock_get_context (dockbook->p->dock)->gimp;
+
+  size = gimp_gui_config_detect_icon_size (GIMP_GUI_CONFIG (gimp->config));
+  /* Match GimpIconSize with GtkIconSize. */
+  switch (size)
+    {
+    case GIMP_ICON_SIZE_SMALL:
+    case GIMP_ICON_SIZE_MEDIUM:
+      tab_size = GTK_ICON_SIZE_MENU;
+      break;
+    case GIMP_ICON_SIZE_LARGE:
+      tab_size = GTK_ICON_SIZE_LARGE_TOOLBAR;
+      break;
+    case GIMP_ICON_SIZE_HUGE:
+      tab_size = GTK_ICON_SIZE_DND;
+      break;
+    default:
+      /* GIMP_ICON_SIZE_DEFAULT:
+       * let's use the size set by the theme. */
+      gtk_widget_style_get (GTK_WIDGET (dockbook),
+                            "tab-icon-size", &tab_size,
+                            NULL);
+      break;
+    }
 
   return tab_size;
+}
+
+static gint
+gimp_dockbook_get_tab_border (GimpDockbook *dockbook)
+{
+  Gimp         *gimp;
+  GimpIconSize  size;
+  gint          tab_border = DEFAULT_TAB_BORDER;
+
+  gimp = gimp_dock_get_context (dockbook->p->dock)->gimp;
+
+  gtk_widget_style_get (GTK_WIDGET (dockbook),
+                        "tab-border", &tab_border,
+                        NULL);
+
+  size = gimp_gui_config_detect_icon_size (GIMP_GUI_CONFIG (gimp->config));
+  /* Match GimpIconSize with GtkIconSize. */
+  switch (size)
+    {
+    case GIMP_ICON_SIZE_SMALL:
+      tab_border /= 2;
+      break;
+    case GIMP_ICON_SIZE_LARGE:
+      tab_border *= 2;
+      break;
+    case GIMP_ICON_SIZE_HUGE:
+      tab_border *= 3;
+      break;
+    default:
+      /* GIMP_ICON_SIZE_MEDIUM and GIMP_ICON_SIZE_DEFAULT:
+       * let's use the size set by the theme. */
+      break;
+    }
+
+  return tab_border;
 }
 
 static void
@@ -1678,5 +1747,12 @@ static const gchar *
 gimp_dockbook_get_tab_style_name (GimpTabStyle tab_style)
 {
   return g_enum_get_value (g_type_class_peek (GIMP_TYPE_TAB_STYLE),
-                           tab_style)->value_name;  
+                           tab_style)->value_name;
+}
+
+static void
+gimp_dockbook_config_size_changed (GimpGuiConfig *config,
+                                   GimpDockbook  *dockbook)
+{
+  gimp_dockbook_recreate_tab_widgets (dockbook, TRUE);
 }

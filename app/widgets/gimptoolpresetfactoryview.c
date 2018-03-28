@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -59,6 +60,8 @@ gimp_tool_preset_factory_view_new (GimpViewType      view_type,
                                    GimpMenuFactory  *menu_factory)
 {
   GimpToolPresetFactoryView *factory_view;
+  GimpEditor                *editor;
+  GtkWidget                 *button;
 
   g_return_val_if_fail (GIMP_IS_DATA_FACTORY (factory), NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
@@ -83,6 +86,18 @@ gimp_tool_preset_factory_view_new (GimpViewType      view_type,
                                NULL);
 
   gtk_widget_hide (gimp_data_factory_view_get_duplicate_button (GIMP_DATA_FACTORY_VIEW (factory_view)));
+
+  editor = GIMP_EDITOR (GIMP_CONTAINER_EDITOR (factory_view)->view);
+
+  button = gimp_editor_add_action_button (editor, "tool-presets",
+                                          "tool-presets-save", NULL);
+  gtk_box_reorder_child (gimp_editor_get_button_box (editor),
+                         button, 2);
+
+  button = gimp_editor_add_action_button (editor, "tool-presets",
+                                          "tool-presets-restore", NULL);
+  gtk_box_reorder_child (gimp_editor_get_button_box (editor),
+                         button, 3);
 
   return GTK_WIDGET (factory_view);
 }

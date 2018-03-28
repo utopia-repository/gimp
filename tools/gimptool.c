@@ -32,7 +32,7 @@
 
 #include <sys/stat.h>
 
-#include <glib-object.h>
+#include <gio/gio.h>
 
 #include "libgimpbase/gimpbase.h"
 
@@ -427,8 +427,11 @@ maybe_run (gchar *cmd)
   if (!silent)
     g_print ("%s\n", cmd);
 
-  if (!dry_run)
-    system (cmd);
+  /* system() declared with attribute warn_unused_result.
+   * Trick to get rid of the compilation warning without using the result.
+   */
+  if (dry_run || system (cmd))
+    ;
 }
 
 static void

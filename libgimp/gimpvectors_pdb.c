@@ -25,9 +25,6 @@
 #include <string.h>
 
 #include "gimp.h"
-#undef GIMP_DISABLE_DEPRECATED
-#undef __GIMP_VECTORS_PDB_H__
-#include "gimpvectors_pdb.h"
 
 
 /**
@@ -49,9 +46,10 @@
  * Creates a new empty vectors object. The vectors object needs to be
  * added to the image using gimp_image_insert_vectors().
  *
- * Returns: the current vector object, 0 if no vector exists in the image.
+ * Returns: the current vector object, 0 if no vector exists in the
+ * image.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gint32
 gimp_vectors_new (gint32       image_ID,
@@ -87,7 +85,7 @@ gimp_vectors_new (gint32       image_ID,
  *
  * Returns: The vectors of the text layer.
  *
- * Since: GIMP 2.6
+ * Since: 2.6
  **/
 gint32
 gimp_vectors_new_from_text_layer (gint32 image_ID,
@@ -122,7 +120,7 @@ gimp_vectors_new_from_text_layer (gint32 image_ID,
  *
  * Returns: The newly copied vectors object.
  *
- * Since: GIMP 2.6
+ * Since: 2.6
  **/
 gint32
 gimp_vectors_copy (gint32 vectors_ID)
@@ -156,7 +154,7 @@ gimp_vectors_copy (gint32 vectors_ID)
  *
  * Returns: List of the strokes belonging to the path.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gint *
 gimp_vectors_get_strokes (gint32  vectors_ID,
@@ -199,7 +197,7 @@ gimp_vectors_get_strokes (gint32  vectors_ID,
  *
  * Returns: The length (in pixels) of the given stroke.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gdouble
 gimp_vectors_stroke_get_length (gint32  vectors_ID,
@@ -247,7 +245,7 @@ gimp_vectors_stroke_get_length (gint32  vectors_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_vectors_stroke_get_point_at_dist (gint32    vectors_ID,
@@ -302,7 +300,7 @@ gimp_vectors_stroke_get_point_at_dist (gint32    vectors_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_vectors_remove_stroke (gint32 vectors_ID,
@@ -336,7 +334,7 @@ gimp_vectors_remove_stroke (gint32 vectors_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_vectors_stroke_close (gint32 vectors_ID,
@@ -372,7 +370,7 @@ gimp_vectors_stroke_close (gint32 vectors_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_vectors_stroke_translate (gint32 vectors_ID,
@@ -412,7 +410,7 @@ gimp_vectors_stroke_translate (gint32 vectors_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_vectors_stroke_scale (gint32  vectors_ID,
@@ -453,7 +451,7 @@ gimp_vectors_stroke_scale (gint32  vectors_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_vectors_stroke_rotate (gint32  vectors_ID,
@@ -495,7 +493,7 @@ gimp_vectors_stroke_rotate (gint32  vectors_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_vectors_stroke_flip (gint32              vectors_ID,
@@ -539,7 +537,7 @@ gimp_vectors_stroke_flip (gint32              vectors_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_vectors_stroke_flip_free (gint32  vectors_ID,
@@ -585,9 +583,10 @@ gimp_vectors_stroke_flip_free (gint32  vectors_ID,
  * this is always a bezier stroke, where the coordinates are the
  * control points.
  *
- * Returns: type of the stroke (always GIMP_VECTORS_STROKE_TYPE_BEZIER for now).
+ * Returns: type of the stroke (always GIMP_VECTORS_STROKE_TYPE_BEZIER
+ * for now).
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 GimpVectorsStrokeType
 gimp_vectors_stroke_get_points (gint32     vectors_ID,
@@ -645,7 +644,7 @@ gimp_vectors_stroke_get_points (gint32     vectors_ID,
  *
  * Returns: The stroke ID of the newly created stroke.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gint
 gimp_vectors_stroke_new_from_points (gint32                 vectors_ID,
@@ -689,7 +688,7 @@ gimp_vectors_stroke_new_from_points (gint32                 vectors_ID,
  *
  * Returns: List of the coords along the path (x0, y0, x1, y1, ...).
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gdouble *
 gimp_vectors_stroke_interpolate (gint32    vectors_ID,
@@ -738,7 +737,7 @@ gimp_vectors_stroke_interpolate (gint32    vectors_ID,
  *
  * Returns: The resulting stroke.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gint
 gimp_vectors_bezier_stroke_new_moveto (gint32  vectors_ID,
@@ -777,7 +776,7 @@ gimp_vectors_bezier_stroke_new_moveto (gint32  vectors_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_vectors_bezier_stroke_lineto (gint32  vectors_ID,
@@ -821,7 +820,7 @@ gimp_vectors_bezier_stroke_lineto (gint32  vectors_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_vectors_bezier_stroke_conicto (gint32  vectors_ID,
@@ -869,7 +868,7 @@ gimp_vectors_bezier_stroke_conicto (gint32  vectors_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_vectors_bezier_stroke_cubicto (gint32  vectors_ID,
@@ -919,7 +918,7 @@ gimp_vectors_bezier_stroke_cubicto (gint32  vectors_ID,
  *
  * Returns: The resulting stroke.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gint
 gimp_vectors_bezier_stroke_new_ellipse (gint32  vectors_ID,
@@ -964,7 +963,7 @@ gimp_vectors_bezier_stroke_new_ellipse (gint32  vectors_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_vectors_to_selection (gint32         vectors_ID,
@@ -1011,7 +1010,7 @@ gimp_vectors_to_selection (gint32         vectors_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_vectors_import_from_file (gint32        image_ID,
@@ -1070,7 +1069,7 @@ gimp_vectors_import_from_file (gint32        image_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_vectors_import_from_string (gint32        image_ID,
@@ -1128,7 +1127,7 @@ gimp_vectors_import_from_string (gint32        image_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.6
+ * Since: 2.6
  **/
 gboolean
 gimp_vectors_export_to_file (gint32       image_ID,
@@ -1167,7 +1166,7 @@ gimp_vectors_export_to_file (gint32       image_ID,
  *
  * Returns: A string whose contents are a complete SVG document.
  *
- * Since: GIMP 2.6
+ * Since: 2.6
  **/
 gchar *
 gimp_vectors_export_to_string (gint32 image_ID,

@@ -8,7 +8,6 @@ GIMP was originally written by:
 
 The current maintainers are:
 
- Sven Neumann
  Michael Natterer
 
 
@@ -22,11 +21,13 @@ The following people have contributed code to GIMP:
  Karl-Johan Andersson
  Rob Antonishen
  Nicola Archibald
+ Timm Bäder
  Luis Barrancos
  Jerry Baker
  John Beale
  Zach Beane
  Tom Bech
+ Daniel P. Berrange
  Marc Bless
  Edward Blevins
  Reagan Blundell
@@ -36,7 +37,6 @@ The following people have contributed code to GIMP:
  Roberto Boyd
  Stanislav Brabec
  Hans Breuer
- Ingo Brückl
  Simon Budig
  João S. O. Bueno
  Seth Burgess
@@ -58,6 +58,7 @@ The following people have contributed code to GIMP:
  Daniel Cotting
  Jay Cox
  Kevin Cozens
+ Jeremiah Darais
  Michael Deal
  Alexia Death
  Brian Degenhardt
@@ -67,10 +68,12 @@ The following people have contributed code to GIMP:
  Austin Donnelly
  Scott Draves
  Daniel Dunbar
+ Marek Dvoroznak
  Misha Dynin
  Daniel Eddeland
  Daniel Egger
  Ulf-D. Ehlert
+ Ell
  Morton Eriksen
  Larry Ewing
  Pedro Alonso Ferrer
@@ -88,6 +91,7 @@ The following people have contributed code to GIMP:
  GG
  Graeme Gill
  Pedro Gimeno
+ Richard Gitschlag
  Scott Goehring
  Heiko Goller
  Marcelo de Gomensoro Malheiros
@@ -109,12 +113,14 @@ The following people have contributed code to GIMP:
  David Hodson
  Christoph Hoegl
  Wolfgang Hofer
+ Éric Hoffman
  Patrick Horgan
  Alan Horkan
  Daniel Hornung
  Christopher Howard
  Jan Hubička
  Alexander Hämmerle
+ HJ Imbens
  Barak Itkin
  Ben Jackson
  Tim Janik
@@ -137,6 +143,7 @@ The following people have contributed code to GIMP:
  Robert L Krawitz
  Kretynofil
  Christian Krippendorf
+ Hartmut Kuhse
  Tuomas Kuosmanen
  Olof S Kylander
  Philip Lafleur
@@ -146,6 +153,7 @@ The following people have contributed code to GIMP:
  Marco Lamberto
  Jens Lautenbacher
  Laramie Leavitt
+ Roman Lebedev
  Tom Lechner
  Elliot Lee
  Marc Lehmann
@@ -159,6 +167,7 @@ The following people have contributed code to GIMP:
  Adrian Likins
  Tor Lillqvist
  Ingo Lütkebohle
+ Nikc M.
  Josh MacDonald
  Ed Mackey
  Vidar Madsen
@@ -170,10 +179,15 @@ The following people have contributed code to GIMP:
  John Marshall
  Kelly Martin
  Torsten Martinsen
+ Pascal Massimino
+ Johannes Matschke
  Takeshi Matsuyama
  Gordon Matzigkeit
  Téo Mazars
+ Robert McHardy
  Gregory McLean
+ Richard McLean
+ Jörn Meier
  Mike Melancon
  Federico Mena Quintero
  Loren Merritt
@@ -188,17 +202,19 @@ The following people have contributed code to GIMP:
  Adam D Moss
  Tobias Mueller
  Michael Muré
+ Lionel N.
  Balazs Nagy
  Yukihiro Nakai
  Shuji Narazaki
  Felix Natter
  David Neary
  David Necas
+ Sven Neumann
  Andreas Neustifter
- Stephen Robert Norris
  Tim Newsome
  Jon Nordby
  Martin Nordholts
+ Stephen Robert Norris
  Erik Nygren
  Miles O'Neal
  David Odin
@@ -206,10 +222,13 @@ The following people have contributed code to GIMP:
  Victor Oliveira
  Thom van Os
  Garry R. Osgood
+ Nathan Osman
  Benjamin Otte
  Petr Ovtchenkov
  Alan Paeth
+ Jehan Pagès
  Jay Painter
+ Juan Palacios
  Ville Pätsi
  Akkana Peck
  Asbjorn Pettersen
@@ -218,8 +237,10 @@ The following people have contributed code to GIMP:
  Ari Pollak
  Mircea Purdea
  Raphaël Quinet
+ John Ralls
  Dennis Ranke
  Tom Rathborne
+ Debarshi Ray
  Martin Renold
  Jens Restemeier
  Kristian Rietveld
@@ -243,6 +264,7 @@ The following people have contributed code to GIMP:
  Michael Schumacher
  Tracy Scott
  Craig Setera
+ shark0r
  Peter Sikking
  RyōTa SimaMoto
  Ted Shaneyfelt
@@ -258,6 +280,8 @@ The following people have contributed code to GIMP:
  Adam Spiers
  Jakub Steiner
  Omari Stephens
+ Tobias Stoeckmann
+ Elle Stone
  Nathan Summers
  Mike Sweet
  Bogdan Szczurek
@@ -269,6 +293,7 @@ The following people have contributed code to GIMP:
  Ian Tester
  Andy Thomas
  Mason Thomas
+ Benoit Touchette
  Patrice Tremblay
  Kevin Turner
  Andreas Turtschan
@@ -290,6 +315,7 @@ The following people have contributed code to GIMP:
  Andrew Wyatt
  Yoshinori Yamakawa
  Shirasaki Yasuhiro
+ Mihail Zenkov
  Zhenfeng Zhao
  Simon Zilliken
  Przemyslaw Zych
@@ -302,14 +328,15 @@ The following people have contributed art to GIMP:
  Paul Davey
  Alexia Death
  Aurore Derriennic
+ Aryeom Han
  Tuomas Kuosmanen
  Karl La Rocca
  Andreas Nilsson
  Ville Pätsi
  Mike Schaeffer
  Carol Spears
+ Klaus Staedtler
  Jakub Steiner
- Bernhard Stockmann
  William Szilveszter
 
 

@@ -79,6 +79,8 @@ void          gimp_unit_set_deletion_flag   (GimpUnit     unit,
 gdouble       gimp_unit_get_factor          (GimpUnit     unit);
 
 gint          gimp_unit_get_digits          (GimpUnit     unit);
+gint          gimp_unit_get_scaled_digits   (GimpUnit     unit,
+                                             gdouble      resolution);
 
 const gchar * gimp_unit_get_identifier      (GimpUnit     unit);
 
@@ -99,6 +101,8 @@ gdouble       gimp_units_to_pixels          (gdouble      value,
 gdouble       gimp_units_to_points          (gdouble      value,
                                              GimpUnit     unit,
                                              gdouble      resolution);
+
+gboolean      gimp_unit_is_metric           (GimpUnit     unit);
 
 
 G_END_DECLS

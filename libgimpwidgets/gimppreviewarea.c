@@ -20,13 +20,17 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
+#include "libgimpcolor/gimpcolor.h"
 
 #include "gimpwidgetstypes.h"
 
 #include "gimppreviewarea.h"
+#include "gimpwidgetsutils.h"
 
 #include "libgimp/libgimp-intl.h"
 
@@ -57,27 +61,45 @@ enum
     (((area)->offset_x + (col)) & size)) ? dark : light)
 
 
-static void      gimp_preview_area_finalize         (GObject         *object);
-static void      gimp_preview_area_set_property     (GObject         *object,
-                                                     guint            property_id,
-                                                     const GValue    *value,
-                                                     GParamSpec      *pspec);
-static void      gimp_preview_area_get_property     (GObject         *object,
-                                                     guint            property_id,
-                                                     GValue          *value,
-                                                     GParamSpec      *pspec);
+typedef struct _GimpPreviewAreaPrivate GimpPreviewAreaPrivate;
 
-static void      gimp_preview_area_size_allocate    (GtkWidget       *widget,
-                                                     GtkAllocation   *allocation);
-static gboolean  gimp_preview_area_expose           (GtkWidget       *widget,
-                                                     GdkEventExpose  *event);
+struct _GimpPreviewAreaPrivate
+{
+  GimpColorConfig    *config;
+  GimpColorTransform *transform;
+};
 
-static void      gimp_preview_area_queue_draw       (GimpPreviewArea *area,
-                                                     gint             x,
-                                                     gint             y,
-                                                     gint             width,
-                                                     gint             height);
-static gint      gimp_preview_area_image_type_bytes (GimpImageType    type);
+#define GET_PRIVATE(obj) \
+        G_TYPE_INSTANCE_GET_PRIVATE (obj, \
+                                     GIMP_TYPE_PREVIEW_AREA, \
+                                     GimpPreviewAreaPrivate)
+
+
+static void      gimp_preview_area_dispose           (GObject          *object);
+static void      gimp_preview_area_finalize          (GObject          *object);
+static void      gimp_preview_area_set_property      (GObject          *object,
+                                                      guint             property_id,
+                                                      const GValue     *value,
+                                                      GParamSpec       *pspec);
+static void      gimp_preview_area_get_property      (GObject          *object,
+                                                      guint             property_id,
+                                                      GValue           *value,
+                                                      GParamSpec       *pspec);
+
+static void      gimp_preview_area_size_allocate     (GtkWidget        *widget,
+                                                      GtkAllocation    *allocation);
+static gboolean  gimp_preview_area_expose            (GtkWidget        *widget,
+                                                      GdkEventExpose   *event);
+
+static void      gimp_preview_area_queue_draw        (GimpPreviewArea  *area,
+                                                      gint              x,
+                                                      gint              y,
+                                                      gint              width,
+                                                      gint              height);
+static gint      gimp_preview_area_image_type_bytes  (GimpImageType     type);
+
+static void      gimp_preview_area_create_transform  (GimpPreviewArea  *area);
+static void      gimp_preview_area_destroy_transform (GimpPreviewArea  *area);
 
 
 G_DEFINE_TYPE (GimpPreviewArea, gimp_preview_area, GTK_TYPE_DRAWING_AREA)
@@ -91,6 +113,7 @@ gimp_preview_area_class_init (GimpPreviewAreaClass *klass)
   GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
+  object_class->dispose       = gimp_preview_area_dispose;
   object_class->finalize      = gimp_preview_area_finalize;
   object_class->set_property  = gimp_preview_area_set_property;
   object_class->get_property  = gimp_preview_area_get_property;
@@ -100,17 +123,21 @@ gimp_preview_area_class_init (GimpPreviewAreaClass *klass)
 
   g_object_class_install_property (object_class, PROP_CHECK_SIZE,
                                    g_param_spec_enum ("check-size",
-                                                      _("Check Size"), NULL,
+                                                      _("Check Size"),
+                                                      "The size of the checkerboard pattern indicating transparency",
                                                       GIMP_TYPE_CHECK_SIZE,
                                                       DEFAULT_CHECK_SIZE,
                                                       GIMP_PARAM_READWRITE));
 
   g_object_class_install_property (object_class, PROP_CHECK_TYPE,
                                    g_param_spec_enum ("check-type",
-                                                      _("Check Style"), NULL,
+                                                      _("Check Style"),
+                                                      "The colors of the checkerboard pattern indicating transparency",
                                                       GIMP_TYPE_CHECK_TYPE,
                                                       DEFAULT_CHECK_TYPE,
                                                       GIMP_PARAM_READWRITE));
+
+  g_type_class_add_private (object_class, sizeof (GimpPreviewAreaPrivate));
 }
 
 static void
@@ -127,6 +154,20 @@ gimp_preview_area_init (GimpPreviewArea *area)
   area->rowstride  = 0;
   area->max_width  = -1;
   area->max_height = -1;
+
+  gimp_widget_track_monitor (GTK_WIDGET (area),
+                             G_CALLBACK (gimp_preview_area_destroy_transform),
+                             NULL);
+}
+
+static void
+gimp_preview_area_dispose (GObject *object)
+{
+  GimpPreviewArea *area = GIMP_PREVIEW_AREA (object);
+
+  gimp_preview_area_set_color_config (area, NULL);
+
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
@@ -134,16 +175,8 @@ gimp_preview_area_finalize (GObject *object)
 {
   GimpPreviewArea *area = GIMP_PREVIEW_AREA (object);
 
-  if (area->buf)
-    {
-      g_free (area->buf);
-      area->buf = NULL;
-    }
-  if (area->colormap)
-    {
-      g_free (area->colormap);
-      area->colormap = NULL;
-    }
+  g_clear_pointer (&area->buf,      g_free);
+  g_clear_pointer (&area->colormap, g_free);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -229,11 +262,12 @@ static gboolean
 gimp_preview_area_expose (GtkWidget      *widget,
                           GdkEventExpose *event)
 {
-  GimpPreviewArea *area = GIMP_PREVIEW_AREA (widget);
-  GtkAllocation    allocation;
-  GdkPixbuf       *pixbuf;
-  GdkRectangle     rect;
-  cairo_t         *cr;
+  GimpPreviewArea        *area = GIMP_PREVIEW_AREA (widget);
+  GimpPreviewAreaPrivate *priv = GET_PRIVATE (area);
+  GtkAllocation           allocation;
+  GdkPixbuf              *pixbuf;
+  GdkRectangle            rect;
+  cairo_t                *cr;
 
   if (! area->buf)
     return FALSE;
@@ -245,14 +279,50 @@ gimp_preview_area_expose (GtkWidget      *widget,
   rect.width  = area->width;
   rect.height = area->height;
 
-  pixbuf = gdk_pixbuf_new_from_data (area->buf,
-                                     GDK_COLORSPACE_RGB,
-                                     FALSE,
-                                     8,
-                                     rect.width,
-                                     rect.height,
-                                     area->rowstride,
-                                     NULL, NULL);
+  if (! priv->transform)
+    gimp_preview_area_create_transform (area);
+
+  if (priv->transform)
+    {
+      const Babl *format    = babl_format ("R'G'B' u8");
+      gint        rowstride = ((area->width * 3) + 3) & ~3;
+      guchar     *buf       = g_new (guchar, rowstride * area->height);
+      guchar     *src       = area->buf;
+      guchar     *dest      = buf;
+      gint        i;
+
+      for (i = 0; i < area->height; i++)
+        {
+          gimp_color_transform_process_pixels (priv->transform,
+                                               format, src,
+                                               format, dest,
+                                               area->width);
+
+          src  += area->rowstride;
+          dest += rowstride;
+        }
+
+      pixbuf = gdk_pixbuf_new_from_data (buf,
+                                         GDK_COLORSPACE_RGB,
+                                         FALSE,
+                                         8,
+                                         rect.width,
+                                         rect.height,
+                                         rowstride,
+                                         (GdkPixbufDestroyNotify) g_free, NULL);
+    }
+  else
+    {
+      pixbuf = gdk_pixbuf_new_from_data (area->buf,
+                                         GDK_COLORSPACE_RGB,
+                                         FALSE,
+                                         8,
+                                         rect.width,
+                                         rect.height,
+                                         area->rowstride,
+                                         NULL, NULL);
+    }
+
   cr = gdk_cairo_create (gtk_widget_get_window (widget));
 
   gdk_cairo_region (cr, event->region);
@@ -309,6 +379,43 @@ gimp_preview_area_image_type_bytes (GimpImageType type)
       break;
     }
 }
+
+static void
+gimp_preview_area_create_transform (GimpPreviewArea *area)
+{
+  GimpPreviewAreaPrivate *priv = GET_PRIVATE (area);
+
+  if (priv->config)
+    {
+      static GimpColorProfile *profile = NULL;
+
+      const Babl *format = babl_format ("R'G'B' u8");
+
+      if (G_UNLIKELY (! profile))
+        profile = gimp_color_profile_new_rgb_srgb ();
+
+      priv->transform = gimp_widget_get_color_transform (GTK_WIDGET (area),
+                                                         priv->config,
+                                                         profile,
+                                                         format,
+                                                         format);
+    }
+}
+
+static void
+gimp_preview_area_destroy_transform (GimpPreviewArea *area)
+{
+  GimpPreviewAreaPrivate *priv = GET_PRIVATE (area);
+
+  if (priv->transform)
+    {
+      g_object_unref (priv->transform);
+      priv->transform = NULL;
+    }
+
+  gtk_widget_queue_draw (GTK_WIDGET (area));
+}
+
 
 /**
  * gimp_preview_area_new:
@@ -1614,7 +1721,7 @@ gimp_preview_area_fill (GimpPreviewArea *area,
  * Sets the offsets of the previewed area. This information is used
  * when drawing the checkerboard and to determine the dither offsets.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 void
 gimp_preview_area_set_offsets (GimpPreviewArea *area,
@@ -1665,17 +1772,62 @@ gimp_preview_area_set_colormap (GimpPreviewArea *area,
 }
 
 /**
+ * gimp_preview_area_set_color_config:
+ * @area:   a #GimpPreviewArea widget.
+ * @config: a #GimpColorConfig object.
+ *
+ * Sets the color management configuration to use with this preview area.
+ *
+ * Since: 2.10
+ */
+void
+gimp_preview_area_set_color_config (GimpPreviewArea *area,
+                                    GimpColorConfig *config)
+{
+  GimpPreviewAreaPrivate *priv;
+
+  g_return_if_fail (GIMP_IS_PREVIEW_AREA (area));
+  g_return_if_fail (config == NULL || GIMP_IS_COLOR_CONFIG (config));
+
+  priv = GET_PRIVATE (area);
+
+  if (config != priv->config)
+    {
+      if (priv->config)
+        {
+          g_signal_handlers_disconnect_by_func (priv->config,
+                                                gimp_preview_area_destroy_transform,
+                                                area);
+          g_object_unref (priv->config);
+
+          gimp_preview_area_destroy_transform (area);
+        }
+
+      priv->config = config;
+
+      if (priv->config)
+        {
+          g_object_ref (priv->config);
+
+          g_signal_connect_swapped (priv->config, "notify",
+                                    G_CALLBACK (gimp_preview_area_destroy_transform),
+                                    area);
+        }
+    }
+}
+
+/**
  * gimp_preview_area_set_max_size:
  * @area:   a #GimpPreviewArea widget
  * @width:  the maximum width in pixels or -1 to unset the limit
  * @height: the maximum height in pixels or -1 to unset the limit
  *
  * Usually a #GimpPreviewArea fills the size that it is
- * allocated. This funtion allows you to limit the preview area to a
+ * allocated. This function allows you to limit the preview area to a
  * maximum size. If a larger size is allocated for the widget, the
  * preview will draw itself centered into the allocated area.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 void
 gimp_preview_area_set_max_size (GimpPreviewArea *area,
@@ -1779,10 +1931,10 @@ gimp_preview_area_menu_new (GimpPreviewArea *area,
  * @area:  a #GimpPreviewArea
  * @event: the button event that causes the menu to popup or %NULL
  *
- * Creates a popup menu that allows to configure the size and type of
+ * Creates a popup menu that allows one to configure the size and type of
  * the checkerboard pattern that the @area uses to visualize transparency.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 void
 gimp_preview_area_menu_popup (GimpPreviewArea *area,

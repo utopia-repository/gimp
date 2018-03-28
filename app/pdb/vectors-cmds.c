@@ -23,6 +23,10 @@
 
 #include <gegl.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
+#include "libgimpbase/gimpbase.h"
+
 #include "pdb-types.h"
 
 #include "core/gimpimage-undo-push.h"
@@ -47,22 +51,22 @@
 #include "gimp-intl.h"
 
 
-static GValueArray *
-vectors_new_invoker (GimpProcedure      *procedure,
-                     Gimp               *gimp,
-                     GimpContext        *context,
-                     GimpProgress       *progress,
-                     const GValueArray  *args,
-                     GError            **error)
+static GimpValueArray *
+vectors_new_invoker (GimpProcedure         *procedure,
+                     Gimp                  *gimp,
+                     GimpContext           *context,
+                     GimpProgress          *progress,
+                     const GimpValueArray  *args,
+                     GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpImage *image;
   const gchar *name;
   GimpVectors *vectors = NULL;
 
-  image = gimp_value_get_image (&args->values[0], gimp);
-  name = g_value_get_string (&args->values[1]);
+  image = gimp_value_get_image (gimp_value_array_index (args, 0), gimp);
+  name = g_value_get_string (gimp_value_array_index (args, 1));
 
   if (success)
     {
@@ -73,31 +77,31 @@ vectors_new_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_vectors (&return_vals->values[1], vectors);
+    gimp_value_set_vectors (gimp_value_array_index (return_vals, 1), vectors);
 
   return return_vals;
 }
 
-static GValueArray *
-vectors_new_from_text_layer_invoker (GimpProcedure      *procedure,
-                                     Gimp               *gimp,
-                                     GimpContext        *context,
-                                     GimpProgress       *progress,
-                                     const GValueArray  *args,
-                                     GError            **error)
+static GimpValueArray *
+vectors_new_from_text_layer_invoker (GimpProcedure         *procedure,
+                                     Gimp                  *gimp,
+                                     GimpContext           *context,
+                                     GimpProgress          *progress,
+                                     const GimpValueArray  *args,
+                                     GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpImage *image;
   GimpLayer *layer;
   GimpVectors *vectors = NULL;
 
-  image = gimp_value_get_image (&args->values[0], gimp);
-  layer = gimp_value_get_layer (&args->values[1], gimp);
+  image = gimp_value_get_image (gimp_value_array_index (args, 0), gimp);
+  layer = gimp_value_get_layer (gimp_value_array_index (args, 1), gimp);
 
   if (success)
     {
-      if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
+      if (gimp_pdb_layer_is_text_layer (layer, 0, error))
         {
           gint x, y;
 
@@ -117,25 +121,25 @@ vectors_new_from_text_layer_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_vectors (&return_vals->values[1], vectors);
+    gimp_value_set_vectors (gimp_value_array_index (return_vals, 1), vectors);
 
   return return_vals;
 }
 
-static GValueArray *
-vectors_copy_invoker (GimpProcedure      *procedure,
-                      Gimp               *gimp,
-                      GimpContext        *context,
-                      GimpProgress       *progress,
-                      const GValueArray  *args,
-                      GError            **error)
+static GimpValueArray *
+vectors_copy_invoker (GimpProcedure         *procedure,
+                      Gimp                  *gimp,
+                      GimpContext           *context,
+                      GimpProgress          *progress,
+                      const GimpValueArray  *args,
+                      GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpVectors *vectors;
   GimpVectors *vectors_copy = NULL;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -150,26 +154,26 @@ vectors_copy_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_vectors (&return_vals->values[1], vectors_copy);
+    gimp_value_set_vectors (gimp_value_array_index (return_vals, 1), vectors_copy);
 
   return return_vals;
 }
 
-static GValueArray *
-vectors_get_strokes_invoker (GimpProcedure      *procedure,
-                             Gimp               *gimp,
-                             GimpContext        *context,
-                             GimpProgress       *progress,
-                             const GValueArray  *args,
-                             GError            **error)
+static GimpValueArray *
+vectors_get_strokes_invoker (GimpProcedure         *procedure,
+                             Gimp                  *gimp,
+                             GimpContext           *context,
+                             GimpProgress          *progress,
+                             const GimpValueArray  *args,
+                             GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpVectors *vectors;
   gint32 num_strokes = 0;
   gint32 *stroke_ids = NULL;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -197,35 +201,35 @@ vectors_get_strokes_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_int (&return_vals->values[1], num_strokes);
-      gimp_value_take_int32array (&return_vals->values[2], stroke_ids, num_strokes);
+      g_value_set_int (gimp_value_array_index (return_vals, 1), num_strokes);
+      gimp_value_take_int32array (gimp_value_array_index (return_vals, 2), stroke_ids, num_strokes);
     }
 
   return return_vals;
 }
 
-static GValueArray *
-vectors_stroke_get_length_invoker (GimpProcedure      *procedure,
-                                   Gimp               *gimp,
-                                   GimpContext        *context,
-                                   GimpProgress       *progress,
-                                   const GValueArray  *args,
-                                   GError            **error)
+static GimpValueArray *
+vectors_stroke_get_length_invoker (GimpProcedure         *procedure,
+                                   Gimp                  *gimp,
+                                   GimpContext           *context,
+                                   GimpProgress          *progress,
+                                   const GimpValueArray  *args,
+                                   GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpVectors *vectors;
   gint32 stroke_id;
   gdouble precision;
   gdouble length = 0.0;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
-  stroke_id = g_value_get_int (&args->values[1]);
-  precision = g_value_get_double (&args->values[2]);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
+  stroke_id = g_value_get_int (gimp_value_array_index (args, 1));
+  precision = g_value_get_double (gimp_value_array_index (args, 2));
 
   if (success)
     {
-      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id, FALSE, error);
+      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id, 0, error);
 
       if (stroke)
         length = gimp_stroke_get_length (stroke, precision);
@@ -237,21 +241,21 @@ vectors_stroke_get_length_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_double (&return_vals->values[1], length);
+    g_value_set_double (gimp_value_array_index (return_vals, 1), length);
 
   return return_vals;
 }
 
-static GValueArray *
-vectors_stroke_get_point_at_dist_invoker (GimpProcedure      *procedure,
-                                          Gimp               *gimp,
-                                          GimpContext        *context,
-                                          GimpProgress       *progress,
-                                          const GValueArray  *args,
-                                          GError            **error)
+static GimpValueArray *
+vectors_stroke_get_point_at_dist_invoker (GimpProcedure         *procedure,
+                                          Gimp                  *gimp,
+                                          GimpContext           *context,
+                                          GimpProgress          *progress,
+                                          const GimpValueArray  *args,
+                                          GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpVectors *vectors;
   gint32 stroke_id;
   gdouble dist;
@@ -261,14 +265,14 @@ vectors_stroke_get_point_at_dist_invoker (GimpProcedure      *procedure,
   gdouble slope = 0.0;
   gboolean valid = FALSE;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
-  stroke_id = g_value_get_int (&args->values[1]);
-  dist = g_value_get_double (&args->values[2]);
-  precision = g_value_get_double (&args->values[3]);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
+  stroke_id = g_value_get_int (gimp_value_array_index (args, 1));
+  dist = g_value_get_double (gimp_value_array_index (args, 2));
+  precision = g_value_get_double (gimp_value_array_index (args, 3));
 
   if (success)
     {
-      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id, FALSE, error);
+      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id, 0, error);
 
       if (stroke)
         {
@@ -288,33 +292,34 @@ vectors_stroke_get_point_at_dist_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_double (&return_vals->values[1], x_point);
-      g_value_set_double (&return_vals->values[2], y_point);
-      g_value_set_double (&return_vals->values[3], slope);
-      g_value_set_boolean (&return_vals->values[4], valid);
+      g_value_set_double (gimp_value_array_index (return_vals, 1), x_point);
+      g_value_set_double (gimp_value_array_index (return_vals, 2), y_point);
+      g_value_set_double (gimp_value_array_index (return_vals, 3), slope);
+      g_value_set_boolean (gimp_value_array_index (return_vals, 4), valid);
     }
 
   return return_vals;
 }
 
-static GValueArray *
-vectors_remove_stroke_invoker (GimpProcedure      *procedure,
-                               Gimp               *gimp,
-                               GimpContext        *context,
-                               GimpProgress       *progress,
-                               const GValueArray  *args,
-                               GError            **error)
+static GimpValueArray *
+vectors_remove_stroke_invoker (GimpProcedure         *procedure,
+                               Gimp                  *gimp,
+                               GimpContext           *context,
+                               GimpProgress          *progress,
+                               const GimpValueArray  *args,
+                               GError               **error)
 {
   gboolean success = TRUE;
   GimpVectors *vectors;
   gint32 stroke_id;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
-  stroke_id = g_value_get_int (&args->values[1]);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
+  stroke_id = g_value_get_int (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id, TRUE, error);
+      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id,
+                                                        GIMP_PDB_ITEM_CONTENT, error);
 
       if (stroke)
         {
@@ -333,24 +338,25 @@ vectors_remove_stroke_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-vectors_stroke_close_invoker (GimpProcedure      *procedure,
-                              Gimp               *gimp,
-                              GimpContext        *context,
-                              GimpProgress       *progress,
-                              const GValueArray  *args,
-                              GError            **error)
+static GimpValueArray *
+vectors_stroke_close_invoker (GimpProcedure         *procedure,
+                              Gimp                  *gimp,
+                              GimpContext           *context,
+                              GimpProgress          *progress,
+                              const GimpValueArray  *args,
+                              GError               **error)
 {
   gboolean success = TRUE;
   GimpVectors *vectors;
   gint32 stroke_id;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
-  stroke_id = g_value_get_int (&args->values[1]);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
+  stroke_id = g_value_get_int (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id, TRUE, error);
+      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id,
+                                                        GIMP_PDB_ITEM_CONTENT, error);
 
       if (stroke)
         {
@@ -371,13 +377,13 @@ vectors_stroke_close_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-vectors_stroke_translate_invoker (GimpProcedure      *procedure,
-                                  Gimp               *gimp,
-                                  GimpContext        *context,
-                                  GimpProgress       *progress,
-                                  const GValueArray  *args,
-                                  GError            **error)
+static GimpValueArray *
+vectors_stroke_translate_invoker (GimpProcedure         *procedure,
+                                  Gimp                  *gimp,
+                                  GimpContext           *context,
+                                  GimpProgress          *progress,
+                                  const GimpValueArray  *args,
+                                  GError               **error)
 {
   gboolean success = TRUE;
   GimpVectors *vectors;
@@ -385,14 +391,17 @@ vectors_stroke_translate_invoker (GimpProcedure      *procedure,
   gint32 off_x;
   gint32 off_y;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
-  stroke_id = g_value_get_int (&args->values[1]);
-  off_x = g_value_get_int (&args->values[2]);
-  off_y = g_value_get_int (&args->values[3]);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
+  stroke_id = g_value_get_int (gimp_value_array_index (args, 1));
+  off_x = g_value_get_int (gimp_value_array_index (args, 2));
+  off_y = g_value_get_int (gimp_value_array_index (args, 3));
 
   if (success)
     {
-      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id, TRUE, error);
+      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id,
+                                                        GIMP_PDB_ITEM_CONTENT |
+                                                        GIMP_PDB_ITEM_POSITION,
+                                                        error);
 
       if (stroke)
         {
@@ -413,13 +422,13 @@ vectors_stroke_translate_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-vectors_stroke_scale_invoker (GimpProcedure      *procedure,
-                              Gimp               *gimp,
-                              GimpContext        *context,
-                              GimpProgress       *progress,
-                              const GValueArray  *args,
-                              GError            **error)
+static GimpValueArray *
+vectors_stroke_scale_invoker (GimpProcedure         *procedure,
+                              Gimp                  *gimp,
+                              GimpContext           *context,
+                              GimpProgress          *progress,
+                              const GimpValueArray  *args,
+                              GError               **error)
 {
   gboolean success = TRUE;
   GimpVectors *vectors;
@@ -427,14 +436,17 @@ vectors_stroke_scale_invoker (GimpProcedure      *procedure,
   gdouble scale_x;
   gdouble scale_y;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
-  stroke_id = g_value_get_int (&args->values[1]);
-  scale_x = g_value_get_double (&args->values[2]);
-  scale_y = g_value_get_double (&args->values[3]);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
+  stroke_id = g_value_get_int (gimp_value_array_index (args, 1));
+  scale_x = g_value_get_double (gimp_value_array_index (args, 2));
+  scale_y = g_value_get_double (gimp_value_array_index (args, 3));
 
   if (success)
     {
-      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id, TRUE, error);
+      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id,
+                                                        GIMP_PDB_ITEM_CONTENT |
+                                                        GIMP_PDB_ITEM_POSITION,
+                                                        error);
 
       if (stroke)
         {
@@ -455,13 +467,13 @@ vectors_stroke_scale_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-vectors_stroke_rotate_invoker (GimpProcedure      *procedure,
-                               Gimp               *gimp,
-                               GimpContext        *context,
-                               GimpProgress       *progress,
-                               const GValueArray  *args,
-                               GError            **error)
+static GimpValueArray *
+vectors_stroke_rotate_invoker (GimpProcedure         *procedure,
+                               Gimp                  *gimp,
+                               GimpContext           *context,
+                               GimpProgress          *progress,
+                               const GimpValueArray  *args,
+                               GError               **error)
 {
   gboolean success = TRUE;
   GimpVectors *vectors;
@@ -470,15 +482,18 @@ vectors_stroke_rotate_invoker (GimpProcedure      *procedure,
   gdouble center_y;
   gdouble angle;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
-  stroke_id = g_value_get_int (&args->values[1]);
-  center_x = g_value_get_double (&args->values[2]);
-  center_y = g_value_get_double (&args->values[3]);
-  angle = g_value_get_double (&args->values[4]);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
+  stroke_id = g_value_get_int (gimp_value_array_index (args, 1));
+  center_x = g_value_get_double (gimp_value_array_index (args, 2));
+  center_y = g_value_get_double (gimp_value_array_index (args, 3));
+  angle = g_value_get_double (gimp_value_array_index (args, 4));
 
   if (success)
     {
-      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id, TRUE, error);
+      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id,
+                                                        GIMP_PDB_ITEM_CONTENT |
+                                                        GIMP_PDB_ITEM_POSITION,
+                                                        error);
 
       if (stroke)
         {
@@ -499,13 +514,13 @@ vectors_stroke_rotate_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-vectors_stroke_flip_invoker (GimpProcedure      *procedure,
-                             Gimp               *gimp,
-                             GimpContext        *context,
-                             GimpProgress       *progress,
-                             const GValueArray  *args,
-                             GError            **error)
+static GimpValueArray *
+vectors_stroke_flip_invoker (GimpProcedure         *procedure,
+                             Gimp                  *gimp,
+                             GimpContext           *context,
+                             GimpProgress          *progress,
+                             const GimpValueArray  *args,
+                             GError               **error)
 {
   gboolean success = TRUE;
   GimpVectors *vectors;
@@ -513,14 +528,17 @@ vectors_stroke_flip_invoker (GimpProcedure      *procedure,
   gint32 flip_type;
   gdouble axis;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
-  stroke_id = g_value_get_int (&args->values[1]);
-  flip_type = g_value_get_enum (&args->values[2]);
-  axis = g_value_get_double (&args->values[3]);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
+  stroke_id = g_value_get_int (gimp_value_array_index (args, 1));
+  flip_type = g_value_get_enum (gimp_value_array_index (args, 2));
+  axis = g_value_get_double (gimp_value_array_index (args, 3));
 
   if (success)
     {
-      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id, TRUE, error);
+      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id,
+                                                        GIMP_PDB_ITEM_CONTENT |
+                                                        GIMP_PDB_ITEM_POSITION,
+                                                        error);
 
       if (stroke)
         {
@@ -541,13 +559,13 @@ vectors_stroke_flip_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-vectors_stroke_flip_free_invoker (GimpProcedure      *procedure,
-                                  Gimp               *gimp,
-                                  GimpContext        *context,
-                                  GimpProgress       *progress,
-                                  const GValueArray  *args,
-                                  GError            **error)
+static GimpValueArray *
+vectors_stroke_flip_free_invoker (GimpProcedure         *procedure,
+                                  Gimp                  *gimp,
+                                  GimpContext           *context,
+                                  GimpProgress          *progress,
+                                  const GimpValueArray  *args,
+                                  GError               **error)
 {
   gboolean success = TRUE;
   GimpVectors *vectors;
@@ -557,16 +575,19 @@ vectors_stroke_flip_free_invoker (GimpProcedure      *procedure,
   gdouble x2;
   gdouble y2;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
-  stroke_id = g_value_get_int (&args->values[1]);
-  x1 = g_value_get_double (&args->values[2]);
-  y1 = g_value_get_double (&args->values[3]);
-  x2 = g_value_get_double (&args->values[4]);
-  y2 = g_value_get_double (&args->values[5]);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
+  stroke_id = g_value_get_int (gimp_value_array_index (args, 1));
+  x1 = g_value_get_double (gimp_value_array_index (args, 2));
+  y1 = g_value_get_double (gimp_value_array_index (args, 3));
+  x2 = g_value_get_double (gimp_value_array_index (args, 4));
+  y2 = g_value_get_double (gimp_value_array_index (args, 5));
 
   if (success)
     {
-      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id, TRUE, error);
+      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id,
+                                                        GIMP_PDB_ITEM_CONTENT |
+                                                        GIMP_PDB_ITEM_POSITION,
+                                                        error);
 
       if (stroke)
         {
@@ -587,16 +608,16 @@ vectors_stroke_flip_free_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-vectors_stroke_get_points_invoker (GimpProcedure      *procedure,
-                                   Gimp               *gimp,
-                                   GimpContext        *context,
-                                   GimpProgress       *progress,
-                                   const GValueArray  *args,
-                                   GError            **error)
+static GimpValueArray *
+vectors_stroke_get_points_invoker (GimpProcedure         *procedure,
+                                   Gimp                  *gimp,
+                                   GimpContext           *context,
+                                   GimpProgress          *progress,
+                                   const GimpValueArray  *args,
+                                   GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpVectors *vectors;
   gint32 stroke_id;
   gint32 type = 0;
@@ -604,12 +625,12 @@ vectors_stroke_get_points_invoker (GimpProcedure      *procedure,
   gdouble *controlpoints = NULL;
   gboolean closed = FALSE;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
-  stroke_id = g_value_get_int (&args->values[1]);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
+  stroke_id = g_value_get_int (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id, FALSE, error);
+      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id, 0, error);
 
       if (GIMP_IS_BEZIER_STROKE (stroke))
         {
@@ -646,25 +667,25 @@ vectors_stroke_get_points_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_enum (&return_vals->values[1], type);
-      g_value_set_int (&return_vals->values[2], num_points);
-      gimp_value_take_floatarray (&return_vals->values[3], controlpoints, num_points);
-      g_value_set_boolean (&return_vals->values[4], closed);
+      g_value_set_enum (gimp_value_array_index (return_vals, 1), type);
+      g_value_set_int (gimp_value_array_index (return_vals, 2), num_points);
+      gimp_value_take_floatarray (gimp_value_array_index (return_vals, 3), controlpoints, num_points);
+      g_value_set_boolean (gimp_value_array_index (return_vals, 4), closed);
     }
 
   return return_vals;
 }
 
-static GValueArray *
-vectors_stroke_new_from_points_invoker (GimpProcedure      *procedure,
-                                        Gimp               *gimp,
-                                        GimpContext        *context,
-                                        GimpProgress       *progress,
-                                        const GValueArray  *args,
-                                        GError            **error)
+static GimpValueArray *
+vectors_stroke_new_from_points_invoker (GimpProcedure         *procedure,
+                                        Gimp                  *gimp,
+                                        GimpContext           *context,
+                                        GimpProgress          *progress,
+                                        const GimpValueArray  *args,
+                                        GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpVectors *vectors;
   gint32 type;
   gint32 num_points;
@@ -672,11 +693,11 @@ vectors_stroke_new_from_points_invoker (GimpProcedure      *procedure,
   gboolean closed;
   gint32 stroke_id = 0;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
-  type = g_value_get_enum (&args->values[1]);
-  num_points = g_value_get_int (&args->values[2]);
-  controlpoints = gimp_value_get_floatarray (&args->values[3]);
-  closed = g_value_get_boolean (&args->values[4]);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
+  type = g_value_get_enum (gimp_value_array_index (args, 1));
+  num_points = g_value_get_int (gimp_value_array_index (args, 2));
+  controlpoints = gimp_value_get_floatarray (gimp_value_array_index (args, 3));
+  closed = g_value_get_boolean (gimp_value_array_index (args, 4));
 
   if (success)
     {
@@ -722,21 +743,21 @@ vectors_stroke_new_from_points_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_int (&return_vals->values[1], stroke_id);
+    g_value_set_int (gimp_value_array_index (return_vals, 1), stroke_id);
 
   return return_vals;
 }
 
-static GValueArray *
-vectors_stroke_interpolate_invoker (GimpProcedure      *procedure,
-                                    Gimp               *gimp,
-                                    GimpContext        *context,
-                                    GimpProgress       *progress,
-                                    const GValueArray  *args,
-                                    GError            **error)
+static GimpValueArray *
+vectors_stroke_interpolate_invoker (GimpProcedure         *procedure,
+                                    Gimp                  *gimp,
+                                    GimpContext           *context,
+                                    GimpProgress          *progress,
+                                    const GimpValueArray  *args,
+                                    GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpVectors *vectors;
   gint32 stroke_id;
   gdouble precision;
@@ -744,13 +765,13 @@ vectors_stroke_interpolate_invoker (GimpProcedure      *procedure,
   gdouble *coords = NULL;
   gboolean closed = FALSE;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
-  stroke_id = g_value_get_int (&args->values[1]);
-  precision = g_value_get_double (&args->values[2]);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
+  stroke_id = g_value_get_int (gimp_value_array_index (args, 1));
+  precision = g_value_get_double (gimp_value_array_index (args, 2));
 
   if (success)
     {
-      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id, FALSE, error);
+      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id, 0, error);
 
       if (stroke)
         {
@@ -784,36 +805,37 @@ vectors_stroke_interpolate_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_int (&return_vals->values[1], num_coords);
-      gimp_value_take_floatarray (&return_vals->values[2], coords, num_coords);
-      g_value_set_boolean (&return_vals->values[3], closed);
+      g_value_set_int (gimp_value_array_index (return_vals, 1), num_coords);
+      gimp_value_take_floatarray (gimp_value_array_index (return_vals, 2), coords, num_coords);
+      g_value_set_boolean (gimp_value_array_index (return_vals, 3), closed);
     }
 
   return return_vals;
 }
 
-static GValueArray *
-vectors_bezier_stroke_new_moveto_invoker (GimpProcedure      *procedure,
-                                          Gimp               *gimp,
-                                          GimpContext        *context,
-                                          GimpProgress       *progress,
-                                          const GValueArray  *args,
-                                          GError            **error)
+static GimpValueArray *
+vectors_bezier_stroke_new_moveto_invoker (GimpProcedure         *procedure,
+                                          Gimp                  *gimp,
+                                          GimpContext           *context,
+                                          GimpProgress          *progress,
+                                          const GimpValueArray  *args,
+                                          GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpVectors *vectors;
   gdouble x0;
   gdouble y0;
   gint32 stroke_id = 0;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
-  x0 = g_value_get_double (&args->values[1]);
-  y0 = g_value_get_double (&args->values[2]);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
+  x0 = g_value_get_double (gimp_value_array_index (args, 1));
+  y0 = g_value_get_double (gimp_value_array_index (args, 2));
 
   if (success)
     {
-      if (gimp_pdb_item_is_writable (GIMP_ITEM (vectors), error) &&
+      if (gimp_pdb_item_is_modifyable (GIMP_ITEM (vectors),
+                                       GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (vectors), error))
         {
           GimpStroke *stroke;
@@ -842,18 +864,18 @@ vectors_bezier_stroke_new_moveto_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_int (&return_vals->values[1], stroke_id);
+    g_value_set_int (gimp_value_array_index (return_vals, 1), stroke_id);
 
   return return_vals;
 }
 
-static GValueArray *
-vectors_bezier_stroke_lineto_invoker (GimpProcedure      *procedure,
-                                      Gimp               *gimp,
-                                      GimpContext        *context,
-                                      GimpProgress       *progress,
-                                      const GValueArray  *args,
-                                      GError            **error)
+static GimpValueArray *
+vectors_bezier_stroke_lineto_invoker (GimpProcedure         *procedure,
+                                      Gimp                  *gimp,
+                                      GimpContext           *context,
+                                      GimpProgress          *progress,
+                                      const GimpValueArray  *args,
+                                      GError               **error)
 {
   gboolean success = TRUE;
   GimpVectors *vectors;
@@ -861,14 +883,15 @@ vectors_bezier_stroke_lineto_invoker (GimpProcedure      *procedure,
   gdouble x0;
   gdouble y0;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
-  stroke_id = g_value_get_int (&args->values[1]);
-  x0 = g_value_get_double (&args->values[2]);
-  y0 = g_value_get_double (&args->values[3]);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
+  stroke_id = g_value_get_int (gimp_value_array_index (args, 1));
+  x0 = g_value_get_double (gimp_value_array_index (args, 2));
+  y0 = g_value_get_double (gimp_value_array_index (args, 3));
 
   if (success)
     {
-      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id, TRUE, error);
+      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id,
+                                                        GIMP_PDB_ITEM_CONTENT, error);
 
       if (stroke)
         {
@@ -894,13 +917,13 @@ vectors_bezier_stroke_lineto_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-vectors_bezier_stroke_conicto_invoker (GimpProcedure      *procedure,
-                                       Gimp               *gimp,
-                                       GimpContext        *context,
-                                       GimpProgress       *progress,
-                                       const GValueArray  *args,
-                                       GError            **error)
+static GimpValueArray *
+vectors_bezier_stroke_conicto_invoker (GimpProcedure         *procedure,
+                                       Gimp                  *gimp,
+                                       GimpContext           *context,
+                                       GimpProgress          *progress,
+                                       const GimpValueArray  *args,
+                                       GError               **error)
 {
   gboolean success = TRUE;
   GimpVectors *vectors;
@@ -910,16 +933,17 @@ vectors_bezier_stroke_conicto_invoker (GimpProcedure      *procedure,
   gdouble x1;
   gdouble y1;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
-  stroke_id = g_value_get_int (&args->values[1]);
-  x0 = g_value_get_double (&args->values[2]);
-  y0 = g_value_get_double (&args->values[3]);
-  x1 = g_value_get_double (&args->values[4]);
-  y1 = g_value_get_double (&args->values[5]);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
+  stroke_id = g_value_get_int (gimp_value_array_index (args, 1));
+  x0 = g_value_get_double (gimp_value_array_index (args, 2));
+  y0 = g_value_get_double (gimp_value_array_index (args, 3));
+  x1 = g_value_get_double (gimp_value_array_index (args, 4));
+  y1 = g_value_get_double (gimp_value_array_index (args, 5));
 
   if (success)
     {
-      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id, TRUE, error);
+      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id,
+                                                        GIMP_PDB_ITEM_CONTENT, error);
 
       if (stroke)
         {
@@ -949,13 +973,13 @@ vectors_bezier_stroke_conicto_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-vectors_bezier_stroke_cubicto_invoker (GimpProcedure      *procedure,
-                                       Gimp               *gimp,
-                                       GimpContext        *context,
-                                       GimpProgress       *progress,
-                                       const GValueArray  *args,
-                                       GError            **error)
+static GimpValueArray *
+vectors_bezier_stroke_cubicto_invoker (GimpProcedure         *procedure,
+                                       Gimp                  *gimp,
+                                       GimpContext           *context,
+                                       GimpProgress          *progress,
+                                       const GimpValueArray  *args,
+                                       GError               **error)
 {
   gboolean success = TRUE;
   GimpVectors *vectors;
@@ -967,18 +991,19 @@ vectors_bezier_stroke_cubicto_invoker (GimpProcedure      *procedure,
   gdouble x2;
   gdouble y2;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
-  stroke_id = g_value_get_int (&args->values[1]);
-  x0 = g_value_get_double (&args->values[2]);
-  y0 = g_value_get_double (&args->values[3]);
-  x1 = g_value_get_double (&args->values[4]);
-  y1 = g_value_get_double (&args->values[5]);
-  x2 = g_value_get_double (&args->values[6]);
-  y2 = g_value_get_double (&args->values[7]);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
+  stroke_id = g_value_get_int (gimp_value_array_index (args, 1));
+  x0 = g_value_get_double (gimp_value_array_index (args, 2));
+  y0 = g_value_get_double (gimp_value_array_index (args, 3));
+  x1 = g_value_get_double (gimp_value_array_index (args, 4));
+  y1 = g_value_get_double (gimp_value_array_index (args, 5));
+  x2 = g_value_get_double (gimp_value_array_index (args, 6));
+  y2 = g_value_get_double (gimp_value_array_index (args, 7));
 
   if (success)
     {
-      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id, TRUE, error);
+      GimpStroke *stroke = gimp_pdb_get_vectors_stroke (vectors, stroke_id,
+                                                        GIMP_PDB_ITEM_CONTENT, error);
 
       if (stroke)
         {
@@ -1012,16 +1037,16 @@ vectors_bezier_stroke_cubicto_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-vectors_bezier_stroke_new_ellipse_invoker (GimpProcedure      *procedure,
-                                           Gimp               *gimp,
-                                           GimpContext        *context,
-                                           GimpProgress       *progress,
-                                           const GValueArray  *args,
-                                           GError            **error)
+static GimpValueArray *
+vectors_bezier_stroke_new_ellipse_invoker (GimpProcedure         *procedure,
+                                           Gimp                  *gimp,
+                                           GimpContext           *context,
+                                           GimpProgress          *progress,
+                                           const GimpValueArray  *args,
+                                           GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpVectors *vectors;
   gdouble x0;
   gdouble y0;
@@ -1030,16 +1055,17 @@ vectors_bezier_stroke_new_ellipse_invoker (GimpProcedure      *procedure,
   gdouble angle;
   gint32 stroke_id = 0;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
-  x0 = g_value_get_double (&args->values[1]);
-  y0 = g_value_get_double (&args->values[2]);
-  radius_x = g_value_get_double (&args->values[3]);
-  radius_y = g_value_get_double (&args->values[4]);
-  angle = g_value_get_double (&args->values[5]);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
+  x0 = g_value_get_double (gimp_value_array_index (args, 1));
+  y0 = g_value_get_double (gimp_value_array_index (args, 2));
+  radius_x = g_value_get_double (gimp_value_array_index (args, 3));
+  radius_y = g_value_get_double (gimp_value_array_index (args, 4));
+  angle = g_value_get_double (gimp_value_array_index (args, 5));
 
   if (success)
     {
-      if (gimp_pdb_item_is_writable (GIMP_ITEM (vectors), error) &&
+      if (gimp_pdb_item_is_modifyable (GIMP_ITEM (vectors),
+                                       GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (vectors), error))
         {
           GimpStroke *stroke;
@@ -1068,18 +1094,18 @@ vectors_bezier_stroke_new_ellipse_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_int (&return_vals->values[1], stroke_id);
+    g_value_set_int (gimp_value_array_index (return_vals, 1), stroke_id);
 
   return return_vals;
 }
 
-static GValueArray *
-vectors_to_selection_invoker (GimpProcedure      *procedure,
-                              Gimp               *gimp,
-                              GimpContext        *context,
-                              GimpProgress       *progress,
-                              const GValueArray  *args,
-                              GError            **error)
+static GimpValueArray *
+vectors_to_selection_invoker (GimpProcedure         *procedure,
+                              Gimp                  *gimp,
+                              GimpContext           *context,
+                              GimpProgress          *progress,
+                              const GimpValueArray  *args,
+                              GError               **error)
 {
   gboolean success = TRUE;
   GimpVectors *vectors;
@@ -1089,16 +1115,16 @@ vectors_to_selection_invoker (GimpProcedure      *procedure,
   gdouble feather_radius_x;
   gdouble feather_radius_y;
 
-  vectors = gimp_value_get_vectors (&args->values[0], gimp);
-  operation = g_value_get_enum (&args->values[1]);
-  antialias = g_value_get_boolean (&args->values[2]);
-  feather = g_value_get_boolean (&args->values[3]);
-  feather_radius_x = g_value_get_double (&args->values[4]);
-  feather_radius_y = g_value_get_double (&args->values[5]);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 0), gimp);
+  operation = g_value_get_enum (gimp_value_array_index (args, 1));
+  antialias = g_value_get_boolean (gimp_value_array_index (args, 2));
+  feather = g_value_get_boolean (gimp_value_array_index (args, 3));
+  feather_radius_x = g_value_get_double (gimp_value_array_index (args, 4));
+  feather_radius_y = g_value_get_double (gimp_value_array_index (args, 5));
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (vectors), NULL, FALSE, error))
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (vectors), NULL, 0, error))
         gimp_item_to_selection (GIMP_ITEM (vectors),
                                 operation,
                                 antialias,
@@ -1113,16 +1139,16 @@ vectors_to_selection_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-vectors_import_from_file_invoker (GimpProcedure      *procedure,
-                                  Gimp               *gimp,
-                                  GimpContext        *context,
-                                  GimpProgress       *progress,
-                                  const GValueArray  *args,
-                                  GError            **error)
+static GimpValueArray *
+vectors_import_from_file_invoker (GimpProcedure         *procedure,
+                                  Gimp                  *gimp,
+                                  GimpContext           *context,
+                                  GimpProgress          *progress,
+                                  const GimpValueArray  *args,
+                                  GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpImage *image;
   const gchar *filename;
   gboolean merge;
@@ -1130,19 +1156,22 @@ vectors_import_from_file_invoker (GimpProcedure      *procedure,
   gint32 num_vectors = 0;
   gint32 *vectors_ids = NULL;
 
-  image = gimp_value_get_image (&args->values[0], gimp);
-  filename = g_value_get_string (&args->values[1]);
-  merge = g_value_get_boolean (&args->values[2]);
-  scale = g_value_get_boolean (&args->values[3]);
+  image = gimp_value_get_image (gimp_value_array_index (args, 0), gimp);
+  filename = g_value_get_string (gimp_value_array_index (args, 1));
+  merge = g_value_get_boolean (gimp_value_array_index (args, 2));
+  scale = g_value_get_boolean (gimp_value_array_index (args, 3));
 
   if (success)
     {
-      GList *list, *vectors_list = NULL;
+      GFile *file         = g_file_new_for_path (filename);
+      GList *vectors_list = NULL;
 
       /* FIXME tree */
-      success = gimp_vectors_import_file (image, filename,
+      success = gimp_vectors_import_file (image, file,
                                           merge, scale, NULL, -1,
                                           &vectors_list, error);
+
+      g_object_unref (file);
 
       if (success)
         {
@@ -1150,7 +1179,8 @@ vectors_import_from_file_invoker (GimpProcedure      *procedure,
 
           if (num_vectors)
             {
-              gint i;
+              GList *list;
+              gint   i;
 
               vectors_ids = g_new (gint32, num_vectors);
 
@@ -1168,23 +1198,23 @@ vectors_import_from_file_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_int (&return_vals->values[1], num_vectors);
-      gimp_value_take_int32array (&return_vals->values[2], vectors_ids, num_vectors);
+      g_value_set_int (gimp_value_array_index (return_vals, 1), num_vectors);
+      gimp_value_take_int32array (gimp_value_array_index (return_vals, 2), vectors_ids, num_vectors);
     }
 
   return return_vals;
 }
 
-static GValueArray *
-vectors_import_from_string_invoker (GimpProcedure      *procedure,
-                                    Gimp               *gimp,
-                                    GimpContext        *context,
-                                    GimpProgress       *progress,
-                                    const GValueArray  *args,
-                                    GError            **error)
+static GimpValueArray *
+vectors_import_from_string_invoker (GimpProcedure         *procedure,
+                                    Gimp                  *gimp,
+                                    GimpContext           *context,
+                                    GimpProgress          *progress,
+                                    const GimpValueArray  *args,
+                                    GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpImage *image;
   const gchar *string;
   gint32 length;
@@ -1193,11 +1223,11 @@ vectors_import_from_string_invoker (GimpProcedure      *procedure,
   gint32 num_vectors = 0;
   gint32 *vectors_ids = NULL;
 
-  image = gimp_value_get_image (&args->values[0], gimp);
-  string = g_value_get_string (&args->values[1]);
-  length = g_value_get_int (&args->values[2]);
-  merge = g_value_get_boolean (&args->values[3]);
-  scale = g_value_get_boolean (&args->values[4]);
+  image = gimp_value_get_image (gimp_value_array_index (args, 0), gimp);
+  string = g_value_get_string (gimp_value_array_index (args, 1));
+  length = g_value_get_int (gimp_value_array_index (args, 2));
+  merge = g_value_get_boolean (gimp_value_array_index (args, 3));
+  scale = g_value_get_boolean (gimp_value_array_index (args, 4));
 
   if (success)
     {
@@ -1232,55 +1262,59 @@ vectors_import_from_string_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_int (&return_vals->values[1], num_vectors);
-      gimp_value_take_int32array (&return_vals->values[2], vectors_ids, num_vectors);
+      g_value_set_int (gimp_value_array_index (return_vals, 1), num_vectors);
+      gimp_value_take_int32array (gimp_value_array_index (return_vals, 2), vectors_ids, num_vectors);
     }
 
   return return_vals;
 }
 
-static GValueArray *
-vectors_export_to_file_invoker (GimpProcedure      *procedure,
-                                Gimp               *gimp,
-                                GimpContext        *context,
-                                GimpProgress       *progress,
-                                const GValueArray  *args,
-                                GError            **error)
+static GimpValueArray *
+vectors_export_to_file_invoker (GimpProcedure         *procedure,
+                                Gimp                  *gimp,
+                                GimpContext           *context,
+                                GimpProgress          *progress,
+                                const GimpValueArray  *args,
+                                GError               **error)
 {
   gboolean success = TRUE;
   GimpImage *image;
   const gchar *filename;
   GimpVectors *vectors;
 
-  image = gimp_value_get_image (&args->values[0], gimp);
-  filename = g_value_get_string (&args->values[1]);
-  vectors = gimp_value_get_vectors (&args->values[2], gimp);
+  image = gimp_value_get_image (gimp_value_array_index (args, 0), gimp);
+  filename = g_value_get_string (gimp_value_array_index (args, 1));
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 2), gimp);
 
   if (success)
     {
-      success = gimp_vectors_export_file (image, vectors, filename, error);
+      GFile *file = g_file_new_for_path (filename);
+
+      success = gimp_vectors_export_file (image, vectors, file, error);
+
+      g_object_unref (file);
     }
 
   return gimp_procedure_get_return_values (procedure, success,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-vectors_export_to_string_invoker (GimpProcedure      *procedure,
-                                  Gimp               *gimp,
-                                  GimpContext        *context,
-                                  GimpProgress       *progress,
-                                  const GValueArray  *args,
-                                  GError            **error)
+static GimpValueArray *
+vectors_export_to_string_invoker (GimpProcedure         *procedure,
+                                  Gimp                  *gimp,
+                                  GimpContext           *context,
+                                  GimpProgress          *progress,
+                                  const GimpValueArray  *args,
+                                  GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpImage *image;
   GimpVectors *vectors;
   gchar *string = NULL;
 
-  image = gimp_value_get_image (&args->values[0], gimp);
-  vectors = gimp_value_get_vectors (&args->values[1], gimp);
+  image = gimp_value_get_image (gimp_value_array_index (args, 0), gimp);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 1), gimp);
 
   if (success)
     {
@@ -1293,7 +1327,7 @@ vectors_export_to_string_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_take_string (&return_vals->values[1], string);
+    g_value_take_string (gimp_value_array_index (return_vals, 1), string);
 
   return return_vals;
 }

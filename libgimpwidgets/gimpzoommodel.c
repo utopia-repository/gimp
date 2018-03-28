@@ -117,33 +117,63 @@ gimp_zoom_model_class_init (GimpZoomModelClass *klass)
   object_class->set_property = gimp_zoom_model_set_property;
   object_class->get_property = gimp_zoom_model_get_property;
 
+  /**
+   * GimpZoomModel:value:
+   *
+   * The zoom factor.
+   */
   g_object_class_install_property (object_class, PROP_VALUE,
                                    g_param_spec_double ("value",
-                                                        "Zoom factor", NULL,
+                                                        "Value",
+                                                        "Zoom factor",
                                                         ZOOM_MIN, ZOOM_MAX,
                                                         1.0,
                                                         GIMP_PARAM_READWRITE));
+  /**
+   * GimpZoomModel:minimum:
+   *
+   * The minimum zoom factor.
+   */
   g_object_class_install_property (object_class, PROP_MINIMUM,
                                    g_param_spec_double ("minimum",
-                                                        "Lower limit for the zoom factor", NULL,
+                                                        "Minimum",
+                                                        "Lower limit for the zoom factor",
                                                         ZOOM_MIN, ZOOM_MAX,
                                                         ZOOM_MIN,
                                                         GIMP_PARAM_READWRITE));
+  /**
+   * GimpZoomModel:maximum:
+   *
+   * The maximum zoom factor.
+   */
   g_object_class_install_property (object_class, PROP_MAXIMUM,
                                    g_param_spec_double ("maximum",
-                                                        "Upper limit for the zoom factor", NULL,
+                                                        "Maximum",
+                                                        "Upper limit for the zoom factor",
                                                         ZOOM_MIN, ZOOM_MAX,
                                                         ZOOM_MAX,
                                                         GIMP_PARAM_READWRITE));
 
+  /**
+   * GimpZoomModel:fraction:
+   *
+   * The zoom factor expressed as a fraction.
+   */
   g_object_class_install_property (object_class, PROP_FRACTION,
                                    g_param_spec_string ("fraction",
-                                                        "The zoom factor expressed as a fraction", NULL,
+                                                        "Fraction",
+                                                        "The zoom factor expressed as a fraction",
                                                         "1:1",
                                                         GIMP_PARAM_READABLE));
+  /**
+   * GimpZoomModel:percentage:
+   *
+   * The zoom factor expressed as percentage.
+   */
   g_object_class_install_property (object_class, PROP_PERCENTAGE,
                                    g_param_spec_string ("percentage",
-                                                        "The zoom factor expressed as a percentage", NULL,
+                                                        "Percentage",
+                                                        "The zoom factor expressed as a percentage",
                                                         "100%",
                                                         GIMP_PARAM_READABLE));
 
@@ -465,23 +495,19 @@ gimp_zoom_model_get_fraction (GimpZoomModel *model,
 }
 
 static GtkWidget *
-zoom_button_new (const gchar *stock_id,
+zoom_button_new (const gchar *icon_name,
                  GtkIconSize  icon_size)
 {
   GtkWidget *button;
+  GtkWidget *image;
 
-  if (icon_size > 0)
-    {
-      GtkWidget *image = gtk_image_new_from_stock (stock_id, icon_size);
+  image = gtk_image_new_from_icon_name (icon_name,
+                                        icon_size > 0 ?
+                                        icon_size : GTK_ICON_SIZE_BUTTON);
 
-      button = gtk_button_new ();
-      gtk_container_add (GTK_CONTAINER (button), image);
-      gtk_widget_show (image);
-    }
-  else
-    {
-      button = gtk_button_new_from_stock (stock_id);
-    }
+  button = gtk_button_new ();
+  gtk_container_add (GTK_CONTAINER (button), image);
+  gtk_widget_show (image);
 
   return button;
 }
@@ -530,7 +556,7 @@ gimp_zoom_button_new (GimpZoomModel *model,
   switch (zoom_type)
     {
     case GIMP_ZOOM_IN:
-      button = zoom_button_new (GTK_STOCK_ZOOM_IN, icon_size);
+      button = zoom_button_new ("zoom-in", icon_size);
       g_signal_connect_swapped (button, "clicked",
                                 G_CALLBACK (gimp_zoom_model_zoom_in),
                                 model);
@@ -540,7 +566,7 @@ gimp_zoom_button_new (GimpZoomModel *model,
       break;
 
     case GIMP_ZOOM_OUT:
-      button = zoom_button_new (GTK_STOCK_ZOOM_OUT, icon_size);
+      button = zoom_button_new ("zoom-out", icon_size);
       g_signal_connect_swapped (button, "clicked",
                                 G_CALLBACK (gimp_zoom_model_zoom_out),
                                 model);

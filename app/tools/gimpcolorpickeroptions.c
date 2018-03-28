@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpconfig/gimpconfig.h"
@@ -36,7 +37,9 @@ enum
   PROP_0,
   PROP_SAMPLE_AVERAGE, /* overrides a GimpColorOptions property */
   PROP_PICK_MODE,
-  PROP_USE_INFO_WINDOW
+  PROP_USE_INFO_WINDOW,
+  PROP_FRAME1_MODE,
+  PROP_FRAME2_MODE,
 };
 
 
@@ -63,24 +66,43 @@ gimp_color_picker_options_class_init (GimpColorPickerOptionsClass *klass)
   object_class->get_property = gimp_color_picker_options_get_property;
 
   /* override a GimpColorOptions property to get a different default value */
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SAMPLE_AVERAGE,
-                                    "sample-average",
-                                    N_("Use accumulated color value from "
-                                       "all composited visible layers"),
-                                    FALSE,
-                                    GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_PICK_MODE,
-                                 "pick-mode",
-                                 N_("Choose what color picker will do"),
-                                 GIMP_TYPE_COLOR_PICK_MODE,
-                                 GIMP_COLOR_PICK_MODE_FOREGROUND,
-                                 GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_USE_INFO_WINDOW,
-                                    "use-info-window",
-                                    N_("Open a floating dialog to view picked "
-                                       "color values in various color models"),
-                                    FALSE,
-                                    GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_SAMPLE_AVERAGE,
+                            "sample-average",
+                            _("Sample average"),
+                            _("Use averaged color value from "
+                              "nearby pixels"),
+                            FALSE,
+                            GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_PICK_MODE,
+                         "pick-mode",
+                         _("Pick Mode"),
+                         _("Choose what color picker will do"),
+                         GIMP_TYPE_COLOR_PICK_MODE,
+                         GIMP_COLOR_PICK_MODE_FOREGROUND,
+                         GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_USE_INFO_WINDOW,
+                            "use-info-window",
+                            _("Use info window"),
+                            _("Open a floating dialog to view picked "
+                              "color values in various color models"),
+                            FALSE,
+                            GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_FRAME1_MODE,
+                         "frame1-mode",
+                         "Frame 1 Mode", NULL,
+                         GIMP_TYPE_COLOR_FRAME_MODE,
+                         GIMP_COLOR_FRAME_MODE_PIXEL,
+                         GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_FRAME2_MODE,
+                         "frame2-mode",
+                         "Frame 2 Mode", NULL,
+                         GIMP_TYPE_COLOR_FRAME_MODE,
+                         GIMP_COLOR_FRAME_MODE_RGB_PERCENT,
+                         GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void
@@ -106,6 +128,12 @@ gimp_color_picker_options_set_property (GObject      *object,
       break;
     case PROP_USE_INFO_WINDOW:
       options->use_info_window = g_value_get_boolean (value);
+      break;
+    case PROP_FRAME1_MODE:
+      options->frame1_mode = g_value_get_enum (value);
+      break;
+    case PROP_FRAME2_MODE:
+      options->frame2_mode = g_value_get_enum (value);
       break;
 
     default:
@@ -134,6 +162,12 @@ gimp_color_picker_options_get_property (GObject    *object,
     case PROP_USE_INFO_WINDOW:
       g_value_set_boolean (value, options->use_info_window);
       break;
+    case PROP_FRAME1_MODE:
+      g_value_set_enum (value, options->frame1_mode);
+      break;
+    case PROP_FRAME2_MODE:
+      g_value_set_enum (value, options->frame2_mode);
+      break;
 
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -149,13 +183,11 @@ gimp_color_picker_options_gui (GimpToolOptions *tool_options)
   GtkWidget       *button;
   GtkWidget       *frame;
   gchar           *str;
-  GdkModifierType  toggle_mask;
-
-  toggle_mask = gimp_get_toggle_behavior_mask ();
+  GdkModifierType  extend_mask = gimp_get_extend_selection_mask ();
+  GdkModifierType  toggle_mask = gimp_get_toggle_behavior_mask ();
 
   /*  the sample merged toggle button  */
-  button = gimp_prop_check_button_new (config, "sample-merged",
-                                       _("Sample merged"));
+  button = gimp_prop_check_button_new (config, "sample-merged", NULL);
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
@@ -170,7 +202,7 @@ gimp_color_picker_options_gui (GimpToolOptions *tool_options)
 
   /*  the use_info_window toggle button  */
   str = g_strdup_printf (_("Use info window  (%s)"),
-                         gimp_get_mod_string (GDK_SHIFT_MASK));
+                         gimp_get_mod_string (extend_mask));
   button = gimp_prop_check_button_new (config, "use-info-window", str);
   g_free (str);
 

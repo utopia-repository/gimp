@@ -88,14 +88,16 @@ export_merge (gint32  image_ID,
 
   if (nvisible <= 1)
     {
-      /* if there is only one (or zero) visible layer, add a new transparent
-         layer that has the same size as the canvas.  The merge that follows
-         will ensure that the offset, opacity and size are correct */
+      /* if there is only one (or zero) visible layer, add a new
+       * transparent layer that has the same size as the canvas.  The
+       * merge that follows will ensure that the offset, opacity and
+       * size are correct
+       */
       transp = gimp_layer_new (image_ID, "-",
                                gimp_image_width (image_ID),
                                gimp_image_height (image_ID),
                                gimp_drawable_type (*drawable_ID) | 1,
-                               100.0, GIMP_NORMAL_MODE);
+                               100.0, GIMP_LAYER_MODE_NORMAL);
       gimp_image_insert_layer (image_ID, transp, -1, 1);
       gimp_selection_none (image_ID);
       gimp_edit_clear (transp);
@@ -191,11 +193,15 @@ export_convert_indexed (gint32  image_ID,
   /* check alpha */
   g_free (gimp_image_get_layers (image_ID, &nlayers));
   if (nlayers > 1 || gimp_drawable_has_alpha (*drawable_ID))
-    gimp_image_convert_indexed (image_ID, GIMP_NO_DITHER,
-                                GIMP_MAKE_PALETTE, 255, FALSE, FALSE, "");
+    gimp_image_convert_indexed (image_ID,
+                                GIMP_CONVERT_DITHER_NONE,
+                                GIMP_CONVERT_PALETTE_GENERATE,
+                                255, FALSE, FALSE, "");
   else
-    gimp_image_convert_indexed (image_ID, GIMP_NO_DITHER,
-                                GIMP_MAKE_PALETTE, 256, FALSE, FALSE, "");
+    gimp_image_convert_indexed (image_ID,
+                                GIMP_CONVERT_DITHER_NONE,
+                                GIMP_CONVERT_PALETTE_GENERATE,
+                                256, FALSE, FALSE, "");
 }
 
 static void
@@ -205,8 +211,10 @@ export_convert_bitmap (gint32  image_ID,
   if (gimp_image_base_type (image_ID) == GIMP_INDEXED)
     gimp_image_convert_rgb (image_ID);
 
-  gimp_image_convert_indexed (image_ID, GIMP_FS_DITHER,
-                              GIMP_MAKE_PALETTE, 2, FALSE, FALSE, "");
+  gimp_image_convert_indexed (image_ID,
+                              GIMP_CONVERT_DITHER_FS,
+                              GIMP_CONVERT_PALETTE_GENERATE,
+                              2, FALSE, FALSE, "");
 }
 
 static void
@@ -256,19 +264,19 @@ static ExportAction export_action_merge_single =
 
 static ExportAction export_action_animate_or_merge =
 {
-  export_merge,
   NULL,
+  export_merge,
   N_("%s plug-in can only handle layers as animation frames"),
-  { N_("Merge Visible Layers"), N_("Save as Animation")},
+  { N_("Save as Animation"), N_("Merge Visible Layers") },
   0
 };
 
 static ExportAction export_action_animate_or_flatten =
 {
-  export_flatten,
   NULL,
+  export_flatten,
   N_("%s plug-in can only handle layers as animation frames"),
-  { N_("Flatten Image"), N_("Save as Animation") },
+  { N_("Save as Animation"), N_("Flatten Image") },
   0
 };
 
@@ -350,7 +358,7 @@ static ExportAction export_action_convert_rgb_or_indexed =
 {
   export_convert_rgb,
   export_convert_indexed,
-  N_("%s plug-in  can only handle RGB or indexed images"),
+  N_("%s plug-in can only handle RGB or indexed images"),
   { N_("Convert to RGB"), N_("Convert to Indexed using default settings\n"
                              "(Do it manually to tune the result)")},
   0
@@ -381,10 +389,14 @@ static ExportFunc
 export_action_get_func (const ExportAction *action)
 {
   if (action->choice == 0 && action->default_action)
-    return action->default_action;
+    {
+      return action->default_action;
+    }
 
   if (action->choice == 1 && action->alt_action)
-    return action->alt_action;
+    {
+      return action->alt_action;
+    }
 
   return export_void;
 }
@@ -432,8 +444,8 @@ confirm_save_dialog (const gchar *message,
                             gimp_standard_help_func,
                             "gimp-export-confirm-dialog",
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            _("Confirm"),     GTK_RESPONSE_OK,
+                            _("_Cancel"),  GTK_RESPONSE_CANCEL,
+                            _("C_onfirm"), GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -451,8 +463,8 @@ confirm_save_dialog (const gchar *message,
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
   gtk_widget_show (hbox);
 
-  image = gtk_image_new_from_stock (GTK_STOCK_DIALOG_WARNING,
-                                    GTK_ICON_SIZE_DIALOG);
+  image = gtk_image_new_from_icon_name ("dialog-warning",
+                                        GTK_ICON_SIZE_DIALOG);
   gtk_misc_set_alignment (GTK_MISC (image), 0.5, 0.0);
   gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
   gtk_widget_show (image);
@@ -469,7 +481,7 @@ confirm_save_dialog (const gchar *message,
                              PANGO_ATTR_SCALE,  PANGO_SCALE_LARGE,
                              PANGO_ATTR_WEIGHT, PANGO_WEIGHT_BOLD,
                              -1);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
   gtk_box_pack_start (GTK_BOX (main_vbox), label, FALSE, FALSE, 0);
@@ -513,9 +525,9 @@ export_dialog (GSList      *actions,
                             NULL, 0,
                             gimp_standard_help_func, "gimp-export-dialog",
 
-                            _("_Ignore"),     GTK_RESPONSE_NO,
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            _("_Export"),     GTK_RESPONSE_OK,
+                            _("_Ignore"), GTK_RESPONSE_NO,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_Export"), GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -534,8 +546,8 @@ export_dialog (GSList      *actions,
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
   gtk_widget_show (hbox);
 
-  image = gtk_image_new_from_stock (GTK_STOCK_DIALOG_INFO,
-                                    GTK_ICON_SIZE_DIALOG);
+  image = gtk_image_new_from_icon_name ("dialog-information",
+                                        GTK_ICON_SIZE_DIALOG);
   gtk_misc_set_alignment (GTK_MISC (image), 0.5, 0.0);
   gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
   gtk_widget_show (image);
@@ -554,7 +566,7 @@ export_dialog (GSList      *actions,
   gimp_label_set_attributes (GTK_LABEL (label),
                              PANGO_ATTR_SCALE,  PANGO_SCALE_LARGE,
                              -1);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
   gtk_box_pack_start (GTK_BOX (main_vbox), label, FALSE, FALSE, 0);
@@ -607,7 +619,7 @@ export_dialog (GSList      *actions,
       else if (action->possibilities[0])
         {
           label = gtk_label_new (gettext (action->possibilities[0]));
-          gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+          gtk_label_set_xalign (GTK_LABEL (label), 0.0);
           gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
           gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
           gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
@@ -624,7 +636,7 @@ export_dialog (GSList      *actions,
   gimp_label_set_attributes (GTK_LABEL (label),
                              PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
                              -1);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
   gtk_box_pack_start (GTK_BOX (main_vbox), label, FALSE, FALSE, 0);
@@ -766,7 +778,7 @@ gimp_export_image (gint32                 *image_ID,
           /*  If this is the last layer, it's visible and has no alpha
            *  channel, then the image has a "flat" background
            */
-                if (i == n_layers - 1 && gimp_item_get_visible (layers[i]))
+          if (i == n_layers - 1 && gimp_item_get_visible (layers[i]))
             background_has_alpha = FALSE;
 
           if (capabilities & GIMP_EXPORT_NEEDS_ALPHA)
@@ -992,28 +1004,24 @@ gimp_export_image (gint32                 *image_ID,
  *
  * Returns: The new export dialog.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 GtkWidget *
 gimp_export_dialog_new (const gchar *format_name,
                         const gchar *role,
                         const gchar *help_id)
 {
-  GtkWidget *dialog = NULL;
-  GtkWidget *button = NULL;
+  GtkWidget *dialog;
   gchar     *title  = g_strconcat (_("Export Image as "), format_name, NULL);
 
   dialog = gimp_dialog_new (title, role,
                             NULL, 0,
                             gimp_standard_help_func, help_id,
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            NULL);
 
-  button = gimp_dialog_add_button (GIMP_DIALOG (dialog),
-                                   _("_Export"), GTK_RESPONSE_OK);
-  gtk_button_set_image (GTK_BUTTON (button),
-                        gtk_image_new_from_stock (GTK_STOCK_SAVE,
-                                                  GTK_ICON_SIZE_BUTTON));
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_Export"), GTK_RESPONSE_OK,
+
+                            NULL);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
                                            GTK_RESPONSE_OK,
@@ -1036,7 +1044,7 @@ gimp_export_dialog_new (const gchar *format_name,
  *
  * Returns: The #GtkVBox to fill with export options.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 GtkWidget *
 gimp_export_dialog_get_content_area (GtkWidget *dialog)

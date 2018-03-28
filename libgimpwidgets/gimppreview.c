@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpmath/gimpmath.h"
@@ -183,14 +184,16 @@ gimp_preview_class_init (GimpPreviewClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_UPDATE,
                                    g_param_spec_boolean ("update",
-                                                         NULL, NULL,
+                                                         "Update",
+                                                         "Whether the preview should update automatically",
                                                          TRUE,
                                                          GIMP_PARAM_READWRITE |
                                                          G_PARAM_CONSTRUCT));
 
   gtk_widget_class_install_style_property (widget_class,
                                            g_param_spec_int ("size",
-                                                             NULL, NULL,
+                                                             "Size",
+                                                             "The preview's size",
                                                              1, 1024,
                                                              DEFAULT_SIZE,
                                                              GIMP_PARAM_READABLE));
@@ -548,7 +551,7 @@ gimp_preview_real_untransform (GimpPreview *preview,
  *
  * Sets the state of the "Preview" check button.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 void
 gimp_preview_set_update (GimpPreview *preview,
@@ -567,7 +570,7 @@ gimp_preview_set_update (GimpPreview *preview,
  *
  * Return value: the state of the "Preview" check button.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_preview_get_update (GimpPreview *preview)
@@ -589,7 +592,7 @@ gimp_preview_get_update (GimpPreview *preview)
  * difference between the upper and lower value is used to set the
  * maximum size of the #GimpPreviewArea used in the @preview.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 void
 gimp_preview_set_bounds (GimpPreview *preview,
@@ -618,7 +621,7 @@ gimp_preview_set_bounds (GimpPreview *preview,
  * @width:   return location for the preview area width
  * @height:  return location for the preview area height
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 void
 gimp_preview_get_size (GimpPreview *preview,
@@ -640,7 +643,7 @@ gimp_preview_get_size (GimpPreview *preview,
  * @x:       return location for the horizontal offset
  * @y:       return location for the vertical offset
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 void
 gimp_preview_get_position (GimpPreview *preview,
@@ -666,7 +669,7 @@ gimp_preview_get_position (GimpPreview *preview,
  *
  * Transforms from image to widget coordinates.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 void
 gimp_preview_transform (GimpPreview *preview,
@@ -692,7 +695,7 @@ gimp_preview_transform (GimpPreview *preview,
  *
  * Transforms from widget to image coordinates.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 void
 gimp_preview_untransform (GimpPreview *preview,
@@ -719,7 +722,7 @@ gimp_preview_untransform (GimpPreview *preview,
  *
  * Return value: a pointer to the #GimpPreviewArea used in the @preview.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 GtkWidget *
 gimp_preview_get_area (GimpPreview  *preview)
@@ -740,7 +743,7 @@ gimp_preview_get_area (GimpPreview  *preview)
  * #GimpDrawablePreview implements gimp_preview_draw() by drawing the
  * original, unmodified drawable to the @preview.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 void
 gimp_preview_draw (GimpPreview *preview)
@@ -761,7 +764,7 @@ gimp_preview_draw (GimpPreview *preview)
  * doesn't implement this method so the behaviour is determined by the
  * derived class implementing this method.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 void
 gimp_preview_draw_buffer (GimpPreview  *preview,
@@ -788,7 +791,7 @@ gimp_preview_draw_buffer (GimpPreview  *preview,
  * toplevel window containing the @preview and on the preview area
  * itself.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 void
 gimp_preview_invalidate (GimpPreview *preview)
@@ -816,7 +819,7 @@ gimp_preview_invalidate (GimpPreview *preview)
  * be overriden by a %GDK_FLEUR if the preview has scrollbars, or by a
  * %GDK_WATCH when the preview is invalidated.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 void
 gimp_preview_set_default_cursor (GimpPreview *preview,
@@ -843,7 +846,7 @@ gimp_preview_set_default_cursor (GimpPreview *preview,
  *
  * Return value: the #GtkHBox at the bottom of the preview.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 GtkWidget *
 gimp_preview_get_controls (GimpPreview *preview)

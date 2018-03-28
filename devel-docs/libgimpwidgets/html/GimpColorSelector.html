@@ -5,10 +5,10 @@
 <title>GimpColorSelector: GIMP Widgets Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
-<link rel="up" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors">
-<link rel="prev" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors">
+<link rel="up" href="libgimpwidgets-colorselector.html" title="Part IV. GIMP Color Selectors">
+<link rel="prev" href="libgimpwidgets-colorselector.html" title="Part IV. GIMP Color Selectors">
 <link rel="next" href="GimpColorNotebook.html" title="GimpColorNotebook">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -30,7 +30,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="GimpColorSelector.top_of_page"></a>GimpColorSelector</span></h2>
-<p>GimpColorSelector</p>
+<p>GimpColorSelector — Pluggable GIMP color selector modules.</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -44,7 +44,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/gtk2GtkWidget.html#GtkWidget-struct"><span class="returnvalue">GtkWidget</span></a> *
+<a href="../gtk2/GtkWidget.html#GtkWidget-struct"><span class="returnvalue">GtkWidget</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="GimpColorSelector.html#gimp-color-selector-new" title="gimp_color_selector_new ()">gimp_color_selector_new</a> <span class="c_punctuation">()</span>
@@ -60,6 +60,14 @@
 </tr>
 <tr>
 <td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GimpColorSelector.html#gimp-color-selector-get-toggles-visible" title="gimp_color_selector_get_toggles_visible ()">gimp_color_selector_get_toggles_visible</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <span class="returnvalue">void</span>
 </td>
 <td class="function_name">
@@ -68,10 +76,26 @@
 </tr>
 <tr>
 <td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GimpColorSelector.html#gimp-color-selector-get-toggles-sensitive" title="gimp_color_selector_get_toggles_sensitive ()">gimp_color_selector_get_toggles_sensitive</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <span class="returnvalue">void</span>
 </td>
 <td class="function_name">
 <a class="link" href="GimpColorSelector.html#gimp-color-selector-set-show-alpha" title="gimp_color_selector_set_show_alpha ()">gimp_color_selector_set_show_alpha</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GimpColorSelector.html#gimp-color-selector-get-show-alpha" title="gimp_color_selector_get_show_alpha ()">gimp_color_selector_get_show_alpha</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -87,7 +111,23 @@
 <span class="returnvalue">void</span>
 </td>
 <td class="function_name">
+<a class="link" href="GimpColorSelector.html#gimp-color-selector-get-color" title="gimp_color_selector_get_color ()">gimp_color_selector_get_color</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
 <a class="link" href="GimpColorSelector.html#gimp-color-selector-set-channel" title="gimp_color_selector_set_channel ()">gimp_color_selector_set_channel</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="GimpColorSelector.html#GimpColorSelectorChannel" title="enum GimpColorSelectorChannel"><span class="returnvalue">GimpColorSelectorChannel</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GimpColorSelector.html#gimp-color-selector-get-channel" title="gimp_color_selector_get_channel ()">gimp_color_selector_get_channel</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -129,12 +169,17 @@
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="GimpColorSelector.html#GimpColorSelector-channel-changed" title="The “channel-changed” signal">channel-changed</a></td>
-<td class="signal_flags"><a href="/usr/share/gtk-doc/html/gobjectgobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></td>
+<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="GimpColorSelector.html#GimpColorSelector-color-changed" title="The “color-changed” signal">color-changed</a></td>
-<td class="signal_flags"><a href="/usr/share/gtk-doc/html/gobjectgobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></td>
+<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="GimpColorSelector.html#GimpColorSelector-model-visible-changed" title="The “model-visible-changed” signal">model-visible-changed</a></td>
+<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></td>
 </tr>
 </tbody>
 </table></div>
@@ -168,12 +213,12 @@
 </div>
 <div class="refsect1">
 <a name="GimpColorSelector.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
-    <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
-        <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gtk2GtkObject.html#GtkObject-struct">GtkObject</a>
-            <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gtk2GtkWidget.html#GtkWidget-struct">GtkWidget</a>
-                <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gtk2GtkContainer.html#GtkContainer-struct">GtkContainer</a>
-                    <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gtk2GtkBox.html#GtkBox-struct">GtkBox</a>
+<pre class="screen">    <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    <span class="lineart">╰──</span> <a href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+        <span class="lineart">╰──</span> <a href="../gtk2/GtkObject.html#GtkObject-struct">GtkObject</a>
+            <span class="lineart">╰──</span> <a href="../gtk2/GtkWidget.html#GtkWidget-struct">GtkWidget</a>
+                <span class="lineart">╰──</span> <a href="../gtk2/GtkContainer.html#GtkContainer-struct">GtkContainer</a>
+                    <span class="lineart">╰──</span> <a href="../gtk2/GtkBox.html#GtkBox-struct">GtkBox</a>
                         <span class="lineart">╰──</span> GimpColorSelector
                             <span class="lineart">├──</span> <a class="link" href="GimpColorNotebook.html" title="GimpColorNotebook">GimpColorNotebook</a>
                             <span class="lineart">├──</span> <a class="link" href="GimpColorScales.html" title="GimpColorScales">GimpColorScales</a>
@@ -184,20 +229,60 @@
 <a name="GimpColorSelector.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpColorSelector implements
- AtkImplementorIface,  <a href="/usr/share/gtk-doc/html/gtk2GtkBuildable.html#GtkBuildable-struct">GtkBuildable</a> and  <a href="/usr/share/gtk-doc/html/gtk2gtk2-Orientable.html#GtkOrientable-struct">GtkOrientable</a>.</p>
+ AtkImplementorIface,  <a href="../gtk2/GtkBuildable.html#GtkBuildable-struct">GtkBuildable</a> and  <a href="../gtk2/gtk2-Orientable.html#GtkOrientable-struct">GtkOrientable</a>.</p>
 </div>
 <div class="refsect1">
 <a name="GimpColorSelector.description"></a><h2>Description</h2>
+<p>Functions and definitions for creating pluggable GIMP color
+selector modules.</p>
 </div>
 <div class="refsect1">
 <a name="GimpColorSelector.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="gimp-color-selector-new"></a><h3>gimp_color_selector_new ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk2GtkWidget.html#GtkWidget-struct"><span class="returnvalue">GtkWidget</span></a> *
-gimp_color_selector_new (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobjectgobject-Type-Information.html#GType"><span class="type">GType</span></a> selector_type</code></em>,
+<pre class="programlisting"><a href="../gtk2/GtkWidget.html#GtkWidget-struct"><span class="returnvalue">GtkWidget</span></a> *
+gimp_color_selector_new (<em class="parameter"><code><a href="../gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> selector_type</code></em>,
                          <em class="parameter"><code>const <a href="../html/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>,
                          <em class="parameter"><code>const <a href="../html/libgimpcolor-GimpHSV.html#GimpHSV"><span class="type">GimpHSV</span></a> *hsv</code></em>,
                          <em class="parameter"><code><a class="link" href="GimpColorSelector.html#GimpColorSelectorChannel" title="enum GimpColorSelectorChannel"><span class="type">GimpColorSelectorChannel</span></a> channel</code></em>);</pre>
+<p>Creates a new <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> widget of type <em class="parameter"><code>selector_type</code></em>
+.</p>
+<p>Note that this is mostly internal API to be used by other widgets.</p>
+<p>Please use <a class="link" href="GimpColorSelection.html#gimp-color-selection-new" title="gimp_color_selection_new ()"><code class="function">gimp_color_selection_new()</code></a> for the "GIMP-typical" color
+selection widget. Also see <a class="link" href="GimpColorButton.html#gimp-color-button-new" title="gimp_color_button_new ()"><code class="function">gimp_color_button_new()</code></a>.</p>
+<p>Retunn value: the new <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> widget.</p>
+<div class="refsect3">
+<a name="gimp-color-selector-new.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>selector_type</p></td>
+<td class="parameter_description"><p>The <a href="../gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> of the selector to create.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>rgb</p></td>
+<td class="parameter_description"><p>The inital color to be edited.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>hsv</p></td>
+<td class="parameter_description"><p>The same color in HSV.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>channel</p></td>
+<td class="parameter_description"><p>The selector's initial channel.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
@@ -205,7 +290,66 @@ gimp_color_selector_new (<em class="parameter"><code><a href="/usr/share/gtk-doc
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_color_selector_set_toggles_visible
                                (<em class="parameter"><code><a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> *selector</code></em>,
-                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> visible</code></em>);</pre>
+                                <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> visible</code></em>);</pre>
+<p>Sets the <em class="parameter"><code>visible</code></em>
+ property of the <em class="parameter"><code>selector</code></em>
+'s toggles.</p>
+<p>This function has no effect if this <em class="parameter"><code>selector</code></em>
+ instance has no
+toggles to switch channels.</p>
+<div class="refsect3">
+<a name="gimp-color-selector-set-toggles-visible.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>selector</p></td>
+<td class="parameter_description"><p>A <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> widget.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>visible</p></td>
+<td class="parameter_description"><p>The new <em class="parameter"><code>visible</code></em>
+setting.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-color-selector-get-toggles-visible"></a><h3>gimp_color_selector_get_toggles_visible ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_color_selector_get_toggles_visible
+                               (<em class="parameter"><code><a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> *selector</code></em>);</pre>
+<p>Returns the <em class="parameter"><code>visible</code></em>
+ property of the <em class="parameter"><code>selector</code></em>
+'s toggles.</p>
+<div class="refsect3">
+<a name="gimp-color-selector-get-toggles-visible.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>selector</p></td>
+<td class="parameter_description"><p>A <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> widget.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gimp-color-selector-get-toggles-visible.returns"></a><h4>Returns</h4>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if the <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a>'s toggles are visible.</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -213,14 +357,128 @@ gimp_color_selector_set_toggles_visible
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_color_selector_set_toggles_sensitive
                                (<em class="parameter"><code><a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> *selector</code></em>,
-                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> sensitive</code></em>);</pre>
+                                <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> sensitive</code></em>);</pre>
+<p>Sets the <em class="parameter"><code>sensitive</code></em>
+ property of the <em class="parameter"><code>selector</code></em>
+'s toggles.</p>
+<p>This function has no effect if this <em class="parameter"><code>selector</code></em>
+ instance has no
+toggles to switch channels.</p>
+<div class="refsect3">
+<a name="gimp-color-selector-set-toggles-sensitive.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>selector</p></td>
+<td class="parameter_description"><p>A <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> widget.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>sensitive</p></td>
+<td class="parameter_description"><p>The new <em class="parameter"><code>sensitive</code></em>
+setting.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-color-selector-get-toggles-sensitive"></a><h3>gimp_color_selector_get_toggles_sensitive ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_color_selector_get_toggles_sensitive
+                               (<em class="parameter"><code><a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> *selector</code></em>);</pre>
+<p>Returns the <em class="parameter"><code>sensitive</code></em>
+ property of the <em class="parameter"><code>selector</code></em>
+'s toggles.</p>
+<div class="refsect3">
+<a name="gimp-color-selector-get-toggles-sensitive.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>selector</p></td>
+<td class="parameter_description"><p>A <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> widget.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gimp-color-selector-get-toggles-sensitive.returns"></a><h4>Returns</h4>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if the <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a>'s toggles are sensitive.</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-color-selector-set-show-alpha"></a><h3>gimp_color_selector_set_show_alpha ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_color_selector_set_show_alpha (<em class="parameter"><code><a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> *selector</code></em>,
-                                    <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> show_alpha</code></em>);</pre>
+                                    <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> show_alpha</code></em>);</pre>
+<p>Sets the <em class="parameter"><code>show_alpha</code></em>
+ property of the <em class="parameter"><code>selector</code></em>
+ widget.</p>
+<div class="refsect3">
+<a name="gimp-color-selector-set-show-alpha.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>selector</p></td>
+<td class="parameter_description"><p>A <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> widget.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>show_alpha</p></td>
+<td class="parameter_description"><p>The new <em class="parameter"><code>show_alpha</code></em>
+setting.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-color-selector-get-show-alpha"></a><h3>gimp_color_selector_get_show_alpha ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_color_selector_get_show_alpha (<em class="parameter"><code><a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> *selector</code></em>);</pre>
+<p>Returns the <em class="parameter"><code>selector</code></em>
+'s <em class="parameter"><code>show_alpha</code></em>
+ property.</p>
+<div class="refsect3">
+<a name="gimp-color-selector-get-show-alpha.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>selector</p></td>
+<td class="parameter_description"><p>A <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> widget.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gimp-color-selector-get-show-alpha.returns"></a><h4>Returns</h4>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if the <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> has alpha controls.</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -229,6 +487,73 @@ gimp_color_selector_set_show_alpha (<em class="parameter"><code><a class="link" 
 gimp_color_selector_set_color (<em class="parameter"><code><a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> *selector</code></em>,
                                <em class="parameter"><code>const <a href="../html/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>,
                                <em class="parameter"><code>const <a href="../html/libgimpcolor-GimpHSV.html#GimpHSV"><span class="type">GimpHSV</span></a> *hsv</code></em>);</pre>
+<p>Sets the color shown in the <em class="parameter"><code>selector</code></em>
+ widget.</p>
+<div class="refsect3">
+<a name="gimp-color-selector-set-color.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>selector</p></td>
+<td class="parameter_description"><p>A <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> widget.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>rgb</p></td>
+<td class="parameter_description"><p>The new color.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>hsv</p></td>
+<td class="parameter_description"><p>The same color in HSV.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-color-selector-get-color"></a><h3>gimp_color_selector_get_color ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gimp_color_selector_get_color (<em class="parameter"><code><a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> *selector</code></em>,
+                               <em class="parameter"><code><a href="../html/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>,
+                               <em class="parameter"><code><a href="../html/libgimpcolor-GimpHSV.html#GimpHSV"><span class="type">GimpHSV</span></a> *hsv</code></em>);</pre>
+<p>Retrieves the color shown in the <em class="parameter"><code>selector</code></em>
+ widget.</p>
+<div class="refsect3">
+<a name="gimp-color-selector-get-color.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>selector</p></td>
+<td class="parameter_description"><p>A <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> widget.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>rgb</p></td>
+<td class="parameter_description"><p>Return location for the color.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>hsv</p></td>
+<td class="parameter_description"><p>Return location for the same same color in HSV.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -236,26 +561,141 @@ gimp_color_selector_set_color (<em class="parameter"><code><a class="link" href=
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_color_selector_set_channel (<em class="parameter"><code><a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> *selector</code></em>,
                                  <em class="parameter"><code><a class="link" href="GimpColorSelector.html#GimpColorSelectorChannel" title="enum GimpColorSelectorChannel"><span class="type">GimpColorSelectorChannel</span></a> channel</code></em>);</pre>
+<p>Sets the <em class="parameter"><code>channel</code></em>
+ property of the <em class="parameter"><code>selector</code></em>
+ widget.</p>
+<p>Changes between displayed channels if this <em class="parameter"><code>selector</code></em>
+ instance has
+the ability to show different channels.
+This will also update the color model if needed.</p>
+<div class="refsect3">
+<a name="gimp-color-selector-set-channel.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>selector</p></td>
+<td class="parameter_description"><p>A <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> widget.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>channel</p></td>
+<td class="parameter_description"><p>The new <em class="parameter"><code>channel</code></em>
+setting.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-color-selector-get-channel"></a><h3>gimp_color_selector_get_channel ()</h3>
+<pre class="programlisting"><a class="link" href="GimpColorSelector.html#GimpColorSelectorChannel" title="enum GimpColorSelectorChannel"><span class="returnvalue">GimpColorSelectorChannel</span></a>
+gimp_color_selector_get_channel (<em class="parameter"><code><a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> *selector</code></em>);</pre>
+<p>Returns the <em class="parameter"><code>selector</code></em>
+'s current channel.</p>
+<div class="refsect3">
+<a name="gimp-color-selector-get-channel.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>selector</p></td>
+<td class="parameter_description"><p>A <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> widget.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gimp-color-selector-get-channel.returns"></a><h4>Returns</h4>
+<p> The <a class="link" href="GimpColorSelector.html#GimpColorSelectorChannel" title="enum GimpColorSelectorChannel"><span class="type">GimpColorSelectorChannel</span></a> currently shown by the
+<em class="parameter"><code>selector</code></em>
+.</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-color-selector-color-changed"></a><h3>gimp_color_selector_color_changed ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_color_selector_color_changed (<em class="parameter"><code><a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> *selector</code></em>);</pre>
+<p>Emits the "color-changed" signal.</p>
+<div class="refsect3">
+<a name="gimp-color-selector-color-changed.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>selector</p></td>
+<td class="parameter_description"><p>A <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> widget.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-color-selector-channel-changed"></a><h3>gimp_color_selector_channel_changed ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_color_selector_channel_changed (<em class="parameter"><code><a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> *selector</code></em>);</pre>
+<p>Emits the "channel-changed" signal.</p>
+<div class="refsect3">
+<a name="gimp-color-selector-channel-changed.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>selector</p></td>
+<td class="parameter_description"><p>A <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> widget.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-color-selector-set-config"></a><h3>gimp_color_selector_set_config ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_color_selector_set_config (<em class="parameter"><code><a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> *selector</code></em>,
-                                <em class="parameter"><code><a href="../html/GimpColorConfig.html#GimpColorConfig-struct"><span class="type">GimpColorConfig</span></a> *config</code></em>);</pre>
-<p class="since">Since: GIMP 2.4</p>
+                                <em class="parameter"><code><span class="type">GimpColorConfig</span> *config</code></em>);</pre>
+<p>Sets the color management configuration to use with this color selector.</p>
+<div class="refsect3">
+<a name="gimp-color-selector-set-config.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>selector</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> widget.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>config</p></td>
+<td class="parameter_description"><p>a <span class="type">GimpColorConfig</span> object.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
 </div>
 <div class="refsect1">
@@ -269,16 +709,22 @@ gimp_color_selector_set_config (<em class="parameter"><code><a class="link" href
 <a name="GIMP-COLOR-SELECTOR-SIZE:CAPS"></a><h3>GIMP_COLOR_SELECTOR_SIZE</h3>
 <pre class="programlisting">#define GIMP_COLOR_SELECTOR_SIZE     150
 </pre>
+<p>The suggested size for a color area in a <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a>
+implementation.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GIMP-COLOR-SELECTOR-BAR-SIZE:CAPS"></a><h3>GIMP_COLOR_SELECTOR_BAR_SIZE</h3>
 <pre class="programlisting">#define GIMP_COLOR_SELECTOR_BAR_SIZE 15
 </pre>
+<p>The suggested width for a color bar in a <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a>
+implementation.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpColorSelectorChannel"></a><h3>enum GimpColorSelectorChannel</h3>
+<p>An enum to specify the types of color channels edited in
+<a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> widgets.</p>
 <div class="refsect3">
 <a name="GimpColorSelectorChannel.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -290,38 +736,73 @@ gimp_color_selector_set_config (<em class="parameter"><code><a class="link" href
 <tbody>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-COLOR-SELECTOR-HUE:CAPS"></a>GIMP_COLOR_SELECTOR_HUE</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>the hue channel</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-COLOR-SELECTOR-SATURATION:CAPS"></a>GIMP_COLOR_SELECTOR_SATURATION</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>the saturation channel</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-COLOR-SELECTOR-VALUE:CAPS"></a>GIMP_COLOR_SELECTOR_VALUE</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>the value channel</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-COLOR-SELECTOR-RED:CAPS"></a>GIMP_COLOR_SELECTOR_RED</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>the red channel</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-COLOR-SELECTOR-GREEN:CAPS"></a>GIMP_COLOR_SELECTOR_GREEN</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>the green channel</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-COLOR-SELECTOR-BLUE:CAPS"></a>GIMP_COLOR_SELECTOR_BLUE</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>the blue channel</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-COLOR-SELECTOR-ALPHA:CAPS"></a>GIMP_COLOR_SELECTOR_ALPHA</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>the alpha channel</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GIMP-COLOR-SELECTOR-LCH-LIGHTNESS:CAPS"></a>GIMP_COLOR_SELECTOR_LCH_LIGHTNESS</p></td>
+<td class="enum_member_description">
+<p>the lightness channel</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GIMP-COLOR-SELECTOR-LCH-CHROMA:CAPS"></a>GIMP_COLOR_SELECTOR_LCH_CHROMA</p></td>
+<td class="enum_member_description">
+<p>the chroma channel</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GIMP-COLOR-SELECTOR-LCH-HUE:CAPS"></a>GIMP_COLOR_SELECTOR_LCH_HUE</p></td>
+<td class="enum_member_description">
+<p>the hue channel</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -333,24 +814,38 @@ gimp_color_selector_set_config (<em class="parameter"><code><a class="link" href
 <div class="refsect2">
 <a name="GimpColorSelector-channel-changed"></a><h3>The <code class="literal">“channel-changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-user_function (<a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> *gimpcolorselector,
-               <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a>               arg1,
-               <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>           user_data)</pre>
-<p>Flags: <a href="/usr/share/gtk-doc/html/gobjectgobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></p>
+user_function (<a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a>       *gimpcolorselector,
+               <a class="link" href="GimpColorSelector.html#GimpColorSelectorChannel" title="enum GimpColorSelectorChannel"><span class="type">GimpColorSelectorChannel</span></a> arg1,
+               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>                 user_data)</pre>
+<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpColorSelector-color-changed"></a><h3>The <code class="literal">“color-changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> *gimpcolorselector,
-               <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>           arg1,
-               <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>           arg2,
-               <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>           user_data)</pre>
-<p>Flags: <a href="/usr/share/gtk-doc/html/gobjectgobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></p>
+               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>           arg1,
+               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>           arg2,
+               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>           user_data)</pre>
+<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></p>
 </div>
+<hr>
+<div class="refsect2">
+<a name="GimpColorSelector-model-visible-changed"></a><h3>The <code class="literal">“model-visible-changed”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a>     *gimpcolorselector,
+               <span class="type">GimpColorSelectorModel</span> arg1,
+               <a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>               arg2,
+               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)</pre>
+<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></p>
+</div>
+</div>
+<div class="refsect1">
+<a name="GimpColorSelector.see-also"></a><h2>See Also</h2>
+<p><a href="../glib/glib-Dynamic-Loading-of-Modules.html#GModule"><span class="type">GModule</span></a>, <a href="../gobject/GTypeModule.html#GTypeModule-struct"><span class="type">GTypeModule</span></a>, <a href="../libgimpmodule/GimpModule.html#GimpModule-struct"><span class="type">GimpModule</span></a></p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.27</div>
 </body>
 </html>

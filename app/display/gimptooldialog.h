@@ -43,8 +43,12 @@ struct _GimpToolDialog
 GType       gimp_tool_dialog_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_tool_dialog_new       (GimpToolInfo     *tool_info,
-                                        GimpDisplayShell *shell,
-                                        const gchar      *desc,
+                                        GdkScreen        *screen,
+                                        gint              monitor,
+                                        const gchar      *title,
+                                        const gchar      *description,
+                                        const gchar      *icon_name,
+                                        const gchar      *help_id,
                                         ...) G_GNUC_NULL_TERMINATED;
 
 void        gimp_tool_dialog_set_shell (GimpToolDialog   *tool_dialog,

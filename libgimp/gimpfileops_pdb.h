@@ -49,7 +49,6 @@ gboolean gimp_file_save                   (GimpRunMode  run_mode,
                                            const gchar *raw_filename);
 gboolean gimp_file_save_thumbnail         (gint32       image_ID,
                                            const gchar *filename);
-gchar*   gimp_temp_name                   (const gchar *extension);
 gboolean gimp_register_magic_load_handler (const gchar *procedure_name,
                                            const gchar *extensions,
                                            const gchar *prefixes,
@@ -61,7 +60,9 @@ gboolean gimp_register_save_handler       (const gchar *procedure_name,
                                            const gchar *extensions,
                                            const gchar *prefixes);
 gboolean gimp_register_file_handler_mime  (const gchar *procedure_name,
-                                           const gchar *mime_type);
+                                           const gchar *mime_types);
+gboolean gimp_register_file_handler_uri   (const gchar *procedure_name);
+gboolean gimp_register_file_handler_raw   (const gchar *procedure_name);
 gboolean gimp_register_thumbnail_loader   (const gchar *load_proc,
                                            const gchar *thumb_proc);
 

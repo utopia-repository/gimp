@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -86,24 +87,27 @@ gimp_align_options_class_init (GimpAlignOptionsClass *klass)
                   G_TYPE_NONE, 1,
                   GIMP_TYPE_ALIGNMENT_TYPE);
 
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_ALIGN_REFERENCE,
-                                 "align-reference",
-                                 N_("Reference image object a layer will be aligned on"),
-                                 GIMP_TYPE_ALIGN_REFERENCE_TYPE,
-                                 GIMP_ALIGN_REFERENCE_FIRST,
-                                 GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_ALIGN_REFERENCE,
+                         "align-reference",
+                         _("Relative to"),
+                         _("Reference image object a layer will be aligned on"),
+                         GIMP_TYPE_ALIGN_REFERENCE_TYPE,
+                         GIMP_ALIGN_REFERENCE_FIRST,
+                         GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_OFFSET_X,
-                                   "offset-x",
-                                   N_("Horizontal offset for distribution"),
-                                   -GIMP_MAX_IMAGE_SIZE, GIMP_MAX_IMAGE_SIZE, 0,
-                                   GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_OFFSET_X,
+                           "offset-x",
+                           _("Offset"),
+                           _("Horizontal offset for distribution"),
+                           -GIMP_MAX_IMAGE_SIZE, GIMP_MAX_IMAGE_SIZE, 0,
+                           GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_OFFSET_Y,
-                                   "offset-y",
-                                   N_("Vertical offset for distribution"),
-                                   -GIMP_MAX_IMAGE_SIZE, GIMP_MAX_IMAGE_SIZE, 0,
-                                   GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_OFFSET_Y,
+                           "offset-y",
+                           _("Offset"),
+                           _("Vertical offset for distribution"),
+                           -GIMP_MAX_IMAGE_SIZE, GIMP_MAX_IMAGE_SIZE, 0,
+                           GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void
@@ -188,46 +192,52 @@ gimp_align_options_button_new (GimpAlignOptions  *options,
 {
   GtkWidget   *button;
   GtkWidget   *image;
-  const gchar *stock_id = NULL;
+  const gchar *icon_name = NULL;
 
   switch (action)
     {
     case GIMP_ALIGN_LEFT:
-      stock_id = GIMP_STOCK_GRAVITY_WEST;
+      icon_name = GIMP_ICON_GRAVITY_WEST;
       break;
     case GIMP_ALIGN_HCENTER:
-      stock_id = GIMP_STOCK_HCENTER;
+      icon_name = GIMP_ICON_CENTER_HORIZONTAL;
       break;
     case GIMP_ALIGN_RIGHT:
-      stock_id = GIMP_STOCK_GRAVITY_EAST;
+      icon_name = GIMP_ICON_GRAVITY_EAST;
       break;
     case GIMP_ALIGN_TOP:
-      stock_id = GIMP_STOCK_GRAVITY_NORTH;
+      icon_name = GIMP_ICON_GRAVITY_NORTH;
       break;
     case GIMP_ALIGN_VCENTER:
-      stock_id = GIMP_STOCK_VCENTER;
+      icon_name = GIMP_ICON_CENTER_VERTICAL;
       break;
     case GIMP_ALIGN_BOTTOM:
-      stock_id = GIMP_STOCK_GRAVITY_SOUTH;
+      icon_name = GIMP_ICON_GRAVITY_SOUTH;
       break;
     case GIMP_ARRANGE_LEFT:
-      stock_id = GIMP_STOCK_GRAVITY_WEST;
+      icon_name = GIMP_ICON_GRAVITY_WEST;
       break;
     case GIMP_ARRANGE_HCENTER:
-      stock_id = GIMP_STOCK_HCENTER;
+      icon_name = GIMP_ICON_CENTER_HORIZONTAL;
       break;
     case GIMP_ARRANGE_RIGHT:
-      stock_id = GIMP_STOCK_GRAVITY_EAST;
+      icon_name = GIMP_ICON_GRAVITY_EAST;
       break;
     case GIMP_ARRANGE_TOP:
-      stock_id = GIMP_STOCK_GRAVITY_NORTH;
+      icon_name = GIMP_ICON_GRAVITY_NORTH;
       break;
     case GIMP_ARRANGE_VCENTER:
-      stock_id = GIMP_STOCK_VCENTER;
+      icon_name = GIMP_ICON_CENTER_VERTICAL;
       break;
     case GIMP_ARRANGE_BOTTOM:
-      stock_id = GIMP_STOCK_GRAVITY_SOUTH;
+      icon_name = GIMP_ICON_GRAVITY_SOUTH;
       break;
+    case GIMP_ARRANGE_HFILL:
+        icon_name = GIMP_ICON_FILL_HORIZONTAL;
+        break;
+    case GIMP_ARRANGE_VFILL:
+        icon_name = GIMP_ICON_FILL_VERTICAL;
+        break;
     default:
       g_return_val_if_reached (NULL);
       break;
@@ -237,7 +247,7 @@ gimp_align_options_button_new (GimpAlignOptions  *options,
   gtk_widget_set_sensitive (button, FALSE);
   gtk_widget_show (button);
 
-  image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
+  image = gtk_image_new_from_icon_name (icon_name, GTK_ICON_SIZE_BUTTON);
   gtk_container_add (GTK_CONTAINER (button), image);
   gtk_widget_show (image);
 
@@ -277,16 +287,10 @@ gimp_align_options_gui (GimpToolOptions *tool_options)
   gtk_container_add (GTK_CONTAINER (frame), align_vbox);
   gtk_widget_show (align_vbox);
 
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-  gtk_box_pack_start (GTK_BOX (align_vbox), hbox, FALSE, FALSE, 0);
-  gtk_widget_show (hbox);
-
-  frame = gimp_frame_new (_("Relative to:"));
-  gtk_box_pack_start (GTK_BOX (align_vbox), frame, FALSE, FALSE, 0);
-  gtk_widget_show (frame);
-
   combo = gimp_prop_enum_combo_box_new (config, "align-reference", 0, 0);
-  gtk_container_add (GTK_CONTAINER (frame), combo);
+  gimp_int_combo_box_set_label (GIMP_INT_COMBO_BOX (combo), _("Relative to"));
+  g_object_set (combo, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+  gtk_box_pack_start (GTK_BOX (align_vbox), combo, FALSE, FALSE, 0);
   gtk_widget_show (combo);
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
@@ -345,6 +349,10 @@ gimp_align_options_gui (GimpToolOptions *tool_options)
     gimp_align_options_button_new (options, GIMP_ARRANGE_RIGHT, hbox,
                                    _("Distribute right edges of targets"));
 
+  options->button[n++] =
+    gimp_align_options_button_new (options, GIMP_ARRANGE_HFILL, hbox,
+                                   _("Distribute targets evenly in the horizontal"));
+
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (align_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
@@ -361,15 +369,32 @@ gimp_align_options_gui (GimpToolOptions *tool_options)
     gimp_align_options_button_new (options, GIMP_ARRANGE_BOTTOM, hbox,
                                    _("Distribute bottoms of targets"));
 
+  options->button[n++] =
+    gimp_align_options_button_new (options, GIMP_ARRANGE_VFILL, hbox,
+                                   _("Distribute targets evenly in the vertical"));
+
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (align_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
-  label = gtk_label_new (_("Offset:"));
+  label = gtk_label_new (_("Offset X:"));
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
   spinbutton = gimp_prop_spin_button_new (config, "offset-x",
+                                          1, 20, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
+  gtk_widget_show (spinbutton);
+
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+  gtk_box_pack_start (GTK_BOX (align_vbox), hbox, FALSE, FALSE, 0);
+  gtk_widget_show (hbox);
+
+  label = gtk_label_new (_("Offset Y:"));
+  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+  gtk_widget_show (label);
+
+  spinbutton = gimp_prop_spin_button_new (config, "offset-y",
                                           1, 20, 0);
   gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
   gtk_widget_show (spinbutton);

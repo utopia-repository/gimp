@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -41,22 +42,22 @@
 
 static const GimpActionEntry gradient_editor_actions[] =
 {
-  { "gradient-editor-popup", GIMP_STOCK_GRADIENT,
+  { "gradient-editor-popup", GIMP_ICON_GRADIENT,
     NC_("gradient-editor-action", "Gradient Editor Menu"), NULL, NULL, NULL,
     GIMP_HELP_GRADIENT_EDITOR_DIALOG },
 
   { "gradient-editor-left-color-type", NULL,
     NC_("gradient-editor-action", "Left Color Type") },
-  { "gradient-editor-load-left-color", GTK_STOCK_REVERT_TO_SAVED,
+  { "gradient-editor-load-left-color", GIMP_ICON_DOCUMENT_REVERT,
     NC_("gradient-editor-action", "_Load Left Color From") },
-  { "gradient-editor-save-left-color", GTK_STOCK_SAVE,
+  { "gradient-editor-save-left-color", GIMP_ICON_DOCUMENT_SAVE,
     NC_("gradient-editor-action", "_Save Left Color To") },
 
   { "gradient-editor-right-color-type", NULL,
     NC_("gradient-editor-action", "Right Color Type") },
-  { "gradient-editor-load-right-color", GTK_STOCK_REVERT_TO_SAVED,
+  { "gradient-editor-load-right-color", GIMP_ICON_DOCUMENT_REVERT,
     NC_("gradient-editor-action", "Load Right Color Fr_om") },
-  { "gradient-editor-save-right-color", GTK_STOCK_SAVE,
+  { "gradient-editor-save-right-color", GIMP_ICON_DOCUMENT_SAVE,
     NC_("gradient-editor-action", "Sa_ve Right Color To") },
 
   { "gradient-editor-blending-func", NULL, "blending-function" },
@@ -72,12 +73,12 @@ static const GimpActionEntry gradient_editor_actions[] =
     G_CALLBACK (gradient_editor_right_color_cmd_callback),
     GIMP_HELP_GRADIENT_EDITOR_RIGHT_COLOR },
 
-  { "gradient-editor-flip", GIMP_STOCK_FLIP_HORIZONTAL,
+  { "gradient-editor-flip", GIMP_ICON_OBJECT_FLIP_HORIZONTAL,
     "flip", NULL, NULL,
     G_CALLBACK (gradient_editor_flip_cmd_callback),
     GIMP_HELP_GRADIENT_EDITOR_FLIP },
 
-  { "gradient-editor-replicate", GIMP_STOCK_DUPLICATE,
+  { "gradient-editor-replicate", GIMP_ICON_OBJECT_DUPLICATE,
     "replicate", NULL, NULL,
     G_CALLBACK (gradient_editor_replicate_cmd_callback),
     GIMP_HELP_GRADIENT_EDITOR_FLIP },
@@ -92,7 +93,7 @@ static const GimpActionEntry gradient_editor_actions[] =
     G_CALLBACK (gradient_editor_split_uniformly_cmd_callback),
     GIMP_HELP_GRADIENT_EDITOR_SPLIT_UNIFORM },
 
-  { "gradient-editor-delete", GTK_STOCK_DELETE,
+  { "gradient-editor-delete", GIMP_ICON_EDIT_DELETE,
     "delete", "", NULL,
     G_CALLBACK (gradient_editor_delete_cmd_callback),
     GIMP_HELP_GRADIENT_EDITOR_DELETE },
@@ -120,7 +121,7 @@ static const GimpActionEntry gradient_editor_actions[] =
 
 static const GimpToggleActionEntry gradient_editor_toggle_actions[] =
 {
-  { "gradient-editor-edit-active", GIMP_STOCK_LINKED,
+  { "gradient-editor-edit-active", GIMP_ICON_LINKED,
     NC_("gradient-editor-action", "Edit Active Gradient"), NULL, NULL,
     G_CALLBACK (data_editor_edit_active_cmd_callback),
     FALSE,
@@ -369,19 +370,19 @@ static const GimpRadioActionEntry gradient_editor_coloring_actions[] =
 
 static const GimpEnumActionEntry gradient_editor_zoom_actions[] =
 {
-  { "gradient-editor-zoom-in", GTK_STOCK_ZOOM_IN,
+  { "gradient-editor-zoom-in", GIMP_ICON_ZOOM_IN,
     N_("Zoom In"), NULL,
     N_("Zoom in"),
     GIMP_ZOOM_IN, FALSE,
     GIMP_HELP_GRADIENT_EDITOR_ZOOM_IN },
 
-  { "gradient-editor-zoom-out", GTK_STOCK_ZOOM_OUT,
+  { "gradient-editor-zoom-out", GIMP_ICON_ZOOM_OUT,
     N_("Zoom Out"), NULL,
     N_("Zoom out"),
     GIMP_ZOOM_OUT, FALSE,
     GIMP_HELP_GRADIENT_EDITOR_ZOOM_OUT },
 
-  { "gradient-editor-zoom-all", GTK_STOCK_ZOOM_FIT,
+  { "gradient-editor-zoom-all", GIMP_ICON_ZOOM_FIT_BEST,
     N_("Zoom All"), NULL,
     N_("Zoom all"),
     GIMP_ZOOM_OUT_MAX, FALSE,
@@ -490,33 +491,35 @@ gradient_editor_actions_update (GimpActionGroup *group,
       if (data_editor->data_editable)
         editable = TRUE;
 
-      gimp_gradient_get_color_at (gradient, data_editor->context,
-                                  editor->control_sel_l,
-                                  editor->control_sel_l->left, FALSE,
-                                  &left_color);
+      gimp_gradient_segment_get_left_flat_color (gradient,
+                                                 data_editor->context,
+                                                 editor->control_sel_l,
+                                                 &left_color);
 
       if (editor->control_sel_l->prev)
         left_seg = editor->control_sel_l->prev;
       else
         left_seg = gimp_gradient_segment_get_last (editor->control_sel_l);
 
-      gimp_gradient_get_color_at (gradient, data_editor->context,
-                                  left_seg, left_seg->right, FALSE,
-                                  &left_seg_color);
+      gimp_gradient_segment_get_right_flat_color (gradient,
+                                                  data_editor->context,
+                                                  left_seg,
+                                                  &left_seg_color);
 
-      gimp_gradient_get_color_at (gradient, data_editor->context,
-                                  editor->control_sel_r,
-                                  editor->control_sel_r->right, FALSE,
-                                  &right_color);
+      gimp_gradient_segment_get_right_flat_color (gradient,
+                                                  data_editor->context,
+                                                  editor->control_sel_r,
+                                                  &right_color);
 
       if (editor->control_sel_r->next)
         right_seg = editor->control_sel_r->next;
       else
         right_seg = gimp_gradient_segment_get_first (editor->control_sel_r);
 
-      gimp_gradient_get_color_at (gradient, data_editor->context,
-                                  right_seg, right_seg->left, FALSE,
-                                  &right_seg_color);
+      gimp_gradient_segment_get_left_flat_color (gradient,
+                                                 data_editor->context,
+                                                 right_seg,
+                                                 &right_seg_color);
 
       left_editable  = (editor->control_sel_l->left_color_type ==
                         GIMP_GRADIENT_COLOR_FIXED);

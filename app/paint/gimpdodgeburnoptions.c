@@ -17,7 +17,8 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include "libgimpconfig/gimpconfig.h"
 
@@ -25,9 +26,11 @@
 
 #include "gimpdodgeburnoptions.h"
 
+#include "gimp-intl.h"
 
-#define DODGE_BURN_DEFAULT_TYPE     GIMP_DODGE
-#define DODGE_BURN_DEFAULT_MODE     GIMP_MIDTONES
+
+#define DODGE_BURN_DEFAULT_TYPE     GIMP_DODGE_BURN_TYPE_DODGE
+#define DODGE_BURN_DEFAULT_MODE     GIMP_TRANSFER_MIDTONES
 #define DODGE_BURN_DEFAULT_EXPOSURE 50.0
 
 
@@ -62,20 +65,28 @@ gimp_dodge_burn_options_class_init (GimpDodgeBurnOptionsClass *klass)
   object_class->set_property = gimp_dodge_burn_options_set_property;
   object_class->get_property = gimp_dodge_burn_options_get_property;
 
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_TYPE,
-                                 "type", NULL,
-                                 GIMP_TYPE_DODGE_BURN_TYPE,
-                                 DODGE_BURN_DEFAULT_TYPE,
-                                 GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_MODE,
-                                 "mode", NULL,
-                                 GIMP_TYPE_TRANSFER_MODE,
-                                 DODGE_BURN_DEFAULT_MODE,
-                                 GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_EXPOSURE,
-                                   "exposure", NULL,
-                                   0.0, 100.0, DODGE_BURN_DEFAULT_EXPOSURE,
-                                   GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_TYPE,
+                         "type",
+                         _("Type"),
+                         NULL,
+                         GIMP_TYPE_DODGE_BURN_TYPE,
+                         DODGE_BURN_DEFAULT_TYPE,
+                         GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_MODE,
+                         "mode",
+                         _("Range"),
+                         NULL,
+                         GIMP_TYPE_TRANSFER_MODE,
+                         DODGE_BURN_DEFAULT_MODE,
+                         GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_EXPOSURE,
+                           "exposure",
+                           _("Exposure"),
+                           NULL,
+                           0.0, 100.0, DODGE_BURN_DEFAULT_EXPOSURE,
+                           GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void

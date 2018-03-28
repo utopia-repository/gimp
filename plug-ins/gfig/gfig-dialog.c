@@ -90,7 +90,7 @@ SelectItVals selvals =
     TRUE,                 /* show control points           */
     0.0,                  /* grid_radius_min               */
     10.0,                 /* grid_radius_interval          */
-    0.0,	          /* grid_rotation                 */
+    0.0,                  /* grid_rotation                 */
     5.0,                  /* grid_granularity              */
     120                   /* grid_sectors_desired          */
   },
@@ -99,7 +99,7 @@ SelectItVals selvals =
   TRUE,                   /* Show pos updates              */
   0.0,                    /* Brush fade                    */
   0.0,                    /* Brush gradient                */
-  20.0,                   /* Air bursh pressure            */
+  20.0,                   /* Air brush pressure            */
   ORIGINAL_LAYER,         /* Draw all objects on one layer */
   LAYER_TRANS_BG,         /* New layers background         */
   PAINT_BRUSH_TYPE,       /* Default to use brushes        */
@@ -239,7 +239,7 @@ gfig_dialog (void)
 
   if (parasite)
     {
-      gimp_drawable_fill (gfig_context->drawable_id, GIMP_TRANSPARENT_FILL);
+      gimp_drawable_fill (gfig_context->drawable_id, GIMP_FILL_TRANSPARENT);
       gfig_context->using_new_layer = FALSE;
       gimp_parasite_free (parasite);
     }
@@ -247,14 +247,14 @@ gfig_dialog (void)
     {
       newlayer = gimp_layer_new (gfig_context->image_id, "GFig",
                                  img_width, img_height,
-                                 img_type, 100.0, GIMP_NORMAL_MODE);
-      gimp_drawable_fill (newlayer, GIMP_TRANSPARENT_FILL);
+                                 img_type,
+                                 100.0,
+                                 gimp_image_get_default_new_layer_mode (gfig_context->image_id));
+      gimp_drawable_fill (newlayer, GIMP_FILL_TRANSPARENT);
       gimp_image_insert_layer (gfig_context->image_id, newlayer, -1, -1);
       gfig_context->drawable_id = newlayer;
       gfig_context->using_new_layer = TRUE;
     }
-
-  gfig_drawable = gimp_drawable_get (gfig_context->drawable_id);
 
   gfig_stock_init ();
 
@@ -288,8 +288,8 @@ gfig_dialog (void)
                                    NULL, 0,
                                    gimp_standard_help_func, PLUG_IN_PROC,
 
-                                   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                   GTK_STOCK_CLOSE,  GTK_RESPONSE_OK,
+                                   _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                   _("_Close"),  GTK_RESPONSE_OK,
 
                                    NULL);
 
@@ -636,8 +636,8 @@ gfig_load_action_callback (GtkAction *action,
                                      GTK_WINDOW (data),
                                      GTK_FILE_CHOOSER_ACTION_OPEN,
 
-                                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                     GTK_STOCK_OPEN,   GTK_RESPONSE_OK,
+                                     _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                     _("_Open"),   GTK_RESPONSE_OK,
 
                                      NULL);
 
@@ -685,8 +685,8 @@ gfig_save_action_callback (GtkAction *action,
                                      GTK_WINDOW (data),
                                      GTK_FILE_CHOOSER_ACTION_SAVE,
 
-                                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                     GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
+                                     _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                     _("_Save"),   GTK_RESPONSE_OK,
 
                                      NULL);
 
@@ -868,62 +868,62 @@ create_ui_manager (GtkWidget *window)
 
     { "gfig-file-menu", NULL, "_File" },
 
-    { "open", GTK_STOCK_OPEN,
-      NULL, "<control>O", NULL,
+    { "open", GIMP_ICON_DOCUMENT_OPEN,
+      N_("_Open..."), "<control>O", NULL,
       G_CALLBACK (gfig_load_action_callback) },
 
-    { "save", GTK_STOCK_SAVE,
-      NULL, "<control>S", NULL,
+    { "save", GIMP_ICON_DOCUMENT_SAVE,
+      N_("_Save..."), "<control>S", NULL,
       G_CALLBACK (gfig_save_action_callback) },
 
-    { "close", GTK_STOCK_CLOSE,
-      NULL, "<control>C", NULL,
+    { "close", GIMP_ICON_CLOSE,
+      N_("_Close"), "<control>C", NULL,
       G_CALLBACK (gfig_close_action_callback) },
 
     { "gfig-edit-menu", NULL, "_Edit" },
 
-    { "undo", GTK_STOCK_UNDO,
+    { "undo", GIMP_ICON_EDIT_UNDO,
       N_("_Undo"), "<control>Z", NULL,
       G_CALLBACK (gfig_undo_action_callback) },
 
-    { "clear", GTK_STOCK_CLEAR,
+    { "clear", GIMP_ICON_EDIT_CLEAR,
       N_("_Clear"), NULL, NULL,
       G_CALLBACK (gfig_clear_action_callback) },
 
-    { "grid", GIMP_STOCK_GRID,
+    { "grid", GIMP_ICON_GRID,
       N_("_Grid"), "<control>G", NULL,
       G_CALLBACK (gfig_grid_action_callback) },
 
-    { "prefs", GTK_STOCK_PREFERENCES,
-      NULL, "<control>P", NULL,
+    { "prefs", GIMP_ICON_PREFERENCES_SYSTEM,
+      N_("_Preferences..."), "<control>P", NULL,
       G_CALLBACK (gfig_prefs_action_callback) },
 
-    { "raise", GTK_STOCK_GO_UP,
-      NULL, "<control>U", N_("Raise selected object"),
+    { "raise", GIMP_ICON_GO_UP,
+      N_("_Raise"), "<control>U", N_("Raise selected object"),
       G_CALLBACK (raise_selected_obj) },
 
-    { "lower", GTK_STOCK_GO_DOWN,
-      NULL, "<control>D", N_("Lower selected object"),
+    { "lower", GIMP_ICON_GO_DOWN,
+      N_("_Lower"), "<control>D", N_("Lower selected object"),
       G_CALLBACK (lower_selected_obj) },
 
-    { "top", GTK_STOCK_GOTO_TOP,
-      NULL, "<control>T", N_("Raise selected object to top"),
+    { "top", GIMP_ICON_GO_TOP,
+      N_("Raise to _top"), "<control>T", N_("Raise selected object to top"),
       G_CALLBACK (raise_selected_obj_to_top) },
 
-    { "bottom", GTK_STOCK_GOTO_BOTTOM,
-      NULL, "<control>B", N_("Lower selected object to bottom"),
+    { "bottom", GIMP_ICON_GO_BOTTOM,
+      N_("Lower to _bottom"), "<control>B", N_("Lower selected object to bottom"),
       G_CALLBACK (lower_selected_obj_to_bottom) },
 
-    { "show_previous", GTK_STOCK_GO_BACK,
-      NULL, "<control>H", N_("Show previous object"),
+    { "show_previous", GIMP_ICON_GO_PREVIOUS,
+      N_("_Previous"), "<control>H", N_("Show previous object"),
       G_CALLBACK (select_button_clicked_lt) },
 
-    { "show_next", GTK_STOCK_GO_FORWARD,
-      NULL, "<control>L", N_("Show next object"),
+    { "show_next", GIMP_ICON_GO_NEXT,
+      N_("_Next"), "<control>L", N_("Show next object"),
       G_CALLBACK (select_button_clicked_gt) },
 
     { "show_all", GFIG_STOCK_SHOW_ALL,
-      NULL, "<control>A", N_("Show all objects"),
+      N_("Show _all"), "<control>A", N_("Show all objects"),
       G_CALLBACK (select_button_clicked_eq) }
   };
   static GtkRadioActionEntry radio_actions[] =
@@ -1211,7 +1211,7 @@ gfig_paint_timeout (gpointer data)
   gfig_paint_callback ();
 
   paint_timeout = 0;
-  
+
   return FALSE;
 }
 
@@ -1243,7 +1243,7 @@ gfig_prefs_action_callback (GtkAction *widget,
       dialog = gimp_dialog_new (_("Options"), "gimp-gfig-options",
                                 GTK_WIDGET (data), 0, NULL, NULL,
 
-                                GTK_STOCK_CLOSE,  GTK_RESPONSE_CLOSE,
+                                _("_Close"),  GTK_RESPONSE_CLOSE,
 
                                 NULL);
 
@@ -1391,7 +1391,7 @@ gfig_grid_action_callback (GtkAction *action,
       dialog = gimp_dialog_new (_("Grid"), "gimp-gfig-grid",
                                 GTK_WIDGET (data), 0, NULL, NULL,
 
-                                GTK_STOCK_CLOSE,  GTK_RESPONSE_CLOSE,
+                                _("_Close"),  GTK_RESPONSE_CLOSE,
 
                                 NULL);
 
@@ -1622,7 +1622,6 @@ save_file_chooser_response (GtkFileChooser *chooser,
 
       gfig_context->current_obj = obj;
       gfig_save_callbk ();
-      gfig_context->current_obj = gfig_context->current_obj;
     }
 
   gtk_widget_destroy (GTK_WIDGET (chooser));
@@ -1786,7 +1785,7 @@ gfig_paint (BrushType brush_type,
     case BRUSH_PATTERN_TYPE:
       gimp_clone (drawable_ID,
                   drawable_ID,
-                  GIMP_PATTERN_CLONE,
+                  GIMP_CLONE_PATTERN,
                   0.0, 0.0,
                   seg_count, line_pnts);
       break;
@@ -1903,7 +1902,7 @@ load_file_chooser_response (GtkFileChooser *chooser,
 void
 paint_layer_fill (gdouble x1, gdouble y1, gdouble x2, gdouble y2)
 {
-  GimpBucketFillMode fill_mode = FILL_NONE;
+  GimpBucketFillMode fill_mode = GIMP_BUCKET_FILL_FG;
   Style *current_style;
 
   current_style = gfig_context_get_current_style ();
@@ -1914,17 +1913,17 @@ paint_layer_fill (gdouble x1, gdouble y1, gdouble x2, gdouble y2)
       return;
 
     case FILL_COLOR:
-      fill_mode = GIMP_BG_BUCKET_FILL;
+      fill_mode = GIMP_BUCKET_FILL_FG;
       break;
 
     case FILL_PATTERN:
-      fill_mode = GIMP_PATTERN_BUCKET_FILL;
+      fill_mode = GIMP_BUCKET_FILL_PATTERN;
       break;
 
     case FILL_GRADIENT:
       gimp_edit_blend (gfig_context->drawable_id,
-                       GIMP_CUSTOM_MODE,
-                       GIMP_NORMAL_MODE,
+                       GIMP_BLEND_CUSTOM,
+                       GIMP_LAYER_MODE_NORMAL_LEGACY,
                        GIMP_GRADIENT_SHAPEBURST_DIMPLED,
                        100.0,             /* opacity            */
                        0.0,               /* offset             */
@@ -1939,8 +1938,8 @@ paint_layer_fill (gdouble x1, gdouble y1, gdouble x2, gdouble y2)
       return;
     case FILL_VERTICAL:
       gimp_edit_blend (gfig_context->drawable_id,
-                       GIMP_CUSTOM_MODE,
-                       GIMP_NORMAL_MODE,
+                       GIMP_BLEND_CUSTOM,
+                       GIMP_LAYER_MODE_NORMAL_LEGACY,
                        GIMP_GRADIENT_LINEAR,
                        100.0,
                        0.0,
@@ -1955,8 +1954,8 @@ paint_layer_fill (gdouble x1, gdouble y1, gdouble x2, gdouble y2)
       return;
     case FILL_HORIZONTAL:
       gimp_edit_blend (gfig_context->drawable_id,
-                       GIMP_CUSTOM_MODE,
-                       GIMP_NORMAL_MODE,
+                       GIMP_BLEND_CUSTOM,
+                       GIMP_LAYER_MODE_NORMAL_LEGACY,
                        GIMP_GRADIENT_LINEAR,
                        100.0,
                        0.0,
@@ -1973,7 +1972,7 @@ paint_layer_fill (gdouble x1, gdouble y1, gdouble x2, gdouble y2)
 
   gimp_edit_bucket_fill (gfig_context->drawable_id,
                          fill_mode,    /* Fill mode */
-                         GIMP_NORMAL_MODE,
+                         GIMP_LAYER_MODE_NORMAL_LEGACY,
                          current_style->fill_opacity, /* Fill opacity */
                          0.0,                 /* threshold - ignored */
                          FALSE,               /* Sample merged - ignored */
@@ -1993,7 +1992,7 @@ gfig_paint_callback (void)
 
   objs = gfig_context->current_obj->obj_list;
 
-  gimp_drawable_fill (gfig_context->drawable_id, GIMP_TRANSPARENT_FILL);
+  gimp_drawable_fill (gfig_context->drawable_id, GIMP_FILL_TRANSPARENT);
 
   while (objs)
     {

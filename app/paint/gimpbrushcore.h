@@ -39,36 +39,37 @@ typedef struct _GimpBrushCoreClass GimpBrushCoreClass;
 
 struct _GimpBrushCore
 {
-  GimpPaintCore  parent_instance;
+  GimpPaintCore      parent_instance;
 
-  GimpBrush     *main_brush;
-  GimpBrush     *brush;
-  GimpDynamics  *dynamics;
-  gdouble        spacing;
-  gdouble        scale;
-  gdouble        angle;
-  gdouble        hardness;
-  gdouble        aspect_ratio;
+  GimpBrush         *main_brush;
+  GimpBrush         *brush;
+  GimpDynamics      *dynamics;
+  gdouble            spacing;
+  gdouble            scale;
+  gdouble            aspect_ratio;
+  gdouble            angle;
+  gboolean           reflect;
+  gdouble            hardness;
 
   /*  brush buffers  */
-  TempBuf       *pressure_brush;
+  GimpTempBuf       *pressure_brush;
 
-  TempBuf       *solid_brushes[BRUSH_CORE_SOLID_SUBSAMPLE][BRUSH_CORE_SOLID_SUBSAMPLE];
-  const TempBuf *last_solid_brush_mask;
-  gboolean       solid_cache_invalid;
+  GimpTempBuf       *solid_brushes[BRUSH_CORE_SOLID_SUBSAMPLE][BRUSH_CORE_SOLID_SUBSAMPLE];
+  const GimpTempBuf *last_solid_brush_mask;
+  gboolean           solid_cache_invalid;
 
-  const TempBuf *transform_brush;
-  const TempBuf *transform_pixmap;
+  const GimpTempBuf *transform_brush;
+  const GimpTempBuf *transform_pixmap;
 
-  TempBuf       *subsample_brushes[BRUSH_CORE_SUBSAMPLE + 1][BRUSH_CORE_SUBSAMPLE + 1];
-  const TempBuf *last_subsample_brush_mask;
-  gboolean       subsample_cache_invalid;
+  GimpTempBuf       *subsample_brushes[BRUSH_CORE_SUBSAMPLE + 1][BRUSH_CORE_SUBSAMPLE + 1];
+  const GimpTempBuf *last_subsample_brush_mask;
+  gboolean           subsample_cache_invalid;
 
-  gdouble        jitter;
-  gdouble        jitter_lut_x[BRUSH_CORE_JITTER_LUTSIZE];
-  gdouble        jitter_lut_y[BRUSH_CORE_JITTER_LUTSIZE];
+  gdouble            jitter;
+  gdouble            jitter_lut_x[BRUSH_CORE_JITTER_LUTSIZE];
+  gdouble            jitter_lut_y[BRUSH_CORE_JITTER_LUTSIZE];
 
-  GRand         *rand;
+  GRand             *rand;
 };
 
 struct _GimpBrushCoreClass
@@ -104,10 +105,11 @@ void   gimp_brush_core_paste_canvas   (GimpBrushCore            *core,
                                        const GimpCoords         *coords,
                                        gdouble                   brush_opacity,
                                        gdouble                   image_opacity,
-                                       GimpLayerModeEffects      paint_mode,
+                                       GimpLayerMode             paint_mode,
                                        GimpBrushApplicationMode  brush_hardness,
                                        gdouble                   dynamic_hardness,
-                                       GimpPaintApplicationMode  mode);
+                                       GimpPaintApplicationMode  mode,
+                                       GeglNode                 *op);
 void   gimp_brush_core_replace_canvas (GimpBrushCore            *core,
                                        GimpDrawable             *drawable,
                                        const GimpCoords         *coords,
@@ -115,18 +117,23 @@ void   gimp_brush_core_replace_canvas (GimpBrushCore            *core,
                                        gdouble                   image_opacity,
                                        GimpBrushApplicationMode  brush_hardness,
                                        gdouble                   dynamic_hardness,
-                                       GimpPaintApplicationMode  mode);
+                                       GimpPaintApplicationMode  mode,
+                                       GeglNode                 *op);
 
 void   gimp_brush_core_color_area_with_pixmap
                                       (GimpBrushCore            *core,
                                        GimpDrawable             *drawable,
                                        const GimpCoords         *coords,
-                                       TempBuf                  *area,
+                                       GeglNode                 *op,
+                                       GeglBuffer               *area,
+                                       gint                      area_x,
+                                       gint                      area_y,
                                        GimpBrushApplicationMode  mode);
 
-const TempBuf * gimp_brush_core_get_brush_mask
+const GimpTempBuf * gimp_brush_core_get_brush_mask
                                       (GimpBrushCore            *core,
                                        const GimpCoords         *coords,
+                                       GeglNode                 *op,
                                        GimpBrushApplicationMode  brush_hardness,
                                        gdouble                   dynamic_hardness);
 

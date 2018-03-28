@@ -137,11 +137,11 @@ gimp_thumb_init (const gchar *creator,
 
 #else
 
-      const gchar *home_dir = g_get_home_dir ();
+      const gchar *cache_dir = g_get_user_cache_dir ();
 
-      if (home_dir && g_file_test (home_dir, G_FILE_TEST_IS_DIR))
+      if (cache_dir && g_file_test (cache_dir, G_FILE_TEST_IS_DIR))
         {
-          thumb_dir = g_build_filename (home_dir, ".thumbnails", NULL);
+          thumb_dir = g_build_filename (cache_dir, "thumbnails", NULL);
         }
 
 #endif
@@ -150,7 +150,7 @@ gimp_thumb_init (const gchar *creator,
         {
           gchar *name = g_filename_display_name (g_get_tmp_dir ());
 
-          g_message (_("Cannot determine a valid home directory.\n"
+          g_message (_("Cannot determine a valid thumbnails directory.\n"
                        "Thumbnails will be stored in the folder for "
                        "temporary files (%s) instead."), name);
           g_free (name);
@@ -187,6 +187,28 @@ gimp_thumb_init (const gchar *creator,
 }
 
 /**
+ * gimp_thumb_get_thumb_base_dir:
+ *
+ * Returns the base directory of thumbnails cache.
+ * It uses the Freedesktop Thumbnail Managing Standard on UNIX,
+ * "~/Library/Caches/org.freedesktop.thumbnails" on OSX, and a cache
+ * folder determined by glib on Windows (currently the common repository
+ * for temporary Internet files).
+ * The returned string belongs to GIMP and must not be changed nor freed.
+ *
+ * Returns: the thumbnails cache directory.
+ *
+ * Since: 2.10
+ **/
+const gchar *
+gimp_thumb_get_thumb_base_dir (void)
+{
+  g_return_val_if_fail (gimp_thumb_initialized, NULL);
+
+  return thumb_dir;
+}
+
+/**
  * gimp_thumb_get_thumb_dir:
  * @size: a GimpThumbSize
  *
@@ -217,7 +239,7 @@ gimp_thumb_get_thumb_dir (GimpThumbSize  size)
  *
  * Return value: the thumbnail directory in the encoding of the filesystem
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gchar *
 gimp_thumb_get_thumb_dir_local (const gchar   *dirname,
@@ -296,7 +318,7 @@ gimp_thumb_ensure_thumb_dir (GimpThumbSize   size,
  * Return value: %TRUE is the directory exists, %FALSE if it could not
  *               be created
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_thumb_ensure_thumb_dir_local (const gchar    *dirname,
@@ -391,7 +413,7 @@ gimp_thumb_name_from_uri (const gchar   *uri,
  *               filesystem or %NULL if @uri is a remote file or
  *               points to the user's thumbnail repository.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gchar *
 gimp_thumb_name_from_uri_local (const gchar   *uri,
@@ -576,7 +598,7 @@ gimp_thumb_file_test (const gchar *filename,
  * Deletes all thumbnails for the image file specified by @uri from the
  * user's thumbnail repository.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 void
 gimp_thumbs_delete_for_uri (const gchar *uri)
@@ -605,7 +627,7 @@ gimp_thumbs_delete_for_uri (const gchar *uri)
  * Deletes all thumbnails for the image file specified by @uri from
  * the local thumbnail repository.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 void
 gimp_thumbs_delete_for_uri_local (const gchar *uri)

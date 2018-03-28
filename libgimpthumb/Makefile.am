@@ -46,21 +46,19 @@ libgimpthumbincludedir = $(includedir)/gimp-$(GIMP_API_VERSION)/libgimpthumb
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"LibGimpThumb\"	\
-	-DGIMP_THUMB_COMPILATION
-
-INCLUDES = \
-	-I$(top_srcdir)		\
-	$(GDK_PIXBUF_CFLAGS)	\
-	$(GIO_CFLAGS)		\
-	-I$(includedir)		\
+	-DGIMP_THUMB_COMPILATION	\
+	-I$(top_srcdir)			\
+	$(GDK_PIXBUF_CFLAGS)		\
+	$(GIO_CFLAGS)			\
+	-I$(includedir)			\
 	$(xobjective_c)
 
 EXTRA_DIST = \
 	gimpthumb.def
 
-lib_LTLIBRARIES = libgimpthumb-2.0.la
+lib_LTLIBRARIES = libgimpthumb-@GIMP_API_VERSION@.la
 
-libgimpthumb_2_0_la_SOURCES = \
+libgimpthumb_@GIMP_API_VERSION@_la_SOURCES = \
 	gimpthumb.h		\
 	gimpthumb-enums.c	\
 	gimpthumb-enums.h	\
@@ -80,15 +78,15 @@ libgimpthumbinclude_HEADERS = \
 	gimpthumb-utils.h	\
 	gimpthumbnail.h
 
-libgimpthumb_2_0_la_LDFLAGS = \
+libgimpthumb_@GIMP_API_VERSION@_la_LDFLAGS = \
 	-version-info $(LT_VERSION_INFO)	\
 	$(no_undefined)				\
 	$(libgimpthumb_export_symbols)		\
 	$(framework_cocoa)
 
-libgimpthumb_2_0_la_LIBADD = \
+libgimpthumb_@GIMP_API_VERSION@_la_LIBADD = \
 	$(GDK_PIXBUF_LIBS)	\
-	$(GIO_LIBS) 
+	$(GIO_LIBS)
 
 
 noinst_PROGRAMS = gimp-thumbnail-list
@@ -113,13 +111,13 @@ uninstall-local: uninstall-ms-lib uninstall-libtool-import-lib
 gen_sources = xgen-tec
 CLEANFILES = $(gen_sources)
 
-gimpthumb-enums.c: $(srcdir)/gimpthumb-enums.h $(GIMP_MKENUMS)
-	$(GIMP_MKENUMS) \
+gimpthumb-enums.c: $(srcdir)/gimpthumb-enums.h $(GIMP_MKENUMS) Makefile.am
+	$(AM_V_GEN) $(GIMP_MKENUMS) \
 		--fhead "#include \"config.h\"\n#include <glib-object.h>\n#include \"gimpthumb-enums.h\"" \
 		--fprod "\n/* enumerations from \"@filename@\" */" \
 		--vhead "GType\n@enum_name@_get_type (void)\n{\n  static const G@Type@Value values[] =\n  {" \
 		--vprod "    { @VALUENAME@, @valuedesc@, \"@valuenick@\" }," \
 		--vtail "    { 0, NULL, NULL }\n  };\n\n  static GType type = 0;\n\n  if (G_UNLIKELY (! type))\n    type = g_@type@_register_static (\"@EnumName@\", values);\n\n  return type;\n}\n" \
-		$(srcdir)/gimpthumb-enums.h > xgen-tec \
+		$< > xgen-tec \
 	&& cp xgen-tec $(@F) \
 	&& rm -f xgen-tec

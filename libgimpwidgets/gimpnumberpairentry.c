@@ -33,6 +33,7 @@
 
 #include "gimpwidgetstypes.h"
 
+#include "gimpicons.h"
 #include "gimpnumberpairentry.h"
 
 
@@ -125,7 +126,7 @@ typedef struct
 static void         gimp_number_pair_entry_finalize          (GObject             *entry);
 
 static gboolean     gimp_number_pair_entry_valid_separator   (GimpNumberPairEntry *entry,
-                                                              gunichar             canditate);
+                                                              gunichar             candidate);
 static void         gimp_number_pair_entry_ratio_to_fraction (gdouble              ratio,
                                                               gdouble             *numerator,
                                                               gdouble             *denominator);
@@ -139,7 +140,8 @@ static void         gimp_number_pair_entry_get_property      (GObject           
                                                               GValue              *value,
                                                               GParamSpec          *pspec);
 static void         gimp_number_pair_entry_changed           (GimpNumberPairEntry *entry);
-static gboolean     gimp_number_pair_entry_events            (GtkWidget           *widgett,
+static void         gimp_number_pair_entry_icon_press        (GimpNumberPairEntry *entry);
+static gboolean     gimp_number_pair_entry_events            (GtkWidget           *widget,
                                                               GdkEvent            *event);
 
 static void         gimp_number_pair_entry_update_text       (GimpNumberPairEntry *entry);
@@ -178,8 +180,6 @@ gimp_number_pair_entry_class_init (GimpNumberPairEntryClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (GimpNumberPairEntryPrivate));
-
   entry_signals[NUMBERS_CHANGED] =
     g_signal_new ("numbers-changed",
                   G_TYPE_FROM_CLASS (klass),
@@ -198,43 +198,52 @@ gimp_number_pair_entry_class_init (GimpNumberPairEntryClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
-  klass->numbers_changed = NULL;
-  klass->ratio_changed   = NULL;
-
   object_class->set_property = gimp_number_pair_entry_set_property;
   object_class->get_property = gimp_number_pair_entry_get_property;
   object_class->finalize     = gimp_number_pair_entry_finalize;
 
+  klass->numbers_changed = NULL;
+  klass->ratio_changed   = NULL;
+
   g_object_class_install_property (object_class, PROP_LEFT_NUMBER,
                                    g_param_spec_double ("left-number",
-                                                        "Left number", NULL,
+                                                        "Left number",
+                                                        "The left number",
                                                         G_MINDOUBLE, G_MAXDOUBLE,
                                                         100.0,
                                                         GIMP_PARAM_READWRITE));
+
   g_object_class_install_property (object_class, PROP_RIGHT_NUMBER,
                                    g_param_spec_double ("right-number",
-                                                        "Right number", NULL,
+                                                        "Right number",
+                                                        "The right number",
                                                         G_MINDOUBLE, G_MAXDOUBLE,
                                                         100.0,
                                                         GIMP_PARAM_READWRITE));
+
   g_object_class_install_property (object_class, PROP_DEFAULT_LEFT_NUMBER,
                                    g_param_spec_double ("default-left-number",
-                                                        "Default left number", NULL,
+                                                        "Default left number",
+                                                        "The default left number",
                                                         G_MINDOUBLE, G_MAXDOUBLE,
                                                         100.0,
                                                         GIMP_PARAM_READWRITE));
+
   g_object_class_install_property (object_class, PROP_DEFAULT_RIGHT_NUMBER,
                                    g_param_spec_double ("default-right-number",
-                                                        "Default right number", NULL,
+                                                        "Default right number",
+                                                        "The default right number",
                                                         G_MINDOUBLE, G_MAXDOUBLE,
                                                         100.0,
                                                         GIMP_PARAM_READWRITE));
+
   g_object_class_install_property (object_class, PROP_USER_OVERRIDE,
                                    g_param_spec_boolean ("user-override",
                                                          "User override",
                                                          "Whether the widget is in 'user override' mode",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
+
   g_object_class_install_property (object_class, PROP_SEPARATORS,
                                    g_param_spec_string ("separators",
                                                         "Separators",
@@ -242,18 +251,21 @@ gimp_number_pair_entry_class_init (GimpNumberPairEntryClass *klass)
                                                         NULL,
                                                         GIMP_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY));
+
   g_object_class_install_property (object_class, PROP_DEFAULT_TEXT,
                                    g_param_spec_string ("default-text",
                                                         "Default text",
                                                         "String to show when in automatic mode",
                                                         NULL,
                                                         GIMP_PARAM_READWRITE));
+
   g_object_class_install_property (object_class, PROP_ALLOW_SIMPLIFICATION,
                                    g_param_spec_boolean ("allow-simplification",
                                                          "Allow simplification",
                                                          "Whether to allow simplification",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
+
   g_object_class_install_property (object_class, PROP_MIN_VALID_VALUE,
                                    g_param_spec_double ("min-valid-value",
                                                         "Min valid value",
@@ -261,6 +273,7 @@ gimp_number_pair_entry_class_init (GimpNumberPairEntryClass *klass)
                                                         G_MINDOUBLE, G_MAXDOUBLE,
                                                         G_MINDOUBLE,
                                                         GIMP_PARAM_READWRITE));
+
   g_object_class_install_property (object_class, PROP_MAX_VALID_VALUE,
                                    g_param_spec_double ("max-valid-value",
                                                         "Max valid value",
@@ -268,18 +281,24 @@ gimp_number_pair_entry_class_init (GimpNumberPairEntryClass *klass)
                                                         G_MINDOUBLE, G_MAXDOUBLE,
                                                         G_MAXDOUBLE,
                                                         GIMP_PARAM_READWRITE));
+
   g_object_class_install_property (object_class, PROP_RATIO,
                                    g_param_spec_double ("ratio",
-                                                        "Ratio", NULL,
+                                                        "Ratio",
+                                                        "The value as ratio",
                                                         G_MINDOUBLE, G_MAXDOUBLE,
                                                         1.0,
                                                         GIMP_PARAM_READWRITE));
+
   g_object_class_install_property (object_class, PROP_ASPECT,
                                    g_param_spec_enum ("aspect",
-                                                      "Aspect", NULL,
+                                                      "Aspect",
+                                                      "The value as aspect",
                                                       GIMP_TYPE_ASPECT_TYPE,
                                                       GIMP_ASPECT_SQUARE,
                                                       GIMP_PARAM_READWRITE));
+
+  g_type_class_add_private (klass, sizeof (GimpNumberPairEntryPrivate));
 }
 
 static void
@@ -309,6 +328,9 @@ gimp_number_pair_entry_init (GimpNumberPairEntry *entry)
   g_signal_connect (entry, "changed",
                     G_CALLBACK (gimp_number_pair_entry_changed),
                     NULL);
+  g_signal_connect (entry, "icon-press",
+                    G_CALLBACK (gimp_number_pair_entry_icon_press),
+                    NULL);
   g_signal_connect (entry, "focus-out-event",
                     G_CALLBACK (gimp_number_pair_entry_events),
                     NULL);
@@ -317,6 +339,10 @@ gimp_number_pair_entry_init (GimpNumberPairEntry *entry)
                     NULL);
 
   gtk_widget_set_direction (GTK_WIDGET (entry), GTK_TEXT_DIR_LTR);
+
+  gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry),
+                                     GTK_ENTRY_ICON_SECONDARY,
+                                     GIMP_ICON_EDIT_CLEAR);
 }
 
 static void
@@ -369,7 +395,7 @@ gimp_number_pair_entry_finalize (GObject *object)
  *
  * Return value: The new #GimpNumberPairEntry widget.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 GtkWidget *
 gimp_number_pair_entry_new (const gchar *separators,
@@ -447,7 +473,7 @@ gimp_number_pair_entry_ratio_to_fraction (gdouble  ratio,
  * An attempt is made to convert the decimal number into a fraction
  * with left_number and right_number < 1000.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 void
 gimp_number_pair_entry_set_ratio (GimpNumberPairEntry *entry,
@@ -471,7 +497,7 @@ gimp_number_pair_entry_set_ratio (GimpNumberPairEntry *entry,
  *
  * Returns: The ratio value.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gdouble
 gimp_number_pair_entry_get_ratio (GimpNumberPairEntry *entry)
@@ -495,7 +521,7 @@ gimp_number_pair_entry_get_ratio (GimpNumberPairEntry *entry)
  * ignoring if the user has set his/her own value. The state of
  * user-override will not be changed.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 void
 gimp_number_pair_entry_set_values (GimpNumberPairEntry *entry,
@@ -579,7 +605,7 @@ gimp_number_pair_entry_set_values (GimpNumberPairEntry *entry,
  *
  * Gets the numbers displayed by a #GimpNumberPairEntry.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 void
 gimp_number_pair_entry_get_values (GimpNumberPairEntry *entry,
@@ -612,7 +638,7 @@ gimp_number_pair_entry_get_values (GimpNumberPairEntry *entry,
  * Set the default string to %NULL to display default values as
  * normal.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  */
 void
 gimp_number_pair_entry_set_default_text (GimpNumberPairEntry *entry,
@@ -636,10 +662,10 @@ gimp_number_pair_entry_set_default_text (GimpNumberPairEntry *entry,
  * gimp_number_pair_entry_get_default_text:
  * @entry:  A #GimpNumberPairEntry widget.
  *
- * Returns: the string manully set to be shown, or %NULL if values are
+ * Returns: the string manually set to be shown, or %NULL if values are
  *          shown in a normal fashion.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  */
 const gchar *
 gimp_number_pair_entry_get_default_text (GimpNumberPairEntry *entry)
@@ -662,7 +688,7 @@ gimp_number_pair_entry_get_default_text (GimpNumberPairEntry *entry)
  * right_number if necessary (or setting them to 1.0 in case that
  * @aspect is %GIMP_ASPECT_SQUARE).
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 void
 gimp_number_pair_entry_set_aspect (GimpNumberPairEntry *entry,
@@ -702,7 +728,7 @@ gimp_number_pair_entry_set_aspect (GimpNumberPairEntry *entry,
  *
  * Returns: The entry's current aspect.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 GimpAspectType
 gimp_number_pair_entry_get_aspect (GimpNumberPairEntry *entry)
@@ -756,6 +782,10 @@ gimp_number_pair_entry_modify_font (GimpNumberPairEntry *entry,
 
   gtk_widget_modify_style (GTK_WIDGET (entry), rc_style);
 
+  gtk_entry_set_icon_sensitive (GTK_ENTRY (entry),
+                                GTK_ENTRY_ICON_SECONDARY,
+                                ! italic);
+
   priv->font_italic = italic;
 }
 
@@ -770,7 +800,7 @@ gimp_number_pair_entry_modify_font (GimpNumberPairEntry *entry,
  * change when the default values are changed. When in user overridden
  * mode, setting default values will not affect the active values.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 void
 gimp_number_pair_entry_set_user_override (GimpNumberPairEntry *entry,
@@ -800,9 +830,9 @@ gimp_number_pair_entry_set_user_override (GimpNumberPairEntry *entry,
  * gimp_number_pair_entry_get_user_override:
  * @entry: A #GimpNumberPairEntry widget.
  *
- * Returns: Wether or not the the widget is in user overridden mode.
+ * Returns: Whether or not the the widget is in user overridden mode.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_number_pair_entry_get_user_override (GimpNumberPairEntry *entry)
@@ -820,6 +850,14 @@ static void
 gimp_number_pair_entry_changed (GimpNumberPairEntry *entry)
 {
   gimp_number_pair_entry_modify_font (entry, FALSE);
+}
+
+static void
+gimp_number_pair_entry_icon_press (GimpNumberPairEntry *entry)
+{
+  gimp_number_pair_entry_set_user_override (entry, FALSE);
+
+  gtk_editable_set_position (GTK_EDITABLE (entry), -1);
 }
 
 static gboolean
@@ -878,27 +916,20 @@ gimp_number_pair_entry_events (GtkWidget *widget,
                                                      left_value,
                                                      right_value);
 
-                  priv->user_override = TRUE;
-                  g_object_notify (G_OBJECT (entry), "user-override");
+                  gimp_number_pair_entry_set_user_override (entry, TRUE);
                 }
             }
             break;
 
           case PARSE_CLEAR:
-
-            gimp_number_pair_entry_set_values (entry,
-                                               priv->default_left_number,
-                                               priv->default_right_number);
-
-            priv->user_override = FALSE;
-            g_object_notify (G_OBJECT (entry), "user-override");
+            gimp_number_pair_entry_set_user_override (entry, FALSE);
             break;
 
           default:
             break;
           }
 
-        /* Mak sure the entry text is up to date */
+        /* Make sure the entry text is up to date */
 
         gimp_number_pair_entry_update_text (entry);
 
@@ -969,6 +1000,8 @@ gimp_number_pair_entry_update_text (GimpNumberPairEntry *entry)
 
   g_signal_handlers_unblock_by_func (entry,
                                      gimp_number_pair_entry_changed, NULL);
+
+  gimp_number_pair_entry_modify_font (entry, ! priv->user_override);
 }
 
 static gboolean
@@ -1006,11 +1039,19 @@ gimp_number_pair_entry_parse_text (GimpNumberPairEntry *entry,
   gboolean  simplify = FALSE;
   gchar    *end;
 
+  /* skip over whitespace */
+  while (g_unichar_isspace (g_utf8_get_char (text)))
+    text = g_utf8_next_char (text);
+
+  /* check if clear */
+  if (! *text)
+    return PARSE_CLEAR;
+
   /* try to parse a number */
   new_left_number = strtod (text, &end);
 
   if (end == text)
-    return PARSE_CLEAR;
+    return PARSE_INVALID;
   else
     text = end;
 
@@ -1207,7 +1248,7 @@ gimp_number_pair_entry_get_property (GObject    *object,
  * @left:  Default left value in the entry.
  * @right: Default right value in the entry.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 void
 gimp_number_pair_entry_set_default_values (GimpNumberPairEntry *entry,
@@ -1237,7 +1278,7 @@ gimp_number_pair_entry_set_default_values (GimpNumberPairEntry *entry,
  * @left:  Pointer of where to put left value.
  * @right: Pointer of where to put right value.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 void
 gimp_number_pair_entry_get_default_values (GimpNumberPairEntry *entry,

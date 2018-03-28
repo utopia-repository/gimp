@@ -21,6 +21,7 @@
 #include "config.h"
 
 #include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <pango/pangocairo.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -34,7 +35,7 @@
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-undo.h"
-#include "core/gimplayer-floating-sel.h"
+#include "core/gimplayer-floating-selection.h"
 
 #include "gimptext.h"
 #include "gimptext-compat.h"

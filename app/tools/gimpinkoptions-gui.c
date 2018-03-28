@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -60,15 +61,13 @@ gimp_ink_options_gui (GimpToolOptions *tool_options)
   gtk_widget_show (vbox2);
 
   /*  size slider  */
-  scale = gimp_prop_spin_scale_new (config, "size",
-                                    _("Size"),
+  scale = gimp_prop_spin_scale_new (config, "size", NULL,
                                     1.0, 2.0, 1);
   gtk_box_pack_start (GTK_BOX (vbox2), scale, FALSE, FALSE, 0);
   gtk_widget_show (scale);
 
   /* angle adjust slider */
-  scale = gimp_prop_spin_scale_new (config, "tilt-angle",
-                                    _("Angle"),
+  scale = gimp_prop_spin_scale_new (config, "tilt-angle", NULL,
                                     1.0, 10.0, 1);
   gtk_box_pack_start (GTK_BOX (vbox2), scale, FALSE, FALSE, 0);
   gtk_widget_show (scale);
@@ -83,22 +82,19 @@ gimp_ink_options_gui (GimpToolOptions *tool_options)
   gtk_widget_show (vbox2);
 
   /* size sens slider */
-  scale = gimp_prop_spin_scale_new (config, "size-sensitivity",
-                                    _("Size"),
+  scale = gimp_prop_spin_scale_new (config, "size-sensitivity", NULL,
                                     0.01, 0.1, 2);
   gtk_box_pack_start (GTK_BOX (vbox2), scale, FALSE, FALSE, 0);
   gtk_widget_show (scale);
 
   /* tilt sens slider */
-  scale = gimp_prop_spin_scale_new (config, "tilt-sensitivity",
-                                    _("Tilt"),
+  scale = gimp_prop_spin_scale_new (config, "tilt-sensitivity", NULL,
                                     0.01, 0.1, 2);
   gtk_box_pack_start (GTK_BOX (vbox2), scale, FALSE, FALSE, 0);
   gtk_widget_show (scale);
 
   /* velocity sens slider */
-  scale = gimp_prop_spin_scale_new (config, "vel-sensitivity",
-                                    _("Speed"),
+  scale = gimp_prop_spin_scale_new (config, "vel-sensitivity", NULL,
                                     0.01, 0.1, 2);
   gtk_box_pack_start (GTK_BOX (vbox2), scale, FALSE, FALSE, 0);
   gtk_widget_show (scale);
@@ -115,8 +111,8 @@ gimp_ink_options_gui (GimpToolOptions *tool_options)
   size_group = gtk_size_group_new (GTK_SIZE_GROUP_VERTICAL);
 
   /* Blob type radiobuttons */
-  blob_box = gimp_prop_enum_stock_box_new (config, "blob-type",
-                                           "gimp-shape", 0, 0);
+  blob_box = gimp_prop_enum_icon_box_new (config, "blob-type",
+                                          "gimp-shape", 0, 0);
   gtk_orientable_set_orientation (GTK_ORIENTABLE (blob_box),
                                   GTK_ORIENTATION_VERTICAL);
   gtk_box_pack_start (GTK_BOX (hbox), blob_box, FALSE, FALSE, 0);

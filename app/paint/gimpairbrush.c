@@ -17,24 +17,18 @@
 
 #include "config.h"
 
-#include <cairo.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
-#include "libgimpcolor/gimpcolor.h"
-
 #include "paint-types.h"
-
-#include "base/temp-buf.h"
-
-#include "paint-funcs/paint-funcs.h"
 
 #include "core/gimp.h"
 #include "core/gimpbrush.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpdynamics.h"
-#include "core/gimpdynamicsoutput.h"
 #include "core/gimpgradient.h"
 #include "core/gimpimage.h"
+#include "core/gimpsymmetry.h"
 
 #include "gimpairbrush.h"
 #include "gimpairbrushoptions.h"
@@ -47,13 +41,14 @@ static void       gimp_airbrush_finalize (GObject          *object);
 static void       gimp_airbrush_paint    (GimpPaintCore    *paint_core,
                                           GimpDrawable     *drawable,
                                           GimpPaintOptions *paint_options,
-                                          const GimpCoords *coords,
+                                          GimpSymmetry     *sym,
                                           GimpPaintState    paint_state,
                                           guint32           time);
 static void       gimp_airbrush_motion   (GimpPaintCore    *paint_core,
                                           GimpDrawable     *drawable,
                                           GimpPaintOptions *paint_options,
-                                          const GimpCoords *coords);
+                                          GimpSymmetry     *sym);
+
 static gboolean   gimp_airbrush_timeout  (gpointer          data);
 
 
@@ -88,7 +83,6 @@ gimp_airbrush_class_init (GimpAirbrushClass *klass)
 static void
 gimp_airbrush_init (GimpAirbrush *airbrush)
 {
-  airbrush->timeout_id = 0;
 }
 
 static void
@@ -102,6 +96,8 @@ gimp_airbrush_finalize (GObject *object)
       airbrush->timeout_id = 0;
     }
 
+  g_clear_object (&airbrush->sym);
+
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
@@ -109,7 +105,7 @@ static void
 gimp_airbrush_paint (GimpPaintCore    *paint_core,
                      GimpDrawable     *drawable,
                      GimpPaintOptions *paint_options,
-                     const GimpCoords *coords,
+                     GimpSymmetry     *sym,
                      GimpPaintState    paint_state,
                      guint32           time)
 {
@@ -117,37 +113,31 @@ gimp_airbrush_paint (GimpPaintCore    *paint_core,
   GimpAirbrushOptions *options  = GIMP_AIRBRUSH_OPTIONS (paint_options);
   GimpDynamics        *dynamics = GIMP_BRUSH_CORE (paint_core)->dynamics;
 
+  if (airbrush->timeout_id)
+    {
+      g_source_remove (airbrush->timeout_id);
+      airbrush->timeout_id = 0;
+    }
+
   switch (paint_state)
     {
     case GIMP_PAINT_STATE_INIT:
-      if (airbrush->timeout_id)
-        {
-          g_source_remove (airbrush->timeout_id);
-          airbrush->timeout_id = 0;
-        }
-
       GIMP_PAINT_CORE_CLASS (parent_class)->paint (paint_core, drawable,
                                                    paint_options,
-                                                   coords,
+                                                   sym,
                                                    paint_state, time);
       break;
 
     case GIMP_PAINT_STATE_MOTION:
-      if (airbrush->timeout_id)
-        {
-          g_source_remove (airbrush->timeout_id);
-          airbrush->timeout_id = 0;
-        }
+      gimp_airbrush_motion (paint_core, drawable, paint_options, sym);
 
-      gimp_airbrush_motion (paint_core, drawable, paint_options, coords);
-
-      if ((options->rate != 0.0) && (!options->motion_only))
+      if ((options->rate != 0.0) && ! options->motion_only)
         {
-          GimpImage          *image = gimp_item_get_image (GIMP_ITEM (drawable));
-          GimpDynamicsOutput *rate_output;
-          gdouble             fade_point;
-          gdouble             dynamic_rate;
-          gint                timeout;
+          GimpImage  *image = gimp_item_get_image (GIMP_ITEM (drawable));
+          gdouble     fade_point;
+          gdouble     dynamic_rate;
+          gint        timeout;
+          GimpCoords *coords;
 
           fade_point = gimp_paint_options_get_fade (paint_options, image,
                                                     paint_core->pixel_dist);
@@ -155,13 +145,18 @@ gimp_airbrush_paint (GimpPaintCore    *paint_core,
           airbrush->drawable      = drawable;
           airbrush->paint_options = paint_options;
 
-          rate_output = gimp_dynamics_get_output (dynamics,
-                                                  GIMP_DYNAMICS_OUTPUT_RATE);
+          if (airbrush->sym)
+            g_object_unref (airbrush->sym);
+          airbrush->sym = g_object_ref (sym);
 
-          dynamic_rate = gimp_dynamics_output_get_linear_value (rate_output,
-                                                                coords,
-                                                                paint_options,
-                                                                fade_point);
+          /* Base our timeout on the original stroke. */
+          coords = gimp_symmetry_get_origin (sym);
+
+          dynamic_rate = gimp_dynamics_get_linear_value (dynamics,
+                                                         GIMP_DYNAMICS_OUTPUT_RATE,
+                                                         coords,
+                                                         paint_options,
+                                                         fade_point);
 
           timeout = 10000 / (options->rate * dynamic_rate);
 
@@ -172,16 +167,12 @@ gimp_airbrush_paint (GimpPaintCore    *paint_core,
       break;
 
     case GIMP_PAINT_STATE_FINISH:
-      if (airbrush->timeout_id)
-        {
-          g_source_remove (airbrush->timeout_id);
-          airbrush->timeout_id = 0;
-        }
-
       GIMP_PAINT_CORE_CLASS (parent_class)->paint (paint_core, drawable,
                                                    paint_options,
-                                                   coords,
+                                                   sym,
                                                    paint_state, time);
+
+      g_clear_object (&airbrush->sym);
       break;
     }
 }
@@ -190,45 +181,44 @@ static void
 gimp_airbrush_motion (GimpPaintCore    *paint_core,
                       GimpDrawable     *drawable,
                       GimpPaintOptions *paint_options,
-                      const GimpCoords *coords)
+                      GimpSymmetry     *sym)
 
 {
-  GimpAirbrushOptions *options = GIMP_AIRBRUSH_OPTIONS (paint_options);
-  GimpImage           *image   = gimp_item_get_image (GIMP_ITEM (drawable));
-  GimpDynamicsOutput  *flow_output;
+  GimpAirbrushOptions *options  = GIMP_AIRBRUSH_OPTIONS (paint_options);
+  GimpDynamics        *dynamics = GIMP_BRUSH_CORE (paint_core)->dynamics;
+  GimpImage           *image    = gimp_item_get_image (GIMP_ITEM (drawable));
   gdouble              opacity;
   gdouble              fade_point;
-
-  flow_output = gimp_dynamics_get_output (GIMP_BRUSH_CORE (paint_core)->dynamics,
-                                          GIMP_DYNAMICS_OUTPUT_FLOW);
+  GimpCoords          *coords;
 
   fade_point = gimp_paint_options_get_fade (paint_options, image,
                                             paint_core->pixel_dist);
 
-  opacity = (options->flow / 100.0 *
-             gimp_dynamics_output_get_linear_value (flow_output,
-                                                    coords,
-                                                    paint_options,
-                                                    fade_point));
+  coords = gimp_symmetry_get_origin (sym);
 
-  _gimp_paintbrush_motion (paint_core, drawable, paint_options, coords, opacity);
+  opacity = (options->flow / 100.0 *
+             gimp_dynamics_get_linear_value (dynamics,
+                                             GIMP_DYNAMICS_OUTPUT_FLOW,
+                                             coords,
+                                             paint_options,
+                                             fade_point));
+
+  _gimp_paintbrush_motion (paint_core, drawable, paint_options,
+                           sym, opacity);
 }
 
 static gboolean
 gimp_airbrush_timeout (gpointer data)
 {
   GimpAirbrush *airbrush = GIMP_AIRBRUSH (data);
-  GimpCoords    coords;
-
-  gimp_paint_core_get_current_coords (GIMP_PAINT_CORE (airbrush), &coords);
 
   gimp_airbrush_paint (GIMP_PAINT_CORE (airbrush),
                        airbrush->drawable,
                        airbrush->paint_options,
-                       &coords,
+                       airbrush->sym,
                        GIMP_PAINT_STATE_MOTION, 0);
 
   gimp_image_flush (gimp_item_get_image (GIMP_ITEM (airbrush->drawable)));
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }

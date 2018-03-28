@@ -25,6 +25,9 @@
 #include <pygobject.h>
 #include <pygtk/pygtk.h>
 
+#include <pycairo.h>
+Pycairo_CAPI_t *Pycairo_CAPI;
+
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
@@ -39,17 +42,30 @@ extern PyMethodDef gimpui_functions[];
 
 
 static char gimpui_doc[] =
-"This module provides interfaces to allow you to write gimp plugins"
+"This module provides interfaces to allow you to write gimp plug-ins"
 ;
 
 void init_gimpui(void);
+
+static gboolean
+init_pycairo(void)
+{
+  Pycairo_IMPORT;
+  if (Pycairo_CAPI == NULL)
+    return FALSE;
+
+  return TRUE;
+}
+
+extern const char *prog_name;
+
+const char *prog_name = "pygimp";
 
 PyMODINIT_FUNC
 init_gimpui(void)
 {
     PyObject *m, *d;
     PyObject *av;
-    char *prog_name = "pygimp";
 
     av = PySys_GetObject("argv");
     if (av != NULL) {
@@ -61,11 +77,12 @@ init_gimpui(void)
 		       "ignoring sys.argv: it must be a list of strings");
     }
 
-    gimp_ui_init(prog_name, FALSE);
 
     pygimp_init_pygobject();
 
     init_pygtk();
+    if (!init_pycairo())
+      return;
     init_pygimpcolor();
     init_pygimp();
 

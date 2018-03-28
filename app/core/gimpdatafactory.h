@@ -25,12 +25,13 @@
 #include "gimpobject.h"
 
 
-typedef GimpData * (* GimpDataNewFunc)         (GimpContext  *context,
-                                                const gchar  *name);
-typedef GList    * (* GimpDataLoadFunc)        (GimpContext  *context,
-                                                const gchar  *filename,
-                                                GError      **error);
-typedef GimpData * (* GimpDataGetStandardFunc) (GimpContext  *context);
+typedef GimpData * (* GimpDataNewFunc)         (GimpContext   *context,
+                                                const gchar   *name);
+typedef GList    * (* GimpDataLoadFunc)        (GimpContext   *context,
+                                                GFile         *file,
+                                                GInputStream  *input,
+                                                GError       **error);
+typedef GimpData * (* GimpDataGetStandardFunc) (GimpContext   *context);
 
 
 typedef struct _GimpDataFactoryLoaderEntry GimpDataFactoryLoaderEntry;
@@ -81,6 +82,7 @@ GimpDataFactory * gimp_data_factory_new      (Gimp                             *
 void            gimp_data_factory_data_init         (GimpDataFactory  *factory,
                                                      GimpContext      *context,
                                                      gboolean          no_data);
+void            gimp_data_factory_data_clean        (GimpDataFactory  *factory);
 void            gimp_data_factory_data_refresh      (GimpDataFactory  *factory,
                                                      GimpContext      *context);
 void            gimp_data_factory_data_save         (GimpDataFactory  *factory);
@@ -100,6 +102,7 @@ GimpData      * gimp_data_factory_data_get_standard (GimpDataFactory  *factory,
 gboolean        gimp_data_factory_data_save_single  (GimpDataFactory  *factory,
                                                      GimpData         *data,
                                                      GError          **error);
+GType           gimp_data_factory_get_data_type     (GimpDataFactory  *factory);
 GimpContainer * gimp_data_factory_get_container     (GimpDataFactory  *factory);
 GimpContainer * gimp_data_factory_get_container_obsolete
                                                     (GimpDataFactory  *factory);

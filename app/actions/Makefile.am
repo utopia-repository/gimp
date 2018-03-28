@@ -1,15 +1,13 @@
 ## Process this file with automake to produce Makefile.in
 
 AM_CPPFLAGS = \
-	-DG_LOG_DOMAIN=\"Gimp-Actions\"
-
-INCLUDES = \
-	-I$(top_builddir)	\
-	-I$(top_srcdir)		\
-	-I$(top_builddir)/app	\
-	-I$(top_srcdir)/app	\
-	$(GEGL_CFLAGS)		\
-	$(GTK_CFLAGS)		\
+	-DG_LOG_DOMAIN=\"Gimp-Actions\"	\
+	-I$(top_builddir)		\
+	-I$(top_srcdir)			\
+	-I$(top_builddir)/app		\
+	-I$(top_srcdir)/app		\
+	$(GEGL_CFLAGS)			\
+	$(GTK_CFLAGS)			\
 	-I$(includedir)
 
 noinst_LIBRARIES = libappactions.a
@@ -18,6 +16,9 @@ libappactions_a_SOURCES = \
 	actions-types.h			\
 	actions.c			\
 	actions.h			\
+	\
+	gimpgeglprocedure.c		\
+	gimpgeglprocedure.h		\
 	\
 	brush-editor-actions.c		\
 	brush-editor-actions.h		\
@@ -35,10 +36,6 @@ libappactions_a_SOURCES = \
 	colormap-actions.h		\
 	colormap-commands.c		\
 	colormap-commands.h		\
-	config-actions.c		\
-	config-actions.h		\
-	config-commands.c		\
-	config-commands.h		\
 	context-actions.c		\
 	context-actions.h		\
 	context-commands.c		\
@@ -47,6 +44,10 @@ libappactions_a_SOURCES = \
 	cursor-info-actions.h		\
 	cursor-info-commands.c		\
 	cursor-info-commands.h		\
+	dashboard-actions.c		\
+	dashboard-actions.h		\
+	dashboard-commands.c		\
+	dashboard-commands.h		\
 	data-commands.c			\
 	data-commands.h			\
 	data-editor-commands.c		\
@@ -91,6 +92,10 @@ libappactions_a_SOURCES = \
 	file-actions.h			\
 	file-commands.c			\
 	file-commands.h			\
+	filters-actions.c		\
+	filters-actions.h		\
+	filters-commands.c		\
+	filters-commands.h		\
 	fonts-actions.c			\
 	fonts-actions.h			\
 	fonts-commands.c		\
@@ -115,10 +120,16 @@ libappactions_a_SOURCES = \
 	images-actions.h		\
 	images-commands.c		\
 	images-commands.h		\
+	items-commands.c		\
+	items-commands.h		\
+	items-actions.c			\
+	items-actions.h			\
 	layers-actions.c		\
 	layers-actions.h		\
 	layers-commands.c		\
 	layers-commands.h		\
+	mypaint-brushes-actions.c	\
+	mypaint-brushes-actions.h	\
 	palette-editor-actions.c	\
 	palette-editor-actions.h	\
 	palette-editor-commands.c	\
@@ -133,6 +144,8 @@ libappactions_a_SOURCES = \
 	plug-in-actions.h		\
 	plug-in-commands.c		\
 	plug-in-commands.h		\
+	procedure-commands.c		\
+	procedure-commands.h		\
 	quick-mask-actions.c		\
 	quick-mask-actions.h		\
 	quick-mask-commands.c		\
@@ -163,8 +176,12 @@ libappactions_a_SOURCES = \
 	tool-options-commands.h		\
 	tool-presets-actions.c		\
 	tool-presets-actions.h		\
+	tool-presets-commands.c		\
+	tool-presets-commands.h		\
 	tool-preset-editor-actions.c	\
 	tool-preset-editor-actions.h	\
+	tool-preset-editor-commands.c	\
+	tool-preset-editor-commands.h	\
 	tools-actions.c			\
 	tools-actions.h			\
 	tools-commands.c		\

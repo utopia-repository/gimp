@@ -31,15 +31,16 @@
 #include "core/gimpprogress.h"
 
 #include "gimpcanvas.h"
+#include "gimpcanvas-style.h"
 #include "gimpcanvasitem-utils.h"
 #include "gimpcanvasprogress.h"
 #include "gimpdisplayshell.h"
-#include "gimpdisplayshell-transform.h"
-#include "gimpdisplayshell-style.h"
 
 
-#define BORDER   5
-#define RADIUS  20
+#define BORDER                5
+#define RADIUS               20
+
+#define MIN_UPDATE_INTERVAL  50000 /* microseconds */
 
 
 enum
@@ -61,6 +62,8 @@ struct _GimpCanvasProgressPrivate
 
   gchar            *text;
   gdouble           value;
+
+  guint64           last_update_time;
 };
 
 #define GET_PRIVATE(progress) \
@@ -73,37 +76,38 @@ struct _GimpCanvasProgressPrivate
 
 static void             gimp_canvas_progress_iface_init   (GimpProgressInterface *iface);
 
-static void             gimp_canvas_progress_finalize     (GObject          *object);
-static void             gimp_canvas_progress_set_property (GObject          *object,
-                                                           guint             property_id,
-                                                           const GValue     *value,
-                                                           GParamSpec       *pspec);
-static void             gimp_canvas_progress_get_property (GObject          *object,
-                                                           guint             property_id,
-                                                           GValue           *value,
-                                                           GParamSpec       *pspec);
-static void             gimp_canvas_progress_draw         (GimpCanvasItem   *item,
-                                                           GimpDisplayShell *shell,
-                                                           cairo_t          *cr);
-static cairo_region_t * gimp_canvas_progress_get_extents  (GimpCanvasItem   *item,
-                                                           GimpDisplayShell *shell);
+static void             gimp_canvas_progress_finalize     (GObject               *object);
+static void             gimp_canvas_progress_set_property (GObject               *object,
+                                                           guint                  property_id,
+                                                           const GValue          *value,
+                                                           GParamSpec            *pspec);
+static void             gimp_canvas_progress_get_property (GObject               *object,
+                                                           guint                  property_id,
+                                                           GValue                *value,
+                                                           GParamSpec            *pspec);
+static void             gimp_canvas_progress_draw         (GimpCanvasItem        *item,
+                                                           cairo_t               *cr);
+static cairo_region_t * gimp_canvas_progress_get_extents  (GimpCanvasItem        *item);
+static gboolean         gimp_canvas_progress_hit          (GimpCanvasItem        *item,
+                                                           gdouble                x,
+                                                           gdouble                y);
 
-static GimpProgress   * gimp_canvas_progress_start        (GimpProgress      *progress,
-                                                           const gchar       *message,
-                                                           gboolean           cancelable);
-static void             gimp_canvas_progress_end          (GimpProgress      *progress);
-static gboolean         gimp_canvas_progress_is_active    (GimpProgress      *progress);
-static void             gimp_canvas_progress_set_text     (GimpProgress      *progress,
-                                                           const gchar       *message);
-static void             gimp_canvas_progress_set_value    (GimpProgress      *progress,
-                                                           gdouble            percentage);
-static gdouble          gimp_canvas_progress_get_value    (GimpProgress      *progress);
-static void             gimp_canvas_progress_pulse        (GimpProgress      *progress);
-static gboolean         gimp_canvas_progress_message      (GimpProgress      *progress,
-                                                           Gimp              *gimp,
-                                                           GimpMessageSeverity severity,
-                                                           const gchar       *domain,
-                                                           const gchar       *message);
+static GimpProgress   * gimp_canvas_progress_start        (GimpProgress          *progress,
+                                                           gboolean               cancellable,
+                                                           const gchar           *message);
+static void             gimp_canvas_progress_end          (GimpProgress          *progress);
+static gboolean         gimp_canvas_progress_is_active    (GimpProgress          *progress);
+static void             gimp_canvas_progress_set_text     (GimpProgress          *progress,
+                                                           const gchar           *message);
+static void             gimp_canvas_progress_set_value    (GimpProgress          *progress,
+                                                           gdouble                percentage);
+static gdouble          gimp_canvas_progress_get_value    (GimpProgress          *progress);
+static void             gimp_canvas_progress_pulse        (GimpProgress          *progress);
+static gboolean         gimp_canvas_progress_message      (GimpProgress          *progress,
+                                                           Gimp                  *gimp,
+                                                           GimpMessageSeverity    severity,
+                                                           const gchar           *domain,
+                                                           const gchar           *message);
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpCanvasProgress, gimp_canvas_progress,
@@ -126,6 +130,7 @@ gimp_canvas_progress_class_init (GimpCanvasProgressClass *klass)
 
   item_class->draw           = gimp_canvas_progress_draw;
   item_class->get_extents    = gimp_canvas_progress_get_extents;
+  item_class->hit            = gimp_canvas_progress_hit;
 
   g_object_class_install_property (object_class, PROP_ANCHOR,
                                    g_param_spec_enum ("anchor", NULL, NULL,
@@ -233,27 +238,29 @@ gimp_canvas_progress_get_property (GObject    *object,
 }
 
 static PangoLayout *
-gimp_canvas_progress_transform (GimpCanvasItem   *item,
-                                GimpDisplayShell *shell,
-                                gdouble          *x,
-                                gdouble          *y,
-                                gint             *width,
-                                gint             *height)
+gimp_canvas_progress_transform (GimpCanvasItem *item,
+                                gdouble        *x,
+                                gdouble        *y,
+                                gint           *width,
+                                gint           *height)
 {
   GimpCanvasProgressPrivate *private = GET_PRIVATE (item);
+  GtkWidget                 *canvas  = gimp_canvas_item_get_canvas (item);
   PangoLayout               *layout;
 
-  layout = gimp_canvas_get_layout (GIMP_CANVAS (shell->canvas), "%s",
+  layout = gimp_canvas_get_layout (GIMP_CANVAS (canvas), "%s",
                                    private->text);
 
   pango_layout_get_pixel_size (layout, width, height);
 
+  *width = MAX (*width, 2 * RADIUS);
+
   *width  += 2 * BORDER;
   *height += 3 * BORDER + 2 * RADIUS;
 
-  gimp_display_shell_transform_xy_f (shell,
-                                     private->x, private->y,
-                                     x, y);
+  gimp_canvas_item_transform_xy_f (item,
+                                   private->x, private->y,
+                                   x, y);
 
   gimp_canvas_item_shift_to_north_west (private->anchor,
                                         *x, *y,
@@ -268,15 +275,15 @@ gimp_canvas_progress_transform (GimpCanvasItem   *item,
 }
 
 static void
-gimp_canvas_progress_draw (GimpCanvasItem   *item,
-                           GimpDisplayShell *shell,
-                           cairo_t          *cr)
+gimp_canvas_progress_draw (GimpCanvasItem *item,
+                           cairo_t        *cr)
 {
   GimpCanvasProgressPrivate *private = GET_PRIVATE (item);
+  GtkWidget                 *canvas  = gimp_canvas_item_get_canvas (item);
   gdouble                    x, y;
   gint                       width, height;
 
-  gimp_canvas_progress_transform (item, shell, &x, &y, &width, &height);
+  gimp_canvas_progress_transform (item, &x, &y, &width, &height);
 
   cairo_move_to (cr, x, y);
   cairo_line_to (cr, x + width, y);
@@ -291,10 +298,10 @@ gimp_canvas_progress_draw (GimpCanvasItem   *item,
   cairo_move_to (cr, x + BORDER, y + BORDER);
   cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 1.0);
   pango_cairo_show_layout (cr,
-                           gimp_canvas_get_layout (GIMP_CANVAS (shell->canvas),
+                           gimp_canvas_get_layout (GIMP_CANVAS (canvas),
                                                    "%s", private->text));
 
-  gimp_display_shell_set_tool_bg_style (shell, cr);
+  gimp_canvas_set_tool_bg_style (gimp_canvas_item_get_canvas (item), cr);
   cairo_arc (cr, x + BORDER + RADIUS, y + height - BORDER - RADIUS,
              RADIUS, - G_PI / 2.0, 2 * G_PI - G_PI / 2.0);
   cairo_fill (cr);
@@ -307,14 +314,13 @@ gimp_canvas_progress_draw (GimpCanvasItem   *item,
 }
 
 static cairo_region_t *
-gimp_canvas_progress_get_extents (GimpCanvasItem   *item,
-                                  GimpDisplayShell *shell)
+gimp_canvas_progress_get_extents (GimpCanvasItem *item)
 {
   cairo_rectangle_int_t rectangle;
   gdouble               x, y;
   gint                  width, height;
 
-  gimp_canvas_progress_transform (item, shell, &x, &y, &width, &height);
+  gimp_canvas_progress_transform (item, &x, &y, &width, &height);
 
   /*  add 1px on each side because fill()'s default impl does the same  */
   rectangle.x      = (gint) x - 1;
@@ -325,12 +331,34 @@ gimp_canvas_progress_get_extents (GimpCanvasItem   *item,
   return cairo_region_create_rectangle (&rectangle);
 }
 
+static gboolean
+gimp_canvas_progress_hit (GimpCanvasItem *item,
+                          gdouble         x,
+                          gdouble         y)
+{
+  gdouble px, py;
+  gint    pwidth, pheight;
+  gdouble tx, ty;
+
+  gimp_canvas_progress_transform (item, &px, &py, &pwidth, &pheight);
+  gimp_canvas_item_transform_xy_f (item, x, y, &tx, &ty);
+
+  pheight -= BORDER + 2 * RADIUS;
+
+  return (tx >= px && tx < (px + pwidth) &&
+          ty >= py && ty < (py + pheight));
+}
+
 static GimpProgress *
 gimp_canvas_progress_start (GimpProgress *progress,
-                            const gchar  *message,
-                            gboolean      cancelable)
+                            gboolean      cancellable,
+                            const gchar  *message)
 {
+  GimpCanvasProgressPrivate *private = GET_PRIVATE (progress);
+
   gimp_canvas_progress_set_text (progress, message);
+
+  private->last_update_time = g_get_monotonic_time ();
 
   return progress;
 }
@@ -379,15 +407,22 @@ gimp_canvas_progress_set_value (GimpProgress *progress,
 
   if (percentage != private->value)
     {
-      cairo_region_t *region;
+      guint64 time = g_get_monotonic_time ();
 
       private->value = percentage;
 
-      region = gimp_canvas_item_get_extents (GIMP_CANVAS_ITEM (progress));
+      if (time - private->last_update_time >= MIN_UPDATE_INTERVAL)
+        {
+          cairo_region_t *region;
 
-      _gimp_canvas_item_update (GIMP_CANVAS_ITEM (progress), region);
+          private->last_update_time = time;
 
-      cairo_region_destroy (region);
+          region = gimp_canvas_item_get_extents (GIMP_CANVAS_ITEM (progress));
+
+          _gimp_canvas_item_update (GIMP_CANVAS_ITEM (progress), region);
+
+          cairo_region_destroy (region);
+        }
     }
 }
 

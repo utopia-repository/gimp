@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -80,7 +81,7 @@ static QueryBox * create_query_box             (const gchar   *title,
                                                 GimpHelpFunc   help_func,
                                                 const gchar   *help_id,
                                                 GCallback      response_callback,
-                                                const gchar   *stock_id,
+                                                const gchar   *icon_name,
                                                 const gchar   *message,
                                                 const gchar   *ok_button,
                                                 const gchar   *cancel_button,
@@ -120,7 +121,7 @@ create_query_box (const gchar   *title,
                   GimpHelpFunc   help_func,
                   const gchar   *help_id,
                   GCallback      response_callback,
-                  const gchar   *stock_id,
+                  const gchar   *icon_name,
                   const gchar   *message,
                   const gchar   *ok_button,
                   const gchar   *cancel_button,
@@ -177,7 +178,7 @@ create_query_box (const gchar   *title,
       g_signal_connect_closure (object, signal, closure, FALSE);
     }
 
-  if (stock_id)
+  if (icon_name)
     {
       GtkWidget *content_area;
       GtkWidget *image;
@@ -189,7 +190,7 @@ create_query_box (const gchar   *title,
       gtk_box_pack_start (GTK_BOX (content_area), hbox, TRUE, TRUE, 0);
       gtk_widget_show (hbox);
 
-      image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_DIALOG);
+      image = gtk_image_new_from_icon_name (icon_name, GTK_ICON_SIZE_DIALOG);
       gtk_misc_set_alignment (GTK_MISC (image), 0.5, 0.0);
       gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
       gtk_widget_show (image);
@@ -220,7 +221,7 @@ create_query_box (const gchar   *title,
   if (message)
     {
       label = gtk_label_new (message);
-      gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+      gtk_label_set_xalign (GTK_LABEL (label), 0.0);
       gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
       gtk_box_pack_start (GTK_BOX (query_box->vbox), label, FALSE, FALSE, 0);
       gtk_widget_show (label);
@@ -268,9 +269,9 @@ gimp_query_string_box (const gchar             *title,
 
   query_box = create_query_box (title, parent, help_func, help_id,
                                 G_CALLBACK (string_query_box_response),
-                                GTK_STOCK_DIALOG_QUESTION,
+                                "dialog-question",
                                 message,
-                                GTK_STOCK_OK, GTK_STOCK_CANCEL,
+                                _("_OK"), _("_Cancel"),
                                 object, signal,
                                 G_CALLBACK (callback), data);
 
@@ -322,24 +323,25 @@ gimp_query_int_box (const gchar          *title,
                     GimpQueryIntCallback  callback,
                     gpointer              data)
 {
-  QueryBox  *query_box;
-  GtkWidget *spinbutton;
-  GtkObject *adjustment;
+  QueryBox      *query_box;
+  GtkWidget     *spinbutton;
+  GtkAdjustment *adjustment;
 
   query_box = create_query_box (title, parent, help_func, help_id,
                                 G_CALLBACK (int_query_box_response),
-                                GTK_STOCK_DIALOG_QUESTION,
+                                "dialog-question",
                                 message,
-                                GTK_STOCK_OK, GTK_STOCK_CANCEL,
+                                _("_OK"), _("_Cancel"),
                                 object, signal,
                                 G_CALLBACK (callback), data);
 
   if (! query_box)
     return NULL;
 
-  spinbutton = gimp_spin_button_new (&adjustment,
-                                     initial, lower, upper, 1, 10, 0,
-                                     1, 0);
+  adjustment = (GtkAdjustment *)
+    gtk_adjustment_new (initial, lower, upper, 1, 10, 0);
+  spinbutton = gtk_spin_button_new (adjustment, 1.0, 0);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gtk_entry_set_activates_default (GTK_ENTRY (spinbutton), TRUE);
   gtk_box_pack_start (GTK_BOX (query_box->vbox), spinbutton, FALSE, FALSE, 0);
   gtk_widget_grab_focus (spinbutton);
@@ -385,24 +387,25 @@ gimp_query_double_box (const gchar             *title,
                        GimpQueryDoubleCallback  callback,
                        gpointer                 data)
 {
-  QueryBox  *query_box;
-  GtkWidget *spinbutton;
-  GtkObject *adjustment;
+  QueryBox      *query_box;
+  GtkWidget     *spinbutton;
+  GtkAdjustment *adjustment;
 
   query_box = create_query_box (title, parent, help_func, help_id,
                                 G_CALLBACK (double_query_box_response),
-                                GTK_STOCK_DIALOG_QUESTION,
+                                "dialog-question",
                                 message,
-                                GTK_STOCK_OK, GTK_STOCK_CANCEL,
+                                _("_OK"), _("_Cancel"),
                                 object, signal,
                                 G_CALLBACK (callback), data);
 
   if (! query_box)
     return NULL;
 
-  spinbutton = gimp_spin_button_new (&adjustment,
-                                     initial, lower, upper, 1, 10, 0,
-                                     1, digits);
+  adjustment = (GtkAdjustment *)
+    gtk_adjustment_new (initial, lower, upper, 1, 10, 0);
+  spinbutton = gtk_spin_button_new (adjustment, 1.0, 0);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gtk_entry_set_activates_default (GTK_ENTRY (spinbutton), TRUE);
   gtk_box_pack_start (GTK_BOX (query_box->vbox), spinbutton, FALSE, FALSE, 0);
   gtk_widget_grab_focus (spinbutton);
@@ -464,9 +467,9 @@ gimp_query_size_box (const gchar           *title,
 
   query_box = create_query_box (title, parent, help_func, help_id,
                                 G_CALLBACK (size_query_box_response),
-                                GTK_STOCK_DIALOG_QUESTION,
+                                "dialog-question",
                                 message,
-                                GTK_STOCK_OK, GTK_STOCK_CANCEL,
+                                _("_OK"), _("_Cancel"),
                                 object, signal,
                                 G_CALLBACK (callback), data);
 
@@ -502,7 +505,7 @@ gimp_query_size_box (const gchar           *title,
  * @parent:       The dialog's parent widget.
  * @help_func:    The help function to show this dialog's help page.
  * @help_id:      A string identifying this dialog's help page.
- * @stock_id:     A stock_id to specify an icon to appear on the left
+ * @icon_name:    An icon name to specify an icon to appear on the left
  *                on the dialog's message.
  * @message:      A string which will be shown in the query box.
  * @true_button:  The string to be shown in the dialog's left button.
@@ -523,7 +526,7 @@ gimp_query_boolean_box (const gchar              *title,
                         GtkWidget                *parent,
                         GimpHelpFunc              help_func,
                         const gchar              *help_id,
-                        const gchar              *stock_id,
+                        const gchar              *icon_name,
                         const gchar              *message,
                         const gchar              *true_button,
                         const gchar              *false_button,
@@ -536,7 +539,7 @@ gimp_query_boolean_box (const gchar              *title,
 
   query_box = create_query_box (title, parent, help_func, help_id,
                                 G_CALLBACK (boolean_query_box_response),
-                                stock_id,
+                                icon_name,
                                 message,
                                 true_button, false_button,
                                 object, signal,

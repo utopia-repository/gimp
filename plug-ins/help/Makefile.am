@@ -7,11 +7,6 @@ libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
 
-if PLATFORM_OSX
-xobjective_c = "-xobjective-c"
-framework_cocoa = -framework Foundation
-endif
-
 if OS_WIN32
 mwindows = -mwindows
 endif
@@ -21,10 +16,16 @@ include $(top_srcdir)/build/windows/gimprc-plug-ins.rule
 help_RC = help.rc.o
 endif
 
-AM_CPPFLAGS = -DDATADIR=\""$(gimpdatadir)"\"
+AM_CPPFLAGS = \
+	-DDATADIR=\""$(gimpdatadir)"\"	\
+	-I$(top_srcdir)			\
+	$(CAIRO_CFLAGS)			\
+	$(GIO_CFLAGS)			\
+	$(GEGL_CFLAGS)			\
+	$(GDK_PIXBUF_CFLAGS)		\
+	-I$(includedir)
 
-AM_LDFLAGS = $(mwindows) \
-	$(framework_cocoa)
+AM_LDFLAGS = $(mwindows)
 
 noinst_LIBRARIES = libgimphelp.a
 
@@ -47,14 +48,6 @@ libexecdir = $(gimpplugindir)/plug-ins
 libexec_PROGRAMS = help
 
 help_SOURCES = help.c
-
-INCLUDES = \
-	-I$(top_srcdir)		\
-	$(CAIRO_CFLAGS)		\
-	$(GIO_CFLAGS)		\
-	$(GDK_PIXBUF_CFLAGS)	\
-	-I$(includedir) \
-	$(xobjective_c)
 
 LDADD = \
 	$(libgimphelp)		\

@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -38,36 +39,42 @@
 
 static const GimpActionEntry dynamics_actions[] =
 {
-  { "dynamics-popup", GIMP_STOCK_DYNAMICS,
+  { "dynamics-popup", GIMP_ICON_DYNAMICS,
     NC_("dynamics-action", "Paint Dynamics Menu"), NULL, NULL, NULL,
     GIMP_HELP_DYNAMICS_DIALOG },
 
-  { "dynamics-new", GTK_STOCK_NEW,
-    NC_("dynamics-action", "_New Dynamics"), "",
+  { "dynamics-new", GIMP_ICON_DOCUMENT_NEW,
+    NC_("dynamics-action", "_New Dynamics"), NULL,
     NC_("dynamics-action", "Create a new dynamics"),
     G_CALLBACK (data_new_cmd_callback),
     GIMP_HELP_DYNAMICS_NEW },
 
-  { "dynamics-duplicate", GIMP_STOCK_DUPLICATE,
+  { "dynamics-duplicate", GIMP_ICON_OBJECT_DUPLICATE,
     NC_("dynamics-action", "D_uplicate Dynamics"), NULL,
     NC_("dynamics-action", "Duplicate this dynamics"),
     G_CALLBACK (data_duplicate_cmd_callback),
     GIMP_HELP_DYNAMICS_DUPLICATE },
 
-  { "dynamics-copy-location", GTK_STOCK_COPY,
-    NC_("dynamics-action", "Copy Dynamics _Location"), "",
+  { "dynamics-copy-location", GIMP_ICON_EDIT_COPY,
+    NC_("dynamics-action", "Copy Dynamics _Location"), NULL,
     NC_("dynamics-action", "Copy dynamics file location to clipboard"),
     G_CALLBACK (data_copy_location_cmd_callback),
     GIMP_HELP_DYNAMICS_COPY_LOCATION },
 
-  { "dynamics-delete", GTK_STOCK_DELETE,
-    NC_("dynamics-action", "_Delete Dynamics"), "",
+  { "dynamics-show-in-file-manager", GIMP_ICON_FILE_MANAGER,
+    NC_("dynamics-action", "Show in _File Manager"), NULL,
+    NC_("dynamics-action", "Show dynamics file location in the file manager"),
+    G_CALLBACK (data_show_in_file_manager_cmd_callback),
+    GIMP_HELP_DYNAMICS_SHOW_IN_FILE_MANAGER },
+
+  { "dynamics-delete", GIMP_ICON_EDIT_DELETE,
+    NC_("dynamics-action", "_Delete Dynamics"), NULL,
     NC_("dynamics-action", "Delete this dynamics"),
     G_CALLBACK (data_delete_cmd_callback),
     GIMP_HELP_DYNAMICS_DELETE },
 
-  { "dynamics-refresh", GTK_STOCK_REFRESH,
-    NC_("dynamics-action", "_Refresh Dynamics"), "",
+  { "dynamics-refresh", GIMP_ICON_VIEW_REFRESH,
+    NC_("dynamics-action", "_Refresh Dynamics"), NULL,
     NC_("dynamics-action", "Refresh dynamics"),
     G_CALLBACK (data_refresh_cmd_callback),
     GIMP_HELP_DYNAMICS_REFRESH }
@@ -75,9 +82,9 @@ static const GimpActionEntry dynamics_actions[] =
 
 static const GimpStringActionEntry dynamics_edit_actions[] =
 {
-  { "dynamics-edit", GTK_STOCK_EDIT,
+  { "dynamics-edit", GIMP_ICON_EDIT,
     NC_("dynamics-action", "_Edit Dynamics..."), NULL,
-    NC_("dynamics-action", "Edit dynamics"),
+    NC_("dynamics-action", "Edit this dynamics"),
     "gimp-dynamics-editor",
     GIMP_HELP_DYNAMICS_EDIT }
 };
@@ -103,7 +110,7 @@ dynamics_actions_update (GimpActionGroup *group,
   GimpContext  *context  = action_data_get_context (user_data);
   GimpDynamics *dynamics = NULL;
   GimpData     *data     = NULL;
-  const gchar  *filename = NULL;
+  GFile        *file     = NULL;
 
   if (context)
     {
@@ -113,17 +120,18 @@ dynamics_actions_update (GimpActionGroup *group,
         {
           data = GIMP_DATA (dynamics);
 
-          filename = gimp_data_get_filename (data);
+          file = gimp_data_get_file (data);
         }
     }
 
 #define SET_SENSITIVE(action,condition) \
         gimp_action_group_set_action_sensitive (group, action, (condition) != 0)
 
-  SET_SENSITIVE ("dynamics-edit",          dynamics);
-  SET_SENSITIVE ("dynamics-duplicate",     dynamics && GIMP_DATA_GET_CLASS (data)->duplicate);
-  SET_SENSITIVE ("dynamics-copy-location", dynamics && filename);
-  SET_SENSITIVE ("dynamics-delete",        dynamics && gimp_data_is_deletable (data));
+  SET_SENSITIVE ("dynamics-edit",                 dynamics);
+  SET_SENSITIVE ("dynamics-duplicate",            dynamics && gimp_data_is_duplicatable (data));
+  SET_SENSITIVE ("dynamics-copy-location",        file);
+  SET_SENSITIVE ("dynamics-show-in-file-manager", file);
+  SET_SENSITIVE ("dynamics-delete",               dynamics && gimp_data_is_deletable (data));
 
 #undef SET_SENSITIVE
 }

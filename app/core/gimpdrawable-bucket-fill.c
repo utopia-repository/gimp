@@ -17,284 +17,177 @@
 
 #include "config.h"
 
-#include <string.h>
-
 #include <cairo.h>
 #include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
 
 #include "core-types.h"
 
-#include "base/pixel-region.h"
-#include "base/temp-buf.h"
-#include "base/tile-manager.h"
-
-#include "paint-funcs/paint-funcs.h"
+#include "gegl/gimp-gegl-apply-operation.h"
+#include "gegl/gimp-gegl-mask.h"
+#include "gegl/gimp-gegl-mask-combine.h"
+#include "gegl/gimp-gegl-utils.h"
 
 #include "gimp.h"
 #include "gimpchannel.h"
-#include "gimpchannel-combine.h"
-#include "gimpcontext.h"
 #include "gimpdrawable.h"
 #include "gimpdrawable-bucket-fill.h"
-#include "gimperror.h"
+#include "gimpfilloptions.h"
 #include "gimpimage.h"
-#include "gimpimage-contiguous-region.h"
-#include "gimppattern.h"
+#include "gimppickable.h"
+#include "gimppickable-contiguous-region.h"
 
 #include "gimp-intl.h"
 
 
 /*  public functions  */
 
-gboolean
+void
 gimp_drawable_bucket_fill (GimpDrawable         *drawable,
-                           GimpContext          *context,
-                           GimpBucketFillMode    fill_mode,
-                           gint                  paint_mode,
-                           gdouble               opacity,
-                           gboolean              do_seed_fill,
+                           GimpFillOptions      *options,
                            gboolean              fill_transparent,
                            GimpSelectCriterion   fill_criterion,
                            gdouble               threshold,
                            gboolean              sample_merged,
-                           gdouble               x,
-                           gdouble               y,
-                           GError              **error)
+                           gboolean              diagonal_neighbors,
+                           gdouble               seed_x,
+                           gdouble               seed_y)
 {
-  GimpRGB      color;
-  GimpPattern *pattern = NULL;
-
-  g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), FALSE);
-  g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)), FALSE);
-  g_return_val_if_fail (GIMP_IS_CONTEXT (context), FALSE);
-  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
-
-  if (fill_mode == GIMP_FG_BUCKET_FILL)
-    {
-      gimp_context_get_foreground (context, &color);
-    }
-  else if (fill_mode == GIMP_BG_BUCKET_FILL)
-    {
-      gimp_context_get_background (context, &color);
-    }
-  else if (fill_mode == GIMP_PATTERN_BUCKET_FILL)
-    {
-      pattern = gimp_context_get_pattern (context);
-
-      if (! pattern)
-        {
-          g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
-			       _("No patterns available for this operation."));
-          return FALSE;
-        }
-    }
-  else
-    {
-      g_warning ("%s: invalid fill_mode passed", G_STRFUNC);
-      return FALSE;
-    }
-
-  gimp_drawable_bucket_fill_full (drawable,
-                                  fill_mode,
-                                  paint_mode, opacity,
-                                  do_seed_fill,
-                                  fill_transparent, fill_criterion,
-                                  threshold, sample_merged,
-                                  x, y,
-                                  &color, pattern);
-
-  return TRUE;
-}
-
-void
-gimp_drawable_bucket_fill_full (GimpDrawable        *drawable,
-                                GimpBucketFillMode   fill_mode,
-                                gint                 paint_mode,
-                                gdouble              opacity,
-                                gboolean             do_seed_fill,
-                                gboolean             fill_transparent,
-                                GimpSelectCriterion  fill_criterion,
-                                gdouble              threshold,
-                                gboolean             sample_merged,
-                                gdouble              x,
-                                gdouble              y,
-                                const GimpRGB       *color,
-                                GimpPattern         *pattern)
-{
-  GimpImage   *image;
-  TileManager *buf_tiles;
-  PixelRegion  bufPR, maskPR;
-  GimpChannel *mask = NULL;
-  gint         bytes;
-  gint         x1, y1, x2, y2;
-  guchar       col[MAX_CHANNELS];
-  TempBuf     *pat_buf = NULL;
-  gboolean     new_buf = FALSE;
-  gboolean     selection;
+  GimpImage    *image;
+  GimpPickable *pickable;
+  GeglBuffer   *buffer;
+  GeglBuffer   *mask_buffer;
+  gboolean      antialias;
+  gint          x, y, width, height;
+  gint          mask_offset_x = 0;
+  gint          mask_offset_y = 0;
+  gint          sel_x, sel_y, sel_width, sel_height;
 
   g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
   g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
-  g_return_if_fail (fill_mode != GIMP_PATTERN_BUCKET_FILL ||
-                    GIMP_IS_PATTERN (pattern));
-  g_return_if_fail (fill_mode == GIMP_PATTERN_BUCKET_FILL ||
-                    color != NULL);
+  g_return_if_fail (GIMP_IS_FILL_OPTIONS (options));
 
   image = gimp_item_get_image (GIMP_ITEM (drawable));
 
-  bytes     = gimp_drawable_bytes (drawable);
-  selection = gimp_item_mask_bounds (GIMP_ITEM (drawable), &x1, &y1, &x2, &y2);
-
-  if ((x1 == x2) || (y1 == y2))
+  if (! gimp_item_mask_intersect (GIMP_ITEM (drawable),
+                                  &sel_x, &sel_y, &sel_width, &sel_height))
     return;
-
-  if (fill_mode == GIMP_FG_BUCKET_FILL ||
-      fill_mode == GIMP_BG_BUCKET_FILL)
-    {
-      guchar tmp_col[MAX_CHANNELS];
-
-      gimp_rgb_get_uchar (color,
-                          &tmp_col[RED],
-                          &tmp_col[GREEN],
-                          &tmp_col[BLUE]);
-
-      gimp_image_transform_color (image, gimp_drawable_type (drawable), col,
-                                  GIMP_RGB, tmp_col);
-      col[gimp_drawable_bytes_with_alpha (drawable) - 1] = OPAQUE_OPACITY;
-    }
-  else if (fill_mode == GIMP_PATTERN_BUCKET_FILL)
-    {
-      pat_buf = gimp_image_transform_temp_buf (image,
-                                               gimp_drawable_type (drawable),
-                                               pattern->mask, &new_buf);
-    }
-  else
-    {
-      g_warning ("%s: invalid fill_mode passed", G_STRFUNC);
-      return;
-    }
 
   gimp_set_busy (image->gimp);
 
+  if (sample_merged)
+    pickable = GIMP_PICKABLE (image);
+  else
+    pickable = GIMP_PICKABLE (drawable);
+
+  antialias = gimp_fill_options_get_antialias (options);
+
   /*  Do a seed bucket fill...To do this, calculate a new
-   *  contiguous region. If there is a selection, calculate the
-   *  intersection of this region with the existing selection.
+   *  contiguous region.
    */
-  if (do_seed_fill)
+  mask_buffer = gimp_pickable_contiguous_region_by_seed (pickable,
+                                                         antialias,
+                                                         threshold,
+                                                         fill_transparent,
+                                                         fill_criterion,
+                                                         diagonal_neighbors,
+                                                         (gint) seed_x,
+                                                         (gint) seed_y);
+
+  gimp_gegl_mask_bounds (mask_buffer, &x, &y, &width, &height);
+  width  -= x;
+  height -= y;
+
+  /*  If there is a selection, inersect the region bounds
+   *  with the selection bounds, to avoid processing areas
+   *  that are going to be masked out anyway.  The actual
+   *  intersection of the fill region with the mask data
+   *  happens when combining the fill buffer, in
+   *  gimp_drawable_apply_buffer().
+   */
+  if (! gimp_channel_is_empty (gimp_image_get_mask (image)))
     {
-      mask = gimp_image_contiguous_region_by_seed (image, drawable,
-                                                   sample_merged,
-                                                   TRUE,
-                                                   (gint) threshold,
-                                                   fill_transparent,
-                                                   fill_criterion,
-                                                   (gint) x,
-                                                   (gint) y);
+      gint off_x = 0;
+      gint off_y = 0;
 
-      if (selection)
-        {
-          gint off_x = 0;
-          gint off_y = 0;
-
-          if (! sample_merged)
-            gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
-
-          gimp_channel_combine_mask (mask, gimp_image_get_mask (image),
-                                     GIMP_CHANNEL_OP_INTERSECT,
-                                     -off_x, -off_y);
-        }
-
-      gimp_channel_bounds (mask, &x1, &y1, &x2, &y2);
-
-      /*  make sure we handle the mask correctly if it was sample-merged  */
       if (sample_merged)
+        gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
+
+      if (! gimp_rectangle_intersect (x, y, width, height,
+
+                                      sel_x + off_x, sel_y + off_y,
+                                      sel_width,     sel_height,
+
+                                      &x, &y, &width, &height))
         {
-          GimpItem *item;
-          gint      off_x, off_y;
+          /*  The fill region and the selection are disjoint; bail.  */
 
-          item = GIMP_ITEM (drawable);
+          g_object_unref (mask_buffer);
 
-          /*  Limit the channel bounds to the drawable's extents  */
-          gimp_item_get_offset (item, &off_x, &off_y);
+          gimp_unset_busy (image->gimp);
 
-          x1 = CLAMP (x1, off_x, (off_x + gimp_item_get_width (item)));
-          y1 = CLAMP (y1, off_y, (off_y + gimp_item_get_height (item)));
-          x2 = CLAMP (x2, off_x, (off_x + gimp_item_get_width (item)));
-          y2 = CLAMP (y2, off_y, (off_y + gimp_item_get_height (item)));
-
-          pixel_region_init (&maskPR,
-                             gimp_drawable_get_tiles (GIMP_DRAWABLE (mask)),
-                             x1, y1, (x2 - x1), (y2 - y1), TRUE);
-
-          /*  translate mask bounds to drawable coords  */
-          x1 -= off_x;
-          y1 -= off_y;
-          x2 -= off_x;
-          y2 -= off_y;
+          return;
         }
-      else
-        {
-          pixel_region_init (&maskPR,
-                             gimp_drawable_get_tiles (GIMP_DRAWABLE (mask)),
-                             x1, y1, (x2 - x1), (y2 - y1), TRUE);
-        }
-
-      /*  if the image doesn't have an alpha channel, make sure that
-       *  the buf_tiles have.  We need the alpha channel to fill with
-       *  the region calculated above
-       */
-      if (! gimp_drawable_has_alpha (drawable))
-        bytes++;
     }
-  else if (fill_mode == GIMP_PATTERN_BUCKET_FILL &&
-           (pat_buf->bytes == 2 || pat_buf->bytes == 4))
+
+  /*  make sure we handle the mask correctly if it was sample-merged  */
+  if (sample_merged)
     {
-      /* If pattern being applied has an alpha channel, add one to the
-       * buf_tiles.
-       */
-      if (! gimp_drawable_has_alpha (drawable))
-        bytes++;
+      GimpItem *item = GIMP_ITEM (drawable);
+      gint      off_x, off_y;
+
+      /*  Limit the channel bounds to the drawable's extents  */
+      gimp_item_get_offset (item, &off_x, &off_y);
+
+      gimp_rectangle_intersect (x, y, width, height,
+
+                                off_x, off_y,
+                                gimp_item_get_width (item),
+                                gimp_item_get_height (item),
+
+                                &x, &y, &width, &height);
+
+      mask_offset_x = x;
+      mask_offset_y = y;
+
+     /*  translate mask bounds to drawable coords  */
+      x -= off_x;
+      y -= off_y;
     }
-
-  buf_tiles = tile_manager_new ((x2 - x1), (y2 - y1), bytes);
-  pixel_region_init (&bufPR, buf_tiles, 0, 0, (x2 - x1), (y2 - y1), TRUE);
-
-  switch (fill_mode)
+  else
     {
-    case GIMP_FG_BUCKET_FILL:
-    case GIMP_BG_BUCKET_FILL:
-      if (mask)
-        color_region_mask (&bufPR, &maskPR, col);
-      else
-        color_region (&bufPR, col);
-      break;
-
-    case GIMP_PATTERN_BUCKET_FILL:
-      if (mask)
-        pattern_region (&bufPR, &maskPR, pat_buf, x1, y1);
-      else
-        pattern_region (&bufPR, NULL, pat_buf, x1, y1);
-      break;
+      mask_offset_x = x;
+      mask_offset_y = y;
     }
+
+  buffer = gimp_fill_options_create_buffer (options, drawable,
+                                            GEGL_RECTANGLE (0, 0,
+                                                            width, height));
+
+  gimp_gegl_apply_opacity (buffer, NULL, NULL, buffer,
+                           mask_buffer,
+                           -mask_offset_x,
+                           -mask_offset_y,
+                           1.0);
+  g_object_unref (mask_buffer);
 
   /*  Apply it to the image  */
-  pixel_region_init (&bufPR, buf_tiles, 0, 0, (x2 - x1), (y2 - y1), FALSE);
-  gimp_drawable_apply_region (drawable, &bufPR,
+  gimp_drawable_apply_buffer (drawable, buffer,
+                              GEGL_RECTANGLE (0, 0, width, height),
                               TRUE, C_("undo-type", "Bucket Fill"),
-                              opacity, paint_mode,
-                              NULL, NULL, x1, y1);
-  tile_manager_unref (buf_tiles);
+                              gimp_context_get_opacity (GIMP_CONTEXT (options)),
+                              gimp_context_get_paint_mode (GIMP_CONTEXT (options)),
+                              GIMP_LAYER_COLOR_SPACE_AUTO,
+                              GIMP_LAYER_COLOR_SPACE_AUTO,
+                              GIMP_LAYER_COMPOSITE_AUTO,
+                              NULL, x, y);
 
-  /*  update the image  */
-  gimp_drawable_update (drawable, x1, y1, x2 - x1, y2 - y1);
+  g_object_unref (buffer);
 
-  /*  free the mask  */
-  if (mask)
-    g_object_unref (mask);
-
-  if (new_buf)
-    temp_buf_free (pat_buf);
+  gimp_drawable_update (drawable, x, y, width, height);
 
   gimp_unset_busy (image->gimp);
 }

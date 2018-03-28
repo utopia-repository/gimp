@@ -83,7 +83,7 @@
 
               ;--- add an alpha mask for blending and select it
               (gimp-image-select-item img CHANNEL-OP-REPLACE bl-layer)
-              (set! bl-mask (car (gimp-layer-create-mask bl-layer ADD-BLACK-MASK)))
+              (set! bl-mask (car (gimp-layer-create-mask bl-layer ADD-MASK-BLACK)))
               (gimp-layer-add-mask bl-layer bl-mask)
 
               ;--- handle layer geometry
@@ -115,7 +115,7 @@
               (if (= fadeout TRUE)
                   (begin
                     ; blend with 20% offset to get less transparency in the front
-                    (gimp-edit-blend bl-mask FG-BG-RGB-MODE NORMAL-MODE
+                    (gimp-edit-blend bl-mask BLEND-FG-BG-RGB LAYER-MODE-NORMAL
                                      GRADIENT-LINEAR 100 20 REPEAT-NONE FALSE
                                      FALSE 0 0 TRUE
                                      (+ bl-x-off bl-width) 0 bl-x-off 0)
@@ -125,7 +125,7 @@
               (if (= fadeout FALSE)
                   (begin
                     (gimp-context-set-foreground '(255 255 255))
-                    (gimp-edit-bucket-fill bl-mask FG-BUCKET-FILL NORMAL-MODE
+                    (gimp-edit-bucket-fill bl-mask BUCKET-FILL-FG LAYER-MODE-NORMAL
                                            100 255 0 0 0)
                   )
               )
@@ -137,12 +137,12 @@
                   (begin
                     ;--- add some brightness to whole text
                     (if (= fadeout TRUE)
-                        (gimp-brightness-contrast bl-layer 100 0)
+                        (gimp-drawable-brightness-contrast bl-layer 0.787 0)
                     )
 
           ;--- blend glow color inside the letters
           (gimp-context-set-foreground glow-color)
-          (gimp-edit-blend bl-layer FG-TRANSPARENT-MODE NORMAL-MODE
+          (gimp-edit-blend bl-layer BLEND-FG-TRANSPARENT LAYER-MODE-NORMAL
                    GRADIENT-LINEAR 100 0 REPEAT-NONE FALSE
                    FALSE 0 0 TRUE
                    (+ bl-x-off bl-width) 0
@@ -155,7 +155,7 @@
           (gimp-layer-set-lock-alpha bl-layer FALSE)
           (gimp-selection-feather img corona-width)
           (gimp-context-set-foreground glow-color)
-          (gimp-edit-blend bl-layer FG-TRANSPARENT-MODE NORMAL-MODE
+          (gimp-edit-blend bl-layer BLEND-FG-TRANSPARENT LAYER-MODE-NORMAL
                    GRADIENT-LINEAR 100 0 REPEAT-NONE FALSE
                    FALSE 0 0 TRUE
                    (- (+ bl-x-off bl-width) corona-width) 0
@@ -190,7 +190,7 @@
 
           (if (= optimize TRUE)
               (begin
-                (gimp-image-convert-indexed img 1 WEB-PALETTE 250 FALSE TRUE "")
+                (gimp-image-convert-indexed img CONVERT-DITHER-FS CONVERT-PALETTE-WEB 250 FALSE TRUE "")
                 (set! img-out (car (plug-in-animationoptimize RUN-NONINTERACTIVE
                                                               img
                                                               bl-layer)))

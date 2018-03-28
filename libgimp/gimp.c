@@ -53,6 +53,12 @@
 
 #ifndef G_OS_WIN32
 #include "libgimpbase/gimpsignal.h"
+
+#ifdef HAVE_EXCHNDL
+#include <time.h>
+#include <exchndl.h>
+#endif
+
 #else
 #include <signal.h>
 #endif
@@ -90,6 +96,7 @@
 #  define STRICT
 #  define _WIN32_WINNT 0x0601
 #  include <windows.h>
+#  include <tlhelp32.h>
 #  undef RGB
 #  define USE_WIN32_SHM 1
 #endif
@@ -101,7 +108,6 @@
 #include "libgimpbase/gimpprotocol.h"
 #include "libgimpbase/gimpwire.h"
 
-#undef GIMP_DISABLE_DEPRECATED
 #include "gimp.h"
 #include "gimpunitcache.h"
 
@@ -119,7 +125,7 @@
  **/
 
 
-#define TILE_MAP_SIZE (_tile_width * _tile_height * 4)
+#define TILE_MAP_SIZE (_tile_width * _tile_height * 32)
 
 #define ERRMSG_SHM_FAILED "Could not attach to gimp shared memory segment"
 
@@ -189,6 +195,9 @@ static const gdouble  _gamma_val         = 2.2;
 static gboolean       _install_cmap      = FALSE;
 static gboolean       _show_tool_tips    = TRUE;
 static gboolean       _show_help_button  = TRUE;
+static gboolean       _export_exif       = FALSE;
+static gboolean       _export_xmp        = FALSE;
+static gboolean       _export_iptc       = FALSE;
 static GimpCheckSize  _check_size        = GIMP_CHECK_SIZE_MEDIUM_CHECKS;
 static GimpCheckType  _check_type        = GIMP_CHECK_TYPE_GRAY_CHECKS;
 static gint           _min_colors        = 144;
@@ -244,6 +253,18 @@ gimp_main (const GimpPlugInInfo *info,
            gint                  argc,
            gchar                *argv[])
 {
+  enum
+  {
+    ARG_PROGNAME,
+    ARG_GIMP,
+    ARG_READ_FD,
+    ARG_WRITE_FD,
+    ARG_MODE,
+    ARG_STACK_TRACE_MODE,
+
+    N_ARGS
+  };
+
   gchar       *basename;
   const gchar *env_string;
   gchar       *debug_string;
@@ -257,7 +278,7 @@ gimp_main (const GimpPlugInInfo *info,
     t_SetDllDirectoryA p_SetDllDirectoryA;
 
     p_SetDllDirectoryA = GetProcAddress (GetModuleHandle ("kernel32.dll"),
-					 "SetDllDirectoryA");
+                                         "SetDllDirectoryA");
     if (p_SetDllDirectoryA)
       (*p_SetDllDirectoryA) ("");
   }
@@ -295,17 +316,59 @@ gimp_main (const GimpPlugInInfo *info,
     g_free (bin_dir);
   }
 
+#ifdef HAVE_EXCHNDL
+  /* Use Dr. Mingw (dumps backtrace on crash) if it is available. */
+  {
+    time_t t;
+    gchar *filename;
+    gchar *dir;
+    gchar *path;
+
+    /* This has to be the non-roaming directory (i.e., the local
+       directory) as backtraces correspond to the binaries on this
+       system. */
+    dir = g_build_filename (g_get_user_data_dir (),
+                            GIMPDIR, GIMP_USER_VERSION, "CrashLog",
+                            NULL);
+    /* Ensure the path exists. */
+    g_mkdir_with_parents (dir, 0700);
+
+    time (&t);
+    filename = g_strdup_printf ("%s-crash-%" G_GUINT64_FORMAT ".txt",
+                                g_get_prgname(), t);
+    path = g_build_filename (dir, filename, NULL);
+    g_free (filename);
+    g_free (dir);
+
+    ExcHndlInit ();
+    ExcHndlSetLogFileNameA (path);
+
+    g_free (path);
+  }
+#endif
+
 #ifndef _WIN64
   {
     typedef BOOL (WINAPI *t_SetProcessDEPPolicy) (DWORD dwFlags);
     t_SetProcessDEPPolicy p_SetProcessDEPPolicy;
 
     p_SetProcessDEPPolicy = GetProcAddress (GetModuleHandle ("kernel32.dll"),
-					    "SetProcessDEPPolicy");
+                                            "SetProcessDEPPolicy");
     if (p_SetProcessDEPPolicy)
       (*p_SetProcessDEPPolicy) (PROCESS_DEP_ENABLE|PROCESS_DEP_DISABLE_ATL_THUNK_EMULATION);
   }
 #endif
+
+  /* Group all our windows together on the taskbar */
+  {
+    typedef HRESULT (WINAPI *t_SetCurrentProcessExplicitAppUserModelID) (PCWSTR lpPathName);
+    t_SetCurrentProcessExplicitAppUserModelID p_SetCurrentProcessExplicitAppUserModelID;
+
+    p_SetCurrentProcessExplicitAppUserModelID = GetProcAddress (GetModuleHandle ("shell32.dll"),
+                                                                "SetCurrentProcessExplicitAppUserModelID");
+    if (p_SetCurrentProcessExplicitAppUserModelID)
+      (*p_SetCurrentProcessExplicitAppUserModelID) (L"gimp.GimpApplication");
+  }
 
   /* Check for exe file name with spaces in the path having been split up
    * by buggy NT C runtime, or something. I don't know why this happens
@@ -325,7 +388,7 @@ gimp_main (const GimpPlugInInfo *info,
                */
               GString *s;
 
-              s = g_string_new (argv[0]);
+              s = g_string_new (argv[ARG_PROGNAME]);
 
               for (j = 1; j <= i; j++)
                 {
@@ -333,7 +396,7 @@ gimp_main (const GimpPlugInInfo *info,
                   s = g_string_append (s, argv[j]);
                 }
 
-              argv[0] = s->str;
+              argv[ARG_PROGNAME] = s->str;
 
               /* Move rest of argv down */
               for (j = 1; j < argc - i; j++)
@@ -352,16 +415,16 @@ gimp_main (const GimpPlugInInfo *info,
 
   PLUG_IN_INFO = *info;
 
-  if ((argc != 6) || (strcmp (argv[1], "-gimp") != 0))
+  if ((argc != N_ARGS) || (strcmp (argv[ARG_GIMP], "-gimp") != 0))
     {
       g_printerr ("%s is a GIMP plug-in and must be run by GIMP to be used\n",
-                  argv[0]);
+                  argv[ARG_PROGNAME]);
       return 1;
     }
 
   gimp_env_init (TRUE);
 
-  progname = argv[0];
+  progname = argv[ARG_PROGNAME];
 
   basename = g_path_get_basename (progname);
 
@@ -410,7 +473,7 @@ gimp_main (const GimpPlugInInfo *info,
 
   g_free (basename);
 
-  stack_trace_mode = (GimpStackTraceMode) CLAMP (atoi (argv[5]),
+  stack_trace_mode = (GimpStackTraceMode) CLAMP (atoi (argv[ARG_STACK_TRACE_MODE]),
                                                  GIMP_STACK_TRACE_NEVER,
                                                  GIMP_STACK_TRACE_ALWAYS);
 
@@ -436,11 +499,11 @@ gimp_main (const GimpPlugInInfo *info,
 #endif
 
 #ifdef G_OS_WIN32
-  _readchannel  = g_io_channel_win32_new_fd (atoi (argv[2]));
-  _writechannel = g_io_channel_win32_new_fd (atoi (argv[3]));
+  _readchannel  = g_io_channel_win32_new_fd (atoi (argv[ARG_READ_FD]));
+  _writechannel = g_io_channel_win32_new_fd (atoi (argv[ARG_WRITE_FD]));
 #else
-  _readchannel  = g_io_channel_unix_new (atoi (argv[2]));
-  _writechannel = g_io_channel_unix_new (atoi (argv[3]));
+  _readchannel  = g_io_channel_unix_new (atoi (argv[ARG_READ_FD]));
+  _writechannel = g_io_channel_unix_new (atoi (argv[ARG_WRITE_FD]));
 #endif
 
   g_io_channel_set_encoding (_readchannel, NULL, NULL);
@@ -457,7 +520,6 @@ gimp_main (const GimpPlugInInfo *info,
   gimp_wire_set_writer (gimp_write);
   gimp_wire_set_flusher (gimp_flush);
 
-  g_type_init ();
   gimp_enums_init ();
 
   /*  initialize units  */
@@ -492,15 +554,31 @@ gimp_main (const GimpPlugInInfo *info,
 
 
   /* set handler both for the "LibGimp" and "" domains */
+  {
+    const gchar * const log_domains[] =
+    {
+      "LibGimp",
+      "LibGimpBase",
+      "LibGimpColor",
+      "LibGimpConfig",
+      "LibGimpMath",
+      "LibGimpModule",
+      "LibGimpThumb",
+      "LibGimpWidgets"
+    };
+    gint i;
 
-  g_log_set_handler (G_LOG_DOMAIN,
-                     G_LOG_LEVEL_MESSAGE,
-                     gimp_message_func,
-                     NULL);
-  g_log_set_handler (NULL,
-                     G_LOG_LEVEL_MESSAGE,
-                     gimp_message_func,
-                     NULL);
+    for (i = 0; i < G_N_ELEMENTS (log_domains); i++)
+      g_log_set_handler (log_domains[i],
+                         G_LOG_LEVEL_MESSAGE,
+                         gimp_message_func,
+                         NULL);
+
+    g_log_set_handler (NULL,
+                       G_LOG_LEVEL_MESSAGE,
+                       gimp_message_func,
+                       NULL);
+  }
 
   if (gimp_debug_flags & GIMP_DEBUG_FATAL_WARNINGS)
     {
@@ -511,7 +589,7 @@ gimp_main (const GimpPlugInInfo *info,
       g_log_set_always_fatal (fatal_mask);
     }
 
-  if (strcmp (argv[4], "-query") == 0)
+  if (strcmp (argv[ARG_MODE], "-query") == 0)
     {
       if (PLUG_IN_INFO.init_proc)
         gp_has_init_write (_writechannel, NULL);
@@ -527,7 +605,7 @@ gimp_main (const GimpPlugInInfo *info,
       return EXIT_SUCCESS;
     }
 
-  if (strcmp (argv[4], "-init") == 0)
+  if (strcmp (argv[ARG_MODE], "-init") == 0)
     {
       if (gimp_debug_flags & GIMP_DEBUG_INIT)
         gimp_debug_stop ();
@@ -869,7 +947,7 @@ gimp_run_procedure (const gchar *name,
           (void) va_arg (args, gchar **);
           break;
         case GIMP_PDB_COLOR:
-	case GIMP_PDB_COLORARRAY:
+        case GIMP_PDB_COLORARRAY:
           (void) va_arg (args, GimpRGB *);
           break;
         case GIMP_PDB_PARASITE:
@@ -1054,10 +1132,12 @@ gimp_run_procedure2 (const gchar     *name,
   proc_run.nparams = n_params;
   proc_run.params  = (GPParam *) params;
 
+  gp_lock ();
   if (! gp_proc_run_write (_writechannel, &proc_run, NULL))
     gimp_quit ();
 
   gimp_read_expect_msg (&msg, GP_PROC_RETURN);
+  gp_unlock ();
 
   proc_return = msg.data;
 
@@ -1117,7 +1197,7 @@ gimp_destroy_paramdefs (GimpParamDef *paramdefs,
  *
  * If a procedure call fails, then it might pass an error message with
  * the return values. Plug-ins that are using the libgimp C wrappers
- * don't access the procedure return values directly. Thus ligimp
+ * don't access the procedure return values directly. Thus libgimp
  * stores the error message and makes it available with this
  * function. The next procedure call unsets the error message again.
  *
@@ -1126,7 +1206,7 @@ gimp_destroy_paramdefs (GimpParamDef *paramdefs,
  *
  * Return value: the error message
  *
- * Since: GIMP 2.6
+ * Since: 2.6
  **/
 const gchar *
 gimp_get_pdb_error (void)
@@ -1155,6 +1235,21 @@ gimp_get_pdb_error (void)
     default:
       return "invalid return status";
     }
+}
+
+/**
+ * gimp_get_pdb_status:
+ *
+ * Retrieves the status from the last procedure call.
+ *
+ * Return value: the #GimpPDBStatusType.
+ *
+ * Since: 2.10
+ **/
+GimpPDBStatusType
+gimp_get_pdb_status (void)
+{
+  return pdb_error_status;
 }
 
 /**
@@ -1302,12 +1397,63 @@ gimp_show_tool_tips (void)
  *
  * Return value: the show_help_button boolean
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_show_help_button (void)
 {
   return _show_help_button;
+}
+
+/**
+ * gimp_export_exif:
+ *
+ * Returns whether file plug-ins should default to exporting Exif
+ * metadata, according preferences (original settings is #FALSE since
+ * metadata can contain sensitive information).
+ *
+ * Return value: TRUE if preferences are set to export Exif.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_export_exif (void)
+{
+  return _export_exif;
+}
+
+/**
+ * gimp_export_xmp:
+ *
+ * Returns whether file plug-ins should default to exporting XMP
+ * metadata, according preferences (original settings is #FALSE since
+ * metadata can contain sensitive information).
+ *
+ * Return value: TRUE if preferences are set to export XMP.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_export_xmp (void)
+{
+  return _export_xmp;
+}
+
+/**
+ * gimp_export_iptc:
+ *
+ * Returns whether file plug-ins should default to exporting IPTC
+ * metadata, according preferences (original settings is #FALSE since
+ * metadata can contain sensitive information).
+ *
+ * Return value: TRUE if preferences are set to export IPTC.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_export_iptc (void)
+{
+  return _export_iptc;
 }
 
 /**
@@ -1319,7 +1465,7 @@ gimp_show_help_button (void)
  *
  * Return value: the check_size value
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 GimpCheckSize
 gimp_check_size (void)
@@ -1336,7 +1482,7 @@ gimp_check_size (void)
  *
  * Return value: the check_type value
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 GimpCheckType
 gimp_check_type (void)
@@ -1418,7 +1564,7 @@ gimp_monitor_number (void)
  *
  * Return value: timestamp for plug-in window
  *
- * Since: GIMP 2.6
+ * Since: 2.6
  **/
 guint32
 gimp_user_time (void)
@@ -1528,26 +1674,26 @@ gimp_extension_process (guint timeout)
       struct timeval *tvp;
 
       if (timeout)
-	{
-	  tv.tv_sec  = timeout / 1000;
-	  tv.tv_usec = (timeout % 1000) * 1000;
-	  tvp = &tv;
-	}
+        {
+          tv.tv_sec  = timeout / 1000;
+          tv.tv_usec = (timeout % 1000) * 1000;
+          tvp = &tv;
+        }
       else
-	tvp = NULL;
+        tvp = NULL;
 
       FD_ZERO (&readfds);
       FD_SET (g_io_channel_unix_get_fd (_readchannel), &readfds);
 
       if ((select_val = select (FD_SETSIZE, &readfds, NULL, NULL, tvp)) > 0)
-	{
-	  gimp_single_message ();
-	}
+        {
+          gimp_single_message ();
+        }
       else if (select_val == -1 && errno != EINTR)
-	{
-	  perror ("gimp_extension_process");
-	  gimp_quit ();
-	}
+        {
+          perror ("gimp_extension_process");
+          gimp_quit ();
+        }
     }
   while (select_val == -1 && errno == EINTR);
 #else
@@ -1696,10 +1842,50 @@ static void
 gimp_debug_stop (void)
 {
 #ifndef G_OS_WIN32
+
   g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG, "Waiting for debugger...");
   raise (SIGSTOP);
+
 #else
-  g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG, "Debugging not implemented on Win32");
+
+  HANDLE        hThreadSnap = NULL;
+  THREADENTRY32 te32        = { 0 };
+  pid_t         opid        = getpid ();
+
+  g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG, "Debugging (restart externally): %d",
+         opid);
+
+  hThreadSnap = CreateToolhelp32Snapshot (TH32CS_SNAPTHREAD, 0);
+  if (hThreadSnap == INVALID_HANDLE_VALUE)
+    {
+      g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,
+             "error getting threadsnap - debugging impossible");
+      return;
+    }
+
+  te32.dwSize = sizeof (THREADENTRY32);
+
+  if (Thread32First (hThreadSnap, &te32))
+    {
+      do
+        {
+          if (te32.th32OwnerProcessID == opid)
+            {
+              HANDLE hThread = OpenThread (THREAD_SUSPEND_RESUME, FALSE,
+                                           te32.th32ThreadID);
+              SuspendThread (hThread);
+              CloseHandle (hThread);
+            }
+        }
+      while (Thread32Next (hThreadSnap, &te32));
+    }
+  else
+    {
+      g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG, "error getting threads");
+    }
+
+  CloseHandle (hThreadSnap);
+
 #endif
 }
 
@@ -1743,7 +1929,7 @@ gimp_plugin_sigfatal_handler (gint sig_num)
 
             sigemptyset (&sigset);
             sigprocmask (SIG_SETMASK, &sigset, NULL);
-            g_on_error_query (progname);
+            gimp_stack_trace_query (progname);
           }
           break;
 
@@ -1753,7 +1939,7 @@ gimp_plugin_sigfatal_handler (gint sig_num)
 
             sigemptyset (&sigset);
             sigprocmask (SIG_SETMASK, &sigset, NULL);
-            g_on_error_stack_trace (progname);
+            gimp_stack_trace_print (progname, stdout, NULL);
           }
           break;
         }
@@ -1949,6 +2135,9 @@ gimp_config (GPConfig *config)
   _install_cmap     = config->install_cmap     ? TRUE : FALSE;
   _show_tool_tips   = config->show_tooltips    ? TRUE : FALSE;
   _show_help_button = config->show_help_button ? TRUE : FALSE;
+  _export_exif      = config->export_exif      ? TRUE : FALSE;
+  _export_xmp       = config->export_xmp       ? TRUE : FALSE;
+  _export_iptc      = config->export_iptc      ? TRUE : FALSE;
   _min_colors       = config->min_colors;
   _gdisp_ID         = config->gdisp_ID;
   _wm_class         = g_strdup (config->wm_class);
@@ -1960,6 +2149,11 @@ gimp_config (GPConfig *config)
     g_set_application_name (config->app_name);
 
   gimp_cpu_accel_set_use (config->use_cpu_accel);
+
+  g_object_set (gegl_config (),
+                "use-opencl",          config->use_opencl,
+                "application-license", "GPL3",
+                NULL);
 
   if (_shm_ID != -1)
     {

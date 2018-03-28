@@ -17,15 +17,18 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "libgimpconfig/gimpconfig.h"
 
 #include "text-types.h"
 
+#include "gegl/gimp-babl.h"
+
+#include "core/gimp-memsize.h"
 #include "core/gimpitem.h"
 #include "core/gimpitemundo.h"
-#include "core/gimp-utils.h"
 
 #include "gimptext.h"
 #include "gimptextlayer.h"
@@ -98,10 +101,9 @@ gimp_text_undo_constructed (GObject *object)
   GimpTextUndo  *text_undo = GIMP_TEXT_UNDO (object);
   GimpTextLayer *layer;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_TEXT_LAYER (GIMP_ITEM_UNDO (text_undo)->item));
+  gimp_assert (GIMP_IS_TEXT_LAYER (GIMP_ITEM_UNDO (text_undo)->item));
 
   layer = GIMP_TEXT_LAYER (GIMP_ITEM_UNDO (text_undo)->item);
 
@@ -110,7 +112,7 @@ gimp_text_undo_constructed (GObject *object)
     case GIMP_UNDO_TEXT_LAYER:
       if (text_undo->pspec)
         {
-          g_assert (text_undo->pspec->owner_type == GIMP_TYPE_TEXT);
+          gimp_assert (text_undo->pspec->owner_type == GIMP_TYPE_TEXT);
 
           text_undo->value = g_slice_new0 (GValue);
 
@@ -128,8 +130,12 @@ gimp_text_undo_constructed (GObject *object)
       text_undo->modified = layer->modified;
       break;
 
+    case GIMP_UNDO_TEXT_LAYER_CONVERT:
+      text_undo->format = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
+      break;
+
     default:
-      g_assert_not_reached ();
+      gimp_assert_not_reached ();
     }
 }
 
@@ -258,8 +264,25 @@ gimp_text_undo_pop (GimpUndo            *undo,
       }
       break;
 
+    case GIMP_UNDO_TEXT_LAYER_CONVERT:
+      {
+        const Babl *format;
+
+        format = gimp_drawable_get_format (GIMP_DRAWABLE (layer));
+        gimp_drawable_convert_type (GIMP_DRAWABLE (layer),
+                                    gimp_item_get_image (GIMP_ITEM (layer)),
+                                    gimp_babl_format_get_base_type (text_undo->format),
+                                    gimp_babl_format_get_precision (text_undo->format),
+                                    babl_format_has_alpha (text_undo->format),
+                                    NULL,
+                                    GEGL_DITHER_NONE, GEGL_DITHER_NONE,
+                                    FALSE, NULL);
+        text_undo->format = format;
+      }
+      break;
+
     default:
-      g_assert_not_reached ();
+      gimp_assert_not_reached ();
     }
 }
 
@@ -269,11 +292,7 @@ gimp_text_undo_free (GimpUndo     *undo,
 {
   GimpTextUndo *text_undo = GIMP_TEXT_UNDO (undo);
 
-  if (text_undo->text)
-    {
-      g_object_unref (text_undo->text);
-      text_undo->text = NULL;
-    }
+  g_clear_object (&text_undo->text);
 
   if (text_undo->pspec)
     {

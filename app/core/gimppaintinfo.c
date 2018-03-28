@@ -17,7 +17,8 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include "core-types.h"
 
@@ -67,8 +68,7 @@ gimp_paint_info_dispose (GObject *object)
   if (paint_info->paint_options)
     {
       g_object_run_dispose (G_OBJECT (paint_info->paint_options));
-      g_object_unref (paint_info->paint_options);
-      paint_info->paint_options = NULL;
+      g_clear_object (&paint_info->paint_options);
     }
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
@@ -79,11 +79,7 @@ gimp_paint_info_finalize (GObject *object)
 {
   GimpPaintInfo *paint_info = GIMP_PAINT_INFO (object);
 
-  if (paint_info->blurb)
-    {
-      g_free (paint_info->blurb);
-      paint_info->blurb = NULL;
-    }
+  g_clear_pointer (&paint_info->blurb, g_free);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -103,18 +99,18 @@ gimp_paint_info_new (Gimp        *gimp,
                      GType        paint_options_type,
                      const gchar *identifier,
                      const gchar *blurb,
-                     const gchar *stock_id)
+                     const gchar *icon_name)
 {
   GimpPaintInfo *paint_info;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (identifier != NULL, NULL);
   g_return_val_if_fail (blurb != NULL, NULL);
-  g_return_val_if_fail (stock_id != NULL, NULL);
+  g_return_val_if_fail (icon_name != NULL, NULL);
 
   paint_info = g_object_new (GIMP_TYPE_PAINT_INFO,
-                             "name",     identifier,
-                             "stock-id", stock_id,
+                             "name",      identifier,
+                             "icon-name", icon_name,
                              NULL);
 
   paint_info->gimp               = gimp;

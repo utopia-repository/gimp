@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -28,13 +29,14 @@
 #include "widgets-types.h"
 
 #include "core/gimp.h"
+#include "core/gimpcontext.h"
 #include "core/gimpmarshal.h"
 #include "core/gimpviewable.h"
 
 #include "gimpactiongroup.h"
 #include "gimpaction.h"
 #include "gimpenumaction.h"
-#include "gimppluginaction.h"
+#include "gimpprocedureaction.h"
 #include "gimpradioaction.h"
 #include "gimpstringaction.h"
 #include "gimptoggleaction.h"
@@ -52,7 +54,7 @@ enum
   PROP_0,
   PROP_GIMP,
   PROP_LABEL,
-  PROP_STOCK_ID
+  PROP_ICON_NAME
 };
 
 
@@ -101,8 +103,8 @@ gimp_action_group_class_init (GimpActionGroupClass *klass)
                                                         GIMP_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY));
 
-  g_object_class_install_property (object_class, PROP_STOCK_ID,
-                                   g_param_spec_string ("stock-id",
+  g_object_class_install_property (object_class, PROP_ICON_NAME,
+                                   g_param_spec_string ("icon-name",
                                                         NULL, NULL,
                                                         NULL,
                                                         GIMP_PARAM_READWRITE |
@@ -132,10 +134,9 @@ gimp_action_group_constructed (GObject *object)
   GimpActionGroup *group = GIMP_ACTION_GROUP (object);
   const gchar     *name;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_GIMP (group->gimp));
+  gimp_assert (GIMP_IS_GIMP (group->gimp));
 
   name = gtk_action_group_get_name (GTK_ACTION_GROUP (object));
 
@@ -195,10 +196,10 @@ gimp_action_group_finalize (GObject *object)
       group->label = NULL;
     }
 
-  if (group->stock_id)
+  if (group->icon_name)
     {
-      g_free (group->stock_id);
-      group->stock_id = NULL;
+      g_free (group->icon_name);
+      group->icon_name = NULL;
     }
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -220,8 +221,8 @@ gimp_action_group_set_property (GObject      *object,
     case PROP_LABEL:
       group->label = g_value_dup_string (value);
       break;
-    case PROP_STOCK_ID:
-      group->stock_id = g_value_dup_string (value);
+    case PROP_ICON_NAME:
+      group->icon_name = g_value_dup_string (value);
       break;
 
     default:
@@ -246,8 +247,8 @@ gimp_action_group_get_property (GObject    *object,
     case PROP_LABEL:
       g_value_set_string (value, group->label);
       break;
-    case PROP_STOCK_ID:
-      g_value_set_string (value, group->stock_id);
+    case PROP_ICON_NAME:
+      g_value_set_string (value, group->icon_name);
       break;
 
     default:
@@ -258,13 +259,13 @@ gimp_action_group_get_property (GObject    *object,
 
 static gboolean
 gimp_action_group_check_unique_action (GimpActionGroup *group,
-				       const gchar     *action_name)
+                                       const gchar     *action_name)
 {
   if (G_UNLIKELY (gtk_action_group_get_action (GTK_ACTION_GROUP (group),
                                                action_name)))
     {
       g_warning ("Refusing to add non-unique action '%s' to action group '%s'",
-	 	 action_name,
+                 action_name,
                  gtk_action_group_get_name (GTK_ACTION_GROUP (group)));
       return FALSE;
     }
@@ -278,7 +279,7 @@ gimp_action_group_check_unique_action (GimpActionGroup *group,
  * @gimp:        the @Gimp instance this action group belongs to
  * @name:        the name of the action group.
  * @label:       the user visible label of the action group.
- * @stock_id:    the icon of the action group.
+ * @icon_name:   the icon of the action group.
  * @user_data:   the user_data for #GtkAction callbacks.
  * @update_func: the function that will be called on
  *               gimp_action_group_update().
@@ -293,7 +294,7 @@ GimpActionGroup *
 gimp_action_group_new (Gimp                      *gimp,
                        const gchar               *name,
                        const gchar               *label,
-                       const gchar               *stock_id,
+                       const gchar               *icon_name,
                        gpointer                   user_data,
                        GimpActionGroupUpdateFunc  update_func)
 {
@@ -306,7 +307,7 @@ gimp_action_group_new (Gimp                      *gimp,
                         "gimp",      gimp,
                         "name",      name,
                         "label",     label,
-                        "stock-id",  stock_id,
+                        "icon-name", icon_name,
                         NULL);
 
   group->user_data   = user_data;
@@ -344,7 +345,7 @@ gimp_action_group_update (GimpActionGroup *group,
 
 void
 gimp_action_group_add_actions (GimpActionGroup       *group,
-			       const gchar           *msg_context,
+                               const gchar           *msg_context,
                                const GimpActionEntry *entries,
                                guint                  n_entries)
 {
@@ -375,7 +376,7 @@ gimp_action_group_add_actions (GimpActionGroup       *group,
         }
 
       action = gimp_action_new (entries[i].name, label, tooltip,
-                                entries[i].stock_id);
+                                entries[i].icon_name);
 
       if (entries[i].callback)
         g_signal_connect (action, "activate",
@@ -429,7 +430,7 @@ gimp_action_group_add_toggle_actions (GimpActionGroup             *group,
         }
 
       action = gimp_toggle_action_new (entries[i].name, label, tooltip,
-                                       entries[i].stock_id);
+                                       entries[i].icon_name);
 
       gtk_toggle_action_set_active (action, entries[i].is_active);
 
@@ -489,7 +490,7 @@ gimp_action_group_add_radio_actions (GimpActionGroup            *group,
         }
 
       action = gimp_radio_action_new (entries[i].name, label, tooltip,
-                                      entries[i].stock_id,
+                                      entries[i].icon_name,
                                       entries[i].value);
 
       if (i == 0)
@@ -556,7 +557,7 @@ gimp_action_group_add_enum_actions (GimpActionGroup           *group,
         }
 
       action = gimp_enum_action_new (entries[i].name, label, tooltip,
-                                     entries[i].stock_id,
+                                     entries[i].icon_name,
                                      entries[i].value,
                                      entries[i].value_variable);
 
@@ -613,7 +614,7 @@ gimp_action_group_add_string_actions (GimpActionGroup             *group,
         }
 
       action = gimp_string_action_new (entries[i].name, label, tooltip,
-                                       entries[i].stock_id,
+                                       entries[i].icon_name,
                                        entries[i].value);
 
       if (callback)
@@ -636,10 +637,10 @@ gimp_action_group_add_string_actions (GimpActionGroup             *group,
 }
 
 void
-gimp_action_group_add_plug_in_actions (GimpActionGroup             *group,
-                                       const GimpPlugInActionEntry *entries,
-                                       guint                        n_entries,
-                                       GCallback                    callback)
+gimp_action_group_add_procedure_actions (GimpActionGroup                *group,
+                                         const GimpProcedureActionEntry *entries,
+                                         guint                           n_entries,
+                                         GCallback                       callback)
 {
   gint i;
 
@@ -647,16 +648,16 @@ gimp_action_group_add_plug_in_actions (GimpActionGroup             *group,
 
   for (i = 0; i < n_entries; i++)
     {
-      GimpPlugInAction *action;
+      GimpProcedureAction *action;
 
       if (! gimp_action_group_check_unique_action (group, entries[i].name))
         continue;
 
-      action = gimp_plug_in_action_new (entries[i].name,
-                                        entries[i].label,
-                                        entries[i].tooltip,
-                                        entries[i].stock_id,
-                                        entries[i].procedure);
+      action = gimp_procedure_action_new (entries[i].name,
+                                          entries[i].label,
+                                          entries[i].tooltip,
+                                          entries[i].icon_name,
+                                          entries[i].procedure);
 
       if (callback)
         g_signal_connect (action, "selected",
@@ -675,6 +676,36 @@ gimp_action_group_add_plug_in_actions (GimpActionGroup             *group,
 
       g_object_unref (action);
     }
+}
+
+/**
+ * gimp_action_group_remove_action:
+ * @group:  the #GimpActionGroup to which @action belongs.
+ * @action: the #GimpAction.
+ *
+ * This function removes @action from @group and clean any
+ * accelerator this action may have set.
+ * If you wish to only remove the action from the group, use
+ * gtk_action_group_remove_action() instead.
+ */
+void
+gimp_action_group_remove_action (GimpActionGroup *group,
+                                 GimpAction      *action)
+{
+  const gchar *action_name;
+  const gchar *group_name;
+  gchar       *accel_path;
+
+  action_name = gtk_action_get_name (GTK_ACTION (action));
+  group_name  = gtk_action_group_get_name (GTK_ACTION_GROUP (group));
+  accel_path = g_strconcat ("<Actions>/", group_name, "/",
+                            action_name, NULL);
+
+  gtk_accel_map_change_entry (accel_path, 0, 0, FALSE);
+
+  gtk_action_group_remove_action (GTK_ACTION_GROUP (group),
+                                  GTK_ACTION (action));
+  g_free (accel_path);
 }
 
 void
@@ -800,6 +831,30 @@ gimp_action_group_set_action_label (GimpActionGroup *group,
 }
 
 void
+gimp_action_group_set_action_pixbuf (GimpActionGroup *group,
+                                     const gchar     *action_name,
+                                     GdkPixbuf       *pixbuf)
+{
+  GtkAction *action;
+
+  g_return_if_fail (GIMP_IS_ACTION_GROUP (group));
+  g_return_if_fail (action_name != NULL);
+
+  action = gtk_action_group_get_action (GTK_ACTION_GROUP (group), action_name);
+
+  if (! action)
+    {
+      g_warning ("%s: Unable to set pixbuf of action "
+                 "which doesn't exist: %s",
+                 G_STRFUNC, action_name);
+      return;
+    }
+
+  gtk_action_set_gicon (action, G_ICON (pixbuf));
+}
+
+
+void
 gimp_action_group_set_action_tooltip (GimpActionGroup     *group,
                                       const gchar         *action_name,
                                       const gchar         *tooltip)
@@ -842,6 +897,38 @@ gimp_action_group_get_action_tooltip (GimpActionGroup     *group,
     }
 
   return gtk_action_get_tooltip (action);
+}
+
+void
+gimp_action_group_set_action_context (GimpActionGroup *group,
+                                      const gchar     *action_name,
+                                      GimpContext     *context)
+{
+  GtkAction *action;
+
+  g_return_if_fail (GIMP_IS_ACTION_GROUP (group));
+  g_return_if_fail (action_name != NULL);
+  g_return_if_fail (context == NULL || GIMP_IS_CONTEXT (context));
+
+  action = gtk_action_group_get_action (GTK_ACTION_GROUP (group), action_name);
+
+  if (! action)
+    {
+      g_warning ("%s: Unable to set context of action "
+                 "which doesn't exist: %s",
+                 G_STRFUNC, action_name);
+      return;
+    }
+
+  if (! GIMP_IS_ACTION (action))
+    {
+      g_warning ("%s: Unable to set \"context\" of action "
+                 "which is not a GimpAction: %s",
+                 G_STRFUNC, action_name);
+      return;
+    }
+
+  g_object_set (action, "context", context, NULL);
 }
 
 void

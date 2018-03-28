@@ -26,12 +26,15 @@ libexec_PROGRAMS = file-bmp
 file_bmp_SOURCES = \
 	bmp.c		\
 	bmp.h		\
-	bmp-read.c	\
-	bmp-write.c
+	bmp-load.c	\
+	bmp-load.h	\
+	bmp-save.c	\
+	bmp-save.h
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir)	\
 	$(GTK_CFLAGS)	\
+	$(GEGL_CFLAGS) \
 	-I$(includedir)
 
 LDADD = \
@@ -43,6 +46,7 @@ LDADD = \
 	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_bmp_RC)

@@ -19,7 +19,9 @@
 #define __LAYERS_COMMANDS_H__
 
 
-void   layers_text_tool_cmd_callback          (GtkAction   *action,
+void   layers_edit_cmd_callback               (GtkAction   *action,
+                                               gpointer     data);
+void   layers_edit_text_cmd_callback          (GtkAction   *action,
                                                gpointer     data);
 void   layers_edit_attributes_cmd_callback    (GtkAction   *action,
                                                gpointer     data);
@@ -70,10 +72,14 @@ void   layers_resize_to_image_cmd_callback    (GtkAction   *action,
                                                gpointer     data);
 void   layers_scale_cmd_callback              (GtkAction   *action,
                                                gpointer     data);
-void   layers_crop_cmd_callback               (GtkAction   *action,
+void   layers_crop_to_selection_cmd_callback  (GtkAction   *action,
+                                               gpointer     data);
+void   layers_crop_to_content_cmd_callback    (GtkAction   *action,
                                                gpointer     data);
 
 void   layers_mask_add_cmd_callback           (GtkAction   *action,
+                                               gpointer     data);
+void   layers_mask_add_last_vals_cmd_callback (GtkAction   *action,
                                                gpointer     data);
 void   layers_mask_apply_cmd_callback         (GtkAction   *action,
                                                gint         value,
@@ -102,8 +108,29 @@ void   layers_opacity_cmd_callback            (GtkAction   *action,
 void   layers_mode_cmd_callback               (GtkAction   *action,
                                                gint         value,
                                                gpointer     data);
+void   layers_blend_space_cmd_callback        (GtkAction   *action,
+                                               GtkAction   *current,
+                                               gpointer     data);
+void   layers_composite_space_cmd_callback    (GtkAction   *action,
+                                               GtkAction   *current,
+                                               gpointer     data);
+void   layers_composite_mode_cmd_callback     (GtkAction   *action,
+                                               GtkAction   *current,
+                                               gpointer     data);
 
+void   layers_visible_cmd_callback            (GtkAction   *action,
+                                               gpointer     data);
+void   layers_linked_cmd_callback             (GtkAction   *action,
+                                               gpointer     data);
+void   layers_lock_content_cmd_callback       (GtkAction   *action,
+                                               gpointer     data);
+void   layers_lock_position_cmd_callback      (GtkAction   *action,
+                                               gpointer     data);
 void   layers_lock_alpha_cmd_callback         (GtkAction   *action,
+                                               gpointer     data);
+
+void   layers_color_tag_cmd_callback          (GtkAction   *action,
+                                               gint         value,
                                                gpointer     data);
 
 

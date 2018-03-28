@@ -19,6 +19,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpconfig/gimpconfig.h"
@@ -41,6 +42,7 @@
 #include "widgets/gimpmessagedialog.h"
 #include "widgets/gimptooloptionseditor.h"
 #include "widgets/gimpuimanager.h"
+#include "widgets/gimpwidgets-utils.h"
 #include "widgets/gimpwindowstrategy.h"
 
 #include "dialogs/data-delete-dialog.h"
@@ -173,7 +175,7 @@ tool_options_reset_cmd_callback (GtkAction *action,
   GimpContext  *context   = gimp_get_user_context (gimp_editor_get_ui_manager (editor)->gimp);
   GimpToolInfo *tool_info = gimp_context_get_tool (context);
 
-  gimp_tool_options_reset (tool_info->tool_options);
+  gimp_config_reset (GIMP_CONFIG (tool_info->tool_options));
 }
 
 void
@@ -184,17 +186,18 @@ tool_options_reset_all_cmd_callback (GtkAction *action,
   GtkWidget  *dialog;
 
   dialog = gimp_message_dialog_new (_("Reset All Tool Options"),
-                                    GIMP_STOCK_QUESTION,
+                                    GIMP_ICON_DIALOG_QUESTION,
                                     GTK_WIDGET (editor),
                                     GTK_DIALOG_MODAL |
                                     GTK_DIALOG_DESTROY_WITH_PARENT,
                                     gimp_standard_help_func, NULL,
 
-                                    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                    GIMP_STOCK_RESET, GTK_RESPONSE_OK,
+                                    _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                    _("_Reset"),  GTK_RESPONSE_OK,
 
                                     NULL);
 
+  gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL);
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
                                            GTK_RESPONSE_OK,
                                            GTK_RESPONSE_CANCEL,
@@ -220,7 +223,7 @@ tool_options_reset_all_cmd_callback (GtkAction *action,
         {
           GimpToolInfo *tool_info = list->data;
 
-          gimp_tool_options_reset (tool_info->tool_options);
+          gimp_config_reset (GIMP_CONFIG (tool_info->tool_options));
         }
     }
 
@@ -242,6 +245,7 @@ tool_options_show_preset_editor (Gimp           *gimp,
                                                gimp,
                                                gimp_dialog_factory_get_singleton (),
                                                gtk_widget_get_screen (GTK_WIDGET (editor)),
+                                               gimp_widget_get_monitor (GTK_WIDGET (editor)),
                                                "gimp-tool-preset-editor");
 
   gimp_data_editor_set_data (GIMP_DATA_EDITOR (gtk_bin_get_child (GTK_BIN (dockable))),

@@ -19,6 +19,7 @@
 
 #include <cairo.h>
 #include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "libgimpcolor/gimpcolor.h"
 
@@ -32,7 +33,7 @@
 #include "gimpimage-undo.h"
 #include "gimpimage-undo-push.h"
 #include "gimplayer.h"
-#include "gimplayer-floating-sel.h"
+#include "gimplayer-floating-selection.h"
 #include "gimpselection.h"
 
 #include "gimp-intl.h"
@@ -82,41 +83,25 @@ gimp_image_set_quick_mask_state (GimpImage *image,
     {
       if (! mask)
         {
+          GimpLayer *floating_sel;
+
           gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_QUICK_MASK,
                                        C_("undo-type", "Enable Quick Mask"));
 
-          if (gimp_channel_is_empty (selection))
-            {
-              /* if no selection */
+          floating_sel = gimp_image_get_floating_selection (image);
 
-              GimpLayer *floating_sel = gimp_image_get_floating_selection (image);
+          if (floating_sel)
+            floating_sel_to_layer (floating_sel, NULL);
 
-              if (floating_sel)
-                floating_sel_to_layer (floating_sel, NULL);
+          mask = GIMP_CHANNEL (gimp_item_duplicate (GIMP_ITEM (selection),
+                                                    GIMP_TYPE_CHANNEL));
 
-              mask = gimp_channel_new (image,
-                                       gimp_image_get_width  (image),
-                                       gimp_image_get_height (image),
-                                       GIMP_IMAGE_QUICK_MASK_NAME,
-                                       &private->quick_mask_color);
+          if (! gimp_channel_is_empty (selection))
+            gimp_channel_clear (selection, NULL, TRUE);
 
-              /* Clear the mask */
-              gimp_channel_clear (mask, NULL, FALSE);
-            }
-          else
-            {
-              /* if selection */
-
-              mask = GIMP_CHANNEL (gimp_item_duplicate (GIMP_ITEM (selection),
-                                                        GIMP_TYPE_CHANNEL));
-
-              /* Clear the selection */
-              gimp_channel_clear (selection, NULL, TRUE);
-
-              gimp_channel_set_color (mask, &private->quick_mask_color, FALSE);
-              gimp_item_rename (GIMP_ITEM (mask), GIMP_IMAGE_QUICK_MASK_NAME,
-                                NULL);
-            }
+          gimp_channel_set_color (mask, &private->quick_mask_color, FALSE);
+          gimp_item_rename (GIMP_ITEM (mask), GIMP_IMAGE_QUICK_MASK_NAME,
+                            NULL);
 
           if (private->quick_mask_inverted)
             gimp_channel_invert (mask, FALSE);
@@ -157,7 +142,7 @@ gimp_image_set_quick_mask_state (GimpImage *image,
 }
 
 gboolean
-gimp_image_get_quick_mask_state (const GimpImage *image)
+gimp_image_get_quick_mask_state (GimpImage *image)
 {
   g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
 
@@ -181,8 +166,8 @@ gimp_image_set_quick_mask_color (GimpImage     *image,
 }
 
 void
-gimp_image_get_quick_mask_color (const GimpImage *image,
-                                 GimpRGB         *color)
+gimp_image_get_quick_mask_color (GimpImage *image,
+                                 GimpRGB   *color)
 {
   g_return_if_fail (GIMP_IS_IMAGE (image));
   g_return_if_fail (color != NULL);
@@ -191,7 +176,7 @@ gimp_image_get_quick_mask_color (const GimpImage *image,
 }
 
 GimpChannel *
-gimp_image_get_quick_mask (const GimpImage *image)
+gimp_image_get_quick_mask (GimpImage *image)
 {
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
 
@@ -219,7 +204,7 @@ gimp_image_quick_mask_invert (GimpImage *image)
 }
 
 gboolean
-gimp_image_get_quick_mask_inverted (const GimpImage *image)
+gimp_image_get_quick_mask_inverted (GimpImage *image)
 {
   g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
 

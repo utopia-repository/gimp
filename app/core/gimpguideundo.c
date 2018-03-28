@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "core-types.h"
@@ -86,10 +87,9 @@ gimp_guide_undo_constructed (GObject *object)
 {
   GimpGuideUndo *guide_undo = GIMP_GUIDE_UNDO (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_GUIDE (guide_undo->guide));
+  gimp_assert (GIMP_IS_GUIDE (guide_undo->guide));
 
   guide_undo->orientation = gimp_guide_get_orientation (guide_undo->guide);
   guide_undo->position    = gimp_guide_get_position (guide_undo->guide);
@@ -150,12 +150,12 @@ gimp_guide_undo_pop (GimpUndo              *undo,
   orientation = gimp_guide_get_orientation (guide_undo->guide);
   position    = gimp_guide_get_position (guide_undo->guide);
 
-  if (position == -1)
+  if (position == GIMP_GUIDE_POSITION_UNDEFINED)
     {
       gimp_image_add_guide (undo->image,
                             guide_undo->guide, guide_undo->position);
     }
-  else if (guide_undo->position == -1)
+  else if (guide_undo->position == GIMP_GUIDE_POSITION_UNDEFINED)
     {
       gimp_image_remove_guide (undo->image, guide_undo->guide, FALSE);
     }
@@ -181,11 +181,7 @@ gimp_guide_undo_free (GimpUndo     *undo,
 {
   GimpGuideUndo *guide_undo = GIMP_GUIDE_UNDO (undo);
 
-  if (guide_undo->guide)
-    {
-      g_object_unref (guide_undo->guide);
-      guide_undo->guide = NULL;
-    }
+  g_clear_object (&guide_undo->guide);
 
   GIMP_UNDO_CLASS (parent_class)->free (undo, undo_mode);
 }

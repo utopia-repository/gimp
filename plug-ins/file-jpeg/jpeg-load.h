@@ -21,16 +21,13 @@
 gint32 load_image           (const gchar  *filename,
                              GimpRunMode   runmode,
                              gboolean      preview,
+                             gboolean     *resolution_loaded,
                              GError      **error);
 
-
-#ifdef HAVE_LIBEXIF
-
-gint32 load_thumbnail_image (const gchar  *filename,
-                             gint         *width,
-                             gint         *height,
-                             GError      **error);
-
-#endif /* HAVE_LIBEXIF */
+gint32 load_thumbnail_image (GFile         *file,
+                             gint          *width,
+                             gint          *height,
+                             GimpImageType *type,
+                             GError       **error);
 
 #endif /* __JPEG_LOAD_H__ */

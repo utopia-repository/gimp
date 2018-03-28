@@ -19,13 +19,13 @@
 /*
  * hot.c - Scan an image for pixels with RGB values that will give
  *      "unsafe" values of chrominance signal or composite signal
- *      amplitude when encoded into an NTSC or PAL colour signal.
- *      (This happens for certain high-intensity high-saturation colours
+ *      amplitude when encoded into an NTSC or PAL color signal.
+ *      (This happens for certain high-intensity high-saturation colors
  *      that are rare in real scenes, but can easily be present
  *      in synthetic images.)
  *
  *      Such pixels can be flagged so the user may then choose other
- *      colours.  Or, the offending pixels can be made "safe"
+ *      colors.  Or, the offending pixels can be made "safe"
  *      in a manner that preserves hue.
  *
  *      There are two reasonable ways to make a pixel "safe":
@@ -58,7 +58,7 @@
  *      monochrome white, and is always safe.  120 is the absolute
  *      limit for NTSC broadcasting, since the transmitter's carrier
  *      goes to zero with 120 IRE input signal.  Generally, 110
- *      is a good compromise - it allows somewhat brighter colours
+ *      is a good compromise - it allows somewhat brighter colors
  *      than 100, while staying safely away from the hard limit.
  */
 
@@ -312,7 +312,7 @@ pluginCore (piArgs *argp)
   gint          nl      = 0;
   gint          y, i;
   gint          Y, I, Q;
-  guint         width, height, bpp;
+  gint          width, height, bpp;
   gint          sel_x1, sel_x2, sel_y1, sel_y2;
   gint          prog_interval;
   guchar       *src, *s, *dst, *d;
@@ -349,17 +349,20 @@ pluginCore (piArgs *argp)
                   action_names[argp->action]);
 
       nl = gimp_layer_new (argp->image, name, width, height,
-                           GIMP_RGBA_IMAGE, (gdouble)100, GIMP_NORMAL_MODE);
+                           GIMP_RGBA_IMAGE,
+                           100,
+                           gimp_image_get_default_new_layer_mode (argp->image));
       ndrw = gimp_drawable_get (nl);
-      gimp_drawable_fill (nl, GIMP_TRANSPARENT_FILL);
+      gimp_drawable_fill (nl, GIMP_FILL_TRANSPARENT);
       gimp_image_insert_layer (argp->image, nl, -1, 0);
     }
 
-  gimp_drawable_mask_bounds (drw->drawable_id,
-                             &sel_x1, &sel_y1, &sel_x2, &sel_y2);
+  if (! gimp_drawable_mask_intersect (drw->drawable_id,
+                                      &sel_x1, &sel_y1, &width, &height))
+    return success;
 
-  width  = sel_x2 - sel_x1;
-  height = sel_y2 - sel_y1;
+  sel_x2 = sel_x1 + width;
+  sel_y2 = sel_y1 + height;
 
   src = g_new (guchar, width * height * bpp);
   dst = g_new (guchar, width * height * 4);
@@ -588,8 +591,8 @@ plugin_dialog (piArgs *argp)
                          NULL, 0,
                          gimp_standard_help_func, PLUG_IN_PROC,
 
-                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                         GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                         _("_Cancel"), GTK_RESPONSE_CANCEL,
+                         _("_OK"),     GTK_RESPONSE_OK,
 
                          NULL);
 

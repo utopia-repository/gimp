@@ -29,13 +29,14 @@
 
 #include "core/gimp-transform-utils.h"
 #include "core/gimpimage.h"
-#include "core/gimpdrawable-transform.h"
 
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpsizebox.h"
 
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
+#include "display/gimptoolgui.h"
+#include "display/gimptooltransformgrid.h"
 
 #include "gimpscaletool.h"
 #include "gimptoolcontrol.h"
@@ -50,26 +51,26 @@ enum
   X0,
   Y0,
   X1,
-  Y1,
-  X2,
-  Y2,
-  X3,
-  Y3
+  Y1
 };
 
 
 /*  local function prototypes  */
 
-static void    gimp_scale_tool_dialog        (GimpTransformTool  *tr_tool);
-static void    gimp_scale_tool_dialog_update (GimpTransformTool  *tr_tool);
-static void    gimp_scale_tool_prepare       (GimpTransformTool  *tr_tool);
-static void    gimp_scale_tool_motion        (GimpTransformTool  *tr_tool);
-static void    gimp_scale_tool_recalc_matrix (GimpTransformTool  *tr_tool);
-static gchar * gimp_scale_tool_get_undo_desc (GimpTransformTool  *tr_tool);
+static void             gimp_scale_tool_dialog         (GimpTransformTool *tr_tool);
+static void             gimp_scale_tool_dialog_update  (GimpTransformTool *tr_tool);
+static void             gimp_scale_tool_prepare        (GimpTransformTool *tr_tool);
+static GimpToolWidget * gimp_scale_tool_get_widget     (GimpTransformTool *tr_tool);
+static void             gimp_scale_tool_recalc_matrix  (GimpTransformTool *tr_tool,
+                                                        GimpToolWidget    *widget);
+static gchar          * gimp_scale_tool_get_undo_desc  (GimpTransformTool *tr_tool);
 
-static void    gimp_scale_tool_size_notify   (GtkWidget          *box,
-                                              GParamSpec         *pspec,
-                                              GimpTransformTool  *tr_tool);
+static void             gimp_scale_tool_widget_changed (GimpToolWidget    *widget,
+                                                        GimpTransformTool *tr_tool);
+
+static void             gimp_scale_tool_size_notify    (GtkWidget         *box,
+                                                        GParamSpec        *pspec,
+                                                        GimpTransformTool *tr_tool);
 
 
 G_DEFINE_TYPE (GimpScaleTool, gimp_scale_tool, GIMP_TYPE_TRANSFORM_TOOL)
@@ -84,13 +85,13 @@ gimp_scale_tool_register (GimpToolRegisterCallback  callback,
   (* callback) (GIMP_TYPE_SCALE_TOOL,
                 GIMP_TYPE_TRANSFORM_OPTIONS,
                 gimp_transform_options_gui,
-                GIMP_CONTEXT_BACKGROUND_MASK,
+                GIMP_CONTEXT_PROP_MASK_BACKGROUND,
                 "gimp-scale-tool",
                 _("Scale"),
                 _("Scale Tool: Scale the layer, selection or path"),
-                N_("_Scale"), "<shift>T",
+                N_("_Scale"), "<shift>S",
                 NULL, GIMP_HELP_TOOL_SCALE,
-                GIMP_STOCK_TOOL_SCALE,
+                GIMP_ICON_TOOL_SCALE,
                 data);
 }
 
@@ -99,12 +100,14 @@ gimp_scale_tool_class_init (GimpScaleToolClass *klass)
 {
   GimpTransformToolClass *trans_class = GIMP_TRANSFORM_TOOL_CLASS (klass);
 
-  trans_class->dialog        = gimp_scale_tool_dialog;
-  trans_class->dialog_update = gimp_scale_tool_dialog_update;
-  trans_class->prepare       = gimp_scale_tool_prepare;
-  trans_class->motion        = gimp_scale_tool_motion;
-  trans_class->recalc_matrix = gimp_scale_tool_recalc_matrix;
-  trans_class->get_undo_desc = gimp_scale_tool_get_undo_desc;
+  trans_class->dialog          = gimp_scale_tool_dialog;
+  trans_class->dialog_update   = gimp_scale_tool_dialog_update;
+  trans_class->prepare         = gimp_scale_tool_prepare;
+  trans_class->get_widget      = gimp_scale_tool_get_widget;
+  trans_class->recalc_matrix   = gimp_scale_tool_recalc_matrix;
+  trans_class->get_undo_desc   = gimp_scale_tool_get_undo_desc;
+
+  trans_class->ok_button_label = _("_Scale");
 }
 
 static void
@@ -115,12 +118,7 @@ gimp_scale_tool_init (GimpScaleTool *scale_tool)
 
   gimp_tool_control_set_tool_cursor (tool->control, GIMP_TOOL_CURSOR_RESIZE);
 
-  tr_tool->progress_text   = _("Scaling");
-
-  tr_tool->use_grid        = TRUE;
-  tr_tool->use_handles     = TRUE;
-  tr_tool->use_center      = TRUE;
-  tr_tool->use_mid_handles = TRUE;
+  tr_tool->progress_text = _("Scaling");
 }
 
 static void
@@ -132,14 +130,16 @@ static void
 gimp_scale_tool_dialog_update (GimpTransformTool *tr_tool)
 {
   GimpTransformOptions *options = GIMP_TRANSFORM_TOOL_GET_OPTIONS (tr_tool);
+  gint                  width;
+  gint                  height;
 
-  gint width  = ROUND (tr_tool->trans_info[X1] - tr_tool->trans_info[X0]);
-  gint height = ROUND (tr_tool->trans_info[Y1] - tr_tool->trans_info[Y0]);
+  width  = ROUND (tr_tool->trans_info[X1] - tr_tool->trans_info[X0]);
+  height = ROUND (tr_tool->trans_info[Y1] - tr_tool->trans_info[Y0]);
 
   g_object_set (GIMP_SCALE_TOOL (tr_tool)->box,
                 "width",       width,
                 "height",      height,
-                "keep-aspect", options->constrain,
+                "keep-aspect", options->constrain_scale,
                 NULL);
 }
 
@@ -175,14 +175,13 @@ gimp_scale_tool_prepare (GimpTransformTool *tr_tool)
     g_object_new (GIMP_TYPE_SIZE_BOX,
                   "width",       tr_tool->x2 - tr_tool->x1,
                   "height",      tr_tool->y2 - tr_tool->y1,
-                  "keep-aspect", options->constrain,
+                  "keep-aspect", options->constrain_scale,
                   "unit",        gimp_display_get_shell (display)->unit,
                   "xresolution", xres,
                   "yresolution", yres,
                   NULL);
 
-  gtk_container_set_border_width (GTK_CONTAINER (scale->box), 6);
-  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (tr_tool->dialog))),
+  gtk_box_pack_start (GTK_BOX (gimp_tool_gui_get_vbox (tr_tool->gui)),
                       scale->box, FALSE, FALSE, 0);
   gtk_widget_show (scale->box);
 
@@ -191,131 +190,40 @@ gimp_scale_tool_prepare (GimpTransformTool *tr_tool)
                     tr_tool);
 }
 
-static void
-gimp_scale_tool_motion (GimpTransformTool *tr_tool)
+static GimpToolWidget *
+gimp_scale_tool_get_widget (GimpTransformTool *tr_tool)
 {
-  GimpTransformOptions *options = GIMP_TRANSFORM_TOOL_GET_OPTIONS (tr_tool);
-  gdouble              *x1;
-  gdouble              *y1;
-  gdouble              *x2;
-  gdouble              *y2;
-  gint                  dir_x;
-  gint                  dir_y;
-  gdouble               diff_x = tr_tool->curx - tr_tool->lastx;
-  gdouble               diff_y = tr_tool->cury - tr_tool->lasty;
+  GimpTool         *tool  = GIMP_TOOL (tr_tool);
+  GimpDisplayShell *shell = gimp_display_get_shell (tool->display);
+  GimpToolWidget   *widget;
 
-  switch (tr_tool->function)
-    {
-    case TRANSFORM_HANDLE_N:
-      diff_x = 0; /* and fall through */
-    case TRANSFORM_HANDLE_NW:
-      x1 = &tr_tool->trans_info[X0];
-      y1 = &tr_tool->trans_info[Y0];
-      x2 = &tr_tool->trans_info[X1];
-      y2 = &tr_tool->trans_info[Y1];
-      dir_x = dir_y = 1;
-      break;
+  widget = gimp_tool_transform_grid_new (shell,
+                                         &tr_tool->transform,
+                                         tr_tool->x1,
+                                         tr_tool->y1,
+                                         tr_tool->x2,
+                                         tr_tool->y2);
 
-    case TRANSFORM_HANDLE_E:
-      diff_y = 0; /* and fall through */
-    case TRANSFORM_HANDLE_NE:
-      x1 = &tr_tool->trans_info[X1];
-      y1 = &tr_tool->trans_info[Y0];
-      x2 = &tr_tool->trans_info[X0];
-      y2 = &tr_tool->trans_info[Y1];
-      dir_x = -1;
-      dir_y = 1;
-      break;
+  g_object_set (widget,
+                "pivot-x",            (tr_tool->x1 + tr_tool->x2) / 2.0,
+                "pivot-y",            (tr_tool->y1 + tr_tool->y2) / 2.0,
+                "inside-function",    GIMP_TRANSFORM_FUNCTION_SCALE,
+                "outside-function",   GIMP_TRANSFORM_FUNCTION_SCALE,
+                "use-corner-handles", TRUE,
+                "use-side-handles",   TRUE,
+                "use-center-handle",  TRUE,
+                NULL);
 
-    case TRANSFORM_HANDLE_W:
-      diff_y = 0; /* and fall through */
-    case TRANSFORM_HANDLE_SW:
-      x1 = &tr_tool->trans_info[X0];
-      y1 = &tr_tool->trans_info[Y1];
-      x2 = &tr_tool->trans_info[X1];
-      y2 = &tr_tool->trans_info[Y0];
-      dir_x = 1;
-      dir_y = -1;
-      break;
+  g_signal_connect (widget, "changed",
+                    G_CALLBACK (gimp_scale_tool_widget_changed),
+                    tr_tool);
 
-    case TRANSFORM_HANDLE_S:
-      diff_x = 0; /* and fall through */
-    case TRANSFORM_HANDLE_SE:
-      x1 = &tr_tool->trans_info[X1];
-      y1 = &tr_tool->trans_info[Y1];
-      x2 = &tr_tool->trans_info[X0];
-      y2 = &tr_tool->trans_info[Y0];
-      dir_x = dir_y = -1;
-      break;
-
-    case TRANSFORM_HANDLE_CENTER:
-      tr_tool->trans_info[X0] += diff_x;
-      tr_tool->trans_info[Y0] += diff_y;
-      tr_tool->trans_info[X1] += diff_x;
-      tr_tool->trans_info[Y1] += diff_y;
-      tr_tool->trans_info[X2] += diff_x;
-      tr_tool->trans_info[Y2] += diff_y;
-      tr_tool->trans_info[X3] += diff_x;
-      tr_tool->trans_info[Y3] += diff_y;
-      return;
-
-    default:
-      return;
-    }
-
-  *x1 += diff_x;
-  *y1 += diff_y;
-
-  /*  if control is being held, constrain the aspect ratio  */
-  if (options->constrain)
-    {
-      /*  FIXME: improve this  */
-      gdouble h = tr_tool->trans_info[Y1] - tr_tool->trans_info[Y0];
-
-      switch (tr_tool->function)
-        {
-        case TRANSFORM_HANDLE_NW:
-        case TRANSFORM_HANDLE_SW:
-          tr_tool->trans_info[X0] =
-            tr_tool->trans_info[X1] - tr_tool->aspect * h;
-          break;
-
-        case TRANSFORM_HANDLE_NE:
-        case TRANSFORM_HANDLE_SE:
-          tr_tool->trans_info[X1] =
-            tr_tool->trans_info[X0] + tr_tool->aspect * h;
-          break;
-
-        default:
-          break;
-        }
-    }
-
-  if (dir_x > 0)
-    {
-      if (*x1 >= *x2)
-        *x1 = *x2 - 1;
-    }
-  else
-    {
-      if (*x1 <= *x2)
-        *x1 = *x2 + 1;
-    }
-
-  if (dir_y > 0)
-    {
-      if (*y1 >= *y2)
-        *y1 = *y2 - 1;
-    }
-  else
-    {
-      if (*y1 <= *y2)
-        *y1 = *y2 + 1;
-    }
+  return widget;
 }
 
 static void
-gimp_scale_tool_recalc_matrix (GimpTransformTool *tr_tool)
+gimp_scale_tool_recalc_matrix (GimpTransformTool *tr_tool,
+                               GimpToolWidget    *widget)
 {
   gimp_matrix3_identity (&tr_tool->transform);
   gimp_transform_matrix_scale (&tr_tool->transform,
@@ -327,6 +235,17 @@ gimp_scale_tool_recalc_matrix (GimpTransformTool *tr_tool)
                                tr_tool->trans_info[Y0],
                                tr_tool->trans_info[X1] - tr_tool->trans_info[X0],
                                tr_tool->trans_info[Y1] - tr_tool->trans_info[Y0]);
+
+  if (widget)
+    g_object_set (widget,
+                  "transform", &tr_tool->transform,
+                  "x1",        (gdouble) tr_tool->x1,
+                  "y1",        (gdouble) tr_tool->y1,
+                  "x2",        (gdouble) tr_tool->x2,
+                  "y2",        (gdouble) tr_tool->y2,
+                  "pivot-x",   (tr_tool->x1 + tr_tool->x2) / 2.0,
+                  "pivot-y",   (tr_tool->y1 + tr_tool->y2) / 2.0,
+                  NULL);
 }
 
 static gchar *
@@ -337,6 +256,30 @@ gimp_scale_tool_get_undo_desc (GimpTransformTool *tr_tool)
 
   return g_strdup_printf (C_("undo-type", "Scale to %d x %d"),
                           width, height);
+}
+
+static void
+gimp_scale_tool_widget_changed (GimpToolWidget    *widget,
+                                GimpTransformTool *tr_tool)
+{
+  GimpMatrix3 *transform;
+
+  g_object_get (widget,
+                "transform", &transform,
+                NULL);
+
+  gimp_matrix3_transform_point (transform,
+                                tr_tool->x1, tr_tool->y1,
+                                &tr_tool->trans_info[X0],
+                                &tr_tool->trans_info[Y0]);
+  gimp_matrix3_transform_point (transform,
+                                tr_tool->x2, tr_tool->y2,
+                                &tr_tool->trans_info[X1],
+                                &tr_tool->trans_info[Y1]);
+
+  g_free (transform);
+
+  gimp_transform_tool_recalc_matrix (tr_tool, NULL);
 }
 
 static void
@@ -364,14 +307,12 @@ gimp_scale_tool_size_notify (GtkWidget         *box,
 
       if ((width != old_width) || (height != old_height))
         {
-          gimp_draw_tool_pause (GIMP_DRAW_TOOL (tr_tool));
-
           tr_tool->trans_info[X1] = tr_tool->trans_info[X0] + width;
           tr_tool->trans_info[Y1] = tr_tool->trans_info[Y0] + height;
 
-          gimp_transform_tool_recalc_matrix (tr_tool);
+          gimp_transform_tool_push_internal_undo (tr_tool);
 
-          gimp_draw_tool_resume (GIMP_DRAW_TOOL (tr_tool));
+          gimp_transform_tool_recalc_matrix (tr_tool, tr_tool->widget);
         }
     }
   else if (! strcmp (pspec->name, "keep-aspect"))
@@ -382,7 +323,7 @@ gimp_scale_tool_size_notify (GtkWidget         *box,
                     "keep-aspect", &constrain,
                     NULL);
 
-      if (constrain != options->constrain)
+      if (constrain != options->constrain_scale)
         {
           gint width;
           gint height;
@@ -392,13 +333,8 @@ gimp_scale_tool_size_notify (GtkWidget         *box,
                         "height", &height,
                         NULL);
 
-          /*  Take the aspect ratio from the size box when the user
-           *  activates the constraint by pressing the chain button.
-           */
-          tr_tool->aspect = (gdouble) width / (gdouble) height;
-
           g_object_set (options,
-                        "constrain", constrain,
+                        "constrain-scale", constrain,
                         NULL);
         }
     }

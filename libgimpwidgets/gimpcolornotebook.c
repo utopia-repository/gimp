@@ -24,6 +24,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -67,6 +68,10 @@ static void   gimp_color_notebook_set_color       (GimpColorSelector *selector,
                                                    const GimpHSV     *hsv);
 static void   gimp_color_notebook_set_channel     (GimpColorSelector *selector,
                                                    GimpColorSelectorChannel channel);
+static void   gimp_color_notebook_set_model_visible
+                                                  (GimpColorSelector *selector,
+                                                   GimpColorSelectorModel model,
+                                                   gboolean           gboolean);
 static void   gimp_color_notebook_set_config      (GimpColorSelector *selector,
                                                    GimpColorConfig   *config);
 
@@ -82,6 +87,11 @@ static void   gimp_color_notebook_color_changed   (GimpColorSelector *page,
                                                    GimpColorNotebook *notebook);
 static void   gimp_color_notebook_channel_changed (GimpColorSelector *page,
                                                    GimpColorSelectorChannel channel,
+                                                   GimpColorNotebook *notebook);
+static void   gimp_color_notebook_model_visible_changed
+                                                  (GimpColorSelector *page,
+                                                   GimpColorSelectorModel model,
+                                                   gboolean           visible,
                                                    GimpColorNotebook *notebook);
 
 static GtkWidget * gimp_color_notebook_add_page   (GimpColorNotebook *notebook,
@@ -112,6 +122,7 @@ gimp_color_notebook_class_init (GimpColorNotebookClass *klass)
   selector_class->set_show_alpha        = gimp_color_notebook_set_show_alpha;
   selector_class->set_color             = gimp_color_notebook_set_color;
   selector_class->set_channel           = gimp_color_notebook_set_channel;
+  selector_class->set_model_visible     = gimp_color_notebook_set_model_visible;
   selector_class->set_config            = gimp_color_notebook_set_config;
 
   gtk_widget_class_install_style_property (widget_class,
@@ -121,6 +132,7 @@ gimp_color_notebook_class_init (GimpColorNotebookClass *klass)
                                                              0, G_MAXINT,
                                                              DEFAULT_TAB_BORDER,
                                                              G_PARAM_READABLE));
+
   gtk_widget_class_install_style_property (widget_class,
                                            g_param_spec_enum ("tab-icon-size",
                                                               NULL,
@@ -202,7 +214,8 @@ gimp_color_notebook_style_set (GtkWidget *widget,
 
       selector_class = GIMP_COLOR_SELECTOR_GET_CLASS (list->data);
 
-      image = gtk_image_new_from_stock (selector_class->stock_id, icon_size);
+      image = gtk_image_new_from_icon_name (selector_class->icon_name,
+                                            icon_size);
 
       gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook->notebook),
                                   GTK_WIDGET (list->data),
@@ -291,6 +304,24 @@ gimp_color_notebook_set_channel (GimpColorSelector        *selector,
 }
 
 static void
+gimp_color_notebook_set_model_visible (GimpColorSelector      *selector,
+                                       GimpColorSelectorModel  model,
+                                       gboolean                visible)
+{
+  GimpColorNotebook *notebook = GIMP_COLOR_NOTEBOOK (selector);
+
+  g_signal_handlers_block_by_func (notebook->cur_page,
+                                   gimp_color_notebook_model_visible_changed,
+                                   notebook);
+
+  gimp_color_selector_set_model_visible (notebook->cur_page, model, visible);
+
+  g_signal_handlers_unblock_by_func (notebook->cur_page,
+                                     gimp_color_notebook_model_visible_changed,
+                                     notebook);
+}
+
+static void
 gimp_color_notebook_set_config (GimpColorSelector *selector,
                                 GimpColorConfig   *config)
 {
@@ -311,8 +342,9 @@ gimp_color_notebook_switch_page (GtkNotebook       *gtk_notebook,
                                  guint              page_num,
                                  GimpColorNotebook *notebook)
 {
-  GimpColorSelector *selector = GIMP_COLOR_SELECTOR (notebook);
-  GtkWidget         *page_widget;
+  GimpColorSelector      *selector = GIMP_COLOR_SELECTOR (notebook);
+  GtkWidget              *page_widget;
+  GimpColorSelectorModel  model;
 
   page_widget = gtk_notebook_get_nth_page (gtk_notebook, page_num);
 
@@ -324,18 +356,34 @@ gimp_color_notebook_switch_page (GtkNotebook       *gtk_notebook,
   g_signal_handlers_block_by_func (notebook->cur_page,
                                    gimp_color_notebook_channel_changed,
                                    notebook);
+  g_signal_handlers_block_by_func (notebook->cur_page,
+                                   gimp_color_notebook_model_visible_changed,
+                                   notebook);
 
   gimp_color_selector_set_color (notebook->cur_page,
                                  &selector->rgb,
                                  &selector->hsv);
   gimp_color_selector_set_channel (notebook->cur_page,
-                                   selector->channel);
+                                   gimp_color_selector_get_channel (selector));
+
+  for (model = GIMP_COLOR_SELECTOR_MODEL_RGB;
+       model <= GIMP_COLOR_SELECTOR_MODEL_HSV;
+       model++)
+    {
+      gboolean visible = gimp_color_selector_get_model_visible (selector, model);
+
+      gimp_color_selector_set_model_visible (notebook->cur_page, model,
+                                             visible);
+    }
 
   g_signal_handlers_unblock_by_func (notebook->cur_page,
                                      gimp_color_notebook_color_changed,
                                      notebook);
   g_signal_handlers_unblock_by_func (notebook->cur_page,
                                      gimp_color_notebook_channel_changed,
+                                     notebook);
+  g_signal_handlers_unblock_by_func (notebook->cur_page,
+                                     gimp_color_notebook_model_visible_changed,
                                      notebook);
 }
 
@@ -360,9 +408,18 @@ gimp_color_notebook_channel_changed (GimpColorSelector        *page,
 {
   GimpColorSelector *selector = GIMP_COLOR_SELECTOR (notebook);
 
-  selector->channel = channel;
+  gimp_color_selector_set_channel (selector, channel);
+}
 
-  gimp_color_selector_channel_changed (selector);
+static void
+gimp_color_notebook_model_visible_changed (GimpColorSelector      *page,
+                                           GimpColorSelectorModel  model,
+                                           gboolean                visible,
+                                           GimpColorNotebook      *notebook)
+{
+  GimpColorSelector *selector = GIMP_COLOR_SELECTOR (notebook);
+
+  gimp_color_selector_set_model_visible (selector, model, visible);
 }
 
 static GtkWidget *
@@ -375,24 +432,25 @@ gimp_color_notebook_add_page (GimpColorNotebook *notebook,
   GtkWidget              *menu_widget;
   GtkWidget              *image;
   GtkWidget              *label;
+  gboolean                show_alpha;
 
   page = gimp_color_selector_new (page_type,
                                   &selector->rgb,
                                   &selector->hsv,
-                                  selector->channel);
+                                  gimp_color_selector_get_channel (selector));
 
   if (! page)
     return NULL;
 
   selector_class = GIMP_COLOR_SELECTOR_GET_CLASS (page);
 
-  gimp_color_selector_set_show_alpha (GIMP_COLOR_SELECTOR (page),
-                                      GIMP_COLOR_SELECTOR (notebook)->show_alpha);
+  show_alpha = gimp_color_selector_get_show_alpha (GIMP_COLOR_SELECTOR (notebook));
+  gimp_color_selector_set_show_alpha (GIMP_COLOR_SELECTOR (page), show_alpha);
 
   menu_widget = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
 
-  image = gtk_image_new_from_stock (selector_class->stock_id,
-                                    GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name (selector_class->icon_name,
+                                        GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (menu_widget), image, FALSE, FALSE, 0);
   gtk_widget_show (image);
 
@@ -400,8 +458,8 @@ gimp_color_notebook_add_page (GimpColorNotebook *notebook,
   gtk_box_pack_start (GTK_BOX (menu_widget), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-  image = gtk_image_new_from_stock (selector_class->stock_id,
-                                    DEFAULT_TAB_ICON_SIZE);
+  image = gtk_image_new_from_icon_name (selector_class->icon_name,
+                                        DEFAULT_TAB_ICON_SIZE);
 
   gtk_notebook_append_page_menu (GTK_NOTEBOOK (notebook->notebook),
                                  page, image, menu_widget);
@@ -418,6 +476,9 @@ gimp_color_notebook_add_page (GimpColorNotebook *notebook,
                     notebook);
   g_signal_connect (page, "channel-changed",
                     G_CALLBACK (gimp_color_notebook_channel_changed),
+                    notebook);
+  g_signal_connect (page, "model-visible-changed",
+                    G_CALLBACK (gimp_color_notebook_model_visible_changed),
                     notebook);
 
   return page;

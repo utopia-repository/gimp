@@ -24,9 +24,8 @@
 
 #include <stdio.h>
 
-#include <gtk/gtk.h>
-
-#include "libgimpwidgets/gimpwidgets.h"
+#include "libgimp/gimp.h"
+#include "libgimp/gimpui.h"
 
 #include "imap_commands.h"
 #include "imap_main.h"
@@ -401,7 +400,7 @@ make_selection(ObjectList_t *object_list)
   gtk_container_add (GTK_CONTAINER(frame), swin);
   gtk_widget_show (swin);
 
-  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW(swin), list);
+  gtk_container_add (GTK_CONTAINER (swin), list);
   gtk_widget_show (list);
 
   /* Drop support */

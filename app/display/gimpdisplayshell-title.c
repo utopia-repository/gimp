@@ -23,6 +23,7 @@
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpcolor/gimpcolor.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "libgimpbase/gimpbase.h"
@@ -31,9 +32,12 @@
 
 #include "config/gimpdisplayconfig.h"
 
+#include "gegl/gimp-babl.h"
+
 #include "core/gimpcontainer.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
+#include "core/gimpimage-color-profile.h"
 #include "core/gimpitem.h"
 
 #include "gimpdisplay.h"
@@ -122,18 +126,18 @@ gimp_display_shell_title_image_type (GimpImage *image)
   const gchar *name = "";
 
   gimp_enum_get_value (GIMP_TYPE_IMAGE_BASE_TYPE,
-                       gimp_image_base_type (image), NULL, NULL, &name, NULL);
+                       gimp_image_get_base_type (image), NULL, NULL, &name, NULL);
 
   return name;
 }
 
 static const gchar *
-gimp_display_shell_title_drawable_type (GimpDrawable *drawable)
+gimp_display_shell_title_image_precision (GimpImage *image)
 {
   const gchar *name = "";
 
-  gimp_enum_get_value (GIMP_TYPE_IMAGE_TYPE,
-                       gimp_drawable_type (drawable), NULL, NULL, &name, NULL);
+  gimp_enum_get_value (GIMP_TYPE_PRECISION,
+                       gimp_image_get_precision (image), NULL, NULL, &name, NULL);
 
   return name;
 }
@@ -171,9 +175,10 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
                                  gint              title_len,
                                  const gchar      *format)
 {
-  GimpImage *image;
-  gint       num, denom;
-  gint       i = 0;
+  GimpImage    *image;
+  GimpDrawable *drawable;
+  gint          num, denom;
+  gint          i = 0;
 
   g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), 0);
 
@@ -184,6 +189,8 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
       title[0] = '\n';
       return 0;
     }
+
+  drawable = gimp_image_get_active_drawable (image);
 
   gimp_zoom_model_get_fraction (shell->zoom, &num, &denom);
 
@@ -222,18 +229,19 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
               break;
 
             case 't': /* image type */
-              i += print (title, title_len, i, "%s",
-                          gimp_display_shell_title_image_type (image));
+              i += print (title, title_len, i, "%s %s",
+                          gimp_display_shell_title_image_type (image),
+                          gimp_display_shell_title_image_precision (image));
               break;
 
             case 'T': /* drawable type */
-              {
-                GimpDrawable *drawable = gimp_image_get_active_drawable (image);
+              if (drawable)
+                {
+                  const Babl *format = gimp_drawable_get_format (drawable);
 
-                if (drawable)
                   i += print (title, title_len, i, "%s",
-                              gimp_display_shell_title_drawable_type (drawable));
-              }
+                              gimp_babl_format_get_description (format));
+                }
               break;
 
             case 's': /* user source zoom factor */
@@ -319,37 +327,27 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
               break;
 
             case 'n': /* active drawable name */
-              {
-                GimpDrawable *drawable = gimp_image_get_active_drawable (image);
+              if (drawable)
+                {
+                  gchar *desc;
 
-                if (drawable)
-                  {
-                    gchar *desc;
-
-                    desc = gimp_viewable_get_description (GIMP_VIEWABLE (drawable),
-                                                          NULL);
-
-                    i += print (title, title_len, i, "%s", desc);
-
-                    g_free (desc);
-                  }
-                else
-                  {
-                    i += print (title, title_len, i, "%s", _("(none)"));
-                  }
-              }
+                  desc = gimp_viewable_get_description (GIMP_VIEWABLE (drawable),
+                                                        NULL);
+                  i += print (title, title_len, i, "%s", desc);
+                  g_free (desc);
+                }
+              else
+                {
+                  i += print (title, title_len, i, "%s", _("(none)"));
+                }
               break;
 
             case 'P': /* active drawable PDB id */
-              {
-                GimpDrawable *drawable = gimp_image_get_active_drawable (image);
-
-                if (drawable)
-                  i += print (title, title_len, i, "%d",
-                              gimp_item_get_ID (GIMP_ITEM (drawable)));
-                else
-                  i += print (title, title_len, i, "%s", _("(none)"));
-              }
+              if (drawable)
+                i += print (title, title_len, i, "%d",
+                            gimp_item_get_ID (GIMP_ITEM (drawable)));
+              else
+                i += print (title, title_len, i, "%s", _("(none)"));
               break;
 
             case 'W': /* width in real-world units */
@@ -362,13 +360,14 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
                   gimp_image_get_resolution (image, &xres, &yres);
 
                   g_snprintf (unit_format, sizeof (unit_format), "%%.%df",
-                              gimp_unit_get_digits (shell->unit) + 1);
+                              gimp_unit_get_scaled_digits (shell->unit, xres));
                   i += print (title, title_len, i, unit_format,
                               gimp_pixels_to_units (gimp_image_get_width (image),
                                                     shell->unit, xres));
                   break;
                 }
               /* else fallthru */
+
             case 'w': /* width in pixels */
               i += print (title, title_len, i, "%d",
                           gimp_image_get_width (image));
@@ -384,13 +383,14 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
                   gimp_image_get_resolution (image, &xres, &yres);
 
                   g_snprintf (unit_format, sizeof (unit_format), "%%.%df",
-                              gimp_unit_get_digits (shell->unit) + 1);
+                              gimp_unit_get_scaled_digits (shell->unit, yres));
                   i += print (title, title_len, i, unit_format,
                               gimp_pixels_to_units (gimp_image_get_height (image),
                                                     shell->unit, yres));
                   break;
                 }
               /* else fallthru */
+
             case 'h': /* height in pixels */
               i += print (title, title_len, i, "%d",
                           gimp_image_get_height (image));
@@ -406,11 +406,117 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
                           gimp_unit_get_abbreviation (shell->unit));
               break;
 
+            case 'X': /* drawable width in real world units */
+              if (drawable && shell->unit != GIMP_UNIT_PIXEL)
+                {
+                  gdouble xres;
+                  gdouble yres;
+                  gchar   unit_format[8];
+
+                  gimp_image_get_resolution (image, &xres, &yres);
+
+                  g_snprintf (unit_format, sizeof (unit_format), "%%.%df",
+                              gimp_unit_get_scaled_digits (shell->unit, xres));
+                  i += print (title, title_len, i, unit_format,
+                              gimp_pixels_to_units (gimp_item_get_width
+                                                    (GIMP_ITEM (drawable)),
+                                                    shell->unit, xres));
+                  break;
+                }
+              /* else fallthru */
+
+            case 'x': /* drawable width in pixels */
+              if (drawable)
+                i += print (title, title_len, i, "%d",
+                            gimp_item_get_width (GIMP_ITEM (drawable)));
+              break;
+
+            case 'Y': /* drawable height in real world units */
+              if (drawable && shell->unit != GIMP_UNIT_PIXEL)
+                {
+                  gdouble xres;
+                  gdouble yres;
+                  gchar   unit_format[8];
+
+                  gimp_image_get_resolution (image, &xres, &yres);
+
+                  g_snprintf (unit_format, sizeof (unit_format), "%%.%df",
+                              gimp_unit_get_scaled_digits (shell->unit, yres));
+                  i += print (title, title_len, i, unit_format,
+                              gimp_pixels_to_units (gimp_item_get_height
+                                                    (GIMP_ITEM (drawable)),
+                                                    shell->unit, yres));
+                  break;
+                }
+              /* else fallthru */
+
+            case 'y': /* drawable height in pixels */
+              if (drawable)
+                i += print (title, title_len, i, "%d",
+                            gimp_item_get_height (GIMP_ITEM (drawable)));
+              break;
+
+            case 'o': /* image's color profile name */
+              if (gimp_image_get_is_color_managed (image))
+                {
+                  GimpColorManaged *managed = GIMP_COLOR_MANAGED (image);
+                  GimpColorProfile *profile;
+
+                  profile = gimp_color_managed_get_color_profile (managed);
+
+                  i += print (title, title_len, i, "%s",
+                              gimp_color_profile_get_label (profile));
+                }
+              else
+                {
+                  i += print (title, title_len, i, "%s",
+                              _("not color managed"));
+                }
+              break;
+
+            case 'e': /* display's offsets in pixels */
+              {
+                gdouble scale    = gimp_zoom_model_get_factor (shell->zoom);
+                gdouble offset_x = shell->offset_x / scale;
+                gdouble offset_y = shell->offset_y / scale;
+
+                i += print (title, title_len, i,
+                            scale >= 0.15 ? "%.0fx%.0f" : "%.2fx%.2f",
+                            offset_x, offset_y);
+              }
+              break;
+
+            case 'r': /* view rotation angle in degrees */
+              {
+                i += print (title, title_len, i, "%.1f", shell->rotate_angle);
+              }
+              break;
+
+            case '\xc3': /* utf-8 extended char */
+              {
+                format ++;
+                switch (*format)
+                  {
+                  case '\xbe':
+                    /* line actually written at 23:55 on an Easter Sunday */
+                    i += print (title, title_len, i, "42");
+                    break;
+
+                  default:
+                    /* in the case of an unhandled utf-8 extended char format
+                     * leave the format string parsing as it was
+                    */
+                    format--;
+                    break;
+                  }
+              }
+              break;
+
               /* Other cool things to be added:
                * %r = xresolution
                * %R = yresolution
                * %ø = image's fractal dimension
-               * %þ = the answer to everything
+               * %þ = the answer to everything - (implemented)
                */
 
             default:

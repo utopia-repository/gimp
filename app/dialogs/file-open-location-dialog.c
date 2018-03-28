@@ -20,8 +20,10 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "dialogs-types.h"
@@ -36,6 +38,7 @@
 #include "widgets/gimpcontainerentry.h"
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpprogressbox.h"
+#include "widgets/gimpwidgets-utils.h"
 
 #include "file-open-location-dialog.h"
 
@@ -74,19 +77,19 @@ file_open_location_dialog_new (Gimp *gimp)
                             gimp_standard_help_func,
                             GIMP_HELP_FILE_OPEN_LOCATION,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OPEN,   GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_Open"),   GTK_RESPONSE_OK,
 
                             NULL);
-
-  g_signal_connect (dialog, "response",
-                    G_CALLBACK (file_open_location_response),
-                    gimp);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG(dialog),
                                            GTK_RESPONSE_OK,
                                            GTK_RESPONSE_CANCEL,
                                            -1);
+
+  g_signal_connect (dialog, "response",
+                    G_CALLBACK (file_open_location_response),
+                    gimp);
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
@@ -98,7 +101,7 @@ file_open_location_dialog_new (Gimp *gimp)
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
-  image = gtk_image_new_from_stock (GIMP_STOCK_WEB, GTK_ICON_SIZE_BUTTON);
+  image = gtk_image_new_from_icon_name (GIMP_ICON_WEB, GTK_ICON_SIZE_BUTTON);
   gtk_box_pack_start (GTK_BOX (vbox), image, FALSE, FALSE, 0);
   gtk_widget_show (image);
 
@@ -107,7 +110,7 @@ file_open_location_dialog_new (Gimp *gimp)
   gtk_widget_show (vbox);
 
   label = gtk_label_new (_("Enter location (URI):"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 1.0);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
@@ -168,24 +171,21 @@ file_open_location_response (GtkDialog *dialog,
   if (text && strlen (text))
     {
       GimpImage         *image;
-      gchar             *uri;
       gchar             *filename;
-      gchar             *hostname;
-      GError            *error  = NULL;
+      GFile             *file;
       GimpPDBStatusType  status;
+      GError            *error = NULL;
 
-      filename = g_filename_from_uri (text, &hostname, NULL);
+      filename = g_filename_from_uri (text, NULL, NULL);
 
       if (filename)
         {
-          uri = g_filename_to_uri (filename, hostname, &error);
-
-          g_free (hostname);
+          file = g_file_new_for_uri (text);
           g_free (filename);
         }
       else
         {
-          uri = file_utils_filename_to_uri (gimp, text, &error);
+          file = file_utils_filename_to_file (gimp, text, &error);
         }
 
       box = gimp_progress_box_new ();
@@ -195,29 +195,32 @@ file_open_location_response (GtkDialog *dialog,
 
       g_object_set_data (G_OBJECT (dialog), "progress-box", box);
 
-      if (uri)
+      if (file)
         {
+          GFile *entered_file = g_file_new_for_uri (text);
+
           gtk_widget_show (box);
 
           image = file_open_with_proc_and_display (gimp,
                                                    gimp_get_user_context (gimp),
                                                    GIMP_PROGRESS (box),
-                                                   uri, text, FALSE, NULL,
+                                                   file, entered_file,
+                                                   FALSE, NULL,
+                                                   G_OBJECT (gtk_widget_get_screen (entry)),
+                                                   gimp_widget_get_monitor (entry),
                                                    &status, &error);
+
+          g_object_unref (entered_file);
 
           if (image == NULL && status != GIMP_PDB_CANCEL)
             {
-              gchar *filename = file_utils_uri_display_name (uri);
-
               gimp_message (gimp, G_OBJECT (box), GIMP_MESSAGE_ERROR,
                             _("Opening '%s' failed:\n\n%s"),
-                            filename, error->message);
+                            gimp_file_get_utf8_name (file), error->message);
               g_clear_error (&error);
-
-              g_free (filename);
             }
 
-          g_free (uri);
+          g_object_unref (file);
         }
       else
         {

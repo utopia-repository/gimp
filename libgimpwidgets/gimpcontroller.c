@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -32,7 +33,7 @@
 
 #define GIMP_ENABLE_CONTROLLER_UNDER_CONSTRUCTION
 #include "gimpcontroller.h"
-#include "gimpstock.h"
+#include "gimpicons.h"
 
 
 /**
@@ -89,20 +90,24 @@ gimp_controller_class_init (GimpControllerClass *klass)
   klass->name                = "Unnamed";
   klass->help_domain         = NULL;
   klass->help_id             = NULL;
-  klass->stock_id            = GIMP_STOCK_CONTROLLER;
+  klass->icon_name           = GIMP_ICON_CONTROLLER;
 
   klass->get_n_events        = NULL;
   klass->get_event_name      = NULL;
   klass->event               = NULL;
 
   g_object_class_install_property (object_class, PROP_NAME,
-                                   g_param_spec_string ("name", NULL, NULL,
+                                   g_param_spec_string ("name",
+                                                        "Name",
+                                                        "The controller's name",
                                                         "Unnamed Controller",
                                                         GIMP_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (object_class, PROP_STATE,
-                                   g_param_spec_string ("state", NULL, NULL,
+                                   g_param_spec_string ("state",
+                                                        "State",
+                                                        "The controller's state, as human-readable string",
                                                         "Unknown",
                                                         GIMP_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT));

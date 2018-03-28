@@ -91,7 +91,8 @@ static void      unsharp_mask        (GimpDrawable   *drawable,
                                       gdouble         amount);
 
 static gboolean  unsharp_mask_dialog (GimpDrawable   *drawable);
-static void      preview_update      (GimpPreview    *preview);
+static void      preview_update      (GimpPreview    *preview,
+                                      GimpDrawable   *drawable);
 
 
 /* create a few globals, set default values */
@@ -138,7 +139,7 @@ query (void)
                           "Winston Chang <winstonc@cs.wisc.edu>",
                           "Winston Chang",
                           "1999-2009",
-                          N_("_Unsharp Mask..."),
+                          N_("_Unsharp Mask (legacy)..."),
                           "GRAY*, RGB*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
@@ -256,7 +257,7 @@ box_blur_line (const gint    box_width,   /* Width of the kernel           */
 {
   gint  i;
   gint  lead;    /* This marks the leading edge of the kernel              */
-  gint  output;  /* This marks the center of ther kernel                   */
+  gint  output;  /* This marks the center of the kernel                    */
   gint  trail;   /* This marks the pixel BEHIND the last 1 in the
                     kernel; it's the pixel to remove from the accumulator. */
   gint  ac[bpp]; /* Accumulator for each channel                           */
@@ -536,7 +537,7 @@ unsharp_mask (GimpDrawable *drawable,
               gdouble       amount)
 {
   GimpPixelRgn srcPR, destPR;
-  gint         x1, y1, x2, y2;
+  gint         x1, y1, width, height;
 
   /* initialize pixel regions */
   gimp_pixel_rgn_init (&srcPR, drawable,
@@ -545,16 +546,18 @@ unsharp_mask (GimpDrawable *drawable,
                        0, 0, drawable->width, drawable->height, TRUE, TRUE);
 
   /* Get the input */
-  gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                      &x1, &y1, &width, &height))
+    return;
 
   unsharp_region (&srcPR, &destPR, drawable->bpp,
                   radius, amount,
-                  x1, x2, y1, y2,
+                  x1, x1 + width, y1, y1 + height,
                   TRUE);
 
   gimp_drawable_flush (drawable);
   gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
-  gimp_drawable_update (drawable->drawable_id, x1, y1, x2 - x1, y2 - y1);
+  gimp_drawable_update (drawable->drawable_id, x1, y1, width, height);
 }
 
 /* Perform an unsharp mask on the region, given a source region, dest.
@@ -750,7 +753,7 @@ gen_convolve_matrix (gdouble   radius,
 
   /* we want to generate a matrix that goes out a certain radius
    * from the center, so we have to go out ceil(rad-0.5) pixels,
-   * inlcuding the center pixel.  Of course, that's only in one direction,
+   * including the center pixel.  Of course, that's only in one direction,
    * so we have to go the same amount in the other direction, but not count
    * the center pixel again.  So we double the previous result and subtract
    * one.
@@ -836,8 +839,8 @@ unsharp_mask_dialog (GimpDrawable *drawable)
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -854,13 +857,13 @@ unsharp_mask_dialog (GimpDrawable *drawable)
                       main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_drawable_preview_new (drawable, NULL);
+  preview = gimp_drawable_preview_new_from_drawable_id (drawable->drawable_id);
   gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
 
   g_signal_connect (preview, "invalidated",
                     G_CALLBACK (preview_update),
-                    NULL);
+                    drawable);
 
   table = gtk_table_new (3, 3, FALSE);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
@@ -918,9 +921,9 @@ unsharp_mask_dialog (GimpDrawable *drawable)
 }
 
 static void
-preview_update (GimpPreview *preview)
+preview_update (GimpPreview  *preview,
+                GimpDrawable *drawable)
 {
-  GimpDrawable *drawable;
   gint          x1, x2;
   gint          y1, y2;
   gint          x, y;
@@ -928,9 +931,6 @@ preview_update (GimpPreview *preview)
   gint          border;
   GimpPixelRgn  srcPR;
   GimpPixelRgn  destPR;
-
-  drawable =
-    gimp_drawable_preview_get_drawable (GIMP_DRAWABLE_PREVIEW (preview));
 
   gimp_pixel_rgn_init (&srcPR, drawable,
                        0, 0, drawable->width, drawable->height, FALSE, FALSE);

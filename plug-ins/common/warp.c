@@ -243,8 +243,6 @@ query (void)
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
-
-  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Map");
 }
 
 static void
@@ -377,8 +375,8 @@ warp_dialog (GimpDrawable *drawable)
                          NULL, 0,
                          gimp_standard_help_func, PLUG_IN_PROC,
 
-                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                         GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                         _("_Cancel"), GTK_RESPONSE_CANCEL,
+                         _("_OK"),     GTK_RESPONSE_OK,
 
                          NULL);
 
@@ -441,7 +439,8 @@ warp_dialog (GimpDrawable *drawable)
 
   /*  Displacement map menu  */
   label = gtk_label_new (_("Displacement map:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 1.0);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
+  gtk_label_set_yalign (GTK_LABEL (label), 1.0);
   gtk_table_attach (GTK_TABLE (table), label, 2, 3, 0, 1,
                     GTK_FILL, GTK_FILL, 0, 0);
   gtk_widget_show (label);
@@ -459,7 +458,7 @@ warp_dialog (GimpDrawable *drawable)
 
   /*  Displacement Type  */
   label = gtk_label_new (_("On edges:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
                     GTK_FILL, GTK_FILL, 0, 0);
   gtk_widget_show (label);
@@ -586,7 +585,8 @@ warp_dialog (GimpDrawable *drawable)
 
   /*  Magnitude map menu  */
   label = gtk_label_new (_("Magnitude map:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 1.0);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
+  gtk_label_set_yalign (GTK_LABEL (label), 1.0);
   gtk_table_attach (GTK_TABLE (table), label, 2, 3, 0, 1,
                     GTK_FILL, GTK_FILL, 0, 0);
   gtk_widget_show (label);
@@ -940,19 +940,23 @@ diff (GimpDrawable *drawable,
 
   xlayer_id = gimp_layer_new (new_image_id, "Warp_X_Vectors",
                               width, height,
-                              GIMP_RGB_IMAGE, 100.0, GIMP_NORMAL_MODE);
+                              GIMP_RGB_IMAGE,
+                              100.0,
+                              gimp_image_get_default_new_layer_mode (new_image_id));
 
   ylayer_id = gimp_layer_new (new_image_id, "Warp_Y_Vectors",
                               width, height,
-                              GIMP_RGB_IMAGE, 100.0, GIMP_NORMAL_MODE);
+                              GIMP_RGB_IMAGE,
+                              100.0,
+                              gimp_image_get_default_new_layer_mode (new_image_id));
 
   draw_yd = gimp_drawable_get (ylayer_id);
   draw_xd = gimp_drawable_get (xlayer_id);
 
   gimp_image_insert_layer (new_image_id, xlayer_id, -1, 1);
   gimp_image_insert_layer (new_image_id, ylayer_id, -1, 1);
-  gimp_drawable_fill (xlayer_id, GIMP_BACKGROUND_FILL);
-  gimp_drawable_fill (ylayer_id, GIMP_BACKGROUND_FILL);
+  gimp_drawable_fill (xlayer_id, GIMP_FILL_BACKGROUND);
+  gimp_drawable_fill (ylayer_id, GIMP_FILL_BACKGROUND);
   gimp_image_set_active_layer (image_id, layer_active);
 
   dest_bytes = draw_xd->bpp;

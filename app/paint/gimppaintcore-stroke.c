@@ -17,14 +17,14 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "libgimpmath/gimpmath.h"
 
 #include "paint-types.h"
 
-#include "base/boundary.h"
-
+#include "core/gimpboundary.h"
 #include "core/gimpdrawable.h"
 #include "core/gimperror.h"
 #include "core/gimpcoords.h"
@@ -96,26 +96,26 @@ gimp_paint_core_stroke (GimpPaintCore     *core,
 }
 
 gboolean
-gimp_paint_core_stroke_boundary (GimpPaintCore     *core,
-                                 GimpDrawable      *drawable,
-                                 GimpPaintOptions  *paint_options,
-                                 gboolean           emulate_dynamics,
-                                 const BoundSeg    *bound_segs,
-                                 gint               n_bound_segs,
-                                 gint               offset_x,
-                                 gint               offset_y,
-                                 gboolean           push_undo,
-                                 GError           **error)
+gimp_paint_core_stroke_boundary (GimpPaintCore      *core,
+                                 GimpDrawable       *drawable,
+                                 GimpPaintOptions   *paint_options,
+                                 gboolean            emulate_dynamics,
+                                 const GimpBoundSeg *bound_segs,
+                                 gint                n_bound_segs,
+                                 gint                offset_x,
+                                 gint                offset_y,
+                                 gboolean            push_undo,
+                                 GError            **error)
 {
-  BoundSeg   *stroke_segs;
-  gint        n_stroke_segs;
-  gint        off_x;
-  gint        off_y;
-  GimpCoords *coords;
-  gboolean    initialized = FALSE;
-  gint        n_coords;
-  gint        seg;
-  gint        s;
+  GimpBoundSeg *stroke_segs;
+  gint          n_stroke_segs;
+  gint          off_x;
+  gint          off_y;
+  GimpCoords   *coords;
+  gboolean      initialized = FALSE;
+  gint          n_coords;
+  gint          seg;
+  gint          s;
 
   g_return_val_if_fail (GIMP_IS_PAINT_CORE (core), FALSE);
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), FALSE);
@@ -124,7 +124,8 @@ gimp_paint_core_stroke_boundary (GimpPaintCore     *core,
   g_return_val_if_fail (bound_segs != NULL && n_bound_segs > 0, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  stroke_segs = boundary_sort (bound_segs, n_bound_segs, &n_stroke_segs);
+  stroke_segs = gimp_boundary_sort (bound_segs, n_bound_segs,
+                                    &n_stroke_segs);
 
   if (n_stroke_segs == 0)
     return TRUE;
@@ -252,7 +253,9 @@ gimp_paint_core_stroke_vectors (GimpPaintCore     *core,
   off_x -= vectors_off_x;
   off_y -= vectors_off_y;
 
-  for (stroke = vectors->strokes; stroke; stroke = stroke->next)
+  for (stroke = vectors->strokes->head;
+       stroke;
+       stroke = stroke->next)
     {
       GArray   *coords;
       gboolean  closed;
@@ -377,8 +380,7 @@ gimp_paint_core_stroke_emulate_dynamics (GimpCoords *coords,
       /* Fill in direction */
       for (i = 1; i < length; i++)
         {
-           coords[i].direction = gimp_coords_direction (&coords[i-1], &coords[i]);
-
+          coords[i].direction = gimp_coords_direction (&coords[i-1], &coords[i]);
         }
 
       coords[0].direction = coords[1].direction;

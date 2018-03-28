@@ -38,6 +38,7 @@
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpconfig/gimpconfig.h"
@@ -124,7 +125,7 @@ struct _ControllerDXDInputClass
 };
 
 
-GType         controller_dx_dinput_get_type     (void);
+static GType  controller_dx_dinput_get_type     (void);
 
 static void   dx_dinput_dispose                 (GObject        *object);
 static void   dx_dinput_finalize                (GObject        *object);
@@ -204,7 +205,7 @@ controller_dx_dinput_class_init (ControllerDXDInputClass *klass)
 
   controller_class->name            = _("DirectX DirectInput");
   controller_class->help_id         = "gimp-controller-directx-directinput";
-  controller_class->stock_id        = GIMP_STOCK_CONTROLLER_LINUX_INPUT;
+  controller_class->icon_name       = GIMP_ICON_CONTROLLER_LINUX_INPUT;
 
   controller_class->get_n_events    = dx_dinput_get_n_events;
   controller_class->get_event_name  = dx_dinput_get_event_name;
@@ -647,16 +648,15 @@ dx_dinput_event_dispatch (GSource     *source,
   GimpController                  *controller = &input->parent_instance;
   const DIDATAFORMAT * const       format = input->format;
   const DIOBJECTDATAFORMAT        *rgodf = format->rgodf;
-  HRESULT                          hresult;
   guchar                          *data;
   gint                             i;
   GimpControllerEvent              cevent = { 0, };
 
   data = g_alloca (format->dwDataSize);
 
-  if (FAILED ((hresult = IDirectInputDevice8_GetDeviceState (input->didevice8,
-                                                             format->dwDataSize,
-                                                             data))))
+  if (FAILED (IDirectInputDevice8_GetDeviceState (input->didevice8,
+                                                  format->dwDataSize,
+                                                  data)))
     {
       return TRUE;
     }

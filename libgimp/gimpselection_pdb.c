@@ -23,9 +23,6 @@
 #include "config.h"
 
 #include "gimp.h"
-#undef GIMP_DISABLE_DEPRECATED
-#undef __GIMP_SELECTION_PDB_H__
-#include "gimpselection_pdb.h"
 
 
 /**
@@ -52,7 +49,7 @@
  * specified image. If there is one, the upper left and lower right
  * corners of the bounding box are returned. These coordinates are
  * relative to the image. Please note that the pixel specified by the
- * lower righthand coordinate of the bounding box is not part of the
+ * lower right coordinate of the bounding box is not part of the
  * selection. The selection ends at the upper left corner of this
  * pixel. This means the width of the selection can be calculated as
  * (x2 - x1), its height as (y2 - y1).
@@ -475,7 +472,7 @@ gimp_selection_grow (gint32 image_ID,
  *
  * Shrink the image's selection
  *
- * This procedure shrinks the selection. Shrinking invovles trimming
+ * This procedure shrinks the selection. Shrinking involves trimming
  * the existing selection boundary on all sides by the specified number
  * of pixels.
  *
@@ -493,6 +490,40 @@ gimp_selection_shrink (gint32 image_ID,
                                     &nreturn_vals,
                                     GIMP_PDB_IMAGE, image_ID,
                                     GIMP_PDB_INT32, steps,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_selection_flood:
+ * @image_ID: The image.
+ *
+ * Remove holes from the image's selection
+ *
+ * This procedure removes holes from the selection, that can come from
+ * selecting a patchy area with the Fuzzy Select Tool. In technical
+ * terms this procedure floods the selection. See the Algorithms page
+ * in the developer wiki for details.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_selection_flood (gint32 image_ID)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-selection-flood",
+                                    &nreturn_vals,
+                                    GIMP_PDB_IMAGE, image_ID,
                                     GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;

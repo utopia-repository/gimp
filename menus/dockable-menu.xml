@@ -20,10 +20,12 @@
   <menuitem action="dialogs-undo-history"/>
   <menuitem action="dialogs-cursor"/>
   <menuitem action="dialogs-sample-points"/>
+  <menuitem action="dialogs-symmetry"/>
   <separator/>
   <menuitem action="dialogs-colors"/>
   <menuitem action="dialogs-brushes"/>
   <menuitem action="dialogs-dynamics"/>
+  <menuitem action="dialogs-mypaint-brushes"/>
   <menuitem action="dialogs-patterns"/>
   <menuitem action="dialogs-gradients"/>
   <menuitem action="dialogs-palettes"/>
@@ -35,6 +37,7 @@
   <menuitem action="dialogs-document-history"/>
   <menuitem action="dialogs-templates"/>
   <menuitem action="dialogs-error-console"/>
+  <menuitem action="dialogs-dashboard"/>
 
     </menu>
     <menuitem action="dockable-close-tab"/>

@@ -1,4 +1,4 @@
-# GIMPi eesti keele tõlge.
+# Gimp-i eesti keele tõlge.
 # Estonian translation of Gimp.
 #
 # Copyright (C) 2001-2005 Free Software Foundation, Inc.
@@ -8,15 +8,15 @@
 # Olle Niit <olle paalalinn com>, 2005-2007.
 # Priit Laes <plaes plaes org>, 2007,2008.
 # Alexia Death <alexiadeath gmail com>, 2008,2009.
-# Mattias Põldaru <mahfiaz@gmail.com>, 2008-2015.
+# Mattias Põldaru <mahfiaz@gmail.com>, 2008,2009, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gimp_et\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gimp&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-15 06:09+0000\n"
-"PO-Revision-Date: 2015-03-17 04:06+0300\n"
+"POT-Creation-Date: 2012-12-19 14:19+0000\n"
+"PO-Revision-Date: 2012-12-19 19:05+0300\n"
 "Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "Language: et\n"
@@ -24,13 +24,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 1.5.4\n"
-
-msgid "GIMP"
-msgstr "GIMP"
 
 msgid "GNU Image Manipulation Program"
 msgstr "GIMP - GNU pilditöötlusprogramm"
+
+msgid "Image Editor"
+msgstr "Pildiredaktor"
+
+msgid "Create images and edit photographs"
+msgstr "Joonistamine ja fotode töötlemine"
+
+msgid "GIMP"
+msgstr "GIMP"
 
 #. The year of the last commit (UTC) will be inserted into this string.
 #, c-format
@@ -39,7 +44,7 @@ msgid ""
 "Spencer Kimball, Peter Mattis and the GIMP Development Team"
 msgstr ""
 "Autoriõigus © 1995-%s\n"
-"Spencer Kimball, Peter Mattis ja GIMPi arendusmeeskond"
+"Spencer Kimball, Peter Mattis ja GIMP-i arendusmeeskond"
 
 msgid ""
 "GIMP is free software: you can redistribute it and/or modify it under the "
@@ -60,25 +65,13 @@ msgstr ""
 "poolt avaldatud; kas Litsentsi versioon number 3 või (vastavalt teie "
 "valikule) ükskõik milline hilisem versioon.\n"
 "\n"
-"GIMPi levitatakse lootuses, et see on kasulik, kuid ILMA IGASUGUSE "
+"GIMP-i levitatakse lootuses, et see on kasulik, kuid ILMA IGASUGUSE "
 "GARANTIITA; isegi ilma KESKMISE/TAVALISE KVALITEEDI GARANTIITA või "
 "SOBIVUSELE TEATUD KINDLAKS EESMÄRGIKS. Üksikasjade suhtes vaata GNU Üldist "
 "Avalikku Litsentsi.\n"
 "\n"
-"Te peaks olema saanud GNU Üldise Avaliku Litsentsi koopia koos GIMPiga. Kui "
-"ei, siis vaadake http://www.gnu.org/licenses/"
-
-#, c-format
-msgid ""
-"Unable to open a test swap file.\n"
-"\n"
-"To avoid data loss, please check the location and permissions of the swap "
-"directory defined in your Preferences (currently \"%s\")."
-msgstr ""
-"Testsaalefaili pole võimalik avada.\n"
-"\n"
-"Andmekadude vältimiseks kontrolli palun eelistustes määratud saalefailide "
-"kausta asukohta ja ligipääsuõiguseid (hetkel \"%s\")."
+"Te peaks olema saanud GNU Üldise Avaliku Litsentsi koopia koos GIMP-iga. Kui "
+"ei, siis vaadake http://www.gnu.org/licenses/."
 
 #, c-format
 msgid "No batch interpreter specified, using the default '%s'.\n"
@@ -102,7 +95,7 @@ msgid "Be more verbose"
 msgstr "Rohkemate teadete väljastamine"
 
 msgid "Start a new GIMP instance"
-msgstr "Uue GIMPi protsessi käivitamine"
+msgstr "Uue GIMP-i protsessi käivitamine"
 
 msgid "Open images as new"
 msgstr "Piltide avamine uuena"
@@ -120,7 +113,7 @@ msgid "Do not show a splash screen"
 msgstr "Ei näita käivitusakent"
 
 msgid "Do not use shared memory between GIMP and plugins"
-msgstr "GIMPi ja pluginate jaoks ei kasutata ühismälu"
+msgstr "GIMP-i ja pluginate jaoks ei kasutata ühismälu"
 
 msgid "Do not use special CPU acceleration functions"
 msgstr "Ei kasuta spetsiaalseid CPU kiirenduse funktsioone"
@@ -174,17 +167,17 @@ msgstr ""
 "Kontrolli, et graafilise keskkonnaga oleks kõik korras."
 
 msgid "Another GIMP instance is already running."
-msgstr "Üks GIMPi protsess juba töötab."
+msgstr "Üks GIMP-i protsess juba käib."
 
 msgid "GIMP output. Type any character to close this window."
-msgstr "GIMPi väljund. Akna sulgemiseks vajuta suvalist klahvi."
+msgstr "GIMP-i väljund. Akna sulgemiseks vajuta suvalist klahvi."
 
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(Vajuta suvalist klahvi selle akna sulgemiseks)\n"
 
 msgid "GIMP output. You can minimize this window, but don't close it."
-msgstr "GIMPi väljund. Võid selle akna minimeerida, aga ära seda sulge."
+msgstr "GIMP-i väljund. Võid selle akna minimeerida, aga ära seda sulge."
 
 #, c-format
 msgid ""
@@ -205,7 +198,7 @@ msgid ""
 "you didn't tell GLib about this. Please set the environment variable "
 "G_FILENAME_ENCODING."
 msgstr ""
-"Kataloogi nimi, kus hoitakse GIMPi kasutaja häälestusfaili ei ole UTF-8 "
+"Kataloogi nimi, kus hoitakse GIMP-i kasutaja häälestusfaili ei ole UTF-8 "
 "kodeeringusse tõlgitav: %s\n"
 "\n"
 "Kõige tõenäolisemalt kasutab sinu failisüsteem kodeeringut mis erineb UTF-8-"
@@ -236,9 +229,6 @@ msgstr "Kanalid"
 
 msgid "Colormap"
 msgstr "Värviindeks"
-
-msgid "Configuration"
-msgstr "Seadistamine"
 
 msgid "Context"
 msgstr "Kontekst"
@@ -280,6 +270,9 @@ msgstr "Veateadete konsool"
 
 msgid "File"
 msgstr "Fail"
+
+msgid "Filters"
+msgstr "Filtrid"
 
 msgid "Fonts"
 msgstr "Fondid"
@@ -643,14 +636,6 @@ msgstr "Muuda värvikaardi elementi #%d"
 
 msgid "Edit Colormap Entry"
 msgstr "Värvikaardi elemendi muutmine"
-
-msgctxt "config-action"
-msgid "Use _GEGL"
-msgstr "_GEGLi kasutamine"
-
-msgctxt "config-action"
-msgid "If possible, use GEGL for image processing"
-msgstr "Kui võimalik kasutatakse pilditöötluseks GEGL'it"
 
 msgctxt "context-action"
 msgid "_Context"
@@ -1047,19 +1032,15 @@ msgstr "_Tänane vihje"
 
 msgctxt "dialogs-action"
 msgid "Show some helpful tips on using GIMP"
-msgstr "Näidatakse vihjeid GIMPi kasutamise kohta"
-
-msgctxt "dialogs-action"
-msgid "About GIMP"
-msgstr "Lähem teave GIMPi kohta"
-
-msgctxt "dialogs-action"
-msgid "About"
-msgstr "Lähemalt"
+msgstr "Näidatakse vihjeid GIMP-i kasutamise kohta"
 
 msgctxt "dialogs-action"
 msgid "_About"
 msgstr "T_eave"
+
+msgctxt "dialogs-action"
+msgid "About GIMP"
+msgstr "Lähem teave GIMP-i kohta"
 
 msgid "Toolbox"
 msgstr "Tööriistakast"
@@ -1072,30 +1053,6 @@ msgstr "Uus tööriistakast"
 
 msgid "Create a new toolbox"
 msgstr "Uue tööriistakasti loomine"
-
-msgctxt "dock-action"
-msgid "M_ove to Screen"
-msgstr "_Liiguta ekraanile"
-
-msgctxt "dock-action"
-msgid "Close Dock"
-msgstr "Sulge dokk"
-
-msgctxt "dock-action"
-msgid "_Open Display..."
-msgstr "_Ava ekraan..."
-
-msgctxt "dock-action"
-msgid "Connect to another display"
-msgstr "Teise ekraaniga ühendumine"
-
-msgctxt "dock-action"
-msgid "_Show Image Selection"
-msgstr "_Valitud ala on nähtav"
-
-msgctxt "dock-action"
-msgid "Auto _Follow Active Image"
-msgstr "_Aktiivset pilti järgitakse automaatselt"
 
 msgctxt "dockable-action"
 msgid "Dialogs Menu"
@@ -1200,6 +1157,30 @@ msgstr "_Loendivaade"
 msgctxt "dockable-action"
 msgid "View as _Grid"
 msgstr "_Ikoonivaade"
+
+msgctxt "dock-action"
+msgid "M_ove to Screen"
+msgstr "_Liiguta ekraanile"
+
+msgctxt "dock-action"
+msgid "Close Dock"
+msgstr "Sulge dokk"
+
+msgctxt "dock-action"
+msgid "_Open Display..."
+msgstr "_Ava ekraan..."
+
+msgctxt "dock-action"
+msgid "Connect to another display"
+msgstr "Teise ekraaniga ühendumine"
+
+msgctxt "dock-action"
+msgid "_Show Image Selection"
+msgstr "_Valitud ala on nähtav"
+
+msgctxt "dock-action"
+msgid "Auto _Follow Active Image"
+msgstr "_Aktiivset pilti järgitakse automaatselt"
 
 msgctxt "documents-action"
 msgid "Documents Menu"
@@ -1307,6 +1288,14 @@ msgid "Invert the colors"
 msgstr "Värvide inverteerimine"
 
 msgctxt "drawable-action"
+msgid "_Value Invert"
+msgstr "_Väärtuse inverteerimine"
+
+msgctxt "drawable-action"
+msgid "Invert the brightness of each pixel"
+msgstr "Kõigi pikslite heleduse inverteerimine"
+
+msgctxt "drawable-action"
 msgid "_White Balance"
 msgstr "_Valgetasakaal"
 
@@ -1348,6 +1337,14 @@ msgid "Keep the pixels on this drawable from being modified"
 msgstr "Joonispinna pikslite lukustamine, et neid muuta ei saaks"
 
 msgctxt "drawable-action"
+msgid "L_ock position of channel"
+msgstr "_Lukusta asukoht ja kanal"
+
+msgctxt "drawable-action"
+msgid "Keep the position on this drawable from being modified"
+msgstr "Joonispinna asukoha lukustamine, et seda muuta ei saaks"
+
+msgctxt "drawable-action"
 msgid "Flip _Horizontally"
 msgstr "Peegelda _horisontaalselt"
 
@@ -1387,11 +1384,8 @@ msgctxt "drawable-action"
 msgid "Rotate 90 degrees to the left"
 msgstr "90 kraadi vasakule pööramine"
 
-msgid "Equalize does not operate on indexed layers."
-msgstr "Tasakaalustamine ei tööta indekseeritud kihtidega."
-
-msgid "Invert does not operate on indexed layers."
-msgstr "Inversioon ei tööta indekseeritud kihtidega."
+msgid "Invert"
+msgstr "Inverteerimine"
 
 msgid "White Balance operates only on RGB color layers."
 msgstr "Valge tasakaal töötab ainult RGB värvisüsteemis kihtidega."
@@ -1434,7 +1428,7 @@ msgstr "Selle pintslidünaamika kustutamine"
 
 msgctxt "dynamics-action"
 msgid "_Refresh Dynamics"
-msgstr "_Värskenda pintslidünaamikat"
+msgstr "_Värskenda pintslidünaamika"
 
 msgctxt "dynamics-action"
 msgid "Refresh dynamics"
@@ -1866,8 +1860,8 @@ msgid "Save this image and close its window"
 msgstr "Selle pildi salvestamine ja selle akna sulgemine"
 
 msgctxt "file-action"
-msgid "Export"
-msgstr "Eksport"
+msgid "Export to"
+msgstr "Ekspordi kohta..."
 
 msgctxt "file-action"
 msgid "Export the image again"
@@ -1882,8 +1876,8 @@ msgid "Export the image back to the imported file in the import format"
 msgstr "Pildi eksportimine tagasi failivormingusse, millest see imporditi"
 
 msgctxt "file-action"
-msgid "Export As..."
-msgstr "Ekspordi kui..."
+msgid "Export..."
+msgstr "Eksport..."
 
 msgctxt "file-action"
 msgid "Export the image to various file formats such as PNG or JPEG"
@@ -1897,8 +1891,8 @@ msgstr "Ekspordi kohta %s"
 msgid "Over_write %s"
 msgstr "_Kirjuta %s üle"
 
-msgid "Export"
-msgstr "Eksport"
+msgid "Export to"
+msgstr "Ekspordi kohta"
 
 msgid "Open Image"
 msgstr "Pildi avamine"
@@ -1950,6 +1944,182 @@ msgstr ""
 "'%s' otsast alustamine nurjus:\n"
 "\n"
 "%s"
+
+msgctxt "filters-action"
+msgid "Ca_rtoon..."
+msgstr "_Multikas..."
+
+msgctxt "filters-action"
+msgid "Simulate a cartoon by enhancing edges"
+msgstr "Servade rõhutamisega multikapildi järeleaimamine"
+
+msgctxt "filters-action"
+msgid "Color _Reduction..."
+msgstr "_Värvivähendus..."
+
+msgctxt "filters-action"
+msgid "Reduce the number of colors in the image, with optional dithering"
+msgstr "Pildis olevate värvide arvu vähendamine valikulise värinaga"
+
+msgctxt "filters-action"
+msgid "Color T_emperature..."
+msgstr "Värvus_temperatuur..."
+
+msgctxt "filters-action"
+msgid "Change the color temperature of the image"
+msgstr "Pildi värvustemperatuuri muutmine"
+
+msgctxt "filters-action"
+msgid "Color to _Alpha..."
+msgstr "Värvist _alfakanal..."
+
+msgctxt "filters-action"
+msgid "Convert a specified color to transparency"
+msgstr "Määratud värvi teisendamine läbipaistvuseks"
+
+msgctxt "filters-action"
+msgid "Difference of Gaussians..."
+msgstr "Gaussi erinevus..."
+
+msgctxt "filters-action"
+msgid "Edge detection with control of edge thickness"
+msgstr "Serva tuvastamine serva paksuse määramise võimalusega"
+
+msgctxt "filters-action"
+msgid "_Gaussian Blur..."
+msgstr "_Gaussi udu..."
+
+msgctxt "filters-action"
+msgid "Apply a gaussian blur"
+msgstr "Gaussi udu rakendamine"
+
+msgctxt "filters-action"
+msgid "_Laplace"
+msgstr "_Laplace'i"
+
+msgctxt "filters-action"
+msgid "High-resolution edge detection"
+msgstr "Kõrglahutusega servatuvastus"
+
+msgctxt "filters-action"
+msgid "Lens Distortion..."
+msgstr "Läätse moonutus..."
+
+msgctxt "filters-action"
+msgid "Corrects lens distortion"
+msgstr "Läätse moonutuse parandamine"
+
+msgctxt "filters-action"
+msgid "HSV Noise..."
+msgstr "HSV müra..."
+
+msgctxt "filters-action"
+msgid "Scattering pixel values in HSV space"
+msgstr "Pikslite väärtuste hajutamine HSV ruumis"
+
+msgctxt "filters-action"
+msgid "_Hurl..."
+msgstr "_Pildumine..."
+
+msgctxt "filters-action"
+msgid "Completely randomize a fraction of pixels"
+msgstr "Pikslitükkide täielik juhuslikustamine"
+
+msgctxt "filters-action"
+msgid "_Pick..."
+msgstr "_Vali..."
+
+msgctxt "filters-action"
+msgid "Randomly interchange some pixels with neighbors"
+msgstr "Juhuslikult mõnede pikslite äravahetamine naabritega"
+
+msgctxt "filters-action"
+msgid "_RGB Noise..."
+msgstr "_RGB müra..."
+
+msgctxt "filters-action"
+msgid "Distort colors by random amounts"
+msgstr "Värvide moonutamine juhuslikul määral"
+
+msgctxt "filters-action"
+msgid "_Slur..."
+msgstr "_Segamine..."
+
+msgctxt "filters-action"
+msgid "Randomly slide some pixels downward (similar to melting)"
+msgstr "Juhuslikult pikslite lohistamine alla (meenutab sulamist)"
+
+msgctxt "filters-action"
+msgid "_Photocopy..."
+msgstr "_Koopiamasin..."
+
+msgctxt "filters-action"
+msgid "Simulate color distortion produced by a copy machine"
+msgstr "Koopiamasina tekitatava värvimuudatuse simuleerimine"
+
+msgctxt "filters-action"
+msgid "_Pixelize..."
+msgstr "_Suured pikslid..."
+
+msgctxt "filters-action"
+msgid "Simplify image into an array of solid-colored squares"
+msgstr "Pildi lihtsustamine ühevärvilisteks ruudukesteks"
+
+msgctxt "filters-action"
+msgid "P_olar Coordinates..."
+msgstr "_Polaarkoordinaadid..."
+
+msgctxt "filters-action"
+msgid "Convert image to or from polar coordinates"
+msgstr "Pildi teisendamine polaarkoordinaatidesse või tagasi"
+
+msgctxt "filters-action"
+msgid "_Ripple..."
+msgstr "_Lainetus..."
+
+msgctxt "filters-action"
+msgid "Displace pixels in a ripple pattern"
+msgstr "Piltide asukohtade muutmine laine järgi"
+
+msgctxt "filters-action"
+msgid "_Semi-Flatten..."
+msgstr "_Osaline kihtide ühendamine..."
+
+msgctxt "filters-action"
+msgid "Replace partial transparency with a color"
+msgstr "Osalise läbipaistvuse asendamine värviga"
+
+msgctxt "filters-action"
+msgid "_Sobel..."
+msgstr "_Sobel..."
+
+msgctxt "filters-action"
+msgid "Specialized direction-dependent edge-detection"
+msgstr "Eriline suunatundlik servatuvastus"
+
+msgctxt "filters-action"
+msgid "_Softglow..."
+msgstr "_Pehme helendus..."
+
+msgctxt "filters-action"
+msgid "Simulate glow by making highlights intense and fuzzy"
+msgstr "Helenduse jäljendamine tehes heledad alad tugevamaks ning hägusaks"
+
+msgctxt "filters-action"
+msgid "_Threshold Alpha..."
+msgstr "_Läbipaistvuse lävi..."
+
+msgctxt "filters-action"
+msgid "Make transparency all-or-nothing"
+msgstr "Järsu servaga läbipaistvus"
+
+msgctxt "filters-action"
+msgid "_Unsharp Mask..."
+msgstr "_Ebaterav mask..."
+
+msgctxt "filters-action"
+msgid "The most widely used method for sharpening an image"
+msgstr "Kõige levinum meetod pildi teravdamiseks"
 
 msgctxt "fonts-action"
 msgid "Fonts Menu"
@@ -2307,7 +2477,7 @@ msgstr "_Abi"
 
 msgctxt "help-action"
 msgid "Open the GIMP user manual"
-msgstr "GIMPi kasutusjuhendi avamine"
+msgstr "GIMP-i kasutusjuhendi avamine"
 
 msgctxt "help-action"
 msgid "_Context Help"
@@ -2328,6 +2498,10 @@ msgstr "_Pilt"
 msgctxt "image-action"
 msgid "_Mode"
 msgstr "_Värvirežiim"
+
+msgctxt "image-action"
+msgid "_Precision"
+msgstr "_Täpsus"
 
 msgctxt "image-action"
 msgid "_Transform"
@@ -2395,7 +2569,7 @@ msgstr "_Väljaprindi suurus..."
 
 msgctxt "image-action"
 msgid "Adjust the print resolution"
-msgstr "Väljaprindi lahutuse muutmine"
+msgstr "Väljaprindi eraldusvõime muutmine"
 
 msgctxt "image-action"
 msgid "_Scale Image..."
@@ -2412,6 +2586,16 @@ msgstr "_Kärbi valiku järgi"
 msgctxt "image-action"
 msgid "Crop the image to the extents of the selection"
 msgstr "Pildi kärpimine valiku piirjoonteni"
+
+msgctxt "image-action"
+msgid "Crop to C_ontent"
+msgstr "Kärbi _sisuni"
+
+msgctxt "image-action"
+msgid ""
+"Crop the image to the extents of its content (remove empty borders from the "
+"image)"
+msgstr "Pildi kärpimine selle sisuni (eemaldades pildilt tühjad ääred)"
 
 msgctxt "image-action"
 msgid "_Duplicate"
@@ -2477,6 +2661,46 @@ msgctxt "image-convert-action"
 msgid "Convert the image to indexed colors"
 msgstr "Pilt teisendamine indekseeritud värvidega pildiks"
 
+msgctxt "image-convert-action"
+msgid "8 bit integer"
+msgstr "8-biti täisarv"
+
+msgctxt "image-convert-action"
+msgid "Convert the image to 8 bit integer"
+msgstr "Pildi teisendamine 8-biti pildiks"
+
+msgctxt "image-convert-action"
+msgid "16 bit integer"
+msgstr "16-biti täisarv"
+
+msgctxt "image-convert-action"
+msgid "Convert the image to 16 bit integer"
+msgstr "Pildi teisendamine 16-biti pildiks"
+
+msgctxt "image-convert-action"
+msgid "32 bit integer"
+msgstr "32-biti täisarv"
+
+msgctxt "image-convert-action"
+msgid "Convert the image to 32 bit integer"
+msgstr "Pildi teisendamine 32-biti pildiks"
+
+msgctxt "image-convert-action"
+msgid "16 bit floating point"
+msgstr "16-biti ujukomaarv"
+
+msgctxt "image-convert-action"
+msgid "Convert the image to 16 bit floating point"
+msgstr "Pildi teisendamine 16-biti ujukomapildiks"
+
+msgctxt "image-convert-action"
+msgid "32 bit floating point"
+msgstr "32-biti ujukomaarv"
+
+msgctxt "image-convert-action"
+msgid "Convert the image to 32 bit floating point"
+msgstr "Pildi teisendamine 32-biti ujukomapildiks"
+
 msgctxt "image-action"
 msgid "Flip _Horizontally"
 msgstr "Peegelda _horisontaalselt"
@@ -2524,7 +2748,7 @@ msgid "Resizing"
 msgstr "Mõõtmete muutmine"
 
 msgid "Set Image Print Resolution"
-msgstr "Pildi väljaprindi lahutuse määramine"
+msgstr "Pildi väljaprindi eraldusvõime määramine"
 
 msgid "Flipping"
 msgstr "Peegeldamine"
@@ -2534,6 +2758,9 @@ msgstr "Pööramine"
 
 msgid "Cannot crop because the current selection is empty."
 msgstr "Ei saa kärpida sest valitud ala on tühi"
+
+msgid "Cannot crop because the image has no content."
+msgstr "Pole võimalik kärpida, sest pilt on tühi."
 
 msgid "Change Print Size"
 msgstr "Väljaprindi suuruse muutmine"
@@ -2651,7 +2878,7 @@ msgstr "Nähtava pildi järgi uue kihi loomine"
 
 msgctxt "layers-action"
 msgid "New Layer _Group..."
-msgstr "Uus kihtide _grupp"
+msgstr "Uus kihtide _grupp..."
 
 msgctxt "layers-action"
 msgid "Create a new layer group and add it to the image"
@@ -2687,7 +2914,7 @@ msgstr "Kiht _pealmiseks"
 
 msgctxt "layers-action"
 msgid "Move this layer to the top of the layer stack"
-msgstr "Selle kihi tõstmine kõige ülemiseks"
+msgstr "Selle kihi tõstmine kõige pealmiseks"
 
 msgctxt "layers-action"
 msgid "_Lower Layer"
@@ -2800,6 +3027,16 @@ msgstr "_Kärbi valikuni"
 msgctxt "layers-action"
 msgid "Crop the layer to the extents of the selection"
 msgstr "Kihi kärpimine valitud ala piirideni"
+
+msgctxt "layers-action"
+msgid "Crop to C_ontent"
+msgstr "Kärbi _sisuni"
+
+msgctxt "layers-action"
+msgid ""
+"Crop the layer to the extents of its content (remove empty borders from the "
+"layer)"
+msgstr "Kihi kärpimine selle sisuni (eemaldades kihi tühjad raamid)"
 
 msgctxt "layers-action"
 msgid "Add La_yer Mask..."
@@ -2998,8 +3235,14 @@ msgstr "Kihi mõõtmete määramine"
 msgid "Scale Layer"
 msgstr "Kihi mõõtmete muutmine"
 
-msgid "Crop Layer"
-msgstr "Kärbi kihti"
+msgid "Crop Layer to Selection"
+msgstr "Kihi kärpimine valiku järgi"
+
+msgid "Cannot crop because the active layer has no content."
+msgstr "Pole võimalik aktiivset kihti kärpida, sest see on tühi."
+
+msgid "Crop Layer to Content"
+msgstr "Kihi kärpimine sisu järgi"
 
 msgid "Please select a channel first"
 msgstr "Palun vali kõigepealt kanal"
@@ -3246,7 +3489,7 @@ msgstr "_Kaunistused"
 
 msgctxt "plug-in-action"
 msgid "_Map"
-msgstr "_Kaardid"
+msgstr "_Kaart"
 
 msgctxt "plug-in-action"
 msgid "_Render"
@@ -3716,6 +3959,14 @@ msgstr "Kõigi tööriistasätete lähtestamine"
 msgid "Do you really want to reset all tool options to default values?"
 msgstr "Kas sa tõesti tahad kõik tööriista sätted lähtestada?"
 
+msgctxt "tool-preset-editor-action"
+msgid "Tool Preset Editor Menu"
+msgstr "Tööriistamalli redaktori menüü"
+
+msgctxt "tool-preset-editor-action"
+msgid "Edit Active Tool Preset"
+msgstr "Aktiivse tööriistamalli muutmine"
+
 msgctxt "tool-presets-action"
 msgid "Tool Presets Menu"
 msgstr "Tööriistamallide menüü"
@@ -3767,14 +4018,6 @@ msgstr "_Muuda tööriistamalli..."
 msgctxt "tool-presets-action"
 msgid "Edit this tool preset"
 msgstr "Selle tööriistamalli muutmine"
-
-msgctxt "tool-preset-editor-action"
-msgid "Tool Preset Editor Menu"
-msgstr "Tööriistamalli redaktori menüü"
-
-msgctxt "tool-preset-editor-action"
-msgid "Edit Active Tool Preset"
-msgstr "Aktiivse tööriistamalli muutmine"
 
 msgctxt "tools-action"
 msgid "_Tools"
@@ -3940,6 +4183,10 @@ msgstr "_Lingitud"
 msgctxt "vectors-action"
 msgid "L_ock strokes"
 msgstr "Pintslitõmmete _lukustamine"
+
+msgctxt "vectors-action"
+msgid "L_ock position"
+msgstr "_Lukusta asukoht"
 
 msgctxt "vectors-action"
 msgid "Path to Sele_ction"
@@ -4227,14 +4474,6 @@ msgctxt "view-action"
 msgid "Toggle fullscreen view"
 msgstr "Täisekraanvaate sisse-/väljalülitamine"
 
-msgctxt "view-action"
-msgid "Use GEGL"
-msgstr "GEGLi kasutamine"
-
-msgctxt "view-action"
-msgid "Use GEGL to create this window's projection"
-msgstr "Selle akna projektsioon luuakse GEGLiga"
-
 msgctxt "view-zoom-action"
 msgid "Zoom _Out"
 msgstr "_Vähenda"
@@ -4455,6 +4694,579 @@ msgctxt "windows-action"
 msgid "When enabled GIMP is in a single-window mode."
 msgstr "Kui lubatud, töötab GIMP ühe-akna režiimis."
 
+msgid ""
+"The chosen recent dock contains a toolbox. Please close the currently open "
+"toolbox and try again."
+msgstr ""
+"Valitud hiljutine dokk sisaldab tööriistakasti. Palun sulge praegu avatud "
+"tööriistakast ja proovi uuesti."
+
+msgctxt "cursor-mode"
+msgid "Tool icon"
+msgstr "Tööriista ikoon"
+
+msgctxt "cursor-mode"
+msgid "Tool icon with crosshair"
+msgstr "Tööriista ikoon ristiga"
+
+msgctxt "cursor-mode"
+msgid "Crosshair only"
+msgstr "Ainult rist"
+
+msgctxt "canvas-padding-mode"
+msgid "From theme"
+msgstr "Teemast"
+
+msgctxt "canvas-padding-mode"
+msgid "Light check color"
+msgstr "Heleda ruudu värv"
+
+msgctxt "canvas-padding-mode"
+msgid "Dark check color"
+msgstr "Tumeda ruudu värv"
+
+msgctxt "canvas-padding-mode"
+msgid "Custom color"
+msgstr "Oma värv"
+
+msgctxt "space-bar-action"
+msgid "No action"
+msgstr "Tegevus puudub"
+
+msgctxt "space-bar-action"
+msgid "Pan view"
+msgstr "Vaate nihutamine"
+
+msgctxt "space-bar-action"
+msgid "Switch to Move tool"
+msgstr "Liigutamise tööriistale vahetamine"
+
+msgctxt "zoom-quality"
+msgid "Low"
+msgstr "Madal"
+
+msgctxt "zoom-quality"
+msgid "High"
+msgstr "Kõrge"
+
+msgctxt "help-browser-type"
+msgid "GIMP help browser"
+msgstr "GIMP-i abiteabe sirvija"
+
+msgctxt "help-browser-type"
+msgid "Web browser"
+msgstr "Veebisirvija"
+
+msgctxt "window-hint"
+msgid "Normal window"
+msgstr "Tavaaken"
+
+msgctxt "window-hint"
+msgid "Utility window"
+msgstr "Tööriistaaken"
+
+msgctxt "window-hint"
+msgid "Keep above"
+msgstr "Kõige peal"
+
+msgctxt "cursor-format"
+msgid "Black & white"
+msgstr "Mustvalge"
+
+msgctxt "cursor-format"
+msgid "Fancy"
+msgstr "Edev"
+
+msgctxt "handedness"
+msgid "Left-handed"
+msgstr "Vasakukäeline"
+
+msgctxt "handedness"
+msgid "Right-handed"
+msgstr "Paremakäeline"
+
+#, c-format
+msgid "Could not open '%s' for writing: %s"
+msgstr "Ei saanud '%s' kirjutamiseks avada: %s"
+
+msgid "Error parsing '%s': line longer than %"
+msgstr "Viga '%s' analüüsimisel: rida on pikem kui %"
+
+#, c-format
+msgid "Error writing '%s': %s"
+msgstr "Viga '%s' kirjutamisel: %s"
+
+#, c-format
+msgid "Error reading '%s': %s"
+msgstr "Viga '%s' lugemisel: %s"
+
+#, c-format
+msgid ""
+"There was an error parsing your '%s' file. Default values will be used. A "
+"backup of your configuration has been created at '%s'."
+msgstr ""
+"Tekkis viga andmete parsimisel failist '%s'. Kasutatakse vaikeväärtusi. Sinu "
+"häälestustest tehti varukoopia nimega '%s'."
+
+#. Not all strings defined here are used in the user interface
+#. *  (the preferences dialog mainly) and only those that are should
+#. *  be marked for translation.
+#.
+msgid ""
+"When enabled, an image will become the active image when its image window "
+"receives the focus. This is useful for window managers using \"click to focus"
+"\"."
+msgstr ""
+"Muutu aktiivseks pildiks kui pildiaken saab fookuse. See on kasulik, kui "
+"aknahalduris on määratud \"klõpsa fokuseerimiseks\" säte."
+
+msgid "Sets the dynamics search path."
+msgstr "Määrab pintslidünaamika otsinguraja."
+
+msgid ""
+"Sets the canvas padding color used if the padding mode is set to custom "
+"color."
+msgstr "Lõuendiga katmata servade värv, kui selleks on oma määratud värv."
+
+msgid "Specifies how the area around the image should be drawn."
+msgstr "Määrab ära kuidas näeb välja pildi ümber olev ala."
+
+msgid "How to handle embedded color profiles when opening a file."
+msgstr "Mida teha kaasapandud värviprofiiliga faili avamisel?"
+
+msgid "Sets the pixel format to use for mouse pointers."
+msgstr "Määrab piksliformaadi, mida hiire kursorid kasutavad."
+
+msgid "Sets the type of mouse pointers to use."
+msgstr "Määrab kasutatava hiirekursori tüübi."
+
+msgid "Sets the handedness for cursor positioning."
+msgstr "Määrab kursori asukoha käelisuse."
+
+msgid ""
+"Context-dependent mouse pointers are helpful.  They are enabled by default.  "
+"However, they require overhead that you may want to do without."
+msgstr ""
+"Sisust sõltuvad kursorid on abiks aga kui ressurssi vähe võid need välja "
+"lülitada."
+
+msgid ""
+"When enabled, this will ensure that each pixel of an image gets mapped to a "
+"pixel on the screen."
+msgstr "Tagab et iga piksel failis vastab pikslile ekraanil."
+
+msgid "This is the distance in pixels where Guide and Grid snapping activates."
+msgstr ""
+"See on kaugus pikslites, kus tõmme abijoonele ja alusvõrgu joonele "
+"aktiveerub."
+
+msgid ""
+"Tools such as fuzzy-select and bucket fill find regions based on a seed-fill "
+"algorithm.  The seed fill starts at the initially selected pixel and "
+"progresses in all directions until the difference of pixel intensity from "
+"the original is greater than a specified threshold. This value represents "
+"the default threshold."
+msgstr ""
+"Võlukepikesega valimise ja värviga täitmise tööriistad otsivad alasid "
+"valgala algoritmi järgi. Alustatakse valitud pikslist ning kasvatakse igas "
+"suunas kuni erinevus esimesest pikslist on suurem kui määratud lävi. See "
+"väärtus määrab vaikimisi läve."
+
+msgid ""
+"The window type hint that is set on dock windows and the toolbox window. "
+"This may affect the way your window manager decorates and handles these "
+"windows."
+msgstr ""
+"Dokitavatele ning tööriistaakendele määratav tüübivihje. See võib mõjutada "
+"seda, kuidas aknahaldur nende aknatega käitub ning kuidas neid dekoreerib."
+
+msgid "When enabled, the selected brush will be used for all tools."
+msgstr "Kui lubatud, kasutatakse sama pintslit kõigi tööriistade jaoks."
+
+msgid "When enabled, the selected dynamics will be used for all tools."
+msgstr ""
+"Kui lubatud, kasutatakse sama pintslidünaamikat kõigi tööriistade jaoks."
+
+msgid "When enabled, the selected gradient will be used for all tools."
+msgstr "Kui lubatud, kasutatakse sama värvisulandust kõigi tööriistade jaoks."
+
+msgid "When enabled, the selected pattern will be used for all tools."
+msgstr "Kui lubatud, kasutatakse sama mustrit kõigi tööriistade jaoks."
+
+msgid "Sets the browser used by the help system."
+msgstr "Määrab veebilehitseja, mida abisüsteem kasutab."
+
+msgid "Sets the text to appear in image window status bars."
+msgstr "Määrab teksti, mis on pildiakna olekuribal."
+
+msgid "Sets the text to appear in image window titles."
+msgstr "Määrab tekst, mis on pildiakna pealkirjades"
+
+msgid ""
+"When enabled, this will ensure that the full image is visible after a file "
+"is opened, otherwise it will be displayed with a scale of 1:1."
+msgstr "Tagab et peale avamist oleks terve pilt nähtav, muidu kuvatakse 1:1"
+
+msgid ""
+"Sets the level of interpolation used for scaling and other transformations."
+msgstr "Interpoleerimise tase skaleerimisel ja muundamisel."
+
+msgid "Specifies the language to use for the user interface."
+msgstr "Määrab kasutajaliidese jaoks kasutatava keele."
+
+msgid "How many recently opened image filenames to keep on the File menu."
+msgstr "Kui mitu hiljuti avatud faili meeles hoida."
+
+msgid ""
+"Speed of marching ants in the selection outline.  This value is in "
+"milliseconds (less time indicates faster marching)."
+msgstr ""
+"Valitud ala piirjoone liikumise kiirus millisekundites (väiksem aeg, kiirem "
+"liikumine)."
+
+msgid ""
+"GIMP will warn the user if an attempt is made to create an image that would "
+"take more memory than the size specified here."
+msgstr ""
+"GIMP hoiatab kasutajat, kui see püüab luua pilti, mis võtab rohkem mälu kui "
+"siinkohal määratud."
+
+msgid ""
+"Sets the monitor's horizontal resolution, in dots per inch.  If set to 0, "
+"forces the X server to be queried for both horizontal and vertical "
+"resolution information."
+msgstr ""
+"Monitori horisontaalne eraldusvõime, punktides tolli kohta. Kui väärtus on "
+"0, päritakse X serverilt nii rõht- kui püsteraldusvõimet."
+
+msgid ""
+"Sets the monitor's vertical resolution, in dots per inch.  If set to 0, "
+"forces the X server to be queried for both horizontal and vertical "
+"resolution information."
+msgstr ""
+"Monitori vertikaalne eraldusvõime, punktides tolli kohta. Kui väärtus on 0, "
+"päritakse X serverilt nii rõht- kui püsteraldusvõimet."
+
+msgid ""
+"If enabled, the move tool sets the edited layer or path as active.  This "
+"used to be the default behaviour in older versions."
+msgstr ""
+"Kui lubatud, teeb liigutamise tööriist muudetud kihi või vektorjoone "
+"aktiivseks. See oli vaikimisi käitumine vanemates versioonides."
+
+msgid ""
+"Sets the size of the navigation preview available in the lower right corner "
+"of the image window."
+msgstr "Määrab navigatsiooni eelvaate pildiakna kagunurka."
+
+msgid "Sets how many processors GIMP should try to use simultaneously."
+msgstr "Paneb paika, mitu protsessorit võib GIMP korraga kasutada."
+
+msgid ""
+"When enabled, the X server is queried for the mouse's current position on "
+"each motion event, rather than relying on the position hint.  This means "
+"painting with large brushes should be more accurate, but it may be slower.  "
+"Conversely, on some X servers enabling this option results in faster "
+"painting."
+msgstr ""
+"Kui lubatud, päritakse X-serverilt hiire asukohta igal liikumisel, mitte ei "
+"usaldata asukohavihjet. Selliselt peaks suurte pintslitega maalimine olema "
+"täpsem, aga ka aeglasem. Paradoksaalselt miskpärast on mõnede X-serverite "
+"puhul tulemus hoopis kiirem maalimine."
+
+msgid ""
+"Sets whether GIMP should create previews of layers and channels. Previews in "
+"the layers and channels dialog are nice to have but they can slow things "
+"down when working with large images."
+msgstr ""
+"Kas GIMP peaks looma kihtidest ja kanalitest eelvaated. Eelvaated kihtide ja "
+"kanalite dokis näevad küll kenad välja, kuid võivad suurte piltidega "
+"töötamisel tööd aeglustada."
+
+msgid ""
+"Sets the preview size used for layers and channel previews in newly created "
+"dialogs."
+msgstr "Kihtide ja kanalite eelvaadete vaikesuurus."
+
+msgid "Sets the default quick mask color."
+msgstr "Määrab vaikimisi kiirmaski värvi."
+
+msgid ""
+"When enabled, the image window will automatically resize itself whenever the "
+"physical image size changes."
+msgstr ""
+"Kui lubatud, siis pildi aken muudab autmaatselt oma suurust kui pildi "
+"suurust muudetakse."
+
+msgid ""
+"When enabled, the image window will automatically resize itself when zooming "
+"into and out of images."
+msgstr "Kui lubatud, muudetakse suurendamisel akna suurust automaatselt."
+
+msgid "Let GIMP try to restore your last saved session on each startup."
+msgstr ""
+"Lase GIMP-il proovida taastada sinu salvestatud sessioni igal käivitamisel."
+
+msgid ""
+"Remember the current tool, pattern, color, and brush across GIMP sessions."
+msgstr ""
+"Pea kasutatud tööriist, muster, värv ja pintsel meeles läbi GIMP-i "
+"sessioonide."
+
+msgid ""
+"Keep a permanent record of all opened and saved files in the Recent "
+"Documents list."
+msgstr ""
+"Lisa kõik avatud ja salvestatud failid kettal asuvasse dokumentide ajaloo "
+"faili."
+
+msgid "Save the positions and sizes of the main dialogs when GIMP exits."
+msgstr "Salvesta dokkide asukohad ja suurused GIMP-ist väljumisel."
+
+msgid "Save the tool options when GIMP exits."
+msgstr "Salvesta tööriista seaded GIMP-ist väljumisel."
+
+msgid ""
+"When enabled, all brush-based paint tools will show a preview of the current "
+"brush's outline."
+msgstr ""
+"Kui lubatud, näidatakse kõigi pintslitööriistade puhul pintsli piirjooni."
+
+msgid ""
+"When enabled, dialogs will show a help button that gives access to the "
+"related help page.  Without this button, the help page can still be reached "
+"by pressing F1."
+msgstr ""
+"Kui lubatud, on dokkidel abiinfo näitamise nupp. Kui seda nuppu pole, saab "
+"abiinfo ikkagi kätte vajutades F1 nuppu."
+
+msgid ""
+"When enabled, the mouse pointer will be shown over the image while using a "
+"brush-based paint tool."
+msgstr ""
+"Kui lubatud, on hiirekursor pintslitööriistadega joonistamise ajal nähtav."
+
+msgid ""
+"When enabled, the menubar is visible by default. This can also be toggled "
+"with the \"View->Show Menubar\" command."
+msgstr ""
+"Kui lubatud, on menüüriba vaikimisi nähtav. Seda saab ümber lülitada menüüst "
+"\"Vaade->Menüüriba\"."
+
+msgid ""
+"When enabled, the rulers are visible by default. This can also be toggled "
+"with the \"View->Show Rulers\" command."
+msgstr ""
+"Kui lubatud, on joonlauad vaikimisi nähtavad. Seda saab ümber lülitada "
+"menüüst \"Vaade->Joonlaud\"."
+
+msgid ""
+"When enabled, the scrollbars are visible by default. This can also be "
+"toggled with the \"View->Show Scrollbars\" command."
+msgstr ""
+"Kui lubatud, on kerimisribad vaikimisi nähtavad. Seda saab ümber lülitada "
+"menüüst \"Vaade->Kerimisribad\"."
+
+msgid ""
+"When enabled, the statusbar is visible by default. This can also be toggled "
+"with the \"View->Show Statusbar\" command."
+msgstr ""
+"Kui lubatud näidatakse vaikimisi olekuriba. Seda saab ümber lülitada menüüst "
+"\"Vaade->Olekuriba\"."
+
+msgid ""
+"When enabled, the selection is visible by default. This can also be toggled "
+"with the \"View->Show Selection\" command."
+msgstr ""
+"Kui lubatud, on valitud ala vaikimisi nähtav. Seda saab ümber lülitada "
+"menüüst \"Vaade->Valitud ala näitamine\"."
+
+msgid ""
+"When enabled, the layer boundary is visible by default. This can also be "
+"toggled with the \"View->Show Layer Boundary\" command."
+msgstr ""
+"Kui lubatud, on kihi piir vaikimisi nähtav. Seda saab ümber lülitada menüüst "
+"\"Vaade->Kihi piiri näitamine\""
+
+msgid ""
+"When enabled, the guides are visible by default. This can also be toggled "
+"with the \"View->Show Guides\" command."
+msgstr ""
+"Kui lubatud, on abijooned vaikimisi nähtavad. Seda saab ümber lülitada "
+"menüüst \"Vaade->Abijoonte näitamine\"."
+
+msgid ""
+"When enabled, the grid is visible by default. This can also be toggled with "
+"the \"View->Show Grid\" command."
+msgstr ""
+"Kui lubatud, on alusvõrk vaikimisi nähtav. Seda saab ümber lülitada menüüst "
+"\"Vaade->Alusvõrgu näitamine\"."
+
+msgid ""
+"When enabled, the sample points are visible by default. This can also be "
+"toggled with the \"View->Show Sample Points\" command."
+msgstr ""
+"Kui lubatud, on näidispunktid vaikimisi nähtavad. Seda saab ümber lülitada "
+"menüüst \"Vaade->Näidispunktide näitamine\"."
+
+msgid "Show a tooltip when the pointer hovers over an item."
+msgstr "Kui kursor jääb kirjele, näidatakse vihjet."
+
+msgid "Use GIMP in a single-window mode."
+msgstr "GIMPi kasutamine ühe-akna režiimis."
+
+msgid "Hide docks and other windows, leaving only image windows."
+msgstr "Dokkide ja muude akende varjamine, jättes ainult pildiaknad."
+
+msgid "What to do when the space bar is pressed in the image window."
+msgstr "Mida teha kui tühiku klahvi all hoitakse."
+
+msgid ""
+"Sets the swap file location. GIMP uses a tile based memory allocation "
+"scheme. The swap file is used to quickly and easily swap tiles out to disk "
+"and back in. Be aware that the swap file can easily get very large if GIMP "
+"is used with large images. Also, things can get horribly slow if the swap "
+"file is created on a folder that is mounted over NFS.  For these reasons, it "
+"may be desirable to put your swap file in \"/tmp\"."
+msgstr ""
+"Saalefaili asukoht. GIMP kasutab ruutude kaupa mäluhalduse skeemi. "
+"Saalefaili kasutatakse, et kiiresti ja lihtsalt ruudukesed kettale kirjutada "
+"ja uuesti mällu lugeda. Hoiatus! Kui GIMP-i kasutatakse suurte failidega, "
+"võib saalefail kasvada väga suureks. Lisaks võib töö minna kohutavalt "
+"aeglaseks, kui saalefail on kaustas, mis on haagitud üle NFS-i. Sel põhjusel "
+"võib olla kasulik saalefaili suunamine \"/tmp\" kausta."
+
+msgid "When enabled, menus can be torn off."
+msgstr "Kui lubatud saab menüüdest elemente välja rebida."
+
+msgid ""
+"When enabled, you can change keyboard shortcuts for menu items by hitting a "
+"key combination while the menu item is highlighted."
+msgstr ""
+"Kui lubatud, saad menüüelementide kiirklahve seada klahvikombiatsiooni "
+"vajutades, kui menüüelement on märgitud."
+
+msgid "Save changed keyboard shortcuts when GIMP exits."
+msgstr "GIMP-i sulgemisel salvestatakse muudetud kiirklahvid."
+
+msgid "Restore saved keyboard shortcuts on each GIMP startup."
+msgstr "Taasta salvestatud klaviatuuri kiirklahvid igal GIMP-i käivitumisel."
+
+msgid ""
+"Sets the folder for temporary storage. Files will appear here during the "
+"course of running GIMP.  Most files will disappear when GIMP exits, but some "
+"files are likely to remain, so it is best if this folder not be one that is "
+"shared by other users."
+msgstr ""
+"Määrab ajutiste failide kataloogi. Failid on seal GIMP-i töötamise ajal. "
+"Enamik faile kustuvad, kui töö GIMP-iga lõpetada, kuid mõned võivad siiski "
+"alles jääda. Sellepärast on parem, kui kasuta ei jagata teiste kasutajatega."
+
+msgid "Sets the size of the thumbnail shown in the Open dialog."
+msgstr "Määrab faili avamise dialoogis näidatava pisipildi suuruse."
+
+msgid ""
+"The thumbnail in the Open dialog will be automatically updated if the file "
+"being previewed is smaller than the size set here."
+msgstr ""
+"Faili avamise dialoogis uuendatakse automaatselt pisipilti kui fail on "
+"siinmääratud suurusest väiksem."
+
+msgid ""
+"When the amount of pixel data exceeds this limit, GIMP will start to swap "
+"tiles to disk.  This is a lot slower but it makes it possible to work on "
+"images that wouldn't fit into memory otherwise.  If you have a lot of RAM, "
+"you may want to set this to a higher value."
+msgstr ""
+"Kui pilt muutub töötlemisel suuremaks kui see limiit, alustab GIMP osaliselt "
+"andmete hoidmist kõvakettal saalefailis. See on küll kõvasti aeglasem, aga "
+"võimaldab siiski töötada piltidega, mis muud moodi mällu ära ei mahu. Kui "
+"arvutil on rohkem mälu, võib olla vajalik seda numbrit suurendada."
+
+msgid "Show the current foreground and background colors in the toolbox."
+msgstr "Näita esiplaani ja tagaplaani värvi tööriistakastis."
+
+msgid "Show the currently selected brush, pattern and gradient in the toolbox."
+msgstr "Näita tööriistakastis aktiivset pintslit, mustrit ja värvisulandust"
+
+msgid "Show the currently active image in the toolbox."
+msgstr "Näita hetkel aktiivset pilti tööriistakastis"
+
+msgid "Sets the manner in which transparency is displayed in images."
+msgstr "Määrab viisi, kuidas näidatakse pildil läbipaistvat osa."
+
+msgid "Sets the size of the checkerboard used to display transparency."
+msgstr "Määrab pildi läbipaistva osa näitamisel kasutatava malelaua suuruse."
+
+msgid ""
+"When enabled, GIMP will not save an image if it has not been changed since "
+"it was opened."
+msgstr ""
+"Kui lubatud, ei salvesta GIMP pilti juhul, kui peale avamist pilti muudetud "
+"ei ole."
+
+msgid ""
+"Sets the minimal number of operations that can be undone. More undo levels "
+"are kept available until the undo-size limit is reached."
+msgstr ""
+"Määrab minimaalse arvu operatsioone, mida saab tagasi võtta. Rohkem "
+"tagasivõtmise tasemeid on saadaval kuni jõutakse tagasivõtmiste mälu "
+"piiranguni."
+
+msgid ""
+"Sets an upper limit to the memory that is used per image to keep operations "
+"on the undo stack. Regardless of this setting, at least as many undo-levels "
+"as configured can be undone."
+msgstr ""
+"Määrab ülemise piiri, kui palju mälu kasutatakse pildi kohta tagasivõtmise "
+"pinus. Hoolimata sellest sättest saab ikkagi nii palju tagasi võtta, kui on "
+"häälestatud tagasivõtmise sammude arvu suurusena."
+
+msgid "Sets the size of the previews in the Undo History."
+msgstr "Määrab eelvaadete suuruse Tagasivõtmise ajaloo dialoogis."
+
+msgid "When enabled, pressing F1 will open the help browser."
+msgstr "Kui lubatud, avaneb F1 klahvile vajutades abiinfo sirvija."
+
+msgid "fatal parse error"
+msgstr "ületamatu parsimise viga"
+
+#, c-format
+msgid "value for token %s is not a valid UTF-8 string"
+msgstr "Elemendi %s väärtus ei ole korrektne UTF-8 string"
+
+msgctxt "convert-dither-type"
+msgid "None"
+msgstr "Puudub"
+
+msgctxt "convert-dither-type"
+msgid "Floyd-Steinberg (normal)"
+msgstr "Floyd-Steinbergi (tavaline)"
+
+msgctxt "convert-dither-type"
+msgid "Floyd-Steinberg (reduced color bleeding)"
+msgstr "Floyd-Steinbergi (vähendatud värvide ülekate)"
+
+msgctxt "convert-dither-type"
+msgid "Positioned"
+msgstr "Korrapärane"
+
+msgctxt "convert-palette-type"
+msgid "Generate optimum palette"
+msgstr "Optimaalse paleti genereerimine"
+
+msgctxt "convert-palette-type"
+msgid "Use web-optimized palette"
+msgstr "Veebi jaoks optimeeritud palett"
+
+msgctxt "convert-palette-type"
+msgid "Use black and white (1-bit) palette"
+msgstr "Mustvalge (1-bitine) värvipalett"
+
+msgctxt "convert-palette-type"
+msgid "Use custom palette"
+msgstr "Omatehtud värvipalett"
+
 msgctxt "curve-type"
 msgid "Smooth"
 msgstr "Sujuv"
@@ -4590,584 +5402,6 @@ msgstr "Asendamine"
 msgctxt "layer-mode-effects"
 msgid "Anti erase"
 msgstr "Kustutatu taastamine"
-
-msgid ""
-"Unable to open swap file. GIMP has run out of memory and cannot use the swap "
-"file. Some parts of your images may be corrupted. Try to save your work "
-"using different filenames, restart GIMP and check the location of the swap "
-"directory in your Preferences."
-msgstr ""
-"Saalefaili ei saanud avada. GIMPil sai mälu otsa ja ei saanud ka saalefaili "
-"kasutama hakata. Mõned osad sinu piltidest võivad olla viga saanud. Püüa oma "
-"töö salvestada teistsuguse failinimega, pane GIMP uuesti käima ja kontolli "
-"häälestustes saalefaili asukohta."
-
-#, c-format
-msgid "Failed to resize swap file: %s"
-msgstr "Ei õnnestunud saalefaili suurust muuta: %s"
-
-msgctxt "cursor-mode"
-msgid "Tool icon"
-msgstr "Tööriista ikoon"
-
-msgctxt "cursor-mode"
-msgid "Tool icon with crosshair"
-msgstr "Tööriista ikoon ristiga"
-
-msgctxt "cursor-mode"
-msgid "Crosshair only"
-msgstr "Ainult rist"
-
-msgctxt "canvas-padding-mode"
-msgid "From theme"
-msgstr "Teemast"
-
-msgctxt "canvas-padding-mode"
-msgid "Light check color"
-msgstr "Heleda ruudu värv"
-
-msgctxt "canvas-padding-mode"
-msgid "Dark check color"
-msgstr "Tumeda ruudu värv"
-
-msgctxt "canvas-padding-mode"
-msgid "Custom color"
-msgstr "Oma värv"
-
-msgctxt "space-bar-action"
-msgid "No action"
-msgstr "Tegevus puudub"
-
-msgctxt "space-bar-action"
-msgid "Pan view"
-msgstr "Vaate nihutamine"
-
-msgctxt "space-bar-action"
-msgid "Switch to Move tool"
-msgstr "Liigutamise tööriistale vahetamine"
-
-msgctxt "zoom-quality"
-msgid "Low"
-msgstr "Madal"
-
-msgctxt "zoom-quality"
-msgid "High"
-msgstr "Kõrge"
-
-msgctxt "help-browser-type"
-msgid "GIMP help browser"
-msgstr "GIMPi abiteabe sirvija"
-
-msgctxt "help-browser-type"
-msgid "Web browser"
-msgstr "Veebisirvija"
-
-msgctxt "window-hint"
-msgid "Normal window"
-msgstr "Tavaaken"
-
-msgctxt "window-hint"
-msgid "Utility window"
-msgstr "Tööriistaaken"
-
-msgctxt "window-hint"
-msgid "Keep above"
-msgstr "Kõige peal"
-
-msgctxt "cursor-format"
-msgid "Black & white"
-msgstr "Mustvalge"
-
-msgctxt "cursor-format"
-msgid "Fancy"
-msgstr "Edev"
-
-msgctxt "handedness"
-msgid "Left-handed"
-msgstr "Vasakukäeline"
-
-msgctxt "handedness"
-msgid "Right-handed"
-msgstr "Paremakäeline"
-
-#, c-format
-msgid "Could not open '%s' for writing: %s"
-msgstr "Ei saanud '%s' kirjutamiseks avada: %s"
-
-#, c-format
-msgid "Error writing '%s': %s"
-msgstr "Viga '%s' kirjutamisel: %s"
-
-#, c-format
-msgid "Error reading '%s': %s"
-msgstr "Viga '%s' lugemisel: %s"
-
-#, c-format
-msgid ""
-"There was an error parsing your '%s' file. Default values will be used. A "
-"backup of your configuration has been created at '%s'."
-msgstr ""
-"Tekkis viga andmete parsimisel failist '%s'. Kasutatakse vaikeväärtusi. Sinu "
-"häälestustest tehti varukoopia nimega '%s'."
-
-#. Not all strings defined here are used in the user interface
-#. *  (the preferences dialog mainly) and only those that are should
-#. *  be marked for translation.
-#.
-msgid ""
-"When enabled, an image will become the active image when its image window "
-"receives the focus. This is useful for window managers using \"click to focus"
-"\"."
-msgstr ""
-"Muutu aktiivseks pildiks kui pildiaken saab fookuse. See on kasulik, kui "
-"aknahalduris on määratud \"klõpsa fokuseerimiseks\" säte."
-
-msgid "Sets the dynamics search path."
-msgstr "Määrab pintslidünaamika otsinguraja."
-
-msgid ""
-"Sets the canvas padding color used if the padding mode is set to custom "
-"color."
-msgstr "Lõuendiga katmata servade värv, kui selleks on oma määratud värv."
-
-msgid "Specifies how the area around the image should be drawn."
-msgstr "Määrab ära kuidas näeb välja pildi ümber olev ala."
-
-msgid "How to handle embedded color profiles when opening a file."
-msgstr "Mida teha kaasapandud värviprofiiliga faili avamisel?"
-
-msgid "Sets the pixel format to use for mouse pointers."
-msgstr "Määrab piksliformaadi, mida hiire kursorid kasutavad."
-
-msgid "Sets the type of mouse pointers to use."
-msgstr "Määrab kasutatava hiirekursori tüübi."
-
-msgid "Sets the handedness for cursor positioning."
-msgstr "Määrab kursori asukoha käelisuse."
-
-msgid ""
-"Context-dependent mouse pointers are helpful.  They are enabled by default.  "
-"However, they require overhead that you may want to do without."
-msgstr ""
-"Sisust sõltuvad kursorid on abiks aga kui ressurssi vähe võid need välja "
-"lülitada."
-
-msgid ""
-"When enabled, this will ensure that each pixel of an image gets mapped to a "
-"pixel on the screen."
-msgstr "Tagab et iga piksel failis vastab pikslile ekraanil."
-
-msgid "This is the distance in pixels where Guide and Grid snapping activates."
-msgstr ""
-"See on kaugus pikslites, kus tõmme abijoonele ja alusvõrgu joonele "
-"aktiveerub."
-
-msgid ""
-"Tools such as fuzzy-select and bucket fill find regions based on a seed-fill "
-"algorithm.  The seed fill starts at the initially selected pixel and "
-"progresses in all directions until the difference of pixel intensity from "
-"the original is greater than a specified threshold. This value represents "
-"the default threshold."
-msgstr ""
-"Võlukepikesega valimise ja värviga täitmise tööriistad otsivad alasid "
-"valgala algoritmi järgi. Alustatakse valitud pikslist ning kasvatakse igas "
-"suunas kuni erinevus esimesest pikslist on suurem kui määratud lävi. See "
-"väärtus määrab vaikimisi läve."
-
-msgid ""
-"The window type hint that is set on dock windows and the toolbox window. "
-"This may affect the way your window manager decorates and handles these "
-"windows."
-msgstr ""
-"Dokitavatele ning tööriistaakendele määratav tüübivihje. See võib mõjutada "
-"seda, kuidas aknahaldur nende akendega käitub ning kuidas neid dekoreerib."
-
-msgid "When enabled, the selected brush will be used for all tools."
-msgstr "Kui lubatud, kasutatakse sama pintslit kõigi tööriistade jaoks."
-
-msgid "When enabled, the selected dynamics will be used for all tools."
-msgstr ""
-"Kui lubatud, kasutatakse sama pintslidünaamikat kõigi tööriistade jaoks."
-
-msgid "When enabled, the selected gradient will be used for all tools."
-msgstr "Kui lubatud, kasutatakse sama värvisulandust kõigi tööriistade jaoks."
-
-msgid "When enabled, the selected pattern will be used for all tools."
-msgstr "Kui lubatud, kasutatakse sama mustrit kõigi tööriistade jaoks."
-
-msgid "Sets the browser used by the help system."
-msgstr "Määrab veebilehitseja, mida abisüsteem kasutab."
-
-msgid "Sets the text to appear in image window status bars."
-msgstr "Määrab teksti, mis on pildiakna olekuribal."
-
-msgid "Sets the text to appear in image window titles."
-msgstr "Määrab tekst, mis on pildiakna pealkirjades"
-
-msgid ""
-"When enabled, this will ensure that the full image is visible after a file "
-"is opened, otherwise it will be displayed with a scale of 1:1."
-msgstr "Tagab et peale avamist oleks terve pilt nähtav, muidu kuvatakse 1:1"
-
-msgid ""
-"Sets the level of interpolation used for scaling and other transformations."
-msgstr "Interpoleerimise tase skaleerimisel ja muundamisel."
-
-msgid "Specifies the language to use for the user interface."
-msgstr "Määrab kasutajaliideses kasutatava keele."
-
-msgid "How many recently opened image filenames to keep on the File menu."
-msgstr "Kui mitu hiljuti avatud faili meeles hoida."
-
-msgid ""
-"Speed of marching ants in the selection outline.  This value is in "
-"milliseconds (less time indicates faster marching)."
-msgstr ""
-"Valitud ala piirjoone liikumise kiirus millisekundites (väiksem aeg, kiirem "
-"liikumine)."
-
-msgid ""
-"GIMP will warn the user if an attempt is made to create an image that would "
-"take more memory than the size specified here."
-msgstr ""
-"GIMP hoiatab kasutajat, kui see püüab luua pilti, mis võtab rohkem mälu kui "
-"siinkohal määratud."
-
-msgid ""
-"Sets the monitor's horizontal resolution, in dots per inch.  If set to 0, "
-"forces the X server to be queried for both horizontal and vertical "
-"resolution information."
-msgstr ""
-"Monitori horisontaalne lahutus punktides tolli kohta. Kui väärtus on 0, "
-"päritakse X serverilt nii rõht- kui püstlahutust."
-
-msgid ""
-"Sets the monitor's vertical resolution, in dots per inch.  If set to 0, "
-"forces the X server to be queried for both horizontal and vertical "
-"resolution information."
-msgstr ""
-"Monitori vertikaalne lahutus punktides tolli kohta. Kui väärtus on 0, "
-"päritakse X serverilt nii rõht- kui püstlahutust."
-
-msgid ""
-"If enabled, the move tool sets the edited layer or path as active.  This "
-"used to be the default behaviour in older versions."
-msgstr ""
-"Kui lubatud, teeb liigutamise tööriist muudetud kihi või vektorjoone "
-"aktiivseks. See oli vaikimisi käitumine vanemates versioonides."
-
-msgid ""
-"Sets the size of the navigation preview available in the lower right corner "
-"of the image window."
-msgstr "Määrab navigatsiooni eelvaate pildiakna kagunurka."
-
-msgid "Sets how many processors GIMP should try to use simultaneously."
-msgstr "Paneb paika, mitu protsessorit võib GIMP korraga kasutada."
-
-msgid ""
-"When enabled, the X server is queried for the mouse's current position on "
-"each motion event, rather than relying on the position hint.  This means "
-"painting with large brushes should be more accurate, but it may be slower.  "
-"Conversely, on some X servers enabling this option results in faster "
-"painting."
-msgstr ""
-"Kui lubatud, päritakse X-serverilt hiire asukohta igal liikumisel, mitte ei "
-"usaldata asukohavihjet. Selliselt peaks suurte pintslitega maalimine olema "
-"täpsem, aga ka aeglasem. Paradoksaalselt miskpärast on mõnede X-serverite "
-"puhul tulemus hoopis kiirem maalimine."
-
-msgid ""
-"Sets whether GIMP should create previews of layers and channels. Previews in "
-"the layers and channels dialog are nice to have but they can slow things "
-"down when working with large images."
-msgstr ""
-"Kas GIMP peaks looma kihtidest ja kanalitest eelvaated. Eelvaated kihtide ja "
-"kanalite dokis näevad küll kenad välja, kuid võivad suurte piltidega "
-"töötamisel tööd aeglustada."
-
-msgid ""
-"Sets the preview size used for layers and channel previews in newly created "
-"dialogs."
-msgstr "Kihtide ja kanalite eelvaadete vaikesuurus."
-
-msgid "Sets the default quick mask color."
-msgstr "Määrab vaikimisi kiirmaski värvi."
-
-msgid ""
-"When enabled, the image window will automatically resize itself whenever the "
-"physical image size changes."
-msgstr ""
-"Kui lubatud, siis pildi aken muudab autmaatselt oma suurust kui pildi "
-"suurust muudetakse."
-
-msgid ""
-"When enabled, the image window will automatically resize itself when zooming "
-"into and out of images."
-msgstr "Kui lubatud, muudetakse suurendamisel akna suurust automaatselt."
-
-msgid "Let GIMP try to restore your last saved session on each startup."
-msgstr ""
-"Lase GIMPil proovida taastada sinu salvestatud sessiooni igal käivitumisel."
-
-msgid ""
-"Remember the current tool, pattern, color, and brush across GIMP sessions."
-msgstr ""
-"Kasutatud tööriista, musteri, värvi ja pintsli meelespidamine läbi GIMPi "
-"sessioonide."
-
-msgid ""
-"Keep a permanent record of all opened and saved files in the Recent "
-"Documents list."
-msgstr ""
-"Lisa kõik avatud ja salvestatud failid kettal asuvasse dokumentide ajaloo "
-"faili."
-
-msgid "Save the positions and sizes of the main dialogs when GIMP exits."
-msgstr "Salvesta dokkide asukohad ja suurused GIMPist väljumisel."
-
-msgid "Save the tool options when GIMP exits."
-msgstr "Salvesta tööriista seaded GIMPist väljumisel."
-
-msgid ""
-"When enabled, all paint tools will show a preview of the current brush's "
-"outline."
-msgstr ""
-"Kui lubatud, näidatakse kõigi pintslitööriistade puhul pintsli piirjooni."
-
-msgid ""
-"When enabled, dialogs will show a help button that gives access to the "
-"related help page.  Without this button, the help page can still be reached "
-"by pressing F1."
-msgstr ""
-"Kui lubatud, on dokkidel abiinfo näitamise nupp. Kui seda nuppu pole, saab "
-"abiinfo ikkagi kätte vajutades F1 nuppu."
-
-msgid ""
-"When enabled, the mouse pointer will be shown over the image while using a "
-"paint tool."
-msgstr ""
-"Kui lubatud, on hiirekursor pintslitööriistadega joonistamise ajal nähtav."
-
-msgid ""
-"When enabled, the menubar is visible by default. This can also be toggled "
-"with the \"View->Show Menubar\" command."
-msgstr ""
-"Kui lubatud, on menüüriba vaikimisi nähtav. Seda saab ümber lülitada menüüst "
-"\"Vaade->Menüüriba\"."
-
-msgid ""
-"When enabled, the rulers are visible by default. This can also be toggled "
-"with the \"View->Show Rulers\" command."
-msgstr ""
-"Kui lubatud, on joonlauad vaikimisi nähtavad. Seda saab ümber lülitada "
-"menüüst \"Vaade->Joonlaud\"."
-
-msgid ""
-"When enabled, the scrollbars are visible by default. This can also be "
-"toggled with the \"View->Show Scrollbars\" command."
-msgstr ""
-"Kui lubatud, on kerimisribad vaikimisi nähtavad. Seda saab ümber lülitada "
-"menüüst \"Vaade->Kerimisribad\"."
-
-msgid ""
-"When enabled, the statusbar is visible by default. This can also be toggled "
-"with the \"View->Show Statusbar\" command."
-msgstr ""
-"Kui lubatud näidatakse vaikimisi olekuriba. Seda saab ümber lülitada menüüst "
-"\"Vaade->Olekuriba\"."
-
-msgid ""
-"When enabled, the selection is visible by default. This can also be toggled "
-"with the \"View->Show Selection\" command."
-msgstr ""
-"Kui lubatud, on valitud ala vaikimisi nähtav. Seda saab ümber lülitada "
-"menüüst \"Vaade->Valitud ala näitamine\"."
-
-msgid ""
-"When enabled, the layer boundary is visible by default. This can also be "
-"toggled with the \"View->Show Layer Boundary\" command."
-msgstr ""
-"Kui lubatud, on kihi piir vaikimisi nähtav. Seda saab ümber lülitada menüüst "
-"\"Vaade->Kihi piiri näitamine\""
-
-msgid ""
-"When enabled, the guides are visible by default. This can also be toggled "
-"with the \"View->Show Guides\" command."
-msgstr ""
-"Kui lubatud, on abijooned vaikimisi nähtavad. Seda saab ümber lülitada "
-"menüüst \"Vaade->Abijoonte näitamine\"."
-
-msgid ""
-"When enabled, the grid is visible by default. This can also be toggled with "
-"the \"View->Show Grid\" command."
-msgstr ""
-"Kui lubatud, on alusvõrk vaikimisi nähtav. Seda saab ümber lülitada menüüst "
-"\"Vaade->Alusvõrgu näitamine\"."
-
-msgid ""
-"When enabled, the sample points are visible by default. This can also be "
-"toggled with the \"View->Show Sample Points\" command."
-msgstr ""
-"Kui lubatud, on näidispunktid vaikimisi nähtavad. Seda saab ümber lülitada "
-"menüüst \"Vaade->Näidispunktide näitamine\"."
-
-msgid "Show a tooltip when the pointer hovers over an item."
-msgstr "Kui kursor jääb kirjele, näidatakse vihjet."
-
-msgid "Use GIMP in a single-window mode."
-msgstr "GIMPi kasutamine ühe-akna režiimis."
-
-msgid "Hide docks and other windows, leaving only image windows."
-msgstr "Dokkide ja muude akende varjamine, jättes ainult pildiaknad."
-
-msgid "What to do when the space bar is pressed in the image window."
-msgstr "Mida teha kui tühiku klahvi all hoitakse."
-
-msgid ""
-"Sets the swap file location. GIMP uses a tile based memory allocation "
-"scheme. The swap file is used to quickly and easily swap tiles out to disk "
-"and back in. Be aware that the swap file can easily get very large if GIMP "
-"is used with large images. Also, things can get horribly slow if the swap "
-"file is created on a folder that is mounted over NFS.  For these reasons, it "
-"may be desirable to put your swap file in \"/tmp\"."
-msgstr ""
-"Saalefaili asukoht. GIMP kasutab ruutude kaupa mäluhalduse skeemi. "
-"Saalefaili kasutatakse, et kiiresti ja lihtsalt ruudukesed kettale kirjutada "
-"ja uuesti mällu lugeda. Hoiatus! Kui GIMPi kasutatakse suurte failidega, "
-"võib saalefail kasvada väga suureks. Lisaks võib töö minna kohutavalt "
-"aeglaseks, kui saalefail on kaustas, mis on haagitud üle NFS-i. Sel põhjusel "
-"võib olla kasulik saalefaili suunamine \"/tmp\" kausta."
-
-msgid "When enabled, menus can be torn off."
-msgstr "Kui lubatud saab menüüdest elemente välja rebida."
-
-msgid ""
-"When enabled, you can change keyboard shortcuts for menu items by hitting a "
-"key combination while the menu item is highlighted."
-msgstr ""
-"Kui lubatud, saad menüüelementide kiirklahve seada klahvikombiatsiooni "
-"vajutades, kui menüüelement on märgitud."
-
-msgid "Save changed keyboard shortcuts when GIMP exits."
-msgstr "GIMPi sulgemisel salvestatakse muudetud kiirklahvid."
-
-msgid "Restore saved keyboard shortcuts on each GIMP startup."
-msgstr "Taasta salvestatud klaviatuuri kiirklahvid igal GIMPi käivitumisel."
-
-msgid ""
-"Sets the folder for temporary storage. Files will appear here during the "
-"course of running GIMP.  Most files will disappear when GIMP exits, but some "
-"files are likely to remain, so it is best if this folder not be one that is "
-"shared by other users."
-msgstr ""
-"Määrab ajutiste failide kataloogi. Failid on seal GIMPi töötamise ajal. "
-"Enamik faile kustuvad, kui töö GIMPiga lõpetada, kuid mõned võivad siiski "
-"alles jääda. Sellepärast on parem, kui kasuta ei jagata teiste kasutajatega."
-
-msgid "Sets the size of the thumbnail shown in the Open dialog."
-msgstr "Määrab faili avamise dialoogis näidatava pisipildi suuruse."
-
-msgid ""
-"The thumbnail in the Open dialog will be automatically updated if the file "
-"being previewed is smaller than the size set here."
-msgstr ""
-"Faili avamise dialoogis uuendatakse automaatselt pisipilti kui fail on "
-"siinmääratud suurusest väiksem."
-
-msgid ""
-"When the amount of pixel data exceeds this limit, GIMP will start to swap "
-"tiles to disk.  This is a lot slower but it makes it possible to work on "
-"images that wouldn't fit into memory otherwise.  If you have a lot of RAM, "
-"you may want to set this to a higher value."
-msgstr ""
-"Kui pilt muutub töötlemisel suuremaks kui see limiit, alustab GIMP osaliselt "
-"andmete hoidmist kõvakettal saalefailis. See on küll kõvasti aeglasem, aga "
-"võimaldab siiski töötada piltidega, mis muud moodi mällu ära ei mahu. Kui "
-"arvutil on rohkem mälu, võib olla vajalik seda numbrit suurendada."
-
-msgid "Show the current foreground and background colors in the toolbox."
-msgstr "Näita esiplaani ja tagaplaani värvi tööriistakastis."
-
-msgid "Show the currently selected brush, pattern and gradient in the toolbox."
-msgstr "Näita tööriistakastis aktiivset pintslit, mustrit ja värvisulandust"
-
-msgid "Show the currently active image in the toolbox."
-msgstr "Näita hetkel aktiivset pilti tööriistakastis"
-
-msgid "Sets the manner in which transparency is displayed in images."
-msgstr "Määrab viisi, kuidas näidatakse pildil läbipaistvat osa."
-
-msgid "Sets the size of the checkerboard used to display transparency."
-msgstr "Määrab pildi läbipaistva osa näitamisel kasutatava malelaua suuruse."
-
-msgid ""
-"When enabled, GIMP will not save an image if it has not been changed since "
-"it was opened."
-msgstr ""
-"Kui lubatud, ei salvesta GIMP pilti juhul, kui peale avamist pilti muudetud "
-"ei ole."
-
-msgid ""
-"Sets the minimal number of operations that can be undone. More undo levels "
-"are kept available until the undo-size limit is reached."
-msgstr ""
-"Määrab minimaalse arvu operatsioone, mida saab tagasi võtta. Rohkem "
-"tagasivõtmise tasemeid on saadaval kuni jõutakse tagasivõtmiste mälu "
-"piiranguni."
-
-msgid ""
-"Sets an upper limit to the memory that is used per image to keep operations "
-"on the undo stack. Regardless of this setting, at least as many undo-levels "
-"as configured can be undone."
-msgstr ""
-"Määrab ülemise piiri, kui palju mälu kasutatakse pildi kohta tagasivõtmise "
-"pinus. Hoolimata sellest sättest saab ikkagi nii palju tagasi võtta, kui on "
-"häälestatud tagasivõtmise sammude arvu suurusena."
-
-msgid "Sets the size of the previews in the Undo History."
-msgstr "Määrab eelvaadete suuruse Tagasivõtmise ajaloo dialoogis."
-
-msgid "When enabled, pressing F1 will open the help browser."
-msgstr "Kui lubatud, avaneb F1 klahvile vajutades abiinfo sirvija."
-
-msgid "fatal parse error"
-msgstr "ületamatu parsimise viga"
-
-#, c-format
-msgid "value for token %s is not a valid UTF-8 string"
-msgstr "Elemendi %s väärtus ei ole korrektne UTF-8 string"
-
-msgctxt "convert-dither-type"
-msgid "None"
-msgstr "Puudub"
-
-msgctxt "convert-dither-type"
-msgid "Floyd-Steinberg (normal)"
-msgstr "Floyd-Steinbergi (tavaline)"
-
-msgctxt "convert-dither-type"
-msgid "Floyd-Steinberg (reduced color bleeding)"
-msgstr "Floyd-Steinbergi (vähendatud värvide ülekate)"
-
-msgctxt "convert-dither-type"
-msgid "Positioned"
-msgstr "Korrapärane"
-
-msgctxt "convert-palette-type"
-msgid "Generate optimum palette"
-msgstr "Optimaalse paleti genereerimine"
-
-msgctxt "convert-palette-type"
-msgid "Use web-optimized palette"
-msgstr "Veebi jaoks optimeeritud palett"
-
-msgctxt "convert-palette-type"
-msgid "Use black and white (1-bit) palette"
-msgstr "Mustvalge (1-bitine) värvipalett"
-
-msgctxt "convert-palette-type"
-msgid "Use custom palette"
-msgstr "Omatehtud värvipalett"
 
 msgctxt "align-reference-type"
 msgid "First item"
@@ -5324,6 +5558,26 @@ msgstr "Vertikaalne"
 msgctxt "orientation-type"
 msgid "Unknown"
 msgstr "Tundmatu"
+
+msgctxt "precision"
+msgid "8-bit integer"
+msgstr "8-biti täisarv"
+
+msgctxt "precision"
+msgid "16-bit integer"
+msgstr "16-biti täisarv"
+
+msgctxt "precision"
+msgid "32-bit integer"
+msgstr "32-biti täisarv"
+
+msgctxt "precision"
+msgid "16-bit floating point"
+msgstr "16-biti ujukomaarv"
+
+msgctxt "precision"
+msgid "32-bit floating point"
+msgstr "32-biti ujukomaarv"
 
 msgctxt "item-set"
 msgid "None"
@@ -5558,12 +5812,16 @@ msgid "Image type"
 msgstr "Pildi tüüp"
 
 msgctxt "undo-type"
+msgid "Image precision"
+msgstr "Pildi täpsus"
+
+msgctxt "undo-type"
 msgid "Image size"
 msgstr "Pildi mõõtmed"
 
 msgctxt "undo-type"
 msgid "Image resolution change"
-msgstr "Pildi lahutuse muutmine"
+msgstr "Pildi eraldusvõime muutmine"
 
 msgctxt "undo-type"
 msgid "Change indexed palette"
@@ -5576,6 +5834,14 @@ msgstr "Järjekorra muutmine"
 msgctxt "undo-type"
 msgid "Rename item"
 msgstr "Elemendi ümbernimetamine"
+
+msgctxt "undo-type"
+msgid "Lock/Unlock content"
+msgstr "Sisu lukustamine/vabastamine"
+
+msgctxt "undo-type"
+msgid "Lock/Unlock position"
+msgstr "Asukoha lukustamine/vabastamine"
 
 msgctxt "undo-type"
 msgid "New layer"
@@ -5616,6 +5882,10 @@ msgstr "Tekstikiht"
 msgctxt "undo-type"
 msgid "Text layer modification"
 msgstr "Tekstikihi muutmine"
+
+msgctxt "undo-type"
+msgid "Convert text layer"
+msgstr "Tekstikihi teisendamine"
 
 msgctxt "undo-type"
 msgid "Delete layer mask"
@@ -5757,121 +6027,61 @@ msgctxt "dynamics-output-type"
 msgid "Jitter"
 msgstr "Värin"
 
+msgid "Brush Spacing"
+msgstr "Pinstli vahekaugus"
+
+msgid "Brush Shape"
+msgstr "Pintsli kuju"
+
+msgid "Brush Radius"
+msgstr "Pintsli raadius"
+
+msgid "Brush Spikes"
+msgstr "Pintsli teravikud"
+
+msgid "Brush Hardness"
+msgstr "Pintsli selgus"
+
+msgid "Brush Aspect Ratio"
+msgstr "Pintsli külgede suhe"
+
+msgid "Brush Angle"
+msgstr "Pintsli nurk"
+
 #, c-format
-msgid "Deleting \"%s\" failed: %s"
-msgstr "\"%s\" kustutamine nurjus: %s"
-
-msgid "Pasted Layer"
-msgstr "Asetatud kiht"
-
-msgctxt "undo-type"
-msgid "Clear"
-msgstr "Puhasta"
-
-msgctxt "undo-type"
-msgid "Fill with Foreground Color"
-msgstr "Täidetakse esiplaani värviga"
-
-msgctxt "undo-type"
-msgid "Fill with Background Color"
-msgstr "Täidetakse tagapõhja värviga"
-
-msgctxt "undo-type"
-msgid "Fill with White"
-msgstr "Täidetakse valge värviga"
-
-msgctxt "undo-type"
-msgid "Fill with Transparency"
-msgstr "Jäetakse läbipaistvaks"
-
-msgctxt "undo-type"
-msgid "Fill with Pattern"
-msgstr "Täidetakse mustriga"
-
-msgid "Global Buffer"
-msgstr "Üleprogrammiline puhver"
-
-msgid "FG to BG (RGB)"
-msgstr "EP TP-ks (RGB)"
-
-msgid "FG to BG (Hardedge)"
-msgstr "EP TP-ks (karmi servaga)"
-
-msgid "FG to BG (HSV counter-clockwise)"
-msgstr "EP TP-ks (HSV vastupäeva)"
-
-msgid "FG to BG (HSV clockwise hue)"
-msgstr "EP TP-ks (HSV päripäeva toon)"
-
-msgid "FG to Transparent"
-msgstr "EP läbipaistvaks"
-
-#. This is a special string to specify the language identifier to
-#. * look for in the gimp-tags-default.xml file. Please translate the
-#. * C in it according to the name of the po file used for
-#. * gimp-tags-default.xml. E.g. lithuanian for the translation,
-#. * that would be "tags-locale:lt".
-#.
-msgid "tags-locale:C"
-msgstr "tags-locale:et"
+msgid "Fatal parse error in brush file '%s': Not a GIMP brush file."
+msgstr ""
+"Ületamatu parsimisviga pintslifailis '%s': see ei ole GIMP-i pintslifail."
 
 #, c-format
 msgid ""
-"It seems you have used GIMP %s before.  GIMP will now migrate your user "
-"settings to '%s'."
+"Fatal parse error in brush file '%s': Unknown GIMP brush version in line %d."
 msgstr ""
-"Paistab, et oled varem kasutanud GIMPi versiooni %s. Sätted migreeritakse "
-"'%s' alla."
+"Ületamatu parsimisviga pintslifailis '%s': tundmatu GIMP-i pintsliversioon "
+"real %d."
+
+#, c-format
+msgid "Invalid UTF-8 string in brush file '%s'."
+msgstr "Vigane UTF-8 tekstilõik pintslifailis '%s'."
 
 #, c-format
 msgid ""
-"It appears that you are using GIMP for the first time.  GIMP will now create "
-"a folder named '%s' and copy some files to it."
+"Fatal parse error in brush file '%s': Unknown GIMP brush shape in line %d."
 msgstr ""
-"Paistab, et kasutad GIMPi esmakordselt. GIMP loob nüüd kausta '%s' ja "
-"kopeerib sinna mõned failid."
+"Ületamatu parsimisviga pintslifailis '%s': tundmatu GIMP-i pintslikuju real "
+"%d."
 
 #, c-format
-msgid "Copying file '%s' from '%s'..."
-msgstr "Faili '%s' kopeerimine asukohast '%s'..."
+msgid "Line %d: %s"
+msgstr "Rida %d: %s"
 
 #, c-format
-msgid "Creating folder '%s'..."
-msgstr "Kausta '%s' loomine..."
+msgid "File is truncated in line %d"
+msgstr "Fail on lühendatud real %d"
 
 #, c-format
-msgid "Cannot create folder '%s': %s"
-msgstr "Kataloogi '%s' pole võimalik luua: %s"
-
-msgid "Initialization"
-msgstr "Lähtestamine"
-
-#. register all internal procedures
-msgid "Internal Procedures"
-msgstr "Siseprotseduurid"
-
-#. initialize  the global parasite table
-msgid "Looking for data files"
-msgstr "Andmefailide otsimine"
-
-msgid "Parasites"
-msgstr "Parasiidid"
-
-#. initialize the list of gimp dynamics
-msgid "Dynamics"
-msgstr "Pintslidünaamika"
-
-#. initialize the list of fonts
-msgid "Fonts (this may take a while)"
-msgstr "Fondid (see võib aega võtta)"
-
-#. initialize the module list
-msgid "Modules"
-msgstr "Moodulid"
-
-#. update tag cache
-msgid "Updating tag cache"
-msgstr "Märksõnade puhvri uuendamine"
+msgid "Error while reading brush file '%s': %s"
+msgstr "Viga pintslifaili '%s' lugemisel: %s"
 
 #, c-format
 msgid "Could not read %d byte from '%s': %s"
@@ -5905,24 +6115,8 @@ msgstr ""
 "Ületamatu parsimisviga pintslifailis '%s': tundub, et faili lõpust on jupp "
 "puudu."
 
-#, c-format
-msgid "Invalid UTF-8 string in brush file '%s'."
-msgstr "Vigane UTF-8 tekstilõik pintslifailis '%s'."
-
 msgid "Unnamed"
 msgstr "Nimetu"
-
-#, c-format
-msgid ""
-"Fatal parse error in brush file '%s': Unsupported brush depth %d\n"
-"GIMP brushes must be GRAY or RGBA.\n"
-"This might be an obsolete GIMP brush file, try loading it as image and save "
-"it again."
-msgstr ""
-"Ületamatu parsimisviga pintslifailis '%s': mittetoetatud pintsli sügavus %d\n"
-"GIMPi pintslite värvid peavad olema GRAY või RGBA vormingus.\n"
-"See võib olla liiga vana GIMPi pintslifail, proovi seda avada pildina ja "
-"salvesta uuesti."
 
 #, c-format
 msgid ""
@@ -5930,7 +6124,7 @@ msgid ""
 "GIMP brushes must be GRAY or RGBA."
 msgstr ""
 "Ületamatu parsimisviga pintslifailis '%s': mittetoetatud pintsli sügavus %d\n"
-"GIMPi pintslite värvid peavad olema GRAY või RGBA."
+"GIMP-i pintslite värvid peavad olema GRAY või RGBA."
 
 #, c-format
 msgid ""
@@ -5944,90 +6138,39 @@ msgid "Fatal parse error in brush file '%s': Wide brushes are not supported."
 msgstr ""
 "Ületamatu parsimisviga pintslifailis '%s': laiad pintslid pole toetatud."
 
-msgid "Brush Spacing"
-msgstr "Pinstli vahekaugus"
-
-#, c-format
-msgid "Fatal parse error in brush file '%s': Not a GIMP brush file."
-msgstr ""
-"Ületamatu parsimisviga pintslifailis '%s': see ei ole GIMPi pintslifail."
-
-#, c-format
-msgid ""
-"Fatal parse error in brush file '%s': Unknown GIMP brush version in line %d."
-msgstr ""
-"Ületamatu parsimisviga pintslifailis '%s': tundmatu GIMPi pintsliversioon "
-"real %d."
-
-#, c-format
-msgid ""
-"Fatal parse error in brush file '%s': Unknown GIMP brush shape in line %d."
-msgstr ""
-"Ületamatu parsimisviga pintslifailis '%s': tundmatu GIMPi pintslikuju real "
-"%d."
-
-#, c-format
-msgid "Line %d: %s"
-msgstr "Rida %d: %s"
-
-#, c-format
-msgid "File is truncated in line %d"
-msgstr "Fail on lühendatud real %d"
-
-#, c-format
-msgid "Error while reading brush file '%s': %s"
-msgstr "Viga pintslifaili '%s' lugemisel: %s"
-
-msgid "Brush Shape"
-msgstr "Pintsli kuju"
-
-msgid "Brush Radius"
-msgstr "Pintsli raadius"
-
-msgid "Brush Spikes"
-msgstr "Pintsli teravikud"
-
-msgid "Brush Hardness"
-msgstr "Pintsli selgus"
-
-msgid "Brush Aspect Ratio"
-msgstr "Pintsli külgede suhe"
-
-msgid "Brush Angle"
-msgstr "Pintsli nurk"
-
 #, c-format
 msgid "Fatal parse error in brush file '%s': File is corrupt."
 msgstr "Ületamatu parsimisviga pintslifailis '%s': fail on vigane."
 
-msgctxt "undo-type"
-msgid "Rectangle Select"
-msgstr "Ristküliku valimine"
+msgid "Initialization"
+msgstr "Lähtestamine"
 
-msgctxt "undo-type"
-msgid "Ellipse Select"
-msgstr "Ellipsi valimine"
+#. register all internal procedures
+msgid "Internal Procedures"
+msgstr "Siseprotseduurid"
 
-msgctxt "undo-type"
-msgid "Rounded Rectangle Select"
-msgstr "Ümarnurkse ristküliku valimine"
+#. initialize  the global parasite table
+msgid "Looking for data files"
+msgstr "Andmefailide otsimine"
 
-msgctxt "undo-type"
-msgid "Alpha to Selection"
-msgstr "Alfakanalist valiku tegemine"
+msgid "Parasites"
+msgstr "Parasiidid"
 
-#, c-format
-msgctxt "undo-type"
-msgid "%s Channel to Selection"
-msgstr "%s kanalist valiku tegemine"
+#. initialize the list of gimp dynamics
+msgid "Dynamics"
+msgstr "Pintslidünaamika"
 
-msgctxt "undo-type"
-msgid "Fuzzy Select"
-msgstr "Võlukepikesega valimine"
+#. initialize the list of fonts
+msgid "Fonts (this may take a while)"
+msgstr "Fondid (see võib aega võtta)"
 
-msgctxt "undo-type"
-msgid "Select by Color"
-msgstr "Värvi järgi valimine"
+#. initialize the module list
+msgid "Modules"
+msgstr "Moodulid"
+
+#. update tag cache
+msgid "Updating tag cache"
+msgstr "Märksõnade puhvri uuendamine"
 
 msgctxt "undo-type"
 msgid "Rename Channel"
@@ -6137,11 +6280,44 @@ msgstr "Kanali katvuse määramine"
 msgid "Selection Mask"
 msgstr "Valiku mask"
 
+msgctxt "undo-type"
+msgid "Rectangle Select"
+msgstr "Ristküliku valimine"
+
+msgctxt "undo-type"
+msgid "Ellipse Select"
+msgstr "Ellipsi valimine"
+
+msgctxt "undo-type"
+msgid "Rounded Rectangle Select"
+msgstr "Ümarnurkse ristküliku valimine"
+
+msgctxt "undo-type"
+msgid "Alpha to Selection"
+msgstr "Alfakanalist valiku tegemine"
+
+#, c-format
+msgctxt "undo-type"
+msgid "%s Channel to Selection"
+msgstr "%s kanalist valiku tegemine"
+
+msgctxt "undo-type"
+msgid "Fuzzy Select"
+msgstr "Võlukepikesega valimine"
+
+msgctxt "undo-type"
+msgid "Select by Color"
+msgstr "Värvi järgi valimine"
+
 msgid "Opacity"
 msgstr "Katvus"
 
 msgid "Paint Mode"
 msgstr "Värvimise režiim"
+
+#, c-format
+msgid "Deleting \"%s\" failed: %s"
+msgstr "\"%s\" kustutamine nurjus: %s"
 
 #, c-format
 msgid "Could not delete '%s': %s"
@@ -6202,9 +6378,11 @@ msgctxt "undo-type"
 msgid "Blend"
 msgstr "Värvisulandus"
 
-msgctxt "undo-type"
-msgid "Brightness-Contrast"
-msgstr "Heledus-kontrastsus"
+msgid "Calculating distance map"
+msgstr "Kauguskaardi arvutamine"
+
+msgid "Blending"
+msgstr "Kokkusegamine"
 
 msgid "No patterns available for this operation."
 msgstr "Selle tegevuse jaoks pole mustreid saadaval."
@@ -6214,19 +6392,8 @@ msgid "Bucket Fill"
 msgstr "Värviga täitmine"
 
 msgctxt "undo-type"
-msgid "Color Balance"
-msgstr "Värvustasakaal"
-
-msgctxt "undo-type"
-msgid "Colorize"
-msgstr "Toonimine"
-
-msgctxt "undo-type"
-msgid "Curves"
-msgstr "Kurvid"
-
-msgid "Desaturate"
-msgstr "Värvide eemaldamine"
+msgid "Scale"
+msgstr "Skaleeri"
 
 msgctxt "undo-type"
 msgid "Equalize"
@@ -6235,24 +6402,12 @@ msgstr "Tasakaalusta"
 msgid "Foreground Extraction"
 msgstr "Esiplaani eraldamine"
 
-msgid "Hue-Saturation"
-msgstr "Värvitoon-küllastus"
-
-msgid "Hue_Saturation"
-msgstr "Värvitoon-küllastus"
-
-msgid "Invert"
-msgstr "Inverteerimine"
-
 msgid "Levels"
 msgstr "Tasemete muutmine"
 
 msgctxt "undo-type"
 msgid "Offset Drawable"
 msgstr "Joonispinna nihutamine"
-
-msgid "Posterize"
-msgstr "Posterdamine"
 
 msgid "Not enough points to stroke"
 msgstr "Pintseldamise jaoks pole piisavalt punkte"
@@ -6263,9 +6418,6 @@ msgstr "Täitmise jaoks pole piisavalt punkte"
 msgctxt "undo-type"
 msgid "Render Stroke"
 msgstr "Joone renderdamine"
-
-msgid "Threshold"
-msgstr "Läve muutmine"
 
 msgctxt "undo-type"
 msgid "Flip"
@@ -6282,12 +6434,38 @@ msgstr "Kihi muundamine"
 msgid "Transformation"
 msgstr "Muundamine"
 
-msgctxt "undo-type"
-msgid "Scale"
-msgstr "Skaleeri"
-
 msgid "Output type"
 msgstr "Väljundi liik"
+
+msgid "Pasted Layer"
+msgstr "Asetatud kiht"
+
+msgctxt "undo-type"
+msgid "Clear"
+msgstr "Puhasta"
+
+msgctxt "undo-type"
+msgid "Fill with Foreground Color"
+msgstr "Täidetakse esiplaani värviga"
+
+msgctxt "undo-type"
+msgid "Fill with Background Color"
+msgstr "Täidetakse tagapõhja värviga"
+
+msgctxt "undo-type"
+msgid "Fill with White"
+msgstr "Täidetakse valge värviga"
+
+msgctxt "undo-type"
+msgid "Fill with Transparency"
+msgstr "Jäetakse läbipaistvaks"
+
+msgctxt "undo-type"
+msgid "Fill with Pattern"
+msgstr "Täidetakse mustriga"
+
+msgid "Global Buffer"
+msgstr "Üleprogrammiline puhver"
 
 #, c-format
 msgid "Fatal parse error in gradient file '%s': Read error in line %d."
@@ -6297,7 +6475,7 @@ msgstr ""
 #, c-format
 msgid "Fatal parse error in gradient file '%s': Not a GIMP gradient file."
 msgstr ""
-"Ületamatu parsimisviga värvisulanduse failis '%s': See pole GIMPi "
+"Ületamatu parsimisviga värvisulanduse failis '%s': See pole GIMP-i "
 "värvisulanduse fail."
 
 #, c-format
@@ -6325,6 +6503,21 @@ msgstr "Lineaarseid värvisulandused '%s'-st ei leidnud."
 #, c-format
 msgid "Failed to import gradients from '%s': %s"
 msgstr "Ei õnnestunud värvisulandusi '%s'-st importida: %s"
+
+msgid "FG to BG (RGB)"
+msgstr "EP TP-ks (RGB)"
+
+msgid "FG to BG (Hardedge)"
+msgstr "EP TP-ks (karmi servaga)"
+
+msgid "FG to BG (HSV counter-clockwise)"
+msgstr "EP TP-ks (HSV vastupäeva)"
+
+msgid "FG to BG (HSV clockwise hue)"
+msgstr "EP TP-ks (HSV päripäeva toon)"
+
+msgid "FG to Transparent"
+msgstr "EP läbipaistvaks"
 
 msgid "Line style used for the grid."
 msgstr "Alusvõrgu joonte stiil."
@@ -6385,6 +6578,59 @@ msgctxt "undo-type"
 msgid "Arrange Objects"
 msgstr "Objektide järjestamine"
 
+msgid " (exported)"
+msgstr " (eksporditud)"
+
+msgid " (overwritten)"
+msgstr " (üle kirjutatud)"
+
+msgid " (imported)"
+msgstr " (imporditud)"
+
+msgctxt "undo-type"
+msgid "Change Image Resolution"
+msgstr "Pildi eraldusvõime muutmine"
+
+msgctxt "undo-type"
+msgid "Change Image Unit"
+msgstr "Pildi mõõtühiku muutmine"
+
+msgctxt "undo-type"
+msgid "Attach Parasite to Image"
+msgstr "Pildile parasiitomaduse lisamine"
+
+msgctxt "undo-type"
+msgid "Remove Parasite from Image"
+msgstr "Pildilt parasiitomaduse eemaldamine"
+
+msgctxt "undo-type"
+msgid "Add Layer"
+msgstr "Kihi lisamine"
+
+msgctxt "undo-type"
+msgid "Remove Layer"
+msgstr "Kihi eemaldamine"
+
+msgctxt "undo-type"
+msgid "Remove Floating Selection"
+msgstr "Ujuvaliku eemaldamine"
+
+msgctxt "undo-type"
+msgid "Add Channel"
+msgstr "Kanali lisamine"
+
+msgctxt "undo-type"
+msgid "Remove Channel"
+msgstr "Kanali eemaldamine"
+
+msgctxt "undo-type"
+msgid "Add Path"
+msgstr "Vektorjoone lisamine"
+
+msgctxt "undo-type"
+msgid "Remove Path"
+msgstr "Vektorjoone eemaldamine"
+
 #, c-format
 msgid "Colormap of Image #%d (%s)"
 msgstr "Pildi nr %d värvikaart (%s)"
@@ -6394,16 +6640,32 @@ msgid "Set Colormap"
 msgstr "Värvikaardi määramine"
 
 msgctxt "undo-type"
-msgid "Unset Colormap"
-msgstr "Värvikaardi tühistamine"
-
-msgctxt "undo-type"
 msgid "Change Colormap entry"
 msgstr "Värvikaardi kirje muutmine"
 
 msgctxt "undo-type"
 msgid "Add Color to Colormap"
 msgstr "Värvi lisamine värvikaarti"
+
+msgctxt "undo-type"
+msgid "Convert Image to 8 bit integer"
+msgstr "Pildi teisendamine 8-biti värvidesse"
+
+msgctxt "undo-type"
+msgid "Convert Image to 16 bit integer"
+msgstr "Pildi teisendamine 16-biti värvidesse"
+
+msgctxt "undo-type"
+msgid "Convert Image to 32 bit integer"
+msgstr "Pildi teisendamine 32-biti värvidesse"
+
+msgctxt "undo-type"
+msgid "Convert Image to 16 bit floating point"
+msgstr "Pildi teisendamine 16-biti ujukomapildiks"
+
+msgctxt "undo-type"
+msgid "Convert Image to 32 bit floating point"
+msgstr "Pildi teisendamine 32-biti ujukomapildiks"
 
 msgid "Cannot convert image: palette is empty."
 msgstr "Pilti pole võimalik teisendada: värvipalett on tühi."
@@ -6433,6 +6695,47 @@ msgstr "Pildi kärpimine"
 msgctxt "undo-type"
 msgid "Resize Image"
 msgstr "Pildi suuruse muutmine"
+
+msgid "Folder"
+msgstr "Kaust"
+
+msgid "Special File"
+msgstr "Erililne fail"
+
+msgid "Remote File"
+msgstr "Mittekohalik fail"
+
+msgid "Click to create preview"
+msgstr "Eelvaate loomiseks klõpsa"
+
+msgid "Loading preview..."
+msgstr "Eelvaate laadimine..."
+
+msgid "Preview is out of date"
+msgstr "Eelvaade on aegunud"
+
+msgid "Cannot create preview"
+msgstr "Ei suuda eelvaadet luua"
+
+msgid "(Preview may be out of date)"
+msgstr "(Eelvaade võib aegunud olla)"
+
+#. pixel size
+#, c-format
+msgid "%d × %d pixel"
+msgid_plural "%d × %d pixels"
+msgstr[0] "%d x %d piksel"
+msgstr[1] "%d x %d pikslit"
+
+#, c-format
+msgid "%d layer"
+msgid_plural "%d layers"
+msgstr[0] "%d kiht"
+msgstr[1] "%d kihti"
+
+#, c-format
+msgid "Could not open thumbnail '%s': %s"
+msgstr "Eelvaadet '%s' ei saanud avada: %s"
 
 msgctxt "undo-type"
 msgid "Add Horizontal Guide"
@@ -6473,9 +6776,6 @@ msgstr "Nähtavate kihtide liitmine"
 msgctxt "undo-type"
 msgid "Flatten Image"
 msgstr "Kõigi kihtide liitmine"
-
-msgid "Cannot flatten an image without any visible layer."
-msgstr "Ilma ühegi nähtava kihiga pildi kihte pole võimalik ühendada."
 
 msgid "Cannot merge down to a layer group."
 msgstr "Kihigrupi ühendamine pole võimalik."
@@ -6533,100 +6833,6 @@ msgstr "Pildi skaleerimine"
 msgid "Can't undo %s"
 msgstr "Pole võimalik tegevust \"%s\" tagasi võtta"
 
-msgid " (exported)"
-msgstr " (eksporditud)"
-
-msgid " (overwritten)"
-msgstr " (üle kirjutatud)"
-
-msgid " (imported)"
-msgstr " (imporditud)"
-
-msgctxt "undo-type"
-msgid "Change Image Resolution"
-msgstr "Pildi lahutuse muutmine"
-
-msgctxt "undo-type"
-msgid "Change Image Unit"
-msgstr "Pildi mõõtühiku muutmine"
-
-msgctxt "undo-type"
-msgid "Attach Parasite to Image"
-msgstr "Pildile parasiitomaduse lisamine"
-
-msgctxt "undo-type"
-msgid "Remove Parasite from Image"
-msgstr "Pildilt parasiitomaduse eemaldamine"
-
-msgctxt "undo-type"
-msgid "Add Layer"
-msgstr "Kihi lisamine"
-
-msgctxt "undo-type"
-msgid "Remove Layer"
-msgstr "Kihi eemaldamine"
-
-msgctxt "undo-type"
-msgid "Remove Floating Selection"
-msgstr "Ujuvaliku eemaldamine"
-
-msgctxt "undo-type"
-msgid "Add Channel"
-msgstr "Kanali lisamine"
-
-msgctxt "undo-type"
-msgid "Remove Channel"
-msgstr "Kanali eemaldamine"
-
-msgctxt "undo-type"
-msgid "Add Path"
-msgstr "Vektorjoone lisamine"
-
-msgctxt "undo-type"
-msgid "Remove Path"
-msgstr "Vektorjoone eemaldamine"
-
-msgid "Folder"
-msgstr "Kaust"
-
-msgid "Special File"
-msgstr "Erililne fail"
-
-msgid "Remote File"
-msgstr "Mittekohalik fail"
-
-msgid "Click to create preview"
-msgstr "Eelvaate loomiseks klõpsa"
-
-msgid "Loading preview..."
-msgstr "Eelvaate laadimine..."
-
-msgid "Preview is out of date"
-msgstr "Eelvaade on aegunud"
-
-msgid "Cannot create preview"
-msgstr "Ei suuda eelvaadet luua"
-
-msgid "(Preview may be out of date)"
-msgstr "(Eelvaade võib aegunud olla)"
-
-#. pixel size
-#, c-format
-msgid "%d × %d pixel"
-msgid_plural "%d × %d pixels"
-msgstr[0] "%d x %d piksel"
-msgstr[1] "%d x %d pikslit"
-
-#, c-format
-msgid "%d layer"
-msgid_plural "%d layers"
-msgstr[0] "%d kiht"
-msgstr[1] "%d kihti"
-
-#, c-format
-msgid "Could not open thumbnail '%s': %s"
-msgstr "Eelvaadet '%s' ei saanud avada: %s"
-
 msgctxt "undo-type"
 msgid "Attach Parasite"
 msgstr "Lisa parasiitomadus"
@@ -6644,20 +6850,6 @@ msgstr "Elemendi määramine erandlikult nähtavaks"
 
 msgid "Set Item Exclusive Linked"
 msgstr "Elemendi määramine erandlikult lingituks"
-
-msgctxt "undo-type"
-msgid "Anchor Floating Selection"
-msgstr "Ujuvaliku ankurdamine"
-
-msgid ""
-"Cannot create a new layer from the floating selection because it belongs to "
-"a layer mask or channel."
-msgstr ""
-"Ei saa luua ujuvalikust kihti, kuna see kuulub kas maskile või kanalile."
-
-msgctxt "undo-type"
-msgid "Floating Selection to Layer"
-msgstr "Ujuvalik kihiks"
 
 msgctxt "undo-type"
 msgid "Rename Layer"
@@ -6721,6 +6913,12 @@ msgstr ""
 "Ujuvalik\n"
 "(%s)"
 
+msgid ""
+"Cannot create a new layer from the floating selection because it belongs to "
+"a layer mask or channel."
+msgstr ""
+"Ei saa luua ujuvalikust kihti, kuna see kuulub kas maskile või kanalile."
+
 msgid "Unable to add a layer mask since the layer already has one."
 msgstr "Võimatu lisada kihimaski - kihil on juba üks mask."
 
@@ -6744,6 +6942,18 @@ msgid "Delete Layer Mask"
 msgstr "Kihi maski kustutamine"
 
 msgctxt "undo-type"
+msgid "Enable Layer Mask"
+msgstr "Kihi maski lubamine"
+
+msgctxt "undo-type"
+msgid "Disable Layer Mask"
+msgstr "Kihi maski keelamine"
+
+msgctxt "undo-type"
+msgid "Show Layer Mask"
+msgstr "Kihi maski näitamine"
+
+msgctxt "undo-type"
 msgid "Add Alpha Channel"
 msgstr "Alfakanali lisamine"
 
@@ -6756,6 +6966,14 @@ msgid "Layer to Image Size"
 msgstr "Kiht pildi suuruseks"
 
 msgctxt "undo-type"
+msgid "Anchor Floating Selection"
+msgstr "Ujuvaliku ankurdamine"
+
+msgctxt "undo-type"
+msgid "Floating Selection to Layer"
+msgstr "Ujuvalik kihiks"
+
+msgctxt "undo-type"
 msgid "Move Layer Mask"
 msgstr "Kihi maski liigutamine"
 
@@ -6766,18 +6984,6 @@ msgstr "Kihi maskist valitud ala tegemine"
 #, c-format
 msgid "Cannot rename layer masks."
 msgstr "Kihimaske ei saa ümber nimetada"
-
-msgctxt "undo-type"
-msgid "Enable Layer Mask"
-msgstr "Kihi maski lubamine"
-
-msgctxt "undo-type"
-msgid "Disable Layer Mask"
-msgstr "Kihi maski keelamine"
-
-msgctxt "undo-type"
-msgid "Show Layer Mask"
-msgstr "Kihi maski näitamine"
 
 #, c-format
 msgid "Index %d"
@@ -6925,18 +7131,23 @@ msgstr ""
 "Otsliides muutudb servatud liideseks kui ots ulatab kaugemale kui otsa "
 "limiit."
 
-#, c-format
-msgid "Error while parsing '%s'"
-msgstr "Viga '%s' parsimisel"
+#. This is a special string to specify the language identifier to
+#. * look for in the gimp-tags-default.xml file. Please translate the
+#. * C in it according to the name of the po file used for
+#. * gimp-tags-default.xml. E.g. lithuanian for the translation,
+#. * that would be "tags-locale:lt".
+#.
+msgid "tags-locale:C"
+msgstr "tags-locale:et"
 
 msgid "The unit used for coordinate display when not in dot-for-dot mode."
 msgstr "Mõõtühik, mida kasutatakse, kui ei ole punkt-punktilt režiimis. "
 
 msgid "The horizontal image resolution."
-msgstr "Pildi horisontaalne lahutus."
+msgstr "Pildi horisontaalne eraldusvõime."
 
 msgid "The vertical image resolution."
-msgstr "Pildi vertikaalne lahutus."
+msgstr "Pildi vertikaalne eraldusvõime."
 
 msgctxt "unit-singular"
 msgid "pixel"
@@ -6986,11 +7197,39 @@ msgctxt "plural"
 msgid "percent"
 msgstr "protsent"
 
+#, c-format
+msgid ""
+"It seems you have used GIMP %s before.  GIMP will now migrate your user "
+"settings to '%s'."
+msgstr ""
+"Paistab, et oled varem kasutanud GIMP-i versiooni %s. Sätted migreeritakse "
+"'%s' alla."
+
+#, c-format
+msgid ""
+"It appears that you are using GIMP for the first time.  GIMP will now create "
+"a folder named '%s' and copy some files to it."
+msgstr ""
+"Paistab, et kasutad GIMP-i esmakordselt. GIMP loob nüüd kausta '%s' ja "
+"kopeerib sinna mõned failid."
+
+#, c-format
+msgid "Copying file '%s' from '%s'..."
+msgstr "Faili '%s' kopeerimine asukohast '%s'..."
+
+#, c-format
+msgid "Creating folder '%s'..."
+msgstr "Kausta '%s' loomine..."
+
+#, c-format
+msgid "Cannot create folder '%s': %s"
+msgstr "Kataloogi '%s' pole võimalik luua: %s"
+
 msgid "About GIMP"
 msgstr "Lähem teave GIMP kohta"
 
 msgid "Visit the GIMP website"
-msgstr "Külasta GIMPi kodulehekülge"
+msgstr "Külasta GIMP-i kodulehekülge"
 
 #. Translators: insert your names here,
 #. separated by newline
@@ -7002,7 +7241,7 @@ msgstr ""
 "Mattias Põldaru <mahfiaz gmail com>, 2008, 2009."
 
 msgid "GIMP is brought to you by"
-msgstr "GIMPi tõid teieni"
+msgstr "GIMP-i tõid teieni"
 
 msgid "This is an unstable development release."
 msgstr "See on ebastabiilne arendusväljalase."
@@ -7013,14 +7252,40 @@ msgstr "Kanali _nimi:"
 msgid "Initialize from _selection"
 msgstr "_Valitud ala järgi"
 
+#, c-format
+msgid "Convert Image to %s"
+msgstr "Pildi teisendamine: %s"
+
+msgid "Precision Conversion"
+msgstr "Täpne teisendus"
+
+msgid "C_onvert"
+msgstr "_Teisenda"
+
+#. dithering
+msgid "Dithering"
+msgstr "Pseudotoonimine"
+
+msgid "_Layers:"
+msgstr "_Kihid:"
+
+msgid "_Text Layers:"
+msgstr "_Tekstikihid:"
+
+msgid "Dithering text layers will make them uneditable"
+msgstr "Tekstikihtide virvtoonimine teeb võimatuks nende muutmise"
+
+msgid "_Channels and Masks:"
+msgstr "_Kanalid ja maskid:"
+
+msgid "Converting to lower bit depth"
+msgstr "Pildi värvisügavuse vähendamine"
+
 msgid "Indexed Color Conversion"
 msgstr "Värvide indekseerimine"
 
 msgid "Convert Image to Indexed Colors"
 msgstr "Teisenda pilt indekseeritud värvidega pildiks"
-
-msgid "C_onvert"
-msgstr "_Teisenda"
 
 msgid "_Maximum number of colors:"
 msgstr "_Maksimaalne värvide arv:"
@@ -7028,15 +7293,14 @@ msgstr "_Maksimaalne värvide arv:"
 msgid "_Remove unused colors from colormap"
 msgstr "_Eemalda kasutamata värvid värvikaardilt"
 
-#. dithering
-msgid "Dithering"
-msgstr "Pseudotoonimine"
-
 msgid "Color _dithering:"
 msgstr "Värvi _pseudotoonimine:"
 
 msgid "Enable dithering of _transparency"
 msgstr "Läbipaistva ala pseudo_toonimine"
+
+msgid "Enable dithering of text layers"
+msgstr "Tekstikihtide virvtoonimise lubamine"
 
 msgid "Converting to indexed colors"
 msgstr "Indekseeritud värvideks teisendamine"
@@ -7056,9 +7320,6 @@ msgid ""
 "Are you sure you want to remove '%s' from the list and delete it on disk?"
 msgstr ""
 "Kas oled kindel, et tahad '%s' eemaldada loendist ja kustutada kettalt?"
-
-msgid "GIMP Message"
-msgstr "GIMPi teade"
 
 msgid "Devices"
 msgstr "Seadmed"
@@ -7105,6 +7366,9 @@ msgstr "esiplaan/taust"
 msgid "FG/BG Color"
 msgstr "Esiplaani/tausta värv"
 
+msgid "GIMP Message"
+msgstr "GIMP-i teade"
+
 #, c-format
 msgid "Fade %s"
 msgstr "Hajuta %s"
@@ -7142,9 +7406,6 @@ msgstr ""
 "vormingus salvestada. Sisesta kas tuntud laiend või üldse mitte mingit "
 "laiendit."
 
-msgid "The given filename cannot be used for exporting"
-msgstr "Antud failinime pole võimalik eksportimiseks kasutada"
-
 msgid ""
 "You can use this dialog to export to various file formats. If you want to "
 "save the image to the GIMP XCF format, use File→Save instead."
@@ -7152,12 +7413,6 @@ msgstr ""
 "Selle dialoogi abil saab eksportida paljudesse failivormingutesse. Kui sa "
 "tahad pildi salvestada GIMP XCF vormingusse, kasuta selle asemel Fail → "
 "Salvesta."
-
-msgid "Take me to the Save dialog"
-msgstr "Salvestamise dialoogi avamine"
-
-msgid "The given filename cannot be used for saving"
-msgstr "Antud failinime pole võimalik salvestamiseks kasutada"
 
 msgid ""
 "You can use this dialog to save to the GIMP XCF format. Use File→Export to "
@@ -7167,18 +7422,15 @@ msgstr ""
 "pildi salvestada teistesse vormingutesse, kasuta selle asemel Fail → "
 "Ekspordi."
 
-msgid "Take me to the Export dialog"
-msgstr "Eksportimise dialoogi avamine"
-
-msgid "Extension Mismatch"
-msgstr "Laiend ei sobi"
-
 msgid ""
 "The given filename does not have any known file extension. Please enter a "
 "known file extension or select a file format from the file format list."
 msgstr ""
 "Selle failinime laiend ei määra ühtki tuntud vormingut. Kas sisesta tuntud "
 "laiend või määra vorming vormingute nimekirjast."
+
+msgid "Extension Mismatch"
+msgstr "Laiend ei sobi"
 
 msgid "The given file extension does not match the chosen file type."
 msgstr "Antud faili laiend ei sobi valitud faili tüübiga."
@@ -7305,7 +7557,7 @@ msgstr ""
 "Kiirklahvi tühistamiseks vajuta BackSpace klahvi."
 
 msgid "S_ave keyboard shortcuts on exit"
-msgstr "GIMPi sulgemisel salvestatakse kiirklahvid"
+msgstr "GIMP-i sulgemisel salvestatakse kiirklahvid"
 
 msgid "Add a Mask to the Layer"
 msgstr "Lisa kihile mask"
@@ -7331,6 +7583,45 @@ msgstr "Kihi täide"
 
 msgid "Set name from _text"
 msgstr "Loo _tekstist nimi"
+
+#, c-format
+msgid "<b>GAME OVER</b> at level %d!"
+msgstr "<b>MÄNG LÄBI</b> tasemel %d!"
+
+#. Translators: the first and third strings are similar to a
+#. * title, and the second string is a small information text.
+#. * The spaces are there only to separate all the strings, so
+#. try to keep them as is.
+#, c-format
+msgid "%1$s   %2$s   %3$s"
+msgstr "%1$s   %2$s   %3$s"
+
+msgid "Press 'q' to quit"
+msgstr "Lõpetamiseks vajuta 'q'"
+
+msgid "Paused"
+msgstr "Paus"
+
+#. Translators: the first string is a title and the second
+#. * string is a small information text.
+#, c-format
+msgid "%1$s\t%2$s"
+msgstr "%1$s\t%2$s"
+
+msgid "Press 'p' to unpause"
+msgstr "Pausi mahavõtmiseks vajuta 'p'"
+
+#, c-format
+msgid "Level: %s,  Lives: %s"
+msgstr "Tase: %s,  elusid: %s"
+
+msgid "Left/Right to move, Space to fire, 'p' to pause, 'q' to quit"
+msgstr ""
+"Liikumiseks vasak/parem, tulistamiseks tühik, pausiks 'p' ning lõpetamiseks "
+"'q'."
+
+msgid "Killer GEGLs from Outer Space"
+msgstr "Tapja-GEGLid avakosmosest"
 
 msgid "Module Manager"
 msgstr "Moodulihaldur"
@@ -7385,14 +7676,14 @@ msgstr "_X:"
 msgid "_Y:"
 msgstr "_Y:"
 
-msgid "Offset by  x/_2, y/2"
-msgstr "Nihuta  x/_2, y/2 võrra"
+msgid "By width/_2, height/2"
+msgstr "Laius/_2, kõrgus/2"
 
 #. The edge behavior frame
 msgid "Edge Behavior"
 msgstr "Serva käitumine"
 
-msgid "_Wrap around"
+msgid "W_rap around"
 msgstr "_Murtakse ümber serva"
 
 msgid "Fill with _background color"
@@ -7470,7 +7761,7 @@ msgstr "Pane GIMP uuesti käima, siis jõustuvad järgmised muudatused:"
 msgid ""
 "Your keyboard shortcuts will be reset to default values the next time you "
 "start GIMP."
-msgstr "Klaviatuuri kiirklahvid lähtestatakse GIMPi järgmisel käivitamisel."
+msgstr "Klaviatuuri kiirklahvid lähtestatakse GIMP-i järgmisel käivitamisel."
 
 msgid "Remove all Keyboard Shortcuts"
 msgstr "Eemalda kõik klaviatuuri kiirklahvid"
@@ -7481,7 +7772,7 @@ msgstr "Kas sa tahad tõesti eemaldada kõikidest menüüdest kõik kiirklahvid?
 msgid ""
 "Your window setup will be reset to default values the next time you start "
 "GIMP."
-msgstr "Järgmisel GIMPi käivitamisel on akende sätete algseis taastatud."
+msgstr "Järgmisel GIMP-i käivitamisel on akende sätete algseis taastatud."
 
 msgid ""
 "Your input device settings will be reset to default values the next time you "
@@ -7596,7 +7887,7 @@ msgid "Configure _Keyboard Shortcuts..."
 msgstr "Seadista _klaviatuuri kiirklahve..."
 
 msgid "_Save keyboard shortcuts on exit"
-msgstr "_GIMPi sulgemisel salvestatakse klaviatuuri kiirklahvid"
+msgstr "_GIMP-i sulgemisel salvestatakse klaviatuuri kiirklahvid"
 
 msgid "Save Keyboard Shortcuts _Now"
 msgstr "Salvesta klaviatuuri kiirklahvid _kohe praegu"
@@ -7644,6 +7935,7 @@ msgstr "Kasutusjuhend on arvutisse paigaldatud."
 msgid "The user manual is not installed locally."
 msgstr "Kasutusjuhendit pole arvutisse paigaldatud."
 
+#. Help Browser
 msgid "Help Browser"
 msgstr "Abiinfo sirvija"
 
@@ -7763,13 +8055,10 @@ msgstr "Hiire kursorid"
 msgid "Show _brush outline"
 msgstr "Pintsli piirjoont näidatakse"
 
-msgid "Show pointer for paint _tools"
-msgstr "Joonistusvahenditel näidatakse _kursorit"
+msgid "Show pointer for brush _tools"
+msgstr "Joonistusvahenditele näidatakse _kursorit"
 
 msgid "Pointer _mode:"
-msgstr "Kursori _režiim:"
-
-msgid "Pointer re_ndering:"
 msgstr "Kursori _režiim:"
 
 msgid "Pointer _handedness:"
@@ -7825,7 +8114,7 @@ msgid "Check _size:"
 msgstr "Malelaua _suurus:"
 
 msgid "Monitor Resolution"
-msgstr "Monitori lahutus"
+msgstr "Monitori eraldusvõime"
 
 #. Pixels
 msgid "Pixels"
@@ -8065,23 +8354,23 @@ msgstr "_Kõrgus:"
 
 #. the resolution labels
 msgid "_X resolution:"
-msgstr "_X-lahutus:"
+msgstr "_X-eraldusvõime:"
 
 msgid "_Y resolution:"
-msgstr "_Y-lahutus:"
+msgstr "_Y-eraldusvõime:"
 
 #, c-format
 msgid "pixels/%a"
 msgstr "pikslit/%a"
 
 msgid "Quit GIMP"
-msgstr "GIMPist väljumine"
+msgstr "GIMP-ist väljumine"
 
 msgid "Close All Images"
 msgstr "Sulge kõik pildid"
 
 msgid "If you quit GIMP now, these changes will be lost."
-msgstr "Kui praegu GIMPist väljud, lähevad muudatused kaduma."
+msgstr "Kui praegu GIMP-ist väljud, lähevad muudatused kaduma."
 
 msgid "If you close these images now, changes will be lost."
 msgstr "Kui need pildid kohe sulged, lähevad muudatused kaduma."
@@ -8092,28 +8381,8 @@ msgid_plural "There are %d images with unsaved changes:"
 msgstr[0] "Ühe pildi muudatused on salvestamata:"
 msgstr[1] "%d pildi muudatused on salvestamata:"
 
-#, c-format
-msgid "Press %s to quit."
-msgstr "Lõpetamiseks vajuta %s."
-
-#, c-format
-msgid "Press %s to close all images."
-msgstr "Kõigi piltide sulgemiseks vajuta %s."
-
-#, c-format
-msgid "Press %s to discard all changes and quit."
-msgstr "Kõigi muutuste hülgamiseks ja lõpetamiseks vajuta %s."
-
-#, c-format
-msgid "Press %s to discard all changes and close all images."
-msgstr "Kõigi muutuste hülgamiseks ja kõigi piltide sulgemiseks vajuta %s."
-
 msgid "_Discard Changes"
 msgstr "_Ära salvesta"
-
-#, c-format
-msgid "Exported to %s"
-msgstr "Eksporditud kohta %s"
 
 msgid "Canvas Size"
 msgstr "Lõuendi suurus"
@@ -8124,8 +8393,11 @@ msgstr "Kihi suurus"
 msgid "Resize _layers:"
 msgstr "_Kihtide suuruse muutmine:"
 
+msgid "Resize _text layers"
+msgstr "_Tekstikihi suuruse muutmine"
+
 msgid "Calibrate Monitor Resolution"
-msgstr "Monitori lahutuse õigeks seadmine"
+msgstr "Monitori eraldusvõime õigeks seadmine"
 
 msgid "Measure the rulers and enter their lengths:"
 msgstr "Mõõda joonlauad ära ja sisesta nende pikkused:"
@@ -8163,17 +8435,17 @@ msgid "_Emulate brush dynamics"
 msgstr "_Pintsli dünaamika emuleerimine"
 
 msgid "The GIMP tips file is empty!"
-msgstr "GIMPi vihjetefail on tühi!"
+msgstr "GIMP-i vihjetefail on tühi!"
 
 msgid "The GIMP tips file appears to be missing!"
-msgstr "Tundub et sinu GIMPi vihjefail on kadunud!"
+msgstr "Tundub et sinu GIMP-i vihjefail on kadunud!"
 
 #, c-format
 msgid "There should be a file called '%s'. Please check your installation."
 msgstr "Siin peaks olema fail nimega '%s'. Palun kontrolli paigaldust."
 
 msgid "The GIMP tips file could not be parsed!"
-msgstr "GIMPi vihjefaili pole võimalik parsida!"
+msgstr "GIMP-i vihjefaili pole võimalik parsida!"
 
 msgid "GIMP Tip of the Day"
 msgstr "GIMP tänane vihje"
@@ -8197,13 +8469,14 @@ msgid "tips-locale:C"
 msgstr "tips-locale:et"
 
 msgid "GIMP User Installation"
-msgstr "GIMPi kasutajapaigaldus"
+msgstr "GIMP-i kasutajapaigaldus"
 
 msgid "User installation failed!"
 msgstr "Kasutajapaigaldus nurjus!"
 
 msgid "The GIMP user installation failed; see the log for details."
-msgstr "GIMPi kasutajapaigaldus ei õnnestunud; täpsema info leiad logifailist."
+msgstr ""
+"GIMP-i kasutajapaigaldus ei õnnestunud; täpsema info leiad logifailist."
 
 msgid "Installation Log"
 msgstr "Paigaldamise logi"
@@ -8314,9 +8587,8 @@ msgstr "Avamiseks lohista pildifail siia"
 msgid "Close %s"
 msgstr "Sulge %s"
 
-#, c-format
-msgid "Press %s to discard all changes and close the image."
-msgstr "Kõigi muutuste hülgamiseks ja selle pildi sulgemiseks vajuta %s."
+msgid "Close _without Saving"
+msgstr "Sulge _ilma salvestamata"
 
 #, c-format
 msgid "Save the changes to image '%s' before closing?"
@@ -8367,6 +8639,14 @@ msgstr "Kihtide gruppide piksleid pole võimalik muuta."
 
 msgid "The active layer's pixels are locked."
 msgstr "Aktiivse kihi pikslid on lukustatud."
+
+msgctxt "undo-type"
+msgid "Drop pattern to layer"
+msgstr "Aseta muster kihile"
+
+msgctxt "undo-type"
+msgid "Drop color to layer"
+msgstr "Aseta värv kihile"
 
 msgid "Drop layers"
 msgstr "Aseta kihid"
@@ -8455,6 +8735,36 @@ msgstr "'%s:' pole korrektne URI "
 msgid "Invalid character sequence in URI"
 msgstr "URI koosneb lubamatust tähemärkiderodust"
 
+msgid "RGB"
+msgstr "RGB"
+
+msgid "RGB-alpha"
+msgstr "RGB-alfa"
+
+msgid "Grayscale"
+msgstr "Halltoonid"
+
+msgid "Grayscale-alpha"
+msgstr "Halltoonid, alfakanal"
+
+msgid "Red component"
+msgstr "Punane komponent"
+
+msgid "Green component"
+msgstr "Roheline komponent"
+
+msgid "Blue component"
+msgstr "Sinine komponent"
+
+msgid "Alpha component"
+msgstr "Alfakanal"
+
+msgid "Indexed-alpha"
+msgstr "Indekseeritud alfakanal"
+
+msgid "Indexed"
+msgstr "Indekseeritud"
+
 msgctxt "cage-mode"
 msgid "Create or adjust the cage"
 msgstr "Puuri loomine või muutmine"
@@ -8464,13 +8774,13 @@ msgid "Deform the cage to deform the image"
 msgstr "Pildi deformeerimiseks muuda puuri kuju"
 
 msgid "not a GIMP Curves file"
-msgstr "ei ole GIMPi kurvide fail"
+msgstr "ei ole GIMP-i kurvide fail"
 
 msgid "parse error"
 msgstr "parsimisviga"
 
 msgid "not a GIMP Levels file"
-msgstr "ei ole GIMPi tasemete fail"
+msgstr "ei ole GIMP-i tasemete fail"
 
 msgid "Compute a set of coefficient buffer for the GIMP cage tool"
 msgstr "Tegurite puhvri väljaarvutamine GIMPi puurimuunduse tööriista jaoks"
@@ -8488,21 +8798,12 @@ msgstr "Täidetakse esiplaani värviga"
 msgid "Fill the original position of the cage with a plain color"
 msgstr "Puuri esialgse asukoha täitmine ühtlase värviga"
 
-#. Normally this should have been taken care of during command line
-#. * parsing as a post-parse hook of gtk_get_option_group(), using the
-#. * system locales.
-#. * But user config may have overriden the language, therefore we must
-#. * check the widget directions again.
-#.
-msgid "default:LTR"
-msgstr "default:LTR"
-
 #. initialize the document history
 msgid "Documents"
 msgstr "Dokumendid"
 
 msgid "GIMP Startup"
-msgstr "GIMPi käivitamine"
+msgstr "GIMP-i käivitamine"
 
 msgid "Airbrush"
 msgstr "Pihusti"
@@ -8591,9 +8892,6 @@ msgstr "Pliiats"
 msgid "Perspective Clone"
 msgstr "Perspektiiviga kloonimine"
 
-msgid "Perspective Clone does not operate on indexed layers."
-msgstr "Perspektiiviga kloonimine ei tööta indekseeritud kihtidega."
-
 msgid "Smudge"
 msgstr "Määrimine"
 
@@ -8647,8 +8945,40 @@ msgstr "Romb"
 msgid "Combine Masks"
 msgstr "K_ombineeri maske"
 
+msgctxt "undo-type"
+msgid "Brightness-Contrast"
+msgstr "Heledus-kontrastsus"
+
+msgctxt "undo-type"
+msgid "Levels"
+msgstr "Tasemed"
+
+msgid "Posterize"
+msgstr "Posterdamine"
+
+msgid "Desaturate"
+msgstr "Värvide eemaldamine"
+
+msgctxt "undo-type"
+msgid "Curves"
+msgstr "Kurvid"
+
+msgctxt "undo-type"
+msgid "Color Balance"
+msgstr "Värvustasakaal"
+
+msgctxt "undo-type"
+msgid "Colorize"
+msgstr "Toonimine"
+
+msgid "Hue-Saturation"
+msgstr "Värvitoon-küllastus"
+
+msgid "Threshold"
+msgstr "Läve muutmine"
+
 msgid "Plug-In"
-msgstr "Plugin"
+msgstr "Plug-In"
 
 msgid "Perspective"
 msgstr "Perspektiiv"
@@ -8662,26 +8992,33 @@ msgstr "2D muundamine"
 msgid "2D Transforming"
 msgstr "2D muundamine"
 
-msgid "Blending"
-msgstr "Kokkusegamine"
-
 msgid "Cannot remove this layer because it is not a floating selection."
-msgstr "Seda kihti pole võimalik eemaldada, sest see pole ujuvalik."
+msgstr "Seda kihti pole võimalik eemaldada sest see pole ujuvalik."
 
 msgid "Cannot anchor this layer because it is not a floating selection."
-msgstr "Seda kihti pole võimalik ankurdada, sest see pole ujuvalik."
+msgstr "Seda kihti pole võimalik ankurdada sest see pole ujuvalik."
 
 msgid ""
 "Cannot convert this layer to a normal layer because it is not a floating "
 "selection."
 msgstr ""
-"Seda kihti pole võimalik muuta tavaliseks kihiks, sest see pole ujuvalik."
+"Seda kihti pole võimalik muuta tavaliseks kihiks sest see pole ujuvalik."
 
 #, c-format
 msgid "Procedure '%s' not found"
 msgstr ""
 "PDB kutsumise viga:\n"
 "protseduuri '%s' ei leitud"
+
+#, c-format
+msgid ""
+"Procedure '%s' has been called with a wrong type for argument #%d. Expected "
+"%s, got %s."
+msgstr ""
+"Funktsiooni '%s' kutsuti valet tüüpi parameetiga #%d. Oodati %s, saadi %s."
+
+msgid "Smooth edges"
+msgstr "Siledad servad"
 
 msgid "Invalid empty brush name"
 msgstr "Illegaalne tühi pintsli nimi"
@@ -8784,7 +9121,7 @@ msgid ""
 "the same item tree"
 msgstr ""
 "Elementi '%s' (%d) ja '%s' (%d) pole võimalik kasutada, kuna need ei kuulu "
-"samasse elemendipuusse"
+"sama elemendipuusse"
 
 #, c-format
 msgid "Item '%s' (%d) must not be an ancestor of '%s' (%d)"
@@ -8803,6 +9140,12 @@ msgid "Item '%s' (%d) cannot be modified because its contents are locked"
 msgstr "Elementi '%s' (%d) pole võimalik muuta, kuna selle sisu on lukus"
 
 #, c-format
+msgid ""
+"Item '%s' (%d) cannot be modified because its position and size are locked"
+msgstr ""
+"Elementi '%s' (%d) pole võimalik muuta, kuna selle asukoht ja sisu on lukus"
+
+#, c-format
 msgid "Item '%s' (%d) cannot be used because it is not a group item"
 msgstr "Elementi '%s' (%d) pole võimalik kasutada, kuna see pole grupikirje"
 
@@ -8819,22 +9162,22 @@ msgid "Image '%s' (%d) is of type '%s', but an image of type '%s' is expected"
 msgstr "Pilt '%s' (%d) on tüübiga '%s', vaja on tüüpi '%s' pilti"
 
 #, c-format
-msgid "Image '%s' (%d) is already of type '%s'"
-msgstr "Pildi '%s' (%d) tüüp juba on '%s'"
+msgid "Image '%s' (%d) must not be of type '%s'"
+msgstr "Pilt '%s' (%d) ei tohi olla tüübiga '%s'"
+
+#, c-format
+msgid ""
+"Image '%s' (%d) has precision '%s', but an image of precision '%s' is "
+"expected"
+msgstr "Pilt '%s' (%d) on täpsusega '%s', aga oodatakse täpsust '%s'"
+
+#, c-format
+msgid "Image '%s' (%d) must not be of precision '%s'"
+msgstr "Pilt '%s' (%d) ei tohi olla täpsusega '%s'"
 
 #, c-format
 msgid "Vectors object %d does not contain stroke with ID %d"
 msgstr "Vektorite objekt %d ie sisalda joont ID-ga %d"
-
-#, c-format
-msgid ""
-"Procedure '%s' has been called with a wrong type for argument #%d. Expected "
-"%s, got %s."
-msgstr ""
-"Funktsiooni '%s' kutsuti valet tüüpi parameetiga #%d. Oodati %s, saadi %s."
-
-msgid "Smooth edges"
-msgstr "Siledad servad"
 
 #, c-format
 msgid "Procedure '%s' returned no return values"
@@ -8907,14 +9250,44 @@ msgstr ""
 msgid ""
 "Image resolution is out of bounds, using the default resolution instead."
 msgstr ""
-"Pildi lahutus on piiridest väljas, selle asemel kasutatakse vaikimisi "
-"lahutust."
+"Pildi eraldusvõime on piiridest väljas, selle asemel kasutatakse vaikimisi "
+"eraldusvõimet."
 
 msgid "Free Select"
 msgstr "Vabakäejoone abil valimine"
 
 msgid "Move Layer"
 msgstr "Kihi liigutamine"
+
+msgid "Autocrop image"
+msgstr "Pildi automaatkärbe"
+
+msgid "Autocrop layer"
+msgstr "Kihi automaatkärbe"
+
+msgctxt "undo-type"
+msgid "Color to Alpha"
+msgstr "Värvi teisendamine alfakanaliks"
+
+msgctxt "undo-type"
+msgid "Pixelize"
+msgstr "Pikselisatsioon"
+
+msgctxt "undo-type"
+msgid "Polar Coordinates"
+msgstr "Polaarkoordinaadid"
+
+msgctxt "undo-type"
+msgid "Semi-Flatten"
+msgstr "Osaline kihtide ühendamine"
+
+msgctxt "undo-type"
+msgid "Threshold Alpha"
+msgstr "Alfakanali lävi"
+
+msgctxt "undo-type"
+msgid "Value Invert"
+msgstr "Heleduse inverteerimine"
 
 #, c-format
 msgid "Failed to create text layer"
@@ -8965,25 +9338,6 @@ msgstr "Vigane binaarsõne interpretaatori failis %s"
 
 #, c-format
 msgid ""
-"Calling error for procedure '%s':\n"
-"%s"
-msgstr ""
-"Funktsiooni '%s' kutsumise viga:\n"
-"%s"
-
-#, c-format
-msgid ""
-"Execution error for procedure '%s':\n"
-"%s"
-msgstr ""
-"Käivitusviga protseduuris '%s':\n"
-"%s"
-
-msgid "Cancelled"
-msgstr "Tühistatud"
-
-#, c-format
-msgid ""
 "Plug-in crashed: \"%s\"\n"
 "(%s)\n"
 "\n"
@@ -8993,8 +9347,14 @@ msgstr ""
 "Plugin jooksis kokku: \"%s\"\n"
 "(%s)\n"
 "\n"
-"On võimalik, et kokkujooksnud plugin mõjutab ka GIMPi ennast. Igaks juhuks "
-"võiksid oma pildid salvestada ja GIMPi taaskäivitada."
+"On võimalik, et kokkujooksnud plugin mõjutab ka GIMP-i ennast. Igaks juhuks "
+"võiksid oma pildid salvestada ja GIMP-i taaskäivitada."
+
+msgid "Plug-In Interpreters"
+msgstr "Pluginate interpretaatorid"
+
+msgid "Plug-In Environment"
+msgstr "Pluginate keskkond"
 
 #, c-format
 msgid "Failed to run plug-in \"%s\""
@@ -9015,11 +9375,21 @@ msgstr "Pluginate lähtestamine"
 msgid "Starting Extensions"
 msgstr "Laienduste käivitamine"
 
-msgid "Plug-In Interpreters"
-msgstr "Pluginate interpretaatorid"
+#, c-format
+msgid ""
+"Calling error for procedure '%s':\n"
+"%s"
+msgstr ""
+"Funktsiooni '%s' kutsumise viga:\n"
+"%s"
 
-msgid "Plug-In Environment"
-msgstr "Pluginate keskkond"
+#, c-format
+msgid ""
+"Execution error for procedure '%s':\n"
+"%s"
+msgstr ""
+"Käivitusviga protseduuris '%s':\n"
+"%s"
 
 #, c-format
 msgid ""
@@ -9037,9 +9407,8 @@ msgstr ""
 "'%s' käivitamisviga:\n"
 "%s"
 
-#, c-format
-msgid "Can't apply color profile to grayscale image (%s)"
-msgstr "Halltoonides pildile pole võimalik värviprofiili rakendada (%s)"
+msgid "Cancelled"
+msgstr "Tühistatud"
 
 #, c-format
 msgid "Error running '%s'"
@@ -9051,7 +9420,11 @@ msgstr "Plugin puudub (%s)"
 
 #, c-format
 msgid "Skipping '%s': wrong GIMP protocol version."
-msgstr "'%s' jäetakse vahele: vale GIMPi protokolli versioon."
+msgstr "'%s' jäetakse vahele: vale GIMP-i protokolli versioon."
+
+#, c-format
+msgid "Skipping '%s': wrong pluginrc file format version."
+msgstr "'%s' jäetakse vahele: vale GIMP-i vormingu versioon."
 
 #, c-format
 msgid "invalid value '%s' for icon type"
@@ -9106,13 +9479,6 @@ msgstr "Fontide puudumise tõttu pole tekstitööriistad kasutatavad."
 msgid "Empty Text Layer"
 msgstr "Tühjenda tekstikiht"
 
-msgid ""
-"Your text cannot be rendered. It is likely too big. Please make it shorter "
-"or use a smaller font."
-msgstr ""
-"Sinu teksti pole võimalik renderdada, see võib olla liiga suur. Palun tee "
-"see lühemaks või kasuta väiksemat fonti."
-
 #, c-format
 msgid ""
 "Problems parsing the text parasite for layer '%s':\n"
@@ -9127,12 +9493,6 @@ msgstr ""
 "Mõned tekstikujunduse elemendid võivad ebakorrektsed olla. Kui sa teksti "
 "muuta ei kavatse, pole põhjust muretseda."
 
-msgid ""
-"The new text layout cannot be generated. Most likely the font size is too "
-"big."
-msgstr ""
-"Uue teksti paigutust pole võimalik koostada. Tõenäoliselt on font liiga suur."
-
 msgctxt "text-box-mode"
 msgid "Dynamic"
 msgstr "Dünaamiline"
@@ -9140,13 +9500,6 @@ msgstr "Dünaamiline"
 msgctxt "text-box-mode"
 msgid "Fixed"
 msgstr "Fikseeritud"
-
-msgid ""
-"This tool has\n"
-"no options."
-msgstr ""
-"Sellel tööriistal\n"
-"pole valikuid."
 
 msgid "Airbrush Tool: Paint using a brush, with variable pressure"
 msgstr "Pihusti: pritsimistugevus on muudetav"
@@ -9157,6 +9510,7 @@ msgstr "_Pihusti"
 msgid "Motion only"
 msgstr "Ainult liikumine"
 
+msgctxt "airbrush-tool"
 msgid "Rate"
 msgstr "Sagedus"
 
@@ -9272,9 +9626,6 @@ msgstr "Sulandamise tööriist: valitud ala täitmine värvisulandusega"
 msgid "Blen_d"
 msgstr "_Värvisulandus"
 
-msgid "Blend does not operate on indexed layers."
-msgstr "Värvisulandusega täitmine ei tööta indekseeritud kihtidega."
-
 msgid "No gradient available for use with this tool."
 msgstr "Selle tööriista jaoks pole ühtegi värviüleminekut saadaval."
 
@@ -9306,9 +9657,6 @@ msgstr "Heleduse-kontrastsuse sätete importimine"
 
 msgid "Export Brightness-Contrast settings"
 msgstr "Heleduse-kontrastsuse sätete eksportimine"
-
-msgid "Brightness-Contrast does not operate on indexed layers."
-msgstr "Heledus-kontrastsus ei tööta indekseeritud kihtidel."
 
 msgid "_Brightness:"
 msgstr "_Heledus:"
@@ -9423,7 +9771,7 @@ msgid "Source"
 msgstr "Lähtekoht"
 
 msgid "Alignment:"
-msgstr "Joondus:"
+msgstr "Joondamine:"
 
 msgid "Color Balance"
 msgstr "Värvustasakaal"
@@ -9494,8 +9842,8 @@ msgstr "Toonimise sätete importimine"
 msgid "Export Colorize Settings"
 msgstr "Toonimise sätete eksportimine"
 
-msgid "Colorize operates only on RGB color layers."
-msgstr "Toonimine töötab ainult RGB kihtidel."
+msgid "Colorize does not operate on grayscale layers."
+msgstr "Toonimine ei tööta hallvärvides kihtidel."
 
 msgid "Select Color"
 msgstr "Värvi valimine"
@@ -9507,7 +9855,13 @@ msgid "_Saturation:"
 msgstr "_Küllastus:"
 
 msgid "_Lightness:"
-msgstr "_Heledus:"
+msgstr "V_algustatus:"
+
+msgid "Colorize Color"
+msgstr "Toonimise värv"
+
+msgid "Pick color from image"
+msgstr "Pildi jaoks värvi valimine"
 
 msgid "Color Picker Average Radius"
 msgstr "Värvivalija keskmine raadius"
@@ -9611,6 +9965,10 @@ msgstr "%s udustamiseks"
 msgid "Convolve Type  (%s)"
 msgstr "Konvulsiooni tüüp  (%s)"
 
+msgctxt "convolve-tool"
+msgid "Rate"
+msgstr "Sagedus"
+
 msgid "Dim everything outside selection"
 msgstr "Valikust väljajääva ala tumendamine"
 
@@ -9659,9 +10017,6 @@ msgstr "Kurvide importimine"
 
 msgid "Export Curves"
 msgstr "Kurvide eksportimine"
-
-msgid "Curves does not operate on indexed layers."
-msgstr "Kurvid ei tööta indekseeritud kihtidel."
 
 msgid "Click to add a control point"
 msgstr "Klõpsa kontrollpunkti lisamiseks"
@@ -9874,10 +10229,10 @@ msgid "Large brush"
 msgstr "Suur pintsel"
 
 msgid "Smoothing:"
-msgstr "Sujuv:"
+msgstr "Silumine:"
 
 msgid "Preview color:"
-msgstr "Eelvaate värvus:"
+msgstr "Värvi eelvaade:"
 
 #. granularity
 msgid "Color Sensitivity"
@@ -9950,16 +10305,6 @@ msgstr "GEGL tööriist: suvalise GEGL operatsiooni kasutamine"
 
 msgid "_GEGL Operation..."
 msgstr "_GEGL Operation"
-
-msgid "GEGL operations do not operate on indexed layers."
-msgstr "GEGL operatsioonid ei tööta indekseeritud kihtidega."
-
-msgid "_Operation:"
-msgstr "_Operatsioon:"
-
-#. The options vbox
-msgid "Operation Settings"
-msgstr "Operatsiooni sätted"
 
 msgid "Select an operation from the list above"
 msgstr "Vali tegevus ülemisest loendist"
@@ -10038,15 +10383,15 @@ msgstr "Valitud värvi muutmine"
 msgid "R_eset Color"
 msgstr "_Lähtesta värv"
 
+msgid "_Preview"
+msgstr "_Eelvaade"
+
 msgid "Pre_sets:"
 msgstr "_Mallid:"
 
 #, c-format
 msgid "Settings saved to '%s'"
 msgstr "Sätted salvestati faili '%s'"
-
-msgid "_Preview"
-msgstr "_Eelvaade"
 
 #. adjust sliders
 msgid "Adjustment"
@@ -10126,9 +10471,6 @@ msgstr "Tasemete importimine"
 
 msgid "Export Levels"
 msgstr "Tasemete eksportimine"
-
-msgid "Levels does not operate on indexed layers."
-msgstr "Tasemed ei tööta indekseeritud kihtidega."
 
 msgid "Pick black point"
 msgstr "Vali must punkt"
@@ -10274,6 +10616,24 @@ msgstr "_Liigutamine"
 msgid "Move Guide: "
 msgstr "Liiguta abijoont: "
 
+msgid "There is no path to move."
+msgstr "Pole vektorjoont, mida liigutada."
+
+msgid "The active path's position is locked."
+msgstr "Aktiivse vektorjoone asukoht on lukus."
+
+msgid "The selection is empty."
+msgstr "Valik on tühi."
+
+msgid "There is no layer to move."
+msgstr "Pole kihti, mida liigutada."
+
+msgid "The active layer's position is locked."
+msgstr "Aktiivse kihi asukoht on lukustatud."
+
+msgid "The active channel's position is locked."
+msgstr "Aktiivse kanali asukoht on lukustatud."
+
 msgid "Remove Guide"
 msgstr "Abijoone eemaldamine"
 
@@ -10282,6 +10642,9 @@ msgstr "Tühista abijoon"
 
 msgid "Add Guide: "
 msgstr "Lisa abijoon: "
+
+msgid "Operation Tool: Use an arbitrary GEGL operation"
+msgstr "Operatsiooni tööriist: suvalise GEGL operatsiooni kasutamine"
 
 msgid "Paintbrush Tool: Paint smooth strokes using a brush"
 msgstr "Pintsel: pehmeservalise pintsliga joonistamine"
@@ -10402,11 +10765,8 @@ msgstr "_Posterdamine..."
 msgid "Posterize (Reduce Number of Colors)"
 msgstr "Posterda (vähenda värvide arvu)"
 
-msgid "Posterize does not operate on indexed layers."
-msgstr "Posterdamine ei tööta indekseeritud kihtidega."
-
 msgid "Posterize _levels:"
-msgstr "Posterdamise _tasemed:"
+msgstr "Posterdamise tasemed:"
 
 msgid "Automatically shrink to the nearest rectangular shape in a layer"
 msgstr "Automaaselt vähendatakse kihi lähimale ristkülikulisele kujundile"
@@ -10637,6 +10997,10 @@ msgstr "Määrimiseks klõpsa"
 msgid "Click to smudge the line"
 msgstr "Joone määrimiseks klõpsa"
 
+msgctxt "smudge-tool"
+msgid "Rate"
+msgstr "Sagedus"
+
 msgid "Font size unit"
 msgstr "Fondi suuruse ühik"
 
@@ -10728,7 +11092,7 @@ msgstr ""
 "Sa võid kas kihti muuta või luua selle tekstiomadustest uue kihi."
 
 msgid "GIMP Text Editor"
-msgstr "GIMPi tekstiredaktor"
+msgstr "GIMP-i tekstiredaktor"
 
 msgid "Threshold Tool: Reduce image to two colors using a threshold"
 msgstr "Läve tööriist: pildi kahevärviliseks muutmine kasutades läve"
@@ -10745,14 +11109,18 @@ msgstr "Läve sätete importimine"
 msgid "Export Threshold Settings"
 msgstr "Läve sätete eksportimine"
 
-msgid "Threshold does not operate on indexed layers."
-msgstr "Lävi ei tööta indekseeritud kihtidel."
-
 msgid "Automatically adjust to optimal binarization threshold"
 msgstr "Automaatselt optimaalseima binariseerimise läve määramine"
 
 msgid "Can't work on an empty image, add a layer first"
 msgstr "Tühja pildiga pole võimalik töötada, kõigepealt tuleb lisada üks kiht"
+
+msgid ""
+"This tool has\n"
+"no options."
+msgstr ""
+"Sellel tööriistal\n"
+"pole valikuid."
 
 msgid "Direction of transformation"
 msgstr "Teisenduse suund"
@@ -10813,6 +11181,9 @@ msgstr "Esialgne külgede suhte säilitamine"
 msgid "Transforming"
 msgstr "Muundamine"
 
+msgid "The active layer's position and size are locked."
+msgstr "Aktiivse kihi asukoht ja suurus on lukustatud."
+
 msgid "There is no layer to transform."
 msgstr "Pole kihti, mida muundada."
 
@@ -10821,6 +11192,29 @@ msgstr "Pole vektorjoont, mida muundada."
 
 msgid "The active path's strokes are locked."
 msgstr "Aktiivse vektorjoone pintseldus on lukustatud."
+
+msgid "The active path's position are locked."
+msgstr "Aktiivse vektorjoone asukoht on lukustatud."
+
+msgid "Unified Transform"
+msgstr "Ühendatud teisendus"
+
+msgid "Unified Transform Tool: Transform the layer, selection or path"
+msgstr ""
+"Ühendatud teisendamise tööriist: kihi, valiku või vektorjoone teisendamine"
+
+msgid "_Unified Transform"
+msgstr "Ü_hendatud teisendus"
+
+msgid "Unified transform"
+msgstr "Ühendatud teisendus"
+
+msgid "Transform Matrix"
+msgstr "Maatriksteisendus"
+
+msgctxt "undo-type"
+msgid "Unified Transform"
+msgstr "Ühendatud teisendamine"
 
 msgid "Restrict editing to polygons"
 msgstr "Redigeerimine on piiratud hulknurkadega"
@@ -11137,6 +11531,9 @@ msgstr ""
 msgid "Invalid shortcut."
 msgstr "Vigane kiirklahv."
 
+msgid "F1 cannot be remapped."
+msgstr "F1 toimingut pole võimalik muuta."
+
 msgid "Removing shortcut failed."
 msgstr "Kiirklahvi eemaldamine nurjus."
 
@@ -11194,8 +11591,8 @@ msgstr ""
 "Kuueteistkümnendsüsteemi värvikood, nagu seda kasutatakse HTML ja CSS "
 "värvides."
 
-msgid "Index:"
-msgstr "Indeks:"
+msgid "Value:"
+msgstr "Väärtus:"
 
 msgid "Red:"
 msgstr "Punane:"
@@ -11206,8 +11603,8 @@ msgstr "Roheline:"
 msgid "Blue:"
 msgstr "Sinine:"
 
-msgid "Value:"
-msgstr "Väärtus:"
+msgid "Index:"
+msgstr "Indeks:"
 
 msgid "Hex:"
 msgstr "16nd:"
@@ -11516,6 +11913,9 @@ msgstr "Fail nimega '%s' on juba olemas."
 msgid "Do you want to replace it with the image you are saving?"
 msgstr "Kas asendame selle salvestatava pildiga?"
 
+msgid "Configure this tab"
+msgstr "Häälesta seda kaarti"
+
 #. String used to separate dockables, e.g. "Tool Options, Layers"
 msgctxt "dock"
 msgid ", "
@@ -11535,9 +11935,6 @@ msgctxt "dock"
 msgid " | "
 msgstr " | "
 
-msgid "Configure this tab"
-msgstr "Häälesta seda kaarti"
-
 #. Auto button
 msgid "Auto"
 msgstr "Automaatne"
@@ -11548,6 +11945,9 @@ msgstr "Kui lubatud, siis doki sisu järgib pilti, millega töötad."
 
 msgid "Lock pixels"
 msgstr "Pikslite lukk"
+
+msgid "Lock position and size"
+msgstr "Asukoha ja suuruse lukustamine"
 
 msgid "Mapping matrix"
 msgstr "Vastavusmaatriks"
@@ -11693,32 +12093,32 @@ msgid "Help browser is missing"
 msgstr "Abiinfo sirvija puudub"
 
 msgid "The GIMP help browser is not available."
-msgstr "GIMPi abiinfo sirvija pole saadaval."
+msgstr "GIMP-i abiinfo sirvija pole saadaval."
 
 msgid ""
 "The GIMP help browser plug-in appears to be missing from your installation. "
 "You may instead use the web browser for reading the help pages."
 msgstr ""
-"Paistab, et GIMPi paigalduskomplektist puudub abiinfo sirvimise plugin. "
+"Paistab, et GIMP-i paigalduskomplektist puudub abiinfo sirvimise plugin. "
 "Selle asemel võid abiinfo lugemiseks kasutada veebisirvijat."
 
 msgid "Help browser doesn't start"
 msgstr "Abiinfo sirvija ei käivitu"
 
 msgid "Could not start the GIMP help browser plug-in."
-msgstr "GIMPi abiinfo sirvija pluginat pole võimalik käivitada."
+msgstr "GIMP-i abiinfo sirvija pluginat pole võimalik käivitada."
 
 msgid "Use _Web Browser"
 msgstr "_Veebibrauseri kasutamine"
 
 msgid "GIMP user manual is missing"
-msgstr "GIMPi kasutumisjuhend puudub"
+msgstr "GIMP-i kasutamisjuhendi puudumine"
 
 msgid "_Read Online"
 msgstr "_Loe veebist"
 
 msgid "The GIMP user manual is not installed on your computer."
-msgstr "GIMPi kasutusjuhend pole sinu arvutisse paigaldatud."
+msgstr "GIMP-i kasutusjuhend pole sinu arvutisse paigaldatud."
 
 msgid ""
 "You may either install the additional help package or change your "
@@ -11773,6 +12173,9 @@ msgstr "Lahutusvõime:"
 
 msgid "Color space:"
 msgstr "Värviruum:"
+
+msgid "Precision:"
+msgstr "Täpsus:"
 
 msgid "File Name:"
 msgstr "Faili nimi:"
@@ -11845,6 +12248,9 @@ msgstr "ICC värviprofiil (*.icc, *.icm)"
 
 msgid "Progress"
 msgstr "Edenemine"
+
+msgid "New Seed"
+msgstr "Uus külv"
 
 #, c-format
 msgid ""
@@ -11947,6 +12353,9 @@ msgstr "_Täpsemad valikud"
 msgid "Color _space:"
 msgstr "_Värviruum:"
 
+msgid "_Precision:"
+msgstr "_Täpsus:"
+
 msgid "_Fill with:"
 msgstr "_Täide:"
 
@@ -11968,16 +12377,16 @@ msgid "%d ppi, %s"
 msgstr "%d ppi, %s"
 
 #, c-format
+msgid "Invalid UTF-8 data in file '%s'."
+msgstr "Vigased UTF-8 andmed failis '%s'."
+
+#, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "Atribuut \"%s\" elemendil <%s> on selles kontekstis vigane"
 
 #, c-format
 msgid "Outermost element in text must be <markup> not <%s>"
 msgstr "Kõige välimine element tekstis peab olema <markup>, mitte <%s>"
-
-#, c-format
-msgid "Invalid UTF-8 data in file '%s'."
-msgstr "Vigased UTF-8 andmed failis '%s'."
 
 msgid "_Use selected font"
 msgstr "_Kasutatakse valitud fonti"
@@ -12140,7 +12549,7 @@ msgid "English"
 msgstr "Inglise"
 
 msgid "Your GIMP installation is incomplete:"
-msgstr "Sinu GIMPi paigaldus on poolik:"
+msgstr "Sinu GIMP-i paigaldus on poolik:"
 
 msgid "Please make sure the menu XML files are correctly installed."
 msgstr "Palun kontrolli, et menüü XML-failid oleksid korralikult paigaldatud."
@@ -12154,6 +12563,9 @@ msgstr "[ Algne pilt ]"
 
 msgid "Lock path strokes"
 msgstr "Vektorjoonte lukustamine"
+
+msgid "Lock path position"
+msgstr "Vektorjoone asukoha lukustamine"
 
 msgid "Open the brush selection dialog"
 msgstr "Pintslivaliku doki avamine"
@@ -12273,6 +12685,25 @@ msgctxt "tab-style"
 msgid "Undefined"
 msgstr "Määramata"
 
+msgid "GIMP XCF image"
+msgstr "GIMP XCF pilt"
+
+#, c-format
+msgid "Opening '%s'"
+msgstr "'%s' avamine"
+
+#, c-format
+msgid "XCF error: unsupported XCF file version %d encountered"
+msgstr "XCF viga: XCF faili versioon %d pole toetatud"
+
+#, c-format
+msgid "Saving '%s'"
+msgstr "'%s' salvestamine"
+
+#, c-format
+msgid "Error saving XCF file: %s"
+msgstr "Viga XCF faili salvestamisel: %s"
+
 msgid ""
 "This XCF file is corrupt!  I have loaded as much of it as I can, but it is "
 "incomplete."
@@ -12297,31 +12728,12 @@ msgid "Invalid UTF-8 string in XCF file"
 msgstr "Vigane UTF-8 tekstilõik XCF failis"
 
 #, c-format
-msgid "Error writing XCF: %s"
-msgstr "Viga XCF faili kirjutamisel: %s"
-
-#, c-format
 msgid "Could not seek in XCF file: %s"
 msgstr "XCF failis pole võimalik liikuda: %s"
 
-msgid "GIMP XCF image"
-msgstr "GIMP XCF pilt"
-
 #, c-format
-msgid "Opening '%s'"
-msgstr "'%s' avamine"
-
-#, c-format
-msgid "XCF error: unsupported XCF file version %d encountered"
-msgstr "XCF viga: XCF faili versioon %d pole toetatud"
-
-#, c-format
-msgid "Saving '%s'"
-msgstr "'%s' salvestamine"
-
-#, c-format
-msgid "Error saving XCF file: %s"
-msgstr "Viga XCF faili salvestamisel: %s"
+msgid "Error writing XCF: %s"
+msgstr "Viga XCF faili kirjutamisel: %s"
 
 msgid "round"
 msgstr "ümar"
@@ -12330,1119 +12742,36 @@ msgstr "ümar"
 msgid "fuzzy"
 msgstr "hägune"
 
-msgid ""
-"GIMP is an acronym for GNU Image Manipulation Program. It is a freely "
-"distributed program for such tasks as photo retouching, image composition "
-"and image authoring."
-msgstr ""
-"GIMP on akronüüm GNU pilditöötlusprogrammist. See on vabalt jagatav ja "
-"kasutatav fotode järeltöötluseks, joonistamiseks ja paljuks muuks."
-
-msgid ""
-"It has many capabilities. It can be used as a simple paint program, an "
-"expert quality photo retouching program, an online batch processing system, "
-"a mass production image renderer, an image format converter, etc."
-msgstr ""
-"Sel on palju võimalusi. Seda võib kasutada lihtsa joonistamise, profifotode "
-"järeltöötluse, võrgus piltide pakktöötluse, pildirenderduste masstootmise, "
-"pildivormingute teisendamise ja paljude muude operatsioonide jaoks."
-
-msgid ""
-"GIMP is expandable and extensible. It is designed to be augmented with plug-"
-"ins and extensions to do just about anything. The advanced scripting "
-"interface allows everything from the simplest task to the most complex image "
-"manipulation procedures to be easily scripted. GIMP is available for Linux, "
-"Microsoft Windows and OS X."
-msgstr ""
-"GIMP on laiendatav. Pluginad ja laiendused võivad seda panna peaaegu kõike "
-"tegema. Laiendatud skriptimisliides võimaldab teha kõike alatest kõige "
-"lihtsamatest operatsioonidest kuni kõige keerulisemate "
-"pilditöötlusprotseduurideni. GIMP on saadaval Linuxile, Microsoft Windowsile "
-"ja OS X-ile."
-
-msgid "Image Editor"
-msgstr "Pildiredaktor"
-
-msgid "Create images and edit photographs"
-msgstr "Joonistamine ja fotode töötlemine"
-
-#~ msgid "Filters"
-#~ msgstr "Filtrid"
-
-#~ msgctxt "drawable-action"
-#~ msgid "_Value Invert"
-#~ msgstr "_Väärtuse inverteerimine"
-
-#~ msgctxt "drawable-action"
-#~ msgid "Invert the brightness of each pixel"
-#~ msgstr "Kõigi pikslite heleduse inverteerimine"
-
-#~ msgctxt "drawable-action"
-#~ msgid "L_ock position of channel"
-#~ msgstr "_Lukusta asukoht ja kanal"
-
-#~ msgctxt "drawable-action"
-#~ msgid "Keep the position on this drawable from being modified"
-#~ msgstr "Joonispinna asukoha lukustamine, et seda muuta ei saaks"
-
-#~ msgctxt "file-action"
-#~ msgid "Export to"
-#~ msgstr "Ekspordi kohta..."
-
-#~ msgid "Export to"
-#~ msgstr "Ekspordi kohta"
-
-#~ msgctxt "filters-action"
-#~ msgid "_Alien Map..."
-#~ msgstr "_Tulnukvärvid..."
-
-#~ msgctxt "filters-action"
-#~ msgid "Color to Gray..."
-#~ msgstr "Värv halliks..."
-
-#~ msgctxt "filters-action"
-#~ msgid "Ca_rtoon..."
-#~ msgstr "_Multikas..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_Checkerboard..."
-#~ msgstr "_Maleruudustik..."
-
-#~ msgctxt "filters-action"
-#~ msgid "Color _Reduction..."
-#~ msgstr "_Värvivähendus..."
-
-#~ msgctxt "filters-action"
-#~ msgid "Color T_emperature..."
-#~ msgstr "Värvus_temperatuur..."
-
-#~ msgctxt "filters-action"
-#~ msgid "Color to _Alpha..."
-#~ msgstr "Värvist _alfakanal..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_Cubism..."
-#~ msgstr "_Kubism..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_Deinterlace..."
-#~ msgstr "_Ülerealaotuse eemaldamine..."
-
-#~ msgctxt "filters-action"
-#~ msgid "Difference of Gaussians..."
-#~ msgstr "Gaussi erinevus..."
-
-#~ msgctxt "filters-action"
-#~ msgid "Dots..."
-#~ msgstr "Punktid..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_Drop Shadow..."
-#~ msgstr "_Varju heitmine..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_Laplace"
-#~ msgstr "_Laplace'i"
-
-#~ msgctxt "filters-action"
-#~ msgid "_Sobel..."
-#~ msgstr "_Sobel..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_E_xposure..."
-#~ msgstr "_Valgustatus..."
-
-#, fuzzy
-#~ msgctxt "filters-action"
-#~ msgid "_Fractal Trace..."
-#~ msgstr "_Muuda pildi mõõtmeid..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_Gaussian Blur..."
-#~ msgstr "_Gaussi udu..."
-
-#, fuzzy
-#~ msgctxt "filters-action"
-#~ msgid "_Grid..."
-#~ msgstr "Alusvõrk"
-
-#~ msgctxt "filters-action"
-#~ msgid "Lens Distortion..."
-#~ msgstr "Läätse moonutus..."
-
-#~ msgctxt "filters-action"
-#~ msgid "Mono Mixer..."
-#~ msgstr "Monomikser..."
-
-#, fuzzy
-#~ msgctxt "filters-action"
-#~ msgid "_Circular Motion Blur..."
-#~ msgstr "_Vaba pööramine..."
-
-#, fuzzy
-#~ msgctxt "filters-action"
-#~ msgid "_Linear Motion Blur..."
-#~ msgstr "_Gaussi udu..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_Zoom Motion Blur..."
-#~ msgstr "_Suurenduse liikumishägu..."
-
-#, fuzzy
-#~ msgctxt "filters-action"
-#~ msgid "CIE lch Noise..."
-#~ msgstr "HSV müra..."
-
-#~ msgctxt "filters-action"
-#~ msgid "HSV Noise..."
-#~ msgstr "HSV müra..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_Hurl..."
-#~ msgstr "_Pildumine..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_Pick..."
-#~ msgstr "_Vali..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_RGB Noise..."
-#~ msgstr "_RGB müra..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_Slur..."
-#~ msgstr "_Segamine..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_Sp_read..."
-#~ msgstr "_Laialimäärimine..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_Photocopy..."
-#~ msgstr "_Koopiamasin..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_Pixelize..."
-#~ msgstr "_Suured pikslid..."
-
-#~ msgctxt "filters-action"
-#~ msgid "P_olar Coordinates..."
-#~ msgstr "_Polaarkoordinaadid..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_Red Eye Removal..."
-#~ msgstr "_Punasilmsuse eemaldamine..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_Ripple..."
-#~ msgstr "_Lainetus..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_Semi-Flatten..."
-#~ msgstr "_Osaline kihtide ühendamine..."
-
-#, fuzzy
-#~ msgctxt "filters-action"
-#~ msgid "_Shift..."
-#~ msgstr "_Nihutamine..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_Softglow..."
-#~ msgstr "_Pehme helendus..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_Threshold Alpha..."
-#~ msgstr "_Läbipaistvuse lävi..."
-
-#~ msgctxt "filters-action"
-#~ msgid "_Unsharp Mask..."
-#~ msgstr "_Ebaterav mask..."
-
-#, fuzzy
-#~ msgctxt "filters-action"
-#~ msgid "_Vignette..."
-#~ msgstr "_Redigeeri värvipaletti..."
-
-#, fuzzy
-#~ msgctxt "filters-action"
-#~ msgid "_Waves..."
-#~ msgstr "_Kurvid..."
-
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "image-action"
-#~ msgid "_Precision"
-#~ msgstr "_Täpsus"
-
-#, fuzzy
-#~ msgctxt "image-action"
-#~ msgid "D_esaturate"
-#~ msgstr "Värvide eemaldamine"
-
-#~ msgctxt "image-action"
-#~ msgid "Crop to C_ontent"
-#~ msgstr "Kärbi _sisuni"
-
-#~ msgctxt "image-action"
-#~ msgid ""
-#~ "Crop the image to the extents of its content (remove empty borders from "
-#~ "the image)"
-#~ msgstr "Pildi kärpimine selle sisuni (eemaldades pildilt tühjad ääred)"
-
-#, fuzzy
-#~ msgctxt "image-convert-action"
-#~ msgid "8 bit integer (linear)"
-#~ msgstr "8-biti täisarv"
-
-#, fuzzy
-#~ msgctxt "image-convert-action"
-#~ msgid "Convert the image to 8 bit linear integer"
-#~ msgstr "Pildi teisendamine 8-biti pildiks"
-
-#, fuzzy
-#~ msgctxt "image-convert-action"
-#~ msgid "8 bit integer (gamma)"
-#~ msgstr "8-biti täisarv"
-
-#, fuzzy
-#~ msgctxt "image-convert-action"
-#~ msgid "Convert the image to 8 bit gamma-corrected integer"
-#~ msgstr "Pildi teisendamine 8-biti pildiks"
-
-#, fuzzy
-#~ msgctxt "image-convert-action"
-#~ msgid "16 bit integer (linear)"
-#~ msgstr "16-biti täisarv"
-
-#, fuzzy
-#~ msgctxt "image-convert-action"
-#~ msgid "Convert the image to 16 bit linear integer"
-#~ msgstr "Pildi teisendamine 16-biti pildiks"
-
-#, fuzzy
-#~ msgctxt "image-convert-action"
-#~ msgid "16 bit integer (gamma)"
-#~ msgstr "16-biti täisarv"
-
-#, fuzzy
-#~ msgctxt "image-convert-action"
-#~ msgid "Convert the image to 16 bit gamma-corrected integer"
-#~ msgstr "Pildi teisendamine 16-biti pildiks"
-
-#, fuzzy
-#~ msgctxt "image-convert-action"
-#~ msgid "32 bit integer (linear)"
-#~ msgstr "32-biti täisarv"
-
-#, fuzzy
-#~ msgctxt "image-convert-action"
-#~ msgid "Convert the image to 32 bit linear integer"
-#~ msgstr "Pildi teisendamine 32-biti pildiks"
-
-#, fuzzy
-#~ msgctxt "image-convert-action"
-#~ msgid "32 bit integer (gamma)"
-#~ msgstr "32-biti täisarv"
-
-#, fuzzy
-#~ msgctxt "image-convert-action"
-#~ msgid "Convert the image to 32 bit gamma-corrected integer"
-#~ msgstr "Pildi teisendamine 32-biti pildiks"
-
-#, fuzzy
-#~ msgctxt "image-convert-action"
-#~ msgid "16 bit floating point (linear)"
-#~ msgstr "16-biti ujukomaarv"
-
-#, fuzzy
-#~ msgctxt "image-convert-action"
-#~ msgid "Convert the image to 16 bit linear floating point"
-#~ msgstr "Pildi teisendamine 16-biti ujukomapildiks"
-
-#~ msgctxt "image-convert-action"
-#~ msgid "16 bit floating point (gamma)"
-#~ msgstr "16-biti ujukomaarv (gamma)"
-
-#~ msgctxt "image-convert-action"
-#~ msgid "Convert the image to 16 bit gamma-corrected floating point"
-#~ msgstr "Pildi teisendamine 16-biti ujukomapildiks"
-
-#~ msgctxt "image-convert-action"
-#~ msgid "32 bit floating point (linear)"
-#~ msgstr "32-biti ujukomaarv (lineaarne)"
-
-#~ msgctxt "image-convert-action"
-#~ msgid "Convert the image to 32 bit linear floating point"
-#~ msgstr "Pildi teisendamine 32-biti lineaarseks ujukomapildiks"
-
-#~ msgctxt "image-convert-action"
-#~ msgid "32 bit floating point (gamma)"
-#~ msgstr "32-biti ujukomaarv (gamma)"
-
-#~ msgctxt "image-convert-action"
-#~ msgid "Convert the image to 32 bit gamma-corrected floating point"
-#~ msgstr "Pildi teisendamine 32-biti parandatud gammaga ujukomapildiks"
-
-#~ msgid "Cannot crop because the image has no content."
-#~ msgstr "Pole võimalik kärpida, sest pilt on tühi."
-
-#~ msgctxt "layers-action"
-#~ msgid "Crop to C_ontent"
-#~ msgstr "Kärbi _sisuni"
-
-#~ msgctxt "layers-action"
-#~ msgid ""
-#~ "Crop the layer to the extents of its content (remove empty borders from "
-#~ "the layer)"
-#~ msgstr "Kihi kärpimine selle sisuni (eemaldades kihi tühjad raamid)"
-
-#~ msgid "Crop Layer to Selection"
-#~ msgstr "Kihi kärpimine valiku järgi"
-
-#~ msgid "Cannot crop because the active layer has no content."
-#~ msgstr "Pole võimalik aktiivset kihti kärpida, sest see on tühi."
-
-#~ msgid "Crop Layer to Content"
-#~ msgstr "Kihi kärpimine sisu järgi"
-
-#~ msgctxt "vectors-action"
-#~ msgid "L_ock position"
-#~ msgstr "_Lukusta asukoht"
-
-#~ msgctxt "view-action"
-#~ msgid "_Rotate"
-#~ msgstr "_Pööra"
-
-#~ msgctxt "view-action"
-#~ msgid "_Reset to 0°"
-#~ msgstr "_Lähtesta 0° pööre"
-
-#~ msgctxt "view-action"
-#~ msgid "Reset the angle of rotation to 0°"
-#~ msgstr "Pöördenurga lähtestamine 0°-le"
-
-#~ msgctxt "view-action"
-#~ msgid "Othe_r..."
-#~ msgstr "_Muu..."
-
-#~ msgctxt "view-action"
-#~ msgid "Set a custom rotation angle"
-#~ msgstr "Muu pöördenurga määramine"
-
-#~ msgctxt "view-action"
-#~ msgid "Rotate 90° _clockwise"
-#~ msgstr "Pööra 90° _päripäeva"
-
-#~ msgctxt "view-action"
-#~ msgid "Rotate 90 degrees to the right"
-#~ msgstr "90 kraadi päripäeva pööramine"
-
-#~ msgctxt "view-action"
-#~ msgid "Rotate _180°"
-#~ msgstr "Pööra _180°"
-
-#~ msgctxt "view-action"
-#~ msgid "Turn upside-down"
-#~ msgstr "Pea peale pööramine"
-
-#~ msgctxt "view-action"
-#~ msgid "Rotate 90° counter-clock_wise"
-#~ msgstr "Pööra 90° _vastupäeva"
-
-#~ msgctxt "view-action"
-#~ msgid "Rotate 90 degrees to the left"
-#~ msgstr "90 kraadi vasakule pööramine"
-
-#~ msgid "_Rotate (%d°)"
-#~ msgstr "_Pööra (%d°)"
+#~ msgid "Crop Layer"
+#~ msgstr "Kärbi kihti"
 
 #~ msgid ""
-#~ "The chosen recent dock contains a toolbox. Please close the currently "
-#~ "open toolbox and try again."
+#~ "Unable to open a test swap file.\n"
+#~ "\n"
+#~ "To avoid data loss, please check the location and permissions of the swap "
+#~ "directory defined in your Preferences (currently \"%s\")."
 #~ msgstr ""
-#~ "Valitud hiljutine dokk sisaldab tööriistakasti. Palun sulge praegu avatud "
-#~ "tööriistakast ja proovi uuesti."
-
-#~ msgid "Error parsing '%s': line longer than %"
-#~ msgstr "Viga '%s' analüüsimisel: rida on pikem kui %"
-
-#, fuzzy
-#~ msgid "When enabled, uses OpenCL for some operations."
-#~ msgstr "Kui lubatud saab menüüdest elemente välja rebida."
-
-#~ msgctxt "component-type"
-#~ msgid "8-bit integer"
-#~ msgstr "8-biti täisarv"
-
-#~ msgctxt "component-type"
-#~ msgid "16-bit integer"
-#~ msgstr "16-biti täisarv"
-
-#~ msgctxt "component-type"
-#~ msgid "32-bit integer"
-#~ msgstr "32-biti täisarv"
-
-#~ msgctxt "component-type"
-#~ msgid "16-bit floating point"
-#~ msgstr "16-biti ujukomaarv"
-
-#~ msgctxt "component-type"
-#~ msgid "32-bit floating point"
-#~ msgstr "32-biti ujukomaarv"
-
-#~ msgctxt "precision"
-#~ msgid "8-bit linear integer"
-#~ msgstr "8-biti lineaarne täisarv"
-
-#~ msgctxt "precision"
-#~ msgid "8-bit gamma integer"
-#~ msgstr "8-biti gamma täisarv"
-
-#~ msgctxt "precision"
-#~ msgid "16-bit linear integer"
-#~ msgstr "16-biti lineaarne täisarv"
-
-#~ msgctxt "precision"
-#~ msgid "16-bit gamma integer"
-#~ msgstr "16-biti gamma täisarv"
-
-#~ msgctxt "precision"
-#~ msgid "32-bit linear integer"
-#~ msgstr "32-biti lineaarne täisarv"
-
-#~ msgctxt "precision"
-#~ msgid "32-bit gamma integer"
-#~ msgstr "32-biti gamma täisarv"
-
-#~ msgctxt "precision"
-#~ msgid "16-bit linear floating point"
-#~ msgstr "16-biti lineaarne ujukomaarv"
-
-#~ msgctxt "precision"
-#~ msgid "16-bit gamma floating point"
-#~ msgstr "16-biti gamma ujukomaarv"
-
-#~ msgctxt "precision"
-#~ msgid "32-bit linear floating point"
-#~ msgstr "32-biti lineaarne ujukomaarv"
-
-#~ msgctxt "precision"
-#~ msgid "32-bit gamma floating point"
-#~ msgstr "32-biti gamma ujukomaarv"
-
-#~ msgctxt "undo-type"
-#~ msgid "Image precision"
-#~ msgstr "Pildi täpsus"
-
-#~ msgctxt "undo-type"
-#~ msgid "Lock/Unlock content"
-#~ msgstr "Sisu lukustamine/vabastamine"
-
-#~ msgctxt "undo-type"
-#~ msgid "Lock/Unlock position"
-#~ msgstr "Asukoha lukustamine/vabastamine"
-
-#~ msgctxt "undo-type"
-#~ msgid "Convert text layer"
-#~ msgstr "Tekstikihi teisendamine"
-
-#~ msgid "Calculating distance map"
-#~ msgstr "Kauguskaardi arvutamine"
-
-#, fuzzy
-#~ msgctxt "undo-type"
-#~ msgid "Convert Image to 8 bit linear integer"
-#~ msgstr "Pildi teisendamine 8-biti värvidesse"
-
-#, fuzzy
-#~ msgctxt "undo-type"
-#~ msgid "Convert Image to 8 bit gamma integer"
-#~ msgstr "Pildi teisendamine 8-biti värvidesse"
-
-#, fuzzy
-#~ msgctxt "undo-type"
-#~ msgid "Convert Image to 16 bit linear integer"
-#~ msgstr "Pildi teisendamine 16-biti värvidesse"
-
-#, fuzzy
-#~ msgctxt "undo-type"
-#~ msgid "Convert Image to 16 bit gamma integer"
-#~ msgstr "Pildi teisendamine 16-biti värvidesse"
-
-#, fuzzy
-#~ msgctxt "undo-type"
-#~ msgid "Convert Image to 32 bit linear integer"
-#~ msgstr "Pildi teisendamine 32-biti värvidesse"
-
-#, fuzzy
-#~ msgctxt "undo-type"
-#~ msgid "Convert Image to 32 bit gamma integer"
-#~ msgstr "Pildi teisendamine 32-biti värvidesse"
-
-#, fuzzy
-#~ msgctxt "undo-type"
-#~ msgid "Convert Image to 16 bit linear floating point"
-#~ msgstr "Pildi teisendamine 16-biti ujukomapildiks"
-
-#, fuzzy
-#~ msgctxt "undo-type"
-#~ msgid "Convert Image to 16 bit gamma floating point"
-#~ msgstr "Pildi teisendamine 16-biti ujukomapildiks"
-
-#, fuzzy
-#~ msgctxt "undo-type"
-#~ msgid "Convert Image to 32 bit linear floating point"
-#~ msgstr "Pildi teisendamine 32-biti ujukomapildiks"
-
-#, fuzzy
-#~ msgctxt "undo-type"
-#~ msgid "Convert Image to 32 bit gamma floating point"
-#~ msgstr "Pildi teisendamine 32-biti ujukomapildiks"
-
-#~ msgid "Convert Image to %s"
-#~ msgstr "Pildi teisendamine: %s"
-
-#~ msgid "Precision Conversion"
-#~ msgstr "Täpne teisendus"
-
-#~ msgid "_Layers:"
-#~ msgstr "_Kihid:"
-
-#~ msgid "_Text Layers:"
-#~ msgstr "_Tekstikihid:"
-
-#~ msgid "Dithering text layers will make them uneditable"
-#~ msgstr "Tekstikihtide virvtoonimine teeb võimatuks nende muutmise"
-
-#~ msgid "_Channels and Masks:"
-#~ msgstr "_Kanalid ja maskid:"
-
-#~ msgid "Converting to lower bit depth"
-#~ msgstr "Pildi värvisügavuse vähendamine"
-
-#~ msgid "Enable dithering of text layers"
-#~ msgstr "Tekstikihtide virvtoonimise lubamine"
-
-#~ msgid "<b>GAME OVER</b> at level %d!"
-#~ msgstr "<b>MÄNG LÄBI</b> tasemel %d!"
-
-#~ msgid "%1$s   %2$s   %3$s"
-#~ msgstr "%1$s   %2$s   %3$s"
-
-#~ msgid "Paused"
-#~ msgstr "Paus"
-
-#~ msgid "%1$s\t%2$s"
-#~ msgstr "%1$s\t%2$s"
-
-#~ msgid "Press 'p' to unpause"
-#~ msgstr "Pausi mahavõtmiseks vajuta 'p'"
-
-#~ msgid "Level: %s,  Lives: %s"
-#~ msgstr "Tase: %s,  elusid: %s"
-
-#~ msgid "Left/Right to move, Space to fire, 'p' to pause, 'q' to quit"
-#~ msgstr ""
-#~ "Liikumiseks vasak/parem, tulistamiseks tühik, pausiks 'p' ning "
-#~ "lõpetamiseks 'q'."
-
-#~ msgid "Killer GEGLs from Outer Space"
-#~ msgstr "Tapja-GEGLid avakosmosest"
-
-#~ msgid "By width/_2, height/2"
-#~ msgstr "Laius/_2, kõrgus/2"
-
-#~ msgid "Hardware Acceleration"
-#~ msgstr "Raudvaraline kiirendus"
-
-#~ msgid "Use OpenCL"
-#~ msgstr "OpenCL kasutamine"
-
-#~ msgctxt "preferences"
-#~ msgid "Tool Options"
-#~ msgstr "Tööriista sätted"
-
-#~ msgid "Resize _text layers"
-#~ msgstr "_Tekstikihi suuruse muutmine"
-
-#~ msgid "Close _without Saving"
-#~ msgstr "Sulge _ilma salvestamata"
-
-#~ msgctxt "undo-type"
-#~ msgid "Drop pattern to layer"
-#~ msgstr "Aseta muster kihile"
-
-#~ msgctxt "undo-type"
-#~ msgid "Drop color to layer"
-#~ msgstr "Aseta värv kihile"
-
-#~ msgid "Rotate View"
-#~ msgstr "Pildi pööramine"
-
-#~ msgid "Select Rotation Angle"
-#~ msgstr "Pöördenurga valimine"
-
-#~ msgid "degrees"
-#~ msgstr "kraadi"
-
-#~ msgid "RGB"
-#~ msgstr "RGB"
-
-#~ msgid "RGB-alpha"
-#~ msgstr "RGB-alfa"
-
-#~ msgid "Grayscale"
-#~ msgstr "Halltoonid"
-
-#~ msgid "Grayscale-alpha"
-#~ msgstr "Halltoonid, alfakanal"
-
-#~ msgid "Red component"
-#~ msgstr "Punane komponent"
-
-#~ msgid "Green component"
-#~ msgstr "Roheline komponent"
-
-#~ msgid "Blue component"
-#~ msgstr "Sinine komponent"
-
-#~ msgid "Alpha component"
-#~ msgstr "Alfakanal"
-
-#~ msgid "Indexed-alpha"
-#~ msgstr "Indekseeritud alfakanal"
-
-#~ msgid "Indexed"
-#~ msgstr "Indekseeritud"
-
-#, fuzzy
-#~ msgid "Replace partial transparency with a color"
-#~ msgstr "Osalise läbipaistvuse asendamine värviga"
-
-#, fuzzy
-#~ msgid ""
-#~ "Make transparency all-or-nothing, by thresholding the alpha channel to a "
-#~ "value"
-#~ msgstr "Läbipaistvus olgu kõik-või-ei-midagi, "
-
-#~ msgctxt "undo-type"
-#~ msgid "Levels"
-#~ msgstr "Tasemed"
-
-#~ msgid ""
-#~ "Item '%s' (%d) cannot be modified because its position and size are locked"
-#~ msgstr ""
-#~ "Elementi '%s' (%d) pole võimalik muuta, kuna selle asukoht ja sisu on "
-#~ "lukus"
-
-#~ msgid ""
-#~ "Image '%s' (%d) has precision '%s', but an image of precision '%s' is "
-#~ "expected"
-#~ msgstr "Pilt '%s' (%d) on täpsusega '%s', aga oodatakse täpsust '%s'"
-
-#~ msgid "Image '%s' (%d) must not be of precision '%s'"
-#~ msgstr "Pilt '%s' (%d) ei tohi olla täpsusega '%s'"
-
-#~ msgctxt "undo-type"
-#~ msgid "Alien Map"
-#~ msgstr "Tulnukvärvid"
-
-#~ msgid "Autocrop image"
-#~ msgstr "Pildi automaatkärbe"
-
-#~ msgid "Autocrop layer"
-#~ msgstr "Kihi automaatkärbe"
-
-#~ msgctxt "undo-type"
-#~ msgid "Color to Alpha"
-#~ msgstr "Värvi teisendamine alfakanaliks"
-
-#~ msgctxt "undo-type"
-#~ msgid "Cubism"
-#~ msgstr "Kubism"
-
-#, fuzzy
-#~ msgctxt "undo-type"
-#~ msgid "Motion Blur"
-#~ msgstr "Ainult liikumine"
-
-#~ msgctxt "undo-type"
-#~ msgid "Pixelize"
-#~ msgstr "Pikselisatsioon"
-
-#~ msgctxt "undo-type"
-#~ msgid "Polar Coordinates"
-#~ msgstr "Polaarkoordinaadid"
-
-#~ msgctxt "undo-type"
-#~ msgid "Red Eye Removal"
-#~ msgstr "Punasilmsuse eemaldamine"
-
-#, fuzzy
-#~ msgctxt "undo-type"
-#~ msgid "Random Hurl"
-#~ msgstr "Juhuslik"
-
-#, fuzzy
-#~ msgctxt "undo-type"
-#~ msgid "Random Pick"
-#~ msgstr "Juhuslik"
-
-#, fuzzy
-#~ msgctxt "undo-type"
-#~ msgid "Random Slur"
-#~ msgstr "Juhuslik"
-
-#~ msgctxt "undo-type"
-#~ msgid "Semi-Flatten"
-#~ msgstr "Osaline kihtide ühendamine"
-
-#~ msgctxt "undo-type"
-#~ msgid "Shift"
-#~ msgstr "Nihe"
-
-#~ msgctxt "undo-type"
-#~ msgid "Spread"
-#~ msgstr "Määrimine"
-
-#~ msgctxt "undo-type"
-#~ msgid "Threshold Alpha"
-#~ msgstr "Alfakanali lävi"
-
-#, fuzzy
-#~ msgctxt "undo-type"
-#~ msgid "Tile Seamless"
-#~ msgstr "Faili nimi:"
-
-#~ msgctxt "undo-type"
-#~ msgid "Value Invert"
-#~ msgstr "Heleduse inverteerimine"
-
-#~ msgctxt "undo-type"
-#~ msgid "Waves"
-#~ msgstr "Lained"
-
-#~ msgid "Skipping '%s': wrong pluginrc file format version."
-#~ msgstr "'%s' jäetakse vahele: vale GIMPi vormingu versioon."
-
-#~ msgctxt "airbrush-tool"
-#~ msgid "Rate"
-#~ msgstr "Sagedus"
-
-#~ msgid "The active layer is not visible."
-#~ msgstr "Aktiivne kiht pole nähtav."
-
-#, fuzzy
-#~ msgid ""
-#~ "Fill the original position\n"
-#~ "of the cage with a color"
-#~ msgstr "Puuri esialgse asukoha täitmine ühtlase värviga"
-
-#~ msgid "Colorize does not operate on grayscale layers."
-#~ msgstr "Toonimine ei tööta hallvärvides kihtidel."
-
-#~ msgid "Colorize Color"
-#~ msgstr "Toonimise värv"
-
-#~ msgid "Pick color from image"
-#~ msgstr "Pildi jaoks värvi valimine"
-
-#~ msgctxt "convolve-tool"
-#~ msgid "Rate"
-#~ msgstr "Sagedus"
-
-#~ msgid "Draw Mode"
-#~ msgstr "Värvimise režiim"
-
-#~ msgid "Stroke width"
-#~ msgstr "Pintsli laius"
-
-#~ msgid "Reset stroke width native size"
-#~ msgstr "Pintslile omase suuruse kasutamine"
-
-#~ msgid "Active levels"
-#~ msgstr "Aktiivsed tasemed"
-
-#~ msgid "Iterations"
-#~ msgstr "Iteratsioonid"
-
-#~ msgid "Computing alpha of unknown pixels"
-#~ msgstr "Tundmatute pikslite alfaväärtuse arvutamine"
-
-#~ msgid "There is no path to move."
-#~ msgstr "Pole vektorjoont, mida liigutada."
-
-#~ msgid "The active path's position is locked."
-#~ msgstr "Aktiivse vektorjoone asukoht on lukus."
-
-#~ msgid "The selection is empty."
-#~ msgstr "Valik on tühi."
-
-#~ msgid "There is no layer to move."
-#~ msgstr "Pole kihti, mida liigutada."
-
-#~ msgid "The active layer's position is locked."
-#~ msgstr "Aktiivse kihi asukoht on lukustatud."
-
-#~ msgid "The active channel's position is locked."
-#~ msgstr "Aktiivse kanali asukoht on lukustatud."
-
-#~ msgid "Operation Tool: Use an arbitrary GEGL operation"
-#~ msgstr "Operatsiooni tööriist: suvalise GEGL operatsiooni kasutamine"
-
-#, fuzzy
-#~ msgid "Import '%s' Settings"
-#~ msgstr "Läve sätete importimine"
-
-#, fuzzy
-#~ msgid "Export '%s' Settings"
-#~ msgstr "Läve sätete eksportimine"
-
-#~ msgid "Mode"
-#~ msgstr "Režiim"
-
-#~ msgid "Fixed"
-#~ msgstr "Fikseeritud"
-
-#, fuzzy
-#~ msgid "Temp property"
-#~ msgstr "Elemendi omadused"
-
-#~ msgid "Seamless Clone"
-#~ msgstr "Märkamatu kloon"
-
-#~ msgid "Seamless Clone: Seamlessly paste one image into another"
-#~ msgstr "Märkamatu kloon: pildi asetamine märkamatult teise peale"
-
-#~ msgid "_Seamless Clone"
-#~ msgstr "_Märkamatu kloon"
-
-#~ msgctxt "smudge-tool"
-#~ msgid "Rate"
-#~ msgstr "Sagedus"
-
-#~ msgid "Interpolation"
-#~ msgstr "Interpoleerimine"
-
-#~ msgid "The active layer's position and size are locked."
-#~ msgstr "Aktiivse kihi asukoht ja suurus on lukustatud."
-
-#~ msgid "Transform Step"
-#~ msgstr "Muundamise samm"
-
-#~ msgid "Unified Transform"
-#~ msgstr "Ühendatud teisendus"
-
-#~ msgid "Unified Transform Tool: Transform the layer, selection or path"
-#~ msgstr ""
-#~ "Ühendatud teisendamise tööriist: kihi, valiku või vektorjoone teisendamine"
-
-#~ msgid "_Unified Transform"
-#~ msgstr "Ü_hendatud teisendus"
-
-#~ msgid "Unified transform"
-#~ msgstr "Ühendatud teisendus"
-
-#~ msgid "Transform Matrix"
-#~ msgstr "Maatriksteisendus"
-
-#~ msgctxt "undo-type"
-#~ msgid "Unified Transform"
-#~ msgstr "Ühendatud teisendamine"
-
-#~ msgid "Behavior"
-#~ msgstr "Käitumine"
-
-#~ msgid "Effect Strength"
-#~ msgstr "Efekti tugevus"
-
-#~ msgid "Effect Size"
-#~ msgstr "Efekti suurus"
-
-#~ msgid "Effect Hardness"
-#~ msgstr "Efekti kõvadus"
-
-#~ msgid "Strength"
-#~ msgstr "Tugevus"
-
-#, fuzzy
-#~ msgid "Warp Transform"
-#~ msgstr "Puurimuundus"
-
-#, fuzzy
-#~ msgid "_Warp Transform"
-#~ msgstr "_Puurimuundus"
-
-#, fuzzy
-#~ msgid "Warp transform"
-#~ msgstr "Puurimuundus"
-
-#, fuzzy
-#~ msgctxt "matting-draw-mode"
-#~ msgid "Draw unknown"
-#~ msgstr "Tundmatu"
-
-#~ msgctxt "warp-behavior"
-#~ msgid "Move pixels"
-#~ msgstr "Pikslite liigutamine"
-
-#~ msgctxt "warp-behavior"
-#~ msgid "Grow area"
-#~ msgstr "Kasvatamise ala"
-
-#~ msgctxt "warp-behavior"
-#~ msgid "Shrink area"
-#~ msgstr "Vähendamise ala"
-
-#, fuzzy
-#~ msgctxt "warp-behavior"
-#~ msgid "Swirl clockwise"
-#~ msgstr "HSV (värvitoon _päripäeva )"
-
-#, fuzzy
-#~ msgctxt "warp-behavior"
-#~ msgid "Swirl counter-clockwise"
-#~ msgstr "HSV (värvitoon _vastupäeva)"
-
-#, fuzzy
-#~ msgctxt "warp-behavior"
-#~ msgid "Erase warping"
-#~ msgstr "Kustukumm"
-
-#, fuzzy
-#~ msgctxt "warp-behavior"
-#~ msgid "Smooth warping"
-#~ msgstr "Silumine:"
-
-#~ msgid "F1 cannot be remapped."
-#~ msgstr "F1 toimingut pole võimalik muuta."
-
-#~ msgid "Lock position and size"
-#~ msgstr "Asukoha ja suuruse lukustamine"
-
-#~ msgid "From File..."
-#~ msgstr "Failist..."
-
-#~ msgid "From Stock Icons..."
-#~ msgstr "Vabrikuikoonidest..."
-
-#~ msgid "Copy Icon to Clipboard"
-#~ msgstr "Ikooni kopeerimine lõikepuhvrisse"
-
-#~ msgid "Paste Icon from Clipboard"
-#~ msgstr "Ikooni asetamine lõikepuhvrist"
-
-#~ msgid "Load Icon Image"
-#~ msgstr "Ikoonipildi laadimine"
-
-#~ msgid "Precision:"
-#~ msgstr "Täpsus:"
-
-#~ msgid "New Seed"
-#~ msgstr "Uus külv"
-
-#~ msgid "Pick coordinates from the image"
-#~ msgstr "Koordinaatide valimine pildilt"
-
-#~ msgid "Pick color from the image"
-#~ msgstr "Värvi valimine pildilt"
-
-#~ msgid "_Precision:"
-#~ msgstr "_Täpsus:"
-
-#~ msgid "Font \"%s\" unavailable on this system"
-#~ msgstr "Font \"%s\" pole selles arvutis saadaval"
-
-#~ msgid "Lock path position"
-#~ msgstr "Vektorjoone asukoha lukustamine"
-
-#~ msgctxt "filters-action"
-#~ msgid "Simulate a cartoon by enhancing edges"
-#~ msgstr "Servade rõhutamisega multikapildi järeleaimamine"
-
-#~ msgctxt "filters-action"
-#~ msgid "Reduce the number of colors in the image, with optional dithering"
-#~ msgstr "Pildis olevate värvide arvu vähendamine valikulise värinaga"
-
-#~ msgctxt "filters-action"
-#~ msgid "Change the color temperature of the image"
-#~ msgstr "Pildi värvustemperatuuri muutmine"
-
-#~ msgctxt "filters-action"
-#~ msgid "Convert a specified color to transparency"
-#~ msgstr "Määratud värvi teisendamine läbipaistvuseks"
-
-#~ msgctxt "filters-action"
-#~ msgid "Edge detection with control of edge thickness"
-#~ msgstr "Serva tuvastamine serva paksuse määramise võimalusega"
-
-#~ msgctxt "filters-action"
-#~ msgid "Apply a gaussian blur"
-#~ msgstr "Gaussi udu rakendamine"
-
-#~ msgctxt "filters-action"
-#~ msgid "High-resolution edge detection"
-#~ msgstr "Kõrglahutusega servatuvastus"
-
-#~ msgctxt "filters-action"
-#~ msgid "Corrects lens distortion"
-#~ msgstr "Läätse moonutuse parandamine"
-
-#~ msgctxt "filters-action"
-#~ msgid "Scattering pixel values in HSV space"
-#~ msgstr "Pikslite väärtuste hajutamine HSV ruumis"
-
-#~ msgctxt "filters-action"
-#~ msgid "Completely randomize a fraction of pixels"
-#~ msgstr "Pikslitükkide täielik juhuslikustamine"
-
-#~ msgctxt "filters-action"
-#~ msgid "Randomly interchange some pixels with neighbors"
-#~ msgstr "Juhuslikult mõnede pikslite äravahetamine naabritega"
-
-#~ msgctxt "filters-action"
-#~ msgid "Distort colors by random amounts"
-#~ msgstr "Värvide moonutamine juhuslikul määral"
-
-#~ msgctxt "filters-action"
-#~ msgid "Randomly slide some pixels downward (similar to melting)"
-#~ msgstr "Juhuslikult pikslite lohistamine alla (meenutab sulamist)"
-
-#~ msgctxt "filters-action"
-#~ msgid "Simulate color distortion produced by a copy machine"
-#~ msgstr "Koopiamasina tekitatava värvimuudatuse simuleerimine"
-
-#~ msgctxt "filters-action"
-#~ msgid "Simplify image into an array of solid-colored squares"
-#~ msgstr "Pildi lihtsustamine ühevärvilisteks ruudukesteks"
-
-#~ msgctxt "filters-action"
-#~ msgid "Convert image to or from polar coordinates"
-#~ msgstr "Pildi teisendamine polaarkoordinaatidesse või tagasi"
-
-#~ msgctxt "filters-action"
-#~ msgid "Displace pixels in a ripple pattern"
-#~ msgstr "Piltide asukohtade muutmine laine järgi"
-
-#~ msgctxt "filters-action"
-#~ msgid "Specialized direction-dependent edge-detection"
-#~ msgstr "Eriline suunatundlik servatuvastus"
-
-#~ msgctxt "filters-action"
-#~ msgid "Simulate glow by making highlights intense and fuzzy"
-#~ msgstr "Helenduse jäljendamine tehes heledad alad tugevamaks ning hägusaks"
-
-#~ msgctxt "filters-action"
-#~ msgid "Make transparency all-or-nothing"
-#~ msgstr "Järsu servaga läbipaistvus"
-
-#~ msgctxt "filters-action"
-#~ msgid "The most widely used method for sharpening an image"
-#~ msgstr "Kõige levinum meetod pildi teravdamiseks"
-
-#~ msgid "The active path's position are locked."
-#~ msgstr "Aktiivse vektorjoone asukoht on lukustatud."
+#~ "Testsaalefaili pole võimalik avada.\n"
+#~ "\n"
+#~ "Andmekadude vältimiseks kontrolli palun eelistustes määratud saalefailide "
+#~ "kausta asukohta ja ligipääsuõiguseid (hetkel \"%s\")."
+
+#~ msgid "Configuration"
+#~ msgstr "Seadistamine"
+
+#~ msgctxt "config-action"
+#~ msgid "Use _GEGL"
+#~ msgstr "_GEGLi kasutamine"
+
+#~ msgctxt "config-action"
+#~ msgid "If possible, use GEGL for image processing"
+#~ msgstr "Kui võimalik kasutatakse pilditöötluseks GEGL'it"
+
+#~ msgid "Equalize does not operate on indexed layers."
+#~ msgstr "Tasakaalustamine ei tööta indekseeritud kihtidega."
+
+#~ msgid "Invert does not operate on indexed layers."
+#~ msgstr "Inversioon ei tööta indekseeritud kihtidega."
 
 #~ msgctxt "tool-options-action"
 #~ msgid "_Save Options To"
@@ -13487,6 +12816,20 @@ msgstr "Joonistamine ja fotode töötlemine"
 #~ msgid "Zoom in"
 #~ msgstr "Suurenda"
 
+#~ msgid ""
+#~ "Unable to open swap file. GIMP has run out of memory and cannot use the "
+#~ "swap file. Some parts of your images may be corrupted. Try to save your "
+#~ "work using different filenames, restart GIMP and check the location of "
+#~ "the swap directory in your Preferences."
+#~ msgstr ""
+#~ "Saalefaili ei saanud avada. GIMP-il sai mälu otsa ja ei saanud ka "
+#~ "saalefaili kasutama hakata. Mõned osad sinu piltidest võivad olla viga "
+#~ "saanud. Püüa oma töö salvestada teistsuguse failinimega, pane GIMP uuesti "
+#~ "käima ja kontolli häälestustes saalefaili asukohta."
+
+#~ msgid "Failed to resize swap file: %s"
+#~ msgstr "Ei õnnestunud saalefaili suurust muuta: %s"
+
 #~ msgid "Ask for confirmation before closing an image without saving."
 #~ msgstr "Küsi kinnitust enne kui suletakse salvestamata pilt."
 
@@ -13495,15 +12838,48 @@ msgstr "Joonistamine ja fotode töötlemine"
 #~ msgid "Brightness_Contrast"
 #~ msgstr "Heledus-kontrastsus"
 
+#~ msgid "Hue_Saturation"
+#~ msgstr "Värvitoon-küllastus"
+
+#~ msgid "Offset by  x/_2, y/2"
+#~ msgstr "Nihuta  x/_2, y/2 võrra"
+
 #~ msgid "Saving Images"
 #~ msgstr "Piltide salvestamine"
 
 #~ msgid "Confirm closing of unsa_ved images"
 #~ msgstr "Sal_vestamata piltide sulgemisel küsitakse kinnitust"
 
+#~ msgid "Perspective Clone does not operate on indexed layers."
+#~ msgstr "Perspektiiviga kloonimine ei tööta indekseeritud kihtidega."
+
+#~ msgid "Blend does not operate on indexed layers."
+#~ msgstr "Värvisulandusega täitmine ei tööta indekseeritud kihtidega."
+
+#~ msgid "Brightness-Contrast does not operate on indexed layers."
+#~ msgstr "Heledus-kontrastsus ei tööta indekseeritud kihtidel."
+
+#~ msgid "Colorize operates only on RGB color layers."
+#~ msgstr "Toonimine töötab ainult RGB kihtidel."
+
+#~ msgid "Curves does not operate on indexed layers."
+#~ msgstr "Kurvid ei tööta indekseeritud kihtidel."
+
 #~ msgctxt "command"
 #~ msgid "Flip"
 #~ msgstr "Peegeldamine"
+
+#~ msgid "GEGL operations do not operate on indexed layers."
+#~ msgstr "GEGL operatsioonid ei tööta indekseeritud kihtidega."
+
+#~ msgid "_Operation:"
+#~ msgstr "_Operatsioon:"
+
+#~ msgid "Operation Settings"
+#~ msgstr "Operatsiooni sätted"
+
+#~ msgid "Levels does not operate on indexed layers."
+#~ msgstr "Tasemed ei tööta indekseeritud kihtidega."
 
 #, fuzzy
 #~ msgctxt "tool"
@@ -13525,6 +12901,9 @@ msgstr "Joonistamine ja fotode töötlemine"
 #~ msgctxt "command"
 #~ msgid "Shear"
 #~ msgstr "Kallutamine"
+
+#~ msgid "Threshold does not operate on indexed layers."
+#~ msgstr "Lävi ei tööta indekseeritud kihtidel."
 
 #~ msgid "Preview:"
 #~ msgstr "Eelvaade:"
@@ -13579,7 +12958,7 @@ msgstr "Joonistamine ja fotode töötlemine"
 #~ msgstr "Viga tööriista valmisseadistuste salvestamisel: %s"
 
 #~ msgid "Use a running GIMP only, never start a new one"
-#~ msgstr "Kasuta ainult töötavat GIMPi, ära kunagi käivita uut"
+#~ msgstr "Kasuta ainult töötavat GIMP-i, ära kunagi käivita uut"
 
 #~ msgid "Only check if GIMP is running, then quit"
 #~ msgstr "Kontrolli ainult, kas GIMP töötab ja siis välju"
@@ -13591,7 +12970,7 @@ msgstr "Joonistamine ja fotode töötlemine"
 #~ msgstr "Käivita GIMP käivitusakent näitamata"
 
 #~ msgid "Could not connect to GIMP."
-#~ msgstr "Ei saanud GIMPiga ühendust."
+#~ msgstr "Ei saanud GIMP-iga ühendust."
 
 #~ msgid "Make sure that the Toolbox is visible!"
 #~ msgstr "Kontrolli üle, kas Tööriistakast on ikka nähtav!"

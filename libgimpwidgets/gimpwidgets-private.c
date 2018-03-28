@@ -21,19 +21,20 @@
 
 #include "config.h"
 
+#include <babl/babl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
 
 #include "gimpwidgetstypes.h"
 
-#include "gimpstock.h"
+#include "gimpicons.h"
 #include "gimpwidgets-private.h"
 
 #include "libgimp/libgimp-intl.h"
 
-#include "gimp-wilber-pixbufs.h"
 
+static gboolean       gimp_widgets_initialized  = FALSE;
 
 GimpHelpFunc          _gimp_standard_help_func  = NULL;
 GimpGetColorFunc      _gimp_get_foreground_func = NULL;
@@ -64,20 +65,6 @@ gimp_widgets_init (GimpHelpFunc          standard_help_func,
                    GimpGetColorFunc      get_background_func,
                    GimpEnsureModulesFunc ensure_modules_func)
 {
-  static gboolean  gimp_widgets_initialized = FALSE;
-
-  GdkPixbuf *pixbuf;
-  GList     *icon_list = NULL;
-  gint       i;
-
-  const guint8 *inline_pixbufs[] =
-  {
-    wilber_64,
-    wilber_48,
-    wilber_32,
-    wilber_16
-  };
-
   g_return_if_fail (standard_help_func != NULL);
 
   if (gimp_widgets_initialized)
@@ -88,19 +75,32 @@ gimp_widgets_init (GimpHelpFunc          standard_help_func,
   _gimp_get_background_func = get_background_func;
   _gimp_ensure_modules_func = ensure_modules_func;
 
-  gimp_stock_init ();
+  babl_init (); /* color selectors use babl */
 
-  for (i = 0; i < G_N_ELEMENTS (inline_pixbufs); i++)
-    {
-      pixbuf = gdk_pixbuf_new_from_inline (-1, inline_pixbufs[i], FALSE, NULL);
-      icon_list = g_list_prepend (icon_list, pixbuf);
-    }
+  gimp_icons_init ();
 
-  gtk_window_set_default_icon_list (icon_list);
-
-  g_list_free_full (icon_list, (GDestroyNotify) g_object_unref);
+  gtk_window_set_default_icon_name (GIMP_ICON_WILBER);
 
   gimp_widgets_init_foreign_enums ();
 
   gimp_widgets_initialized = TRUE;
 }
+
+/* clean up babl (in particular, so that the fish cache is constructed) if the
+ * compiler supports destructors
+ */
+#ifdef HAVE_FUNC_ATTRIBUTE_DESTRUCTOR
+
+__attribute__ ((destructor))
+static void
+gimp_widgets_exit (void)
+{
+  if (gimp_widgets_initialized)
+    babl_exit ();
+}
+
+#elif defined (__GNUC__)
+
+#warning babl_init() not paired with babl_exit()
+
+#endif

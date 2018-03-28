@@ -22,6 +22,7 @@
 #define __GIMP_H__
 
 #include <cairo.h>
+#include <gegl.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include <libgimpbase/gimpbase.h>
@@ -38,11 +39,13 @@
 #include <libgimp/gimpbrushselect.h>
 #include <libgimp/gimpchannel.h>
 #include <libgimp/gimpdrawable.h>
+#include <libgimp/gimpedit.h>
 #include <libgimp/gimpfontselect.h>
 #include <libgimp/gimpgimprc.h>
 #include <libgimp/gimpgradients.h>
 #include <libgimp/gimpgradientselect.h>
 #include <libgimp/gimpimage.h>
+#include <libgimp/gimpimagecolorprofile.h>
 #include <libgimp/gimplayer.h>
 #include <libgimp/gimppalette.h>
 #include <libgimp/gimppalettes.h>
@@ -203,8 +206,8 @@ struct _GimpParam
    main (int argc, char *argv[])                        \
    {                                                    \
      /* Use __argc and __argv here, too, as they work   \
-      * better with mingw-w64.				\
-      */						\
+      * better with mingw-w64.                          \
+      */                                                \
      return gimp_main (&PLUG_IN_INFO, __argc, __argv);  \
    }
 #else
@@ -314,6 +317,9 @@ void           gimp_destroy_paramdefs   (GimpParamDef    *paramdefs,
  */
 const gchar  * gimp_get_pdb_error       (void);
 
+/* Retrieve the return status for the last procedure call.
+ */
+GimpPDBStatusType gimp_get_pdb_status   (void);
 
 /* Return various constants given by the GIMP core at plug-in config time.
  */
@@ -324,6 +330,9 @@ guchar       * gimp_shm_addr            (void) G_GNUC_CONST;
 gdouble        gimp_gamma               (void) G_GNUC_CONST;
 gboolean       gimp_show_tool_tips      (void) G_GNUC_CONST;
 gboolean       gimp_show_help_button    (void) G_GNUC_CONST;
+gboolean       gimp_export_exif         (void) G_GNUC_CONST;
+gboolean       gimp_export_xmp          (void) G_GNUC_CONST;
+gboolean       gimp_export_iptc         (void) G_GNUC_CONST;
 GimpCheckSize  gimp_check_size          (void) G_GNUC_CONST;
 GimpCheckType  gimp_check_type          (void) G_GNUC_CONST;
 gint32         gimp_default_display     (void) G_GNUC_CONST;
@@ -334,20 +343,25 @@ guint32        gimp_user_time           (void) G_GNUC_CONST;
 
 const gchar  * gimp_get_progname        (void) G_GNUC_CONST;
 
-#ifndef GIMP_DISABLE_DEPRECATED
+GIMP_DEPRECATED
 gboolean       gimp_install_cmap        (void) G_GNUC_CONST;
+GIMP_DEPRECATED
 gint           gimp_min_colors          (void) G_GNUC_CONST;
 
+GIMP_DEPRECATED_FOR(gimp_get_parasite)
 GimpParasite * gimp_parasite_find       (const gchar        *name);
+GIMP_DEPRECATED_FOR(gimp_attach_parasite)
 gboolean       gimp_parasite_attach     (const GimpParasite *parasite);
+GIMP_DEPRECATED_FOR(gimp_detach_parasite)
 gboolean       gimp_parasite_detach     (const gchar        *name);
+GIMP_DEPRECATED_FOR(gimp_get_parasite_list)
 gboolean       gimp_parasite_list       (gint               *num_parasites,
                                          gchar            ***parasites);
+GIMP_DEPRECATED_FOR(gimp_attach_parasite)
 gboolean       gimp_attach_new_parasite (const gchar        *name,
                                          gint                flags,
                                          gint                size,
                                          gconstpointer       data);
-#endif /* GIMP_DISABLE_DEPRECATED */
 
 
 G_END_DECLS

@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "vectors-types.h"
@@ -68,10 +69,9 @@ gimp_vectors_mod_undo_constructed (GObject *object)
   GimpVectorsModUndo *vectors_mod_undo = GIMP_VECTORS_MOD_UNDO (object);
   GimpVectors        *vectors;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_VECTORS (GIMP_ITEM_UNDO (object)->item));
+  gimp_assert (GIMP_IS_VECTORS (GIMP_ITEM_UNDO (object)->item));
 
   vectors = GIMP_VECTORS (GIMP_ITEM_UNDO (object)->item);
 
@@ -135,11 +135,7 @@ gimp_vectors_mod_undo_free (GimpUndo     *undo,
 {
   GimpVectorsModUndo *vectors_mod_undo = GIMP_VECTORS_MOD_UNDO (undo);
 
-  if (vectors_mod_undo->vectors)
-    {
-      g_object_unref (vectors_mod_undo->vectors);
-      vectors_mod_undo->vectors = NULL;
-    }
+  g_clear_object (&vectors_mod_undo->vectors);
 
   GIMP_UNDO_CLASS (parent_class)->free (undo, undo_mode);
 }

@@ -16,6 +16,7 @@ menudata_DATA = \
 	channels-menu.xml		\
 	colormap-menu.xml		\
 	cursor-info-menu.xml		\
+	dashboard-menu.xml		\
 	documents-menu.xml		\
 	dynamics-editor-menu.xml	\
 	dynamics-menu.xml		\
@@ -25,6 +26,7 @@ menudata_DATA = \
 	gradients-menu.xml		\
 	images-menu.xml			\
 	layers-menu.xml			\
+	mypaint-brushes-menu.xml	\
 	palette-editor-menu.xml		\
 	palettes-menu.xml		\
 	patterns-menu.xml		\

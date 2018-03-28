@@ -26,10 +26,8 @@
 #include "gimp.h"
 
 #include "gimpuitypes.h"
-#include "gimppaletteselectbutton.h"
-
-#undef GIMP_DISABLE_DEPRECATED
 #include "gimppalettemenu.h"
+#include "gimppaletteselectbutton.h"
 
 
 /**
@@ -60,7 +58,7 @@ static void compat_callback_data_free (CompatCallbackData      *data);
  * @title:        Title of the dialog to use or %NULL to use the default title.
  * @palette_name: Initial palette name.
  * @callback:     A function to call when the selected palette changes.
- * @data:         A pointer to arbitary data to be used in the call to @callback.
+ * @data:         A pointer to arbitrary data to be used in the call to @callback.
  *
  * Creates a new #GtkWidget that completely controls the selection of
  * a palette.  This widget is suitable for placement in a table in a
@@ -68,7 +66,7 @@ static void compat_callback_data_free (CompatCallbackData      *data);
  *
  * Returns: A #GtkWidget that you can use in your UI.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  */
 GtkWidget *
 gimp_palette_select_widget_new (const gchar            *title,
@@ -102,7 +100,7 @@ gimp_palette_select_widget_new (const gchar            *title,
  *
  * Closes the popup window associated with @widget.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  */
 void
 gimp_palette_select_widget_close (GtkWidget *widget)
@@ -121,7 +119,7 @@ gimp_palette_select_widget_close (GtkWidget *widget)
  * callback function if one was supplied in the call to
  * gimp_palette_select_widget_new().
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  */
 void
 gimp_palette_select_widget_set (GtkWidget   *widget,

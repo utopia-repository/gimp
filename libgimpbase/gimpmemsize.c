@@ -22,7 +22,8 @@
 
 #include <glib-object.h>
 
-#undef GIMP_DISABLE_DEPRECATED
+#include "gimpbasetypes.h"
+
 #include "gimpmemsize.h"
 
 #include "libgimp/libgimp-intl.h"
@@ -75,7 +76,7 @@ gimp_memsize_get_type (void)
  *
  * Return value: A newly allocated string representation of @memsize.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gchar *
 gimp_memsize_serialize (guint64 memsize)
@@ -101,7 +102,7 @@ gimp_memsize_serialize (guint64 memsize)
  * Return value: %TRUE if the @string was successfully parsed and
  *               @memsize has been set, %FALSE otherwise.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_memsize_deserialize (const gchar *string,
@@ -214,7 +215,7 @@ static void  gimp_param_memsize_class_init (GParamSpecClass *class);
  *
  * Returns: the #GType for a memsize object
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 GType
 gimp_param_memsize_get_type (void)
@@ -251,7 +252,7 @@ gimp_param_memsize_class_init (GParamSpecClass *class)
  * gimp_param_spec_memsize:
  * @name:          Canonical name of the param
  * @nick:          Nickname of the param
- * @blurb:         Brief desciption of param.
+ * @blurb:         Brief description of param.
  * @minimum:       Smallest allowed value of the parameter.
  * @maximum:       Largest allowed value of the parameter.
  * @default_value: Value to use if none is assigned.
@@ -262,7 +263,7 @@ gimp_param_memsize_class_init (GParamSpecClass *class)
  *
  * Returns: a newly allocated #GParamSpec instance
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 GParamSpec *
 gimp_param_spec_memsize (const gchar *name,

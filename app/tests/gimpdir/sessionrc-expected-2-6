@@ -86,7 +86,7 @@
                 (aux-info
                     (show-button-bar "true")
                     (edit-active "true")
-                    (current-data "Standard")
+                    (current-data "Color History")
                     (zoom-factor "2.80"))))))
 (session-info "toplevel"
     (factory-entry "gimp-file-open-dialog")
@@ -98,11 +98,20 @@
 (session-info "toplevel"
     (factory-entry "gimp-empty-image-window")
     (position 140 30)
-    (size 610 190)
-    (open-on-exit))
+    (size 610 190))
+(session-info "toplevel"
+    (factory-entry "gimp-single-image-window")
+    (position 515 470)
+    (size 250 85)
+    (open-on-exit)
+    (aux-info
+        (left-docks-width "1")
+        (right-docks-width "6")
+        (maximized "no")))
 
 (hide-docks no)
-(single-window-mode no)
+(single-window-mode yes)
+(tabs-position 0)
 (last-tip-shown 0)
 
 # end of sessionrc

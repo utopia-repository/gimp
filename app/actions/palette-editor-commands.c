@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -31,6 +32,7 @@
 #include "widgets/gimpcolordialog.h"
 #include "widgets/gimpdialogfactory.h"
 #include "widgets/gimppaletteeditor.h"
+#include "widgets/gimppaletteview.h"
 
 #include "palette-editor-commands.h"
 
@@ -66,7 +68,7 @@ palette_editor_edit_color_cmd_callback (GtkAction *action,
         gimp_color_dialog_new (GIMP_VIEWABLE (palette),
                                data_editor->context,
                                _("Edit Palette Color"),
-                               GIMP_STOCK_PALETTE,
+                               GIMP_ICON_PALETTE,
                                _("Edit Color Palette Entry"),
                                GTK_WIDGET (editor),
                                gimp_dialog_factory_get_singleton (),
@@ -104,15 +106,17 @@ palette_editor_new_color_cmd_callback (GtkAction *action,
 
   if (data_editor->data_editable)
     {
-      GimpPalette *palette = GIMP_PALETTE (data_editor->data);
-      GimpRGB      color;
+      GimpPalette      *palette = GIMP_PALETTE (data_editor->data);
+      GimpPaletteEntry *entry;
+      GimpRGB           color;
 
       if (value)
         gimp_context_get_background (data_editor->context, &color);
       else
         gimp_context_get_foreground (data_editor->context, &color);
 
-      editor->color = gimp_palette_add_entry (palette, -1, NULL, &color);
+      entry = gimp_palette_add_entry (palette, -1, NULL, &color);
+      gimp_palette_view_select_entry (GIMP_PALETTE_VIEW (editor->view), entry);
     }
 }
 

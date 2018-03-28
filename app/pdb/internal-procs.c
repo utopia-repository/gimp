@@ -28,7 +28,7 @@
 #include "internal-procs.h"
 
 
-/* 663 procedures registered total */
+/* 816 procedures registered total */
 
 void
 internal_procs_init (GimpPDB *pdb)
@@ -42,9 +42,10 @@ internal_procs_init (GimpPDB *pdb)
   register_channel_procs (pdb);
   register_color_procs (pdb);
   register_context_procs (pdb);
-  register_convert_procs (pdb);
+  register_debug_procs (pdb);
   register_display_procs (pdb);
   register_drawable_procs (pdb);
+  register_drawable_color_procs (pdb);
   register_drawable_transform_procs (pdb);
   register_dynamics_procs (pdb);
   register_edit_procs (pdb);
@@ -57,11 +58,16 @@ internal_procs_init (GimpPDB *pdb)
   register_gradient_procs (pdb);
   register_gradient_select_procs (pdb);
   register_gradients_procs (pdb);
-  register_grid_procs (pdb);
-  register_guides_procs (pdb);
   register_help_procs (pdb);
   register_image_procs (pdb);
+  register_image_color_profile_procs (pdb);
+  register_image_convert_procs (pdb);
+  register_image_grid_procs (pdb);
+  register_image_guides_procs (pdb);
+  register_image_sample_points_procs (pdb);
   register_image_select_procs (pdb);
+  register_image_transform_procs (pdb);
+  register_image_undo_procs (pdb);
   register_item_procs (pdb);
   register_item_transform_procs (pdb);
   register_layer_procs (pdb);
@@ -75,6 +81,7 @@ internal_procs_init (GimpPDB *pdb)
   register_pattern_select_procs (pdb);
   register_patterns_procs (pdb);
   register_plug_in_procs (pdb);
+  register_plug_in_compat_procs (pdb);
   register_procedural_db_procs (pdb);
   register_progress_procs (pdb);
   register_selection_procs (pdb);
@@ -82,7 +89,6 @@ internal_procs_init (GimpPDB *pdb)
   register_text_layer_procs (pdb);
   register_text_tool_procs (pdb);
   register_transform_tools_procs (pdb);
-  register_undo_procs (pdb);
   register_unit_procs (pdb);
   register_vectors_procs (pdb);
 }

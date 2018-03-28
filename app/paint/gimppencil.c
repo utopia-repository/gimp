@@ -17,7 +17,8 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include "paint-types.h"
 

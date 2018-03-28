@@ -22,6 +22,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -36,10 +37,18 @@
 #define GIMP_ERROR_DIALOG_MAX_MESSAGES 3
 
 
-static void   gimp_error_dialog_finalize (GObject   *object);
-static void   gimp_error_dialog_response (GtkDialog *dialog,
-                                          gint       response_id);
+typedef struct
+{
+  GtkWidget *box;
+  gchar     *domain;
+  gchar     *message;
+} GimpErrorDialogMessage;
 
+static void   gimp_error_dialog_finalize        (GObject   *object);
+static void   gimp_error_dialog_response        (GtkDialog *dialog,
+                                                 gint       response_id);
+
+static void   gimp_error_dialog_message_destroy (gpointer   data);
 
 G_DEFINE_TYPE (GimpErrorDialog, gimp_error_dialog, GIMP_TYPE_DIALOG)
 
@@ -63,7 +72,9 @@ gimp_error_dialog_init (GimpErrorDialog *dialog)
   gtk_window_set_role (GTK_WINDOW (dialog), "gimp-message");
 
   gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-                          GTK_STOCK_OK, GTK_RESPONSE_CLOSE,
+
+                          _("_OK"), GTK_RESPONSE_CLOSE,
+
                           NULL);
 
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CLOSE);
@@ -75,10 +86,8 @@ gimp_error_dialog_init (GimpErrorDialog *dialog)
                       dialog->vbox, TRUE, TRUE, 0);
   gtk_widget_show (dialog->vbox);
 
-  dialog->last_box     = NULL;
-  dialog->last_domain  = NULL;
-  dialog->last_message = NULL;
-  dialog->num_messages = 0;
+  dialog->messages = NULL;
+  dialog->overflow = FALSE;
 }
 
 static void
@@ -86,16 +95,8 @@ gimp_error_dialog_finalize (GObject *object)
 {
   GimpErrorDialog *dialog = GIMP_ERROR_DIALOG (object);
 
-  if (dialog->last_domain)
-    {
-      g_free (dialog->last_domain);
-      dialog->last_domain = NULL;
-    }
-  if (dialog->last_message)
-    {
-      g_free (dialog->last_message);
-      dialog->last_message = NULL;
-    }
+  g_list_free_full (dialog->messages,
+                    gimp_error_dialog_message_destroy);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -105,6 +106,16 @@ gimp_error_dialog_response (GtkDialog *dialog,
                             gint       response_id)
 {
   gtk_widget_destroy (GTK_WIDGET (dialog));
+}
+
+static void
+gimp_error_dialog_message_destroy (gpointer data)
+{
+  GimpErrorDialogMessage *item = (GimpErrorDialogMessage *) data;
+
+  g_free (item->domain);
+  g_free (item->message);
+  g_free (item);
 }
 
 
@@ -122,67 +133,72 @@ gimp_error_dialog_new (const gchar *title)
 
 void
 gimp_error_dialog_add (GimpErrorDialog *dialog,
-                       const gchar     *stock_id,
+                       const gchar     *icon_name,
                        const gchar     *domain,
                        const gchar     *message)
 {
-  GtkWidget *box;
-  gboolean   overflow = FALSE;
+  GimpErrorDialogMessage *item;
+  gboolean                overflow = FALSE;
 
   g_return_if_fail (GIMP_IS_ERROR_DIALOG (dialog));
   g_return_if_fail (domain != NULL);
   g_return_if_fail (message != NULL);
 
-  if (dialog->last_box     &&
-      dialog->last_domain  && strcmp (dialog->last_domain,  domain)  == 0 &&
-      dialog->last_message && strcmp (dialog->last_message, message) == 0)
+  if (dialog->messages)
     {
-      if (gimp_message_box_repeat (GIMP_MESSAGE_BOX (dialog->last_box)))
-        return;
-    }
+      GList *iter = dialog->messages;
 
-  if (dialog->num_messages >= GIMP_ERROR_DIALOG_MAX_MESSAGES)
-    {
-      g_printerr ("%s: %s\n\n", domain, message);
-
-      overflow = TRUE;
-      stock_id = GIMP_STOCK_WILBER_EEK;
-      domain   = _("Too many error messages!");
-      message  = _("Messages are redirected to stderr.");
-
-      if (dialog->last_domain  && strcmp (dialog->last_domain,  domain)  == 0 &&
-          dialog->last_message && strcmp (dialog->last_message, message) == 0)
+      for (; iter; iter = iter->next)
         {
-          return;
+          item = iter->data;
+          if (strcmp (item->domain, domain)   == 0 &&
+              strcmp (item->message, message) == 0)
+            {
+              if (gimp_message_box_repeat (GIMP_MESSAGE_BOX (item->box)))
+                return;
+            }
         }
     }
 
-  box = g_object_new (GIMP_TYPE_MESSAGE_BOX,
-                      "stock-id", stock_id,
-                      NULL);
+  if (g_list_length (dialog->messages) >= GIMP_ERROR_DIALOG_MAX_MESSAGES)
+    {
+      g_printerr ("%s: %s\n\n", domain, message);
 
-  dialog->num_messages++;
+      overflow  = TRUE;
+      icon_name = GIMP_ICON_WILBER_EEK;
+      domain    = _("Too many error messages!");
+      message   = _("Messages are redirected to stderr.");
+
+      if (dialog->overflow)
+        {
+          /* We were already overflowing. */
+          return;
+        }
+      dialog->overflow = TRUE;
+    }
+
+  item = g_new0 (GimpErrorDialogMessage, 1);
+  item->box = g_object_new (GIMP_TYPE_MESSAGE_BOX,
+                            "icon-name", icon_name,
+                            NULL);
+  item->domain  = g_strdup (domain);
+  item->message = g_strdup (message);
 
   if (overflow)
-    gimp_message_box_set_primary_text (GIMP_MESSAGE_BOX (box), "%s", domain);
+    gimp_message_box_set_primary_text (GIMP_MESSAGE_BOX (item->box),
+                                       "%s", domain);
   else
-    gimp_message_box_set_primary_text (GIMP_MESSAGE_BOX (box),
+    gimp_message_box_set_primary_text (GIMP_MESSAGE_BOX (item->box),
                                        /* %s is a message domain,
                                         * like "GIMP Message" or
                                         * "PNG Message"
                                         */
                                        _("%s Message"), domain);
 
-  gimp_message_box_set_text (GIMP_MESSAGE_BOX (box), "%s", message);
+  gimp_message_box_set_text (GIMP_MESSAGE_BOX (item->box), "%s", message);
 
-  gtk_box_pack_start (GTK_BOX (dialog->vbox), box, TRUE, TRUE, 0);
-  gtk_widget_show (box);
+  gtk_box_pack_start (GTK_BOX (dialog->vbox), item->box, TRUE, TRUE, 0);
+  gtk_widget_show (item->box);
 
-  dialog->last_box = box;
-
-  g_free (dialog->last_domain);
-  dialog->last_domain = g_strdup (domain);
-
-  g_free (dialog->last_message);
-  dialog->last_message = g_strdup (message);
+  dialog->messages = g_list_prepend (dialog->messages, item);
 }

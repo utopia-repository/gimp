@@ -34,10 +34,11 @@
 #include "core/gimp.h"
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
-#include "core/gimpimage-pick-layer.h"
+#include "core/gimp-palettes.h"
+#include "core/gimpimage-pick-item.h"
 #include "core/gimpimage-undo.h"
 #include "core/gimpimage-undo-push.h"
-#include "core/gimplayer-floating-sel.h"
+#include "core/gimplayer-floating-selection.h"
 #include "core/gimpmarshal.h"
 #include "core/gimptoolinfo.h"
 #include "core/gimpundostack.h"
@@ -51,6 +52,7 @@
 #include "vectors/gimpvectors-warp.h"
 
 #include "widgets/gimpdialogfactory.h"
+#include "widgets/gimpdockcontainer.h"
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpmenufactory.h"
 #include "widgets/gimptextbuffer.h"
@@ -60,8 +62,8 @@
 #include "display/gimpcanvasgroup.h"
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
+#include "display/gimptoolrectangle.h"
 
-#include "gimprectangletool.h"
 #include "gimptextoptions.h"
 #include "gimptexttool.h"
 #include "gimptexttool-editor.h"
@@ -74,8 +76,6 @@
 
 
 /*  local function prototypes  */
-
-static void gimp_text_tool_rectangle_tool_iface_init (GimpRectangleToolInterface *iface);
 
 static void      gimp_text_tool_constructed     (GObject           *object);
 static void      gimp_text_tool_finalize        (GObject           *object);
@@ -124,10 +124,20 @@ static GimpUIManager * gimp_text_tool_get_popup (GimpTool          *tool,
 static void      gimp_text_tool_draw            (GimpDrawTool      *draw_tool);
 static void      gimp_text_tool_draw_selection  (GimpDrawTool      *draw_tool);
 
+static void      gimp_text_tool_start           (GimpTextTool      *text_tool,
+                                                 GimpDisplay       *display,
+                                                 GimpLayer         *layer);
+static void      gimp_text_tool_halt            (GimpTextTool      *text_tool);
+
 static void      gimp_text_tool_frame_item      (GimpTextTool      *text_tool);
 
-static gboolean  gimp_text_tool_rectangle_change_complete
-                                                (GimpRectangleTool *rect_tool);
+static void      gimp_text_tool_rectangle_response
+                                                (GimpToolRectangle *rectangle,
+                                                 gint               response_id,
+                                                 GimpTextTool      *text_tool);
+static void      gimp_text_tool_rectangle_change_complete
+                                                (GimpToolRectangle *rectangle,
+                                                 GimpTextTool      *text_tool);
 
 static void      gimp_text_tool_connect         (GimpTextTool      *text_tool,
                                                  GimpTextLayer     *layer,
@@ -146,8 +156,8 @@ static void      gimp_text_tool_text_notify     (GimpText          *text,
 static void      gimp_text_tool_text_changed    (GimpText          *text,
                                                  GimpTextTool      *text_tool);
 
-static gboolean  gimp_text_tool_apply           (GimpTextTool      *text_tool,
-                                                 gboolean           push_undo);
+static void      gimp_text_tool_apply_list      (GimpTextTool      *text_tool,
+                                                 GList             *pspecs);
 
 static void      gimp_text_tool_create_layer    (GimpTextTool      *text_tool,
                                                  GimpText          *text);
@@ -168,11 +178,13 @@ static void    gimp_text_tool_buffer_begin_edit (GimpTextBuffer    *buffer,
 static void    gimp_text_tool_buffer_end_edit   (GimpTextBuffer    *buffer,
                                                  GimpTextTool      *text_tool);
 
+static void    gimp_text_tool_buffer_color_applied
+                                                (GimpTextBuffer    *buffer,
+                                                 const GimpRGB     *color,
+                                                 GimpTextTool      *text_tool);
 
-G_DEFINE_TYPE_WITH_CODE (GimpTextTool, gimp_text_tool,
-                         GIMP_TYPE_DRAW_TOOL,
-                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_RECTANGLE_TOOL,
-                                                gimp_text_tool_rectangle_tool_iface_init))
+
+G_DEFINE_TYPE (GimpTextTool, gimp_text_tool, GIMP_TYPE_DRAW_TOOL)
 
 #define parent_class gimp_text_tool_parent_class
 
@@ -184,15 +196,15 @@ gimp_text_tool_register (GimpToolRegisterCallback  callback,
   (* callback) (GIMP_TYPE_TEXT_TOOL,
                 GIMP_TYPE_TEXT_OPTIONS,
                 gimp_text_options_gui,
-                GIMP_CONTEXT_FOREGROUND_MASK |
-                GIMP_CONTEXT_FONT_MASK       |
-                GIMP_CONTEXT_PALETTE_MASK /* for the color popup's palette tab */,
+                GIMP_CONTEXT_PROP_MASK_FOREGROUND |
+                GIMP_CONTEXT_PROP_MASK_FONT       |
+                GIMP_CONTEXT_PROP_MASK_PALETTE /* for the color popup's palette tab */,
                 "gimp-text-tool",
                 _("Text"),
                 _("Text Tool: Create or edit text layers"),
                 N_("Te_xt"), "T",
                 NULL, GIMP_HELP_TOOL_TEXT,
-                GIMP_STOCK_TOOL_TEXT,
+                GIMP_ICON_TOOL_TEXT,
                 data);
 }
 
@@ -205,8 +217,6 @@ gimp_text_tool_class_init (GimpTextToolClass *klass)
 
   object_class->constructed    = gimp_text_tool_constructed;
   object_class->finalize       = gimp_text_tool_finalize;
-  object_class->set_property   = gimp_rectangle_tool_set_property;
-  object_class->get_property   = gimp_rectangle_tool_get_property;
 
   tool_class->control          = gimp_text_tool_control;
   tool_class->button_press     = gimp_text_tool_button_press;
@@ -219,31 +229,12 @@ gimp_text_tool_class_init (GimpTextToolClass *klass)
   tool_class->get_popup        = gimp_text_tool_get_popup;
 
   draw_tool_class->draw        = gimp_text_tool_draw;
-
-  gimp_rectangle_tool_install_properties (object_class);
-}
-
-static void
-gimp_text_tool_rectangle_tool_iface_init (GimpRectangleToolInterface *iface)
-{
-  iface->execute                   = NULL;
-  iface->cancel                    = NULL;
-  iface->rectangle_change_complete = gimp_text_tool_rectangle_change_complete;
 }
 
 static void
 gimp_text_tool_init (GimpTextTool *text_tool)
 {
   GimpTool *tool = GIMP_TOOL (text_tool);
-
-  text_tool->proxy   = NULL;
-  text_tool->pending = NULL;
-  text_tool->idle_id = 0;
-
-  text_tool->text    = NULL;
-  text_tool->layer   = NULL;
-  text_tool->image   = NULL;
-  text_tool->layout  = NULL;
 
   text_tool->buffer = gimp_text_buffer_new ();
 
@@ -252,6 +243,9 @@ gimp_text_tool_init (GimpTextTool *text_tool)
                     text_tool);
   g_signal_connect (text_tool->buffer, "end-user-action",
                     G_CALLBACK (gimp_text_tool_buffer_end_edit),
+                    text_tool);
+  g_signal_connect (text_tool->buffer, "color-applied",
+                    G_CALLBACK (gimp_text_tool_buffer_color_applied),
                     text_tool);
 
   text_tool->handle_rectangle_change_complete = TRUE;
@@ -264,6 +258,8 @@ gimp_text_tool_init (GimpTextTool *text_tool)
   gimp_tool_control_set_wants_double_click   (tool->control, TRUE);
   gimp_tool_control_set_wants_triple_click   (tool->control, TRUE);
   gimp_tool_control_set_wants_all_key_events (tool->control, TRUE);
+  gimp_tool_control_set_active_modifiers     (tool->control,
+                                              GIMP_TOOL_ACTIVE_MODIFIERS_SEPARATE);
   gimp_tool_control_set_precision            (tool->control,
                                               GIMP_CURSOR_PRECISION_PIXEL_BORDER);
   gimp_tool_control_set_tool_cursor          (tool->control,
@@ -278,10 +274,7 @@ gimp_text_tool_constructed (GObject *object)
   GimpTextTool    *text_tool = GIMP_TEXT_TOOL (object);
   GimpTextOptions *options   = GIMP_TEXT_TOOL_GET_OPTIONS (text_tool);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
-
-  gimp_rectangle_tool_constructor (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   text_tool->proxy = g_object_new (GIMP_TYPE_TEXT, NULL);
 
@@ -290,10 +283,6 @@ gimp_text_tool_constructed (GObject *object)
   g_signal_connect_object (text_tool->proxy, "notify",
                            G_CALLBACK (gimp_text_tool_proxy_notify),
                            text_tool, 0);
-
-  g_object_set (options,
-                "highlight", FALSE,
-                NULL);
 }
 
 static void
@@ -301,21 +290,43 @@ gimp_text_tool_finalize (GObject *object)
 {
   GimpTextTool *text_tool = GIMP_TEXT_TOOL (object);
 
-  if (text_tool->proxy)
-    {
-      g_object_unref (text_tool->proxy);
-      text_tool->proxy = NULL;
-    }
-
-  if (text_tool->buffer)
-    {
-      g_object_unref (text_tool->buffer);
-      text_tool->buffer = NULL;
-    }
+  g_clear_object (&text_tool->proxy);
+  g_clear_object (&text_tool->buffer);
 
   gimp_text_tool_editor_finalize (text_tool);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
+}
+
+static void
+gimp_text_tool_remove_empty_text_layer (GimpTextTool *text_tool)
+{
+  GimpTextLayer *text_layer = text_tool->layer;
+
+  if (text_layer && text_layer->auto_rename)
+    {
+      GimpText *text = gimp_text_layer_get_text (text_layer);
+
+      if (text && text->box_mode == GIMP_TEXT_BOX_DYNAMIC &&
+          (! text->text || text->text[0] == '\0') &&
+          (! text->markup || text->markup[0] == '\0'))
+        {
+          GimpImage *image = gimp_item_get_image (GIMP_ITEM (text_layer));
+
+          if (text_tool->image == image)
+            g_signal_handlers_block_by_func (image,
+                                             gimp_text_tool_layer_changed,
+                                             text_tool);
+
+          gimp_image_remove_layer (image, GIMP_LAYER (text_layer), TRUE, NULL);
+          gimp_image_flush (image);
+
+          if (text_tool->image == image)
+            g_signal_handlers_unblock_by_func (image,
+                                               gimp_text_tool_layer_changed,
+                                               text_tool);
+        }
+    }
 }
 
 static void
@@ -332,12 +343,12 @@ gimp_text_tool_control (GimpTool       *tool,
       break;
 
     case GIMP_TOOL_ACTION_HALT:
-      gimp_text_tool_editor_halt (text_tool);
-      gimp_text_tool_set_drawable (text_tool, NULL, FALSE);
+      gimp_text_tool_halt (text_tool);
+      break;
+
+    case GIMP_TOOL_ACTION_COMMIT:
       break;
     }
-
-  gimp_rectangle_tool_control (tool, action, display);
 
   GIMP_TOOL_CLASS (parent_class)->control (tool, action, display);
 }
@@ -351,40 +362,65 @@ gimp_text_tool_button_press (GimpTool            *tool,
                              GimpDisplay         *display)
 {
   GimpTextTool      *text_tool = GIMP_TEXT_TOOL (tool);
-  GimpRectangleTool *rect_tool = GIMP_RECTANGLE_TOOL (tool);
   GimpImage         *image     = gimp_display_get_image (display);
   GimpText          *text      = text_tool->text;
+  GimpToolRectangle *rectangle;
 
   gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
   if (tool->display && tool->display != display)
     gimp_tool_control (tool, GIMP_TOOL_ACTION_HALT, display);
 
+  if (! text_tool->widget)
+    {
+      gimp_text_tool_start (text_tool, display, NULL);
+
+      gimp_tool_widget_hover (text_tool->widget, coords, state, TRUE);
+
+      /* HACK: force CREATING on a newly created rectangle; otherwise,
+       * the above binding of properties would cause the rectangle to
+       * start with the size from tool options.
+       */
+      gimp_tool_rectangle_set_function (GIMP_TOOL_RECTANGLE (text_tool->widget),
+                                        GIMP_TOOL_RECTANGLE_CREATING);
+    }
+
+  rectangle = GIMP_TOOL_RECTANGLE (text_tool->widget);
+
   if (press_type == GIMP_BUTTON_PRESS_NORMAL)
     {
       gimp_tool_control_activate (tool->control);
 
-      gimp_text_tool_reset_im_context (text_tool);
+      /* clicking anywhere while a preedit is going on aborts the
+       * preedit, this is ugly but at least leaves everything in
+       * a consistent state
+       */
+      if (text_tool->preedit_active)
+        gimp_text_tool_abort_im_context (text_tool);
+      else
+        gimp_text_tool_reset_im_context (text_tool);
 
       text_tool->selecting = FALSE;
 
-      if (gimp_rectangle_tool_point_in_rectangle (rect_tool,
+      if (gimp_tool_rectangle_point_in_rectangle (rectangle,
                                                   coords->x,
                                                   coords->y) &&
           ! text_tool->moving)
         {
-          gimp_rectangle_tool_set_function (rect_tool, GIMP_RECTANGLE_TOOL_DEAD);
+          gimp_tool_rectangle_set_function (rectangle,
+                                            GIMP_TOOL_RECTANGLE_DEAD);
         }
-      else
+      else if (gimp_tool_widget_button_press (text_tool->widget, coords,
+                                              time, state, press_type))
         {
-          gimp_rectangle_tool_button_press (tool, coords, time, state, display);
+          text_tool->grab_widget = text_tool->widget;
         }
 
       /*  bail out now if the user user clicked on a handle of an
        *  existing rectangle, but not inside an existing framed layer
        */
-      if (gimp_rectangle_tool_get_function (rect_tool) !=
-          GIMP_RECTANGLE_TOOL_CREATING)
+      if (gimp_tool_rectangle_get_function (rectangle) !=
+          GIMP_TOOL_RECTANGLE_CREATING)
         {
           if (text_tool->layer)
             {
@@ -410,8 +446,8 @@ gimp_text_tool_button_press (GimpTool            *tool,
        * layer in any way, try to pick a text layer
        */
       if (! text_tool->moving &&
-          gimp_rectangle_tool_get_function (rect_tool) ==
-          GIMP_RECTANGLE_TOOL_CREATING)
+          gimp_tool_rectangle_get_function (rectangle) ==
+          GIMP_TOOL_RECTANGLE_CREATING)
         {
           GimpTextLayer *text_layer;
 
@@ -450,11 +486,11 @@ gimp_text_tool_button_press (GimpTool            *tool,
                *  (didn't show a rectangle), frame the layer and switch to
                *  selecting instead of drawing a new rectangle
                */
-              if (gimp_rectangle_tool_get_function (rect_tool) ==
-                  GIMP_RECTANGLE_TOOL_CREATING)
+              if (gimp_tool_rectangle_get_function (rectangle) ==
+                  GIMP_TOOL_RECTANGLE_CREATING)
                 {
-                  gimp_rectangle_tool_set_function (rect_tool,
-                                                    GIMP_RECTANGLE_TOOL_DEAD);
+                  gimp_tool_rectangle_set_function (rectangle,
+                                                    GIMP_TOOL_RECTANGLE_DEAD);
 
                   gimp_text_tool_frame_item (text_tool);
                 }
@@ -502,8 +538,8 @@ gimp_text_tool_button_release (GimpTool              *tool,
                                GimpButtonReleaseType  release_type,
                                GimpDisplay           *display)
 {
-  GimpRectangleTool *rect_tool = GIMP_RECTANGLE_TOOL (tool);
   GimpTextTool      *text_tool = GIMP_TEXT_TOOL (tool);
+  GimpToolRectangle *rectangle = GIMP_TOOL_RECTANGLE (text_tool->widget);
 
   gimp_tool_control_halt (tool->control);
 
@@ -550,8 +586,8 @@ gimp_text_tool_button_release (GimpTool              *tool,
        *  setting text layer's new position.
        */
     }
-  else if (gimp_rectangle_tool_get_function (rect_tool) ==
-           GIMP_RECTANGLE_TOOL_DEAD)
+  else if (gimp_tool_rectangle_get_function (rectangle) ==
+           GIMP_TOOL_RECTANGLE_DEAD)
     {
       /*  the user clicked in dead space (like between the corner and
        *  edge handles, so completely ignore that.
@@ -561,18 +597,14 @@ gimp_text_tool_button_release (GimpTool              *tool,
     }
   else if (release_type == GIMP_BUTTON_RELEASE_CANCEL)
     {
-      /*  user has clicked outside of any text layer in order to
-       *  create a new text, but cancelled the operation.
+      /*  user has canceled the rectangle resizing, fall through
+       *  and let the rectangle handle restoring the previous size
        */
-
-      gimp_text_tool_editor_halt (text_tool);
-
-      text_tool->handle_rectangle_change_complete = FALSE;
     }
   else
     {
-      gint x1, y1;
-      gint x2, y2;
+      gdouble x1, y1;
+      gdouble x2, y2;
 
       /*  otherwise the user has clicked outside of any text layer in
        *  order to create a new text, fall through and let
@@ -580,7 +612,7 @@ gimp_text_tool_button_release (GimpTool              *tool,
        *  layer's size.
        */
 
-      g_object_get (text_tool,
+      g_object_get (rectangle,
                     "x1", &x1,
                     "y1", &y1,
                     "x2", &x2,
@@ -605,8 +637,12 @@ gimp_text_tool_button_release (GimpTool              *tool,
         }
     }
 
-  gimp_rectangle_tool_button_release (tool, coords, time, state,
-                                      release_type, display);
+  if (text_tool->grab_widget)
+    {
+      gimp_tool_widget_button_release (text_tool->grab_widget,
+                                       coords, time, state, release_type);
+      text_tool->grab_widget = NULL;
+    }
 
   text_tool->handle_rectangle_change_complete = TRUE;
 }
@@ -622,7 +658,11 @@ gimp_text_tool_motion (GimpTool         *tool,
 
   if (! text_tool->selecting)
     {
-      gimp_rectangle_tool_motion (tool, coords, time, state, display);
+      if (text_tool->grab_widget)
+        {
+          gimp_tool_widget_motion (text_tool->grab_widget,
+                                   coords, time, state);
+        }
     }
   else
     {
@@ -668,12 +708,14 @@ gimp_text_tool_oper_update (GimpTool         *tool,
                             GimpDisplay      *display)
 {
   GimpTextTool      *text_tool = GIMP_TEXT_TOOL (tool);
-  GimpRectangleTool *rect_tool = GIMP_RECTANGLE_TOOL (tool);
+  GimpToolRectangle *rectangle = GIMP_TOOL_RECTANGLE (text_tool->widget);
 
-  gimp_rectangle_tool_oper_update (tool, coords, state, proximity, display);
+  GIMP_TOOL_CLASS (parent_class)->oper_update (tool, coords, state,
+                                               proximity, display);
 
-  text_tool->moving = (gimp_rectangle_tool_get_function (rect_tool) ==
-                       GIMP_RECTANGLE_TOOL_MOVING &&
+  text_tool->moving = (text_tool->widget &&
+                       gimp_tool_rectangle_get_function (rectangle) ==
+                       GIMP_TOOL_RECTANGLE_MOVING &&
                        (state & GDK_MOD1_MASK));
 }
 
@@ -683,32 +725,32 @@ gimp_text_tool_cursor_update (GimpTool         *tool,
                               GdkModifierType   state,
                               GimpDisplay      *display)
 {
-  if (tool->display == display)
-    {
-      GimpTextTool *text_tool = GIMP_TEXT_TOOL (tool);
+  GimpTextTool      *text_tool = GIMP_TEXT_TOOL (tool);
+  GimpToolRectangle *rectangle = GIMP_TOOL_RECTANGLE (text_tool->widget);
 
-      if (gimp_rectangle_tool_point_in_rectangle (GIMP_RECTANGLE_TOOL (tool),
+  if (rectangle && tool->display == display)
+    {
+      if (gimp_tool_rectangle_point_in_rectangle (rectangle,
                                                   coords->x,
                                                   coords->y) &&
           ! text_tool->moving)
         {
-          gimp_tool_control_set_cursor          (tool->control, GDK_XTERM);
-          gimp_tool_control_set_cursor_modifier (tool->control,
-                                                 GIMP_CURSOR_MODIFIER_NONE);
+          gimp_tool_set_cursor (tool, display,
+                                (GimpCursorType) GDK_XTERM,
+                                gimp_tool_control_get_tool_cursor (tool->control),
+                                GIMP_CURSOR_MODIFIER_NONE);
         }
       else
         {
-          gimp_rectangle_tool_cursor_update (tool, coords, state, display);
+          GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords, state,
+                                                         display);
         }
     }
   else
     {
-      gimp_tool_control_set_cursor          (tool->control, GDK_XTERM);
-      gimp_tool_control_set_cursor_modifier (tool->control,
-                                             GIMP_CURSOR_MODIFIER_NONE);
+      GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords, state,
+                                                     display);
     }
-
-  GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords, state, display);
 }
 
 static GimpUIManager *
@@ -718,19 +760,24 @@ gimp_text_tool_get_popup (GimpTool         *tool,
                           GimpDisplay      *display,
                           const gchar     **ui_path)
 {
-  GimpTextTool *text_tool = GIMP_TEXT_TOOL (tool);
+  GimpTextTool      *text_tool = GIMP_TEXT_TOOL (tool);
+  GimpToolRectangle *rectangle = GIMP_TOOL_RECTANGLE (text_tool->widget);
 
-  if (gimp_rectangle_tool_point_in_rectangle (GIMP_RECTANGLE_TOOL (text_tool),
+  if (rectangle &&
+      gimp_tool_rectangle_point_in_rectangle (rectangle,
                                               coords->x,
                                               coords->y))
     {
       if (! text_tool->ui_manager)
         {
+          GimpDisplayShell  *shell = gimp_display_get_shell (tool->display);
+          GimpImageWindow   *image_window;
           GimpDialogFactory *dialog_factory;
           GtkWidget         *im_menu;
           GList             *children;
 
-          dialog_factory = gimp_dialog_factory_get_singleton ();
+          image_window   = gimp_display_shell_get_window (shell);
+          dialog_factory = gimp_dock_container_get_dialog_factory (GIMP_DOCK_CONTAINER (image_window));
 
           text_tool->ui_manager =
             gimp_menu_factory_manager_new (gimp_dialog_factory_get_menu_factory (dialog_factory),
@@ -770,17 +817,13 @@ gimp_text_tool_draw (GimpDrawTool *draw_tool)
 {
   GimpTextTool *text_tool = GIMP_TEXT_TOOL (draw_tool);
 
-  g_object_set (text_tool,
-                "narrow-mode", TRUE,
-                NULL);
-
-  gimp_rectangle_tool_draw (draw_tool, NULL);
+  GIMP_DRAW_TOOL_CLASS (parent_class)->draw (draw_tool);
 
   if (! text_tool->text  ||
       ! text_tool->layer ||
       ! text_tool->layer->text)
     {
-      gimp_text_tool_editor_update_im_rect (text_tool);
+      gimp_text_tool_editor_update_im_cursor (text_tool);
 
       return;
     }
@@ -817,7 +860,7 @@ gimp_text_tool_draw (GimpDrawTool *draw_tool)
       gimp_canvas_item_set_highlight (item, TRUE);
     }
 
-  gimp_text_tool_editor_update_im_rect (text_tool);
+  gimp_text_tool_editor_update_im_cursor (text_tool);
 }
 
 static void
@@ -825,7 +868,7 @@ gimp_text_tool_draw_selection (GimpDrawTool *draw_tool)
 {
   GimpTextTool    *text_tool = GIMP_TEXT_TOOL (draw_tool);
   GtkTextBuffer   *buffer    = GTK_TEXT_BUFFER (text_tool->buffer);
-  GimpCanvasGroup *fill_group;
+  GimpCanvasGroup *group;
   PangoLayout     *layout;
   gint             offset_x;
   gint             offset_y;
@@ -835,8 +878,8 @@ gimp_text_tool_draw_selection (GimpDrawTool *draw_tool)
   gint             min, max;
   gint             i;
 
-  fill_group = gimp_draw_tool_add_fill_group (draw_tool);
-  gimp_canvas_item_set_highlight (GIMP_CANVAS_ITEM (fill_group), TRUE);
+  group = gimp_draw_tool_add_stroke_group (draw_tool);
+  gimp_canvas_item_set_highlight (GIMP_CANVAS_ITEM (group), TRUE);
 
   gtk_text_buffer_get_selection_bounds (buffer, &sel_start, &sel_end);
 
@@ -853,7 +896,7 @@ gimp_text_tool_draw_selection (GimpDrawTool *draw_tool)
 
   iter = pango_layout_get_iter (layout);
 
-  gimp_draw_tool_push_group (draw_tool, fill_group);
+  gimp_draw_tool_push_group (draw_tool, group);
 
   do
     {
@@ -880,7 +923,7 @@ gimp_text_tool_draw_selection (GimpDrawTool *draw_tool)
           rect.x += offset_x;
           rect.y += offset_y;
 
-          gimp_draw_tool_add_rectangle (draw_tool, TRUE,
+          gimp_draw_tool_add_rectangle (draw_tool, FALSE,
                                         rect.x, rect.y,
                                         rect.width, rect.height);
         }
@@ -893,30 +936,99 @@ gimp_text_tool_draw_selection (GimpDrawTool *draw_tool)
 }
 
 static void
+gimp_text_tool_start (GimpTextTool *text_tool,
+                      GimpDisplay  *display,
+                      GimpLayer    *layer)
+{
+  GimpTool         *tool  = GIMP_TOOL (text_tool);
+  GimpDisplayShell *shell = gimp_display_get_shell (display);
+  GimpToolWidget   *widget;
+
+  tool->display = display;
+
+  text_tool->widget = widget = gimp_tool_rectangle_new (shell);
+
+  g_object_set (widget,
+                "force-narrow-mode", TRUE,
+                "status-title",      _("Text box: "),
+                NULL);
+
+  gimp_draw_tool_set_widget (GIMP_DRAW_TOOL (tool), widget);
+
+  g_signal_connect (widget, "response",
+                    G_CALLBACK (gimp_text_tool_rectangle_response),
+                    text_tool);
+  g_signal_connect (widget, "change-complete",
+                    G_CALLBACK (gimp_text_tool_rectangle_change_complete),
+                    text_tool);
+
+  gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), display);
+
+  if (layer)
+    {
+      gimp_text_tool_frame_item (text_tool);
+      gimp_text_tool_editor_start (text_tool);
+      gimp_text_tool_editor_position (text_tool);
+    }
+}
+
+static void
+gimp_text_tool_halt (GimpTextTool *text_tool)
+{
+  GimpTool *tool = GIMP_TOOL (text_tool);
+
+  gimp_text_tool_editor_halt (text_tool);
+  gimp_text_tool_clear_layout (text_tool);
+  gimp_text_tool_set_drawable (text_tool, NULL, FALSE);
+
+  if (gimp_draw_tool_is_active (GIMP_DRAW_TOOL (tool)))
+    gimp_draw_tool_stop (GIMP_DRAW_TOOL (tool));
+
+  gimp_draw_tool_set_widget (GIMP_DRAW_TOOL (tool), NULL);
+  g_clear_object (&text_tool->widget);
+
+  tool->display  = NULL;
+  tool->drawable = NULL;
+}
+
+static void
 gimp_text_tool_frame_item (GimpTextTool *text_tool)
 {
   g_return_if_fail (GIMP_IS_LAYER (text_tool->layer));
 
   text_tool->handle_rectangle_change_complete = FALSE;
 
-  gimp_rectangle_tool_frame_item (GIMP_RECTANGLE_TOOL (text_tool),
+  gimp_tool_rectangle_frame_item (GIMP_TOOL_RECTANGLE (text_tool->widget),
                                   GIMP_ITEM (text_tool->layer));
 
   text_tool->handle_rectangle_change_complete = TRUE;
 }
 
-static gboolean
-gimp_text_tool_rectangle_change_complete (GimpRectangleTool *rect_tool)
+static void
+gimp_text_tool_rectangle_response (GimpToolRectangle *rectangle,
+                                   gint               response_id,
+                                   GimpTextTool      *text_tool)
 {
-  GimpTextTool *text_tool = GIMP_TEXT_TOOL (rect_tool);
+  GimpTool *tool = GIMP_TOOL (text_tool);
 
+  /* this happens when a newly created rectangle gets canceled,
+   * we have to shut down the tool
+   */
+  if (response_id == GIMP_TOOL_WIDGET_RESPONSE_CANCEL)
+    gimp_tool_control (tool, GIMP_TOOL_ACTION_HALT, tool->display);
+}
+
+static void
+gimp_text_tool_rectangle_change_complete (GimpToolRectangle *rectangle,
+                                          GimpTextTool      *text_tool)
+{
   gimp_text_tool_editor_position (text_tool);
 
   if (text_tool->handle_rectangle_change_complete)
     {
       GimpItem *item = GIMP_ITEM (text_tool->layer);
-      gint      x1, y1;
-      gint      x2, y2;
+      gdouble   x1, y1;
+      gdouble   x2, y2;
 
       if (! item)
         {
@@ -927,10 +1039,10 @@ gimp_text_tool_rectangle_change_complete (GimpRectangleTool *rect_tool)
            */
           text_tool->text_box_fixed = TRUE;
 
-          return TRUE;
+          return;
         }
 
-      g_object_get (rect_tool,
+      g_object_get (rectangle,
                     "x1", &x1,
                     "y1", &y1,
                     "x2", &x2,
@@ -989,8 +1101,6 @@ gimp_text_tool_rectangle_change_complete (GimpRectangleTool *rect_tool)
             gimp_image_undo_group_end (text_tool->image);
         }
     }
-
-  return TRUE;
 }
 
 static void
@@ -1025,8 +1135,7 @@ gimp_text_tool_connect (GimpTextTool  *text_tool,
           if (text_tool->pending)
             gimp_text_tool_apply (text_tool, TRUE);
 
-          g_object_unref (text_tool->text);
-          text_tool->text = NULL;
+          g_clear_object (&text_tool->text);
 
           g_object_set (text_tool->proxy,
                         "text",   NULL,
@@ -1081,6 +1190,8 @@ gimp_text_tool_connect (GimpTextTool  *text_tool,
                                               gimp_text_tool_layer_notify,
                                               text_tool);
 
+      gimp_text_tool_remove_empty_text_layer (text_tool);
+
       text_tool->layer = layer;
 
       if (layer)
@@ -1126,17 +1237,59 @@ gimp_text_tool_proxy_notify (GimpText         *text,
   if ((pspec->flags & G_PARAM_READWRITE) == G_PARAM_READWRITE &&
       pspec->owner_type == GIMP_TYPE_TEXT)
     {
-      gimp_text_tool_block_drawing (text_tool);
+      if (text_tool->preedit_active)
+        {
+          /* if there is a preedit going on, don't queue pending
+           * changes to be idle-applied with undo; instead, flush the
+           * pending queue (happens only when preedit starts), and
+           * apply the changes to text_tool->text directly. Preedit
+           * will *always* end by removing the preedit string, and if
+           * the preedit was committed, it will insert the resulting
+           * text, which will not trigger this if() any more.
+           */
 
-      text_tool->pending = g_list_append (text_tool->pending, (gpointer) pspec);
+          GList *list = NULL;
 
-      if (text_tool->idle_id)
-        g_source_remove (text_tool->idle_id);
+         /* if there are pending changes, apply them before applying
+           * preedit stuff directly (bypassing undo)
+           */
+          if (text_tool->pending)
+            {
+              gimp_text_tool_block_drawing (text_tool);
+              gimp_text_tool_apply (text_tool, TRUE);
+            }
 
-      text_tool->idle_id =
-        g_idle_add_full (G_PRIORITY_LOW,
-                         gimp_text_tool_apply_idle, text_tool,
-                         NULL);
+          gimp_text_tool_block_drawing (text_tool);
+
+          list = g_list_append (list, (gpointer) pspec);
+          gimp_text_tool_apply_list (text_tool, list);
+          g_list_free (list);
+
+          gimp_text_tool_frame_item (text_tool);
+
+          gimp_image_flush (gimp_item_get_image (GIMP_ITEM (text_tool->layer)));
+
+          gimp_text_tool_unblock_drawing (text_tool);
+        }
+      else
+        {
+          /* else queue the property change for normal processing,
+           * including undo
+           */
+
+          gimp_text_tool_block_drawing (text_tool);
+
+          text_tool->pending = g_list_append (text_tool->pending,
+                                              (gpointer) pspec);
+
+          if (text_tool->idle_id)
+            g_source_remove (text_tool->idle_id);
+
+          text_tool->idle_id =
+            g_idle_add_full (G_PRIORITY_LOW,
+                             gimp_text_tool_apply_idle, text_tool,
+                             NULL);
+        }
     }
 }
 
@@ -1147,11 +1300,15 @@ gimp_text_tool_text_notify (GimpText         *text,
 {
   g_return_if_fail (text == text_tool->text);
 
+  /* an undo cancels all preedit operations */
+  if (text_tool->preedit_active)
+    gimp_text_tool_abort_im_context (text_tool);
+
   gimp_text_tool_block_drawing (text_tool);
 
   if ((pspec->flags & G_PARAM_READWRITE) == G_PARAM_READWRITE)
     {
-      GValue value = { 0, };
+      GValue value = G_VALUE_INIT;
 
       g_value_init (&value, pspec->value_type);
 
@@ -1182,6 +1339,7 @@ gimp_text_tool_text_notify (GimpText         *text,
       g_signal_handlers_block_by_func (text_tool->buffer,
                                        gimp_text_tool_buffer_end_edit,
                                        text_tool);
+
       if (text->markup)
         gimp_text_buffer_set_markup (text_tool->buffer, text->markup);
       else
@@ -1208,95 +1366,13 @@ gimp_text_tool_text_changed (GimpText     *text,
   gimp_text_tool_unblock_drawing (text_tool);
 }
 
-static gboolean
-gimp_text_tool_apply (GimpTextTool *text_tool,
-                      gboolean      push_undo)
+static void
+gimp_text_tool_apply_list (GimpTextTool *text_tool,
+                           GList        *pspecs)
 {
-  const GParamSpec *pspec = NULL;
-  GimpImage        *image;
-  GimpTextLayer    *layer;
-  GObject          *src;
-  GObject          *dest;
-  GList            *list;
-  gboolean          undo_group = FALSE;
-
-  if (text_tool->idle_id)
-    {
-      g_source_remove (text_tool->idle_id);
-      text_tool->idle_id = 0;
-    }
-
-  g_return_val_if_fail (text_tool->text != NULL, FALSE);
-  g_return_val_if_fail (text_tool->layer != NULL, FALSE);
-
-  layer = text_tool->layer;
-  image = gimp_item_get_image (GIMP_ITEM (layer));
-
-  g_return_val_if_fail (layer->text == text_tool->text, FALSE);
-
-  /*  Walk over the list of changes and figure out if we are changing
-   *  a single property or need to push a full text undo.
-   */
-  for (list = text_tool->pending;
-       list && list->next && list->next->data == list->data;
-       list = list->next)
-    /* do nothing */;
-
-  if (g_list_length (list) == 1)
-    pspec = list->data;
-
-  /*  If we are changing a single property, we don't need to push
-   *  an undo if all of the following is true:
-   *   - the redo stack is empty
-   *   - the last item on the undo stack is a text undo
-   *   - the last undo changed the same text property on the same layer
-   *   - the last undo happened less than TEXT_UNDO_TIMEOUT seconds ago
-   */
-  if (pspec)
-    {
-      GimpUndo *undo = gimp_image_undo_can_compress (image, GIMP_TYPE_TEXT_UNDO,
-                                                     GIMP_UNDO_TEXT_LAYER);
-
-      if (undo && GIMP_ITEM_UNDO (undo)->item == GIMP_ITEM (layer))
-        {
-          GimpTextUndo *text_undo = GIMP_TEXT_UNDO (undo);
-
-          if (text_undo->pspec == pspec)
-            {
-              if (gimp_undo_get_age (undo) < TEXT_UNDO_TIMEOUT)
-                {
-                  GimpTool    *tool = GIMP_TOOL (text_tool);
-                  GimpContext *context;
-
-                  context = GIMP_CONTEXT (gimp_tool_get_options (tool));
-
-                  push_undo = FALSE;
-                  gimp_undo_reset_age (undo);
-                  gimp_undo_refresh_preview (undo, context);
-                }
-            }
-        }
-    }
-
-  if (push_undo)
-    {
-      if (layer->modified)
-        {
-          undo_group = TRUE;
-          gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_TEXT, NULL);
-
-          gimp_image_undo_push_text_layer_modified (image, NULL, layer);
-
-          /*  see comment in gimp_text_layer_set()  */
-          gimp_image_undo_push_drawable_mod (image, NULL,
-                                             GIMP_DRAWABLE (layer), TRUE);
-        }
-
-      gimp_image_undo_push_text_layer (image, NULL, layer, pspec);
-    }
-
-  src  = G_OBJECT (text_tool->proxy);
-  dest = G_OBJECT (text_tool->text);
+  GObject *src  = G_OBJECT (text_tool->proxy);
+  GObject *dest = G_OBJECT (text_tool->text);
+  GList   *list;
 
   g_signal_handlers_block_by_func (dest,
                                    gimp_text_tool_text_notify,
@@ -1307,9 +1383,10 @@ gimp_text_tool_apply (GimpTextTool *text_tool,
 
   g_object_freeze_notify (dest);
 
-  for (; list; list = g_list_next (list))
+  for (list = pspecs; list; list = g_list_next (list))
     {
-      GValue value = { 0, };
+      const GParamSpec *pspec;
+      GValue            value = G_VALUE_INIT;
 
       /*  look ahead and compress changes  */
       if (list->next && list->next->data == list->data)
@@ -1325,9 +1402,6 @@ gimp_text_tool_apply (GimpTextTool *text_tool,
       g_value_unset (&value);
     }
 
-  g_list_free (text_tool->pending);
-  text_tool->pending = NULL;
-
   g_object_thaw_notify (dest);
 
   g_signal_handlers_unblock_by_func (dest,
@@ -1336,34 +1410,17 @@ gimp_text_tool_apply (GimpTextTool *text_tool,
   g_signal_handlers_unblock_by_func (dest,
                                      gimp_text_tool_text_changed,
                                      text_tool);
-
-  if (push_undo)
-    {
-      g_object_set (layer, "modified", FALSE, NULL);
-
-      if (undo_group)
-        gimp_image_undo_group_end (image);
-    }
-
-  gimp_text_tool_frame_item (text_tool);
-
-  gimp_image_flush (image);
-
-  gimp_text_tool_unblock_drawing (text_tool);
-
-  return FALSE;
 }
 
 static void
 gimp_text_tool_create_layer (GimpTextTool *text_tool,
                              GimpText     *text)
 {
-  GimpRectangleTool *rect_tool = GIMP_RECTANGLE_TOOL (text_tool);
-  GimpTool          *tool      = GIMP_TOOL (text_tool);
-  GimpImage         *image     = gimp_display_get_image (tool->display);
-  GimpLayer         *layer;
-  gint               x1, y1;
-  gint               x2, y2;
+  GimpTool  *tool  = GIMP_TOOL (text_tool);
+  GimpImage *image = gimp_display_get_image (tool->display);
+  GimpLayer *layer;
+  gdouble    x1, y1;
+  gdouble    x2, y2;
 
   gimp_text_tool_block_drawing (text_tool);
 
@@ -1427,7 +1484,7 @@ gimp_text_tool_create_layer (GimpTextTool *text_tool,
                                          text_tool);
     }
 
-  g_object_get (rect_tool,
+  g_object_get (text_tool->widget,
                 "x1", &x1,
                 "y1", &y1,
                 "x2", &x2,
@@ -1525,14 +1582,14 @@ gimp_text_tool_confirm_dialog (GimpTextTool *text_tool)
                                      GIMP_CONTEXT (gimp_tool_get_options (tool)),
                                      _("Confirm Text Editing"),
                                      "gimp-text-tool-confirm",
-                                     GIMP_STOCK_TEXT_LAYER,
+                                     GIMP_ICON_LAYER_TEXT_LAYER,
                                      _("Confirm Text Editing"),
                                      GTK_WIDGET (shell),
                                      gimp_standard_help_func, NULL,
 
                                      _("Create _New Layer"), RESPONSE_NEW,
-                                     GTK_STOCK_CANCEL,       GTK_RESPONSE_CANCEL,
-                                     GTK_STOCK_EDIT,         GTK_RESPONSE_ACCEPT,
+                                     _("_Cancel"),           GTK_RESPONSE_CANCEL,
+                                     _("_Edit"),             GTK_RESPONSE_ACCEPT,
 
                                      NULL);
 
@@ -1561,7 +1618,7 @@ gimp_text_tool_confirm_dialog (GimpTextTool *text_tool)
                            "\n\n"
                            "You can edit the layer or create a new "
                            "text layer from its text attributes."));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
@@ -1580,37 +1637,23 @@ gimp_text_tool_layer_changed (GimpImage    *image,
 {
   GimpLayer *layer = gimp_image_get_active_layer (image);
 
-  if (layer == GIMP_LAYER (text_tool->layer))
-    return;
-
-  /* all this stuff doesn't work quite yet, but it's better than before
-   */
-
-  gimp_draw_tool_pause (GIMP_DRAW_TOOL (text_tool));
-
-  gimp_text_tool_editor_halt (text_tool);
-  gimp_text_tool_clear_layout (text_tool);
-
-  if (gimp_draw_tool_is_active (GIMP_DRAW_TOOL (text_tool)))
-    gimp_draw_tool_stop (GIMP_DRAW_TOOL (text_tool));
-
-  if (gimp_text_tool_set_drawable (text_tool, GIMP_DRAWABLE (layer), FALSE) &&
-      GIMP_LAYER (text_tool->layer) == layer)
+  if (layer != GIMP_LAYER (text_tool->layer))
     {
-      gimp_draw_tool_start (GIMP_DRAW_TOOL (text_tool),
-                            GIMP_TOOL (text_tool)->display);
+      GimpTool    *tool    = GIMP_TOOL (text_tool);
+      GimpDisplay *display = tool->display;
 
-      gimp_text_tool_frame_item (text_tool);
-      gimp_text_tool_editor_start (text_tool);
-      gimp_text_tool_editor_position (text_tool);
-    }
-  else
-    {
-      gimp_tool_control (GIMP_TOOL (text_tool), GIMP_TOOL_ACTION_HALT,
-                         GIMP_TOOL (text_tool)->display);
-    }
+      if (display)
+        {
+          gimp_tool_control (tool, GIMP_TOOL_ACTION_HALT, display);
 
-  gimp_draw_tool_resume (GIMP_DRAW_TOOL (text_tool));
+          if (gimp_text_tool_set_drawable (text_tool, GIMP_DRAWABLE (layer),
+                                           FALSE) &&
+              GIMP_LAYER (text_tool->layer) == layer)
+            {
+              gimp_text_tool_start (text_tool, display, layer);
+            }
+        }
+    }
 }
 
 static void
@@ -1757,17 +1800,22 @@ gimp_text_tool_buffer_end_edit (GimpTextBuffer *buffer,
     }
 }
 
+static void
+gimp_text_tool_buffer_color_applied (GimpTextBuffer *buffer,
+                                     const GimpRGB  *color,
+                                     GimpTextTool   *text_tool)
+{
+  gimp_palettes_add_color_history (GIMP_TOOL (text_tool)->tool_info->gimp,
+                                   color);
+}
+
 
 /*  public functions  */
 
 void
 gimp_text_tool_clear_layout (GimpTextTool *text_tool)
 {
-  if (text_tool->layout)
-    {
-      g_object_unref (text_tool->layout);
-      text_tool->layout = NULL;
-    }
+  g_clear_object (&text_tool->layout);
 }
 
 gboolean
@@ -1794,6 +1842,113 @@ gimp_text_tool_ensure_layout (GimpTextTool *text_tool)
   return text_tool->layout != NULL;
 }
 
+gboolean
+gimp_text_tool_apply (GimpTextTool *text_tool,
+                      gboolean      push_undo)
+{
+  const GParamSpec *pspec = NULL;
+  GimpImage        *image;
+  GimpTextLayer    *layer;
+  GList            *list;
+  gboolean          undo_group = FALSE;
+
+  if (text_tool->idle_id)
+    {
+      g_source_remove (text_tool->idle_id);
+      text_tool->idle_id = 0;
+    }
+
+  g_return_val_if_fail (text_tool->text != NULL, FALSE);
+  g_return_val_if_fail (text_tool->layer != NULL, FALSE);
+
+  layer = text_tool->layer;
+  image = gimp_item_get_image (GIMP_ITEM (layer));
+
+  g_return_val_if_fail (layer->text == text_tool->text, FALSE);
+
+  /*  Walk over the list of changes and figure out if we are changing
+   *  a single property or need to push a full text undo.
+   */
+  for (list = text_tool->pending;
+       list && list->next && list->next->data == list->data;
+       list = list->next)
+    /* do nothing */;
+
+  if (g_list_length (list) == 1)
+    pspec = list->data;
+
+  /*  If we are changing a single property, we don't need to push
+   *  an undo if all of the following is true:
+   *   - the redo stack is empty
+   *   - the last item on the undo stack is a text undo
+   *   - the last undo changed the same text property on the same layer
+   *   - the last undo happened less than TEXT_UNDO_TIMEOUT seconds ago
+   */
+  if (pspec)
+    {
+      GimpUndo *undo = gimp_image_undo_can_compress (image, GIMP_TYPE_TEXT_UNDO,
+                                                     GIMP_UNDO_TEXT_LAYER);
+
+      if (undo && GIMP_ITEM_UNDO (undo)->item == GIMP_ITEM (layer))
+        {
+          GimpTextUndo *text_undo = GIMP_TEXT_UNDO (undo);
+
+          if (text_undo->pspec == pspec)
+            {
+              if (gimp_undo_get_age (undo) < TEXT_UNDO_TIMEOUT)
+                {
+                  GimpTool    *tool = GIMP_TOOL (text_tool);
+                  GimpContext *context;
+
+                  context = GIMP_CONTEXT (gimp_tool_get_options (tool));
+
+                  push_undo = FALSE;
+                  gimp_undo_reset_age (undo);
+                  gimp_undo_refresh_preview (undo, context);
+                }
+            }
+        }
+    }
+
+  if (push_undo)
+    {
+      if (layer->modified)
+        {
+          undo_group = TRUE;
+          gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_TEXT, NULL);
+
+          gimp_image_undo_push_text_layer_modified (image, NULL, layer);
+
+          /*  see comment in gimp_text_layer_set()  */
+          gimp_image_undo_push_drawable_mod (image, NULL,
+                                             GIMP_DRAWABLE (layer), TRUE);
+        }
+
+      gimp_image_undo_push_text_layer (image, NULL, layer, pspec);
+    }
+
+  gimp_text_tool_apply_list (text_tool, list);
+
+  g_list_free (text_tool->pending);
+  text_tool->pending = NULL;
+
+  if (push_undo)
+    {
+      g_object_set (layer, "modified", FALSE, NULL);
+
+      if (undo_group)
+        gimp_image_undo_group_end (image);
+    }
+
+  gimp_text_tool_frame_item (text_tool);
+
+  gimp_image_flush (image);
+
+  gimp_text_tool_unblock_drawing (text_tool);
+
+  return FALSE;
+}
+
 void
 gimp_text_tool_set_layer (GimpTextTool *text_tool,
                           GimpLayer    *layer)
@@ -1801,6 +1956,11 @@ gimp_text_tool_set_layer (GimpTextTool *text_tool,
   g_return_if_fail (GIMP_IS_TEXT_TOOL (text_tool));
   g_return_if_fail (layer == NULL || GIMP_IS_LAYER (layer));
 
+  /*  FIXME this function works, and I have no clue why: first we set
+   *  the drawable, then we HALT the tool and start() it without
+   *  re-setting the drawable. Why this works perfectly anyway when
+   *  double clicking a text layer in the layers dialog... no idea.
+   */
   if (gimp_text_tool_set_drawable (text_tool, GIMP_DRAWABLE (layer), TRUE))
     {
       GimpTool    *tool = GIMP_TOOL (text_tool);
@@ -1834,22 +1994,14 @@ gimp_text_tool_set_layer (GimpTextTool *text_tool,
             }
         }
 
-      tool->display = display;
-
       if (tool->display)
+        gimp_tool_control (tool, GIMP_TOOL_ACTION_HALT, tool->display);
+
+      if (display)
         {
-          GimpDrawTool *draw_tool = GIMP_DRAW_TOOL (tool);
+          gimp_text_tool_start (text_tool, display, layer);
 
           tool->drawable = GIMP_DRAWABLE (layer);
-
-          if (gimp_draw_tool_is_active (draw_tool))
-            gimp_draw_tool_stop (draw_tool);
-
-          gimp_draw_tool_start (draw_tool, display);
-
-          gimp_text_tool_frame_item (text_tool);
-
-          gimp_text_tool_editor_start (text_tool);
         }
     }
 }

@@ -8,7 +8,7 @@
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimptexttool.html" title="gimptexttool">
 <link rel="next" href="libgimp-gimppainttools.html" title="gimppainttools">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -27,7 +27,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="libgimp-gimptile.top_of_page"></a>gimptile</span></h2>
-<p>gimptile</p>
+<p>gimptile — Functions for working with tiles.</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -105,6 +105,7 @@
 </div>
 <div class="refsect1">
 <a name="libgimp-gimptile.description"></a><h2>Description</h2>
+<p>Functions for working with tiles.</p>
 </div>
 <div class="refsect1">
 <a name="libgimp-gimptile.functions_details"></a><h2>Functions</h2>
@@ -112,37 +113,84 @@
 <a name="gimp-tile-ref"></a><h3>gimp_tile_ref ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_tile_ref (<em class="parameter"><code><a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile"><span class="type">GimpTile</span></a> *tile</code></em>);</pre>
+<div class="warning"><p><code class="literal">gimp_tile_ref</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-tile-ref-zero"></a><h3>gimp_tile_ref_zero ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_tile_ref_zero (<em class="parameter"><code><a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile"><span class="type">GimpTile</span></a> *tile</code></em>);</pre>
+<div class="warning"><p><code class="literal">gimp_tile_ref_zero</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-tile-unref"></a><h3>gimp_tile_unref ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_tile_unref (<em class="parameter"><code><a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile"><span class="type">GimpTile</span></a> *tile</code></em>,
-                 <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> dirty</code></em>);</pre>
+                 <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> dirty</code></em>);</pre>
+<div class="warning"><p><code class="literal">gimp_tile_unref</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-tile-flush"></a><h3>gimp_tile_flush ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_tile_flush (<em class="parameter"><code><a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile"><span class="type">GimpTile</span></a> *tile</code></em>);</pre>
+<div class="warning"><p><code class="literal">gimp_tile_flush</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-tile-cache-size"></a><h3>gimp_tile_cache_size ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-gimp_tile_cache_size (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gulong"><span class="type">gulong</span></a> kilobytes</code></em>);</pre>
+gimp_tile_cache_size (<em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gulong"><span class="type">gulong</span></a> kilobytes</code></em>);</pre>
+<div class="warning"><p><code class="literal">gimp_tile_cache_size</code> is deprecated and should not be used in newly-written code.</p></div>
+<p>Sets the size of the tile cache on the plug-in side. The tile cache
+is used to reduce the number of tiles exchanged between the GIMP core
+and the plug-in. See also <a class="link" href="libgimp-gimptile.html#gimp-tile-cache-ntiles" title="gimp_tile_cache_ntiles ()"><code class="function">gimp_tile_cache_ntiles()</code></a>.</p>
+<div class="refsect3">
+<a name="gimp-tile-cache-size.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>kilobytes</p></td>
+<td class="parameter_description"><p>new cache size in kilobytes</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-tile-cache-ntiles"></a><h3>gimp_tile_cache_ntiles ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-gimp_tile_cache_ntiles (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gulong"><span class="type">gulong</span></a> ntiles</code></em>);</pre>
+gimp_tile_cache_ntiles (<em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gulong"><span class="type">gulong</span></a> ntiles</code></em>);</pre>
+<div class="warning"><p><code class="literal">gimp_tile_cache_ntiles</code> is deprecated and should not be used in newly-written code.</p></div>
+<p>Sets the size of the tile cache on the plug-in side. This function
+is similar to <a class="link" href="libgimp-gimptile.html#gimp-tile-cache-size" title="gimp_tile_cache_size ()"><code class="function">gimp_tile_cache_size()</code></a> but supports specifying the
+number of tiles directly.</p>
+<p>If your plug-in access pixels tile-by-tile, it doesn't need a tile
+cache at all. If however the plug-in accesses drawable pixel data
+row-by-row, it should set the tile cache large enough to hold the
+number of tiles per row. Double this size if your plug-in uses
+shadow tiles.</p>
+<div class="refsect3">
+<a name="gimp-tile-cache-ntiles.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>ntiles</p></td>
+<td class="parameter_description"><p>number of tiles that should fit into the cache</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
 </div>
 </div>
 <div class="refsect1">
@@ -165,6 +213,6 @@ gimp_tile_cache_ntiles (<em class="parameter"><code><a href="/usr/share/gtk-doc/
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.27</div>
 </body>
 </html>

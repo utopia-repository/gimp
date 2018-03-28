@@ -131,9 +131,6 @@ run (const gchar      *name,
   *return_vals  = values;
   values[0].type = GIMP_PDB_STATUS;
 
-  /* MUST call this before any RSVG funcs */
-  g_type_init ();
-
   gimp_get_data (PLUG_IN_PROC, &save);
 
   webpagevals.url = g_strdup (save.url);
@@ -214,19 +211,19 @@ run (const gchar      *name,
 static gboolean
 webpage_dialog (void)
 {
-  GtkWidget *dialog;
-  GtkWidget *hbox;
-  GtkWidget *vbox;
-  GtkWidget *image;
-  GtkWidget *label;
-  GtkWidget *entry;
-  GtkSizeGroup *sizegroup;
-  GtkObject *adjustment;
-  GtkWidget *spinbutton;
-  GtkWidget *combo;
-  gint active;
-  gint status;
-  gboolean ret = FALSE;
+  GtkWidget     *dialog;
+  GtkWidget     *hbox;
+  GtkWidget     *vbox;
+  GtkWidget     *image;
+  GtkWidget     *label;
+  GtkWidget     *entry;
+  GtkSizeGroup  *sizegroup;
+  GtkAdjustment *adjustment;
+  GtkWidget     *spinbutton;
+  GtkWidget     *combo;
+  gint           active;
+  gint           status;
+  gboolean       ret = FALSE;
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
@@ -234,8 +231,8 @@ webpage_dialog (void)
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            _("_Create"),     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("Cre_ate"), GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -255,7 +252,8 @@ webpage_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
-  image = gtk_image_new_from_stock (GIMP_STOCK_WEB, GTK_ICON_SIZE_BUTTON);
+  image = gtk_image_new_from_icon_name (GIMP_ICON_WEB,
+                                        GTK_ICON_SIZE_BUTTON);
   gtk_box_pack_start (GTK_BOX (vbox), image, FALSE, FALSE, 0);
   gtk_widget_show (image);
 
@@ -264,7 +262,7 @@ webpage_dialog (void)
   gtk_widget_show (vbox);
 
   label = gtk_label_new (_("Enter location (URI):"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 1.0);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
@@ -289,13 +287,15 @@ webpage_dialog (void)
   label = gtk_label_new (_("Width (pixels):"));
   gtk_size_group_add_widget (sizegroup, label);
 
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-  spinbutton = gimp_spin_button_new (&adjustment, webpagevals.width,
-                                     1, 8192,
-                                     1, 10, 0, 1, 0);
+  adjustment = (GtkAdjustment *)
+    gtk_adjustment_new (webpagevals.width,
+                        1, 8192, 1, 10, 0);
+  spinbutton = gtk_spin_button_new (adjustment, 1.0, 0);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
   gtk_widget_show (spinbutton);
 
@@ -308,7 +308,7 @@ webpage_dialog (void)
   label = gtk_label_new (_("Font size:"));
   gtk_size_group_add_widget (sizegroup, label);
 
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
@@ -533,8 +533,11 @@ webpage_capture (void)
       image = gimp_image_new (width, height, GIMP_RGB);
 
       gimp_image_undo_disable (image);
-      layer = gimp_layer_new_from_pixbuf (image, _("Webpage"), webpagevals.pixbuf,
-                                          100, GIMP_NORMAL_MODE, 0.0, 1.0);
+      layer = gimp_layer_new_from_pixbuf (image, _("Webpage"),
+                                          webpagevals.pixbuf,
+                                          100,
+                                          gimp_image_get_default_new_layer_mode (image),
+                                          0.0, 1.0);
       gimp_image_insert_layer (image, layer, -1, 0);
       gimp_image_undo_enable (image);
 

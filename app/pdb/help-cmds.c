@@ -21,6 +21,10 @@
 
 #include <gegl.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
+#include "libgimpbase/gimpbase.h"
+
 #include "pdb-types.h"
 
 #include "core/gimp.h"
@@ -34,20 +38,20 @@
 #include "internal-procs.h"
 
 
-static GValueArray *
-help_invoker (GimpProcedure      *procedure,
-              Gimp               *gimp,
-              GimpContext        *context,
-              GimpProgress       *progress,
-              const GValueArray  *args,
-              GError            **error)
+static GimpValueArray *
+help_invoker (GimpProcedure         *procedure,
+              Gimp                  *gimp,
+              GimpContext           *context,
+              GimpProgress          *progress,
+              const GimpValueArray  *args,
+              GError               **error)
 {
   gboolean success = TRUE;
   const gchar *help_domain;
   const gchar *help_id;
 
-  help_domain = g_value_get_string (&args->values[0]);
-  help_id = g_value_get_string (&args->values[1]);
+  help_domain = g_value_get_string (gimp_value_array_index (args, 0));
+  help_id = g_value_get_string (gimp_value_array_index (args, 1));
 
   if (success)
     {
@@ -56,7 +60,7 @@ help_invoker (GimpProcedure      *procedure,
       if (! help_domain && manager->current_plug_in)
         help_domain = (gchar *)
           gimp_plug_in_manager_get_help_domain (manager,
-                                                manager->current_plug_in->prog,
+                                                manager->current_plug_in->file,
                                                 NULL);
 
       gimp_help (gimp, progress, help_domain, help_id);

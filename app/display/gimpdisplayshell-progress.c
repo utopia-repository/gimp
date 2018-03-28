@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "display-types.h"
@@ -32,13 +33,14 @@
 
 static GimpProgress *
 gimp_display_shell_progress_start (GimpProgress *progress,
-                                   const gchar  *message,
-                                   gboolean      cancelable)
+                                   gboolean      cancellable,
+                                   const gchar  *message)
 {
   GimpDisplayShell *shell     = GIMP_DISPLAY_SHELL (progress);
   GimpStatusbar    *statusbar = gimp_display_shell_get_statusbar (shell);
 
-  return gimp_progress_start (GIMP_PROGRESS (statusbar), message, cancelable);
+  return gimp_progress_start (GIMP_PROGRESS (statusbar), cancellable,
+                              "%s", message);
 }
 
 static void
@@ -66,7 +68,7 @@ gimp_display_shell_progress_set_text (GimpProgress *progress,
   GimpDisplayShell *shell     = GIMP_DISPLAY_SHELL (progress);
   GimpStatusbar    *statusbar = gimp_display_shell_get_statusbar (shell);
 
-  gimp_progress_set_text (GIMP_PROGRESS (statusbar), message);
+  gimp_progress_set_text_literal (GIMP_PROGRESS (statusbar), message);
 }
 
 static void
@@ -121,6 +123,8 @@ gimp_display_shell_progress_message (GimpProgress        *progress,
   switch (severity)
     {
     case GIMP_MESSAGE_ERROR:
+    case GIMP_MESSAGE_BUG_WARNING:
+    case GIMP_MESSAGE_BUG_CRITICAL:
       /* error messages are never handled here */
       break;
 

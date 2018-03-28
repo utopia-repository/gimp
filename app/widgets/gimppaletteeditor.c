@@ -19,6 +19,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -165,10 +166,10 @@ static void
 gimp_palette_editor_init (GimpPaletteEditor *editor)
 {
   GimpDataEditor *data_editor = GIMP_DATA_EDITOR (editor);
+  GtkWidget      *viewport;
   GtkWidget      *hbox;
   GtkWidget      *label;
   GtkWidget      *spinbutton;
-  GtkObject      *adj;
 
   editor->zoom_factor = 1.0;
   editor->col_width   = 0;
@@ -183,6 +184,10 @@ gimp_palette_editor_init (GimpPaletteEditor *editor)
   gtk_box_pack_start (GTK_BOX (editor), data_editor->view, TRUE, TRUE, 0);
   gtk_widget_show (data_editor->view);
 
+  viewport = gtk_viewport_new (NULL, NULL);
+  gtk_container_add (GTK_CONTAINER (data_editor->view), viewport);
+  gtk_widget_show (viewport);
+
   editor->view = gimp_view_new_full_by_types (NULL,
                                               GIMP_TYPE_PALETTE_VIEW,
                                               GIMP_TYPE_PALETTE,
@@ -192,9 +197,7 @@ gimp_palette_editor_init (GimpPaletteEditor *editor)
     (GIMP_VIEW_RENDERER_PALETTE (GIMP_VIEW (editor->view)->renderer), -1);
   gimp_view_renderer_palette_set_draw_grid
     (GIMP_VIEW_RENDERER_PALETTE (GIMP_VIEW (editor->view)->renderer), TRUE);
-
-  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (data_editor->view),
-                                         editor->view);
+  gtk_container_add (GTK_CONTAINER (viewport), editor->view);
   gtk_widget_show (editor->view);
 
   g_signal_connect (gtk_widget_get_parent (editor->view), "size-allocate",
@@ -249,12 +252,14 @@ gimp_palette_editor_init (GimpPaletteEditor *editor)
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-  spinbutton = gimp_spin_button_new (&adj, 0, 0, 64, 1, 4, 0, 1, 0);
-  editor->columns_data = GTK_ADJUSTMENT (adj);
+  editor->columns_adj = (GtkAdjustment *)
+    gtk_adjustment_new (0, 0, 64, 1, 4, 0);
+  spinbutton = gtk_spin_button_new (editor->columns_adj, 1.0, 0);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
   gtk_widget_show (spinbutton);
 
-  g_signal_connect (editor->columns_data, "value-changed",
+  g_signal_connect (editor->columns_adj, "value-changed",
                     G_CALLBACK (palette_editor_columns_changed),
                     editor);
 }
@@ -264,8 +269,7 @@ gimp_palette_editor_constructed (GObject *object)
 {
   GimpPaletteEditor *editor = GIMP_PALETTE_EDITOR (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   gimp_editor_add_action_button (GIMP_EDITOR (editor), "palette-editor",
                                  "palette-editor-edit-color", NULL);
@@ -320,7 +324,7 @@ gimp_palette_editor_set_data (GimpDataEditor *editor,
 {
   GimpPaletteEditor *palette_editor = GIMP_PALETTE_EDITOR (editor);
 
-  g_signal_handlers_block_by_func (palette_editor->columns_data,
+  g_signal_handlers_block_by_func (palette_editor->columns_adj,
                                    palette_editor_columns_changed,
                                    editor);
 
@@ -336,7 +340,7 @@ gimp_palette_editor_set_data (GimpDataEditor *editor,
                                             palette_editor_invalidate_preview,
                                             editor);
 
-      gtk_adjustment_set_value (palette_editor->columns_data, 0);
+      gtk_adjustment_set_value (palette_editor->columns_adj, 0);
     }
 
   GIMP_DATA_EDITOR_CLASS (parent_class)->set_data (editor, data);
@@ -352,7 +356,7 @@ gimp_palette_editor_set_data (GimpDataEditor *editor,
                         G_CALLBACK (palette_editor_invalidate_preview),
                         editor);
 
-      gtk_adjustment_set_value (palette_editor->columns_data,
+      gtk_adjustment_set_value (palette_editor->columns_adj,
                                 gimp_palette_get_columns (palette));
 
       palette_editor_scroll_top_left (palette_editor);
@@ -361,7 +365,7 @@ gimp_palette_editor_set_data (GimpDataEditor *editor,
                                          palette_editor);
     }
 
-  g_signal_handlers_unblock_by_func (palette_editor->columns_data,
+  g_signal_handlers_unblock_by_func (palette_editor->columns_adj,
                                      palette_editor_columns_changed,
                                      editor);
 }
@@ -463,7 +467,7 @@ gimp_palette_editor_pick_color (GimpPaletteEditor  *editor,
 
       switch (pick_state)
         {
-        case GIMP_COLOR_PICK_STATE_NEW:
+        case GIMP_COLOR_PICK_STATE_START:
           if (editor->color)
             index = editor->color->position + 1;
 
@@ -474,6 +478,7 @@ gimp_palette_editor_pick_color (GimpPaletteEditor  *editor,
           break;
 
         case GIMP_COLOR_PICK_STATE_UPDATE:
+        case GIMP_COLOR_PICK_STATE_END:
           gimp_palette_set_entry_color (GIMP_PALETTE (data),
                                         editor->color->position,
                                         color);

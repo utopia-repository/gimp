@@ -18,70 +18,10 @@
 #ifndef __TOOLS_ENUMS_H__
 #define __TOOLS_ENUMS_H__
 
+
 /*
  * these enums are registered with the type system
  */
-
-#define GIMP_TYPE_BUTTON_PRESS_TYPE (gimp_button_press_type_get_type ())
-
-GType gimp_button_press_type_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_BUTTON_PRESS_NORMAL,
-  GIMP_BUTTON_PRESS_DOUBLE,
-  GIMP_BUTTON_PRESS_TRIPLE
-} GimpButtonPressType;
-
-
-#define GIMP_TYPE_BUTTON_RELEASE_TYPE (gimp_button_release_type_get_type ())
-
-GType gimp_button_release_type_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_BUTTON_RELEASE_NORMAL,
-  GIMP_BUTTON_RELEASE_CANCEL,
-  GIMP_BUTTON_RELEASE_CLICK,
-  GIMP_BUTTON_RELEASE_NO_MOTION
-} GimpButtonReleaseType;
-
-
-#define GIMP_TYPE_RECTANGLE_CONSTRAINT (gimp_rectangle_constraint_get_type ())
-
-GType gimp_rectangle_constraint_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_RECTANGLE_CONSTRAIN_NONE,
-  GIMP_RECTANGLE_CONSTRAIN_IMAGE,
-  GIMP_RECTANGLE_CONSTRAIN_DRAWABLE
-} GimpRectangleConstraint;
-
-
-#define GIMP_TYPE_RECTANGLE_PRECISION (gimp_rectangle_precision_get_type ())
-
-GType gimp_rectangle_precision_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_RECTANGLE_PRECISION_INT,
-  GIMP_RECTANGLE_PRECISION_DOUBLE,
-} GimpRectanglePrecision;
-
-
-#define GIMP_TYPE_RECTANGLE_TOOL_FIXED_RULE (gimp_rectangle_tool_fixed_rule_get_type ())
-
-GType gimp_rectangle_tool_fixed_rule_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_RECTANGLE_TOOL_FIXED_ASPECT, /*< desc="Aspect ratio" >*/
-  GIMP_RECTANGLE_TOOL_FIXED_WIDTH,  /*< desc="Width"        >*/
-  GIMP_RECTANGLE_TOOL_FIXED_HEIGHT, /*< desc="Height"       >*/
-  GIMP_RECTANGLE_TOOL_FIXED_SIZE,   /*< desc="Size"         >*/
-} GimpRectangleToolFixedRule;
-
 
 #define GIMP_TYPE_RECT_SELECT_MODE (gimp_rect_select_mode_get_type ())
 
@@ -107,18 +47,6 @@ typedef enum
 } GimpTransformType;
 
 
-#define GIMP_TYPE_VECTOR_MODE (gimp_vector_mode_get_type ())
-
-GType gimp_vector_mode_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_VECTOR_MODE_DESIGN,      /*< desc="Design" >*/
-  GIMP_VECTOR_MODE_EDIT,        /*< desc="Edit"   >*/
-  GIMP_VECTOR_MODE_MOVE         /*< desc="Move"   >*/
-} GimpVectorMode;
-
-
 #define GIMP_TYPE_TOOL_ACTION (gimp_tool_action_get_type ())
 
 GType gimp_tool_action_get_type (void) G_GNUC_CONST;
@@ -127,8 +55,49 @@ typedef enum
 {
   GIMP_TOOL_ACTION_PAUSE,
   GIMP_TOOL_ACTION_RESUME,
-  GIMP_TOOL_ACTION_HALT
+  GIMP_TOOL_ACTION_HALT,
+  GIMP_TOOL_ACTION_COMMIT
 } GimpToolAction;
+
+
+#define GIMP_TYPE_TOOL_ACTIVE_MODIFIERS (gimp_tool_active_modifiers_get_type ())
+
+GType gimp_tool_active_modifiers_get_type (void) G_GNUC_CONST;
+
+typedef enum
+{
+  GIMP_TOOL_ACTIVE_MODIFIERS_OFF,
+  GIMP_TOOL_ACTIVE_MODIFIERS_SAME,
+  GIMP_TOOL_ACTIVE_MODIFIERS_SEPARATE,
+} GimpToolActiveModifiers;
+
+
+#define GIMP_TYPE_MATTING_DRAW_MODE (gimp_matting_draw_mode_get_type ())
+
+GType gimp_matting_draw_mode_get_type (void) G_GNUC_CONST;
+
+typedef enum
+{
+ GIMP_MATTING_DRAW_MODE_FOREGROUND,   /*< desc="Draw foreground" >*/
+ GIMP_MATTING_DRAW_MODE_BACKGROUND,   /*< desc="Draw background" >*/
+ GIMP_MATTING_DRAW_MODE_UNKNOWN,      /*< desc="Draw unknown" >*/
+} GimpMattingDrawMode;
+
+
+#define GIMP_TYPE_WARP_BEHAVIOR (gimp_warp_behavior_get_type ())
+
+GType gimp_warp_behavior_get_type (void) G_GNUC_CONST;
+
+typedef enum
+{
+  GIMP_WARP_BEHAVIOR_MOVE,      /*< desc="Move pixels" >*/
+  GEGL_WARP_BEHAVIOR_GROW,      /*< desc="Grow area" >*/
+  GEGL_WARP_BEHAVIOR_SHRINK,    /*< desc="Shrink area" >*/
+  GEGL_WARP_BEHAVIOR_SWIRL_CW,  /*< desc="Swirl clockwise" >*/
+  GEGL_WARP_BEHAVIOR_SWIRL_CCW, /*< desc="Swirl counter-clockwise" >*/
+  GEGL_WARP_BEHAVIOR_ERASE,     /*< desc="Erase warping" >*/
+  GEGL_WARP_BEHAVIOR_SMOOTH     /*< desc="Smooth warping" >*/
+} GimpWarpBehavior;
 
 
 /*

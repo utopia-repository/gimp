@@ -90,14 +90,14 @@ typedef struct
   gint32 orig_inten;       /* TRUE or FALSE */
   gint32 rnd_subcolors;    /* TRUE or FALSE */
   gint32 guess_missing;    /* TRUE or FALSE */
-  gint32 lvl_in_min;       /* 0 upto 254 */
-  gint32 lvl_in_max;       /* 1 upto 255 */
-  float  lvl_in_gamma;     /* 0.1 upto 10.0  (1.0 == linear) */
-  gint32 lvl_out_min;      /* 0 upto 254 */
-  gint32 lvl_out_max;      /* 1 upto 255 */
+  gint32 lvl_in_min;       /* 0 up to 254 */
+  gint32 lvl_in_max;       /* 1 up to 255 */
+  float  lvl_in_gamma;     /* 0.1 up to 10.0  (1.0 == linear) */
+  gint32 lvl_out_min;      /* 0 up to 254 */
+  gint32 lvl_out_max;      /* 1 up to 255 */
 
-  float  tol_col_err;      /* 0.0% upto 100.0%
-                            * this is uesd to findout colors of the same
+  float  tol_col_err;      /* 0.0% up to 100.0%
+                            * this is used to findout colors of the same
                             * colortone, while analyzing sample colors,
                             * It does not make much sense for the user to adjust this
                             * value. (I used a param file to findout a suitable value)
@@ -255,7 +255,7 @@ query (void)
     { GIMP_PDB_INT32, "guess-missing", "TRUE: guess samplecolors for the missing intensity values FALSE: use only colors found in the sample" },
     { GIMP_PDB_INT32, "in-low",   "intensity of lowest input (0 <= in_low <= 254)" },
     { GIMP_PDB_INT32, "in-high",  "intensity of highest input (1 <= in_high <= 255)" },
-    { GIMP_PDB_FLOAT, "gamma",  "gamma correction factor (0.1 <= gamma <= 10) where 1.0 is linear" },
+    { GIMP_PDB_FLOAT, "gamma",  "gamma adjustment factor (0.1 <= gamma <= 10) where 1.0 is linear" },
     { GIMP_PDB_INT32, "out-low",   "lowest sample color intensity (0 <= out_low <= 254)" },
     { GIMP_PDB_INT32, "out-high",  "highest sample color intensity (1 <= out_high <= 255)" }
   };
@@ -394,7 +394,7 @@ run (const gchar      *name,
                   main_colorize (MC_DST_REMAP);
                   status = GIMP_PDB_SUCCESS;
                 }
-              else 
+              else
                 {
                   status = GIMP_PDB_EXECUTION_ERROR;
                 }
@@ -893,7 +893,7 @@ update_preview (gint32 *id_ptr)
 
   if (g_Sdebug)
     printf ("UPD PREVIEWS   ID:%d ENABLE_UPD:%d\n",
-            (int)*id_ptr, (int)g_di.enable_preview_update);
+            id_ptr ? (int) *id_ptr : -1, (int)g_di.enable_preview_update);
 
   if (id_ptr == NULL || !g_di.enable_preview_update)
     return;
@@ -1326,10 +1326,10 @@ smp_dialog (void)
                      NULL, 0,
                      gimp_standard_help_func, PLUG_IN_PROC,
 
-                     GIMP_STOCK_RESET,        RESPONSE_RESET,
+                     _("_Reset"),             RESPONSE_RESET,
                      _("Get _Sample Colors"), RESPONSE_GET_COLORS,
-                     GTK_STOCK_CLOSE,         GTK_RESPONSE_CLOSE,
-                     GTK_STOCK_APPLY,         GTK_RESPONSE_APPLY,
+                     _("_Close"),             GTK_RESPONSE_CLOSE,
+                     _("_Apply"),             GTK_RESPONSE_APPLY,
 
                      NULL);
 
@@ -1357,7 +1357,7 @@ smp_dialog (void)
   ty = 0;
   /* layer combo_box (Dst) */
   label = gtk_label_new (_("Destination:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 1.0);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, ty, ty + 1,
                     GTK_FILL, GTK_FILL, 4, 0);
   gtk_widget_show (label);
@@ -1373,7 +1373,7 @@ smp_dialog (void)
 
   /* layer combo_box (Sample) */
   label = gtk_label_new (_("Sample:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 1.0);
   gtk_table_attach (GTK_TABLE (table), label, 3, 4, ty, ty + 1,
                     GTK_FILL, GTK_FILL, 4, 0);
   gtk_widget_show (label);
@@ -1381,14 +1381,14 @@ smp_dialog (void)
   combo = gimp_layer_combo_box_new (smp_constrain, NULL);
 
   gimp_int_combo_box_prepend (GIMP_INT_COMBO_BOX (combo),
-                              GIMP_INT_STORE_VALUE,    SMP_INV_GRADIENT,
-                              GIMP_INT_STORE_LABEL,    _("From reverse gradient"),
-                              GIMP_INT_STORE_STOCK_ID, GIMP_STOCK_GRADIENT,
+                              GIMP_INT_STORE_VALUE,     SMP_INV_GRADIENT,
+                              GIMP_INT_STORE_LABEL,     _("From reverse gradient"),
+                              GIMP_INT_STORE_ICON_NAME, GIMP_ICON_GRADIENT,
                               -1);
   gimp_int_combo_box_prepend (GIMP_INT_COMBO_BOX (combo),
-                              GIMP_INT_STORE_VALUE,    SMP_GRADIENT,
-                              GIMP_INT_STORE_LABEL,    _("From gradient"),
-                              GIMP_INT_STORE_STOCK_ID, GIMP_STOCK_GRADIENT,
+                              GIMP_INT_STORE_VALUE,     SMP_GRADIENT,
+                              GIMP_INT_STORE_LABEL,     _("From gradient"),
+                              GIMP_INT_STORE_ICON_NAME, GIMP_ICON_GRADIENT,
                               -1);
 
   gimp_int_combo_box_connect (GIMP_INT_COMBO_BOX (combo), g_values.sample_id,
@@ -2544,6 +2544,7 @@ init_gdrw (t_GDRW         *gdrw,
   gint32  sel_channel_id;
   gint32  x1, x2, y1, y2;
   gint    offsetx, offsety;
+  gint    w, h;
   gint    sel_offsetx, sel_offsety;
   t_GDRW *sel_gdrw;
   gint32  non_empty;
@@ -2564,8 +2565,12 @@ init_gdrw (t_GDRW         *gdrw,
   /* get offsets within the image */
   gimp_drawable_offsets (drawable->drawable_id, &offsetx, &offsety);
 
-  gimp_drawable_mask_bounds (drawable->drawable_id,
-                             &gdrw->x1, &gdrw->y1, &gdrw->x2, &gdrw->y2);
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                      &gdrw->x1, &gdrw->y1, &w, &h))
+    return;
+
+  gdrw->x2 = gdrw->x1 + w;
+  gdrw->y2 = gdrw->y1 + h;
 
   gdrw->bpp = drawable->bpp;
   if (gimp_drawable_has_alpha (drawable->drawable_id))

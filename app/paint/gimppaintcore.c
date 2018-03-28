@@ -1,5 +1,6 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
+ * Copyright (C) 2013 Daniel Sabo
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +20,7 @@
 
 #include <string.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -26,30 +28,36 @@
 
 #include "paint-types.h"
 
-#include "base/pixel-region.h"
-#include "base/temp-buf.h"
-#include "base/tile-manager.h"
-#include "base/tile.h"
+#include "operations/layer-modes/gimp-layer-modes.h"
 
-#include "paint-funcs/paint-funcs.h"
+#include "gegl/gimp-gegl-loops.h"
+#include "gegl/gimp-gegl-nodes.h"
+#include "gegl/gimp-gegl-utils.h"
+#include "gegl/gimpapplicator.h"
 
 #include "core/gimp.h"
 #include "core/gimp-utils.h"
-#include "core/gimpdrawable.h"
+#include "core/gimpchannel.h"
 #include "core/gimpimage.h"
+#include "core/gimpimage-guides.h"
+#include "core/gimpimage-symmetry.h"
 #include "core/gimpimage-undo.h"
 #include "core/gimppickable.h"
 #include "core/gimpprojection.h"
+#include "core/gimpsymmetry.h"
+#include "core/gimptempbuf.h"
 
 #include "gimppaintcore.h"
 #include "gimppaintcoreundo.h"
+#include "gimppaintcore-loops.h"
 #include "gimppaintoptions.h"
 
 #include "gimpairbrush.h"
 
 #include "gimp-intl.h"
 
-#define STROKE_BUFFER_INIT_SIZE      2000
+
+#define STROKE_BUFFER_INIT_SIZE 2000
 
 enum
 {
@@ -83,7 +91,7 @@ static gboolean  gimp_paint_core_real_pre_paint      (GimpPaintCore    *core,
 static void      gimp_paint_core_real_paint          (GimpPaintCore    *core,
                                                       GimpDrawable     *drawable,
                                                       GimpPaintOptions *options,
-                                                      const GimpCoords *coords,
+                                                      GimpSymmetry     *sym,
                                                       GimpPaintState    paint_state,
                                                       guint32           time);
 static void      gimp_paint_core_real_post_paint     (GimpPaintCore    *core,
@@ -95,21 +103,19 @@ static void      gimp_paint_core_real_interpolate    (GimpPaintCore    *core,
                                                       GimpDrawable     *drawable,
                                                       GimpPaintOptions *options,
                                                       guint32           time);
-static TempBuf * gimp_paint_core_real_get_paint_area (GimpPaintCore    *core,
+static GeglBuffer *
+               gimp_paint_core_real_get_paint_buffer (GimpPaintCore    *core,
                                                       GimpDrawable     *drawable,
                                                       GimpPaintOptions *options,
-                                                      const GimpCoords *coords);
+                                                      GimpLayerMode     paint_mode,
+                                                      const GimpCoords *coords,
+                                                      gint             *paint_buffer_x,
+                                                      gint             *paint_buffer_y,
+                                                      gint             *paint_width,
+                                                      gint             *paint_height);
 static GimpUndo* gimp_paint_core_real_push_undo      (GimpPaintCore    *core,
                                                       GimpImage        *image,
                                                       const gchar      *undo_desc);
-
-static void      paint_mask_to_canvas_tiles          (GimpPaintCore    *core,
-                                                      PixelRegion      *paint_maskPR,
-                                                      gdouble           paint_opacity);
-static void      paint_mask_to_canvas_buf            (GimpPaintCore    *core,
-                                                      PixelRegion      *paint_maskPR,
-                                                      gdouble           paint_opacity);
-static void      canvas_tiles_to_canvas_buf          (GimpPaintCore    *core);
 
 
 G_DEFINE_TYPE (GimpPaintCore, gimp_paint_core, GIMP_TYPE_OBJECT)
@@ -133,7 +139,7 @@ gimp_paint_core_class_init (GimpPaintCoreClass *klass)
   klass->paint               = gimp_paint_core_real_paint;
   klass->post_paint          = gimp_paint_core_real_post_paint;
   klass->interpolate         = gimp_paint_core_real_interpolate;
-  klass->get_paint_area      = gimp_paint_core_real_get_paint_area;
+  klass->get_paint_buffer    = gimp_paint_core_real_get_paint_buffer;
   klass->push_undo           = gimp_paint_core_real_push_undo;
 
   g_object_class_install_property (object_class, PROP_UNDO_DESC,
@@ -146,26 +152,7 @@ gimp_paint_core_class_init (GimpPaintCoreClass *klass)
 static void
 gimp_paint_core_init (GimpPaintCore *core)
 {
-  core->ID               = global_core_ID++;
-
-  core->undo_desc        = NULL;
-
-  core->distance         = 0.0;
-  core->pixel_dist       = 0.0;
-  core->x1               = 0;
-  core->y1               = 0;
-  core->x2               = 0;
-  core->y2               = 0;
-
-  core->use_saved_proj   = FALSE;
-
-  core->undo_tiles       = NULL;
-  core->saved_proj_tiles = NULL;
-  core->canvas_tiles     = NULL;
-
-  core->orig_buf         = NULL;
-  core->orig_proj_buf    = NULL;
-  core->canvas_buf       = NULL;
+  core->ID = global_core_ID++;
 }
 
 static void
@@ -175,8 +162,7 @@ gimp_paint_core_finalize (GObject *object)
 
   gimp_paint_core_cleanup (core);
 
-  g_free (core->undo_desc);
-  core->undo_desc = NULL;
+  g_clear_pointer (&core->undo_desc, g_free);
 
   if (core->stroke_buffer)
     {
@@ -252,7 +238,7 @@ static void
 gimp_paint_core_real_paint (GimpPaintCore    *core,
                             GimpDrawable     *drawable,
                             GimpPaintOptions *paint_options,
-                            const GimpCoords *coords,
+                            GimpSymmetry     *sym,
                             GimpPaintState    paint_state,
                             guint32           time)
 {
@@ -279,11 +265,16 @@ gimp_paint_core_real_interpolate (GimpPaintCore    *core,
   core->last_coords = core->cur_coords;
 }
 
-static TempBuf *
-gimp_paint_core_real_get_paint_area (GimpPaintCore    *core,
-                                     GimpDrawable     *drawable,
-                                     GimpPaintOptions *paint_options,
-                                     const GimpCoords *coords)
+static GeglBuffer *
+gimp_paint_core_real_get_paint_buffer (GimpPaintCore    *core,
+                                       GimpDrawable     *drawable,
+                                       GimpPaintOptions *paint_options,
+                                       GimpLayerMode     paint_mode,
+                                       const GimpCoords *coords,
+                                       gint             *paint_buffer_x,
+                                       gint             *paint_buffer_y,
+                                       gint             *paint_width,
+                                       gint             *paint_height)
 {
   return NULL;
 }
@@ -323,6 +314,12 @@ gimp_paint_core_paint (GimpPaintCore    *core,
                              paint_options,
                              paint_state, time))
     {
+      GimpSymmetry *sym;
+      GimpImage    *image;
+      GimpItem     *item;
+
+      item  = GIMP_ITEM (drawable);
+      image = gimp_item_get_image (item);
 
       if (paint_state == GIMP_PAINT_STATE_MOTION)
         {
@@ -331,10 +328,14 @@ gimp_paint_core_paint (GimpPaintCore    *core,
           core->last_paint.y = core->cur_coords.y;
         }
 
+      sym = g_object_ref (gimp_image_get_active_symmetry (image));
+      gimp_symmetry_set_origin (sym, drawable, &core->cur_coords);
+
       core_class->paint (core, drawable,
                          paint_options,
-                         &core->cur_coords,
-                         paint_state, time);
+                         sym, paint_state, time);
+
+      g_object_unref (sym);
 
       core_class->post_paint (core, drawable,
                               paint_options,
@@ -349,7 +350,9 @@ gimp_paint_core_start (GimpPaintCore     *core,
                        const GimpCoords  *coords,
                        GError           **error)
 {
-  GimpItem *item;
+  GimpImage   *image;
+  GimpItem    *item;
+  GimpChannel *mask;
 
   g_return_val_if_fail (GIMP_IS_PAINT_CORE (core), FALSE);
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), FALSE);
@@ -358,7 +361,8 @@ gimp_paint_core_start (GimpPaintCore     *core,
   g_return_val_if_fail (coords != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  item = GIMP_ITEM (drawable);
+  item  = GIMP_ITEM (drawable);
+  image = gimp_item_get_image (item);
 
   if (core->stroke_buffer)
     {
@@ -383,37 +387,30 @@ gimp_paint_core_start (GimpPaintCore     *core,
     }
 
   /*  Allocate the undo structure  */
-  if (core->undo_tiles)
-    tile_manager_unref (core->undo_tiles);
+  if (core->undo_buffer)
+    g_object_unref (core->undo_buffer);
 
-  core->undo_tiles = tile_manager_new (gimp_item_get_width  (item),
-                                       gimp_item_get_height (item),
-                                       gimp_drawable_bytes (drawable));
+  core->undo_buffer = gegl_buffer_dup (gimp_drawable_get_buffer (drawable));
 
   /*  Allocate the saved proj structure  */
-  if (core->saved_proj_tiles)
-    tile_manager_unref (core->saved_proj_tiles);
-
-  core->saved_proj_tiles = NULL;
+  g_clear_object (&core->saved_proj_buffer);
 
   if (core->use_saved_proj)
     {
-      GimpImage    *image    = gimp_item_get_image (item);
-      GimpPickable *pickable = GIMP_PICKABLE (gimp_image_get_projection (image));
-      TileManager  *tiles    = gimp_pickable_get_tiles (pickable);
+      GeglBuffer *buffer = gimp_pickable_get_buffer (GIMP_PICKABLE (image));
 
-      core->saved_proj_tiles = tile_manager_new (tile_manager_width (tiles),
-                                                 tile_manager_height (tiles),
-                                                 tile_manager_bpp (tiles));
+      core->saved_proj_buffer = gegl_buffer_dup (buffer);
     }
 
   /*  Allocate the canvas blocks structure  */
-  if (core->canvas_tiles)
-    tile_manager_unref (core->canvas_tiles);
+  if (core->canvas_buffer)
+    g_object_unref (core->canvas_buffer);
 
-  core->canvas_tiles = tile_manager_new (gimp_item_get_width  (item),
-                                         gimp_item_get_height (item),
-                                         1);
+  core->canvas_buffer =
+    gegl_buffer_new (GEGL_RECTANGLE (0, 0,
+                                     gimp_item_get_width  (item),
+                                     gimp_item_get_height (item)),
+                     babl_format ("Y float"));
 
   /*  Get the initial undo extents  */
 
@@ -422,6 +419,67 @@ gimp_paint_core_start (GimpPaintCore     *core,
 
   core->last_paint.x = -1e6;
   core->last_paint.y = -1e6;
+
+  mask = gimp_image_get_mask (image);
+
+  /*  don't apply the mask to itself and don't apply an empty mask  */
+  if (GIMP_DRAWABLE (mask) != drawable && ! gimp_channel_is_empty (mask))
+    {
+      GeglBuffer *mask_buffer;
+      gint        offset_x;
+      gint        offset_y;
+
+      mask_buffer = gimp_drawable_get_buffer (GIMP_DRAWABLE (mask));
+      gimp_item_get_offset (item, &offset_x, &offset_y);
+
+      core->mask_buffer   = g_object_ref (mask_buffer);
+      core->mask_x_offset = -offset_x;
+      core->mask_y_offset = -offset_y;
+    }
+  else
+    {
+      core->mask_buffer = NULL;
+    }
+
+  if (paint_options->use_applicator)
+    {
+      core->applicator = gimp_applicator_new (NULL, FALSE, FALSE);
+
+      if (core->mask_buffer)
+        {
+          gimp_applicator_set_mask_buffer (core->applicator,
+                                           core->mask_buffer);
+          gimp_applicator_set_mask_offset (core->applicator,
+                                           core->mask_x_offset,
+                                           core->mask_y_offset);
+        }
+
+      gimp_applicator_set_affect (core->applicator,
+                                  gimp_drawable_get_active_mask (drawable));
+      gimp_applicator_set_dest_buffer (core->applicator,
+                                       gimp_drawable_get_buffer (drawable));
+    }
+  else
+    {
+      g_clear_object (&core->comp_buffer);
+
+      /* Allocate the scratch buffer if there's a component mask */
+      if (gimp_drawable_get_active_mask (drawable) != GIMP_COMPONENT_MASK_ALL)
+        {
+          const Babl *format;
+
+          if (gimp_drawable_get_linear (drawable))
+            format = babl_format ("RGBA float");
+          else
+            format = babl_format ("R'G'B'A float");
+
+          core->comp_buffer =
+            gegl_buffer_new (GEGL_RECTANGLE (0, 0,
+                                             gimp_item_get_width  (item),
+                                             gimp_item_get_height (item)),
+                             format);
+        }
+    }
 
   /*  Freeze the drawable preview so that it isn't constantly updated.  */
   gimp_viewable_preview_freeze (GIMP_VIEWABLE (drawable));
@@ -440,11 +498,16 @@ gimp_paint_core_finish (GimpPaintCore *core,
   g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
   g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
 
+  g_clear_object (&core->applicator);
+
   if (core->stroke_buffer)
     {
       g_array_free (core->stroke_buffer, TRUE);
       core->stroke_buffer = NULL;
     }
+
+  g_clear_object (&core->mask_buffer);
+  g_clear_object (&core->comp_buffer);
 
   image = gimp_item_get_image (GIMP_ITEM (drawable));
 
@@ -459,61 +522,42 @@ gimp_paint_core_finish (GimpPaintCore *core,
 
   if (push_undo)
     {
+      GeglBuffer *buffer;
+      gint        x, y, width, height;
+
+      gimp_rectangle_intersect (core->x1, core->y1,
+                                core->x2 - core->x1, core->y2 - core->y1,
+                                0, 0,
+                                gimp_item_get_width  (GIMP_ITEM (drawable)),
+                                gimp_item_get_height (GIMP_ITEM (drawable)),
+                                &x, &y, &width, &height);
+
       gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_PAINT,
                                    core->undo_desc);
 
       GIMP_PAINT_CORE_GET_CLASS (core)->push_undo (core, image, NULL);
 
+      buffer = gegl_buffer_new (GEGL_RECTANGLE (0, 0, width, height),
+                                gimp_drawable_get_format (drawable));
+
+      gegl_buffer_copy (core->undo_buffer,
+                        GEGL_RECTANGLE (x, y, width, height),
+                        GEGL_ABYSS_NONE,
+                        buffer,
+                        GEGL_RECTANGLE (0, 0, 0, 0));
+
       gimp_drawable_push_undo (drawable, NULL,
-                               core->x1, core->y1,
-                               core->x2 - core->x1, core->y2 - core->y1,
-                               core->undo_tiles,
-                               TRUE);
+                               buffer, x, y, width, height);
+
+      g_object_unref (buffer);
 
       gimp_image_undo_group_end (image);
     }
 
-  tile_manager_unref (core->undo_tiles);
-  core->undo_tiles = NULL;
-
-  if (core->saved_proj_tiles)
-    {
-      tile_manager_unref (core->saved_proj_tiles);
-      core->saved_proj_tiles = NULL;
-    }
+  g_clear_object (&core->undo_buffer);
+  g_clear_object (&core->saved_proj_buffer);
 
   gimp_viewable_preview_thaw (GIMP_VIEWABLE (drawable));
-}
-
-static void
-gimp_paint_core_copy_valid_tiles (TileManager *src_tiles,
-                                  TileManager *dest_tiles,
-                                  gint         x,
-                                  gint         y,
-                                  gint         w,
-                                  gint         h)
-{
-  Tile *src_tile;
-  gint  i, j;
-
-  for (i = y; i < (y + h); i += (TILE_HEIGHT - (i % TILE_HEIGHT)))
-    {
-      for (j = x; j < (x + w); j += (TILE_WIDTH - (j % TILE_WIDTH)))
-        {
-          src_tile = tile_manager_get_tile (src_tiles,
-                                            j, i, FALSE, FALSE);
-
-          if (tile_is_valid (src_tile))
-            {
-              src_tile = tile_manager_get_tile (src_tiles,
-                                                j, i, TRUE, FALSE);
-
-              tile_manager_map_tile (dest_tiles, j, i, src_tile);
-
-              tile_release (src_tile, FALSE);
-            }
-        }
-    }
 }
 
 void
@@ -541,19 +585,15 @@ gimp_paint_core_cancel (GimpPaintCore *core,
                                 gimp_item_get_height (GIMP_ITEM (drawable)),
                                 &x, &y, &width, &height))
     {
-      gimp_paint_core_copy_valid_tiles (core->undo_tiles,
-                                        gimp_drawable_get_tiles (drawable),
-                                        x, y, width, height);
+      gegl_buffer_copy (core->undo_buffer,
+                        GEGL_RECTANGLE (x, y, width, height),
+                        GEGL_ABYSS_NONE,
+                        gimp_drawable_get_buffer (drawable),
+                        GEGL_RECTANGLE (x, y, width, height));
     }
 
-  tile_manager_unref (core->undo_tiles);
-  core->undo_tiles = NULL;
-
-  if (core->saved_proj_tiles)
-    {
-      tile_manager_unref (core->saved_proj_tiles);
-      core->saved_proj_tiles = NULL;
-    }
+  g_clear_object (&core->undo_buffer);
+  g_clear_object (&core->saved_proj_buffer);
 
   gimp_drawable_update (drawable, x, y, width, height);
 
@@ -565,41 +605,10 @@ gimp_paint_core_cleanup (GimpPaintCore *core)
 {
   g_return_if_fail (GIMP_IS_PAINT_CORE (core));
 
-  if (core->undo_tiles)
-    {
-      tile_manager_unref (core->undo_tiles);
-      core->undo_tiles = NULL;
-    }
-
-  if (core->saved_proj_tiles)
-    {
-      tile_manager_unref (core->saved_proj_tiles);
-      core->saved_proj_tiles = NULL;
-    }
-
-  if (core->canvas_tiles)
-    {
-      tile_manager_unref (core->canvas_tiles);
-      core->canvas_tiles = NULL;
-    }
-
-  if (core->orig_buf)
-    {
-      temp_buf_free (core->orig_buf);
-      core->orig_buf = NULL;
-    }
-
-  if (core->orig_proj_buf)
-    {
-      temp_buf_free (core->orig_proj_buf);
-      core->orig_proj_buf = NULL;
-    }
-
-  if (core->canvas_buf)
-    {
-      temp_buf_free (core->canvas_buf);
-      core->canvas_buf = NULL;
-    }
+  g_clear_object (&core->undo_buffer);
+  g_clear_object (&core->saved_proj_buffer);
+  g_clear_object (&core->canvas_buffer);
+  g_clear_object (&core->paint_buffer);
 }
 
 void
@@ -678,7 +687,8 @@ gimp_paint_core_get_last_coords (GimpPaintCore *core,
 void
 gimp_paint_core_round_line (GimpPaintCore    *core,
                             GimpPaintOptions *paint_options,
-                            gboolean          constrain_15_degrees)
+                            gboolean          constrain_15_degrees,
+                            gdouble           constrain_offset_angle)
 {
   g_return_if_fail (GIMP_IS_PAINT_CORE (core));
   g_return_if_fail (GIMP_IS_PAINT_OPTIONS (paint_options));
@@ -694,321 +704,259 @@ gimp_paint_core_round_line (GimpPaintCore    *core,
   if (constrain_15_degrees)
     gimp_constrain_line (core->last_coords.x, core->last_coords.y,
                          &core->cur_coords.x, &core->cur_coords.y,
-                         GIMP_CONSTRAIN_LINE_15_DEGREES);
+                         GIMP_CONSTRAIN_LINE_15_DEGREES,
+                         constrain_offset_angle);
 }
 
 
 /*  protected functions  */
 
-TempBuf *
-gimp_paint_core_get_paint_area (GimpPaintCore    *core,
-                                GimpDrawable     *drawable,
-                                GimpPaintOptions *paint_options,
-                                const GimpCoords *coords)
+GeglBuffer *
+gimp_paint_core_get_paint_buffer (GimpPaintCore    *core,
+                                  GimpDrawable     *drawable,
+                                  GimpPaintOptions *paint_options,
+                                  GimpLayerMode     paint_mode,
+                                  const GimpCoords *coords,
+                                  gint             *paint_buffer_x,
+                                  gint             *paint_buffer_y,
+                                  gint             *paint_width,
+                                  gint             *paint_height)
 {
+  GeglBuffer *paint_buffer;
+
   g_return_val_if_fail (GIMP_IS_PAINT_CORE (core), NULL);
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
   g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)), NULL);
   g_return_val_if_fail (GIMP_IS_PAINT_OPTIONS (paint_options), NULL);
   g_return_val_if_fail (coords != NULL, NULL);
+  g_return_val_if_fail (paint_buffer_x != NULL, NULL);
+  g_return_val_if_fail (paint_buffer_y != NULL, NULL);
 
-  return GIMP_PAINT_CORE_GET_CLASS (core)->get_paint_area (core, drawable,
-                                                           paint_options,
-                                                           coords);
+  paint_buffer =
+    GIMP_PAINT_CORE_GET_CLASS (core)->get_paint_buffer (core, drawable,
+                                                        paint_options,
+                                                        paint_mode,
+                                                        coords,
+                                                        paint_buffer_x,
+                                                        paint_buffer_y,
+                                                        paint_width,
+                                                        paint_height);
+
+  core->paint_buffer_x = *paint_buffer_x;
+  core->paint_buffer_y = *paint_buffer_y;
+
+  return paint_buffer;
 }
 
-TempBuf *
-gimp_paint_core_get_orig_image (GimpPaintCore *core,
-                                GimpDrawable  *drawable,
-                                gint           x,
-                                gint           y,
-                                gint           width,
-                                gint           height)
+GeglBuffer *
+gimp_paint_core_get_orig_image (GimpPaintCore *core)
 {
-  PixelRegion   srcPR;
-  PixelRegion   destPR;
-  Tile         *undo_tile;
-  gboolean      release_tile;
-  gint          h;
-  gint          pixelwidth;
-  gint          drawable_width;
-  gint          drawable_height;
-  const guchar *s;
-  guchar       *d;
-  gpointer      pr;
-
   g_return_val_if_fail (GIMP_IS_PAINT_CORE (core), NULL);
-  g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
-  g_return_val_if_fail (core->undo_tiles != NULL, NULL);
+  g_return_val_if_fail (core->undo_buffer != NULL, NULL);
 
-  core->orig_buf = temp_buf_resize (core->orig_buf,
-                                    gimp_drawable_bytes (drawable),
-                                    x, y, width, height);
-
-  drawable_width  = gimp_item_get_width  (GIMP_ITEM (drawable));
-  drawable_height = gimp_item_get_height (GIMP_ITEM (drawable));
-
-  gimp_rectangle_intersect (x, y,
-                            width, height,
-                            0, 0,
-                            drawable_width, drawable_height,
-                            &x, &y,
-                            &width, &height);
-
-  /*  configure the pixel regions  */
-  pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
-                     x, y, width, height,
-                     FALSE);
-
-  pixel_region_init_temp_buf (&destPR, core->orig_buf,
-                              x - core->orig_buf->x,
-                              y - core->orig_buf->y,
-                              width, height);
-
-  for (pr = pixel_regions_register (2, &srcPR, &destPR);
-       pr != NULL;
-       pr = pixel_regions_process (pr))
-    {
-      /*  If the undo tile corresponding to this location is valid, use it  */
-      undo_tile = tile_manager_get_tile (core->undo_tiles,
-                                         srcPR.x, srcPR.y,
-                                         FALSE, FALSE);
-
-      if (tile_is_valid (undo_tile))
-        {
-          release_tile = TRUE;
-
-          undo_tile = tile_manager_get_tile (core->undo_tiles,
-                                             srcPR.x, srcPR.y,
-                                             TRUE, FALSE);
-          s = tile_data_pointer (undo_tile, srcPR.x, srcPR.y);
-        }
-      else
-        {
-          release_tile = FALSE;
-
-          s = srcPR.data;
-        }
-
-      d = destPR.data;
-
-      pixelwidth = srcPR.w * srcPR.bytes;
-
-      h = srcPR.h;
-      while (h --)
-        {
-          memcpy (d, s, pixelwidth);
-
-          s += srcPR.rowstride;
-          d += destPR.rowstride;
-        }
-
-      if (release_tile)
-        tile_release (undo_tile, FALSE);
-    }
-
-  return core->orig_buf;
+  return core->undo_buffer;
 }
 
-TempBuf *
-gimp_paint_core_get_orig_proj (GimpPaintCore *core,
-                               GimpPickable  *pickable,
-                               gint           x,
-                               gint           y,
-                               gint           width,
-                               gint           height)
+GeglBuffer *
+gimp_paint_core_get_orig_proj (GimpPaintCore *core)
 {
-  TileManager  *src_tiles;
-  PixelRegion   srcPR;
-  PixelRegion   destPR;
-  Tile         *saved_tile;
-  gboolean      release_tile;
-  gint          h;
-  gint          pixelwidth;
-  gint          pickable_width;
-  gint          pickable_height;
-  const guchar *s;
-  guchar       *d;
-  gpointer      pr;
-
   g_return_val_if_fail (GIMP_IS_PAINT_CORE (core), NULL);
-  g_return_val_if_fail (GIMP_IS_PICKABLE (pickable), NULL);
-  g_return_val_if_fail (core->saved_proj_tiles != NULL, NULL);
+  g_return_val_if_fail (core->saved_proj_buffer != NULL, NULL);
 
-  core->orig_proj_buf = temp_buf_resize (core->orig_proj_buf,
-                                         gimp_pickable_get_bytes (pickable),
-                                         x, y, width, height);
-
-  src_tiles = gimp_pickable_get_tiles (pickable);
-
-  pickable_width  = tile_manager_width  (src_tiles);
-  pickable_height = tile_manager_height (src_tiles);
-
-  gimp_rectangle_intersect (x, y,
-                            width, height,
-                            0, 0,
-                            pickable_width, pickable_height,
-                            &x, &y,
-                            &width, &height);
-
-  /*  configure the pixel regions  */
-  pixel_region_init (&srcPR, src_tiles,
-                     x, y, width, height,
-                     FALSE);
-
-  pixel_region_init_temp_buf (&destPR, core->orig_proj_buf,
-                              x - core->orig_proj_buf->x,
-                              y - core->orig_proj_buf->y,
-                              width, height);
-
-  for (pr = pixel_regions_register (2, &srcPR, &destPR);
-       pr != NULL;
-       pr = pixel_regions_process (pr))
-    {
-      /*  If the saved tile corresponding to this location is valid, use it  */
-      saved_tile = tile_manager_get_tile (core->saved_proj_tiles,
-                                          srcPR.x, srcPR.y,
-                                          FALSE, FALSE);
-
-      if (tile_is_valid (saved_tile))
-        {
-          release_tile = TRUE;
-
-          saved_tile = tile_manager_get_tile (core->saved_proj_tiles,
-                                              srcPR.x, srcPR.y,
-                                              TRUE, FALSE);
-          s = tile_data_pointer (saved_tile, srcPR.x, srcPR.y);
-        }
-      else
-        {
-          release_tile = FALSE;
-
-          s = srcPR.data;
-        }
-
-      d = destPR.data;
-
-      pixelwidth = srcPR.w * srcPR.bytes;
-
-      h = srcPR.h;
-      while (h --)
-        {
-          memcpy (d, s, pixelwidth);
-
-          s += srcPR.rowstride;
-          d += destPR.rowstride;
-        }
-
-      if (release_tile)
-        tile_release (saved_tile, FALSE);
-    }
-
-  return core->orig_proj_buf;
+  return core->saved_proj_buffer;
 }
 
 void
 gimp_paint_core_paste (GimpPaintCore            *core,
-                       PixelRegion              *paint_maskPR,
+                       const GimpTempBuf        *paint_mask,
+                       gint                      paint_mask_offset_x,
+                       gint                      paint_mask_offset_y,
                        GimpDrawable             *drawable,
                        gdouble                   paint_opacity,
                        gdouble                   image_opacity,
-                       GimpLayerModeEffects      paint_mode,
+                       GimpLayerMode             paint_mode,
                        GimpPaintApplicationMode  mode)
 {
-  TileManager *alt = NULL;
-  PixelRegion  srcPR;
+  gint width  = gegl_buffer_get_width  (core->paint_buffer);
+  gint height = gegl_buffer_get_height (core->paint_buffer);
 
-  /*  set undo blocks  */
-  gimp_paint_core_validate_undo_tiles (core, drawable,
-                                       core->canvas_buf->x,
-                                       core->canvas_buf->y,
-                                       core->canvas_buf->width,
-                                       core->canvas_buf->height);
-
-  if (core->use_saved_proj)
+  if (core->applicator)
     {
-      GimpImage      *image      = gimp_item_get_image (GIMP_ITEM (drawable));
-      GimpProjection *projection = gimp_image_get_projection (image);
-      gint            off_x;
-      gint            off_y;
-      gint            x, y;
-      gint            w, h;
-
-      gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
-
-      if (gimp_rectangle_intersect (core->canvas_buf->x + off_x,
-                                    core->canvas_buf->y + off_y,
-                                    core->canvas_buf->width,
-                                    core->canvas_buf->height,
-                                    0, 0,
-                                    tile_manager_width (core->saved_proj_tiles),
-                                    tile_manager_height (core->saved_proj_tiles),
-                                    &x, &y, &w, &h))
-        {
-          gimp_paint_core_validate_saved_proj_tiles (core,
-                                                     GIMP_PICKABLE (projection),
-                                                     x, y, w, h);
-        }
-    }
-
-  /*  If the mode is CONSTANT:
-   *   combine the canvas buf, the paint mask to the canvas tiles
-   */
-  if (mode == GIMP_PAINT_CONSTANT)
-    {
-      /* Some tools (ink) paint the mask to paint_core->canvas_tiles
-       * directly. Don't need to copy it in this case.
+      /*  If the mode is CONSTANT:
+       *   combine the canvas buf, the paint mask to the canvas buffer
        */
-      if (paint_maskPR->tiles != core->canvas_tiles)
+      if (mode == GIMP_PAINT_CONSTANT)
         {
-          /*  initialize any invalid canvas tiles  */
-          gimp_paint_core_validate_canvas_tiles (core,
-                                                 core->canvas_buf->x,
-                                                 core->canvas_buf->y,
-                                                 core->canvas_buf->width,
-                                                 core->canvas_buf->height);
+          /* Some tools (ink) paint the mask to paint_core->canvas_buffer
+           * directly. Don't need to copy it in this case.
+           */
+          if (paint_mask != NULL)
+            {
+              GimpTempBuf *modified_mask     = gimp_temp_buf_copy (paint_mask);
+              GeglBuffer  *paint_mask_buffer =
+                gimp_temp_buf_create_buffer ((GimpTempBuf *) modified_mask);
 
-          paint_mask_to_canvas_tiles (core, paint_maskPR, paint_opacity);
+              gimp_gegl_combine_mask_weird (paint_mask_buffer,
+                                            GEGL_RECTANGLE (paint_mask_offset_x,
+                                                            paint_mask_offset_y,
+                                                            width, height),
+                                            core->canvas_buffer,
+                                            GEGL_RECTANGLE (core->paint_buffer_x,
+                                                            core->paint_buffer_y,
+                                                            width, height),
+                                            paint_opacity,
+                                            GIMP_IS_AIRBRUSH (core));
+
+              g_object_unref (paint_mask_buffer);
+              gimp_temp_buf_unref (modified_mask);
+            }
+
+          gimp_gegl_apply_mask (core->canvas_buffer,
+                                GEGL_RECTANGLE (core->paint_buffer_x,
+                                                core->paint_buffer_y,
+                                                width, height),
+                                core->paint_buffer,
+                                GEGL_RECTANGLE (0, 0, width, height),
+                                1.0);
+
+          gimp_applicator_set_src_buffer (core->applicator,
+                                          core->undo_buffer);
+        }
+      /*  Otherwise:
+       *   combine the canvas buf and the paint mask to the canvas buf
+       */
+      else
+        {
+          GeglBuffer *paint_mask_buffer =
+            gimp_temp_buf_create_buffer ((GimpTempBuf *) paint_mask);
+
+          gimp_gegl_apply_mask (paint_mask_buffer,
+                                GEGL_RECTANGLE (paint_mask_offset_x,
+                                                paint_mask_offset_y,
+                                                width, height),
+                                core->paint_buffer,
+                                GEGL_RECTANGLE (0, 0, width, height),
+                                paint_opacity);
+
+          g_object_unref (paint_mask_buffer);
+
+          gimp_applicator_set_src_buffer (core->applicator,
+                                          gimp_drawable_get_buffer (drawable));
         }
 
-      canvas_tiles_to_canvas_buf (core);
-      alt = core->undo_tiles;
+      gimp_applicator_set_apply_buffer (core->applicator,
+                                        core->paint_buffer);
+      gimp_applicator_set_apply_offset (core->applicator,
+                                        core->paint_buffer_x,
+                                        core->paint_buffer_y);
+
+      gimp_applicator_set_opacity (core->applicator, image_opacity);
+      gimp_applicator_set_mode (core->applicator, paint_mode,
+                                GIMP_LAYER_COLOR_SPACE_AUTO,
+                                GIMP_LAYER_COLOR_SPACE_AUTO,
+                                gimp_layer_mode_get_paint_composite_mode (paint_mode));
+
+      /*  apply the paint area to the image  */
+      gimp_applicator_blit (core->applicator,
+                            GEGL_RECTANGLE (core->paint_buffer_x,
+                                            core->paint_buffer_y,
+                                            width, height));
     }
-  /*  Otherwise:
-   *   combine the canvas buf and the paint mask to the canvas buf
-   */
   else
     {
-      paint_mask_to_canvas_buf (core, paint_maskPR, paint_opacity);
+      GimpTempBuf *paint_buf = gimp_gegl_buffer_get_temp_buf (core->paint_buffer);
+      GeglBuffer  *dest_buffer;
+      GeglBuffer  *src_buffer;
+
+      if (! paint_buf)
+        return;
+
+      if (core->comp_buffer)
+        dest_buffer = core->comp_buffer;
+      else
+        dest_buffer = gimp_drawable_get_buffer (drawable);
+
+      if (mode == GIMP_PAINT_CONSTANT)
+        {
+          /* This step is skipped by the ink tool, which writes
+           * directly to canvas_buffer
+           */
+          if (paint_mask != NULL)
+            {
+              /* Mix paint mask and canvas_buffer */
+              combine_paint_mask_to_canvas_mask (paint_mask,
+                                                 paint_mask_offset_x,
+                                                 paint_mask_offset_y,
+                                                 core->canvas_buffer,
+                                                 core->paint_buffer_x,
+                                                 core->paint_buffer_y,
+                                                 paint_opacity,
+                                                 GIMP_IS_AIRBRUSH (core));
+            }
+
+          /* Write canvas_buffer to paint_buf */
+          canvas_buffer_to_paint_buf_alpha (paint_buf,
+                                            core->canvas_buffer,
+                                            core->paint_buffer_x,
+                                            core->paint_buffer_y);
+
+          /* undo buf -> paint_buf -> dest_buffer */
+          src_buffer = core->undo_buffer;
+        }
+      else
+        {
+          g_return_if_fail (paint_mask);
+
+          /* Write paint_mask to paint_buf, does not modify canvas_buffer */
+          paint_mask_to_paint_buffer (paint_mask,
+                                      paint_mask_offset_x,
+                                      paint_mask_offset_y,
+                                      paint_buf,
+                                      paint_opacity);
+
+          /* dest_buffer -> paint_buf -> dest_buffer */
+          if (core->comp_buffer)
+            src_buffer = gimp_drawable_get_buffer (drawable);
+          else
+            src_buffer = dest_buffer;
+        }
+
+      do_layer_blend (src_buffer,
+                      dest_buffer,
+                      paint_buf,
+                      core->mask_buffer,
+                      image_opacity,
+                      core->paint_buffer_x,
+                      core->paint_buffer_y,
+                      core->mask_x_offset,
+                      core->mask_y_offset,
+                      paint_mode);
+
+      if (core->comp_buffer)
+        {
+          mask_components_onto (src_buffer,
+                                core->comp_buffer,
+                                gimp_drawable_get_buffer (drawable),
+                                GEGL_RECTANGLE (core->paint_buffer_x,
+                                                core->paint_buffer_y,
+                                                width,
+                                                height),
+                                gimp_drawable_get_active_mask (drawable),
+                                gimp_drawable_get_linear (drawable));
+        }
     }
 
-  /*  intialize canvas buf source pixel regions  */
-  pixel_region_init_temp_buf (&srcPR, core->canvas_buf,
-                              0, 0,
-                              core->canvas_buf->width,
-                              core->canvas_buf->height);
-
-  /*  apply the paint area to the image  */
-  gimp_drawable_apply_region (drawable, &srcPR,
-                              FALSE, NULL,
-                              image_opacity, paint_mode,
-                              alt,  /*  specify an alternative src1  */
-                              NULL,
-                              core->canvas_buf->x,
-                              core->canvas_buf->y);
-
   /*  Update the undo extents  */
-  core->x1 = MIN (core->x1, core->canvas_buf->x);
-  core->y1 = MIN (core->y1, core->canvas_buf->y);
-  core->x2 = MAX (core->x2, core->canvas_buf->x + core->canvas_buf->width);
-  core->y2 = MAX (core->y2, core->canvas_buf->y + core->canvas_buf->height);
+  core->x1 = MIN (core->x1, core->paint_buffer_x);
+  core->y1 = MIN (core->y1, core->paint_buffer_y);
+  core->x2 = MAX (core->x2, core->paint_buffer_x + width);
+  core->y2 = MAX (core->y2, core->paint_buffer_y + height);
 
   /*  Update the drawable  */
   gimp_drawable_update (drawable,
-                        core->canvas_buf->x,
-                        core->canvas_buf->y,
-                        core->canvas_buf->width,
-                        core->canvas_buf->height);
+                        core->paint_buffer_x,
+                        core->paint_buffer_y,
+                        width, height);
 }
 
 /* This works similarly to gimp_paint_core_paste. However, instead of
@@ -1021,87 +969,112 @@ gimp_paint_core_paste (GimpPaintCore            *core,
  */
 void
 gimp_paint_core_replace (GimpPaintCore            *core,
-                         PixelRegion              *paint_maskPR,
+                         const GimpTempBuf        *paint_mask,
+                         gint                      paint_mask_offset_x,
+                         gint                      paint_mask_offset_y,
                          GimpDrawable             *drawable,
                          gdouble                   paint_opacity,
                          gdouble                   image_opacity,
                          GimpPaintApplicationMode  mode)
 {
-  PixelRegion  srcPR;
+  GeglRectangle  mask_rect;
+  GeglBuffer    *paint_mask_buffer;
+  gint           width, height;
 
   if (! gimp_drawable_has_alpha (drawable))
     {
-      gimp_paint_core_paste (core, paint_maskPR, drawable,
+      gimp_paint_core_paste (core, paint_mask,
+                             paint_mask_offset_x,
+                             paint_mask_offset_y,
+                             drawable,
                              paint_opacity,
-                             image_opacity, GIMP_NORMAL_MODE,
+                             image_opacity,
+                             GIMP_LAYER_MODE_NORMAL,
                              mode);
       return;
     }
 
-  /*  set undo blocks  */
-  gimp_paint_core_validate_undo_tiles (core, drawable,
-                                       core->canvas_buf->x,
-                                       core->canvas_buf->y,
-                                       core->canvas_buf->width,
-                                       core->canvas_buf->height);
+  width  = gegl_buffer_get_width  (core->paint_buffer);
+  height = gegl_buffer_get_height (core->paint_buffer);
 
-  if (mode == GIMP_PAINT_CONSTANT)
-    {
-      /* Some tools (ink) paint the mask to paint_core->canvas_tiles
+  if (mode == GIMP_PAINT_CONSTANT &&
+
+      /* Some tools (ink) paint the mask to paint_core->canvas_buffer
        * directly. Don't need to copy it in this case.
        */
-      if (paint_maskPR->tiles != core->canvas_tiles)
+      paint_mask != NULL)
+    {
+      if (core->applicator)
         {
-          /*  initialize any invalid canvas tiles  */
-          gimp_paint_core_validate_canvas_tiles (core,
-                                                 core->canvas_buf->x,
-                                                 core->canvas_buf->y,
-                                                 core->canvas_buf->width,
-                                                 core->canvas_buf->height);
+          paint_mask_buffer =
+            gimp_temp_buf_create_buffer ((GimpTempBuf *) paint_mask);
 
-          /* combine the paint mask and the canvas tiles */
-          paint_mask_to_canvas_tiles (core, paint_maskPR, paint_opacity);
+          /* combine the paint mask and the canvas buffer */
+          gimp_gegl_combine_mask_weird (paint_mask_buffer,
+                                        GEGL_RECTANGLE (paint_mask_offset_x,
+                                                        paint_mask_offset_y,
+                                                        width, height),
+                                        core->canvas_buffer,
+                                        GEGL_RECTANGLE (core->paint_buffer_x,
+                                                        core->paint_buffer_y,
+                                                        width, height),
+                                        paint_opacity,
+                                        GIMP_IS_AIRBRUSH (core));
 
-          /* initialize the maskPR from the canvas tiles */
-          pixel_region_init (paint_maskPR, core->canvas_tiles,
-                             core->canvas_buf->x,
-                             core->canvas_buf->y,
-                             core->canvas_buf->width,
-                             core->canvas_buf->height,
-                             FALSE);
+          g_object_unref (paint_mask_buffer);
         }
+      else
+        {
+          /* Mix paint mask and canvas_buffer */
+          combine_paint_mask_to_canvas_mask (paint_mask,
+                                             paint_mask_offset_x,
+                                             paint_mask_offset_y,
+                                             core->canvas_buffer,
+                                             core->paint_buffer_x,
+                                             core->paint_buffer_y,
+                                             paint_opacity,
+                                             GIMP_IS_AIRBRUSH (core));
+        }
+
+      /* initialize the maskPR from the canvas buffer */
+      paint_mask_buffer = g_object_ref (core->canvas_buffer);
+
+      mask_rect = *GEGL_RECTANGLE (core->paint_buffer_x,
+                                   core->paint_buffer_y,
+                                   width, height);
     }
   else
     {
-      /* The mask is just the paint_maskPR */
+      paint_mask_buffer =
+        gimp_temp_buf_create_buffer ((GimpTempBuf *) paint_mask);
+
+      mask_rect = *GEGL_RECTANGLE (paint_mask_offset_x,
+                                   paint_mask_offset_y,
+                                   width, height);
     }
 
-  /*  intialize canvas buf source pixel regions  */
-  pixel_region_init_temp_buf (&srcPR, core->canvas_buf,
-                              0, 0,
-                              core->canvas_buf->width,
-                              core->canvas_buf->height);
-
   /*  apply the paint area to the image  */
-  gimp_drawable_replace_region (drawable, &srcPR,
+  gimp_drawable_replace_buffer (drawable, core->paint_buffer,
+                                GEGL_RECTANGLE (0, 0, width, height),
                                 FALSE, NULL,
                                 image_opacity,
-                                paint_maskPR,
-                                core->canvas_buf->x,
-                                core->canvas_buf->y);
+                                paint_mask_buffer, &mask_rect,
+                                core->paint_buffer_x,
+                                core->paint_buffer_y);
+
+  g_object_unref (paint_mask_buffer);
 
   /*  Update the undo extents  */
-  core->x1 = MIN (core->x1, core->canvas_buf->x);
-  core->y1 = MIN (core->y1, core->canvas_buf->y);
-  core->x2 = MAX (core->x2, core->canvas_buf->x + core->canvas_buf->width) ;
-  core->y2 = MAX (core->y2, core->canvas_buf->y + core->canvas_buf->height) ;
+  core->x1 = MIN (core->x1, core->paint_buffer_x);
+  core->y1 = MIN (core->y1, core->paint_buffer_y);
+  core->x2 = MAX (core->x2, core->paint_buffer_x + width);
+  core->y2 = MAX (core->y2, core->paint_buffer_y + height);
 
   /*  Update the drawable  */
   gimp_drawable_update (drawable,
-                        core->canvas_buf->x,
-                        core->canvas_buf->y,
-                        core->canvas_buf->width,
-                        core->canvas_buf->height);
+                        core->paint_buffer_x,
+                        core->paint_buffer_y,
+                        width, height);
 }
 
 /**
@@ -1154,7 +1127,8 @@ gimp_paint_core_smooth_coords (GimpPaintCore    *core,
             {
               /* We use gaussian function with velocity as a window function */
               velocity_sum += next_coords->velocity * 100;
-              rate = gaussian_weight * exp (-velocity_sum*velocity_sum / (2 * gaussian_weight2));
+              rate = gaussian_weight * exp (-velocity_sum * velocity_sum /
+                                            (2 * gaussian_weight2));
             }
 
           scale_sum += rate;
@@ -1167,166 +1141,5 @@ gimp_paint_core_smooth_coords (GimpPaintCore    *core,
           coords->x /= scale_sum;
           coords->y /= scale_sum;
         }
-
-    }
-
-}
-
-
-static void
-canvas_tiles_to_canvas_buf (GimpPaintCore *core)
-{
-  PixelRegion srcPR;
-  PixelRegion maskPR;
-
-  /*  combine the canvas tiles and the canvas buf  */
-  pixel_region_init_temp_buf (&srcPR, core->canvas_buf,
-                              0, 0,
-                              core->canvas_buf->width,
-                              core->canvas_buf->height);
-
-  pixel_region_init (&maskPR, core->canvas_tiles,
-                     core->canvas_buf->x,
-                     core->canvas_buf->y,
-                     core->canvas_buf->width,
-                     core->canvas_buf->height,
-                     FALSE);
-
-  /*  apply the canvas tiles to the canvas buf  */
-  apply_mask_to_region (&srcPR, &maskPR, OPAQUE_OPACITY);
-}
-
-static void
-paint_mask_to_canvas_tiles (GimpPaintCore *core,
-                            PixelRegion   *paint_maskPR,
-                            gdouble        paint_opacity)
-{
-  PixelRegion srcPR;
-
-  /*   combine the paint mask and the canvas tiles  */
-  pixel_region_init (&srcPR, core->canvas_tiles,
-                     core->canvas_buf->x,
-                     core->canvas_buf->y,
-                     core->canvas_buf->width,
-                     core->canvas_buf->height,
-                     TRUE);
-
-  /*  combine the mask to the canvas tiles  */
-  combine_mask_and_region (&srcPR, paint_maskPR,
-                           paint_opacity * 255.999, GIMP_IS_AIRBRUSH (core));
-}
-
-static void
-paint_mask_to_canvas_buf (GimpPaintCore *core,
-                          PixelRegion   *paint_maskPR,
-                          gdouble        paint_opacity)
-{
-  PixelRegion srcPR;
-
-  /*  combine the canvas buf and the paint mask to the canvas buf  */
-  pixel_region_init_temp_buf (&srcPR, core->canvas_buf,
-                              0, 0,
-                              core->canvas_buf->width,
-                              core->canvas_buf->height);
-
-  /*  apply the mask  */
-  apply_mask_to_region (&srcPR, paint_maskPR, paint_opacity * 255.999);
-}
-
-void
-gimp_paint_core_validate_undo_tiles (GimpPaintCore *core,
-                                     GimpDrawable  *drawable,
-                                     gint           x,
-                                     gint           y,
-                                     gint           w,
-                                     gint           h)
-{
-  gint i, j;
-
-  g_return_if_fail (GIMP_IS_PAINT_CORE (core));
-  g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
-  g_return_if_fail (core->undo_tiles != NULL);
-
-  for (i = y; i < (y + h); i += (TILE_HEIGHT - (i % TILE_HEIGHT)))
-    {
-      for (j = x; j < (x + w); j += (TILE_WIDTH - (j % TILE_WIDTH)))
-        {
-          Tile *dest_tile = tile_manager_get_tile (core->undo_tiles,
-                                                   j, i, FALSE, FALSE);
-
-          if (! tile_is_valid (dest_tile))
-            {
-              Tile *src_tile =
-                tile_manager_get_tile (gimp_drawable_get_tiles (drawable),
-                                       j, i, TRUE, FALSE);
-              tile_manager_map_tile (core->undo_tiles, j, i, src_tile);
-              tile_release (src_tile, FALSE);
-            }
-        }
     }
 }
-
-void
-gimp_paint_core_validate_saved_proj_tiles (GimpPaintCore *core,
-                                           GimpPickable  *pickable,
-                                           gint           x,
-                                           gint           y,
-                                           gint           w,
-                                           gint           h)
-{
-  gint i, j;
-
-  g_return_if_fail (GIMP_IS_PAINT_CORE (core));
-  g_return_if_fail (GIMP_IS_PICKABLE (pickable));
-  g_return_if_fail (core->saved_proj_tiles != NULL);
-
-  for (i = y; i < (y + h); i += (TILE_HEIGHT - (i % TILE_HEIGHT)))
-    {
-      for (j = x; j < (x + w); j += (TILE_WIDTH - (j % TILE_WIDTH)))
-        {
-          Tile *dest_tile = tile_manager_get_tile (core->saved_proj_tiles,
-                                                   j, i, FALSE, FALSE);
-
-          if (! tile_is_valid (dest_tile))
-            {
-              Tile *src_tile =
-                tile_manager_get_tile (gimp_pickable_get_tiles (pickable),
-                                       j, i, TRUE, FALSE);
-
-              tile_manager_map_tile (core->saved_proj_tiles, j, i, src_tile);
-              tile_release (src_tile, FALSE);
-            }
-        }
-    }
-}
-
-void
-gimp_paint_core_validate_canvas_tiles (GimpPaintCore *core,
-                                       gint           x,
-                                       gint           y,
-                                       gint           w,
-                                       gint           h)
-{
-  gint i, j;
-
-  g_return_if_fail (GIMP_IS_PAINT_CORE (core));
-  g_return_if_fail (core->canvas_tiles != NULL);
-
-  for (i = y; i < (y + h); i += (TILE_HEIGHT - (i % TILE_HEIGHT)))
-    {
-      for (j = x; j < (x + w); j += (TILE_WIDTH - (j % TILE_WIDTH)))
-        {
-          Tile *tile = tile_manager_get_tile (core->canvas_tiles, j, i,
-                                              FALSE, FALSE);
-
-          if (! tile_is_valid (tile))
-            {
-              tile = tile_manager_get_tile (core->canvas_tiles, j, i,
-                                            TRUE, TRUE);
-              memset (tile_data_pointer (tile, 0, 0), 0, tile_size (tile));
-              tile_release (tile, TRUE);
-            }
-        }
-    }
-}
-

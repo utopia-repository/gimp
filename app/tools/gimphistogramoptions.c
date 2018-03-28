@@ -17,19 +17,14 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpconfig/gimpconfig.h"
-#include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
 
-#include "config/gimpconfig-utils.h"
-
-#include "widgets/gimphistogramview.h"
-
 #include "gimphistogramoptions.h"
-#include "gimptooloptions-gui.h"
 
 #include "gimp-intl.h"
 
@@ -52,7 +47,7 @@ static void   gimp_histogram_options_get_property (GObject      *object,
 
 
 G_DEFINE_TYPE (GimpHistogramOptions, gimp_histogram_options,
-               GIMP_TYPE_COLOR_OPTIONS)
+               GIMP_TYPE_FILTER_OPTIONS)
 
 
 static void
@@ -63,11 +58,13 @@ gimp_histogram_options_class_init (GimpHistogramOptionsClass *klass)
   object_class->set_property = gimp_histogram_options_set_property;
   object_class->get_property = gimp_histogram_options_get_property;
 
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_SCALE,
-                                 "histogram-scale", NULL,
-                                 GIMP_TYPE_HISTOGRAM_SCALE,
-                                 GIMP_HISTOGRAM_SCALE_LINEAR,
-                                 GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_SCALE,
+                         "histogram-scale",
+                         _("Histogram Scale"),
+                         NULL,
+                         GIMP_TYPE_HISTOGRAM_SCALE,
+                         GIMP_HISTOGRAM_SCALE_LINEAR,
+                         GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void
@@ -113,31 +110,4 @@ gimp_histogram_options_get_property (GObject    *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
     }
-}
-
-GtkWidget *
-gimp_histogram_options_gui (GimpToolOptions *tool_options)
-{
-  GObject   *config = G_OBJECT (tool_options);
-  GtkWidget *vbox   = gimp_tool_options_gui (tool_options);
-  GtkWidget *frame;
-
-  frame = gimp_prop_enum_radio_frame_new (config, "histogram-scale",
-                                          _("Histogram Scale"), 0, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
-  gtk_widget_show (frame);
-
-  return vbox;
-}
-
-void
-gimp_histogram_options_connect_view (GimpHistogramOptions *options,
-                                     GimpHistogramView    *view)
-{
-  g_return_if_fail (GIMP_IS_HISTOGRAM_OPTIONS (options));
-  g_return_if_fail (GIMP_IS_HISTOGRAM_VIEW (view));
-
-  gimp_config_connect (G_OBJECT (options), G_OBJECT (view), "histogram-scale");
-
-  g_object_notify (G_OBJECT (options), "histogram-scale");
 }

@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "core-types.h"
@@ -35,9 +36,9 @@ gimp_image_pick_color (GimpImage     *image,
                        gboolean       sample_merged,
                        gboolean       sample_average,
                        gdouble        average_radius,
-                       GimpImageType *sample_type,
-                       GimpRGB       *color,
-                       gint          *color_index)
+                       const Babl   **sample_format,
+                       gpointer       pixel,
+                       GimpRGB       *color)
 {
   GimpPickable *pickable;
 
@@ -58,7 +59,7 @@ gimp_image_pick_color (GimpImage     *image,
 
   if (sample_merged)
     {
-      pickable = GIMP_PICKABLE (gimp_image_get_projection (image));
+      pickable = GIMP_PICKABLE (image);
     }
   else
     {
@@ -76,10 +77,10 @@ gimp_image_pick_color (GimpImage     *image,
    * Instead, call gimp_pickable_flush() in the callers if needed.
    */
 
-  if (sample_type)
-    *sample_type = gimp_pickable_get_image_type (pickable);
+  if (sample_format)
+    *sample_format = gimp_pickable_get_format (pickable);
 
   return gimp_pickable_pick_color (pickable, x, y,
                                    sample_average, average_radius,
-                                   color, color_index);
+                                   pixel, color);
 }

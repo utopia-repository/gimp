@@ -23,8 +23,12 @@
 
 #include <gegl.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
 #include "libgimpbase/gimpbase.h"
 #include "libgimpconfig/gimpconfig.h"
+
+#include "libgimpbase/gimpbase.h"
 
 #include "pdb-types.h"
 
@@ -34,59 +38,71 @@
 #include "core/gimplayer.h"
 #include "core/gimpparamspecs.h"
 #include "file/file-open.h"
-#include "file/file-procedure.h"
 #include "file/file-save.h"
 #include "file/file-utils.h"
 #include "plug-in/gimppluginmanager-file.h"
-#include "plug-in/gimppluginmanager.h"
+#include "plug-in/gimppluginprocedure.h"
 
 #include "gimppdb.h"
 #include "gimpprocedure.h"
 #include "internal-procs.h"
 
 
-static GValueArray *
-file_load_invoker (GimpProcedure      *procedure,
-                   Gimp               *gimp,
-                   GimpContext        *context,
-                   GimpProgress       *progress,
-                   const GValueArray  *args,
-                   GError            **error)
+static GimpValueArray *
+file_load_invoker (GimpProcedure         *procedure,
+                   Gimp                  *gimp,
+                   GimpContext           *context,
+                   GimpProgress          *progress,
+                   const GimpValueArray  *args,
+                   GError               **error)
 {
-  GValueArray         *new_args;
-  GValueArray         *return_vals;
+  GimpValueArray      *new_args;
+  GimpValueArray      *return_vals;
   GimpPlugInProcedure *file_proc;
   GimpProcedure       *proc;
-  gchar               *uri;
+  GFile               *file;
   gint                 i;
 
-  uri = file_utils_filename_to_uri (gimp,
-                                    g_value_get_string (&args->values[1]),
-                                    error);
+  file = file_utils_filename_to_file (gimp,
+                                      g_value_get_string (gimp_value_array_index (args, 1)),
+                                      error);
 
-  if (! uri)
+  if (! file)
     return gimp_procedure_get_return_values (procedure, FALSE,
                                              error ? *error : NULL);
 
-  file_proc =
-    file_procedure_find (gimp->plug_in_manager->load_procs, uri, error);
-
-  g_free (uri);
+  file_proc = gimp_plug_in_manager_file_procedure_find (gimp->plug_in_manager,
+                                                        GIMP_FILE_PROCEDURE_GROUP_OPEN,
+                                                        file, error);
 
   if (! file_proc)
-    return gimp_procedure_get_return_values (procedure, FALSE,
-                                             error ? *error : NULL);
+    {
+      g_object_unref (file);
+
+      return gimp_procedure_get_return_values (procedure, FALSE,
+                                               error ? *error : NULL);
+    }
 
   proc = GIMP_PROCEDURE (file_proc);
 
   new_args = gimp_procedure_get_arguments (proc);
 
-  for (i = 0; i < 3; i++)
-    g_value_transform (&args->values[i], &new_args->values[i]);
+  g_value_transform (gimp_value_array_index (args, 0),
+                     gimp_value_array_index (new_args, 0));
+
+  if (file_proc->handles_uri)
+    g_value_take_string (gimp_value_array_index (new_args, 1),
+                         g_file_get_uri (file));
+  else
+    g_value_transform (gimp_value_array_index (args, 1),
+                       gimp_value_array_index (new_args, 1));
+
+  g_value_transform (gimp_value_array_index (args, 2),
+                     gimp_value_array_index (new_args, 2));
 
   for (i = 3; i < proc->num_args; i++)
     if (G_IS_PARAM_SPEC_STRING (proc->args[i]))
-      g_value_set_static_string (&new_args->values[i], "");
+      g_value_set_static_string (gimp_value_array_index (new_args, i), "");
 
   return_vals =
     gimp_pdb_execute_procedure_by_name_args (gimp->pdb,
@@ -94,53 +110,59 @@ file_load_invoker (GimpProcedure      *procedure,
                                              gimp_object_get_name (proc),
                                              new_args);
 
-  g_value_array_free (new_args);
+  gimp_value_array_unref (new_args);
 
-  if (g_value_get_enum (return_vals->values) == GIMP_PDB_SUCCESS)
+  if (g_value_get_enum (gimp_value_array_index (return_vals, 0)) ==
+      GIMP_PDB_SUCCESS)
     {
-      if (return_vals->n_values > 1 &&
-          GIMP_VALUE_HOLDS_IMAGE_ID (return_vals->values + 1))
+      if (gimp_value_array_length (return_vals) > 1 &&
+          GIMP_VALUE_HOLDS_IMAGE_ID (gimp_value_array_index (return_vals, 1)))
         {
-          GimpImage *image = gimp_value_get_image (return_vals->values + 1,
-                                                   gimp);
+          GimpImage *image =
+            gimp_value_get_image (gimp_value_array_index (return_vals, 1),
+                                  gimp);
           gimp_image_set_load_proc (image, file_proc);
         }
     }
 
+  g_object_unref (file);
+
   return return_vals;
 }
 
-static GValueArray *
-file_load_layer_invoker (GimpProcedure      *procedure,
-                         Gimp               *gimp,
-                         GimpContext        *context,
-                         GimpProgress       *progress,
-                         const GValueArray  *args,
-                         GError            **error)
+static GimpValueArray *
+file_load_layer_invoker (GimpProcedure         *procedure,
+                         Gimp                  *gimp,
+                         GimpContext           *context,
+                         GimpProgress          *progress,
+                         const GimpValueArray  *args,
+                         GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   gint32 run_mode;
   GimpImage *image;
   const gchar *filename;
   GimpLayer *layer = NULL;
 
-  run_mode = g_value_get_enum (&args->values[0]);
-  image = gimp_value_get_image (&args->values[1], gimp);
-  filename = g_value_get_string (&args->values[2]);
+  run_mode = g_value_get_enum (gimp_value_array_index (args, 0));
+  image = gimp_value_get_image (gimp_value_array_index (args, 1), gimp);
+  filename = g_value_get_string (gimp_value_array_index (args, 2));
 
   if (success)
     {
-      gchar *uri = file_utils_filename_to_uri (gimp, filename, error);
+      GFile *file = file_utils_filename_to_file (gimp, filename, error);
 
-      if (uri)
+      if (file)
         {
           GList             *layers;
           GimpPDBStatusType  status;
 
           layers = file_open_layers (gimp, context, progress,
                                      image, FALSE,
-                                     uri, run_mode, NULL, &status, error);
+                                     file, run_mode, NULL, &status, error);
+
+          g_object_unref (file);
 
           if (layers)
             {
@@ -158,43 +180,45 @@ file_load_layer_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_layer (&return_vals->values[1], layer);
+    gimp_value_set_layer (gimp_value_array_index (return_vals, 1), layer);
 
   return return_vals;
 }
 
-static GValueArray *
-file_load_layers_invoker (GimpProcedure      *procedure,
-                          Gimp               *gimp,
-                          GimpContext        *context,
-                          GimpProgress       *progress,
-                          const GValueArray  *args,
-                          GError            **error)
+static GimpValueArray *
+file_load_layers_invoker (GimpProcedure         *procedure,
+                          Gimp                  *gimp,
+                          GimpContext           *context,
+                          GimpProgress          *progress,
+                          const GimpValueArray  *args,
+                          GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   gint32 run_mode;
   GimpImage *image;
   const gchar *filename;
   gint32 num_layers = 0;
   gint32 *layer_ids = NULL;
 
-  run_mode = g_value_get_enum (&args->values[0]);
-  image = gimp_value_get_image (&args->values[1], gimp);
-  filename = g_value_get_string (&args->values[2]);
+  run_mode = g_value_get_enum (gimp_value_array_index (args, 0));
+  image = gimp_value_get_image (gimp_value_array_index (args, 1), gimp);
+  filename = g_value_get_string (gimp_value_array_index (args, 2));
 
   if (success)
     {
-      gchar *uri = file_utils_filename_to_uri (gimp, filename, error);
+      GFile *file = file_utils_filename_to_file (gimp, filename, error);
 
-      if (uri)
+      if (file)
         {
           GList             *layers;
           GimpPDBStatusType  status;
 
           layers = file_open_layers (gimp, context, progress,
                                      image, FALSE,
-                                     uri, run_mode, NULL, &status, error);
+                                     file, run_mode, NULL, &status, error);
+
+          g_object_unref (file);
 
           if (layers)
             {
@@ -224,58 +248,77 @@ file_load_layers_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_int (&return_vals->values[1], num_layers);
-      gimp_value_take_int32array (&return_vals->values[2], layer_ids, num_layers);
+      g_value_set_int (gimp_value_array_index (return_vals, 1), num_layers);
+      gimp_value_take_int32array (gimp_value_array_index (return_vals, 2), layer_ids, num_layers);
     }
 
   return return_vals;
 }
 
-static GValueArray *
-file_save_invoker (GimpProcedure      *procedure,
-                   Gimp               *gimp,
-                   GimpContext        *context,
-                   GimpProgress       *progress,
-                   const GValueArray  *args,
-                   GError            **error)
+static GimpValueArray *
+file_save_invoker (GimpProcedure         *procedure,
+                   Gimp                  *gimp,
+                   GimpContext           *context,
+                   GimpProgress          *progress,
+                   const GimpValueArray  *args,
+                   GError               **error)
 {
-  GValueArray         *new_args;
-  GValueArray         *return_vals;
+  GimpValueArray      *new_args;
+  GimpValueArray      *return_vals;
   GimpPlugInProcedure *file_proc;
   GimpProcedure       *proc;
-  gchar               *uri;
+  GFile               *file;
   gint                 i;
 
-  uri = file_utils_filename_to_uri (gimp,
-                                    g_value_get_string (&args->values[3]),
-                                    error);
+  file = file_utils_filename_to_file (gimp,
+                                      g_value_get_string (gimp_value_array_index (args, 3)),
+                                      error);
 
-  if (! uri)
+  if (! file)
     return gimp_procedure_get_return_values (procedure, FALSE,
                                              error ? *error : NULL);
 
-  file_proc =
-    file_procedure_find (gimp->plug_in_manager->save_procs, uri, NULL);
+  file_proc = gimp_plug_in_manager_file_procedure_find (gimp->plug_in_manager,
+                                                        GIMP_FILE_PROCEDURE_GROUP_SAVE,
+                                                        file, NULL);
 
   if (! file_proc)
-    file_proc = file_procedure_find (gimp->plug_in_manager->export_procs, uri, error);
-
-  g_free (uri);
+    file_proc = gimp_plug_in_manager_file_procedure_find (gimp->plug_in_manager,
+                                                          GIMP_FILE_PROCEDURE_GROUP_EXPORT,
+                                                          file, error);
 
   if (! file_proc)
-    return gimp_procedure_get_return_values (procedure, FALSE,
-                                             error ? *error : NULL);
+    {
+      g_object_unref (file);
+
+      return gimp_procedure_get_return_values (procedure, FALSE,
+                                               error ? *error : NULL);
+    }
 
   proc = GIMP_PROCEDURE (file_proc);
 
   new_args = gimp_procedure_get_arguments (proc);
 
-  for (i = 0; i < 5; i++)
-    g_value_transform (&args->values[i], &new_args->values[i]);
+  g_value_transform (gimp_value_array_index (args, 0),
+                     gimp_value_array_index (new_args, 0));
+  g_value_transform (gimp_value_array_index (args, 1),
+                     gimp_value_array_index (new_args, 1));
+  g_value_transform (gimp_value_array_index (args, 2),
+                     gimp_value_array_index (new_args, 2));
+
+  if (file_proc->handles_uri)
+    g_value_take_string (gimp_value_array_index (new_args, 3),
+                         g_file_get_uri (file));
+  else
+    g_value_transform (gimp_value_array_index (args, 3),
+                       gimp_value_array_index (new_args, 3));
+
+  g_value_transform (gimp_value_array_index (args, 4),
+                     gimp_value_array_index (new_args, 4));
 
   for (i = 5; i < proc->num_args; i++)
     if (G_IS_PARAM_SPEC_STRING (proc->args[i]))
-      g_value_set_static_string (&new_args->values[i], "");
+      g_value_set_static_string (gimp_value_array_index (new_args, i), "");
 
   return_vals =
     gimp_pdb_execute_procedure_by_name_args (gimp->pdb,
@@ -283,28 +326,30 @@ file_save_invoker (GimpProcedure      *procedure,
                                              gimp_object_get_name (proc),
                                              new_args);
 
-  g_value_array_free (new_args);
+  gimp_value_array_unref (new_args);
+
+  g_object_unref (file);
 
   return return_vals;
 }
 
-static GValueArray *
-file_load_thumbnail_invoker (GimpProcedure      *procedure,
-                             Gimp               *gimp,
-                             GimpContext        *context,
-                             GimpProgress       *progress,
-                             const GValueArray  *args,
-                             GError            **error)
+static GimpValueArray *
+file_load_thumbnail_invoker (GimpProcedure         *procedure,
+                             Gimp                  *gimp,
+                             GimpContext           *context,
+                             GimpProgress          *progress,
+                             const GimpValueArray  *args,
+                             GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   const gchar *filename;
   gint32 width = 0;
   gint32 height = 0;
   gint32 thumb_data_count = 0;
   guint8 *thumb_data = NULL;
 
-  filename = g_value_get_string (&args->values[0]);
+  filename = g_value_get_string (gimp_value_array_index (args, 0));
 
   if (success)
     {
@@ -329,29 +374,29 @@ file_load_thumbnail_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_int (&return_vals->values[1], width);
-      g_value_set_int (&return_vals->values[2], height);
-      g_value_set_int (&return_vals->values[3], thumb_data_count);
-      gimp_value_take_int8array (&return_vals->values[4], thumb_data, thumb_data_count);
+      g_value_set_int (gimp_value_array_index (return_vals, 1), width);
+      g_value_set_int (gimp_value_array_index (return_vals, 2), height);
+      g_value_set_int (gimp_value_array_index (return_vals, 3), thumb_data_count);
+      gimp_value_take_int8array (gimp_value_array_index (return_vals, 4), thumb_data, thumb_data_count);
     }
 
   return return_vals;
 }
 
-static GValueArray *
-file_save_thumbnail_invoker (GimpProcedure      *procedure,
-                             Gimp               *gimp,
-                             GimpContext        *context,
-                             GimpProgress       *progress,
-                             const GValueArray  *args,
-                             GError            **error)
+static GimpValueArray *
+file_save_thumbnail_invoker (GimpProcedure         *procedure,
+                             Gimp                  *gimp,
+                             GimpContext           *context,
+                             GimpProgress          *progress,
+                             const GimpValueArray  *args,
+                             GError               **error)
 {
   gboolean success = TRUE;
   GimpImage *image;
   const gchar *filename;
 
-  image = gimp_value_get_image (&args->values[0], gimp);
-  filename = g_value_get_string (&args->values[1]);
+  image = gimp_value_get_image (gimp_value_array_index (args, 0), gimp);
+  filename = g_value_get_string (gimp_value_array_index (args, 1));
 
   if (success)
     {
@@ -362,42 +407,13 @@ file_save_thumbnail_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-temp_name_invoker (GimpProcedure      *procedure,
-                   Gimp               *gimp,
-                   GimpContext        *context,
-                   GimpProgress       *progress,
-                   const GValueArray  *args,
-                   GError            **error)
-{
-  gboolean success = TRUE;
-  GValueArray *return_vals;
-  const gchar *extension;
-  gchar *name = NULL;
-
-  extension = g_value_get_string (&args->values[0]);
-
-  if (success)
-    {
-      name = gimp_get_temp_filename (gimp, extension);
-    }
-
-  return_vals = gimp_procedure_get_return_values (procedure, success,
-                                                  error ? *error : NULL);
-
-  if (success)
-    g_value_take_string (&return_vals->values[1], name);
-
-  return return_vals;
-}
-
-static GValueArray *
-register_magic_load_handler_invoker (GimpProcedure      *procedure,
-                                     Gimp               *gimp,
-                                     GimpContext        *context,
-                                     GimpProgress       *progress,
-                                     const GValueArray  *args,
-                                     GError            **error)
+static GimpValueArray *
+register_magic_load_handler_invoker (GimpProcedure         *procedure,
+                                     Gimp                  *gimp,
+                                     GimpContext           *context,
+                                     GimpProgress          *progress,
+                                     const GimpValueArray  *args,
+                                     GError               **error)
 {
   gboolean success = TRUE;
   const gchar *procedure_name;
@@ -405,10 +421,10 @@ register_magic_load_handler_invoker (GimpProcedure      *procedure,
   const gchar *prefixes;
   const gchar *magics;
 
-  procedure_name = g_value_get_string (&args->values[0]);
-  extensions = g_value_get_string (&args->values[1]);
-  prefixes = g_value_get_string (&args->values[2]);
-  magics = g_value_get_string (&args->values[3]);
+  procedure_name = g_value_get_string (gimp_value_array_index (args, 0));
+  extensions = g_value_get_string (gimp_value_array_index (args, 1));
+  prefixes = g_value_get_string (gimp_value_array_index (args, 2));
+  magics = g_value_get_string (gimp_value_array_index (args, 3));
 
   if (success)
     {
@@ -425,22 +441,22 @@ register_magic_load_handler_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-register_load_handler_invoker (GimpProcedure      *procedure,
-                               Gimp               *gimp,
-                               GimpContext        *context,
-                               GimpProgress       *progress,
-                               const GValueArray  *args,
-                               GError            **error)
+static GimpValueArray *
+register_load_handler_invoker (GimpProcedure         *procedure,
+                               Gimp                  *gimp,
+                               GimpContext           *context,
+                               GimpProgress          *progress,
+                               const GimpValueArray  *args,
+                               GError               **error)
 {
   gboolean success = TRUE;
   const gchar *procedure_name;
   const gchar *extensions;
   const gchar *prefixes;
 
-  procedure_name = g_value_get_string (&args->values[0]);
-  extensions = g_value_get_string (&args->values[1]);
-  prefixes = g_value_get_string (&args->values[2]);
+  procedure_name = g_value_get_string (gimp_value_array_index (args, 0));
+  extensions = g_value_get_string (gimp_value_array_index (args, 1));
+  prefixes = g_value_get_string (gimp_value_array_index (args, 2));
 
   if (success)
     {
@@ -457,22 +473,22 @@ register_load_handler_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-register_save_handler_invoker (GimpProcedure      *procedure,
-                               Gimp               *gimp,
-                               GimpContext        *context,
-                               GimpProgress       *progress,
-                               const GValueArray  *args,
-                               GError            **error)
+static GimpValueArray *
+register_save_handler_invoker (GimpProcedure         *procedure,
+                               Gimp                  *gimp,
+                               GimpContext           *context,
+                               GimpProgress          *progress,
+                               const GimpValueArray  *args,
+                               GError               **error)
 {
   gboolean success = TRUE;
   const gchar *procedure_name;
   const gchar *extensions;
   const gchar *prefixes;
 
-  procedure_name = g_value_get_string (&args->values[0]);
-  extensions = g_value_get_string (&args->values[1]);
-  prefixes = g_value_get_string (&args->values[2]);
+  procedure_name = g_value_get_string (gimp_value_array_index (args, 0));
+  extensions = g_value_get_string (gimp_value_array_index (args, 1));
+  prefixes = g_value_get_string (gimp_value_array_index (args, 2));
 
   if (success)
     {
@@ -489,27 +505,27 @@ register_save_handler_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-register_file_handler_mime_invoker (GimpProcedure      *procedure,
-                                    Gimp               *gimp,
-                                    GimpContext        *context,
-                                    GimpProgress       *progress,
-                                    const GValueArray  *args,
-                                    GError            **error)
+static GimpValueArray *
+register_file_handler_mime_invoker (GimpProcedure         *procedure,
+                                    Gimp                  *gimp,
+                                    GimpContext           *context,
+                                    GimpProgress          *progress,
+                                    const GimpValueArray  *args,
+                                    GError               **error)
 {
   gboolean success = TRUE;
   const gchar *procedure_name;
-  const gchar *mime_type;
+  const gchar *mime_types;
 
-  procedure_name = g_value_get_string (&args->values[0]);
-  mime_type = g_value_get_string (&args->values[1]);
+  procedure_name = g_value_get_string (gimp_value_array_index (args, 0));
+  mime_types = g_value_get_string (gimp_value_array_index (args, 1));
 
   if (success)
     {
       gchar *canonical = gimp_canonicalize_identifier (procedure_name);
 
-      success = gimp_plug_in_manager_register_mime_type (gimp->plug_in_manager,
-                                                         canonical, mime_type);
+      success = gimp_plug_in_manager_register_mime_types (gimp->plug_in_manager,
+                                                          canonical, mime_types);
 
       g_free (canonical);
     }
@@ -518,20 +534,74 @@ register_file_handler_mime_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-register_thumbnail_loader_invoker (GimpProcedure      *procedure,
-                                   Gimp               *gimp,
-                                   GimpContext        *context,
-                                   GimpProgress       *progress,
-                                   const GValueArray  *args,
-                                   GError            **error)
+static GimpValueArray *
+register_file_handler_uri_invoker (GimpProcedure         *procedure,
+                                   Gimp                  *gimp,
+                                   GimpContext           *context,
+                                   GimpProgress          *progress,
+                                   const GimpValueArray  *args,
+                                   GError               **error)
+{
+  gboolean success = TRUE;
+  const gchar *procedure_name;
+
+  procedure_name = g_value_get_string (gimp_value_array_index (args, 0));
+
+  if (success)
+    {
+      gchar *canonical = gimp_canonicalize_identifier (procedure_name);
+
+      success = gimp_plug_in_manager_register_handles_uri (gimp->plug_in_manager,
+                                                           canonical);
+
+      g_free (canonical);
+    }
+
+  return gimp_procedure_get_return_values (procedure, success,
+                                           error ? *error : NULL);
+}
+
+static GimpValueArray *
+register_file_handler_raw_invoker (GimpProcedure         *procedure,
+                                   Gimp                  *gimp,
+                                   GimpContext           *context,
+                                   GimpProgress          *progress,
+                                   const GimpValueArray  *args,
+                                   GError               **error)
+{
+  gboolean success = TRUE;
+  const gchar *procedure_name;
+
+  procedure_name = g_value_get_string (gimp_value_array_index (args, 0));
+
+  if (success)
+    {
+      gchar *canonical = gimp_canonicalize_identifier (procedure_name);
+
+      success = gimp_plug_in_manager_register_handles_raw (gimp->plug_in_manager,
+                                                           canonical);
+
+      g_free (canonical);
+    }
+
+  return gimp_procedure_get_return_values (procedure, success,
+                                           error ? *error : NULL);
+}
+
+static GimpValueArray *
+register_thumbnail_loader_invoker (GimpProcedure         *procedure,
+                                   Gimp                  *gimp,
+                                   GimpContext           *context,
+                                   GimpProgress          *progress,
+                                   const GimpValueArray  *args,
+                                   GError               **error)
 {
   gboolean success = TRUE;
   const gchar *load_proc;
   const gchar *thumb_proc;
 
-  load_proc = g_value_get_string (&args->values[0]);
-  thumb_proc = g_value_get_string (&args->values[1]);
+  load_proc = g_value_get_string (gimp_value_array_index (args, 0));
+  thumb_proc = g_value_get_string (gimp_value_array_index (args, 1));
 
   if (success)
     {
@@ -563,7 +633,7 @@ register_fileops_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-file-load",
                                      "Loads an image file by invoking the right load handler.",
-                                     "This procedure invokes the correct file load handler using magic if possible, and falling back on the file's extension and/or prefix if not. The name of the file to load is typically a full pathname, and the name entered is what the user actually typed before prepending a directory path. The reason for this is that if the user types http://www.xcf/~gimp/ he wants to fetch a URL, and the full pathname will not look like a URL.\"",
+                                     "This procedure invokes the correct file load handler using magic if possible, and falling back on the file's extension and/or prefix if not. The name of the file to load is typically a full pathname, and the name entered is what the user actually typed before prepending a directory path. The reason for this is that if the user types http://www.xcf/~gimp/ he wants to fetch a URL, and the full pathname will not look like a URL.",
                                      "Josh MacDonald",
                                      "Josh MacDonald",
                                      "1997",
@@ -801,7 +871,7 @@ register_fileops_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-file-save-thumbnail",
                                      "Saves a thumbnail for the given image",
-                                     "This procedure saves a thumbnail for the given image according to the Free Desktop Thumbnail Managing Standard. The thumbnail is saved so that it belongs to the file with the given filename. This means you have to save the image under this name first, otherwise this procedure will fail. This procedure may become useful if you want to explicitely save a thumbnail with a file.",
+                                     "This procedure saves a thumbnail for the given image according to the Free Desktop Thumbnail Managing Standard. The thumbnail is saved so that it belongs to the file with the given filename. This means you have to save the image under this name first, otherwise this procedure will fail. This procedure may become useful if you want to explicitly save a thumbnail with a file.",
                                      "Josh MacDonald",
                                      "Josh MacDonald",
                                      "1997",
@@ -819,37 +889,6 @@ register_fileops_procs (GimpPDB *pdb)
                                                        TRUE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register_procedure (pdb, procedure);
-  g_object_unref (procedure);
-
-  /*
-   * gimp-temp-name
-   */
-  procedure = gimp_procedure_new (temp_name_invoker);
-  gimp_object_set_static_name (GIMP_OBJECT (procedure),
-                               "gimp-temp-name");
-  gimp_procedure_set_static_strings (procedure,
-                                     "gimp-temp-name",
-                                     "Generates a unique filename.",
-                                     "Generates a unique filename using the temp path supplied in the user's gimprc.",
-                                     "Josh MacDonald",
-                                     "Josh MacDonald",
-                                     "1997",
-                                     NULL);
-  gimp_procedure_add_argument (procedure,
-                               gimp_param_spec_string ("extension",
-                                                       "extension",
-                                                       "The extension the file will have",
-                                                       TRUE, TRUE, FALSE,
-                                                       NULL,
-                                                       GIMP_PARAM_READWRITE));
-  gimp_procedure_add_return_value (procedure,
-                                   gimp_param_spec_string ("name",
-                                                           "name",
-                                                           "The new temp filename",
-                                                           FALSE, FALSE, FALSE,
-                                                           NULL,
-                                                           GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
@@ -982,8 +1021,8 @@ register_fileops_procs (GimpPDB *pdb)
                                "gimp-register-file-handler-mime");
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-register-file-handler-mime",
-                                     "Associates a MIME type with a file handler procedure.",
-                                     "Registers a MIME type for a file handler procedure. This allows GIMP to determine the MIME type of the file opened or saved using this procedure.",
+                                     "Associates MIME types with a file handler procedure.",
+                                     "Registers MIME types for a file handler procedure. This allows GIMP to determine the MIME type of the file opened or saved using this procedure. It is recommended that only one MIME type is registered per file procedure; when registering more than one MIME type, GIMP will associate the first one with files opened or saved with this procedure.",
                                      "Sven Neumann <sven@gimp.org>",
                                      "Sven Neumann",
                                      "2004",
@@ -996,10 +1035,58 @@ register_fileops_procs (GimpPDB *pdb)
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
-                               gimp_param_spec_string ("mime-type",
-                                                       "mime type",
-                                                       "A single MIME type, like for example \"image/jpeg\".",
+                               gimp_param_spec_string ("mime-types",
+                                                       "mime types",
+                                                       "A comma-separated list of MIME types, such as \"image/jpeg\".",
                                                        FALSE, FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure (pdb, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-register-file-handler-uri
+   */
+  procedure = gimp_procedure_new (register_file_handler_uri_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure),
+                               "gimp-register-file-handler-uri");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-register-file-handler-uri",
+                                     "Registers a file handler procedure as capable of handling URIs.",
+                                     "Registers a file handler procedure as capable of handling URIs. This allows GIMP to call the procecure directly for all kinds of URIs, and the 'filename' traditionally passed to file procesures turns into an URI.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2012",
+                                     NULL);
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("procedure-name",
+                                                       "procedure name",
+                                                       "The name of the procedure to enable URIs for.",
+                                                       FALSE, FALSE, TRUE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure (pdb, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-register-file-handler-raw
+   */
+  procedure = gimp_procedure_new (register_file_handler_raw_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure),
+                               "gimp-register-file-handler-raw");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-register-file-handler-raw",
+                                     "Registers a file handler procedure as capable of handling raw camera files.",
+                                     "Registers a file handler procedure as capable of handling raw digital camera files. Use this procedure only to register raw load handlers, calling it on a save handler will generate an error.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2017",
+                                     NULL);
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("procedure-name",
+                                                       "procedure name",
+                                                       "The name of the procedure to enable raw handling for.",
+                                                       FALSE, FALSE, TRUE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);

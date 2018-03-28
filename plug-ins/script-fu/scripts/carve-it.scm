@@ -5,7 +5,7 @@
 ;   This script requires a grayscale image containing a single layer.
 ;   This layer is used as the mask for the carving effect
 ;   NOTE: This script requires the image to be carved to either be an
-;   RGB colour or grayscale image with a single layer. An indexed file
+;   RGB color or grayscale image with a single layer. An indexed file
 ;   can not be used due to the use of gimp-histogram and gimp-levels.
 
 
@@ -73,7 +73,7 @@
         (bg-height (car (gimp-drawable-height bg-layer)))
         (bg-type (car (gimp-drawable-type bg-layer)))
         (bg-image (car (gimp-item-get-image bg-layer)))
-        (layer1 (car (gimp-layer-new img bg-width bg-height bg-type "Layer1" 100 NORMAL-MODE)))
+        (layer1 (car (gimp-layer-new img bg-width bg-height bg-type "Layer1" 100 LAYER-MODE-NORMAL)))
         )
 
     (gimp-context-push)
@@ -95,7 +95,7 @@
     (set! mask-fs (car (gimp-edit-paste mask FALSE)))
     (gimp-floating-sel-anchor mask-fs)
     (if (= carve-white FALSE)
-        (gimp-invert mask))
+        (gimp-drawable-invert mask FALSE))
 
     (set! mask-fat (car (gimp-channel-copy mask)))
     (gimp-image-insert-channel img mask-fat -1 0)
@@ -113,9 +113,9 @@
     (gimp-context-set-background '(180 180 180))
     (gimp-image-select-item img CHANNEL-OP-REPLACE mask-fat)
     (gimp-selection-invert img)
-    (gimp-edit-fill mask-emboss BACKGROUND-FILL)
+    (gimp-edit-fill mask-emboss FILL-BACKGROUND)
     (gimp-image-select-item img CHANNEL-OP-REPLACE mask)
-    (gimp-edit-fill mask-emboss BACKGROUND-FILL)
+    (gimp-edit-fill mask-emboss FILL-BACKGROUND)
     (gimp-selection-none img)
 
     (set! mask-highlight (car (gimp-channel-copy mask-emboss)))
@@ -128,35 +128,35 @@
     (gimp-edit-copy mask-shadow)
     (set! shadow-layer (car (gimp-edit-paste layer1 FALSE)))
     (gimp-floating-sel-to-layer shadow-layer)
-    (gimp-layer-set-mode shadow-layer MULTIPLY-MODE)
+    (gimp-layer-set-mode shadow-layer LAYER-MODE-MULTIPLY)
 
     (gimp-edit-copy mask-highlight)
     (set! highlight-layer (car (gimp-edit-paste shadow-layer FALSE)))
     (gimp-floating-sel-to-layer highlight-layer)
-    (gimp-layer-set-mode highlight-layer SCREEN-MODE)
+    (gimp-layer-set-mode highlight-layer LAYER-MODE-SCREEN)
 
     (gimp-edit-copy mask)
     (set! cast-shadow-layer (car (gimp-edit-paste highlight-layer FALSE)))
     (gimp-floating-sel-to-layer cast-shadow-layer)
-    (gimp-layer-set-mode cast-shadow-layer MULTIPLY-MODE)
+    (gimp-layer-set-mode cast-shadow-layer LAYER-MODE-MULTIPLY)
     (gimp-layer-set-opacity cast-shadow-layer 75)
     (plug-in-gauss-rle RUN-NONINTERACTIVE img cast-shadow-layer feather TRUE TRUE)
     (gimp-layer-translate cast-shadow-layer offx offy)
 
-    (set! csl-mask (car (gimp-layer-create-mask cast-shadow-layer ADD-BLACK-MASK)))
+    (set! csl-mask (car (gimp-layer-create-mask cast-shadow-layer ADD-MASK-BLACK)))
     (gimp-layer-add-mask cast-shadow-layer csl-mask)
     (gimp-image-select-item img CHANNEL-OP-REPLACE mask)
     (gimp-context-set-background '(255 255 255))
-    (gimp-edit-fill csl-mask BACKGROUND-FILL)
+    (gimp-edit-fill csl-mask FILL-BACKGROUND)
 
     (set! inset-layer (car (gimp-layer-copy layer1 TRUE)))
     (gimp-image-insert-layer img inset-layer 0 1)
 
-    (set! il-mask (car (gimp-layer-create-mask inset-layer ADD-BLACK-MASK)))
+    (set! il-mask (car (gimp-layer-create-mask inset-layer ADD-MASK-BLACK)))
     (gimp-layer-add-mask inset-layer il-mask)
     (gimp-image-select-item img CHANNEL-OP-REPLACE mask)
     (gimp-context-set-background '(255 255 255))
-    (gimp-edit-fill il-mask BACKGROUND-FILL)
+    (gimp-edit-fill il-mask FILL-BACKGROUND)
     (gimp-selection-none img)
     (gimp-selection-none bg-image)
     (gimp-levels inset-layer 0 0 255 inset-gamma 0 255)
@@ -180,7 +180,7 @@
 
 (script-fu-register "script-fu-carve-it"
     _"Stencil C_arve..."
-    "Use the specified [GRAY] drawable as a stencil to carve from the specified image. The specified image must be either RGB colour or grayscale, not indexed."
+    _"Use the specified drawable as a stencil to carve from the specified image."
     "Spencer Kimball"
     "Spencer Kimball"
     "1997"

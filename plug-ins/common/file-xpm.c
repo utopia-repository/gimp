@@ -46,7 +46,7 @@ Previous...Inherited code from Ray Lehtiniemi, who inherited it from S & P.
 
 #include <glib/gstdio.h>
 
-#include <gdkconfig.h>          /* For GDK_WINDOWING_WIN32 */
+#include <gdk/gdk.h>          /* For GDK_WINDOWING_WIN32 */
 
 #ifndef GDK_WINDOWING_X11
 #ifndef XPM_NO_X
@@ -153,9 +153,9 @@ query (void)
   {
     { GIMP_PDB_INT32,    "run-mode",      "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",         "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable",      "Drawable to save" },
-    { GIMP_PDB_STRING,   "filename",      "The name of the file to save the image in" },
-    { GIMP_PDB_STRING,   "raw-filename",  "The name of the file to save the image in" },
+    { GIMP_PDB_DRAWABLE, "drawable",      "Drawable to export" },
+    { GIMP_PDB_STRING,   "filename",      "The name of the file to export the image in" },
+    { GIMP_PDB_STRING,   "raw-filename",  "The name of the file to export the image in" },
     { GIMP_PDB_INT32,    "threshold",     "Alpha threshold (0-255)" }
   };
 
@@ -185,8 +185,8 @@ query (void)
                                     "0, string,/*\\040XPM\\040*/");
 
   gimp_install_procedure (SAVE_PROC,
-                          "Save files in XPM (X11 Pixmap) format.",
-                          "Save files in XPM (X11 Pixmap) format. "
+                          "Export files in XPM (X11 Pixmap) format.",
+                          "Export files in XPM (X11 Pixmap) format. "
                           "XPM is a portable image format designed to be "
                           "included in C source code. XLib provides utility "
                           "functions to read this format. Newer code should "
@@ -221,9 +221,10 @@ run (const gchar      *name,
   GimpExportReturn   export = GIMP_EXPORT_CANCEL;
   GError            *error  = NULL;
 
-  run_mode = param[0].data.d_int32;
-
   INIT_I18N ();
+  gegl_init (NULL, NULL);
+
+  run_mode = param[0].data.d_int32;
 
   *nreturn_vals = 1;
   *return_vals  = values;
@@ -407,6 +408,9 @@ parse_colors (XpmImage  *xpm_image)
 #ifndef XPM_NO_X
   /* open the display and get the default color map */
   display  = XOpenDisplay (NULL);
+  if (display == NULL)
+    g_printerr ("Could not open display\n");
+
   colormap = DefaultColormap (display, DefaultScreen (display));
 #endif
 
@@ -465,16 +469,15 @@ parse_image (gint32    image_ID,
              XpmImage *xpm_image,
              guchar   *cmap)
 {
-  gint       tile_height;
-  gint       scanlines;
-  gint       val;
-  guchar    *buf;
-  guchar    *dest;
-  guint     *src;
-  GimpPixelRgn  pixel_rgn;
-  GimpDrawable *drawable;
-  gint32     layer_ID;
-  gint       i, j;
+  GeglBuffer *buffer;
+  gint        tile_height;
+  gint        scanlines;
+  gint        val;
+  guchar     *buf;
+  guchar     *dest;
+  guint      *src;
+  gint32      layer_ID;
+  gint        i;
 
   layer_ID = gimp_layer_new (image_ID,
                              _("Color"),
@@ -482,51 +485,48 @@ parse_image (gint32    image_ID,
                              xpm_image->height,
                              GIMP_RGBA_IMAGE,
                              100,
-                             GIMP_NORMAL_MODE);
+                             gimp_image_get_default_new_layer_mode (image_ID));
 
   gimp_image_insert_layer (image_ID, layer_ID, -1, 0);
 
-  drawable = gimp_drawable_get (layer_ID);
-
-  gimp_pixel_rgn_init (&pixel_rgn, drawable,
-                       0, 0,
-                       drawable->width, drawable->height,
-                       TRUE, FALSE);
+  buffer = gimp_drawable_get_buffer (layer_ID);
 
   tile_height = gimp_tile_height ();
 
   buf  = g_new (guchar, tile_height * xpm_image->width * 4);
 
   src  = xpm_image->data;
-  for (i = 0; i < xpm_image->height; i+=tile_height)
+  for (i = 0; i < xpm_image->height; i += tile_height)
     {
+      gint j;
+
       dest = buf;
-      scanlines = MIN(tile_height, xpm_image->height - i);
+      scanlines = MIN (tile_height, xpm_image->height - i);
       j = scanlines * xpm_image->width;
-      while (j--) {
+      while (j--)
         {
-          val = *(src++) * 4;
-          *(dest)   = cmap[val];
-          *(dest+1) = cmap[val+1];
-          *(dest+2) = cmap[val+2];
-          *(dest+3) = cmap[val+3];
-          dest += 4;
+          {
+            val = *(src++) * 4;
+            *(dest)   = cmap[val];
+            *(dest+1) = cmap[val+1];
+            *(dest+2) = cmap[val+2];
+            *(dest+3) = cmap[val+3];
+            dest += 4;
+          }
+
+          if ((j % 100) == 0)
+            gimp_progress_update ((double) i / (double) xpm_image->height);
         }
 
-        if ((j % 100) == 0)
-          gimp_progress_update ((double) i / (double) xpm_image->height);
-      }
-
-      gimp_pixel_rgn_set_rect (&pixel_rgn, buf,
-                               0, i,
-                               drawable->width, scanlines);
-
+      gegl_buffer_set (buffer,
+                       GEGL_RECTANGLE (0, i, xpm_image->width, scanlines), 0,
+                       NULL, buf, GEGL_AUTO_ROWSTRIDE);
     }
+
+  g_free (buf);
+  g_object_unref (buffer);
+
   gimp_progress_update (1.0);
-
-  g_free(buf);
-
-  gimp_drawable_detach (drawable);
 }
 
 static guint
@@ -548,7 +548,7 @@ set_XpmImage (XpmColor *array,
               gchar    *colorstring)
 {
   gchar *p;
-  gint i, charnum, indtemp;
+  gint   i, charnum, indtemp;
 
   indtemp=index;
   array[index].string = p = g_new (gchar, cpp+1);
@@ -598,66 +598,91 @@ save_image (const gchar  *filename,
             gint32        drawable_ID,
             GError      **error)
 {
-  GimpDrawable *drawable;
-  GimpPixelRgn  pixel_rgn;
-
-  gint       width;
-  gint       height;
-  gint       ncolors = 1;
-  gint      *indexno;
-  gboolean   indexed;
-  gboolean   alpha;
-
-  XpmColor  *colormap;
-  XpmImage  *image;
-
-  guint     *ibuff   = NULL;
-  guchar    *buffer;
-  guchar    *data;
-
+  GeglBuffer *buffer;
+  const Babl *format;
+  gint        width;
+  gint        height;
+  gint        ncolors = 1;
+  gint       *indexno;
+  gboolean    indexed;
+  gboolean    alpha;
+  XpmColor   *colormap;
+  XpmImage   *image;
+  guint      *ibuff   = NULL;
+  guchar     *buf;
+  guchar     *data;
   GHashTable *hash = NULL;
+  gint        i, j, k;
+  gint        threshold = xpmvals.threshold;
+  gboolean    success = FALSE;
 
-  gint       i, j, k;
-  gint       threshold = xpmvals.threshold;
+  buffer = gimp_drawable_get_buffer (drawable_ID);
 
-  gboolean   success = FALSE;
+  width  = gegl_buffer_get_width  (buffer);
+  height = gegl_buffer_get_height (buffer);
 
-  /* get some basic stats about the image */
   alpha   = gimp_drawable_has_alpha (drawable_ID);
   color   = !gimp_drawable_is_gray (drawable_ID);
   indexed = gimp_drawable_is_indexed (drawable_ID);
 
-  drawable = gimp_drawable_get (drawable_ID);
-  width    = drawable->width;
-  height   = drawable->height;
+  switch (gimp_drawable_type (drawable_ID))
+    {
+    case GIMP_RGB_IMAGE:
+      format = babl_format ("R'G'B' u8");
+      break;
+
+    case GIMP_RGBA_IMAGE:
+      format = babl_format ("R'G'B'A u8");
+      break;
+
+    case GIMP_GRAY_IMAGE:
+      format = babl_format ("Y' u8");
+      break;
+
+    case GIMP_GRAYA_IMAGE:
+      format = babl_format ("Y'A u8");
+      break;
+
+    case GIMP_INDEXED_IMAGE:
+    case GIMP_INDEXEDA_IMAGE:
+      format = gegl_buffer_get_format (buffer);
+      break;
+
+    default:
+      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                   _("Unsupported drawable type"));
+      g_object_unref (buffer);
+      return FALSE;
+    }
 
   /* allocate buffer making the assumption that ibuff is 32 bit aligned... */
   ibuff = g_new (guint, width * height);
 
   hash = g_hash_table_new ((GHashFunc) rgbhash, (GCompareFunc) compare);
 
-  gimp_progress_init_printf (_("Saving '%s'"),
+  gimp_progress_init_printf (_("Exporting '%s'"),
                              gimp_filename_to_utf8 (filename));
 
   ncolors = alpha ? 1 : 0;
 
   /* allocate a pixel region to work with */
-  buffer = g_new (guchar, gimp_tile_height() * width * drawable->bpp);
-
-  gimp_pixel_rgn_init (&pixel_rgn, drawable,
-                       0, 0,
-                       width, height,
-                       TRUE, FALSE);
+  buf = g_new (guchar,
+               gimp_tile_height () * width *
+               babl_format_get_bytes_per_pixel (format));
 
   /* process each row of tiles */
-  for (i = 0; i < height; i+=gimp_tile_height())
+  for (i = 0; i < height; i += gimp_tile_height ())
     {
       gint scanlines;
 
       /* read the next row of tiles */
       scanlines = MIN (gimp_tile_height(), height - i);
-      gimp_pixel_rgn_get_rect (&pixel_rgn, buffer, 0, i, width, scanlines);
-      data = buffer;
+
+      gegl_buffer_get (buffer, GEGL_RECTANGLE (0, i, width, scanlines), 1.0,
+                       format, buf,
+                       GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+
+      data = buf;
 
       /* process each pixel row */
       for (j = 0; j < scanlines; j++)
@@ -706,9 +731,8 @@ save_image (const gchar  *filename,
           gimp_progress_update ((gdouble) (i+j) / (gdouble) height);
         }
     }
-  gimp_progress_update (1.0);
 
-  g_free (buffer);
+  g_free (buf);
 
   if (indexed)
     {
@@ -786,13 +810,13 @@ save_image (const gchar  *filename,
       break;
     }
 
-  /* clean up resources */
-  gimp_drawable_detach (drawable);
-
+  g_object_unref (buffer);
   g_free (ibuff);
 
   if (hash)
     g_hash_table_destroy (hash);
+
+  gimp_progress_update (1.0);
 
   return success;
 }

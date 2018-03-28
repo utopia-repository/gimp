@@ -26,15 +26,12 @@
 
 #include "widgets-types.h"
 
-#include "menus/menus.h"
-
 #include "gimpdialogfactory.h"
 #include "gimpdock.h"
 #include "gimpdockbook.h"
-#include "gimpsessioninfo.h" /* for gimp_session_info_class_apply_position_accuracy() */
+#include "gimpsessioninfo.h"
 #include "gimpsessioninfo-book.h"
 #include "gimpsessioninfo-dockable.h"
-#include "gimpwidgets-utils.h"
 
 
 enum
@@ -80,7 +77,15 @@ gimp_session_info_book_serialize (GimpConfigWriter    *writer,
   gimp_config_writer_open (writer, "book");
 
   if (info->position != 0)
-    gimp_session_write_position (writer, info->position);
+    {
+      gint position;
+
+      position = gimp_session_info_apply_position_accuracy (info->position);
+
+      gimp_config_writer_open (writer, "position");
+      gimp_config_writer_printf (writer, "%d", position);
+      gimp_config_writer_close (writer);
+    }
 
   gimp_config_writer_open (writer, "current-page");
   gimp_config_writer_printf (writer, "%d", info->current_page);
@@ -235,14 +240,19 @@ GimpDockbook *
 gimp_session_info_book_restore (GimpSessionInfoBook *info,
                                 GimpDock            *dock)
 {
-  GtkWidget *dockbook;
-  GList     *pages;
-  gint       n_dockables = 0;
+  GimpDialogFactory *dialog_factory;
+  GimpMenuFactory   *menu_factory;
+  GtkWidget         *dockbook;
+  GList             *pages;
+  gint               n_dockables = 0;
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GIMP_IS_DOCK (dock), NULL);
 
-  dockbook = gimp_dockbook_new (global_menu_factory);
+  dialog_factory = gimp_dock_get_dialog_factory (dock);
+  menu_factory   = gimp_dialog_factory_get_menu_factory (dialog_factory);
+
+  dockbook = gimp_dockbook_new (menu_factory);
 
   gimp_dock_add_book (dock, GIMP_DOCKBOOK (dockbook), -1);
 

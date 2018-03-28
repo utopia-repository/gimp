@@ -42,7 +42,7 @@
 typedef short sa_family_t;	/* Not defined by winsock */
 
 #ifndef AI_ADDRCONFIG
-/* Missing from mingw headers, but value is publicly documented 
+/* Missing from mingw headers, but value is publicly documented
  * on http://msdn.microsoft.com/en-us/library/ms737530%28v=VS.85%29.aspx
  */
 #define AI_ADDRCONFIG 0x0400
@@ -233,6 +233,7 @@ script_fu_server_run (const gchar      *name,
   run_mode = params[0].data.d_int32;
 
   ts_set_run_mode (run_mode);
+  ts_set_print_flag (1);
 
   switch (run_mode)
     {
@@ -546,15 +547,16 @@ server_start (const gchar *listen_ip,
 static gboolean
 execute_command (SFCommand *cmd)
 {
-  guchar    buffer[RESPONSE_HEADER];
-  GString  *response;
-  time_t    clock1;
-  time_t    clock2;
-  gboolean  error;
-  gint      i;
+  guchar      buffer[RESPONSE_HEADER];
+  GString    *response;
+  time_t      clocknow;
+  gboolean    error;
+  gint        i;
+  gdouble     total_time;
+  GTimer     *timer;
 
   server_log ("Processing request #%d\n", cmd->request_no);
-  time (&clock1);
+  timer = g_timer_new ();
 
   response = g_string_new (NULL);
   ts_register_output_func (ts_gstring_output_func, response);
@@ -563,18 +565,22 @@ execute_command (SFCommand *cmd)
   if (ts_interpret_string (cmd->command) != 0)
     {
       error = TRUE;
+
       server_log ("%s\n", response->str);
     }
   else
     {
       error = FALSE;
 
-      g_string_assign (response, ts_get_success_msg ());
+      if (response->len == 0)
+        g_string_assign (response, ts_get_success_msg ());
 
-      time (&clock2);
-      server_log ("Request #%d processed in %f seconds, finishing on %s",
-                  cmd->request_no, difftime (clock2, clock1), ctime (&clock2));
+      total_time = g_timer_elapsed (timer, NULL);
+      time (&clocknow);
+      server_log ("Request #%d processed in %.3f seconds, finishing on %s",
+                  cmd->request_no, total_time, ctime (&clocknow));
     }
+  g_timer_destroy (timer);
 
   buffer[MAGIC_BYTE]     = MAGIC;
   buffer[ERROR_BYTE]     = error ? TRUE : FALSE;
@@ -825,7 +831,7 @@ server_interface (void)
                          NULL, 0,
                          gimp_standard_help_func, "plug-in-script-fu-server",
 
-                         GTK_STOCK_CANCEL,   GTK_RESPONSE_CANCEL,
+                         _("_Cancel"),       GTK_RESPONSE_CANCEL,
                          _("_Start Server"), GTK_RESPONSE_OK,
 
                          NULL);
@@ -880,7 +886,8 @@ server_interface (void)
   gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
-  image = gtk_image_new_from_stock (GIMP_STOCK_WARNING, GTK_ICON_SIZE_DIALOG);
+  image = gtk_image_new_from_icon_name (GIMP_ICON_DIALOG_WARNING,
+                                        GTK_ICON_SIZE_DIALOG);
   gtk_box_pack_start (GTK_BOX (hbox), image, TRUE, TRUE, 0);
   gtk_widget_show (image);
 

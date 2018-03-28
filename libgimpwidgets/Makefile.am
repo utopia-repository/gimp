@@ -6,11 +6,14 @@ libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).
 
 if PLATFORM_WIN32
 no_undefined = -no-undefined
-endif
-
-if PLATFORM_WIN32
+libgdi32 = -lgdi32
 else
 libm = -lm
+endif
+
+if PLATFORM_OSX
+xobjective_c = "-xobjective-c"
+framework_cocoa = -framework Cocoa
 endif
 
 if OS_WIN32
@@ -50,16 +53,17 @@ libgimpwidgetsincludedir = $(includedir)/gimp-$(GIMP_API_VERSION)/libgimpwidgets
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"LibGimpWidgets\"	\
-	-DGIMP_WIDGETS_COMPILATION
+	-DGIMP_WIDGETS_COMPILATION		\
+	-I$(top_srcdir)				\
+	$(GEGL_CFLAGS)				\
+	$(GTK_CFLAGS)				\
+	$(LCMS_CFLAGS)				\
+	-I$(includedir)				\
+	$(xobjective_c)
 
-INCLUDES = \
-	-I$(top_srcdir)	\
-	$(GTK_CFLAGS)	\
-	-I$(includedir)
+lib_LTLIBRARIES = libgimpwidgets-@GIMP_API_VERSION@.la
 
-lib_LTLIBRARIES = libgimpwidgets-2.0.la
-
-libgimpwidgets_2_0_la_sources = \
+libgimpwidgets_sources = \
 	gimpbrowser.c			\
 	gimpbrowser.h			\
 	gimpbutton.c			\
@@ -84,11 +88,15 @@ libgimpwidgets_2_0_la_sources = \
 	gimpcolorhexentry.h		\
 	gimpcolornotebook.c		\
 	gimpcolornotebook.h		\
+	gimpcolorprofilechooserdialog.c	\
+	gimpcolorprofilechooserdialog.h	\
 	gimpcolorprofilecombobox.c	\
 	gimpcolorprofilecombobox.h	\
 	gimpcolorprofilestore-private.h	\
 	gimpcolorprofilestore.c		\
 	gimpcolorprofilestore.h		\
+	gimpcolorprofileview.c		\
+	gimpcolorprofileview.h		\
 	gimpcolorscale.c		\
 	gimpcolorscale.h		\
 	gimpcolorscales.c		\
@@ -121,6 +129,8 @@ libgimpwidgets_2_0_la_sources = \
 	gimphelpui.h			\
 	gimphintbox.c			\
 	gimphintbox.h			\
+	gimpicons.c			\
+	gimpicons.h			\
 	gimpintcombobox.c		\
 	gimpintcombobox.h		\
 	gimpintstore.c			\
@@ -157,8 +167,6 @@ libgimpwidgets_2_0_la_sources = \
 	gimpscrolledpreview.h		\
 	gimpsizeentry.c			\
 	gimpsizeentry.h			\
-	gimpstock.c			\
-	gimpstock.h			\
 	gimpstringcombobox.c		\
 	gimpstringcombobox.h		\
 	gimpunitcombobox.c		\
@@ -175,22 +183,23 @@ libgimpwidgets_2_0_la_sources = \
 	gimpwidgets.h			\
 	gimpwidgetsenums.h		\
 	gimpwidgetstypes.h		\
+	gimpwidgetsutils.c		\
+	gimpwidgetsutils.h		\
 	gimpzoommodel.c			\
 	gimpzoommodel.h			\
 	gimp3migration.c		\
 	gimp3migration.h
 
-libgimpwidgets_2_0_la_built_sources = \
-	gimp-wilber-pixbufs.h	\
+libgimpwidgets_built_sources = \
 	gimpwidgetsenums.c	\
 	gimpwidgetsmarshal.c	\
 	gimpwidgetsmarshal.h
 
-libgimpwidgets_2_0_la_extra_sources = gimpwidgetsmarshal.list
+libgimpwidgets_extra_sources = gimpwidgetsmarshal.list
 
-libgimpwidgets_2_0_la_SOURCES = \
-	$(libgimpwidgets_2_0_la_built_sources)	\
-	$(libgimpwidgets_2_0_la_sources)
+libgimpwidgets_@GIMP_API_VERSION@_la_SOURCES = \
+	$(libgimpwidgets_built_sources)	\
+	$(libgimpwidgets_sources)
 
 libgimpwidgetsinclude_HEADERS = \
 	gimpbrowser.h			\
@@ -205,8 +214,10 @@ libgimpwidgetsinclude_HEADERS = \
 	gimpcolordisplaystack.h		\
 	gimpcolorhexentry.h		\
 	gimpcolornotebook.h		\
+	gimpcolorprofilechooserdialog.h	\
 	gimpcolorprofilecombobox.h	\
 	gimpcolorprofilestore.h		\
+	gimpcolorprofileview.h		\
 	gimpcolorscale.h		\
 	gimpcolorscales.h		\
 	gimpcolorselect.h		\
@@ -222,6 +233,7 @@ libgimpwidgetsinclude_HEADERS = \
 	gimpframe.h			\
 	gimphelpui.h			\
 	gimphintbox.h			\
+	gimpicons.h			\
 	gimpintcombobox.h		\
 	gimpintstore.h			\
 	gimpmemsizeentry.h		\
@@ -240,7 +252,6 @@ libgimpwidgetsinclude_HEADERS = \
 	gimpscaleentry.h		\
 	gimpscrolledpreview.h		\
 	gimpsizeentry.h			\
-	gimpstock.h			\
 	gimpstringcombobox.h		\
 	gimpunitcombobox.h		\
 	gimpunitmenu.h			\
@@ -249,83 +260,90 @@ libgimpwidgetsinclude_HEADERS = \
 	gimpwidgets.h			\
 	gimpwidgetsenums.h		\
 	gimpwidgetstypes.h		\
+	gimpwidgetsutils.h		\
 	gimpzoommodel.h			\
 	gimp3migration.h
 
-libgimpwidgets_2_0_la_LDFLAGS = \
-	-version-info $(LT_VERSION_INFO)\
-	$(no_undefined) 		\
-	$(libgimpwidgets_export_symbols)
+libgimpwidgets_@GIMP_API_VERSION@_la_LDFLAGS = \
+	-version-info $(LT_VERSION_INFO)	\
+	$(no_undefined) 			\
+	$(libgimpwidgets_export_symbols)	\
+	$(framework_cocoa)
 
-libgimpwidgets_2_0_la_LIBADD = \
+EXTRA_libgimpwidgets_@GIMP_API_VERSION@_la_DEPENDENCIES = $(gimpwidgets_def)
+
+libgimpwidgets_@GIMP_API_VERSION@_la_LIBADD = \
+	$(libgimpbase)		\
 	$(libgimpcolor)		\
 	$(libgimpconfig)	\
-	$(libgimpbase)		\
+	$(GEGL_LIBS)		\
 	$(GTK_LIBS)		\
-	$(libm)
-
-libgimpwidgets_2_0_la_DEPENDENCIES = $(gimpwidgets_def)
-
-
-## Wilber icons for the window managaer, compiled in
-
-WILBER_IMAGES = \
-	wilber-16.png	\
-	wilber-32.png	\
-	wilber-48.png	\
-	wilber-64.png
-
-WILBER_VARIABLES = \
-	wilber_16  $(srcdir)/wilber-16.png	\
-	wilber_32  $(srcdir)/wilber-32.png	\
-	wilber_48  $(srcdir)/wilber-48.png	\
-	wilber_64  $(srcdir)/wilber-64.png
+	$(LCMS_LIBS)		\
+	$(libm)			\
+	$(libgdi32)
 
 
 EXTRA_DIST = \
-	gimpwidgets.def				\
-	$(libgimpwidgets_2_0_la_extra_sources)	\
-	$(WILBER_IMAGES)
+	gimpwidgets.def			\
+	$(libgimpwidgets_extra_sources)
+
+#
+# platform-dependent source files
+#
 
 
-gimpwidgets-private.lo: gimp-wilber-pixbufs.h
+if PLATFORM_OSX_QUARTZ
+libgimpwidgets_sources += gimppickbutton-quartz.c gimppickbutton-quartz.h
+AM_CPPFLAGS += "-xobjective-c"
+else
+libgimpwidgets_sources += \
+	gimppickbutton-default.c 	\
+	gimppickbutton-default.h	\
+	gimppickbutton-kwin.c		\
+	gimppickbutton-kwin.h
+endif
 
 
 #
 # rules to generate built sources
 #
 # setup autogeneration dependancies
-gen_sources = xgen-wec xgen-wmh xgen-wmc gimp-wilber-pixbufs.h
+gen_sources = xgen-wec xgen-wmh xgen-wmc
 CLEANFILES = $(gen_sources)
 
-gimpwidgetsenums.c: $(srcdir)/gimpwidgetsenums.h $(GIMP_MKENUMS)
-	$(GIMP_MKENUMS) \
-		--fhead "#include \"config.h\"\n#include <glib-object.h>\n#include \"libgimpbase/gimpbase.h\"\n#include \"gimpwidgetsenums.h\"\n#include \"libgimp/libgimp-intl.h\"" \
-		--fprod "\n/* enumerations from \"@filename@\" */" \
+xgen-wec: $(srcdir)/gimpwidgetsenums.h $(GIMP_MKENUMS) Makefile.am
+	$(AM_V_GEN) $(GIMP_MKENUMS) \
+		--fhead "#include \"config.h\"\n#include <gio/gio.h>\n#include \"libgimpbase/gimpbase.h\"\n#include \"gimpwidgetsenums.h\"\n#include \"libgimp/libgimp-intl.h\"" \
+		--fprod "\n/* enumerations from \"@basename@\" */" \
 		--vhead "GType\n@enum_name@_get_type (void)\n{\n  static const G@Type@Value values[] =\n  {" \
 		--vprod "    { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
 		--vtail "    { 0, NULL, NULL }\n  };\n" \
 		--dhead "  static const Gimp@Type@Desc descs[] =\n  {" \
-		--dprod "    { @VALUENAME@, @valuedesc@, @valuehelp@ }," \
+		--dprod "    { @VALUENAME@, @valuedesc@, @valuehelp@ },@if ('@valueabbrev@' ne 'NULL')@\n    /* Translators: this is an abbreviated version of @valueudesc@.\n       Keep it short. */\n    { @VALUENAME@, @valueabbrev@, NULL },@endif@" \
 		--dtail "    { 0, NULL, NULL }\n  };\n\n  static GType type = 0;\n\n  if (G_UNLIKELY (! type))\n    {\n      type = g_@type@_register_static (\"@EnumName@\", values);\n      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE \"-libgimp\");\n      gimp_type_set_translation_context (type, \"@enumnick@\");\n      gimp_@type@_set_value_descriptions (type, descs);\n    }\n\n  return type;\n}\n" \
-		$(srcdir)/gimpwidgetsenums.h > xgen-wec \
-	&& cp xgen-wec $(@F) \
-	&& rm -f xgen-wec
+		$< > $@
+
+# copy the generated enum file back to the source directory only if it's
+# changed; otherwise, only update its timestamp, so that the recipe isn't
+# executed again on the next build, however, allow this to (harmlessly) fail,
+# to support building from a read-only source tree.
+$(srcdir)/gimpwidgetsenums.c: xgen-wec
+	$(AM_V_GEN) if ! cmp -s $< $@; then \
+		cp $< $@; \
+	else \
+		touch $@ 2> /dev/null \
+		|| true; \
+	fi
 
 gimpwidgetsmarshal.h: $(srcdir)/gimpwidgetsmarshal.list
-	$(GLIB_GENMARSHAL) --prefix=_gimp_widgets_marshal $(srcdir)/gimpwidgetsmarshal.list --header >> xgen-wmh \
+	$(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=_gimp_widgets_marshal $(srcdir)/gimpwidgetsmarshal.list --header >> xgen-wmh \
 	&& (cmp -s xgen-wmh $(@F) || cp xgen-wmh $(@F)) \
 	&& rm -f xgen-wmh xgen-wmh~
 
 gimpwidgetsmarshal.c: gimpwidgetsmarshal.h
-	echo "#include \"gimpwidgetsmarshal.h\"" >> xgen-wmc \
-	&& $(GLIB_GENMARSHAL) --prefix=_gimp_widgets_marshal $(srcdir)/gimpwidgetsmarshal.list --body >> xgen-wmc \
+	$(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=_gimp_widgets_marshal $(srcdir)/gimpwidgetsmarshal.list --header --body >> xgen-wmc \
 	&& cp xgen-wmc $(@F) \
 	&& rm -f xgen-wmc xgen-wmc~
-
-
-gimp-wilber-pixbufs.h: $(WILBER_IMAGES) Makefile.am
-	$(GDK_PIXBUF_CSOURCE) --raw --build-list $(WILBER_VARIABLES) > $(@F)
 
 
 #
@@ -337,26 +355,21 @@ EXTRA_PROGRAMS = \
 	test-eevl
 
 
-test_preview_area_SOURCES = test-preview-area.c 
-
-test_preview_area_DEPENDENCIES = \
-	$(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la	\
-	$(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
+test_preview_area_SOURCES = test-preview-area.c
 
 test_preview_area_LDADD = \
-	$(GTK_LIBS) \
-	$(test_preview_area_DEPENDENCIES)
+	$(GTK_LIBS)	\
+	$(libgimpbase)	\
+	$(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
 
 
 test_eevl_SOURCES = \
 	test-eevl.c
 
-test_eevl_DEPENDENCIES = \
-	$(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
-
 test_eevl_LDADD = \
-	$(GLIB_LIBS) 		\
-	$(test_eevl_DEPENDENCIES)
+	$(GLIB_LIBS)	\
+	$(libgimpcolor)		\
+	$(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
 
 
 #

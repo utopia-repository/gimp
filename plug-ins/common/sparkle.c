@@ -338,8 +338,8 @@ sparkle_dialog (GimpDrawable *drawable)
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -356,7 +356,7 @@ sparkle_dialog (GimpDrawable *drawable)
                       main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_drawable_preview_new (drawable, NULL);
+  preview = gimp_drawable_preview_new_from_drawable_id (drawable->drawable_id);
   gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
   g_signal_connect_swapped (preview, "invalidated",
@@ -632,18 +632,21 @@ compute_lum_threshold (GimpDrawable *drawable,
   gboolean     gray;
   gboolean     has_alpha;
   gint         i;
-  gint         x1, y1, x2, y2;
+  gint         x1, y1;
+  gint         width, height;
 
   /*  zero out the luminosity values array  */
   memset (values, 0, sizeof (gint) * 256);
 
-  gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                      &x1, &y1, &width, &height))
+    return 0;
 
   gray = gimp_drawable_is_gray (drawable->drawable_id);
   has_alpha = gimp_drawable_has_alpha (drawable->drawable_id);
 
   gimp_pixel_rgn_init (&src_rgn, drawable,
-                       x1, y1, (x2 - x1), (y2 - y1), FALSE, FALSE);
+                       x1, y1, width, height, FALSE, FALSE);
 
   for (pr = gimp_pixel_rgns_register (1, &src_rgn);
        pr != NULL;
@@ -668,7 +671,7 @@ compute_lum_threshold (GimpDrawable *drawable,
          }
      }
 
-  total = (x2 - x1) * (y2 - y1);
+  total = width * height;
   sum = 0;
 
   for (i = 255; i >= 0; i--)
@@ -702,8 +705,6 @@ sparkle (GimpDrawable *drawable,
   GRand       *gr;
   guchar      *dest_buf = NULL;
 
-  gr = g_rand_new ();
-
   bytes = drawable->bpp;
 
   if (preview)
@@ -717,11 +718,18 @@ sparkle (GimpDrawable *drawable,
     }
   else
     {
-      gimp_drawable_mask_bounds (drawable->drawable_id,
-                                 &x1, &y1, &x2, &y2);
-      width  = x2 - x1;
-      height = y2 - y1;
+      if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                          &x1, &y1, &width, &height))
+        return;
+
+      x2 = x1 + width;
+      y2 = y1 + height;
     }
+
+  if (width < 1 || height < 1)
+    return;
+
+  gr = g_rand_new ();
 
   if (svals.border)
     {

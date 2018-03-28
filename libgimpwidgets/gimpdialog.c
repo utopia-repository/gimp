@@ -28,6 +28,8 @@
 #include "gimpdialog.h"
 #include "gimphelpui.h"
 
+#include "libgimp/libgimp-intl.h"
+
 
 /**
  * SECTION: gimpdialog
@@ -114,31 +116,37 @@ gimp_dialog_class_init (GimpDialogClass *klass)
   /**
    * GimpDialog:help-func:
    *
-   * Since: GIMP 2.2
+   * Since: 2.2
    **/
   g_object_class_install_property (object_class, PROP_HELP_FUNC,
-                                   g_param_spec_pointer ("help-func", NULL, NULL,
+                                   g_param_spec_pointer ("help-func",
+                                                         "Help Func",
+                                                         "The help function to call when F1 is hit",
                                                          GIMP_PARAM_READWRITE |
                                                          G_PARAM_CONSTRUCT_ONLY));
 
   /**
    * GimpDialog:help-id:
    *
-   * Since: GIMP 2.2
+   * Since: 2.2
    **/
   g_object_class_install_property (object_class, PROP_HELP_ID,
-                                   g_param_spec_string ("help-id", NULL, NULL,
+                                   g_param_spec_string ("help-id",
+                                                        "Help ID",
+                                                        "The help ID to pass to help-func",
                                                         NULL,
                                                         GIMP_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT_ONLY));
+                                                        G_PARAM_CONSTRUCT));
 
   /**
    * GimpDialog:parent:
    *
-   * Since: GIMP 2.8
+   * Since: 2.8
    **/
   g_object_class_install_property (object_class, PROP_PARENT,
-                                   g_param_spec_object ("parent", NULL, NULL,
+                                   g_param_spec_object ("parent",
+                                                        "Parent",
+                                                        "The dialog's parent widget",
                                                         GTK_TYPE_WIDGET,
                                                         GIMP_PARAM_WRITABLE |
                                                         G_PARAM_CONSTRUCT_ONLY));
@@ -159,8 +167,7 @@ gimp_dialog_constructed (GObject *object)
 {
   GimpDialogPrivate *private = GET_PRIVATE (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   if (private->help_func)
     gimp_help_connect (GTK_WIDGET (object),
@@ -172,7 +179,7 @@ gimp_dialog_constructed (GObject *object)
       GtkDialog *dialog      = GTK_DIALOG (object);
       GtkWidget *action_area = gtk_dialog_get_action_area (dialog);
 
-      private->help_button = gtk_button_new_from_stock (GTK_STOCK_HELP);
+      private->help_button = gtk_button_new_with_mnemonic (_("_Help"));
 
       gtk_box_pack_end (GTK_BOX (action_area), private->help_button,
                         FALSE, TRUE, 0);
@@ -211,11 +218,7 @@ gimp_dialog_finalize (GObject *object)
 {
   GimpDialogPrivate *private = GET_PRIVATE (object);
 
-  if (private->help_id)
-    {
-      g_free (private->help_id);
-      private->help_id = NULL;
-    }
+  g_clear_pointer (&private->help_id, g_free);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -235,7 +238,9 @@ gimp_dialog_set_property (GObject      *object,
       break;
 
     case PROP_HELP_ID:
+      g_free (private->help_id);
       private->help_id = g_value_dup_string (value);
+      gimp_help_set_help_data (GTK_WIDGET (object), NULL, private->help_id);
       break;
 
     case PROP_PARENT:
@@ -679,7 +684,7 @@ gimp_dialog_run (GimpDialog *dialog)
  *
  * This function is for internal use only.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 void
 gimp_dialogs_show_help_button (gboolean  show)

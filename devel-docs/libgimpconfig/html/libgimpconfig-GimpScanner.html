@@ -5,10 +5,10 @@
 <title>GimpScanner: GIMP Config Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="GIMP Config Library Reference Manual">
-<link rel="up" href="libgimpconfig.html" title="Part I. GIMP Config Library">
+<link rel="up" href="pt01.html" title="Part I. GIMP Config Library">
 <link rel="prev" href="libgimpconfig-GimpConfigWriter.html" title="GimpConfigWriter">
 <link rel="next" href="GimpColorConfig.html" title="GimpColorConfig">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -18,7 +18,7 @@
                   <a href="#libgimpconfig-GimpScanner.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<td><a accesskey="u" href="libgimpconfig.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="u" href="pt01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="libgimpconfig-GimpConfigWriter.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="GimpColorConfig.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
@@ -27,7 +27,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="libgimpconfig-GimpScanner.top_of_page"></a>GimpScanner</span></h2>
-<p>GimpScanner — A wrapper around <a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> with some convenience API.</p>
+<p>GimpScanner — A wrapper around <a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> with some convenience API.</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -41,7 +41,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="returnvalue">GScanner</span></a> *
+<a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="returnvalue">GScanner</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()">gimp_scanner_new_file</a> <span class="c_punctuation">()</span>
@@ -49,7 +49,23 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="returnvalue">GScanner</span></a> *
+<a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="returnvalue">GScanner</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-gfile" title="gimp_scanner_new_gfile ()">gimp_scanner_new_gfile</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="returnvalue">GScanner</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-stream" title="gimp_scanner_new_stream ()">gimp_scanner_new_stream</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="returnvalue">GScanner</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-string" title="gimp_scanner_new_string ()">gimp_scanner_new_string</a> <span class="c_punctuation">()</span>
@@ -65,7 +81,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-token" title="gimp_scanner_parse_token ()">gimp_scanner_parse_token</a> <span class="c_punctuation">()</span>
@@ -73,7 +89,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-identifier" title="gimp_scanner_parse_identifier ()">gimp_scanner_parse_identifier</a> <span class="c_punctuation">()</span>
@@ -81,7 +97,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-string" title="gimp_scanner_parse_string ()">gimp_scanner_parse_string</a> <span class="c_punctuation">()</span>
@@ -89,7 +105,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-string-no-validate" title="gimp_scanner_parse_string_no_validate ()">gimp_scanner_parse_string_no_validate</a> <span class="c_punctuation">()</span>
@@ -97,7 +113,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-data" title="gimp_scanner_parse_data ()">gimp_scanner_parse_data</a> <span class="c_punctuation">()</span>
@@ -105,7 +121,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-int" title="gimp_scanner_parse_int ()">gimp_scanner_parse_int</a> <span class="c_punctuation">()</span>
@@ -113,7 +129,15 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-int64" title="gimp_scanner_parse_int64 ()">gimp_scanner_parse_int64</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-float" title="gimp_scanner_parse_float ()">gimp_scanner_parse_float</a> <span class="c_punctuation">()</span>
@@ -121,7 +145,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-boolean" title="gimp_scanner_parse_boolean ()">gimp_scanner_parse_boolean</a> <span class="c_punctuation">()</span>
@@ -129,7 +153,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-color" title="gimp_scanner_parse_color ()">gimp_scanner_parse_color</a> <span class="c_punctuation">()</span>
@@ -137,7 +161,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-matrix2" title="gimp_scanner_parse_matrix2 ()">gimp_scanner_parse_matrix2</a> <span class="c_punctuation">()</span>
@@ -148,31 +172,99 @@
 </div>
 <div class="refsect1">
 <a name="libgimpconfig-GimpScanner.description"></a><h2>Description</h2>
-<p>A wrapper around <a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> with some convenience API.</p>
+<p>A wrapper around <a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> with some convenience API.</p>
 </div>
 <div class="refsect1">
 <a name="libgimpconfig-GimpScanner.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="gimp-scanner-new-file"></a><h3>gimp_scanner_new_file ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="returnvalue">GScanner</span></a> *
-gimp_scanner_new_file (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *filename</code></em>,
-                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
-<p class="since">Since: GIMP 2.4</p>
+<pre class="programlisting"><a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="returnvalue">GScanner</span></a> *
+gimp_scanner_new_file (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *filename</code></em>,
+                       <em class="parameter"><code><a href="../glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-scanner-new-gfile"></a><h3>gimp_scanner_new_gfile ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="returnvalue">GScanner</span></a> *
+gimp_scanner_new_gfile (<em class="parameter"><code><a href="../gio/GFile.html#GFile-struct"><span class="type">GFile</span></a> *file</code></em>,
+                        <em class="parameter"><code><a href="../glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<div class="refsect3">
+<a name="gimp-scanner-new-gfile.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>file</p></td>
+<td class="parameter_description"><p>a <a href="../gio/GFile.html#GFile-struct"><span class="type">GFile</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>error</p></td>
+<td class="parameter_description"><p>return location for <a href="../glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gimp-scanner-new-gfile.returns"></a><h4>Returns</h4>
+<p> The new <a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a>.</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-scanner-new-stream"></a><h3>gimp_scanner_new_stream ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="returnvalue">GScanner</span></a> *
+gimp_scanner_new_stream (<em class="parameter"><code><a href="../gio/GInputStream.html#GInputStream-struct"><span class="type">GInputStream</span></a> *input</code></em>,
+                         <em class="parameter"><code><a href="../glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<div class="refsect3">
+<a name="gimp-scanner-new-stream.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>input</p></td>
+<td class="parameter_description"><p>a <a href="../gio/GInputStream.html#GInputStream-struct"><span class="type">GInputStream</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>error</p></td>
+<td class="parameter_description"><p>return location for <a href="../glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gimp-scanner-new-stream.returns"></a><h4>Returns</h4>
+<p> The new <a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a>.</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-scanner-new-string"></a><h3>gimp_scanner_new_string ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="returnvalue">GScanner</span></a> *
-gimp_scanner_new_string (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>,
-                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a> text_len</code></em>,
-                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
-<p class="since">Since: GIMP 2.4</p>
+<pre class="programlisting"><a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="returnvalue">GScanner</span></a> *
+gimp_scanner_new_string (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>,
+                         <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> text_len</code></em>,
+                         <em class="parameter"><code><a href="../glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-scanner-destroy"></a><h3>gimp_scanner_destroy ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-gimp_scanner_destroy (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>);</pre>
+gimp_scanner_destroy (<em class="parameter"><code><a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>);</pre>
 <div class="refsect3">
 <a name="gimp-scanner-destroy.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -183,20 +275,20 @@ gimp_scanner_destroy (<em class="parameter"><code><a href="/usr/share/gtk-doc/ht
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>scanner</p></td>
-<td class="parameter_description"><p>A <a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
+<td class="parameter_description"><p>A <a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-string" title="gimp_scanner_new_string ()"><code class="function">gimp_scanner_new_string()</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
-<p class="since">Since: GIMP 2.4</p>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-scanner-parse-token"></a><h3>gimp_scanner_parse_token ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gimp_scanner_parse_token (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
-                          <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GTokenType"><span class="type">GTokenType</span></a> token</code></em>);</pre>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_scanner_parse_token (<em class="parameter"><code><a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
+                          <em class="parameter"><code><a href="../glib/glib-Lexical-Scanner.html#GTokenType"><span class="type">GTokenType</span></a> token</code></em>);</pre>
 <div class="refsect3">
 <a name="gimp-scanner-parse-token.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -208,7 +300,7 @@ gimp_scanner_parse_token (<em class="parameter"><code><a href="/usr/share/gtk-do
 <tbody>
 <tr>
 <td class="parameter_name"><p>scanner</p></td>
-<td class="parameter_description"><p>A <a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
+<td class="parameter_description"><p>A <a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-string" title="gimp_scanner_new_string ()"><code class="function">gimp_scanner_new_string()</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -222,16 +314,16 @@ gimp_scanner_parse_token (<em class="parameter"><code><a href="/usr/share/gtk-do
 </div>
 <div class="refsect3">
 <a name="gimp-scanner-parse-token.returns"></a><h4>Returns</h4>
-<p> <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 </div>
-<p class="since">Since: GIMP 2.4</p>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-scanner-parse-identifier"></a><h3>gimp_scanner_parse_identifier ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gimp_scanner_parse_identifier (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
-                               <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *identifier</code></em>);</pre>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_scanner_parse_identifier (<em class="parameter"><code><a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
+                               <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *identifier</code></em>);</pre>
 <div class="refsect3">
 <a name="gimp-scanner-parse-identifier.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -243,7 +335,7 @@ gimp_scanner_parse_identifier (<em class="parameter"><code><a href="/usr/share/g
 <tbody>
 <tr>
 <td class="parameter_name"><p>scanner</p></td>
-<td class="parameter_description"><p>A <a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
+<td class="parameter_description"><p>A <a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-string" title="gimp_scanner_new_string ()"><code class="function">gimp_scanner_new_string()</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -257,16 +349,16 @@ gimp_scanner_parse_identifier (<em class="parameter"><code><a href="/usr/share/g
 </div>
 <div class="refsect3">
 <a name="gimp-scanner-parse-identifier.returns"></a><h4>Returns</h4>
-<p> <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 </div>
-<p class="since">Since: GIMP 2.4</p>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-scanner-parse-string"></a><h3>gimp_scanner_parse_string ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gimp_scanner_parse_string (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
-                           <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **dest</code></em>);</pre>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_scanner_parse_string (<em class="parameter"><code><a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
+                           <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **dest</code></em>);</pre>
 <div class="refsect3">
 <a name="gimp-scanner-parse-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -278,7 +370,7 @@ gimp_scanner_parse_string (<em class="parameter"><code><a href="/usr/share/gtk-d
 <tbody>
 <tr>
 <td class="parameter_name"><p>scanner</p></td>
-<td class="parameter_description"><p>A <a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
+<td class="parameter_description"><p>A <a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-string" title="gimp_scanner_new_string ()"><code class="function">gimp_scanner_new_string()</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -292,16 +384,16 @@ gimp_scanner_parse_string (<em class="parameter"><code><a href="/usr/share/gtk-d
 </div>
 <div class="refsect3">
 <a name="gimp-scanner-parse-string.returns"></a><h4>Returns</h4>
-<p> <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 </div>
-<p class="since">Since: GIMP 2.4</p>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-scanner-parse-string-no-validate"></a><h3>gimp_scanner_parse_string_no_validate ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gimp_scanner_parse_string_no_validate (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
-                                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **dest</code></em>);</pre>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_scanner_parse_string_no_validate (<em class="parameter"><code><a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
+                                       <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **dest</code></em>);</pre>
 <div class="refsect3">
 <a name="gimp-scanner-parse-string-no-validate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -313,7 +405,7 @@ gimp_scanner_parse_string_no_validate (<em class="parameter"><code><a href="/usr
 <tbody>
 <tr>
 <td class="parameter_name"><p>scanner</p></td>
-<td class="parameter_description"><p>A <a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
+<td class="parameter_description"><p>A <a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-string" title="gimp_scanner_new_string ()"><code class="function">gimp_scanner_new_string()</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -327,17 +419,17 @@ gimp_scanner_parse_string_no_validate (<em class="parameter"><code><a href="/usr
 </div>
 <div class="refsect3">
 <a name="gimp-scanner-parse-string-no-validate.returns"></a><h4>Returns</h4>
-<p> <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 </div>
-<p class="since">Since: GIMP 2.4</p>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-scanner-parse-data"></a><h3>gimp_scanner_parse_data ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gimp_scanner_parse_data (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
-                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a> length</code></em>,
-                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint8"><span class="type">guint8</span></a> **dest</code></em>);</pre>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_scanner_parse_data (<em class="parameter"><code><a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
+                         <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> length</code></em>,
+                         <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> **dest</code></em>);</pre>
 <div class="refsect3">
 <a name="gimp-scanner-parse-data.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -349,7 +441,7 @@ gimp_scanner_parse_data (<em class="parameter"><code><a href="/usr/share/gtk-doc
 <tbody>
 <tr>
 <td class="parameter_name"><p>scanner</p></td>
-<td class="parameter_description"><p>A <a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
+<td class="parameter_description"><p>A <a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-string" title="gimp_scanner_new_string ()"><code class="function">gimp_scanner_new_string()</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -368,16 +460,16 @@ gimp_scanner_parse_data (<em class="parameter"><code><a href="/usr/share/gtk-doc
 </div>
 <div class="refsect3">
 <a name="gimp-scanner-parse-data.returns"></a><h4>Returns</h4>
-<p> <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 </div>
-<p class="since">Since: GIMP 2.4</p>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-scanner-parse-int"></a><h3>gimp_scanner_parse_int ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gimp_scanner_parse_int (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
-                        <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a> *dest</code></em>);</pre>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_scanner_parse_int (<em class="parameter"><code><a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
+                        <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *dest</code></em>);</pre>
 <div class="refsect3">
 <a name="gimp-scanner-parse-int.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -389,7 +481,7 @@ gimp_scanner_parse_int (<em class="parameter"><code><a href="/usr/share/gtk-doc/
 <tbody>
 <tr>
 <td class="parameter_name"><p>scanner</p></td>
-<td class="parameter_description"><p>A <a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
+<td class="parameter_description"><p>A <a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-string" title="gimp_scanner_new_string ()"><code class="function">gimp_scanner_new_string()</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -403,16 +495,51 @@ gimp_scanner_parse_int (<em class="parameter"><code><a href="/usr/share/gtk-doc/
 </div>
 <div class="refsect3">
 <a name="gimp-scanner-parse-int.returns"></a><h4>Returns</h4>
-<p> <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 </div>
-<p class="since">Since: GIMP 2.4</p>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-scanner-parse-int64"></a><h3>gimp_scanner_parse_int64 ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_scanner_parse_int64 (<em class="parameter"><code><a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
+                          <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> *dest</code></em>);</pre>
+<div class="refsect3">
+<a name="gimp-scanner-parse-int64.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>scanner</p></td>
+<td class="parameter_description"><p>A <a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
+<a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-string" title="gimp_scanner_new_string ()"><code class="function">gimp_scanner_new_string()</code></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>dest</p></td>
+<td class="parameter_description"><p>Return location for the parsed integer</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gimp-scanner-parse-int64.returns"></a><h4>Returns</h4>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-8.html#api-index-2.8">2.8</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-scanner-parse-float"></a><h3>gimp_scanner_parse_float ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gimp_scanner_parse_float (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
-                          <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *dest</code></em>);</pre>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_scanner_parse_float (<em class="parameter"><code><a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
+                          <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *dest</code></em>);</pre>
 <div class="refsect3">
 <a name="gimp-scanner-parse-float.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -424,7 +551,7 @@ gimp_scanner_parse_float (<em class="parameter"><code><a href="/usr/share/gtk-do
 <tbody>
 <tr>
 <td class="parameter_name"><p>scanner</p></td>
-<td class="parameter_description"><p>A <a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
+<td class="parameter_description"><p>A <a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-string" title="gimp_scanner_new_string ()"><code class="function">gimp_scanner_new_string()</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -438,16 +565,16 @@ gimp_scanner_parse_float (<em class="parameter"><code><a href="/usr/share/gtk-do
 </div>
 <div class="refsect3">
 <a name="gimp-scanner-parse-float.returns"></a><h4>Returns</h4>
-<p> <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 </div>
-<p class="since">Since: GIMP 2.4</p>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-scanner-parse-boolean"></a><h3>gimp_scanner_parse_boolean ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gimp_scanner_parse_boolean (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
-                            <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> *dest</code></em>);</pre>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_scanner_parse_boolean (<em class="parameter"><code><a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
+                            <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> *dest</code></em>);</pre>
 <div class="refsect3">
 <a name="gimp-scanner-parse-boolean.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -459,7 +586,7 @@ gimp_scanner_parse_boolean (<em class="parameter"><code><a href="/usr/share/gtk-
 <tbody>
 <tr>
 <td class="parameter_name"><p>scanner</p></td>
-<td class="parameter_description"><p>A <a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
+<td class="parameter_description"><p>A <a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-string" title="gimp_scanner_new_string ()"><code class="function">gimp_scanner_new_string()</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -473,15 +600,15 @@ gimp_scanner_parse_boolean (<em class="parameter"><code><a href="/usr/share/gtk-
 </div>
 <div class="refsect3">
 <a name="gimp-scanner-parse-boolean.returns"></a><h4>Returns</h4>
-<p> <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 </div>
-<p class="since">Since: GIMP 2.4</p>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-scanner-parse-color"></a><h3>gimp_scanner_parse_color ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gimp_scanner_parse_color (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_scanner_parse_color (<em class="parameter"><code><a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
                           <em class="parameter"><code><a href="../html/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *dest</code></em>);</pre>
 <div class="refsect3">
 <a name="gimp-scanner-parse-color.parameters"></a><h4>Parameters</h4>
@@ -494,7 +621,7 @@ gimp_scanner_parse_color (<em class="parameter"><code><a href="/usr/share/gtk-do
 <tbody>
 <tr>
 <td class="parameter_name"><p>scanner</p></td>
-<td class="parameter_description"><p>A <a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
+<td class="parameter_description"><p>A <a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-string" title="gimp_scanner_new_string ()"><code class="function">gimp_scanner_new_string()</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -508,16 +635,16 @@ gimp_scanner_parse_color (<em class="parameter"><code><a href="/usr/share/gtk-do
 </div>
 <div class="refsect3">
 <a name="gimp-scanner-parse-color.returns"></a><h4>Returns</h4>
-<p> <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 </div>
-<p class="since">Since: GIMP 2.4</p>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-scanner-parse-matrix2"></a><h3>gimp_scanner_parse_matrix2 ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gimp_scanner_parse_matrix2 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
-                            <em class="parameter"><code><span class="type">GimpMatrix2</span> *dest</code></em>);</pre>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_scanner_parse_matrix2 (<em class="parameter"><code><a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
+                            <em class="parameter"><code><a href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"><span class="type">GimpMatrix2</span></a> *dest</code></em>);</pre>
 <div class="refsect3">
 <a name="gimp-scanner-parse-matrix2.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -529,7 +656,7 @@ gimp_scanner_parse_matrix2 (<em class="parameter"><code><a href="/usr/share/gtk-
 <tbody>
 <tr>
 <td class="parameter_name"><p>scanner</p></td>
-<td class="parameter_description"><p>A <a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
+<td class="parameter_description"><p>A <a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> created by <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()"><code class="function">gimp_scanner_new_file()</code></a> or
 <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-string" title="gimp_scanner_new_string ()"><code class="function">gimp_scanner_new_string()</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -543,9 +670,9 @@ gimp_scanner_parse_matrix2 (<em class="parameter"><code><a href="/usr/share/gtk-
 </div>
 <div class="refsect3">
 <a name="gimp-scanner-parse-matrix2.returns"></a><h4>Returns</h4>
-<p> <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 </div>
-<p class="since">Since: GIMP 2.4</p>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
 </div>
 <div class="refsect1">
@@ -553,6 +680,6 @@ gimp_scanner_parse_matrix2 (<em class="parameter"><code><a href="/usr/share/gtk-
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.27</div>
 </body>
 </html>

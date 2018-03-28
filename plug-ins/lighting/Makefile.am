@@ -43,9 +43,10 @@ lighting_SOURCES = \
 	lighting-ui.c		\
 	lighting-ui.h
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir)	\
 	$(GTK_CFLAGS)	\
+	$(GEGL_CFLAGS) \
 	-I$(includedir)
 
 LDADD = \

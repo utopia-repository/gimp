@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <locale.h>
 #include <string.h>
 
 #include <gtk/gtk.h>
@@ -28,10 +29,18 @@
 
 #include "widgets-types.h"
 
+#include "gimphelp.h"
+#include "gimplanguagestore-parser.h"
 #include "gimptranslationstore.h"
 
 #include "gimp-intl.h"
 
+enum
+{
+  PROP_0,
+  PROP_MANUAL_L18N,
+  PROP_EMPTY_LABEL
+};
 
 struct _GimpTranslationStoreClass
 {
@@ -42,17 +51,20 @@ struct _GimpTranslationStore
 {
   GimpLanguageStore  parent_instance;
 
-  GHashTable        *map;
+  gboolean           manual_l18n;
+  gchar             *empty_label;
 };
 
 
-static void   gimp_translation_store_constructed (GObject              *object);
-
-static void   gimp_translation_store_add         (GimpLanguageStore    *store,
-                                                  const gchar          *lang,
-                                                  const gchar          *code);
-
-static void   gimp_translation_store_populate    (GimpTranslationStore *store);
+static void   gimp_translation_store_constructed  (GObject           *object);
+static void   gimp_translation_store_set_property (GObject           *object,
+                                                   guint              property_id,
+                                                   const GValue      *value,
+                                                   GParamSpec        *pspec);
+static void   gimp_translation_store_get_property (GObject           *object,
+                                                   guint              property_id,
+                                                   GValue            *value,
+                                                   GParamSpec        *pspec);
 
 
 G_DEFINE_TYPE (GimpTranslationStore, gimp_translation_store,
@@ -64,126 +76,117 @@ G_DEFINE_TYPE (GimpTranslationStore, gimp_translation_store,
 static void
 gimp_translation_store_class_init (GimpTranslationStoreClass *klass)
 {
-  GObjectClass           *object_class = G_OBJECT_CLASS (klass);
-  GimpLanguageStoreClass *store_class  = GIMP_LANGUAGE_STORE_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructed = gimp_translation_store_constructed;
+  object_class->constructed  = gimp_translation_store_constructed;
+  object_class->set_property = gimp_translation_store_set_property;
+  object_class->get_property = gimp_translation_store_get_property;
 
-  store_class->add          = gimp_translation_store_add;
+  g_object_class_install_property (object_class, PROP_MANUAL_L18N,
+                                   g_param_spec_boolean ("manual-l18n", NULL, NULL,
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT_ONLY));
+  g_object_class_install_property (object_class, PROP_EMPTY_LABEL,
+                                   g_param_spec_string ("empty-label", NULL, NULL,
+                                                         NULL,
+                                                         GIMP_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
 gimp_translation_store_init (GimpTranslationStore *store)
 {
-  store->map = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                      (GDestroyNotify) g_free,
-                                      (GDestroyNotify) g_free);
 }
 
 static void
 gimp_translation_store_constructed (GObject *object)
 {
+  GHashTable     *lang_list;
+  GHashTableIter  lang_iter;
+  gpointer        code;
+  gpointer        name;
+  GList          *sublist = NULL;
+
+  lang_list = gimp_language_store_parser_get_languages (TRUE);
+  g_return_if_fail (lang_list != NULL);
+
+  if (GIMP_TRANSLATION_STORE (object)->manual_l18n)
+    sublist = gimp_help_get_installed_languages ();
+
+  g_hash_table_iter_init (&lang_iter, lang_list);
+
+  if (GIMP_TRANSLATION_STORE (object)->manual_l18n &&
+      GIMP_TRANSLATION_STORE (object)->empty_label)
+    {
+      GIMP_LANGUAGE_STORE_GET_CLASS (object)->add (GIMP_LANGUAGE_STORE (object),
+                                                   GIMP_TRANSLATION_STORE (object)->empty_label,
+                                                   "");
+    }
+  while (g_hash_table_iter_next (&lang_iter, &code, &name))
+    {
+      if (! GIMP_TRANSLATION_STORE (object)->manual_l18n ||
+          g_list_find_custom (sublist, code, (GCompareFunc) g_strcmp0))
+        {
+          GIMP_LANGUAGE_STORE_GET_CLASS (object)->add (GIMP_LANGUAGE_STORE (object),
+                                                       name, code);
+        }
+    }
+  g_list_free_full (sublist, g_free);
+}
+
+static void
+gimp_translation_store_set_property (GObject      *object,
+                                     guint         property_id,
+                                     const GValue *value,
+                                     GParamSpec   *pspec)
+{
   GimpTranslationStore *store = GIMP_TRANSLATION_STORE (object);
-  gchar                *label;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
-
-  gimp_translation_store_populate (store);
-
-  /*  we don't need the map any longer  */
-  g_hash_table_unref (store->map);
-  store->map = NULL;
-
-  /*  add special entries for system locale and for "C"  */
-  GIMP_LANGUAGE_STORE_CLASS (parent_class)->add (GIMP_LANGUAGE_STORE (store),
-                                                 _("System Language"),
-                                                 NULL);
-  label = g_strdup_printf ("%s [%s]", _("English"), "en_US");
-  GIMP_LANGUAGE_STORE_CLASS (parent_class)->add (GIMP_LANGUAGE_STORE (store),
-                                                 label, "en_US");
-  g_free (label);
-}
-
-static const gchar *
-gimp_translation_store_map (GimpTranslationStore *store,
-                            const gchar          *locale)
-{
-  const gchar *lang;
-
-  /*  A locale directory name is typically of the form language[_territory]  */
-  lang = g_hash_table_lookup (store->map, locale);
-
-  if (! lang)
+  switch (property_id)
     {
-      /*  strip off the territory suffix  */
-      const gchar *delimiter = strchr (locale, '_');
+    case PROP_MANUAL_L18N:
+      store->manual_l18n = g_value_get_boolean (value);
+      break;
+    case PROP_EMPTY_LABEL:
+      store->empty_label = g_value_dup_string (value);
+      break;
 
-      if (delimiter)
-        {
-          gchar *copy;
-
-          copy = g_strndup (locale, delimiter - locale);
-          lang = g_hash_table_lookup (store->map, copy);
-          g_free (copy);
-        }
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
     }
-
-  return lang;
 }
 
 static void
-gimp_translation_store_populate (GimpTranslationStore *store)
+gimp_translation_store_get_property (GObject    *object,
+                                     guint       property_id,
+                                     GValue     *value,
+                                     GParamSpec *pspec)
 {
-  /*  FIXME: this should better be done asynchronously  */
-  GDir        *dir = g_dir_open (gimp_locale_directory (), 0, NULL);
-  const gchar *dirname;
+  GimpTranslationStore *store = GIMP_TRANSLATION_STORE (object);
 
-  if (! dir)
-    return;
-
-  while ((dirname = g_dir_read_name (dir)) != NULL)
+  switch (property_id)
     {
-      gchar *filename = g_build_filename (gimp_locale_directory (),
-                                          dirname,
-                                          "LC_MESSAGES",
-                                          GETTEXT_PACKAGE ".mo",
-                                          NULL);
-      if (g_file_test (filename, G_FILE_TEST_EXISTS))
-        {
-          const gchar *lang = gimp_translation_store_map (store, dirname);
+    case PROP_MANUAL_L18N:
+      g_value_set_boolean (value, store->manual_l18n);
+      break;
+    case PROP_EMPTY_LABEL:
+      g_value_set_string (value, store->empty_label);
+      break;
 
-          if (lang)
-            {
-              GimpLanguageStore *language_store = GIMP_LANGUAGE_STORE (store);
-              gchar             *label;
-
-              label = g_strdup_printf ("%s [%s]", lang, dirname);
-
-              GIMP_LANGUAGE_STORE_CLASS (parent_class)->add (language_store,
-                                                             label, dirname);
-              g_free (label);
-            }
-        }
-
-      g_free (filename);
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
     }
-
-  g_dir_close (dir);
-}
-
-static void
-gimp_translation_store_add (GimpLanguageStore *store,
-                            const gchar       *lang,
-                            const gchar       *code)
-{
-  g_hash_table_replace (GIMP_TRANSLATION_STORE (store)->map,
-                        g_strdup (code),
-                        g_strdup (lang));
 }
 
 GtkListStore *
-gimp_translation_store_new (void)
+gimp_translation_store_new (gboolean     manual_l18n,
+                            const gchar *empty_label)
 {
-  return g_object_new (GIMP_TYPE_TRANSLATION_STORE, NULL);
+  return g_object_new (GIMP_TYPE_TRANSLATION_STORE,
+                       "manual-l18n", manual_l18n,
+                       "empty-label", empty_label,
+                       NULL);
 }

@@ -19,8 +19,6 @@
 #define __GIMP_SMUDGE_H__
 
 
-#include "base/pixel-region.h"
-
 #include "gimpbrushcore.h"
 
 
@@ -39,9 +37,7 @@ struct _GimpSmudge
   GimpBrushCore  parent_instance;
 
   gboolean       initialized;
-  PixelRegion    accumPR;
-  guchar        *accum_data;
-  gint           accum_size;
+  GList         *accum_buffers;
 };
 
 struct _GimpSmudgeClass

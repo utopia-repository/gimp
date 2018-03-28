@@ -17,13 +17,14 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 
 #include "core-types.h"
 
-#include "gimp-utils.h"
+#include "gimp-memsize.h"
 #include "gimpitem.h"
 #include "gimpitemtree.h"
 #include "gimpitempropundo.h"
@@ -97,8 +98,7 @@ gimp_item_prop_undo_constructed (GObject *object)
   GimpItemPropUndo *item_prop_undo = GIMP_ITEM_PROP_UNDO (object);
   GimpItem         *item;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   item = GIMP_ITEM_UNDO (object)->item;
 
@@ -124,19 +124,31 @@ gimp_item_prop_undo_constructed (GObject *object)
       break;
 
     case GIMP_UNDO_ITEM_LINKED:
-      item_prop_undo->linked  = gimp_item_get_linked (item);
+      item_prop_undo->linked = gimp_item_get_linked (item);
+      break;
+
+    case GIMP_UNDO_ITEM_COLOR_TAG:
+      item_prop_undo->color_tag = gimp_item_get_color_tag (item);
+      break;
+
+    case GIMP_UNDO_ITEM_LOCK_CONTENT:
+      item_prop_undo->lock_content = gimp_item_get_lock_content (item);
+      break;
+
+    case GIMP_UNDO_ITEM_LOCK_POSITION:
+      item_prop_undo->lock_position = gimp_item_get_lock_position (item);
       break;
 
     case GIMP_UNDO_PARASITE_ATTACH:
     case GIMP_UNDO_PARASITE_REMOVE:
-      g_assert (item_prop_undo->parasite_name != NULL);
+      gimp_assert (item_prop_undo->parasite_name != NULL);
 
       item_prop_undo->parasite = gimp_parasite_copy
         (gimp_item_parasite_find (item, item_prop_undo->parasite_name));
       break;
 
     default:
-      g_assert_not_reached ();
+      g_return_if_reached ();
     }
 }
 
@@ -277,6 +289,36 @@ gimp_item_prop_undo_pop (GimpUndo            *undo,
       }
       break;
 
+    case GIMP_UNDO_ITEM_COLOR_TAG:
+      {
+        GimpColorTag color_tag;
+
+        color_tag = gimp_item_get_color_tag (item);
+        gimp_item_set_color_tag (item, item_prop_undo->color_tag, FALSE);
+        item_prop_undo->color_tag = color_tag;
+      }
+      break;
+
+    case GIMP_UNDO_ITEM_LOCK_CONTENT:
+      {
+        gboolean lock_content;
+
+        lock_content = gimp_item_get_lock_content (item);
+        gimp_item_set_lock_content (item, item_prop_undo->lock_content, FALSE);
+        item_prop_undo->lock_content = lock_content;
+      }
+      break;
+
+    case GIMP_UNDO_ITEM_LOCK_POSITION:
+      {
+        gboolean lock_position;
+
+        lock_position = gimp_item_get_lock_position (item);
+        gimp_item_set_lock_position (item, item_prop_undo->lock_position, FALSE);
+        item_prop_undo->lock_position = lock_position;
+      }
+      break;
+
     case GIMP_UNDO_PARASITE_ATTACH:
     case GIMP_UNDO_PARASITE_REMOVE:
       {
@@ -298,7 +340,7 @@ gimp_item_prop_undo_pop (GimpUndo            *undo,
       break;
 
     default:
-      g_assert_not_reached ();
+      g_return_if_reached ();
     }
 }
 
@@ -308,23 +350,9 @@ gimp_item_prop_undo_free (GimpUndo     *undo,
 {
   GimpItemPropUndo *item_prop_undo = GIMP_ITEM_PROP_UNDO (undo);
 
-  if (item_prop_undo->name)
-    {
-      g_free (item_prop_undo->name);
-      item_prop_undo->name = NULL;
-    }
-
-  if (item_prop_undo->parasite_name)
-    {
-      g_free (item_prop_undo->parasite_name);
-      item_prop_undo->parasite_name = NULL;
-    }
-
-  if (item_prop_undo->parasite)
-    {
-      gimp_parasite_free (item_prop_undo->parasite);
-      item_prop_undo->parasite = NULL;
-    }
+  g_clear_pointer (&item_prop_undo->name,          g_free);
+  g_clear_pointer (&item_prop_undo->parasite_name, g_free);
+  g_clear_pointer (&item_prop_undo->parasite,      gimp_parasite_free);
 
   GIMP_UNDO_CLASS (parent_class)->free (undo, undo_mode);
 }

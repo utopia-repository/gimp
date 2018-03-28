@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -35,7 +36,7 @@
 
 static const GimpActionEntry sample_points_actions[] =
 {
-  { "sample-points-popup", GIMP_STOCK_SAMPLE_POINT,
+  { "sample-points-popup", GIMP_ICON_SAMPLE_POINT,
     NC_("sample-points-action", "Sample Point Menu"), NULL, NULL, NULL,
     GIMP_HELP_SAMPLE_POINT_DIALOG }
 };

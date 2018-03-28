@@ -20,7 +20,8 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gio/gio.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpconfig/gimpconfig.h"

@@ -136,7 +136,7 @@ gimp_component_editor_init (GimpComponentEditor *editor)
   editor->eye_column = gtk_tree_view_column_new ();
   gtk_tree_view_append_column (editor->view, editor->eye_column);
 
-  editor->eye_cell = gimp_cell_renderer_toggle_new (GIMP_STOCK_VISIBLE);
+  editor->eye_cell = gimp_cell_renderer_toggle_new (GIMP_ICON_VISIBLE);
   gtk_tree_view_column_pack_start (editor->eye_column, editor->eye_cell,
                                    FALSE);
   gtk_tree_view_column_set_attributes (editor->eye_column, editor->eye_cell,
@@ -299,7 +299,7 @@ gimp_component_editor_set_view_size (GimpComponentEditor *editor,
   tree_style  = gtk_widget_get_style (tree_widget);
 
   icon_size = gimp_get_icon_size (tree_widget,
-                                  GIMP_STOCK_VISIBLE,
+                                  GIMP_ICON_VISIBLE,
                                   GTK_ICON_SIZE_BUTTON,
                                   view_size -
                                   2 * tree_style->xthickness,
@@ -338,28 +338,28 @@ gimp_component_editor_create_components (GimpComponentEditor *editor)
   GEnumClass      *enum_class;
   gint             i;
 
-  switch (gimp_image_base_type (image))
+  switch (gimp_image_get_base_type (image))
     {
     case GIMP_RGB:
       n_components  = 3;
-      components[0] = GIMP_RED_CHANNEL;
-      components[1] = GIMP_GREEN_CHANNEL;
-      components[2] = GIMP_BLUE_CHANNEL;
+      components[0] = GIMP_CHANNEL_RED;
+      components[1] = GIMP_CHANNEL_GREEN;
+      components[2] = GIMP_CHANNEL_BLUE;
       break;
 
     case GIMP_GRAY:
       n_components  = 1;
-      components[0] = GIMP_GRAY_CHANNEL;
+      components[0] = GIMP_CHANNEL_GRAY;
       break;
 
     case GIMP_INDEXED:
       n_components  = 1;
-      components[0] = GIMP_INDEXED_CHANNEL;
+      components[0] = GIMP_CHANNEL_INDEXED;
       break;
     }
 
   if (gimp_image_has_alpha (image))
-    components[n_components++] = GIMP_ALPHA_CHANNEL;
+    components[n_components++] = GIMP_CHANNEL_ALPHA;
 
   enum_class = g_type_class_ref (GIMP_TYPE_CHANNEL_TYPE);
 

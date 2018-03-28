@@ -704,12 +704,10 @@ vectors_parasite_list(PyGimpVectors *self)
 
     ret = PyTuple_New(num_parasites);
 
-    for (i = 0; i < num_parasites; i++) {
+    for (i = 0; i < num_parasites; i++)
         PyTuple_SetItem(ret, i, PyString_FromString(parasites[i]));
-        g_free(parasites[i]);
-    }
 
-    g_free(parasites);
+    g_strfreev(parasites);
     return ret;
 }
 

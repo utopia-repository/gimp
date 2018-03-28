@@ -5,10 +5,10 @@
 <title>GimpConfig-deserialize: GIMP Config Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="GIMP Config Library Reference Manual">
-<link rel="up" href="libgimpconfig.html" title="Part I. GIMP Config Library">
+<link rel="up" href="pt01.html" title="Part I. GIMP Config Library">
 <link rel="prev" href="libgimpconfig-GimpConfig.html" title="GimpConfig-iface">
 <link rel="next" href="libgimpconfig-GimpConfig-serialize.html" title="GimpConfig-serialize">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -18,7 +18,7 @@
                   <a href="#libgimpconfig-GimpConfig-deserialize.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<td><a accesskey="u" href="libgimpconfig.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="u" href="pt01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="libgimpconfig-GimpConfig.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="libgimpconfig-GimpConfig-serialize.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
@@ -41,7 +41,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimpconfig-GimpConfig-deserialize.html#gimp-config-deserialize-properties" title="gimp_config_deserialize_properties ()">gimp_config_deserialize_properties</a> <span class="c_punctuation">()</span>
@@ -49,7 +49,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GTokenType"><span class="returnvalue">GTokenType</span></a>
+<a href="../glib/glib-Lexical-Scanner.html#GTokenType"><span class="returnvalue">GTokenType</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimpconfig-GimpConfig-deserialize.html#gimp-config-deserialize-property" title="gimp_config_deserialize_property ()">gimp_config_deserialize_property</a> <span class="c_punctuation">()</span>
@@ -66,10 +66,10 @@
 <a name="libgimpconfig-GimpConfig-deserialize.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="gimp-config-deserialize-properties"></a><h3>gimp_config_deserialize_properties ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gimp_config_deserialize_properties (<em class="parameter"><code><a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig"><span class="type">GimpConfig</span></a> *config</code></em>,
-                                    <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
-                                    <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a> nest_level</code></em>);</pre>
+                                    <em class="parameter"><code><a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
+                                    <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> nest_level</code></em>);</pre>
 <p>This function uses the <em class="parameter"><code>scanner</code></em>
  to configure the properties of <em class="parameter"><code>config</code></em>
 .</p>
@@ -89,7 +89,7 @@ gimp_config_deserialize_properties (<em class="parameter"><code><a class="link" 
 </tr>
 <tr>
 <td class="parameter_name"><p>scanner</p></td>
-<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a>.</p></td>
+<td class="parameter_description"><p>a <a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -102,17 +102,17 @@ gimp_config_deserialize_properties (<em class="parameter"><code><a class="link" 
 </div>
 <div class="refsect3">
 <a name="gimp-config-deserialize-properties.returns"></a><h4>Returns</h4>
-<p> <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success, <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
 </div>
-<p class="since">Since: GIMP 2.4</p>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-config-deserialize-property"></a><h3>gimp_config_deserialize_property ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GTokenType"><span class="returnvalue">GTokenType</span></a>
+<pre class="programlisting"><a href="../glib/glib-Lexical-Scanner.html#GTokenType"><span class="returnvalue">GTokenType</span></a>
 gimp_config_deserialize_property (<em class="parameter"><code><a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig"><span class="type">GimpConfig</span></a> *config</code></em>,
-                                  <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
-                                  <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a> nest_level</code></em>);</pre>
+                                  <em class="parameter"><code><a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a> *scanner</code></em>,
+                                  <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> nest_level</code></em>);</pre>
 <p>This function deserializes a single property of <em class="parameter"><code>config</code></em>
 . You
 shouldn't need to call this function directly. If possible, use
@@ -133,7 +133,7 @@ shouldn't need to call this function directly. If possible, use
 </tr>
 <tr>
 <td class="parameter_name"><p>scanner</p></td>
-<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a>.</p></td>
+<td class="parameter_description"><p>a <a href="../glib/glib-Lexical-Scanner.html#GScanner"><span class="type">GScanner</span></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -146,11 +146,11 @@ shouldn't need to call this function directly. If possible, use
 </div>
 <div class="refsect3">
 <a name="gimp-config-deserialize-property.returns"></a><h4>Returns</h4>
-<p> <a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#G-TOKEN-RIGHT-PAREN:CAPS"><code class="literal">G_TOKEN_RIGHT_PAREN</code></a> on success, otherwise the
-expected <a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#GTokenType"><span class="type">GTokenType</span></a> or <a href="/usr/share/gtk-doc/html/glibglib-Lexical-Scanner.html#G-TOKEN-NONE:CAPS"><code class="literal">G_TOKEN_NONE</code></a> if the expected token was
+<p> <a href="../glib/glib-Lexical-Scanner.html#G-TOKEN-RIGHT-PAREN:CAPS"><code class="literal">G_TOKEN_RIGHT_PAREN</code></a> on success, otherwise the
+expected <a href="../glib/glib-Lexical-Scanner.html#GTokenType"><span class="type">GTokenType</span></a> or <a href="../glib/glib-Lexical-Scanner.html#G-TOKEN-NONE:CAPS"><code class="literal">G_TOKEN_NONE</code></a> if the expected token was
 found but couldn't be parsed.</p>
 </div>
-<p class="since">Since: GIMP 2.4</p>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
 </div>
 <div class="refsect1">
@@ -158,6 +158,6 @@ found but couldn't be parsed.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.27</div>
 </body>
 </html>

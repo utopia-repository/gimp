@@ -1,7 +1,7 @@
 /* LIBGIMP - The GIMP Library
  * Copyright (C) 1995-1997 Spencer Kimball and Peter Mattis
  *
- * Utitility functions for GimpConfig.
+ * Utility functions for GimpConfig.
  * Copyright (C) 2001-2003  Sven Neumann <sven@gimp.org>
  *
  * This library is free software: you can redistribute it and/or
@@ -21,7 +21,7 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gio/gio.h>
 
 #include "libgimpbase/gimpbase.h"
 
@@ -47,8 +47,8 @@ gimp_config_diff_property (GObject    *a,
                            GObject    *b,
                            GParamSpec *prop_spec)
 {
-  GValue    a_value = { 0, };
-  GValue    b_value = { 0, };
+  GValue    a_value = G_VALUE_INIT;
+  GValue    b_value = G_VALUE_INIT;
   gboolean  retval  = FALSE;
 
   g_value_init (&a_value, prop_spec->value_type);
@@ -160,7 +160,7 @@ gimp_config_diff_other (GObject     *a,
  *
  * Return value: a GList of differing GParamSpecs.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 GList *
 gimp_config_diff (GObject     *a,
@@ -198,7 +198,7 @@ gimp_config_diff (GObject     *a,
  *
  * Return value: %TRUE if @dest was modified, %FALSE otherwise
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_config_sync (GObject     *src,
@@ -231,7 +231,7 @@ gimp_config_sync (GObject     *src,
 
       if (! (prop_spec->flags & G_PARAM_CONSTRUCT_ONLY))
         {
-          GValue value = { 0, };
+          GValue value = G_VALUE_INIT;
 
           g_value_init (&value, prop_spec->value_type);
 
@@ -259,14 +259,13 @@ gimp_config_sync (GObject     *src,
  *
  * If you want to reset a #GimpConfig object, please use gimp_config_reset().
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 void
 gimp_config_reset_properties (GObject *object)
 {
   GObjectClass  *klass;
   GParamSpec   **property_specs;
-  GValue         value = { 0, };
   guint          n_property_specs;
   guint          i;
 
@@ -283,6 +282,7 @@ gimp_config_reset_properties (GObject *object)
   for (i = 0; i < n_property_specs; i++)
     {
       GParamSpec *prop_spec;
+      GValue      value = G_VALUE_INIT;
 
       prop_spec = property_specs[i];
 
@@ -307,12 +307,22 @@ gimp_config_reset_properties (GObject *object)
             }
           else
             {
-              g_value_init (&value, prop_spec->value_type);
-              g_param_value_set_default (prop_spec, &value);
+              GValue default_value = G_VALUE_INIT;
 
-              g_object_set_property (object, prop_spec->name, &value);
+              g_value_init (&default_value, prop_spec->value_type);
+              g_value_init (&value,         prop_spec->value_type);
+
+              g_param_value_set_default (prop_spec, &default_value);
+              g_object_get_property (object, prop_spec->name, &value);
+
+              if (g_param_values_cmp (prop_spec, &default_value, &value))
+                {
+                  g_object_set_property (object, prop_spec->name,
+                                         &default_value);
+                }
 
               g_value_unset (&value);
+              g_value_unset (&default_value);
             }
         }
     }
@@ -331,7 +341,7 @@ gimp_config_reset_properties (GObject *object)
  * Resets the property named @property_name to its default value.  The
  * property must be writable and must not be marked as "construct-only".
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 void
 gimp_config_reset_property (GObject     *object,
@@ -353,7 +363,7 @@ gimp_config_reset_property (GObject     *object,
   if ((prop_spec->flags & G_PARAM_WRITABLE) &&
       ! (prop_spec->flags & G_PARAM_CONSTRUCT_ONLY))
     {
-      GValue  value = { 0, };
+      GValue  value = G_VALUE_INIT;
 
       if (G_IS_PARAM_SPEC_OBJECT (prop_spec))
         {
@@ -398,7 +408,7 @@ gimp_config_reset_property (GObject     *object,
  * leaves non-ASCII characters intact and thus preserves UTF-8
  * strings. Only control characters and quotes are being escaped.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 void
 gimp_config_string_append_escaped (GString     *string,

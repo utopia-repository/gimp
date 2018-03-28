@@ -35,7 +35,7 @@
  * @short_description: A #GtkComboBox to select a #GimpUnit.
  * @see_also: #GimpUnit, #GimpUnitStore
  *
- * #GimpUnitComboBox allows to select units stored in a #GimpUnitStore.
+ * #GimpUnitComboBox selects units stored in a #GimpUnitStore.
  * It replaces the deprecated #GimpUnitMenu.
  **/
 
@@ -60,7 +60,8 @@ gimp_unit_combo_box_class_init (GimpUnitComboBoxClass *klass)
 
   gtk_widget_class_install_style_property (widget_class,
                                            g_param_spec_double ("label-scale",
-                                                                NULL, NULL,
+                                                                "Label Scale",
+                                                                "The scale for the text cell renderer",
                                                                 0.0,
                                                                 G_MAXDOUBLE,
                                                                 1.0,

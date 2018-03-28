@@ -145,7 +145,7 @@ void query (void)
                           "Tim Newsome",
                           "Tim Newsome, Sven Neumann, Tom Rathborne, TC",
                           "1997 - 2000",
-                          N_("_Grid..."),
+                          N_("_Grid (legacy)..."),
                           "RGB*, GRAY*, INDEXED*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
@@ -393,10 +393,16 @@ grid (gint32        image_ID,
     }
   else
     {
-      gimp_drawable_mask_bounds (drawable->drawable_id, &sx1, &sy1, &sx2, &sy2);
+      gint w, h;
 
-      gimp_pixel_rgn_init (&destPR,
-                           drawable, 0, 0, sx2 - sx1, sy2 - sy1, TRUE, TRUE);
+      if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                          &sx1, &sy1, &w, &h))
+        return;
+
+      sx2 = sx1 + w;
+      sy2 = sy1 + h;
+
+      gimp_pixel_rgn_init (&destPR, drawable, 0, 0, w, h, TRUE, TRUE);
     }
 
   gimp_pixel_rgn_init (&srcPR,
@@ -612,22 +618,23 @@ static gint
 dialog (gint32        image_ID,
         GimpDrawable *drawable)
 {
-  GtkWidget    *dlg;
-  GtkWidget    *main_vbox;
-  GtkWidget    *vbox;
-  GtkSizeGroup *group;
-  GtkWidget    *label;
-  GtkWidget    *preview;
-  GtkWidget    *button;
-  GtkWidget    *width;
-  GtkWidget    *space;
-  GtkWidget    *offset;
-  GtkWidget    *chain_button;
-  GtkWidget    *table;
-  GimpUnit      unit;
-  gdouble       xres;
-  gdouble       yres;
-  gboolean      run;
+  GimpColorConfig *config;
+  GtkWidget       *dlg;
+  GtkWidget       *main_vbox;
+  GtkWidget       *vbox;
+  GtkSizeGroup    *group;
+  GtkWidget       *label;
+  GtkWidget       *preview;
+  GtkWidget       *button;
+  GtkWidget      *width;
+  GtkWidget      *space;
+  GtkWidget      *offset;
+  GtkWidget      *chain_button;
+  GtkWidget      *table;
+  GimpUnit        unit;
+  gdouble         xres;
+  gdouble         yres;
+  gboolean        run;
 
   g_return_val_if_fail (main_dialog == NULL, FALSE);
 
@@ -637,8 +644,8 @@ dialog (gint32        image_ID,
                                        NULL, 0,
                                        gimp_standard_help_func, PLUG_IN_PROC,
 
-                                       GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                       GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                                       _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                       _("_OK"),     GTK_RESPONSE_OK,
 
                                        NULL);
 
@@ -659,7 +666,7 @@ dialog (gint32        image_ID,
                       main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_drawable_preview_new (drawable, NULL);
+  preview = gimp_drawable_preview_new_from_drawable_id (drawable->drawable_id);
   gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
 
@@ -903,6 +910,10 @@ dialog (gint32        image_ID,
   gtk_table_attach_defaults (GTK_TABLE (table), hcolor_button, 0, 1, 1, 2);
   gtk_widget_show (hcolor_button);
 
+  config = gimp_get_color_configuration ();
+  gimp_color_button_set_color_config (GIMP_COLOR_BUTTON (hcolor_button),
+                                      config);
+
   g_signal_connect (hcolor_button, "color-changed",
                     G_CALLBACK (gimp_color_button_get_color),
                     &grid_cfg.hcolor);
@@ -921,6 +932,9 @@ dialog (gint32        image_ID,
   gtk_table_attach_defaults (GTK_TABLE (table), vcolor_button, 1, 2, 1, 2);
   gtk_widget_show (vcolor_button);
 
+  gimp_color_button_set_color_config (GIMP_COLOR_BUTTON (vcolor_button),
+                                      config);
+
   g_signal_connect (vcolor_button, "color-changed",
                     G_CALLBACK (gimp_color_button_get_color),
                     &grid_cfg.vcolor);
@@ -938,6 +952,10 @@ dialog (gint32        image_ID,
   gimp_color_button_set_update (GIMP_COLOR_BUTTON (button), TRUE);
   gtk_table_attach_defaults (GTK_TABLE (table), button, 2, 3, 1, 2);
   gtk_widget_show (button);
+
+  gimp_color_button_set_color_config (GIMP_COLOR_BUTTON (button),
+                                      config);
+  g_object_unref (config);
 
   g_signal_connect (button, "color-changed",
                     G_CALLBACK (gimp_color_button_get_color),

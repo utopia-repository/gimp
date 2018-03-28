@@ -20,17 +20,19 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
 
+#include "config/gimpguiconfig.h"
+
 #include "core/gimp.h"
 #include "core/gimpcontext.h"
 #include "core/gimptoolinfo.h"
 
-#include "gimpdialogfactory.h"
 #include "gimptoolbox.h"
 #include "gimptoolpalette.h"
 #include "gimpuimanager.h"
@@ -62,10 +64,14 @@ struct _GimpToolPalettePrivate
                                                     GimpToolPalettePrivate)
 
 
+static void     gimp_tool_palette_dispose             (GObject        *object);
+
 static void     gimp_tool_palette_size_allocate       (GtkWidget       *widget,
                                                        GtkAllocation   *allocation);
 static void     gimp_tool_palette_style_set           (GtkWidget       *widget,
                                                        GtkStyle        *previous_style);
+static void     gimp_tool_palette_hierarchy_changed   (GtkWidget       *widget,
+                                                       GtkWidget       *previous_toplevel);
 
 static void     gimp_tool_palette_tool_changed        (GimpContext     *context,
                                                        GimpToolInfo    *tool_info,
@@ -74,15 +80,14 @@ static void     gimp_tool_palette_tool_reorder        (GimpContainer   *containe
                                                        GimpToolInfo    *tool_info,
                                                        gint             index,
                                                        GimpToolPalette *palette);
-static void     gimp_tool_palette_tool_visible_notify (GimpToolInfo    *tool_info,
-                                                       GParamSpec      *pspec,
-                                                       GtkToolItem     *item);
 static void     gimp_tool_palette_tool_button_toggled (GtkWidget       *widget,
                                                        GimpToolPalette *palette);
 static gboolean gimp_tool_palette_tool_button_press   (GtkWidget       *widget,
                                                        GdkEventButton  *bevent,
                                                        GimpToolPalette *palette);
-static void     gimp_tool_palette_initialize_tools    (GimpToolPalette *palette);
+
+static void     gimp_tool_palette_config_size_changed (GimpGuiConfig   *config,
+                                                       GimpToolPalette *palette);
 
 
 G_DEFINE_TYPE (GimpToolPalette, gimp_tool_palette, GTK_TYPE_TOOL_PALETTE)
@@ -93,10 +98,14 @@ G_DEFINE_TYPE (GimpToolPalette, gimp_tool_palette, GTK_TYPE_TOOL_PALETTE)
 static void
 gimp_tool_palette_class_init (GimpToolPaletteClass *klass)
 {
+  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  widget_class->size_allocate         = gimp_tool_palette_size_allocate;
-  widget_class->style_set             = gimp_tool_palette_style_set;
+  object_class->dispose           = gimp_tool_palette_dispose;
+
+  widget_class->size_allocate     = gimp_tool_palette_size_allocate;
+  widget_class->style_set         = gimp_tool_palette_style_set;
+  widget_class->hierarchy_changed = gimp_tool_palette_hierarchy_changed;
 
   gtk_widget_class_install_style_property (widget_class,
                                            g_param_spec_enum ("tool-icon-size",
@@ -119,6 +128,24 @@ static void
 gimp_tool_palette_init (GimpToolPalette *palette)
 {
   gtk_tool_palette_set_style (GTK_TOOL_PALETTE (palette), GTK_TOOLBAR_ICONS);
+}
+
+static void
+gimp_tool_palette_dispose (GObject *object)
+{
+  GimpToolPalettePrivate *private = GET_PRIVATE (object);
+
+  if (private->toolbox)
+    {
+      GimpContext *context = gimp_toolbox_get_context (private->toolbox);
+
+      if (context)
+        g_signal_handlers_disconnect_by_func (context->gimp->config,
+                                              G_CALLBACK (gimp_tool_palette_config_size_changed),
+                                              object);
+    }
+
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
@@ -174,7 +201,6 @@ gimp_tool_palette_style_set (GtkWidget *widget,
 {
   GimpToolPalettePrivate *private = GET_PRIVATE (widget);
   Gimp                   *gimp;
-  GtkIconSize             tool_icon_size;
   GtkReliefStyle          relief;
   GList                  *list;
 
@@ -186,12 +212,11 @@ gimp_tool_palette_style_set (GtkWidget *widget,
   gimp = gimp_toolbox_get_context (private->toolbox)->gimp;
 
   gtk_widget_style_get (widget,
-                        "tool-icon-size", &tool_icon_size,
                         "button-relief",  &relief,
                         NULL);
 
-  gtk_tool_palette_set_icon_size (GTK_TOOL_PALETTE (widget), tool_icon_size);
-
+  gimp_tool_palette_config_size_changed (GIMP_GUI_CONFIG (gimp->config),
+                                         GIMP_TOOL_PALETTE (widget));
   for (list = gimp_get_tool_info_iter (gimp);
        list;
        list = g_list_next (list))
@@ -213,6 +238,62 @@ gimp_tool_palette_style_set (GtkWidget *widget,
   gimp_dock_invalidate_geometry (GIMP_DOCK (private->toolbox));
 }
 
+static void
+gimp_tool_palette_hierarchy_changed (GtkWidget *widget,
+                                     GtkWidget *previous_toplevel)
+{
+  GimpToolPalettePrivate *private = GET_PRIVATE (widget);
+  GimpUIManager          *ui_manager;
+
+  ui_manager = gimp_dock_get_ui_manager (GIMP_DOCK (private->toolbox));
+
+  if (ui_manager)
+    {
+      GimpContext *context = gimp_toolbox_get_context (private->toolbox);
+      GList       *list;
+
+      for (list = gimp_get_tool_info_iter (context->gimp);
+           list;
+           list = g_list_next (list))
+        {
+          GimpToolInfo  *tool_info = list->data;
+          GtkToolItem   *item;
+          GtkAction     *action;
+          const gchar   *identifier;
+          gchar         *tmp;
+          gchar         *name;
+
+          item = g_object_get_data (G_OBJECT (tool_info), TOOL_BUTTON_DATA_KEY);
+
+          identifier = gimp_object_get_name (tool_info);
+
+          tmp = g_strndup (identifier + strlen ("gimp-"),
+                           strlen (identifier) - strlen ("gimp--tool"));
+          name = g_strdup_printf ("tools-%s", tmp);
+          g_free (tmp);
+
+          action = gimp_ui_manager_find_action (ui_manager, "tools", name);
+          g_free (name);
+
+          if (action)
+            gimp_widget_set_accel_help (GTK_WIDGET (item), action);
+          else
+            gimp_help_set_help_data (GTK_WIDGET (item),
+                                     tool_info->tooltip, tool_info->help_id);
+
+          /* Make sure the toolbox buttons won't grab focus, which has
+           * nearly no practical use, and prevents various actions until
+           * you click back in canvas.
+           */
+          gtk_widget_set_can_focus (gtk_bin_get_child (GTK_BIN (item)),
+                                    FALSE);
+        }
+    }
+}
+
+
+/*  public functions  */
+
 GtkWidget *
 gimp_tool_palette_new (void)
 {
@@ -225,22 +306,65 @@ gimp_tool_palette_set_toolbox (GimpToolPalette *palette,
 {
   GimpToolPalettePrivate *private;
   GimpContext            *context;
+  GtkWidget              *group;
+  GSList                 *item_group = NULL;
+  GList                  *list;
 
   g_return_if_fail (GIMP_IS_TOOL_PALETTE (palette));
   g_return_if_fail (GIMP_IS_TOOLBOX (toolbox));
 
   private = GET_PRIVATE (palette);
 
+  if (private->toolbox)
+    {
+      context = gimp_toolbox_get_context (private->toolbox);
+      g_signal_handlers_disconnect_by_func (GIMP_GUI_CONFIG (context->gimp->config),
+                                            G_CALLBACK (gimp_tool_palette_config_size_changed),
+                                            palette);
+    }
   private->toolbox = toolbox;
-  context          = gimp_toolbox_get_context (toolbox);
 
-  /**
-   * We must wait until GimpToolbox has a parent so we can use
-   * GimpDock::get_ui_manager() and ::get_dialog_factory().
-   */
-  g_signal_connect_swapped (private->toolbox, "parent-set",
-                            G_CALLBACK (gimp_tool_palette_initialize_tools),
-                            palette);
+  context = gimp_toolbox_get_context (toolbox);
+
+  group = gtk_tool_item_group_new (_("Tools"));
+  gtk_tool_item_group_set_label_widget (GTK_TOOL_ITEM_GROUP (group), NULL);
+  gtk_container_add (GTK_CONTAINER (palette), group);
+  gtk_widget_show (group);
+
+  for (list = gimp_get_tool_info_iter (context->gimp);
+       list;
+       list = g_list_next (list))
+    {
+      GimpToolInfo  *tool_info = list->data;
+      GtkToolItem   *item;
+      const gchar   *icon_name;
+
+      icon_name = gimp_viewable_get_icon_name (GIMP_VIEWABLE (tool_info));
+
+      item = gtk_radio_tool_button_new (item_group);
+      gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (item), icon_name);
+      item_group = gtk_radio_tool_button_get_group (GTK_RADIO_TOOL_BUTTON (item));
+      gtk_tool_item_group_insert (GTK_TOOL_ITEM_GROUP (group), item, -1);
+      gtk_widget_show (GTK_WIDGET (item));
+
+      g_object_bind_property (tool_info, "visible",
+                              item,      "visible-horizontal",
+                              G_BINDING_SYNC_CREATE);
+      g_object_bind_property (tool_info, "visible",
+                              item,      "visible-vertical",
+                              G_BINDING_SYNC_CREATE);
+
+      g_object_set_data (G_OBJECT (tool_info), TOOL_BUTTON_DATA_KEY, item);
+      g_object_set_data (G_OBJECT (item)  ,    TOOL_INFO_DATA_KEY,   tool_info);
+
+      g_signal_connect (item, "toggled",
+                        G_CALLBACK (gimp_tool_palette_tool_button_toggled),
+                        palette);
+
+      g_signal_connect (gtk_bin_get_child (GTK_BIN (item)), "button-press-event",
+                        G_CALLBACK (gimp_tool_palette_tool_button_press),
+                        palette);
+    }
 
   g_signal_connect_object (context->gimp->tool_info_list, "reorder",
                            G_CALLBACK (gimp_tool_palette_tool_reorder),
@@ -250,7 +374,17 @@ gimp_tool_palette_set_toolbox (GimpToolPalette *palette,
                            G_CALLBACK (gimp_tool_palette_tool_changed),
                            palette,
                            0);
+  gimp_tool_palette_tool_changed (context,
+                                  gimp_context_get_tool (context),
+                                  palette);
 
+  /* Update the toolbox icon size on config change. */
+  g_signal_connect (GIMP_GUI_CONFIG (context->gimp->config),
+                    "size-changed",
+                    G_CALLBACK (gimp_tool_palette_config_size_changed),
+                    palette);
+  gimp_tool_palette_config_size_changed (GIMP_GUI_CONFIG (context->gimp->config),
+                                         palette);
 }
 
 gboolean
@@ -335,15 +469,6 @@ gimp_tool_palette_tool_reorder (GimpContainer   *container,
 }
 
 static void
-gimp_tool_palette_tool_visible_notify (GimpToolInfo *tool_info,
-                                       GParamSpec   *pspec,
-                                       GtkToolItem  *item)
-{
-  gtk_tool_item_set_visible_horizontal (item, tool_info->visible);
-  gtk_tool_item_set_visible_vertical   (item, tool_info->visible);
-}
-
-static void
 gimp_tool_palette_tool_button_toggled (GtkWidget       *widget,
                                        GimpToolPalette *palette)
 {
@@ -372,6 +497,7 @@ gimp_tool_palette_tool_button_press (GtkWidget       *widget,
                                                  context->gimp,
                                                  gimp_dock_get_dialog_factory (dock),
                                                  gtk_widget_get_screen (widget),
+                                                 gimp_widget_get_monitor (widget),
                                                  "gimp-tool-options");
     }
 
@@ -379,88 +505,36 @@ gimp_tool_palette_tool_button_press (GtkWidget       *widget,
 }
 
 static void
-gimp_tool_palette_initialize_tools (GimpToolPalette *palette)
+gimp_tool_palette_config_size_changed (GimpGuiConfig   *config,
+                                       GimpToolPalette *palette)
 {
-  GimpContext            *context;
-  GimpToolInfo           *active_tool;
-  GList                  *list;
-  GSList                 *item_group = NULL;
-  GimpToolPalettePrivate *private    = GET_PRIVATE(palette);
-  GtkWidget              *group;
+  GimpIconSize size;
+  GtkIconSize  tool_icon_size;
 
-  group = gtk_tool_item_group_new (_("Tools"));
-  gtk_tool_item_group_set_label_widget (GTK_TOOL_ITEM_GROUP (group), NULL);
-  gtk_container_add (GTK_CONTAINER (palette), group);
-  gtk_widget_show (group);
-
-  context     = gimp_toolbox_get_context (private->toolbox);
-  active_tool = gimp_context_get_tool (context);
-
-  for (list = gimp_get_tool_info_iter (context->gimp);
-       list;
-       list = g_list_next (list))
+  size = gimp_gui_config_detect_icon_size (config);
+  /* Match GimpIconSize with GtkIconSize for the toolbox icons. */
+  switch (size)
     {
-      GimpToolInfo  *tool_info = list->data;
-      GtkToolItem   *item;
-      const gchar   *stock_id;
-      GimpUIManager *ui_manager;
-
-      stock_id = gimp_viewable_get_stock_id (GIMP_VIEWABLE (tool_info));
-
-      item = gtk_radio_tool_button_new_from_stock (item_group, stock_id);
-      item_group = gtk_radio_tool_button_get_group (GTK_RADIO_TOOL_BUTTON (item));
-      gtk_tool_item_group_insert (GTK_TOOL_ITEM_GROUP (group), item, -1);
-      gtk_widget_show (GTK_WIDGET (item));
-
-      gtk_tool_item_set_visible_horizontal (item, tool_info->visible);
-      gtk_tool_item_set_visible_vertical   (item, tool_info->visible);
-
-      g_signal_connect_object (tool_info, "notify::visible",
-                               G_CALLBACK (gimp_tool_palette_tool_visible_notify),
-                               item, 0);
-
-      g_object_set_data (G_OBJECT (tool_info), TOOL_BUTTON_DATA_KEY, item);
-      g_object_set_data (G_OBJECT (item)  ,    TOOL_INFO_DATA_KEY,   tool_info);
-
-      if (tool_info == active_tool)
-        gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (item), TRUE);
-
-      g_signal_connect (item, "toggled",
-                        G_CALLBACK (gimp_tool_palette_tool_button_toggled),
-                        palette);
-
-      g_signal_connect (gtk_bin_get_child (GTK_BIN (item)), "button-press-event",
-                        G_CALLBACK (gimp_tool_palette_tool_button_press),
-                        palette);
-
-      ui_manager = gimp_dock_get_ui_manager (GIMP_DOCK (private->toolbox));
-      if (ui_manager)
-        {
-          GtkAction   *action     = NULL;
-          const gchar *identifier = NULL;
-          gchar       *tmp        = NULL;
-          gchar       *name       = NULL;
-
-          identifier = gimp_object_get_name (tool_info);
-
-          tmp = g_strndup (identifier + strlen ("gimp-"),
-                           strlen (identifier) - strlen ("gimp--tool"));
-          name = g_strdup_printf ("tools-%s", tmp);
-          g_free (tmp);
-
-          action = gimp_ui_manager_find_action (ui_manager, "tools", name);
-          g_free (name);
-
-          if (action)
-            gimp_widget_set_accel_help (GTK_WIDGET (item), action);
-          else
-            gimp_help_set_help_data (GTK_WIDGET (item),
-                                     tool_info->help, tool_info->help_id);
-        }
+    case GIMP_ICON_SIZE_SMALL:
+      tool_icon_size = GTK_ICON_SIZE_SMALL_TOOLBAR;
+      break;
+    case GIMP_ICON_SIZE_MEDIUM:
+      tool_icon_size = GTK_ICON_SIZE_LARGE_TOOLBAR;
+      break;
+    case GIMP_ICON_SIZE_LARGE:
+      tool_icon_size = GTK_ICON_SIZE_DND;
+      break;
+    case GIMP_ICON_SIZE_HUGE:
+      tool_icon_size = GTK_ICON_SIZE_DIALOG;
+      break;
+    default:
+      /* GIMP_ICON_SIZE_DEFAULT:
+       * let's use the size set by the theme. */
+      gtk_widget_style_get (GTK_WIDGET (palette),
+                            "tool-icon-size", &tool_icon_size,
+                            NULL);
+      break;
     }
 
-  /* We only need to initialize tools once */
-  g_signal_handlers_disconnect_by_func (private->toolbox,
-                                        gimp_tool_palette_initialize_tools,
-                                        palette);
+  gtk_tool_palette_set_icon_size (GTK_TOOL_PALETTE (palette), tool_icon_size);
 }

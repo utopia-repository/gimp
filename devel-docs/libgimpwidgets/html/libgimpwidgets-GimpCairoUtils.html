@@ -5,10 +5,10 @@
 <title>GimpCairo-utils: GIMP Widgets Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
-<link rel="up" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities">
-<link rel="prev" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities">
+<link rel="up" href="libgimpwidgets-utils.html" title="Part VI. GIMP Widgets Utilities">
+<link rel="prev" href="libgimpwidgets-utils.html" title="Part VI. GIMP Widgets Utilities">
 <link rel="next" href="libgimpwidgets-GimpHelpUI.html" title="GimpHelpUI">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -41,7 +41,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimpwidgets-GimpCairoUtils.html#gimp-cairo-set-focus-line-pattern" title="gimp_cairo_set_focus_line_pattern ()">gimp_cairo_set_focus_line_pattern</a> <span class="c_punctuation">()</span>
@@ -67,9 +67,9 @@ GIMP data types.</p>
 <a name="libgimpwidgets-GimpCairoUtils.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="gimp-cairo-set-focus-line-pattern"></a><h3>gimp_cairo_set_focus_line_pattern ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gimp_cairo_set_focus_line_pattern (<em class="parameter"><code><span class="type">cairo_t</span> *cr</code></em>,
-                                   <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk2GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *widget</code></em>);</pre>
+                                   <em class="parameter"><code><a href="../gtk2/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *widget</code></em>);</pre>
 <p>Sets color and dash pattern for stroking a focus line on the given
 <em class="parameter"><code>cr</code></em>
 . The line pattern is taken from <em class="parameter"><code>widget</code></em>
@@ -98,16 +98,16 @@ gimp_cairo_set_focus_line_pattern (<em class="parameter"><code><span class="type
 </div>
 <div class="refsect3">
 <a name="gimp-cairo-set-focus-line-pattern.returns"></a><h4>Returns</h4>
-<p> <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the widget style has a focus line pattern,
-<a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise</p>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the widget style has a focus line pattern,
+<a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise</p>
 </div>
-<p class="since">Since: GIMP 2.6</p>
+<p class="since">Since: <a class="link" href="api-index-2-6.html#api-index-2.6">2.6</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-cairo-surface-create-from-pixbuf"></a><h3>gimp_cairo_surface_create_from_pixbuf ()</h3>
 <pre class="programlisting"><span class="returnvalue">cairo_surface_t</span> *
-gimp_cairo_surface_create_from_pixbuf (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gdk-pixbufgdk-pixbuf-The-GdkPixbuf-Structure.html#GdkPixbuf-struct"><span class="type">GdkPixbuf</span></a> *pixbuf</code></em>);</pre>
+gimp_cairo_surface_create_from_pixbuf (<em class="parameter"><code><a href="../gdk-pixbuf/gdk-pixbuf-The-GdkPixbuf-Structure.html#GdkPixbuf-struct"><span class="type">GdkPixbuf</span></a> *pixbuf</code></em>);</pre>
 <p>Create a Cairo image surface from a GdkPixbuf.</p>
 <p>You should avoid calling this function as there are probably more
 efficient ways of achieving the result you are looking for.</p>
@@ -121,7 +121,7 @@ efficient ways of achieving the result you are looking for.</p>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>pixbuf</p></td>
-<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gdk-pixbufgdk-pixbuf-The-GdkPixbuf-Structure.html#GdkPixbuf-struct"><span class="type">GdkPixbuf</span></a></p></td>
+<td class="parameter_description"><p>a <a href="../gdk-pixbuf/gdk-pixbuf-The-GdkPixbuf-Structure.html#GdkPixbuf-struct"><span class="type">GdkPixbuf</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
@@ -130,7 +130,7 @@ efficient ways of achieving the result you are looking for.</p>
 <a name="gimp-cairo-surface-create-from-pixbuf.returns"></a><h4>Returns</h4>
 <p> a <span class="type">cairo_surface_t</span>.</p>
 </div>
-<p class="since">Since: GIMP 2.6</p>
+<p class="since">Since: <a class="link" href="api-index-2-6.html#api-index-2.6">2.6</a></p>
 </div>
 </div>
 <div class="refsect1">
@@ -138,6 +138,6 @@ efficient ways of achieving the result you are looking for.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.27</div>
 </body>
 </html>

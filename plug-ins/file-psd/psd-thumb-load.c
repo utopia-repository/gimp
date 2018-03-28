@@ -49,7 +49,7 @@ static gint    read_image_resource_block  (PSDimage     *img_a,
 static gint32  create_gimp_image          (PSDimage     *img_a,
                                            const gchar  *filename);
 
-static gint    add_image_resources        (const gint32  image_id,
+static gint    add_image_resources        (gint32        image_id,
                                            PSDimage     *img_a,
                                            FILE         *f,
                                            GError      **error);
@@ -71,6 +71,9 @@ load_thumbnail_image (const gchar  *filename,
   if (g_stat (filename, &st) == -1)
     return -1;
 
+  gimp_progress_init_printf (_("Opening thumbnail for '%s'"),
+                             gimp_filename_to_utf8 (filename));
+
   IFDBG(1) g_debug ("Open file %s", gimp_filename_to_utf8 (filename));
   f = g_fopen (filename, "rb");
   if (f == NULL)
@@ -81,17 +84,14 @@ load_thumbnail_image (const gchar  *filename,
       return -1;
     }
 
-  gimp_progress_init_printf (_("Opening thumbnail for '%s'"),
-                             gimp_filename_to_utf8 (filename));
-
   /* ----- Read the PSD file Header block ----- */
   IFDBG(2) g_debug ("Read header block");
   if (read_header_block (&img_a, f, &error) < 0)
     goto load_error;
   gimp_progress_update (0.2);
 
-  /* ----- Read the PSD file Colour Mode block ----- */
-  IFDBG(2) g_debug ("Read colour mode block");
+  /* ----- Read the PSD file Color Mode block ----- */
+  IFDBG(2) g_debug ("Read color mode block");
   if (read_color_mode_block (&img_a, f, &error) < 0)
     goto load_error;
   gimp_progress_update (0.4);
@@ -273,10 +273,10 @@ create_gimp_image (PSDimage    *img_a,
 }
 
 static gint
-add_image_resources (const gint32   image_id,
-                     PSDimage      *img_a,
-                     FILE          *f,
-                     GError       **error)
+add_image_resources (gint32     image_id,
+                     PSDimage  *img_a,
+                     FILE      *f,
+                     GError   **error)
 {
   PSDimageres   res_a;
   gint          status;

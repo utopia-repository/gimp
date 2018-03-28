@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -24,17 +25,13 @@
 
 #include "paint-types.h"
 
-#include "base/gimplut.h"
-#include "base/pixel-region.h"
-#include "base/temp-buf.h"
-
-#include "paint-funcs/paint-funcs.h"
+#include "gegl/gimp-gegl-loops.h"
 
 #include "core/gimp.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpdynamics.h"
-#include "core/gimpdynamicsoutput.h"
 #include "core/gimpimage.h"
+#include "core/gimpsymmetry.h"
 
 #include "gimpdodgeburn.h"
 #include "gimpdodgeburnoptions.h"
@@ -42,37 +39,16 @@
 #include "gimp-intl.h"
 
 
-static void   gimp_dodge_burn_finalize   (GObject            *object);
-
-static void   gimp_dodge_burn_paint      (GimpPaintCore      *paint_core,
-                                          GimpDrawable       *drawable,
-                                          GimpPaintOptions   *paint_options,
-                                          const GimpCoords   *coords,
-                                          GimpPaintState      paint_state,
-                                          guint32             time);
-static void   gimp_dodge_burn_motion     (GimpPaintCore      *paint_core,
-                                          GimpDrawable       *drawable,
-                                          GimpPaintOptions   *paint_options,
-                                          const GimpCoords   *coords);
-
-static void   gimp_dodge_burn_make_luts  (GimpDodgeBurn      *dodgeburn,
-                                          gdouble             db_exposure,
-                                          GimpDodgeBurnType   type,
-                                          GimpTransferMode    mode,
-                                          GimpDrawable       *drawable);
-
-static gfloat gimp_dodge_burn_highlights_lut_func (gpointer   user_data,
-                                                   gint       nchannels,
-                                                   gint       channel,
-                                                   gfloat     value);
-static gfloat gimp_dodge_burn_midtones_lut_func   (gpointer   user_data,
-                                                   gint       nchannels,
-                                                   gint       channel,
-                                                   gfloat     value);
-static gfloat gimp_dodge_burn_shadows_lut_func    (gpointer   user_data,
-                                                   gint       nchannels,
-                                                   gint       channel,
-                                                   gfloat     value);
+static void   gimp_dodge_burn_paint  (GimpPaintCore    *paint_core,
+                                      GimpDrawable     *drawable,
+                                      GimpPaintOptions *paint_options,
+                                      GimpSymmetry     *sym,
+                                      GimpPaintState    paint_state,
+                                      guint32           time);
+static void   gimp_dodge_burn_motion (GimpPaintCore    *paint_core,
+                                      GimpDrawable     *drawable,
+                                      GimpPaintOptions *paint_options,
+                                      GimpSymmetry     *sym);
 
 
 G_DEFINE_TYPE (GimpDodgeBurn, gimp_dodge_burn, GIMP_TYPE_BRUSH_CORE)
@@ -95,11 +71,8 @@ gimp_dodge_burn_register (Gimp                      *gimp,
 static void
 gimp_dodge_burn_class_init (GimpDodgeBurnClass *klass)
 {
-  GObjectClass       *object_class     = G_OBJECT_CLASS (klass);
   GimpPaintCoreClass *paint_core_class = GIMP_PAINT_CORE_CLASS (klass);
   GimpBrushCoreClass *brush_core_class = GIMP_BRUSH_CORE_CLASS (klass);
-
-  object_class->finalize  = gimp_dodge_burn_finalize;
 
   paint_core_class->paint = gimp_dodge_burn_paint;
 
@@ -112,52 +85,23 @@ gimp_dodge_burn_init (GimpDodgeBurn *dodgeburn)
 }
 
 static void
-gimp_dodge_burn_finalize (GObject *object)
-{
-  GimpDodgeBurn *dodgeburn = GIMP_DODGE_BURN (object);
-
-  if (dodgeburn->lut)
-    {
-      gimp_lut_free (dodgeburn->lut);
-      dodgeburn->lut = NULL;
-    }
-
-  G_OBJECT_CLASS (parent_class)->finalize (object);
-}
-
-static void
 gimp_dodge_burn_paint (GimpPaintCore    *paint_core,
                        GimpDrawable     *drawable,
                        GimpPaintOptions *paint_options,
-                       const GimpCoords *coords,
+                       GimpSymmetry     *sym,
                        GimpPaintState    paint_state,
                        guint32           time)
 {
-  GimpDodgeBurn        *dodgeburn = GIMP_DODGE_BURN (paint_core);
-  GimpDodgeBurnOptions *options   = GIMP_DODGE_BURN_OPTIONS (paint_options);
-
   switch (paint_state)
     {
     case GIMP_PAINT_STATE_INIT:
-      dodgeburn->lut = gimp_lut_new ();
-
-      gimp_dodge_burn_make_luts (dodgeburn,
-                                 options->exposure,
-                                 options->type,
-                                 options->mode,
-                                 drawable);
       break;
 
     case GIMP_PAINT_STATE_MOTION:
-      gimp_dodge_burn_motion (paint_core, drawable, paint_options, coords);
+      gimp_dodge_burn_motion (paint_core, drawable, paint_options, sym);
       break;
 
     case GIMP_PAINT_STATE_FINISH:
-      if (dodgeburn->lut)
-        {
-          gimp_lut_free (dodgeburn->lut);
-          dodgeburn->lut = NULL;
-        }
       break;
     }
 }
@@ -166,223 +110,88 @@ static void
 gimp_dodge_burn_motion (GimpPaintCore    *paint_core,
                         GimpDrawable     *drawable,
                         GimpPaintOptions *paint_options,
-                        const GimpCoords *coords)
+                        GimpSymmetry     *sym)
 {
-  GimpDodgeBurn      *dodgeburn = GIMP_DODGE_BURN (paint_core);
-  GimpContext        *context   = GIMP_CONTEXT (paint_options);
-  GimpDynamics       *dynamics  = GIMP_BRUSH_CORE (paint_core)->dynamics;
-  GimpDynamicsOutput *opacity_output;
-  GimpDynamicsOutput *hardness_output;
-  GimpImage          *image;
-  TempBuf            *area;
-  TempBuf            *orig;
-  PixelRegion         srcPR, destPR, tempPR;
-  guchar             *temp_data;
-  gdouble             fade_point;
-  gdouble             opacity;
-  gdouble             hardness;
-
-  if (gimp_drawable_is_indexed (drawable))
-    return;
-
-  image = gimp_item_get_image (GIMP_ITEM (drawable));
-
-  opacity_output = gimp_dynamics_get_output (dynamics,
-                                             GIMP_DYNAMICS_OUTPUT_OPACITY);
+  GimpDodgeBurnOptions *options   = GIMP_DODGE_BURN_OPTIONS (paint_options);
+  GimpContext          *context   = GIMP_CONTEXT (paint_options);
+  GimpDynamics         *dynamics  = GIMP_BRUSH_CORE (paint_core)->dynamics;
+  GimpImage            *image     = gimp_item_get_image (GIMP_ITEM (drawable));
+  GeglBuffer           *paint_buffer;
+  gint                  paint_buffer_x;
+  gint                  paint_buffer_y;
+  gdouble               fade_point;
+  gdouble               opacity;
+  gdouble               force;
+  const GimpCoords     *coords;
+  GeglNode             *op;
+  gint                  paint_width, paint_height;
+  gint                  n_strokes;
+  gint                  i;
 
   fade_point = gimp_paint_options_get_fade (paint_options, image,
                                             paint_core->pixel_dist);
 
-  opacity = gimp_dynamics_output_get_linear_value (opacity_output,
-                                                   coords,
-                                                   paint_options,
-                                                   fade_point);
+  coords = gimp_symmetry_get_origin (sym);
+  opacity = gimp_dynamics_get_linear_value (dynamics,
+                                            GIMP_DYNAMICS_OUTPUT_OPACITY,
+                                            coords,
+                                            paint_options,
+                                            fade_point);
   if (opacity == 0.0)
     return;
 
-  area = gimp_paint_core_get_paint_area (paint_core, drawable, paint_options,
-                                         coords);
-  if (! area)
-    return;
-
-  /* Constant painting --get a copy of the orig drawable (with no
-   * paint from this stroke yet)
-   */
-  {
-    GimpItem *item = GIMP_ITEM (drawable);
-    gint      x, y;
-    gint      width, height;
-
-    if (! gimp_rectangle_intersect (area->x, area->y,
-                                    area->width, area->height,
-                                    0, 0,
-                                    gimp_item_get_width  (item),
-                                    gimp_item_get_height (item),
-                                    &x, &y,
-                                    &width, &height))
-      {
-        return;
-      }
-
-    /*  get the original untouched image  */
-    orig = gimp_paint_core_get_orig_image (paint_core, drawable,
-                                           x, y, width, height);
-
-    pixel_region_init_temp_buf (&srcPR, orig,
-                                0, 0, width, height);
-  }
-
-  /* tempPR will hold the dodgeburned region */
-  temp_data = g_malloc (srcPR.h * srcPR.bytes * srcPR.w);
-
-  pixel_region_init_data (&tempPR, temp_data,
-                          srcPR.bytes,
-                          srcPR.bytes * srcPR.w,
-                          srcPR.x,
-                          srcPR.y,
-                          srcPR.w,
-                          srcPR.h);
-
-  /*  DodgeBurn the region  */
-  gimp_lut_process (dodgeburn->lut, &srcPR, &tempPR);
-
-  /* The dest is the paint area we got above (= canvas_buf) */
-  pixel_region_init_temp_buf (&destPR, area,
-                              0, 0, area->width, area->height);
-
-  /* Now add an alpha to the dodgeburned region
-   * and put this in area = canvas_buf
-   */
-  if (! gimp_drawable_has_alpha (drawable))
-    add_alpha_region (&tempPR, &destPR);
-  else
-    copy_region (&tempPR, &destPR);
-
-  g_free (temp_data);
-
-  hardness_output = gimp_dynamics_get_output (dynamics,
-                                              GIMP_DYNAMICS_OUTPUT_HARDNESS);
-
-  hardness = gimp_dynamics_output_get_linear_value (hardness_output,
-                                                    coords,
-                                                    paint_options,
-                                                    fade_point);
-
-  /* Replace the newly dodgedburned area (canvas_buf) to the image */
-  gimp_brush_core_replace_canvas (GIMP_BRUSH_CORE (paint_core), drawable,
-                                  coords,
-                                  MIN (opacity, GIMP_OPACITY_OPAQUE),
-                                  gimp_context_get_opacity (context),
-                                  gimp_paint_options_get_brush_mode (paint_options),
-                                  hardness,
-                                  GIMP_PAINT_CONSTANT);
-}
-
-static void
-gimp_dodge_burn_make_luts (GimpDodgeBurn     *dodgeburn,
-                           gdouble            db_exposure,
-                           GimpDodgeBurnType  type,
-                           GimpTransferMode   mode,
-                           GimpDrawable      *drawable)
-{
-  GimpLutFunc   lut_func;
-  gint          nchannels = gimp_drawable_bytes (drawable);
-  static gfloat exposure;
-
-  exposure = db_exposure / 100.0;
-
-  /* make the exposure negative if burn for luts*/
-  if (type == GIMP_BURN)
-    exposure = -exposure;
-
-  switch (mode)
+  gimp_brush_core_eval_transform_dynamics (GIMP_BRUSH_CORE (paint_core),
+                                           drawable,
+                                           paint_options,
+                                           coords);
+  n_strokes = gimp_symmetry_get_size (sym);
+  for (i = 0; i < n_strokes; i++)
     {
-    case GIMP_HIGHLIGHTS:
-      lut_func = gimp_dodge_burn_highlights_lut_func;
-      break;
-    case GIMP_MIDTONES:
-      lut_func = gimp_dodge_burn_midtones_lut_func;
-      break;
-    case GIMP_SHADOWS:
-      lut_func = gimp_dodge_burn_shadows_lut_func;
-      break;
-    default:
-      lut_func = NULL;
-      break;
+      coords = gimp_symmetry_get_coords (sym, i);
+
+      paint_buffer = gimp_paint_core_get_paint_buffer (paint_core, drawable,
+                                                       paint_options,
+                                                       GIMP_LAYER_MODE_NORMAL,
+                                                       coords,
+                                                       &paint_buffer_x,
+                                                       &paint_buffer_y,
+                                                       &paint_width,
+                                                       &paint_height);
+      if (! paint_buffer)
+        continue;
+
+      op = gimp_symmetry_get_operation (sym, i,
+                                        paint_width,
+                                        paint_height);
+
+      /*  DodgeBurn the region  */
+      gimp_gegl_dodgeburn (gimp_paint_core_get_orig_image (paint_core),
+                           GEGL_RECTANGLE (paint_buffer_x,
+                                           paint_buffer_y,
+                                           gegl_buffer_get_width  (paint_buffer),
+                                           gegl_buffer_get_height (paint_buffer)),
+                           paint_buffer,
+                           GEGL_RECTANGLE (0, 0, 0, 0),
+                           options->exposure / 100.0,
+                           options->type,
+                           options->mode);
+
+      if (gimp_dynamics_is_output_enabled (dynamics, GIMP_DYNAMICS_OUTPUT_FORCE))
+        force = gimp_dynamics_get_linear_value (dynamics,
+                                                GIMP_DYNAMICS_OUTPUT_FORCE,
+                                                coords,
+                                                paint_options,
+                                                fade_point);
+      else
+        force = paint_options->brush_force;
+
+      /* Replace the newly dodgedburned area (paint_area) to the image */
+      gimp_brush_core_replace_canvas (GIMP_BRUSH_CORE (paint_core), drawable,
+                                      coords,
+                                      MIN (opacity, GIMP_OPACITY_OPAQUE),
+                                      gimp_context_get_opacity (context),
+                                      gimp_paint_options_get_brush_mode (paint_options),
+                                      force,
+                                      GIMP_PAINT_CONSTANT, op);
     }
-
-  gimp_lut_setup_exact (dodgeburn->lut,
-                        lut_func, (gpointer) &exposure,
-                        nchannels);
-}
-
-static gfloat
-gimp_dodge_burn_highlights_lut_func (gpointer  user_data,
-                                     gint      nchannels,
-                                     gint      channel,
-                                     gfloat    value)
-{
-  gfloat *exposure_ptr = (gfloat *) user_data;
-  gfloat  exposure     = *exposure_ptr;
-  gfloat  factor       = 1.0 + exposure * (.333333);
-
-  if ((nchannels == 2 && channel == 1) ||
-      (nchannels == 4 && channel == 3))
-    return value;
-
-  return factor * value;
-}
-
-static gfloat
-gimp_dodge_burn_midtones_lut_func (gpointer  user_data,
-                                   gint      nchannels,
-                                   gint      channel,
-                                   gfloat    value)
-{
-  gfloat *exposure_ptr = (gfloat *) user_data;
-  gfloat  exposure     = *exposure_ptr;
-  gfloat  factor;
-
-  if ((nchannels == 2 && channel == 1) ||
-      (nchannels == 4 && channel == 3))
-    return value;
-
-  if (exposure < 0)
-    factor = 1.0 - exposure * (.333333);
-  else
-    factor = 1 / (1.0 + exposure);
-
-  return pow (value, factor);
-}
-
-static gfloat
-gimp_dodge_burn_shadows_lut_func (gpointer  user_data,
-                                  gint      nchannels,
-                                  gint      channel,
-                                  gfloat    value)
-{
-  gfloat *exposure_ptr = (gfloat *) user_data;
-  gfloat  exposure     = *exposure_ptr;
-  gfloat  new_value;
-  gfloat  factor;
-
-  if ((nchannels == 2 && channel == 1) ||
-      (nchannels == 4 && channel == 3))
-    return value;
-
-  if (exposure >= 0)
-    {
-      factor = 0.333333 * exposure;
-      new_value =  factor + value - factor * value;
-    }
-  else /* exposure < 0 */
-    {
-      factor = -0.333333 * exposure;
-      if (value < factor)
-        new_value = 0;
-      else /*factor <= value <=1*/
-        new_value = (value - factor)/(1 - factor);
-    }
-
-  return new_value;
 }

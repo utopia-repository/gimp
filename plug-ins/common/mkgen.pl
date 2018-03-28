@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-use lib '../../tools/pdbgen';
+use lib '../../pdb';
 
 require 'util.pl';
 
@@ -8,13 +8,14 @@ require 'util.pl';
 *FILE_EXT   = \$Gimp::CodeGen::util::FILE_EXT;
 
 $destdir = ".";
+$builddir = ".";
 
 $ignorefile = ".gitignore";
 $rcfile     = "gimprc.common";
 
-$outmk = "Makefile.am$FILE_EXT";
-$outignore = "$ignorefile$FILE_EXT";
-$outrc = "$rcfile$FILE_EXT";
+$outmk = "$builddir/Makefile.am$FILE_EXT";
+$outignore = "$builddir/$ignorefile$FILE_EXT";
+$outrc = "$builddir/$rcfile$FILE_EXT";
 
 open MK, "> $outmk";
 open IGNORE, "> $outignore";
@@ -92,9 +93,10 @@ EXTRA_DIST = \\
 	plugin-defs.pl$extra	\\
 	$rcfile
 
-INCLUDES = \\
+AM_CPPFLAGS = \\
 	-I\$(top_srcdir)	\\
 	\$(GTK_CFLAGS)	\\
+	\$(GEGL_CFLAGS)	\\
 	-I\$(includedir)
 
 libexec_PROGRAMS = \\
@@ -144,17 +146,24 @@ foreach (sort keys %plugins) {
 
     my $glib;
     if (exists $plugins{$_}->{ui}) {
-	$glib = "\$(GTK_LIBS)\t\t\\"
+	$glib = "\$(GTK_LIBS)\t\t\\";
     } else {
-	$glib = "\$(CAIRO_LIBS)\t\t\\\n\t\$(GDK_PIXBUF_LIBS)\t\\"
+	$glib = "\$(CAIRO_LIBS)\t\t\\\n\t\$(GDK_PIXBUF_LIBS)\t\\";
+
+	if (exists $plugins{$_}->{gio} &&
+	    ! exists $plugins{$_}->{gegl}) {
+	    $glib .= "\n\t\$(GIO_LIBS)\t\t\\";
+	}
+    }
+
+    if (exists $plugins{$_}->{gegl}) {
+	$glib .= "\n\t\$(GEGL_LIBS)\t\t\\";
     }
 
     my $optlib = "";
 
-    if (exists $plugins{$_}->{optional}) {
-	if (exists $plugins{$_}->{libs}) {
+    if (exists $plugins{$_}->{libs}) {
 		$optlib = "\n\t\$(" . $plugins{$_}->{libs} . ")\t\t\\";
-	}
     }
 
     if (exists $plugins{$_}->{ldflags}) {

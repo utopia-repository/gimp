@@ -27,7 +27,6 @@
 #include <string.h>
 
 #include <librsvg/rsvg.h>
-#include <librsvg/librsvg-features.h>  /* for version check */
 
 #include "libgimp/gimp.h"
 #include "libgimp/gimpui.h"
@@ -187,9 +186,6 @@ run (const gchar      *name,
   values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 
-  /* MUST call this before any RSVG funcs */
-  g_type_init ();
-
   if (strcmp (name, LOAD_PROC) == 0)
     {
       gimp_get_data (LOAD_PROC, &load_vals);
@@ -255,7 +251,7 @@ run (const gchar      *name,
 
           gimp_set_data (LOAD_PROC, &load_vals, sizeof (load_vals));
         }
-     }
+    }
   else if (strcmp (name, LOAD_THUMB_PROC) == 0)
     {
       if (nparams < 2)
@@ -351,7 +347,9 @@ load_image (const gchar  *filename,
                              load_vals.resolution, load_vals.resolution);
 
   layer = gimp_layer_new_from_pixbuf (image, _("Rendered SVG"), pixbuf,
-                                      100, GIMP_NORMAL_MODE, 0.0, 1.0);
+                                      100,
+                                      gimp_image_get_default_new_layer_mode (image),
+                                      0.0, 1.0);
   gimp_image_insert_layer (image, layer, -1, 0);
 
   gimp_image_undo_enable (image);
@@ -482,7 +480,7 @@ static GtkWidget *size_label = NULL;
 
 /*  This function retrieves the pixel size from an SVG file. Parsing
  *  stops after the first chunk that provided the parser with enough
- *  information to determine the size. This is usally the opening
+ *  information to determine the size. This is usually the opening
  *  <svg> element and should thus be in the first chunk (1024 bytes).
  */
 static gboolean
@@ -571,8 +569,8 @@ load_rsvg_size (const gchar  *filename,
 /*  User interface  */
 
 static GimpSizeEntry *size       = NULL;
-static GtkObject     *xadj       = NULL;
-static GtkObject     *yadj       = NULL;
+static GtkAdjustment *xadj       = NULL;
+static GtkAdjustment *yadj       = NULL;
 static GtkWidget     *constrain  = NULL;
 static gdouble        ratio_x    = 1.0;
 static gdouble        ratio_y    = 1.0;
@@ -607,8 +605,8 @@ static void
 load_dialog_ratio_callback (GtkAdjustment *adj,
                             gpointer       data)
 {
-  gdouble x = gtk_adjustment_get_value (GTK_ADJUSTMENT (xadj));
-  gdouble y = gtk_adjustment_get_value (GTK_ADJUSTMENT (yadj));
+  gdouble x = gtk_adjustment_get_value (xadj);
+  gdouble y = gtk_adjustment_get_value (yadj);
 
   if (gimp_chain_button_get_active (GIMP_CHAIN_BUTTON (constrain)))
     {
@@ -668,8 +666,8 @@ load_dialog_set_ratio (gdouble x,
   g_signal_handlers_block_by_func (xadj, load_dialog_ratio_callback, NULL);
   g_signal_handlers_block_by_func (yadj, load_dialog_ratio_callback, NULL);
 
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (xadj), x);
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (yadj), y);
+  gtk_adjustment_set_value (xadj, x);
+  gtk_adjustment_set_value (yadj, y);
 
   g_signal_handlers_unblock_by_func (xadj, load_dialog_ratio_callback, NULL);
   g_signal_handlers_unblock_by_func (yadj, load_dialog_ratio_callback, NULL);
@@ -679,24 +677,24 @@ static GimpPDBStatusType
 load_dialog (const gchar  *filename,
              GError      **load_error)
 {
-  GtkWidget   *dialog;
-  GtkWidget   *frame;
-  GtkWidget   *hbox;
-  GtkWidget   *vbox;
-  GtkWidget   *image;
-  GdkPixbuf   *preview;
-  GtkWidget   *table;
-  GtkWidget   *table2;
-  GtkWidget   *abox;
-  GtkWidget   *res;
-  GtkWidget   *label;
-  GtkWidget   *spinbutton;
-  GtkWidget   *toggle;
-  GtkWidget   *toggle2;
-  GtkObject   *adj;
-  gboolean     run;
-  GError      *error = NULL;
-  SvgLoadVals  vals  =
+  GtkWidget     *dialog;
+  GtkWidget     *frame;
+  GtkWidget     *hbox;
+  GtkWidget     *vbox;
+  GtkWidget     *image;
+  GdkPixbuf     *preview;
+  GtkWidget     *table;
+  GtkWidget     *table2;
+  GtkWidget     *abox;
+  GtkWidget     *res;
+  GtkWidget     *label;
+  GtkWidget     *spinbutton;
+  GtkWidget     *toggle;
+  GtkWidget     *toggle2;
+  GtkAdjustment *adj;
+  gboolean       run;
+  GError        *error = NULL;
+  SvgLoadVals    vals  =
   {
     SVG_DEFAULT_RESOLUTION,
     - SVG_PREVIEW_SIZE,
@@ -726,8 +724,8 @@ load_dialog (const gchar  *filename,
                             NULL, 0,
                             gimp_standard_help_func, LOAD_PROC,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -766,7 +764,6 @@ load_dialog (const gchar  *filename,
 
   size_label = gtk_label_new (NULL);
   gtk_label_set_justify (GTK_LABEL (size_label), GTK_JUSTIFY_CENTER);
-  gtk_misc_set_alignment (GTK_MISC (size_label), 0.5, 0.0);
   gtk_box_pack_start (GTK_BOX (vbox), size_label, TRUE, TRUE, 4);
   gtk_widget_show (size_label);
 
@@ -788,13 +785,13 @@ load_dialog (const gchar  *filename,
 
   /*  Width and Height  */
   label = gtk_label_new (_("Width:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (label);
 
   label = gtk_label_new (_("Height:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (label);
@@ -804,7 +801,9 @@ load_dialog (const gchar  *filename,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (hbox);
 
-  spinbutton = gimp_spin_button_new (&adj, 1, 1, 1, 1, 10, 0, 1, 2);
+  adj = (GtkAdjustment *) gtk_adjustment_new (1, 1, 1, 1, 10, 0);
+  spinbutton = gtk_spin_button_new (adj, 1.0, 2);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gtk_entry_set_width_chars (GTK_ENTRY (spinbutton), 10);
   gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
   gtk_widget_show (spinbutton);
@@ -852,13 +851,13 @@ load_dialog (const gchar  *filename,
   gtk_table_set_row_spacing (GTK_TABLE (table2), 0, 4);
   gtk_box_pack_start (GTK_BOX (hbox), table2, FALSE, FALSE, 0);
 
-  spinbutton =
-    gimp_spin_button_new (&xadj,
-                          ratio_x,
-                          (gdouble) GIMP_MIN_IMAGE_SIZE / (gdouble) svg_width,
-                          (gdouble) GIMP_MAX_IMAGE_SIZE / (gdouble) svg_width,
-                          0.01, 0.1, 0,
-                          0.01, 4);
+  xadj = (GtkAdjustment *)
+    gtk_adjustment_new (ratio_x,
+                        (gdouble) GIMP_MIN_IMAGE_SIZE / (gdouble) svg_width,
+                        (gdouble) GIMP_MAX_IMAGE_SIZE / (gdouble) svg_width,
+                        0.01, 0.1, 0);
+  spinbutton = gtk_spin_button_new (xadj, 0.01, 4);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gtk_entry_set_width_chars (GTK_ENTRY (spinbutton), 10);
   gtk_table_attach_defaults (GTK_TABLE (table2), spinbutton, 0, 1, 0, 1);
   gtk_widget_show (spinbutton);
@@ -869,18 +868,18 @@ load_dialog (const gchar  *filename,
 
   label = gtk_label_new_with_mnemonic (_("_X ratio:"));
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), spinbutton);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (label);
 
-  spinbutton =
-    gimp_spin_button_new (&yadj,
-                          ratio_y,
-                          (gdouble) GIMP_MIN_IMAGE_SIZE / (gdouble) svg_height,
-                          (gdouble) GIMP_MAX_IMAGE_SIZE / (gdouble) svg_height,
-                          0.01, 0.1, 0,
-                          0.01, 4);
+  yadj = (GtkAdjustment *)
+    gtk_adjustment_new (ratio_y,
+                        (gdouble) GIMP_MIN_IMAGE_SIZE / (gdouble) svg_height,
+                        (gdouble) GIMP_MAX_IMAGE_SIZE / (gdouble) svg_height,
+                        0.01, 0.1, 0);
+  spinbutton = gtk_spin_button_new (yadj, 0.01, 4);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gtk_entry_set_width_chars (GTK_ENTRY (spinbutton), 10);
   gtk_table_attach_defaults (GTK_TABLE (table2), spinbutton, 0, 1, 1, 2);
   gtk_widget_show (spinbutton);
@@ -891,7 +890,7 @@ load_dialog (const gchar  *filename,
 
   label = gtk_label_new_with_mnemonic (_("_Y ratio:"));
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), spinbutton);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (label);
@@ -909,7 +908,7 @@ load_dialog (const gchar  *filename,
 
   /*  Resolution   */
   label = gtk_label_new (_("Resolution:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 4, 5,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (label);

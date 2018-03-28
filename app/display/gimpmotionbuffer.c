@@ -36,7 +36,7 @@
 /* Velocity unit is screen pixels per millisecond we pass to tools as 1. */
 #define VELOCITY_UNIT        3.0
 #define EVENT_FILL_PRECISION 6.0
-#define DIRECTION_RADIUS     (1.5 / MAX (scale_x, scale_y))
+#define DIRECTION_RADIUS     (1.0 / MAX (scale_x, scale_y))
 #define SMOOTH_FACTOR        0.3
 
 
@@ -81,8 +81,6 @@ G_DEFINE_TYPE (GimpMotionBuffer, gimp_motion_buffer, GIMP_TYPE_OBJECT)
 #define parent_class gimp_motion_buffer_parent_class
 
 static guint motion_buffer_signals[LAST_SIGNAL] = { 0 };
-
-static const GimpCoords default_coords = GIMP_COORDS_DEFAULT_VALUES;
 
 
 static void
@@ -231,8 +229,6 @@ gimp_motion_buffer_end_stroke (GimpMotionBuffer *buffer)
  * @buffer:
  * @coords:
  * @time:
- * @scale_x:
- * @scale_y:
  * @event_fill:
  *
  * This function evaluates the event to decide if the change is big
@@ -257,14 +253,14 @@ gboolean
 gimp_motion_buffer_motion_event (GimpMotionBuffer *buffer,
                                  GimpCoords       *coords,
                                  guint32           time,
-                                 gdouble           scale_x,
-                                 gdouble           scale_y,
                                  gboolean          event_fill)
 {
   gdouble  delta_time  = 0.001;
   gdouble  delta_x     = 0.0;
   gdouble  delta_y     = 0.0;
   gdouble  distance    = 1.0;
+  gdouble  scale_x     = coords->xscale;
+  gdouble  scale_y     = coords->yscale;
 
   g_return_val_if_fail (GIMP_IS_MOTION_BUFFER (buffer), FALSE);
   g_return_val_if_fail (coords != NULL, FALSE);
@@ -345,7 +341,7 @@ gimp_motion_buffer_motion_event (GimpMotionBuffer *buffer,
         }
       else
         {
-          gint x = 3;
+          gint x = CLAMP ((buffer->event_history->len - 1), 3, 15);
 
           while (((fabs (dir_delta_x) < DIRECTION_RADIUS) ||
                   (fabs (dir_delta_y) < DIRECTION_RADIUS)) &&
@@ -544,24 +540,22 @@ static void
 gimp_motion_buffer_interpolate_stroke (GimpMotionBuffer *buffer,
                                        GimpCoords       *coords)
 {
-  GArray *ret_coords;
-  gint    i = buffer->event_history->len - 1;
+  GimpCoords  catmull[4];
+  GArray     *ret_coords;
+  gint        i = buffer->event_history->len - 1;
 
   /* Note that there must be exactly one event in buffer or bad things
    * can happen. This must never get called under other circumstances.
    */
   ret_coords = g_array_new (FALSE, FALSE, sizeof (GimpCoords));
 
-  gimp_coords_interpolate_catmull (g_array_index (buffer->event_history,
-                                                  GimpCoords, i - 1),
-                                   g_array_index (buffer->event_history,
-                                                  GimpCoords, i),
-                                   g_array_index (buffer->event_queue,
-                                                  GimpCoords, 0),
-                                   *coords,
-                                   EVENT_FILL_PRECISION / 2,
-                                   &ret_coords,
-                                   NULL);
+  catmull[0] = g_array_index (buffer->event_history, GimpCoords, i - 1);
+  catmull[1] = g_array_index (buffer->event_history, GimpCoords, i);
+  catmull[2] = g_array_index (buffer->event_queue,   GimpCoords, 0);
+  catmull[3] = *coords;
+
+  gimp_coords_interpolate_catmull (catmull, EVENT_FILL_PRECISION / 2,
+                                   ret_coords, NULL);
 
   /* Push the last actual event in history */
   gimp_motion_buffer_push_event_history (buffer,

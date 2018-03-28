@@ -17,15 +17,15 @@
 
 #include "config.h"
 
+#include <gio/gio.h>
 #include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "libgimpbase/gimpbase.h"
 
 #include "core-types.h"
 
-#include "base/pixel-region.h"
-#include "base/siox.h"
-#include "base/tile-manager.h"
+#include "gegl/gimp-gegl-utils.h"
 
 #include "gimpchannel.h"
 #include "gimpdrawable.h"
@@ -38,128 +38,113 @@
 
 /*  public functions  */
 
-void
-gimp_drawable_foreground_extract (GimpDrawable              *drawable,
-                                  GimpForegroundExtractMode  mode,
-                                  GimpDrawable              *mask,
-                                  GimpProgress              *progress)
+GeglBuffer *
+gimp_drawable_foreground_extract (GimpDrawable      *drawable,
+                                  GimpMattingEngine  engine,
+                                  gint               global_iterations,
+                                  gint               levin_levels,
+                                  gint               levin_active_levels,
+                                  GeglBuffer        *trimap,
+                                  GimpProgress      *progress)
 {
-  SioxState    *state;
-  const gdouble sensitivity[3] = { SIOX_DEFAULT_SENSITIVITY_L,
-                                   SIOX_DEFAULT_SENSITIVITY_A,
-                                   SIOX_DEFAULT_SENSITIVITY_B };
-
-  g_return_if_fail (GIMP_IS_DRAWABLE (mask));
-  g_return_if_fail (mode == GIMP_FOREGROUND_EXTRACT_SIOX);
-
-  state =
-    gimp_drawable_foreground_extract_siox_init (drawable,
-                                                0, 0,
-                                                gimp_item_get_width  (GIMP_ITEM (mask)),
-                                                gimp_item_get_height (GIMP_ITEM (mask)));
-
-  if (state)
-    {
-      gimp_drawable_foreground_extract_siox (mask, state,
-                                             SIOX_REFINEMENT_RECALCULATE,
-                                             SIOX_DEFAULT_SMOOTHNESS,
-                                             sensitivity,
-                                             FALSE,
-                                             progress);
-
-      gimp_drawable_foreground_extract_siox_done (state);
-    }
-}
-
-SioxState *
-gimp_drawable_foreground_extract_siox_init (GimpDrawable *drawable,
-                                            gint          x,
-                                            gint          y,
-                                            gint          width,
-                                            gint          height)
-{
-  const guchar *colormap = NULL;
-  gboolean      intersect;
-  gint          offset_x;
-  gint          offset_y;
+  GeglBuffer    *drawable_buffer;
+  GeglNode      *gegl;
+  GeglNode      *input_node;
+  GeglNode      *trimap_node;
+  GeglNode      *matting_node;
+  GeglNode      *output_node;
+  GeglBuffer    *buffer;
+  GeglProcessor *processor;
+  gdouble        value;
+  gint           off_x, off_y;
 
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
-  g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)), NULL);
+  g_return_val_if_fail (GEGL_IS_BUFFER (trimap), NULL);
+  g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
 
-  if (gimp_drawable_is_indexed (drawable))
-    colormap = gimp_drawable_get_colormap (drawable);
+  progress = gimp_progress_start (progress, FALSE,
+                                  _("Computing alpha of unknown pixels"));
 
-  gimp_item_get_offset (GIMP_ITEM (drawable), &offset_x, &offset_y);
+  drawable_buffer = gimp_drawable_get_buffer (drawable);
 
-  intersect = gimp_rectangle_intersect (offset_x, offset_y,
-                                        gimp_item_get_width  (GIMP_ITEM (drawable)),
-                                        gimp_item_get_height (GIMP_ITEM (drawable)),
-                                        x, y, width, height,
-                                        &x, &y, &width, &height);
+  gegl = gegl_node_new ();
 
+  trimap_node = gegl_node_new_child (gegl,
+                                     "operation", "gegl:buffer-source",
+                                     "buffer",    trimap,
+                                     NULL);
+  input_node = gegl_node_new_child (gegl,
+                                    "operation", "gegl:buffer-source",
+                                    "buffer",    drawable_buffer,
+                                    NULL);
+  output_node = gegl_node_new_child (gegl,
+                                     "operation", "gegl:buffer-sink",
+                                     "buffer",    &buffer,
+                                     "format",    NULL,
+                                     NULL);
 
-  /* FIXME:
-   * Clear the mask outside the rectangle that we are working on?
-   */
-
-  if (! intersect)
-    return NULL;
-
-  return siox_init (gimp_drawable_get_tiles (drawable), colormap,
-                    offset_x, offset_y,
-                    x, y, width, height);
-}
-
-void
-gimp_drawable_foreground_extract_siox (GimpDrawable       *mask,
-                                       SioxState          *state,
-                                       SioxRefinementType  refinement,
-                                       gint                smoothness,
-                                       const gdouble       sensitivity[3],
-                                       gboolean            multiblob,
-                                       GimpProgress       *progress)
-{
-  gint x1, y1;
-  gint x2, y2;
-
-  g_return_if_fail (GIMP_IS_DRAWABLE (mask));
-  g_return_if_fail (gimp_drawable_bytes (mask) == 1);
-
-  g_return_if_fail (state != NULL);
-
-  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
-
-  if (progress)
-    gimp_progress_start (progress, _("Foreground Extraction"), FALSE);
-
-  if (GIMP_IS_CHANNEL (mask))
+  if (engine == GIMP_MATTING_ENGINE_GLOBAL)
     {
-      gimp_channel_bounds (GIMP_CHANNEL (mask), &x1, &y1, &x2, &y2);
+      matting_node = gegl_node_new_child (gegl,
+                                          "operation",  "gegl:matting-global",
+                                          "iterations", global_iterations,
+                                          NULL);
     }
   else
     {
-      x1 = 0;
-      y1 = 0;
-      x2 = gimp_item_get_width  (GIMP_ITEM (mask));
-      y2 = gimp_item_get_height (GIMP_ITEM (mask));
+      matting_node = gegl_node_new_child (gegl,
+                                          "operation",     "gegl:matting-levin",
+                                          "levels",        levin_levels,
+                                          "active_levels", levin_active_levels,
+                                          NULL);
     }
 
-  siox_foreground_extract (state, refinement,
-                           gimp_drawable_get_tiles (mask), x1, y1, x2, y2,
-                           smoothness, sensitivity, multiblob,
-                           (SioxProgressFunc) gimp_progress_set_value,
-                           progress);
+  gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
+
+  if (off_x || off_y)
+    {
+      GeglNode *pre;
+      GeglNode *post;
+
+      pre = gegl_node_new_child (gegl,
+                                 "operation", "gegl:translate",
+                                 "x", -1.0 * off_x,
+                                 "y", -1.0 * off_y,
+                                 NULL);
+      post = gegl_node_new_child (gegl,
+                                  "operation", "gegl:translate",
+                                  "x", 1.0 * off_x,
+                                  "y", 1.0 * off_y,
+                                  NULL);
+
+      gegl_node_connect_to (trimap_node,   "output", pre, "input");
+      gegl_node_connect_to (pre,  "output", matting_node, "aux");
+      gegl_node_link_many (input_node, matting_node, post, output_node, NULL);
+    }
+  else
+    {
+      gegl_node_connect_to (input_node,   "output",
+                            matting_node, "input");
+      gegl_node_connect_to (trimap_node,  "output",
+                            matting_node, "aux");
+      gegl_node_connect_to (matting_node, "output",
+                            output_node,  "input");
+    }
+
+  processor = gegl_node_new_processor (output_node, NULL);
+
+  while (gegl_processor_work (processor, &value))
+    {
+      if (progress)
+        gimp_progress_set_value (progress, value);
+    }
 
   if (progress)
     gimp_progress_end (progress);
 
-  gimp_drawable_update (mask, x1, y1, x2, y2);
-}
+  g_object_unref (processor);
 
-void
-gimp_drawable_foreground_extract_siox_done (SioxState *state)
-{
-  g_return_if_fail (state != NULL);
+  g_object_unref (gegl);
 
-  siox_done (state);
+  return buffer;
 }

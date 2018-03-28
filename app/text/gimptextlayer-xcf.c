@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -194,16 +195,20 @@ gimp_text_layer_from_layer (GimpLayer *layer,
 
   drawable = GIMP_DRAWABLE (text_layer);
 
-  drawable->private->type  = gimp_drawable_type (GIMP_DRAWABLE (layer));
-  drawable->private->tiles = gimp_drawable_get_tiles (GIMP_DRAWABLE (layer));
-  GIMP_DRAWABLE (layer)->private->tiles = NULL;
+  gimp_drawable_steal_buffer (drawable, GIMP_DRAWABLE (layer));
 
-  gimp_layer_set_opacity    (GIMP_LAYER (text_layer),
-                             gimp_layer_get_opacity (layer), FALSE);
-  gimp_layer_set_mode       (GIMP_LAYER (text_layer),
-                             gimp_layer_get_mode (layer), FALSE);
-  gimp_layer_set_lock_alpha (GIMP_LAYER (text_layer),
-                             gimp_layer_get_lock_alpha (layer), FALSE);
+  gimp_layer_set_opacity         (GIMP_LAYER (text_layer),
+                                  gimp_layer_get_opacity (layer), FALSE);
+  gimp_layer_set_mode            (GIMP_LAYER (text_layer),
+                                  gimp_layer_get_mode (layer), FALSE);
+  gimp_layer_set_blend_space     (GIMP_LAYER (text_layer),
+                                  gimp_layer_get_blend_space (layer), FALSE);
+  gimp_layer_set_composite_space (GIMP_LAYER (text_layer),
+                                  gimp_layer_get_composite_space (layer), FALSE);
+  gimp_layer_set_composite_mode  (GIMP_LAYER (text_layer),
+                                  gimp_layer_get_composite_mode (layer), FALSE);
+  gimp_layer_set_lock_alpha      (GIMP_LAYER (text_layer),
+                                  gimp_layer_get_lock_alpha (layer), FALSE);
 
   gimp_text_layer_set_text (text_layer, text);
 

@@ -2,13 +2,13 @@
 /* Generated data (by gimp-mkenums) */
 
 #include "config.h"
-#include <glib-object.h>
+#include <gio/gio.h>
 #include "libgimpbase/gimpbase.h"
 #include "core/core-enums.h"
 #include "gimp-gegl-enums.h"
 #include "gimp-intl.h"
 
-/* enumerations from "./gimp-gegl-enums.h" */
+/* enumerations from "gimp-gegl-enums.h" */
 GType
 gimp_cage_mode_get_type (void)
 {
@@ -22,7 +22,7 @@ gimp_cage_mode_get_type (void)
   static const GimpEnumDesc descs[] =
   {
     { GIMP_CAGE_MODE_CAGE_CHANGE, NC_("cage-mode", "Create or adjust the cage"), NULL },
-    { GIMP_CAGE_MODE_DEFORM, NC_("cage-mode", "Deform the cage to deform the image"), NULL },
+    { GIMP_CAGE_MODE_DEFORM, NC_("cage-mode", "Deform the cage\nto deform the image"), NULL },
     { 0, NULL, NULL }
   };
 

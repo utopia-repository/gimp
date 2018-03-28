@@ -30,13 +30,14 @@
 #define GIMP_INK_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_INK_UNDO, GimpInkUndoClass))
 
 
+typedef struct _GimpInkUndo      GimpInkUndo;
 typedef struct _GimpInkUndoClass GimpInkUndoClass;
 
 struct _GimpInkUndo
 {
   GimpPaintCoreUndo  parent_instance;
 
-  GimpBlob         *last_blob;
+  GList             *last_blobs;
 };
 
 struct _GimpInkUndoClass

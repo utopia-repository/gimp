@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -129,7 +130,7 @@ gimp_palette_select_button_class_init (GimpPaletteSelectButtonClass *klass)
    *
    * The title to be used for the palette selection popup dialog.
    *
-   * Since: GIMP 2.4
+   * Since: 2.4
    */
   g_object_class_install_property (object_class, PROP_TITLE,
                                    g_param_spec_string ("title",
@@ -144,7 +145,7 @@ gimp_palette_select_button_class_init (GimpPaletteSelectButtonClass *klass)
    *
    * The name of the currently selected palette.
    *
-   * Since: GIMP 2.4
+   * Since: 2.4
    */
   g_object_class_install_property (object_class, PROP_PALETTE_NAME,
                                    g_param_spec_string ("palette-name",
@@ -161,7 +162,7 @@ gimp_palette_select_button_class_init (GimpPaletteSelectButtonClass *klass)
    *
    * The ::palette-set signal is emitted when the user selects a palette.
    *
-   * Since: GIMP 2.4
+   * Since: 2.4
    */
   palette_button_signals[PALETTE_SET] =
     g_signal_new ("palette-set",
@@ -202,7 +203,7 @@ gimp_palette_select_button_init (GimpPaletteSelectButton *button)
  *
  * Returns: A #GtkWidget that you can use in your UI.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_palette_select_button_new (const gchar *title,
@@ -231,7 +232,7 @@ gimp_palette_select_button_new (const gchar *title,
  *
  * Returns: an internal copy of the palette name which must not be freed.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  */
 const gchar *
 gimp_palette_select_button_get_palette (GimpPaletteSelectButton *button)
@@ -251,7 +252,7 @@ gimp_palette_select_button_get_palette (GimpPaletteSelectButton *button)
  *
  * Sets the current palette for the palette select button.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  */
 void
 gimp_palette_select_button_set_palette (GimpPaletteSelectButton *button,
@@ -463,7 +464,8 @@ gimp_palette_select_button_create_inside (GimpPaletteSelectButton *palette_butto
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
   gtk_container_add (GTK_CONTAINER (button), hbox);
 
-  image = gtk_image_new_from_stock (GIMP_STOCK_PALETTE, GTK_ICON_SIZE_BUTTON);
+  image = gtk_image_new_from_icon_name (GIMP_ICON_PALETTE,
+                                        GTK_ICON_SIZE_BUTTON);
   gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
   priv->label = gtk_label_new (priv->palette_name);

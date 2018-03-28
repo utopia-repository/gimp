@@ -36,12 +36,14 @@ struct _GimpHistogramEditor
 {
   GimpImageEditor       parent_instance;
 
+  gboolean              linear;
+
   GimpDrawable         *drawable;
   GimpHistogram        *histogram;
   GimpHistogram        *bg_histogram;
 
   guint                 idle_id;
-  gboolean              valid;
+  gboolean              recompute;
 
   GtkWidget            *menu;
   GtkWidget            *box;

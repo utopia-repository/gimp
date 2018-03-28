@@ -105,7 +105,7 @@ gimp_procedural_db_dump (const gchar *filename)
  * @author: The regex for procedure author.
  * @copyright: The regex for procedure copyright.
  * @date: The regex for procedure date.
- * @proc_type: The regex for procedure type: { 'Internal GIMP procedure', 'GIMP Plug-In', 'GIMP Extension', 'Temporary Procedure' }.
+ * @proc_type: The regex for procedure type: { 'Internal GIMP procedure', 'GIMP Plug-in', 'GIMP Extension', 'Temporary Procedure' }.
  * @num_matches: The number of matching procedures.
  * @procedure_names: The list of procedure names.
  *
@@ -162,9 +162,12 @@ gimp_procedural_db_query (const gchar   *name,
   if (success)
     {
       *num_matches = return_vals[1].data.d_int32;
-      *procedure_names = g_new (gchar *, *num_matches);
-      for (i = 0; i < *num_matches; i++)
-        (*procedure_names)[i] = g_strdup (return_vals[2].data.d_stringarray[i]);
+      if (*num_matches > 0)
+        {
+          *procedure_names = g_new0 (gchar *, *num_matches + 1);
+          for (i = 0; i < *num_matches; i++)
+            (*procedure_names)[i] = g_strdup (return_vals[2].data.d_stringarray[i]);
+        }
     }
 
   gimp_destroy_params (return_vals, nreturn_vals);
@@ -183,7 +186,7 @@ gimp_procedural_db_query (const gchar   *name,
  *
  * Returns: Whether a procedure of that name is registered.
  *
- * Since: GIMP 2.6
+ * Since: 2.6
  **/
 gboolean
 gimp_procedural_db_proc_exists (const gchar *procedure_name)

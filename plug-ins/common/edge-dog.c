@@ -139,7 +139,7 @@ query (void)
                           "Spencer Kimball, Peter Mattis, Sven Neumann, William Skaggs",
                           "Spencer Kimball, Peter Mattis, Sven Neumann, William Skaggs",
                           "1995-2004",
-                          N_("_Difference of Gaussians..."),
+                          N_("_Difference of Gaussians (legacy)..."),
                           "RGB*, GRAY*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
@@ -161,7 +161,6 @@ run (const gchar      *name,
   GimpRunMode        run_mode;
   GimpPDBStatusType  status = GIMP_PDB_SUCCESS;
   GError            *error  = NULL;
-  gint               x, y, w, h;
 
   run_mode = param[0].data.d_int32;
 
@@ -186,13 +185,6 @@ run (const gchar      *name,
       /*  Get the specified image and drawable  */
       image_ID = param[1].data.d_image;
       drawable = gimp_drawable_get (param[2].data.d_drawable);
-
-      if (! gimp_drawable_mask_intersect (drawable->drawable_id,
-                                          &x, &y, &w, &h))
-        {
-          g_message (_("Region affected by plug-in is empty"));
-          return;
-        }
 
       /*  set the tile cache size so that the gaussian blur works well  */
       gimp_tile_cache_ntiles (2 *
@@ -311,8 +303,8 @@ dog_dialog (gint32        image_ID,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -329,7 +321,7 @@ dog_dialog (gint32        image_ID,
                       main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_drawable_preview_new (drawable, NULL);
+  preview = gimp_drawable_preview_new_from_drawable_id (drawable->drawable_id);
   gtk_box_pack_start (GTK_BOX (main_vbox), preview, FALSE, FALSE, 0);
   gtk_widget_show (preview);
 
@@ -466,10 +458,11 @@ dog (gint32        image_ID,
   gint32        layer1;
   gint32        layer2;
   gint          width, height;
-  gint          x, y;
+  gint          x1, y1;
   guchar        maxval = 255;
 
-  gimp_drawable_mask_intersect (drawable_id, &x, &y, &width, &height);
+  if (! gimp_drawable_mask_intersect (drawable_id, &x1, &y1, &width, &height))
+    return;
 
   gimp_drawable_flush (drawable);
 
@@ -501,6 +494,7 @@ dog (gint32        image_ID,
 
   gimp_drawable_flush (drawable);
   gimp_drawable_merge_shadow (drawable_id, TRUE);
+  gimp_drawable_update (drawable_id, x1, y1, width, height);
 
   if (dogvals.normalize || dogvals.invert)
     /* gimp_invert doesn't work properly with previews due to shadow handling
@@ -510,9 +504,8 @@ dog (gint32        image_ID,
       normalize_invert (drawable, dogvals.normalize, maxval, dogvals.invert);
       gimp_drawable_flush (drawable);
       gimp_drawable_merge_shadow (drawable_id, TRUE);
+      gimp_drawable_update (drawable_id, x1, y1, width, height);
     }
-
-  gimp_drawable_update (drawable_id, x, y, width, height);
 }
 
 
@@ -522,67 +515,52 @@ compute_difference (GimpDrawable *drawable,
                     GimpDrawable *drawable2,
                     guchar       *maxval)
 {
-  GimpPixelRgn src_rgn, src1_rgn, src2_rgn, dest_rgn;
+  GimpPixelRgn src1_rgn, src2_rgn, dest_rgn;
   gint         width, height;
   gint         bpp;
   gpointer     pr;
   gint         x, y, k;
+  gint         x1, y1;
   gboolean     has_alpha;
 
   *maxval = 0;
 
-  gimp_drawable_mask_intersect (drawable->drawable_id,
-                                &x, &y, &width, &height);
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                      &x1, &y1, &width, &height))
+    return;
 
   bpp = drawable->bpp;
   has_alpha = gimp_drawable_has_alpha (drawable->drawable_id);
 
   gimp_pixel_rgn_init (&src1_rgn,
-                       drawable1, x, y, width, height,
+                       drawable1, 0, 0, drawable1->width, drawable1->height,
                        FALSE, FALSE);
   gimp_pixel_rgn_init (&src2_rgn,
-                       drawable2, x, y, width, height,
+                       drawable2, 0, 0, drawable1->width, drawable1->height,
                        FALSE, FALSE);
   gimp_pixel_rgn_init (&dest_rgn,
-                       drawable, x, y, width, height,
+                       drawable, 0, 0, drawable->width, drawable->height,
                        TRUE, TRUE);
 
-  if (has_alpha)
+  for (pr = gimp_pixel_rgns_register (3, &src1_rgn, &src2_rgn, &dest_rgn);
+       pr != NULL;
+       pr = gimp_pixel_rgns_process (pr))
     {
-      gimp_pixel_rgn_init (&src_rgn,
-                           drawable, x, y, width, height,
-                           FALSE, FALSE);
-
-      pr = gimp_pixel_rgns_register (4,
-                                     &src_rgn,
-                                     &src1_rgn,
-                                     &src2_rgn,
-                                     &dest_rgn);
-    }
-  else
-    {
-      pr = gimp_pixel_rgns_register (3,
-                                     &src1_rgn,
-                                     &src2_rgn,
-                                     &dest_rgn);
-    }
-
-  for(; pr != NULL ; pr = gimp_pixel_rgns_process (pr))
-    {
-      guchar *src  = has_alpha ? src_rgn.data : NULL;
       guchar *src1 = src1_rgn.data;
       guchar *src2 = src2_rgn.data;
       guchar *dest = dest_rgn.data;
+      gint    row  = src1_rgn.y - y1;
 
-      for (y = 0; y < src1_rgn.h; y++)
+      for (y = 0; y < src1_rgn.h; y++, row++)
         {
-          guchar *s  = has_alpha ? src : NULL;
-          guchar *s1 = src1;
-          guchar *s2 = src2;
-          guchar *d  = dest;
+          guchar *s1  = src1;
+          guchar *s2  = src2;
+          guchar *d   = dest;
+          gint    col = src1_rgn.x - x1;
 
-          for (x = 0; x < src1_rgn.w; x++)
+          for (x = 0; x < src1_rgn.w; x++, col++)
             {
+
               if (has_alpha)
                 {
                   for (k = 0; k < bpp-1; k++)
@@ -590,9 +568,6 @@ compute_difference (GimpDrawable *drawable,
                       d[k] = CLAMP0255 (s1[k] - s2[k]);
                       *maxval = MAX (d[k], *maxval);
                     }
-
-                  d[bpp - 1] = s[bpp - 1];
-                  s += bpp;
                 }
               else
                 {
@@ -605,10 +580,9 @@ compute_difference (GimpDrawable *drawable,
 
               s1 += bpp;
               s2 += bpp;
-              d  += bpp;
+              d += bpp;
             }
 
-          src = has_alpha ? src + src_rgn.rowstride : NULL;
           src1 += src1_rgn.rowstride;
           src2 += src2_rgn.rowstride;
           dest += dest_rgn.rowstride;
@@ -627,7 +601,8 @@ normalize_invert (GimpDrawable *drawable,
   gint         bpp;
   gpointer     pr;
   gint         x, y, k;
-  gint         x1, y1, x2, y2;
+  gint         x1, y1;
+  gint         width, height;
   gboolean     has_alpha;
   gdouble      factor;
 
@@ -637,7 +612,10 @@ normalize_invert (GimpDrawable *drawable,
   else
     factor = 1.0;
 
-  gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                      &x1, &y1, &width, &height))
+    return;
+
   bpp = drawable->bpp;
   has_alpha = gimp_drawable_has_alpha(drawable->drawable_id);
 
@@ -710,7 +688,7 @@ gauss_rle (GimpDrawable *drawable,
   gint    *buf, *bb;
   gint     pixels;
   gint     total = 1;
-  gint     x1, y1, x2, y2;
+  gint     x1, y1;
   gint     i, row, col, b;
   gint     start, end;
   gdouble  progress, max_progress;
@@ -724,12 +702,8 @@ gauss_rle (GimpDrawable *drawable,
   if (radius <= 0.0)
     return;
 
-  gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
-
-  width  = (x2 - x1);
-  height = (y2 - y1);
-
-  if (width < 1 || height < 1)
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                      &x1, &y1, &width, &height))
     return;
 
   bytes = drawable->bpp;
@@ -768,7 +742,7 @@ gauss_rle (GimpDrawable *drawable,
 
   for (col = 0; col < width; col++)
     {
-      gimp_pixel_rgn_get_col (&src_rgn, src, col + x1, y1, (y2 - y1));
+      gimp_pixel_rgn_get_col (&src_rgn, src, col + x1, y1, height);
 
       if (has_alpha)
         multiply_alpha (src, height, bytes);
@@ -820,7 +794,7 @@ gauss_rle (GimpDrawable *drawable,
       if (has_alpha)
         separate_alpha (dest, height, bytes);
 
-      gimp_pixel_rgn_set_col (&dest_rgn, dest, col + x1, y1, (y2 - y1));
+      gimp_pixel_rgn_set_col (&dest_rgn, dest, col + x1, y1, height);
 
       if (show_progress)
         {
@@ -839,7 +813,7 @@ gauss_rle (GimpDrawable *drawable,
   /*  Now the horizontal pass  */
   for (row = 0; row < height; row++)
     {
-      gimp_pixel_rgn_get_row (&src_rgn, src, x1, row + y1, (x2 - x1));
+      gimp_pixel_rgn_get_row (&src_rgn, src, x1, row + y1, width);
       if (has_alpha)
         multiply_alpha (src, width, bytes);
 
@@ -889,7 +863,7 @@ gauss_rle (GimpDrawable *drawable,
       if (has_alpha)
         separate_alpha (dest, width, bytes);
 
-      gimp_pixel_rgn_set_row (&dest_rgn, dest, x1, row + y1, (x2 - x1));
+      gimp_pixel_rgn_set_row (&dest_rgn, dest, x1, row + y1, width);
 
       if (show_progress)
         {
@@ -900,9 +874,10 @@ gauss_rle (GimpDrawable *drawable,
         }
     }
 
-  /*  merge the shadow */
+  /*  merge the shadow, update the drawable  */
   gimp_drawable_flush (drawable);
   gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
+  gimp_drawable_update (drawable->drawable_id, x1, y1, width, height);
 
   /*  free buffers  */
   g_free (buf);
@@ -1018,7 +993,7 @@ preview_update_preview (GimpPreview  *preview,
   preview_id = gimp_layer_new (image_id, "preview", width, height,
                                gimp_drawable_type (drawable->drawable_id),
                                100,
-                               GIMP_NORMAL_MODE);
+                               gimp_image_get_default_new_layer_mode (image_id));
   preview_drawable = gimp_drawable_get (preview_id);
   gimp_image_insert_layer (image_id, preview_id, -1, 0);
   gimp_layer_set_offsets (preview_id, 0, 0);

@@ -21,6 +21,10 @@
 
 #include <gegl.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
+#include "libgimpbase/gimpbase.h"
+
 #include "libgimpbase/gimpbase.h"
 
 #include "pdb-types.h"
@@ -43,43 +47,43 @@
 #include "gimp-intl.h"
 
 
-static GValueArray *
-item_is_valid_invoker (GimpProcedure      *procedure,
-                       Gimp               *gimp,
-                       GimpContext        *context,
-                       GimpProgress       *progress,
-                       const GValueArray  *args,
-                       GError            **error)
+static GimpValueArray *
+item_is_valid_invoker (GimpProcedure         *procedure,
+                       Gimp                  *gimp,
+                       GimpContext           *context,
+                       GimpProgress          *progress,
+                       const GimpValueArray  *args,
+                       GError               **error)
 {
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gboolean valid = FALSE;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
 
   valid = (GIMP_IS_ITEM (item) &&
            ! gimp_item_is_removed (GIMP_ITEM (item)));
 
   return_vals = gimp_procedure_get_return_values (procedure, TRUE, NULL);
-  g_value_set_boolean (&return_vals->values[1], valid);
+  g_value_set_boolean (gimp_value_array_index (return_vals, 1), valid);
 
   return return_vals;
 }
 
-static GValueArray *
-item_get_image_invoker (GimpProcedure      *procedure,
-                        Gimp               *gimp,
-                        GimpContext        *context,
-                        GimpProgress       *progress,
-                        const GValueArray  *args,
-                        GError            **error)
+static GimpValueArray *
+item_get_image_invoker (GimpProcedure         *procedure,
+                        Gimp                  *gimp,
+                        GimpContext           *context,
+                        GimpProgress          *progress,
+                        const GimpValueArray  *args,
+                        GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   GimpImage *image = NULL;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -90,23 +94,23 @@ item_get_image_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_image (&return_vals->values[1], image);
+    gimp_value_set_image (gimp_value_array_index (return_vals, 1), image);
 
   return return_vals;
 }
 
-static GValueArray *
-item_delete_invoker (GimpProcedure      *procedure,
-                     Gimp               *gimp,
-                     GimpContext        *context,
-                     GimpProgress       *progress,
-                     const GValueArray  *args,
-                     GError            **error)
+static GimpValueArray *
+item_delete_invoker (GimpProcedure         *procedure,
+                     Gimp                  *gimp,
+                     GimpContext           *context,
+                     GimpProgress          *progress,
+                     const GimpValueArray  *args,
+                     GError               **error)
 {
   gboolean success = TRUE;
   GimpItem *item;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -123,20 +127,20 @@ item_delete_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-item_is_drawable_invoker (GimpProcedure      *procedure,
-                          Gimp               *gimp,
-                          GimpContext        *context,
-                          GimpProgress       *progress,
-                          const GValueArray  *args,
-                          GError            **error)
+static GimpValueArray *
+item_is_drawable_invoker (GimpProcedure         *procedure,
+                          Gimp                  *gimp,
+                          GimpContext           *context,
+                          GimpProgress          *progress,
+                          const GimpValueArray  *args,
+                          GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gboolean drawable = FALSE;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -147,25 +151,25 @@ item_is_drawable_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], drawable);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), drawable);
 
   return return_vals;
 }
 
-static GValueArray *
-item_is_layer_invoker (GimpProcedure      *procedure,
-                       Gimp               *gimp,
-                       GimpContext        *context,
-                       GimpProgress       *progress,
-                       const GValueArray  *args,
-                       GError            **error)
+static GimpValueArray *
+item_is_layer_invoker (GimpProcedure         *procedure,
+                       Gimp                  *gimp,
+                       GimpContext           *context,
+                       GimpProgress          *progress,
+                       const GimpValueArray  *args,
+                       GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gboolean layer = FALSE;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -176,25 +180,25 @@ item_is_layer_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], layer);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), layer);
 
   return return_vals;
 }
 
-static GValueArray *
-item_is_text_layer_invoker (GimpProcedure      *procedure,
-                            Gimp               *gimp,
-                            GimpContext        *context,
-                            GimpProgress       *progress,
-                            const GValueArray  *args,
-                            GError            **error)
+static GimpValueArray *
+item_is_text_layer_invoker (GimpProcedure         *procedure,
+                            Gimp                  *gimp,
+                            GimpContext           *context,
+                            GimpProgress          *progress,
+                            const GimpValueArray  *args,
+                            GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gboolean text_layer = FALSE;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -205,25 +209,25 @@ item_is_text_layer_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], text_layer);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), text_layer);
 
   return return_vals;
 }
 
-static GValueArray *
-item_is_channel_invoker (GimpProcedure      *procedure,
-                         Gimp               *gimp,
-                         GimpContext        *context,
-                         GimpProgress       *progress,
-                         const GValueArray  *args,
-                         GError            **error)
+static GimpValueArray *
+item_is_channel_invoker (GimpProcedure         *procedure,
+                         Gimp                  *gimp,
+                         GimpContext           *context,
+                         GimpProgress          *progress,
+                         const GimpValueArray  *args,
+                         GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gboolean channel = FALSE;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -234,25 +238,25 @@ item_is_channel_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], channel);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), channel);
 
   return return_vals;
 }
 
-static GValueArray *
-item_is_layer_mask_invoker (GimpProcedure      *procedure,
-                            Gimp               *gimp,
-                            GimpContext        *context,
-                            GimpProgress       *progress,
-                            const GValueArray  *args,
-                            GError            **error)
+static GimpValueArray *
+item_is_layer_mask_invoker (GimpProcedure         *procedure,
+                            Gimp                  *gimp,
+                            GimpContext           *context,
+                            GimpProgress          *progress,
+                            const GimpValueArray  *args,
+                            GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gboolean layer_mask = FALSE;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -263,25 +267,25 @@ item_is_layer_mask_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], layer_mask);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), layer_mask);
 
   return return_vals;
 }
 
-static GValueArray *
-item_is_selection_invoker (GimpProcedure      *procedure,
-                           Gimp               *gimp,
-                           GimpContext        *context,
-                           GimpProgress       *progress,
-                           const GValueArray  *args,
-                           GError            **error)
+static GimpValueArray *
+item_is_selection_invoker (GimpProcedure         *procedure,
+                           Gimp                  *gimp,
+                           GimpContext           *context,
+                           GimpProgress          *progress,
+                           const GimpValueArray  *args,
+                           GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gboolean selection = FALSE;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -292,25 +296,25 @@ item_is_selection_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], selection);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), selection);
 
   return return_vals;
 }
 
-static GValueArray *
-item_is_vectors_invoker (GimpProcedure      *procedure,
-                         Gimp               *gimp,
-                         GimpContext        *context,
-                         GimpProgress       *progress,
-                         const GValueArray  *args,
-                         GError            **error)
+static GimpValueArray *
+item_is_vectors_invoker (GimpProcedure         *procedure,
+                         Gimp                  *gimp,
+                         GimpContext           *context,
+                         GimpProgress          *progress,
+                         const GimpValueArray  *args,
+                         GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gboolean vectors = FALSE;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -321,25 +325,25 @@ item_is_vectors_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], vectors);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), vectors);
 
   return return_vals;
 }
 
-static GValueArray *
-item_is_group_invoker (GimpProcedure      *procedure,
-                       Gimp               *gimp,
-                       GimpContext        *context,
-                       GimpProgress       *progress,
-                       const GValueArray  *args,
-                       GError            **error)
+static GimpValueArray *
+item_is_group_invoker (GimpProcedure         *procedure,
+                       Gimp                  *gimp,
+                       GimpContext           *context,
+                       GimpProgress          *progress,
+                       const GimpValueArray  *args,
+                       GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gboolean group = FALSE;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -350,25 +354,25 @@ item_is_group_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], group);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), group);
 
   return return_vals;
 }
 
-static GValueArray *
-item_get_parent_invoker (GimpProcedure      *procedure,
-                         Gimp               *gimp,
-                         GimpContext        *context,
-                         GimpProgress       *progress,
-                         const GValueArray  *args,
-                         GError            **error)
+static GimpValueArray *
+item_get_parent_invoker (GimpProcedure         *procedure,
+                         Gimp                  *gimp,
+                         GimpContext           *context,
+                         GimpProgress          *progress,
+                         const GimpValueArray  *args,
+                         GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   GimpItem *parent = NULL;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -379,26 +383,26 @@ item_get_parent_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_item (&return_vals->values[1], parent);
+    gimp_value_set_item (gimp_value_array_index (return_vals, 1), parent);
 
   return return_vals;
 }
 
-static GValueArray *
-item_get_children_invoker (GimpProcedure      *procedure,
-                           Gimp               *gimp,
-                           GimpContext        *context,
-                           GimpProgress       *progress,
-                           const GValueArray  *args,
-                           GError            **error)
+static GimpValueArray *
+item_get_children_invoker (GimpProcedure         *procedure,
+                           Gimp                  *gimp,
+                           GimpContext           *context,
+                           GimpProgress          *progress,
+                           const GimpValueArray  *args,
+                           GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gint32 num_children = 0;
   gint32 *child_ids = NULL;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -415,7 +419,7 @@ item_get_children_invoker (GimpProcedure      *procedure,
 
               child_ids = g_new (gint32, num_children);
 
-              for (list = GIMP_LIST (children)->list, i = 0;
+              for (list = GIMP_LIST (children)->queue->head, i = 0;
                    list;
                    list = g_list_next (list), i++)
                 {
@@ -433,27 +437,80 @@ item_get_children_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_int (&return_vals->values[1], num_children);
-      gimp_value_take_int32array (&return_vals->values[2], child_ids, num_children);
+      g_value_set_int (gimp_value_array_index (return_vals, 1), num_children);
+      gimp_value_take_int32array (gimp_value_array_index (return_vals, 2), child_ids, num_children);
     }
 
   return return_vals;
 }
 
-static GValueArray *
-item_get_name_invoker (GimpProcedure      *procedure,
-                       Gimp               *gimp,
-                       GimpContext        *context,
-                       GimpProgress       *progress,
-                       const GValueArray  *args,
-                       GError            **error)
+static GimpValueArray *
+item_get_expanded_invoker (GimpProcedure         *procedure,
+                           Gimp                  *gimp,
+                           GimpContext           *context,
+                           GimpProgress          *progress,
+                           const GimpValueArray  *args,
+                           GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
+  GimpItem *item;
+  gboolean expanded = FALSE;
+
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+
+  if (success)
+    {
+      expanded = gimp_viewable_get_expanded (GIMP_VIEWABLE (item));
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success,
+                                                  error ? *error : NULL);
+
+  if (success)
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), expanded);
+
+  return return_vals;
+}
+
+static GimpValueArray *
+item_set_expanded_invoker (GimpProcedure         *procedure,
+                           Gimp                  *gimp,
+                           GimpContext           *context,
+                           GimpProgress          *progress,
+                           const GimpValueArray  *args,
+                           GError               **error)
+{
+  gboolean success = TRUE;
+  GimpItem *item;
+  gboolean expanded;
+
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  expanded = g_value_get_boolean (gimp_value_array_index (args, 1));
+
+  if (success)
+    {
+      gimp_viewable_set_expanded (GIMP_VIEWABLE (item), expanded);
+    }
+
+  return gimp_procedure_get_return_values (procedure, success,
+                                           error ? *error : NULL);
+}
+
+static GimpValueArray *
+item_get_name_invoker (GimpProcedure         *procedure,
+                       Gimp                  *gimp,
+                       GimpContext           *context,
+                       GimpProgress          *progress,
+                       const GimpValueArray  *args,
+                       GError               **error)
+{
+  gboolean success = TRUE;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gchar *name = NULL;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -464,25 +521,25 @@ item_get_name_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_take_string (&return_vals->values[1], name);
+    g_value_take_string (gimp_value_array_index (return_vals, 1), name);
 
   return return_vals;
 }
 
-static GValueArray *
-item_set_name_invoker (GimpProcedure      *procedure,
-                       Gimp               *gimp,
-                       GimpContext        *context,
-                       GimpProgress       *progress,
-                       const GValueArray  *args,
-                       GError            **error)
+static GimpValueArray *
+item_set_name_invoker (GimpProcedure         *procedure,
+                       Gimp                  *gimp,
+                       GimpContext           *context,
+                       GimpProgress          *progress,
+                       const GimpValueArray  *args,
+                       GError               **error)
 {
   gboolean success = TRUE;
   GimpItem *item;
   const gchar *name;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
-  name = g_value_get_string (&args->values[1]);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  name = g_value_get_string (gimp_value_array_index (args, 1));
 
   if (success)
     {
@@ -493,20 +550,20 @@ item_set_name_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-item_get_visible_invoker (GimpProcedure      *procedure,
-                          Gimp               *gimp,
-                          GimpContext        *context,
-                          GimpProgress       *progress,
-                          const GValueArray  *args,
-                          GError            **error)
+static GimpValueArray *
+item_get_visible_invoker (GimpProcedure         *procedure,
+                          Gimp                  *gimp,
+                          GimpContext           *context,
+                          GimpProgress          *progress,
+                          const GimpValueArray  *args,
+                          GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gboolean visible = FALSE;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -517,25 +574,25 @@ item_get_visible_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], visible);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), visible);
 
   return return_vals;
 }
 
-static GValueArray *
-item_set_visible_invoker (GimpProcedure      *procedure,
-                          Gimp               *gimp,
-                          GimpContext        *context,
-                          GimpProgress       *progress,
-                          const GValueArray  *args,
-                          GError            **error)
+static GimpValueArray *
+item_set_visible_invoker (GimpProcedure         *procedure,
+                          Gimp                  *gimp,
+                          GimpContext           *context,
+                          GimpProgress          *progress,
+                          const GimpValueArray  *args,
+                          GError               **error)
 {
   gboolean success = TRUE;
   GimpItem *item;
   gboolean visible;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
-  visible = g_value_get_boolean (&args->values[1]);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  visible = g_value_get_boolean (gimp_value_array_index (args, 1));
 
   if (success)
     {
@@ -546,20 +603,20 @@ item_set_visible_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-item_get_linked_invoker (GimpProcedure      *procedure,
-                         Gimp               *gimp,
-                         GimpContext        *context,
-                         GimpProgress       *progress,
-                         const GValueArray  *args,
-                         GError            **error)
+static GimpValueArray *
+item_get_linked_invoker (GimpProcedure         *procedure,
+                         Gimp                  *gimp,
+                         GimpContext           *context,
+                         GimpProgress          *progress,
+                         const GimpValueArray  *args,
+                         GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gboolean linked = FALSE;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -570,25 +627,25 @@ item_get_linked_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], linked);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), linked);
 
   return return_vals;
 }
 
-static GValueArray *
-item_set_linked_invoker (GimpProcedure      *procedure,
-                         Gimp               *gimp,
-                         GimpContext        *context,
-                         GimpProgress       *progress,
-                         const GValueArray  *args,
-                         GError            **error)
+static GimpValueArray *
+item_set_linked_invoker (GimpProcedure         *procedure,
+                         Gimp                  *gimp,
+                         GimpContext           *context,
+                         GimpProgress          *progress,
+                         const GimpValueArray  *args,
+                         GError               **error)
 {
   gboolean success = TRUE;
   GimpItem *item;
   gboolean linked;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
-  linked = g_value_get_boolean (&args->values[1]);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  linked = g_value_get_boolean (gimp_value_array_index (args, 1));
 
   if (success)
     {
@@ -599,20 +656,20 @@ item_set_linked_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-item_get_lock_content_invoker (GimpProcedure      *procedure,
-                               Gimp               *gimp,
-                               GimpContext        *context,
-                               GimpProgress       *progress,
-                               const GValueArray  *args,
-                               GError            **error)
+static GimpValueArray *
+item_get_lock_content_invoker (GimpProcedure         *procedure,
+                               Gimp                  *gimp,
+                               GimpContext           *context,
+                               GimpProgress          *progress,
+                               const GimpValueArray  *args,
+                               GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gboolean lock_content = FALSE;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -623,25 +680,25 @@ item_get_lock_content_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], lock_content);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), lock_content);
 
   return return_vals;
 }
 
-static GValueArray *
-item_set_lock_content_invoker (GimpProcedure      *procedure,
-                               Gimp               *gimp,
-                               GimpContext        *context,
-                               GimpProgress       *progress,
-                               const GValueArray  *args,
-                               GError            **error)
+static GimpValueArray *
+item_set_lock_content_invoker (GimpProcedure         *procedure,
+                               Gimp                  *gimp,
+                               GimpContext           *context,
+                               GimpProgress          *progress,
+                               const GimpValueArray  *args,
+                               GError               **error)
 {
   gboolean success = TRUE;
   GimpItem *item;
   gboolean lock_content;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
-  lock_content = g_value_get_boolean (&args->values[1]);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  lock_content = g_value_get_boolean (gimp_value_array_index (args, 1));
 
   if (success)
     {
@@ -655,20 +712,129 @@ item_set_lock_content_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-item_get_tattoo_invoker (GimpProcedure      *procedure,
-                         Gimp               *gimp,
-                         GimpContext        *context,
-                         GimpProgress       *progress,
-                         const GValueArray  *args,
-                         GError            **error)
+static GimpValueArray *
+item_get_lock_position_invoker (GimpProcedure         *procedure,
+                                Gimp                  *gimp,
+                                GimpContext           *context,
+                                GimpProgress          *progress,
+                                const GimpValueArray  *args,
+                                GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
+  GimpItem *item;
+  gboolean lock_position = FALSE;
+
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+
+  if (success)
+    {
+      lock_position = gimp_item_get_lock_position (GIMP_ITEM (item));
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success,
+                                                  error ? *error : NULL);
+
+  if (success)
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), lock_position);
+
+  return return_vals;
+}
+
+static GimpValueArray *
+item_set_lock_position_invoker (GimpProcedure         *procedure,
+                                Gimp                  *gimp,
+                                GimpContext           *context,
+                                GimpProgress          *progress,
+                                const GimpValueArray  *args,
+                                GError               **error)
+{
+  gboolean success = TRUE;
+  GimpItem *item;
+  gboolean lock_position;
+
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  lock_position = g_value_get_boolean (gimp_value_array_index (args, 1));
+
+  if (success)
+    {
+      if (gimp_item_can_lock_position (GIMP_ITEM (item)))
+        gimp_item_set_lock_position (GIMP_ITEM (item), lock_position, TRUE);
+      else
+        success = FALSE;
+    }
+
+  return gimp_procedure_get_return_values (procedure, success,
+                                           error ? *error : NULL);
+}
+
+static GimpValueArray *
+item_get_color_tag_invoker (GimpProcedure         *procedure,
+                            Gimp                  *gimp,
+                            GimpContext           *context,
+                            GimpProgress          *progress,
+                            const GimpValueArray  *args,
+                            GError               **error)
+{
+  gboolean success = TRUE;
+  GimpValueArray *return_vals;
+  GimpItem *item;
+  gint32 color_tag = 0;
+
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+
+  if (success)
+    {
+      color_tag = gimp_item_get_color_tag (GIMP_ITEM (item));
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success,
+                                                  error ? *error : NULL);
+
+  if (success)
+    g_value_set_enum (gimp_value_array_index (return_vals, 1), color_tag);
+
+  return return_vals;
+}
+
+static GimpValueArray *
+item_set_color_tag_invoker (GimpProcedure         *procedure,
+                            Gimp                  *gimp,
+                            GimpContext           *context,
+                            GimpProgress          *progress,
+                            const GimpValueArray  *args,
+                            GError               **error)
+{
+  gboolean success = TRUE;
+  GimpItem *item;
+  gint32 color_tag;
+
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  color_tag = g_value_get_enum (gimp_value_array_index (args, 1));
+
+  if (success)
+    {
+      gimp_item_set_color_tag (GIMP_ITEM (item), color_tag, TRUE);
+    }
+
+  return gimp_procedure_get_return_values (procedure, success,
+                                           error ? *error : NULL);
+}
+
+static GimpValueArray *
+item_get_tattoo_invoker (GimpProcedure         *procedure,
+                         Gimp                  *gimp,
+                         GimpContext           *context,
+                         GimpProgress          *progress,
+                         const GimpValueArray  *args,
+                         GError               **error)
+{
+  gboolean success = TRUE;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gint32 tattoo = 0;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -679,25 +845,25 @@ item_get_tattoo_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_uint (&return_vals->values[1], tattoo);
+    g_value_set_uint (gimp_value_array_index (return_vals, 1), tattoo);
 
   return return_vals;
 }
 
-static GValueArray *
-item_set_tattoo_invoker (GimpProcedure      *procedure,
-                         Gimp               *gimp,
-                         GimpContext        *context,
-                         GimpProgress       *progress,
-                         const GValueArray  *args,
-                         GError            **error)
+static GimpValueArray *
+item_set_tattoo_invoker (GimpProcedure         *procedure,
+                         Gimp                  *gimp,
+                         GimpContext           *context,
+                         GimpProgress          *progress,
+                         const GimpValueArray  *args,
+                         GError               **error)
 {
   gboolean success = TRUE;
   GimpItem *item;
   gint32 tattoo;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
-  tattoo = g_value_get_uint (&args->values[1]);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  tattoo = g_value_get_uint (gimp_value_array_index (args, 1));
 
   if (success)
     {
@@ -708,44 +874,47 @@ item_set_tattoo_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-item_attach_parasite_invoker (GimpProcedure      *procedure,
-                              Gimp               *gimp,
-                              GimpContext        *context,
-                              GimpProgress       *progress,
-                              const GValueArray  *args,
-                              GError            **error)
+static GimpValueArray *
+item_attach_parasite_invoker (GimpProcedure         *procedure,
+                              Gimp                  *gimp,
+                              GimpContext           *context,
+                              GimpProgress          *progress,
+                              const GimpValueArray  *args,
+                              GError               **error)
 {
   gboolean success = TRUE;
   GimpItem *item;
   const GimpParasite *parasite;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
-  parasite = g_value_get_boxed (&args->values[1]);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  parasite = g_value_get_boxed (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      gimp_item_parasite_attach (item, parasite, TRUE);
+      if (gimp_item_parasite_validate (item, parasite, error))
+        gimp_item_parasite_attach (item, parasite, TRUE);
+      else
+        success = FALSE;
     }
 
   return gimp_procedure_get_return_values (procedure, success,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-item_detach_parasite_invoker (GimpProcedure      *procedure,
-                              Gimp               *gimp,
-                              GimpContext        *context,
-                              GimpProgress       *progress,
-                              const GValueArray  *args,
-                              GError            **error)
+static GimpValueArray *
+item_detach_parasite_invoker (GimpProcedure         *procedure,
+                              Gimp                  *gimp,
+                              GimpContext           *context,
+                              GimpProgress          *progress,
+                              const GimpValueArray  *args,
+                              GError               **error)
 {
   gboolean success = TRUE;
   GimpItem *item;
   const gchar *name;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
-  name = g_value_get_string (&args->values[1]);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  name = g_value_get_string (gimp_value_array_index (args, 1));
 
   if (success)
     {
@@ -756,22 +925,22 @@ item_detach_parasite_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-item_get_parasite_invoker (GimpProcedure      *procedure,
-                           Gimp               *gimp,
-                           GimpContext        *context,
-                           GimpProgress       *progress,
-                           const GValueArray  *args,
-                           GError            **error)
+static GimpValueArray *
+item_get_parasite_invoker (GimpProcedure         *procedure,
+                           Gimp                  *gimp,
+                           GimpContext           *context,
+                           GimpProgress          *progress,
+                           const GimpValueArray  *args,
+                           GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   const gchar *name;
   GimpParasite *parasite = NULL;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
-  name = g_value_get_string (&args->values[1]);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  name = g_value_get_string (gimp_value_array_index (args, 1));
 
   if (success)
     {
@@ -785,26 +954,26 @@ item_get_parasite_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_take_boxed (&return_vals->values[1], parasite);
+    g_value_take_boxed (gimp_value_array_index (return_vals, 1), parasite);
 
   return return_vals;
 }
 
-static GValueArray *
-item_get_parasite_list_invoker (GimpProcedure      *procedure,
-                                Gimp               *gimp,
-                                GimpContext        *context,
-                                GimpProgress       *progress,
-                                const GValueArray  *args,
-                                GError            **error)
+static GimpValueArray *
+item_get_parasite_list_invoker (GimpProcedure         *procedure,
+                                Gimp                  *gimp,
+                                GimpContext           *context,
+                                GimpProgress          *progress,
+                                const GimpValueArray  *args,
+                                GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gint32 num_parasites = 0;
   gchar **parasites = NULL;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -816,8 +985,8 @@ item_get_parasite_list_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_int (&return_vals->values[1], num_parasites);
-      gimp_value_take_stringarray (&return_vals->values[2], parasites, num_parasites);
+      g_value_set_int (gimp_value_array_index (return_vals, 1), num_parasites);
+      gimp_value_take_stringarray (gimp_value_array_index (return_vals, 2), parasites, num_parasites);
     }
 
   return return_vals;
@@ -1205,6 +1374,64 @@ register_item_procs (GimpPDB *pdb)
   g_object_unref (procedure);
 
   /*
+   * gimp-item-get-expanded
+   */
+  procedure = gimp_procedure_new (item_get_expanded_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure),
+                               "gimp-item-get-expanded");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-item-get-expanded",
+                                     "Returns whether the item is expanded.",
+                                     "This procedure returns TRUE if the specified item is expanded.",
+                                     "Ell",
+                                     "Ell",
+                                     "2017",
+                                     NULL);
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_item_id ("item",
+                                                        "item",
+                                                        "The item",
+                                                        pdb->gimp, FALSE,
+                                                        GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_boolean ("expanded",
+                                                         "expanded",
+                                                         "TRUE if the item is expanded, FALSE otherwise",
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure (pdb, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-item-set-expanded
+   */
+  procedure = gimp_procedure_new (item_set_expanded_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure),
+                               "gimp-item-set-expanded");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-item-set-expanded",
+                                     "Sets the expanded state of the item.",
+                                     "This procedure expands or collapses the item.",
+                                     "Ell",
+                                     "Ell",
+                                     "2017",
+                                     NULL);
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_item_id ("item",
+                                                        "item",
+                                                        "The item",
+                                                        pdb->gimp, FALSE,
+                                                        GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("expanded",
+                                                     "expanded",
+                                                     "TRUE to expand the item, FALSE to collapse the item",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure (pdb, procedure);
+  g_object_unref (procedure);
+
+  /*
    * gimp-item-get-name
    */
   procedure = gimp_procedure_new (item_get_name_invoker);
@@ -1435,6 +1662,124 @@ register_item_procs (GimpPDB *pdb)
                                                      "The new item 'lock content' state",
                                                      FALSE,
                                                      GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure (pdb, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-item-get-lock-position
+   */
+  procedure = gimp_procedure_new (item_get_lock_position_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure),
+                               "gimp-item-get-lock-position");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-item-get-lock-position",
+                                     "Get the 'lock position' state of the specified item.",
+                                     "This procedure returns the specified item's lock position state.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2012",
+                                     NULL);
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_item_id ("item",
+                                                        "item",
+                                                        "The item",
+                                                        pdb->gimp, FALSE,
+                                                        GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_boolean ("lock-position",
+                                                         "lock position",
+                                                         "Whether the item's position is locked",
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure (pdb, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-item-set-lock-position
+   */
+  procedure = gimp_procedure_new (item_set_lock_position_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure),
+                               "gimp-item-set-lock-position");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-item-set-lock-position",
+                                     "Set the 'lock position' state of the specified item.",
+                                     "This procedure sets the specified item's lock position state.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2009",
+                                     NULL);
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_item_id ("item",
+                                                        "item",
+                                                        "The item",
+                                                        pdb->gimp, FALSE,
+                                                        GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("lock-position",
+                                                     "lock position",
+                                                     "The new item 'lock position' state",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure (pdb, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-item-get-color-tag
+   */
+  procedure = gimp_procedure_new (item_get_color_tag_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure),
+                               "gimp-item-get-color-tag");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-item-get-color-tag",
+                                     "Get the color tag of the specified item.",
+                                     "This procedure returns the specified item's color tag.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2016",
+                                     NULL);
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_item_id ("item",
+                                                        "item",
+                                                        "The item",
+                                                        pdb->gimp, FALSE,
+                                                        GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_enum ("color-tag",
+                                                      "color tag",
+                                                      "The item's color tag",
+                                                      GIMP_TYPE_COLOR_TAG,
+                                                      GIMP_COLOR_TAG_NONE,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure (pdb, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-item-set-color-tag
+   */
+  procedure = gimp_procedure_new (item_set_color_tag_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure),
+                               "gimp-item-set-color-tag");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-item-set-color-tag",
+                                     "Set the color tag of the specified item.",
+                                     "This procedure sets the specified item's color tag.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2016",
+                                     NULL);
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_item_id ("item",
+                                                        "item",
+                                                        "The item",
+                                                        pdb->gimp, FALSE,
+                                                        GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("color-tag",
+                                                  "color tag",
+                                                  "The new item color tag",
+                                                  GIMP_TYPE_COLOR_TAG,
+                                                  GIMP_COLOR_TAG_NONE,
+                                                  GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 

@@ -19,6 +19,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpmath/gimpmath.h"
@@ -31,9 +32,11 @@
 #include "config/gimprc.h"
 
 #include "core/gimp.h"
-#include "core/gimplist.h"
 #include "core/gimptemplate.h"
 
+#include "plug-in/gimppluginmanager.h"
+
+#include "widgets/gimpaction-history.h"
 #include "widgets/gimpcolorpanel.h"
 #include "widgets/gimpcontainercombobox.h"
 #include "widgets/gimpcontainerview.h"
@@ -43,13 +46,16 @@
 #include "widgets/gimpgrideditor.h"
 #include "widgets/gimphelp.h"
 #include "widgets/gimphelp-ids.h"
+#include "widgets/gimpiconsizescale.h"
+#include "widgets/gimplanguagecombobox.h"
 #include "widgets/gimpmessagebox.h"
 #include "widgets/gimpmessagedialog.h"
-#include "widgets/gimpprofilechooserdialog.h"
+#include "widgets/gimppluginview.h"
+#include "widgets/gimpprefsbox.h"
 #include "widgets/gimppropwidgets.h"
+#include "widgets/gimpstrokeeditor.h"
 #include "widgets/gimptemplateeditor.h"
 #include "widgets/gimptooleditor.h"
-#include "widgets/gimpwidgets-constructors.h"
 #include "widgets/gimpwidgets-utils.h"
 
 #include "menus/menus.h"
@@ -57,9 +63,11 @@
 #include "tools/gimp-tools.h"
 
 #include "gui/session.h"
+#include "gui/icon-themes.h"
 #include "gui/themes.h"
 
 #include "preferences-dialog.h"
+#include "preferences-dialog-utils.h"
 #include "resolution-calibrate-dialog.h"
 
 #include "gimp-intl.h"
@@ -67,58 +75,64 @@
 
 #define RESPONSE_RESET 1
 
-#define COLOR_BUTTON_WIDTH  40
-#define COLOR_BUTTON_HEIGHT 24
-
 
 /*  preferences local functions  */
 
-static GtkWidget * prefs_dialog_new               (Gimp       *gimp,
-                                                   GimpConfig *config);
-static void        prefs_config_notify            (GObject    *config,
-                                                   GParamSpec *param_spec,
-                                                   GObject    *config_copy);
-static void        prefs_config_copy_notify       (GObject    *config_copy,
-                                                   GParamSpec *param_spec,
-                                                   GObject    *config);
-static void        prefs_response                 (GtkWidget  *widget,
-                                                   gint        response_id,
-                                                   GtkWidget  *dialog);
+static GtkWidget * prefs_dialog_new                (Gimp       *gimp,
+                                                    GimpConfig *config);
+static void        prefs_config_notify             (GObject    *config,
+                                                    GParamSpec *param_spec,
+                                                    GObject    *config_copy);
+static void        prefs_config_copy_notify        (GObject    *config_copy,
+                                                    GParamSpec *param_spec,
+                                                    GObject    *config);
+static void        prefs_response                  (GtkWidget  *widget,
+                                                    gint        response_id,
+                                                    GtkWidget  *dialog);
 
-static void        prefs_message                  (GtkMessageType  type,
-                                                   gboolean        destroy,
-                                                   const gchar    *message);
+static void        prefs_message                   (GtkMessageType  type,
+                                                    gboolean        destroy,
+                                                    const gchar    *message);
 
-static void   prefs_notebook_page_callback        (GtkNotebook      *notebook,
-                                                   gpointer          page,
-                                                   guint             page_num,
-                                                   GtkTreeSelection *sel);
-static void   prefs_resolution_source_callback    (GtkWidget  *widget,
-                                                   GObject    *config);
-static void   prefs_resolution_calibrate_callback (GtkWidget  *widget,
-                                                   GtkWidget  *entry);
-static void   prefs_input_devices_dialog          (GtkWidget  *widget,
-                                                   Gimp       *gimp);
-static void   prefs_keyboard_shortcuts_dialog     (GtkWidget  *widget,
-                                                   Gimp       *gimp);
-static void   prefs_menus_save_callback           (GtkWidget  *widget,
-                                                   Gimp       *gimp);
-static void   prefs_menus_clear_callback          (GtkWidget  *widget,
-                                                   Gimp       *gimp);
-static void   prefs_menus_remove_callback         (GtkWidget  *widget,
-                                                   Gimp       *gimp);
-static void   prefs_session_save_callback         (GtkWidget  *widget,
-                                                   Gimp       *gimp);
-static void   prefs_session_clear_callback        (GtkWidget  *widget,
-                                                   Gimp       *gimp);
-static void   prefs_devices_save_callback         (GtkWidget  *widget,
-                                                   Gimp       *gimp);
-static void   prefs_devices_clear_callback        (GtkWidget  *widget,
-                                                   Gimp       *gimp);
-static void   prefs_tool_options_save_callback    (GtkWidget  *widget,
-                                                   Gimp       *gimp);
-static void   prefs_tool_options_clear_callback   (GtkWidget  *widget,
-                                                   Gimp       *gimp);
+static void   prefs_color_management_reset         (GtkWidget    *widget,
+                                                    GObject      *config);
+static void   prefs_dialog_defaults_reset          (GtkWidget    *widget,
+                                                    GObject      *config);
+
+static void   prefs_import_raw_procedure_callback  (GtkWidget    *widget,
+                                                    GObject      *config);
+static void   prefs_resolution_source_callback     (GtkWidget    *widget,
+                                                    GObject      *config);
+static void   prefs_resolution_calibrate_callback  (GtkWidget    *widget,
+                                                    GtkWidget    *entry);
+static void   prefs_input_devices_dialog           (GtkWidget    *widget,
+                                                    Gimp         *gimp);
+static void   prefs_keyboard_shortcuts_dialog      (GtkWidget    *widget,
+                                                    Gimp         *gimp);
+static void   prefs_menus_save_callback            (GtkWidget    *widget,
+                                                    Gimp         *gimp);
+static void   prefs_menus_clear_callback           (GtkWidget    *widget,
+                                                    Gimp         *gimp);
+static void   prefs_menus_remove_callback          (GtkWidget    *widget,
+                                                    Gimp         *gimp);
+static void   prefs_session_save_callback          (GtkWidget    *widget,
+                                                    Gimp         *gimp);
+static void   prefs_session_clear_callback         (GtkWidget    *widget,
+                                                    Gimp         *gimp);
+static void   prefs_devices_save_callback          (GtkWidget    *widget,
+                                                    Gimp         *gimp);
+static void   prefs_devices_clear_callback         (GtkWidget    *widget,
+                                                    Gimp         *gimp);
+static void   prefs_search_clear_callback          (GtkWidget    *widget,
+                                                    Gimp         *gimp);
+static void   prefs_tool_options_save_callback     (GtkWidget    *widget,
+                                                    Gimp         *gimp);
+static void   prefs_tool_options_clear_callback    (GtkWidget    *widget,
+                                                    Gimp         *gimp);
+static void   prefs_help_language_change_callback  (GtkComboBox  *combo,
+                                                    Gimp         *gimp);
+static void   prefs_help_language_change_callback2 (GtkComboBox  *combo,
+                                                    GtkContainer *box);
 
 
 /*  private variables  */
@@ -178,8 +192,8 @@ prefs_config_notify (GObject    *config,
                      GParamSpec *param_spec,
                      GObject    *config_copy)
 {
-  GValue global_value = { 0, };
-  GValue copy_value   = { 0, };
+  GValue global_value = G_VALUE_INIT;
+  GValue copy_value   = G_VALUE_INIT;
 
   g_value_init (&global_value, param_spec->value_type);
   g_value_init (&copy_value,   param_spec->value_type);
@@ -209,8 +223,8 @@ prefs_config_copy_notify (GObject    *config_copy,
                           GParamSpec *param_spec,
                           GObject    *config)
 {
-  GValue copy_value   = { 0, };
-  GValue global_value = { 0, };
+  GValue copy_value   = G_VALUE_INIT;
+  GValue global_value = G_VALUE_INIT;
 
   g_value_init (&copy_value,   param_spec->value_type);
   g_value_init (&global_value, param_spec->value_type);
@@ -264,14 +278,14 @@ prefs_response (GtkWidget *widget,
         GtkWidget *confirm;
 
         confirm = gimp_message_dialog_new (_("Reset All Preferences"),
-                                           GIMP_STOCK_QUESTION,
+                                           GIMP_ICON_DIALOG_QUESTION,
                                            dialog,
                                            GTK_DIALOG_MODAL |
                                            GTK_DIALOG_DESTROY_WITH_PARENT,
                                            gimp_standard_help_func, NULL,
 
-                                           GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                           GIMP_STOCK_RESET, GTK_RESPONSE_OK,
+                                           _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                           _("_Reset"),  GTK_RESPONSE_OK,
 
                                            NULL);
 
@@ -291,6 +305,7 @@ prefs_response (GtkWidget *widget,
             config_copy = g_object_get_data (G_OBJECT (dialog), "config-copy");
 
             gimp_config_reset (config_copy);
+            gimp_rc_load_system (GIMP_RC (config_copy));
 
             /* don't use the default value if there is no help browser */
             if (! gimp_help_browser_is_installed (gimp))
@@ -330,7 +345,7 @@ prefs_response (GtkWidget *widget,
         for (list = confirm_diff; list; list = g_list_next (list))
           {
             GParamSpec *param_spec = list->data;
-            GValue      value      = { 0, };
+            GValue      value      = G_VALUE_INIT;
 
             g_value_init (&value, param_spec->value_type);
 
@@ -401,7 +416,7 @@ prefs_response (GtkWidget *widget,
         for (list = diff; list; list = g_list_next (list))
           {
             GParamSpec *param_spec = list->data;
-            GValue      value      = { 0, };
+            GValue      value      = G_VALUE_INIT;
 
             g_value_init (&value, param_spec->value_type);
 
@@ -430,6 +445,43 @@ prefs_response (GtkWidget *widget,
 }
 
 static void
+prefs_color_management_reset (GtkWidget *widget,
+                              GObject   *config)
+{
+  GimpCoreConfig *core_config = GIMP_CORE_CONFIG (config);
+
+  gimp_config_reset (GIMP_CONFIG (core_config->color_management));
+  gimp_config_reset_property (config, "color-profile-policy");
+  gimp_config_reset_property (config, "filter-tool-show-color-options");
+}
+
+static void
+prefs_dialog_defaults_reset (GtkWidget *widget,
+                             GObject   *config)
+{
+  GParamSpec **pspecs;
+  guint        n_pspecs;
+  guint        i;
+
+  pspecs = g_object_class_list_properties (G_OBJECT_GET_CLASS (config),
+                                           &n_pspecs);
+
+  g_object_freeze_notify (config);
+
+  for (i = 0; i < n_pspecs; i++)
+    {
+      GParamSpec *pspec = pspecs[i];
+
+      if (pspec->owner_type == GIMP_TYPE_DIALOG_CONFIG)
+        gimp_config_reset_property (config, pspec->name);
+    }
+
+  g_object_thaw_notify (config);
+
+  g_free (pspecs);
+}
+
+static void
 prefs_template_select_callback (GimpContainerView *view,
                                 GimpTemplate      *template,
                                 gpointer           insert_data,
@@ -446,6 +498,21 @@ prefs_template_select_callback (GimpContainerView *view,
 }
 
 static void
+prefs_import_raw_procedure_callback (GtkWidget *widget,
+                                     GObject   *config)
+{
+  gchar *raw_plug_in;
+
+  raw_plug_in = gimp_plug_in_view_get_plug_in (GIMP_PLUG_IN_VIEW (widget));
+
+  g_object_set (config,
+                "import-raw-plug-in", raw_plug_in,
+                NULL);
+
+  g_free (raw_plug_in);
+}
+
+static void
 prefs_resolution_source_callback (GtkWidget *widget,
                                   GObject   *config)
 {
@@ -457,7 +524,9 @@ prefs_resolution_source_callback (GtkWidget *widget,
 
   if (from_gdk)
     {
-      gimp_get_screen_resolution (NULL, &xres, &yres);
+      gimp_get_monitor_resolution (gtk_widget_get_screen (widget),
+                                   gimp_widget_get_monitor (widget),
+                                   &xres, &yres);
     }
   else
     {
@@ -482,13 +551,13 @@ prefs_resolution_calibrate_callback (GtkWidget *widget,
                                      GtkWidget *entry)
 {
   GtkWidget *dialog;
-  GtkWidget *notebook;
+  GtkWidget *prefs_box;
   GtkWidget *image;
 
   dialog = gtk_widget_get_toplevel (entry);
 
-  notebook = g_object_get_data (G_OBJECT (dialog),   "notebook");
-  image    = g_object_get_data (G_OBJECT (notebook), "image");
+  prefs_box = g_object_get_data (G_OBJECT (dialog), "prefs-box");
+  image     = gimp_prefs_box_get_image (GIMP_PREFS_BOX (prefs_box));
 
   resolution_calibrate_dialog (entry, gtk_image_get_pixbuf (GTK_IMAGE (image)));
 }
@@ -499,6 +568,7 @@ prefs_input_devices_dialog (GtkWidget *widget,
 {
   gimp_dialog_factory_dialog_raise (gimp_dialog_factory_get_singleton (),
                                     gtk_widget_get_screen (widget),
+                                    gimp_widget_get_monitor (widget),
                                     "gimp-input-devices-dialog", 0);
 }
 
@@ -508,6 +578,7 @@ prefs_keyboard_shortcuts_dialog (GtkWidget *widget,
 {
   gimp_dialog_factory_dialog_raise (gimp_dialog_factory_get_singleton (),
                                     gtk_widget_get_screen (widget),
+                                    gimp_widget_get_monitor (widget),
                                     "gimp-keyboard-shortcuts-dialog", 0);
 }
 
@@ -553,14 +624,14 @@ prefs_menus_remove_callback (GtkWidget *widget,
   GtkWidget *dialog;
 
   dialog = gimp_message_dialog_new (_("Remove all Keyboard Shortcuts"),
-                                    GIMP_STOCK_QUESTION,
+                                    GIMP_ICON_DIALOG_QUESTION,
                                     gtk_widget_get_toplevel (widget),
                                     GTK_DIALOG_MODAL |
                                     GTK_DIALOG_DESTROY_WITH_PARENT,
                                     gimp_standard_help_func, NULL,
 
-                                    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                    GTK_STOCK_CLEAR,  GTK_RESPONSE_OK,
+                                    _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                    _("Cl_ear"),  GTK_RESPONSE_OK,
 
                                     NULL);
 
@@ -656,6 +727,13 @@ prefs_devices_clear_callback (GtkWidget *widget,
 }
 
 static void
+prefs_search_clear_callback (GtkWidget *widget,
+                             Gimp      *gimp)
+{
+  gimp_action_history_clear (gimp);
+}
+
+static void
 prefs_tool_options_save_callback (GtkWidget *widget,
                                   Gimp      *gimp)
 {
@@ -690,175 +768,72 @@ prefs_tool_options_clear_callback (GtkWidget *widget,
     }
 }
 
-static GtkWidget *
-prefs_notebook_append_page (Gimp          *gimp,
-                            GtkNotebook   *notebook,
-                            const gchar   *notebook_label,
-                            const gchar   *notebook_icon,
-                            GtkTreeStore  *tree,
-                            const gchar   *tree_label,
-                            const gchar   *help_id,
-                            GtkTreeIter   *parent,
-                            GtkTreeIter   *iter,
-                            gint           page_index)
+static void
+prefs_help_language_change_callback (GtkComboBox *combo,
+                                     Gimp        *gimp)
 {
-  GtkWidget *event_box;
-  GtkWidget *vbox;
-  GdkPixbuf *pixbuf       = NULL;
-  GdkPixbuf *small_pixbuf = NULL;
+  gchar *help_locales = NULL;
+  gchar *code;
 
-  event_box = gtk_event_box_new ();
-  gtk_event_box_set_visible_window (GTK_EVENT_BOX (event_box), FALSE);
-  gtk_notebook_append_page (notebook, event_box, NULL);
-  gtk_widget_show (event_box);
-
-  gimp_help_set_help_data (event_box, NULL, help_id);
-
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
-  gtk_container_add (GTK_CONTAINER (event_box), vbox);
-  gtk_widget_show (vbox);
-
-  if (notebook_icon)
+  code = gimp_language_combo_box_get_code (GIMP_LANGUAGE_COMBO_BOX (combo));
+  if (code && g_strcmp0 ("", code) != 0)
     {
-      gchar *basename;
-      gchar *filename;
-
-      basename = g_strconcat (notebook_icon, ".png", NULL);
-      filename = themes_get_theme_file (gimp, "images", "preferences",
-                                        basename, NULL);
-
-      if (g_file_test (filename, G_FILE_TEST_IS_REGULAR))
-        pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
-
-      g_free (filename);
-      g_free (basename);
-
-      basename = g_strconcat (notebook_icon, "-22.png", NULL);
-      filename = themes_get_theme_file (gimp, "images", "preferences",
-                                        basename, NULL);
-
-      if (g_file_test (filename, G_FILE_TEST_IS_REGULAR))
-        small_pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
-      else if (pixbuf)
-        small_pixbuf = gdk_pixbuf_scale_simple (pixbuf,
-                                                22, 22, GDK_INTERP_BILINEAR);
-
-      g_free (filename);
-      g_free (basename);
+      help_locales = g_strdup_printf ("%s:", code);
     }
-
-  gtk_tree_store_append (tree, iter, parent);
-  gtk_tree_store_set (tree, iter,
-                      0, small_pixbuf,
-                      1, tree_label ? tree_label : notebook_label,
-                      2, page_index,
-                      3, notebook_label,
-                      4, pixbuf,
-                      -1);
-
-  if (pixbuf)
-    g_object_unref (pixbuf);
-
-  if (small_pixbuf)
-    g_object_unref (small_pixbuf);
-
-  return vbox;
+  g_object_set (gimp->config,
+                "help-locales", help_locales? help_locales : "",
+                NULL);
+  g_free (code);
+  if (help_locales)
+    g_free (help_locales);
 }
 
 static void
-prefs_tree_select_callback (GtkTreeSelection *sel,
-                            GtkNotebook      *notebook)
+prefs_help_language_change_callback2 (GtkComboBox  *combo,
+                                      GtkContainer *box)
 {
-  GtkWidget    *label;
-  GtkWidget    *image;
-  GtkTreeModel *model;
-  GtkTreeIter   iter;
-  gchar        *text;
-  GdkPixbuf    *pixbuf;
-  gint          index;
+  Gimp        *gimp;
+  GtkLabel    *label = NULL;
+  GtkImage    *icon  = NULL;
+  GList       *children;
+  GList       *iter;
+  const gchar *text;
+  const gchar *icon_name;
 
-  if (! gtk_tree_selection_get_selected (sel, &model, &iter))
-    return;
-
-  label = g_object_get_data (G_OBJECT (notebook), "label");
-  image = g_object_get_data (G_OBJECT (notebook), "image");
-
-  gtk_tree_model_get (model, &iter,
-                      3, &text,
-                      4, &pixbuf,
-                      2, &index,
-                      -1);
-
-  gtk_label_set_text (GTK_LABEL (label), text);
-  g_free (text);
-
-  gtk_image_set_from_pixbuf (GTK_IMAGE (image), pixbuf);
-  if (pixbuf)
-    g_object_unref (pixbuf);
-
-  g_signal_handlers_block_by_func (notebook,
-                                   prefs_notebook_page_callback,
-                                   sel);
-  gtk_notebook_set_current_page (GTK_NOTEBOOK (notebook), index);
-  g_signal_handlers_unblock_by_func (notebook,
-                                     prefs_notebook_page_callback,
-                                     sel);
-}
-
-static void
-prefs_notebook_page_callback (GtkNotebook      *notebook,
-                              gpointer          page,
-                              guint             page_num,
-                              GtkTreeSelection *sel)
-{
-  GtkTreeView  *view;
-  GtkTreeModel *model;
-  GtkTreeIter   iter;
-  gboolean      iter_valid;
-
-  view  = gtk_tree_selection_get_tree_view (sel);
-  model = gtk_tree_view_get_model (view);
-
-  for (iter_valid = gtk_tree_model_get_iter_first (model, &iter);
-       iter_valid;
-       iter_valid = gtk_tree_model_iter_next (model, &iter))
+  gimp = g_object_get_data (G_OBJECT (box), "gimp");
+  children = gtk_container_get_children (box);
+  for (iter = children; iter; iter = iter->next)
     {
-      gint index;
-
-      gtk_tree_model_get (model, &iter, 2, &index, -1);
-
-      if (index == page_num)
+      if (GTK_IS_LABEL (iter->data))
         {
-          gtk_tree_selection_select_iter (sel, &iter);
-          return;
+          label = iter->data;
         }
-
-      if (gtk_tree_model_iter_has_child (model, &iter))
+      else if (GTK_IS_IMAGE (iter->data))
         {
-          gint num_children;
-          gint i;
-
-          num_children = gtk_tree_model_iter_n_children (model, &iter);
-
-          for (i = 0; i < num_children; i++)
-            {
-              GtkTreeIter child_iter;
-
-              gtk_tree_model_iter_nth_child (model, &child_iter, &iter, i);
-              gtk_tree_model_get (model, &child_iter, 2, &index, -1);
-
-              if (index == page_num)
-                {
-                  GtkTreePath *path;
-
-                  path = gtk_tree_model_get_path (model, &child_iter);
-                  gtk_tree_view_expand_to_path (view, path);
-                  gtk_tree_selection_select_iter (sel, &child_iter);
-                  return;
-                }
-            }
+          icon = iter->data;
         }
     }
+  if (gimp_help_user_manual_is_installed (gimp))
+    {
+      text = _("There's a local installation of the user manual.");
+      icon_name = GIMP_ICON_DIALOG_INFORMATION;
+    }
+  else
+    {
+      text = _("The user manual is not installed locally.");
+      icon_name = GIMP_ICON_DIALOG_WARNING;
+    }
+  if (label)
+    {
+      gtk_label_set_text (label, text);
+    }
+  if (icon)
+    {
+      gtk_image_set_from_icon_name (icon, icon_name,
+                                    GTK_ICON_SIZE_BUTTON);
+    }
+
+  g_list_free (children);
 }
 
 static void
@@ -870,7 +845,7 @@ prefs_format_string_select_callback (GtkTreeSelection *sel,
 
   if (gtk_tree_selection_get_selected (sel, &model, &iter))
     {
-      GValue val = { 0, };
+      GValue val = G_VALUE_INIT;
 
       gtk_tree_model_get_value (model, &iter, 1, &val);
       gtk_entry_set_text (entry, g_value_get_string (&val));
@@ -887,10 +862,10 @@ prefs_theme_select_callback (GtkTreeSelection *sel,
 
   if (gtk_tree_selection_get_selected (sel, &model, &iter))
     {
-      GValue val = { 0, };
+      GValue val = G_VALUE_INIT;
 
       gtk_tree_model_get_value (model, &iter, 0, &val);
-      g_object_set (gimp->config, "theme", g_value_get_string (&val), NULL);
+      g_object_set_property (G_OBJECT (gimp->config), "theme", &val);
       g_value_unset (&val);
     }
 }
@@ -902,369 +877,21 @@ prefs_theme_reload_callback (GtkWidget *button,
   g_object_notify (G_OBJECT (gimp->config), "theme");
 }
 
-static GtkWidget *
-prefs_frame_new (const gchar  *label,
-                 GtkContainer *parent,
-                 gboolean      expand)
-{
-  GtkWidget *frame;
-  GtkWidget *vbox;
-
-  frame = gimp_frame_new (label);
-
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
-  gtk_container_add (GTK_CONTAINER (frame), vbox);
-  gtk_widget_show (vbox);
-
-  if (GTK_IS_BOX (parent))
-    gtk_box_pack_start (GTK_BOX (parent), frame, expand, expand, 0);
-  else
-    gtk_container_add (parent, frame);
-
-  gtk_widget_show (frame);
-
-  return vbox;
-}
-
-static GtkWidget *
-prefs_table_new (gint          rows,
-                 GtkContainer *parent)
-{
-  GtkWidget *table;
-
-  table = gtk_table_new (rows, 2, FALSE);
-
-  gtk_table_set_row_spacings (GTK_TABLE (table), 6);
-  gtk_table_set_col_spacings (GTK_TABLE (table), 6);
-
-  if (GTK_IS_BOX (parent))
-    gtk_box_pack_start (GTK_BOX (parent), table, FALSE, FALSE, 0);
-  else
-    gtk_container_add (parent, table);
-
-  gtk_widget_show (table);
-
-  return table;
-}
-
 static void
-prefs_profile_combo_dialog_response (GimpProfileChooserDialog *dialog,
-                                     gint                      response,
-                                     GimpColorProfileComboBox *combo)
+prefs_icon_theme_select_callback (GtkTreeSelection *sel,
+                                  Gimp             *gimp)
 {
-  if (response == GTK_RESPONSE_ACCEPT)
+  GtkTreeModel *model;
+  GtkTreeIter   iter;
+
+  if (gtk_tree_selection_get_selected (sel, &model, &iter))
     {
-      gchar *filename;
+      GValue val = G_VALUE_INIT;
 
-      filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-
-      if (filename)
-        {
-          gchar *label = gimp_profile_chooser_dialog_get_desc (dialog,
-                                                               filename);
-
-          gimp_color_profile_combo_box_set_active (combo, filename, label);
-
-          g_free (label);
-        }
+      gtk_tree_model_get_value (model, &iter, 1, &val);
+      g_object_set_property (G_OBJECT (gimp->config), "icon-theme", &val);
+      g_value_unset (&val);
     }
-
-  gtk_widget_hide (GTK_WIDGET (dialog));
-}
-
-static void
-prefs_profile_combo_changed (GimpColorProfileComboBox *combo,
-                             GObject                  *config)
-{
-  gchar *filename = gimp_color_profile_combo_box_get_active (combo);
-
-  g_object_set (config,
-                g_object_get_data (G_OBJECT (combo), "property-name"), filename,
-                NULL);
-
-  g_free (filename);
-}
-
-static GtkWidget *
-prefs_profile_combo_add_tooltip (GtkWidget   *combo,
-                                 GObject     *config,
-                                 const gchar *property_name)
-{
-  GParamSpec  *param_spec;
-  const gchar *blurb;
-
-  param_spec = g_object_class_find_property (G_OBJECT_GET_CLASS (config),
-                                             property_name);
-
-  blurb = g_param_spec_get_blurb (param_spec);
-
-  if (blurb)
-    gimp_help_set_help_data (combo,
-                             dgettext (GETTEXT_PACKAGE "-libgimp", blurb),
-                             NULL);
-
-  return combo;
-}
-
-static GtkWidget *
-prefs_profile_combo_box_new (Gimp         *gimp,
-                             GObject      *config,
-                             GtkListStore *store,
-                             const gchar  *label,
-                             const gchar  *property_name)
-{
-  GtkWidget *dialog = gimp_profile_chooser_dialog_new (gimp, label);
-  GtkWidget *combo;
-  gchar     *filename;
-
-  g_object_get (config, property_name, &filename, NULL);
-
-  combo = gimp_color_profile_combo_box_new_with_model (dialog,
-                                                       GTK_TREE_MODEL (store));
-
-  g_object_set_data (G_OBJECT (combo),
-                     "property-name", (gpointer) property_name);
-
-  gimp_color_profile_combo_box_set_active (GIMP_COLOR_PROFILE_COMBO_BOX (combo),
-                                           filename, NULL);
-
-  g_signal_connect (dialog, "response",
-                    G_CALLBACK (prefs_profile_combo_dialog_response),
-                    combo);
-
-  g_signal_connect (combo, "changed",
-                    G_CALLBACK (prefs_profile_combo_changed),
-                    config);
-
-  return prefs_profile_combo_add_tooltip (combo, config, property_name);
-}
-
-static GtkWidget *
-prefs_hint_box_new (const gchar  *stock_id,
-                    const gchar  *text)
-{
-  GtkWidget *hbox;
-  GtkWidget *image;
-  GtkWidget *label;
-
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-
-  image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
-  gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
-  gtk_widget_show (image);
-
-  label = gtk_label_new (text);
-  gimp_label_set_attributes (GTK_LABEL (label),
-                             PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
-                             -1);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-
-  gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
-  gtk_widget_show (label);
-
-  gtk_widget_show (hbox);
-
-  return hbox;
-}
-
-static GtkWidget *
-prefs_button_add (const gchar *stock_id,
-                  const gchar *label,
-                  GtkBox      *box)
-{
-  GtkWidget *button;
-
-  button = gimp_stock_button_new (stock_id, label);
-  gtk_box_pack_start (GTK_BOX (box), button, FALSE, FALSE, 0);
-  gtk_widget_show (button);
-
-  return button;
-}
-
-static GtkWidget *
-prefs_check_button_add (GObject     *config,
-                        const gchar *property_name,
-                        const gchar *label,
-                        GtkBox      *vbox)
-{
-  GtkWidget *button;
-
-  button = gimp_prop_check_button_new (config, property_name, label);
-
-  if (button)
-    {
-      gtk_box_pack_start (vbox, button, FALSE, FALSE, 0);
-      gtk_widget_show (button);
-    }
-
-  return button;
-}
-
-static GtkWidget *
-prefs_check_button_add_with_icon (GObject      *config,
-                                  const gchar  *property_name,
-                                  const gchar  *label,
-                                  const gchar  *stock_id,
-                                  GtkBox       *vbox,
-                                  GtkSizeGroup *group)
-{
-  GtkWidget *button;
-  GtkWidget *hbox;
-  GtkWidget *image;
-
-  button = gimp_prop_check_button_new (config, property_name, label);
-  if (!button)
-    return NULL;
-
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-  gtk_box_pack_start (vbox, hbox, FALSE, FALSE, 0);
-  gtk_widget_show (hbox);
-
-  image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
-  gtk_misc_set_padding (GTK_MISC (image), 2, 2);
-  gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
-  gtk_widget_show (image);
-
-  gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
-  gtk_widget_show (button);
-
-  if (group)
-    gtk_size_group_add_widget (group, image);
-
-  return button;
-}
-
-static GtkWidget *
-prefs_widget_add_aligned (GtkWidget    *widget,
-                          const gchar  *text,
-                          GtkTable     *table,
-                          gint          table_row,
-                          gboolean      left_align,
-                          GtkSizeGroup *group)
-{
-  GtkWidget *label = gimp_table_attach_aligned (table, 0, table_row,
-                                                text, 0.0, 0.5,
-                                                widget, 1, left_align);
-  if (group)
-    gtk_size_group_add_widget (group, label);
-
-  return label;
-}
-
-static GtkWidget *
-prefs_color_button_add (GObject      *config,
-                        const gchar  *property_name,
-                        const gchar  *label,
-                        const gchar  *title,
-                        GtkTable     *table,
-                        gint          table_row,
-                        GtkSizeGroup *group)
-{
-  GtkWidget *button = gimp_prop_color_button_new (config, property_name,
-                                                  title,
-                                                  COLOR_BUTTON_WIDTH,
-                                                  COLOR_BUTTON_HEIGHT,
-                                                  GIMP_COLOR_AREA_FLAT);
-
-  if (button)
-    prefs_widget_add_aligned (button, label, table, table_row, TRUE, group);
-
-  return button;
-}
-
-static GtkWidget *
-prefs_enum_combo_box_add (GObject      *config,
-                          const gchar  *property_name,
-                          gint          minimum,
-                          gint          maximum,
-                          const gchar  *label,
-                          GtkTable     *table,
-                          gint          table_row,
-                          GtkSizeGroup *group)
-{
-  GtkWidget *combo = gimp_prop_enum_combo_box_new (config, property_name,
-                                                   minimum, maximum);
-
-  if (combo)
-    prefs_widget_add_aligned (combo, label, table, table_row, FALSE, group);
-
-  return combo;
-}
-
-static GtkWidget *
-prefs_boolean_combo_box_add (GObject      *config,
-                             const gchar  *property_name,
-                             const gchar  *true_text,
-                             const gchar  *false_text,
-                             const gchar  *label,
-                             GtkTable     *table,
-                             gint          table_row,
-                             GtkSizeGroup *group)
-{
-  GtkWidget *combo = gimp_prop_boolean_combo_box_new (config, property_name,
-                                                      true_text, false_text);
-
-  if (combo)
-    prefs_widget_add_aligned (combo, label, table, table_row, FALSE, group);
-
-  return combo;
-}
-
-#ifdef HAVE_ISO_CODES
-static GtkWidget *
-prefs_language_combo_box_add (GObject      *config,
-                              const gchar  *property_name,
-                              GtkBox       *vbox)
-{
-  GtkWidget *combo = gimp_prop_language_combo_box_new (config, property_name);
-
-  if (combo)
-    {
-      gtk_box_pack_start (vbox, combo, FALSE, FALSE, 0);
-      gtk_widget_show (combo);
-    }
-
-  return combo;
-}
-#endif
-
-static GtkWidget *
-prefs_spin_button_add (GObject      *config,
-                       const gchar  *property_name,
-                       gdouble       step_increment,
-                       gdouble       page_increment,
-                       gint          digits,
-                       const gchar  *label,
-                       GtkTable     *table,
-                       gint          table_row,
-                       GtkSizeGroup *group)
-{
-  GtkWidget *button = gimp_prop_spin_button_new (config, property_name,
-                                                 step_increment,
-                                                 page_increment,
-                                                 digits);
-
-  if (button)
-    prefs_widget_add_aligned (button, label, table, table_row, TRUE, group);
-
-  return button;
-}
-
-static GtkWidget *
-prefs_memsize_entry_add (GObject      *config,
-                         const gchar  *property_name,
-                         const gchar  *label,
-                         GtkTable     *table,
-                         gint          table_row,
-                         GtkSizeGroup *group)
-{
-  GtkWidget *entry = gimp_prop_memsize_entry_new (config, property_name);
-
-  if (entry)
-    prefs_widget_add_aligned (entry, label, table, table_row, TRUE, group);
-
-  return entry;
 }
 
 static void
@@ -1340,9 +967,8 @@ prefs_display_options_frame_add (Gimp         *gimp,
   button = prefs_color_button_add (object, "padding-color",
                                    _("Custom p_adding color:"),
                                    _("Select Custom Canvas Padding Color"),
-                                   GTK_TABLE (table), 1, NULL);
-  gimp_color_panel_set_context (GIMP_COLOR_PANEL (button),
-                                gimp_get_user_context (gimp));
+                                   GTK_TABLE (table), 1, NULL,
+                                   gimp_get_user_context (gimp));
 
   g_signal_connect (button, "color-changed",
                     G_CALLBACK (prefs_canvas_padding_color_changed),
@@ -1350,18 +976,59 @@ prefs_display_options_frame_add (Gimp         *gimp,
 }
 
 static void
+prefs_behavior_options_frame_add (Gimp         *gimp,
+                                  GObject      *object,
+                                  const gchar  *label,
+                                  GtkContainer *parent)
+{
+  GtkWidget *vbox;
+  GtkWidget *hbox;
+  GtkWidget *checks_vbox;
+
+  vbox = prefs_frame_new (label, parent, FALSE);
+
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  gtk_widget_show (hbox);
+
+  checks_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
+  gtk_box_pack_start (GTK_BOX (hbox), checks_vbox, TRUE, TRUE, 0);
+  gtk_widget_show (checks_vbox);
+
+  prefs_check_button_add (object, "snap-to-guides",
+                          _("Snap to Guides"),
+                          GTK_BOX (checks_vbox));
+  prefs_check_button_add (object, "snap-to-grid",
+                          _("Snap to Grid"),
+                          GTK_BOX (checks_vbox));
+
+  checks_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
+  gtk_box_pack_start (GTK_BOX (hbox), checks_vbox, TRUE, TRUE, 0);
+  gtk_widget_show (checks_vbox);
+
+  prefs_check_button_add (object, "snap-to-canvas",
+                          _("Snap to Canvas Edges"),
+                          GTK_BOX (checks_vbox));
+  prefs_check_button_add (object, "snap-to-path",
+                          _("Snap to Active Path"),
+                          GTK_BOX (checks_vbox));
+}
+
+static void
 prefs_help_func (const gchar *help_id,
                  gpointer     help_data)
 {
+  GtkWidget *prefs_box;
   GtkWidget *notebook;
-  GtkWidget *event_box;
+  GtkWidget *page;
   gint       page_num;
 
-  notebook  = g_object_get_data (G_OBJECT (help_data), "notebook");
+  prefs_box = g_object_get_data (G_OBJECT (help_data), "prefs-box");
+  notebook  = gimp_prefs_box_get_notebook (GIMP_PREFS_BOX (prefs_box));
   page_num  = gtk_notebook_get_current_page (GTK_NOTEBOOK (notebook));
-  event_box = gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook), page_num);
+  page      = gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook), page_num);
 
-  help_id = g_object_get_data (G_OBJECT (event_box), "gimp-help-id");
+  help_id = g_object_get_data (G_OBJECT (page), "gimp-help-id");
   gimp_standard_help_func (help_id, NULL);
 }
 
@@ -1384,42 +1051,24 @@ prefs_message (GtkMessageType  type,
   gtk_widget_show (dialog);
 }
 
-/**
- * prefs_dialog_new:
- * @gimp:  the GIMP instance
- * @config: the configuration model
- *
- * build the Preferences dialog
- *
- * TODO: split into smaller, easy maintainable pieces
- */
 static GtkWidget *
 prefs_dialog_new (Gimp       *gimp,
                   GimpConfig *config)
 {
   GtkWidget         *dialog;
-  GtkWidget         *tv;
-  GtkTreeStore      *tree;
-  GtkTreeViewColumn *column;
-  GtkCellRenderer   *cell;
-  GtkTreeSelection  *sel;
-  GtkTreePath       *path;
   GtkTreeIter        top_iter;
   GtkTreeIter        child_iter;
-  gint               page_index;
 
+  GtkWidget         *prefs_box;
   GtkSizeGroup      *size_group = NULL;
-  GtkWidget         *frame;
-  GtkWidget         *ebox;
-  GtkWidget         *notebook;
   GtkWidget         *vbox;
-  GtkWidget         *vbox2;
   GtkWidget         *hbox;
+  GtkWidget         *vbox2;
+  GtkWidget         *vbox3;
   GtkWidget         *button;
   GtkWidget         *button2;
   GtkWidget         *table;
   GtkWidget         *label;
-  GtkWidget         *image;
   GtkWidget         *entry;
   GtkWidget         *calibrate_button;
   GSList            *group;
@@ -1429,6 +1078,7 @@ prefs_dialog_new (Gimp       *gimp,
   GObject           *object;
   GimpCoreConfig    *core_config;
   GimpDisplayConfig *display_config;
+  GList             *manuals;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (GIMP_IS_CONFIG (config), NULL);
@@ -1442,9 +1092,9 @@ prefs_dialog_new (Gimp       *gimp,
                             prefs_help_func,
                             GIMP_HELP_PREFS_DIALOG,
 
-                            GIMP_STOCK_RESET, RESPONSE_RESET,
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Reset"),  RESPONSE_RESET,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -1458,109 +1108,26 @@ prefs_dialog_new (Gimp       *gimp,
                     G_CALLBACK (prefs_response),
                     dialog);
 
-  /* The main hbox */
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
+  /* The prefs box */
+  prefs_box = gimp_prefs_box_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (prefs_box), 12);
   gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
-                      hbox, TRUE, TRUE, 0);
-  gtk_widget_show (hbox);
+                      prefs_box, TRUE, TRUE, 0);
+  gtk_widget_show (prefs_box);
 
-  /* The categories tree */
-  frame = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (frame),
-                                       GTK_SHADOW_IN);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (frame),
-                                  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-  gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
-  gtk_widget_show (frame);
-
-  tree = gtk_tree_store_new (5,
-                             GDK_TYPE_PIXBUF, G_TYPE_STRING,
-                             G_TYPE_INT, G_TYPE_STRING, GDK_TYPE_PIXBUF);
-  tv = gtk_tree_view_new_with_model (GTK_TREE_MODEL (tree));
-  g_object_unref (tree);
-
-  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tv), FALSE);
-
-  column = gtk_tree_view_column_new ();
-
-  cell = gtk_cell_renderer_pixbuf_new ();
-  gtk_tree_view_column_pack_start (column, cell, FALSE);
-  gtk_tree_view_column_set_attributes (column, cell, "pixbuf", 0, NULL);
-
-  cell = gtk_cell_renderer_text_new ();
-  gtk_tree_view_column_pack_start (column, cell, TRUE);
-  gtk_tree_view_column_set_attributes (column, cell, "text", 1, NULL);
-
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tv), column);
-
-  gtk_container_add (GTK_CONTAINER (frame), tv);
-
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
-  gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
-  gtk_widget_show (vbox);
-
-  ebox = gtk_event_box_new ();
-  gtk_widget_set_state (ebox, GTK_STATE_SELECTED);
-  gtk_box_pack_start (GTK_BOX (vbox), ebox, FALSE, TRUE, 0);
-  gtk_widget_show (ebox);
-
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox), 6);
-  gtk_container_add (GTK_CONTAINER (ebox), hbox);
-  gtk_widget_show (hbox);
-
-  label = gtk_label_new (NULL);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gimp_label_set_attributes (GTK_LABEL (label),
-                             PANGO_ATTR_SCALE,  PANGO_SCALE_LARGE,
-                             PANGO_ATTR_WEIGHT, PANGO_WEIGHT_BOLD,
-                             -1);
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-  gtk_widget_show (label);
-
-  image = gtk_image_new ();
-  gtk_box_pack_end (GTK_BOX (hbox), image, FALSE, FALSE, 0);
-  gtk_widget_show (image);
-
-  /* The main preferences notebook */
-  notebook = gtk_notebook_new ();
-  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (notebook), FALSE);
-  gtk_notebook_set_show_border (GTK_NOTEBOOK (notebook), FALSE);
-  gtk_box_pack_start (GTK_BOX (vbox), notebook, TRUE, TRUE, 0);
-
-  g_object_set_data (G_OBJECT (dialog), "notebook", notebook);
-
-  g_object_set_data (G_OBJECT (notebook), "label", label);
-  g_object_set_data (G_OBJECT (notebook), "image", image);
-
-  sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (tv));
-  g_signal_connect (sel, "changed",
-                    G_CALLBACK (prefs_tree_select_callback),
-                    notebook);
-  g_signal_connect (notebook, "switch-page",
-                    G_CALLBACK (prefs_notebook_page_callback),
-                    sel);
-
-  page_index = 0;
+  g_object_set_data (G_OBJECT (dialog), "prefs-box", prefs_box);
 
 
-  /*****************/
-  /*  Environment  */
-  /*****************/
-  vbox = prefs_notebook_append_page (gimp,
-                                     GTK_NOTEBOOK (notebook),
-                                     _("Environment"),
-                                     "environment",
-                                     GTK_TREE_STORE (tree),
-                                     NULL,
-                                     GIMP_HELP_PREFS_ENVIRONMENT,
-                                     NULL,
-                                     &top_iter,
-                                     page_index++);
-
-  /* select this page in the tree */
-  gtk_tree_selection_select_iter (sel, &top_iter);
+  /**********************/
+  /*  System Resources  */
+  /**********************/
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-system-resources",
+                                  _("System Resources"),
+                                  _("System Resources"),
+                                  GIMP_HELP_PREFS_SYSTEM_RESOURCES,
+                                  NULL,
+                                  &top_iter);
 
   size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
@@ -1588,9 +1155,27 @@ prefs_dialog_new (Gimp       *gimp,
 
 #ifdef ENABLE_MP
   prefs_spin_button_add (object, "num-processors", 1.0, 4.0, 0,
-                         _("Number of _processors to use:"),
+                         _("Number of _threads to use:"),
                          GTK_TABLE (table), 4, size_group);
+
+  vbox2 = g_object_new (GIMP_TYPE_HINT_BOX,
+                        "icon-name", GIMP_ICON_DIALOG_WARNING,
+                        "hint",      _("Threading support is not yet stable.\n"
+                                       "Setting this to greater than one might\n"
+                                       "result in image errors or crashes."),
+                        NULL);
+  gtk_table_attach (GTK_TABLE (table), vbox2, 1, 2, 5, 6,
+                    GTK_FILL | GTK_EXPAND, GTK_FILL, 0, 0);
+  gtk_widget_show (vbox2);
 #endif /* ENABLE_MP */
+
+  /*  Hardware Acceleration  */
+  vbox2 = prefs_frame_new (_("Hardware Acceleration"), GTK_CONTAINER (vbox),
+                           FALSE);
+
+  prefs_check_button_add (object, "use-opencl",
+                          _("Use OpenCL"),
+                          GTK_BOX (vbox2));
 
   /*  Image Thumbnails  */
   vbox2 = prefs_frame_new (_("Image Thumbnails"), GTK_CONTAINER (vbox), FALSE);
@@ -1617,18 +1202,521 @@ prefs_dialog_new (Gimp       *gimp,
 
 
   /***************/
+  /*  Debugging  */
+  /***************/
+  /* No debugging preferences are needed on win32. Either GIMP has been
+   * built with DrMinGW support (HAVE_EXCHNDL) or not. If it has, then
+   * the backtracing is enabled and can't be disabled. It assume it will
+   * work only upon a crash.
+   */
+#ifndef G_OS_WIN32
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-wilber-eek", /* TODO: icon needed. */
+                                  _("Debugging"),
+                                  _("Debugging"),
+                                  GIMP_HELP_PREFS_DEBUGGING,
+                                  NULL,
+                                  &top_iter);
+
+  hbox = g_object_new (GIMP_TYPE_HINT_BOX,
+                       "icon-name", GIMP_ICON_DIALOG_WARNING,
+                       "hint",      _("We hope you will never need these "
+                                      "settings, but as all software, GIMP "
+                                      "has bugs, and crashes can occur. If it "
+                                      "happens, you can help us by reporting "
+                                      "bugs."),
+                        NULL);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  gtk_widget_show (hbox);
+
+  vbox2 = prefs_frame_new (_("Bug Reporting"),
+                           GTK_CONTAINER (vbox), FALSE);
+
+  size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+  button = prefs_enum_combo_box_add (object, "debug-policy", 0, 0,
+                                     _("Debug Policy"),
+                                     GTK_TABLE (table), 0, size_group);
+
+  /* Check existence of gdb or lldb to activate the preference, as a
+   * good hint of its prerequisite, unless backtrace() API exists, in
+   * which case the feature is always available.
+   */
+  hbox = NULL;
+  if (! gimp_stack_trace_available (TRUE))
+    {
+#ifndef HAVE_EXECINFO_H
+      hbox = prefs_hint_box_new (GIMP_ICON_DIALOG_WARNING,
+                                 _("This feature requires \"gdb\" or \"lldb\" installed on your system."));
+      gtk_widget_set_sensitive (button, FALSE);
+#else
+      hbox = prefs_hint_box_new (GIMP_ICON_DIALOG_WARNING,
+                                 _("This feature is more efficient with \"gdb\" or \"lldb\" installed on your system."));
+#endif /* ! HAVE_EXECINFO_H */
+    }
+  if (hbox)
+    gtk_box_pack_start (GTK_BOX (vbox2), hbox, FALSE, FALSE, 0);
+
+#endif /* ! G_OS_WIN32 */
+
+  /**********************/
+  /*  Color Management  */
+  /**********************/
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-color-management",
+                                  _("Color Management"),
+                                  _("Color Management"),
+                                  GIMP_HELP_PREFS_COLOR_MANAGEMENT,
+                                  NULL,
+                                  &top_iter);
+
+  gimp_prefs_box_set_page_scrollable (GIMP_PREFS_BOX (prefs_box), vbox, TRUE);
+
+  button = gimp_prefs_box_set_page_resettable (GIMP_PREFS_BOX (prefs_box),
+                                               vbox,
+                                               _("Reset Color Management"));
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (prefs_color_management_reset),
+                    config);
+
+  {
+    GObject      *color_config = G_OBJECT (core_config->color_management);
+    GtkListStore *store;
+    gchar        *filename;
+    gint          row = 0;
+
+    filename = gimp_personal_rc_file ("profilerc");
+    store = gimp_color_profile_store_new (filename);
+    g_free (filename);
+
+    gimp_color_profile_store_add_file (GIMP_COLOR_PROFILE_STORE (store),
+                                       NULL, NULL);
+
+    size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
+
+    table = prefs_table_new (1, GTK_CONTAINER (vbox));
+
+    prefs_enum_combo_box_add (color_config, "mode", 0, 0,
+                              _("Image display _mode:"),
+                              GTK_TABLE (table), row++, NULL);
+
+    /*  Color Managed Display  */
+    vbox2 = prefs_frame_new (_("Color Managed Display"), GTK_CONTAINER (vbox),
+                             FALSE);
+
+    table = prefs_table_new (4, GTK_CONTAINER (vbox2));
+    row = 0;
+
+    prefs_profile_combo_box_add (color_config,
+                                 "display-profile",
+                                 store,
+                                 _("Select Monitor Color Profile"),
+                                 _("_Monitor profile:"),
+                                 GTK_TABLE (table), row++, size_group,
+                                 object, "color-profile-path");
+
+    button = gimp_prop_check_button_new (color_config,
+                                         "display-profile-from-gdk",
+                                         _("_Try to use the system monitor "
+                                           "profile"));
+    gtk_table_attach_defaults (GTK_TABLE (table),
+                               button, 1, 2, row, row + 1);
+    gtk_widget_show (button);
+    row++;
+
+    prefs_enum_combo_box_add (color_config,
+                              "display-rendering-intent", 0, 0,
+                              _("_Rendering intent:"),
+                              GTK_TABLE (table), row++, size_group);
+
+    button = gimp_prop_check_button_new (color_config,
+                                         "display-use-black-point-compensation",
+                                         _("Use _black point compensation"));
+    gtk_table_attach_defaults (GTK_TABLE (table),
+                               button, 1, 2, row, row + 1);
+    gtk_widget_show (button);
+    row++;
+
+    prefs_boolean_combo_box_add (color_config,
+                                 "display-optimize",
+                                 _("Speed"),
+                                 _("Precision / Color Fidelity"),
+                                 _("_Optimize image display for:"),
+                                 GTK_TABLE (table), row++, size_group);
+
+    /*  Print Simulation (Soft-proofing)  */
+    vbox2 = prefs_frame_new (_("Soft-Proofing"),
+                             GTK_CONTAINER (vbox),
+                             FALSE);
+
+    table = prefs_table_new (4, GTK_CONTAINER (vbox2));
+    row = 0;
+
+    prefs_profile_combo_box_add (color_config,
+                                 "printer-profile",
+                                 store,
+                                 _("Select Soft-Proofing Color Profile"),
+                                 _("_Soft-proofing profile:"),
+                                 GTK_TABLE (table), row++, size_group,
+                                 object, "color-profile-path");
+
+    prefs_enum_combo_box_add (color_config,
+                              "simulation-rendering-intent", 0, 0,
+                              _("Re_ndering intent:"),
+                              GTK_TABLE (table), row++, size_group);
+
+    button = gimp_prop_check_button_new (color_config,
+                                         "simulation-use-black-point-compensation",
+                                         _("Use black _point compensation"));
+    gtk_table_attach_defaults (GTK_TABLE (table),
+                               button, 1, 2, row, row + 1);
+    gtk_widget_show (button);
+    row++;
+
+    prefs_boolean_combo_box_add (color_config,
+                                 "simulation-optimize",
+                                 _("Speed"),
+                                 _("Precision / Color Fidelity"),
+                                 _("O_ptimize soft-proofing for:"),
+                                 GTK_TABLE (table), row++, size_group);
+
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+    gtk_table_attach_defaults (GTK_TABLE (table), hbox, 1, 2, row, row + 1);
+    gtk_widget_show (hbox);
+    row++;
+
+    button = gimp_prop_check_button_new (color_config, "simulation-gamut-check",
+                                         _("Mark out of gamut colors"));
+    gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
+    gtk_widget_show (button);
+
+    button = gimp_prop_color_button_new (color_config, "out-of-gamut-color",
+                                         _("Select Warning Color"),
+                                         PREFS_COLOR_BUTTON_WIDTH,
+                                         PREFS_COLOR_BUTTON_HEIGHT,
+                                         GIMP_COLOR_AREA_FLAT);
+    gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+    gtk_widget_show (button);
+
+    gimp_color_panel_set_context (GIMP_COLOR_PANEL (button),
+                                  gimp_get_user_context (gimp));
+
+    /*  Preferred profiles  */
+    vbox2 = prefs_frame_new (_("Preferred Profiles"), GTK_CONTAINER (vbox),
+                             FALSE);
+
+    table = prefs_table_new (3, GTK_CONTAINER (vbox2));
+    row = 0;
+
+    prefs_profile_combo_box_add (color_config,
+                                 "rgb-profile",
+                                 store,
+                                 _("Select Preferred RGB Color Profile"),
+                                 _("_RGB profile:"),
+                                 GTK_TABLE (table), row++, size_group,
+                                 object, "color-profile-path");
+
+    prefs_profile_combo_box_add (color_config,
+                                 "gray-profile",
+                                 store,
+                                 _("Select Preferred Grayscale Color Profile"),
+                                 _("_Grayscale profile:"),
+                                 GTK_TABLE (table), row++, size_group,
+                                 object, "color-profile-path");
+
+    prefs_profile_combo_box_add (color_config,
+                                 "cmyk-profile",
+                                 store,
+                                 _("Select CMYK Color Profile"),
+                                 _("_CMYK profile:"),
+                                 GTK_TABLE (table), row++, size_group,
+                                 object, "color-profile-path");
+
+    /*  Policies  */
+    vbox2 = prefs_frame_new (_("Policies"), GTK_CONTAINER (vbox),
+                             FALSE);
+    table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+    button = prefs_enum_combo_box_add (object, "color-profile-policy", 0, 0,
+                                       _("File Open behaviour:"),
+                                       GTK_TABLE (table), 0, size_group);
+
+    /*  Filter Dialogs  */
+    vbox2 = prefs_frame_new (_("Filter Dialogs"), GTK_CONTAINER (vbox),
+                             FALSE);
+
+    button = prefs_check_button_add (object, "filter-tool-show-color-options",
+                                     _("Show advanced color options"),
+                                     GTK_BOX (vbox2));
+
+    g_object_unref (size_group);
+
+    g_object_unref (store);
+  }
+
+
+  /***************************/
+  /*  Image Import / Export  */
+  /***************************/
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-import-export",
+                                  _("Image Import & Export"),
+                                  _("Image Import & Export"),
+                                  GIMP_HELP_PREFS_DIALOG,
+                                  NULL,
+                                  &top_iter);
+
+  /*  Import Policies  */
+  vbox2 = prefs_frame_new (_("Import Policies"),
+                           GTK_CONTAINER (vbox), FALSE);
+
+  button = prefs_check_button_add (object, "import-promote-float",
+                                   _("Promote imported images to "
+                                     "_floating point precision"),
+                                   GTK_BOX (vbox2));
+
+  vbox3 = prefs_frame_new (NULL, GTK_CONTAINER (vbox2), FALSE);
+  button = prefs_check_button_add (object, "import-promote-dither",
+                                   _("Dither images when promoting to "
+                                     "floating point"),
+                                   GTK_BOX (vbox3));
+
+  button = prefs_check_button_add (object, "import-add-alpha",
+                                   _("Add an alpha channel to imported images"),
+                                   GTK_BOX (vbox2));
+
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+  button = prefs_enum_combo_box_add (object, "color-profile-policy", 0, 0,
+                                     _("Color profile policy:"),
+                                     GTK_TABLE (table), 0, NULL);
+
+  /*  Export Policies  */
+  vbox2 = prefs_frame_new (_("Export Policies"),
+                           GTK_CONTAINER (vbox), FALSE);
+
+  button = prefs_check_button_add (object, "export-metadata-exif",
+                                   _("Export Exif metadata by default when available"),
+                                   GTK_BOX (vbox2));
+  button = prefs_check_button_add (object, "export-metadata-xmp",
+                                   _("Export XMP metadata by default when available"),
+                                   GTK_BOX (vbox2));
+  button = prefs_check_button_add (object, "export-metadata-iptc",
+                                   _("Export IPTC metadata by default when available"),
+                                   GTK_BOX (vbox2));
+  hbox = prefs_hint_box_new (GIMP_ICON_DIALOG_WARNING,
+                             _("Metadata can contain sensitive information."));
+  gtk_box_pack_start (GTK_BOX (vbox2), hbox, FALSE, FALSE, 0);
+
+
+  /*  Raw Image Importer  */
+  vbox2 = prefs_frame_new (_("Raw Image Importer"),
+                           GTK_CONTAINER (vbox), TRUE);
+
+  {
+    GtkWidget *scrolled_window;
+    GtkWidget *view;
+
+    scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
+                                    GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+    gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolled_window),
+                                         GTK_SHADOW_IN);
+    gtk_box_pack_start (GTK_BOX (vbox2), scrolled_window, TRUE, TRUE, 0);
+    gtk_widget_show (scrolled_window);
+
+    view = gimp_plug_in_view_new (gimp->plug_in_manager->raw_load_procs);
+    gimp_plug_in_view_set_plug_in (GIMP_PLUG_IN_VIEW (view),
+                                   core_config->import_raw_plug_in);
+    gtk_container_add (GTK_CONTAINER (scrolled_window), view);
+    gtk_widget_show (view);
+
+    g_signal_connect (view, "changed",
+                      G_CALLBACK (prefs_import_raw_procedure_callback),
+                      config);
+  }
+
+  /****************/
+  /*  Playground  */
+  /****************/
+  if (gimp->show_playground)
+    {
+      vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                      "gimp-prefs-playground",
+                                      _("Experimental Playground"),
+                                      _("Playground"),
+                                      GIMP_HELP_PREFS_DIALOG,
+                                      NULL,
+                                      &top_iter);
+
+      vbox2 = prefs_frame_new (_("Insane Options"),
+                               GTK_CONTAINER (vbox), TRUE);
+
+      button = prefs_check_button_add (object, "playground-npd-tool",
+                                       _("_N-Point Deformation tool"),
+                                       GTK_BOX (vbox2));
+      button = prefs_check_button_add (object, "playground-seamless-clone-tool",
+                                       _("_Seamless Clone tool"),
+                                       GTK_BOX (vbox2));
+    }
+
+
+  /******************/
+  /*  Tool Options  */
+  /******************/
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-tool-options",
+                                  C_("preferences", "Tool Options"),
+                                  C_("preferences", "Tool Options"),
+                                  GIMP_HELP_PREFS_TOOL_OPTIONS,
+                                  NULL,
+                                  &top_iter);
+
+  size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
+
+  /*  General  */
+  vbox2 = prefs_frame_new (_("General"), GTK_CONTAINER (vbox), FALSE);
+
+  prefs_check_button_add (object, "save-tool-options",
+                          _("_Save tool options on exit"),
+                          GTK_BOX (vbox2));
+
+  button = prefs_button_add (GIMP_ICON_DOCUMENT_SAVE,
+                             _("Save Tool Options _Now"),
+                             GTK_BOX (vbox2));
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (prefs_tool_options_save_callback),
+                    gimp);
+
+  button2 = prefs_button_add (GIMP_ICON_RESET,
+                              _("_Reset Saved Tool Options to "
+                                "Default Values"),
+                              GTK_BOX (vbox2));
+  g_signal_connect (button2, "clicked",
+                    G_CALLBACK (prefs_tool_options_clear_callback),
+                    gimp);
+
+  g_object_set_data (G_OBJECT (button), "clear-button", button2);
+
+  /*  Scaling  */
+  vbox2 = prefs_frame_new (_("Scaling"), GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+  prefs_enum_combo_box_add (object, "interpolation-type", 0, 0,
+                            _("Default _interpolation:"),
+                            GTK_TABLE (table), 0, size_group);
+
+  g_object_unref (size_group);
+  size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
+
+  /*  Global Brush, Pattern, ...  */
+  vbox2 = prefs_frame_new (_("Paint Options Shared Between Tools"),
+                           GTK_CONTAINER (vbox), FALSE);
+
+  prefs_check_button_add_with_icon (object, "global-brush",
+                                    _("_Brush"),    GIMP_ICON_BRUSH,
+                                    GTK_BOX (vbox2), size_group);
+  prefs_check_button_add_with_icon (object, "global-dynamics",
+                                    _("_Dynamics"), GIMP_ICON_DYNAMICS,
+                                    GTK_BOX (vbox2), size_group);
+  prefs_check_button_add_with_icon (object, "global-pattern",
+                                    _("_Pattern"),  GIMP_ICON_PATTERN,
+                                    GTK_BOX (vbox2), size_group);
+  prefs_check_button_add_with_icon (object, "global-gradient",
+                                    _("_Gradient"), GIMP_ICON_GRADIENT,
+                                    GTK_BOX (vbox2), size_group);
+
+  /*  Move Tool */
+  vbox2 = prefs_frame_new (_("Move Tool"),
+                           GTK_CONTAINER (vbox), FALSE);
+
+  prefs_check_button_add_with_icon (object, "move-tool-changes-active",
+                                    _("Set layer or path as active"),
+                                    GIMP_ICON_TOOL_MOVE,
+                                    GTK_BOX (vbox2), size_group);
+
+  g_object_unref (size_group);
+  size_group = NULL;
+
+
+  /*******************/
+  /*  Default Image  */
+  /*******************/
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-new-image",
+                                  _("Default New Image"),
+                                  _("Default Image"),
+                                  GIMP_HELP_PREFS_NEW_IMAGE,
+                                  NULL,
+                                  &top_iter);
+
+  gimp_prefs_box_set_page_scrollable (GIMP_PREFS_BOX (prefs_box), vbox, TRUE);
+
+  table = prefs_table_new (1, GTK_CONTAINER (vbox));
+
+  {
+    GtkWidget *combo;
+
+    combo = gimp_container_combo_box_new (gimp->templates,
+                                          gimp_get_user_context (gimp),
+                                          16, 0);
+    gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
+                               _("_Template:"),  0.0, 0.5,
+                               combo, 1, FALSE);
+
+    gimp_container_view_select_item (GIMP_CONTAINER_VIEW (combo), NULL);
+
+    g_signal_connect (combo, "select-item",
+                      G_CALLBACK (prefs_template_select_callback),
+                      core_config->default_image);
+  }
+
+  editor = gimp_template_editor_new (core_config->default_image, gimp, FALSE);
+  gimp_template_editor_show_advanced (GIMP_TEMPLATE_EDITOR (editor), TRUE);
+  gtk_box_pack_start (GTK_BOX (vbox), editor, FALSE, FALSE, 0);
+  gtk_widget_show (editor);
+
+  /*  Quick Mask Color */
+  vbox2 = prefs_frame_new (_("Quick Mask"), GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+  prefs_color_button_add (object, "quick-mask-color",
+                          _("Quick Mask color:"),
+                          _("Set the default Quick Mask color"),
+                          GTK_TABLE (table), 0, NULL,
+                          gimp_get_user_context (gimp));
+
+
+  /**********************************/
+  /*  Default Image / Default Grid  */
+  /**********************************/
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-default-grid",
+                                  _("Default Image Grid"),
+                                  _("Default Grid"),
+                                  GIMP_HELP_PREFS_DEFAULT_GRID,
+                                  &top_iter,
+                                  &child_iter);
+
+  /*  Grid  */
+  editor = gimp_grid_editor_new (core_config->default_grid,
+                                 gimp_get_user_context (gimp),
+                                 gimp_template_get_resolution_x (core_config->default_image),
+                                 gimp_template_get_resolution_y (core_config->default_image));
+  gtk_box_pack_start (GTK_BOX (vbox), editor, TRUE, TRUE, 0);
+  gtk_widget_show (editor);
+
+
+  /***************/
   /*  Interface  */
   /***************/
-  vbox = prefs_notebook_append_page (gimp,
-                                     GTK_NOTEBOOK (notebook),
-                                     _("User Interface"),
-                                     "interface",
-                                     GTK_TREE_STORE (tree),
-                                     _("Interface"),
-                                      GIMP_HELP_PREFS_INTERFACE,
-                                     NULL,
-                                     &top_iter,
-                                     page_index++);
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-interface",
+                                  _("User Interface"),
+                                  _("Interface"),
+                                  GIMP_HELP_PREFS_INTERFACE,
+                                  NULL,
+                                  &top_iter);
 
   /*  Language  */
 
@@ -1651,9 +1739,12 @@ prefs_dialog_new (Gimp       *gimp,
   prefs_enum_combo_box_add (object, "layer-preview-size", 0, 0,
                             _("_Default layer & channel preview size:"),
                             GTK_TABLE (table), 0, size_group);
+  prefs_enum_combo_box_add (object, "undo-preview-size", 0, 0,
+                            _("_Undo preview size:"),
+                            GTK_TABLE (table), 1, size_group);
   prefs_enum_combo_box_add (object, "navigation-preview-size", 0, 0,
                             _("Na_vigation preview size:"),
-                            GTK_TABLE (table), 1, size_group);
+                            GTK_TABLE (table), 2, size_group);
 
   /* Keyboard Shortcuts */
   vbox2 = prefs_frame_new (_("Keyboard Shortcuts"),
@@ -1663,7 +1754,7 @@ prefs_dialog_new (Gimp       *gimp,
                           _("_Use dynamic keyboard shortcuts"),
                           GTK_BOX (vbox2));
 
-  button = prefs_button_add (GTK_STOCK_PREFERENCES,
+  button = prefs_button_add (GIMP_ICON_PREFERENCES_SYSTEM,
                              _("Configure _Keyboard Shortcuts..."),
                              GTK_BOX (vbox2));
   g_signal_connect (button, "clicked",
@@ -1674,14 +1765,14 @@ prefs_dialog_new (Gimp       *gimp,
                           _("_Save keyboard shortcuts on exit"),
                           GTK_BOX (vbox2));
 
-  button = prefs_button_add (GTK_STOCK_SAVE,
+  button = prefs_button_add (GIMP_ICON_DOCUMENT_SAVE,
                              _("Save Keyboard Shortcuts _Now"),
                              GTK_BOX (vbox2));
   g_signal_connect (button, "clicked",
                     G_CALLBACK (prefs_menus_save_callback),
                     gimp);
 
-  button2 = prefs_button_add (GIMP_STOCK_RESET,
+  button2 = prefs_button_add (GIMP_ICON_RESET,
                               _("_Reset Keyboard Shortcuts to Default Values"),
                               GTK_BOX (vbox2));
   g_signal_connect (button2, "clicked",
@@ -1690,7 +1781,7 @@ prefs_dialog_new (Gimp       *gimp,
 
   g_object_set_data (G_OBJECT (button), "clear-button", button2);
 
-  button = prefs_button_add (GTK_STOCK_CLEAR,
+  button = prefs_button_add (GIMP_ICON_EDIT_CLEAR,
                              _("Remove _All Keyboard Shortcuts"),
                              GTK_BOX (vbox2));
   g_signal_connect (button, "clicked",
@@ -1698,19 +1789,16 @@ prefs_dialog_new (Gimp       *gimp,
                     gimp);
 
 
-  /***********/
-  /*  Theme  */
-  /***********/
-  vbox = prefs_notebook_append_page (gimp,
-                                     GTK_NOTEBOOK (notebook),
-                                     _("Theme"),
-                                     "theme",
-                                     GTK_TREE_STORE (tree),
-                                     NULL,
-                                     GIMP_HELP_PREFS_THEME,
-                                     NULL,
-                                     &top_iter,
-                                     page_index++);
+  /***********************/
+  /*  Interface / Theme  */
+  /***********************/
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-theme",
+                                  _("Theme"),
+                                  _("Theme"),
+                                  GIMP_HELP_PREFS_THEME,
+                                  &top_iter,
+                                  &child_iter);
 
   vbox2 = prefs_frame_new (_("Select Theme"), GTK_CONTAINER (vbox), TRUE);
 
@@ -1758,12 +1846,13 @@ prefs_dialog_new (Gimp       *gimp,
 
     for (i = 0; i < n_themes; i++)
       {
-        GtkTreeIter iter;
+        GtkTreeIter  iter;
+        GFile       *theme_dir = themes_get_theme_dir (gimp, themes[i]);
 
         gtk_list_store_append (list_store, &iter);
         gtk_list_store_set (list_store, &iter,
                             0, themes[i],
-                            1, themes_get_theme_dir (gimp, themes[i]),
+                            1, gimp_file_get_utf8_name (theme_dir),
                             -1);
 
         if (GIMP_GUI_CONFIG (object)->theme &&
@@ -1781,8 +1870,7 @@ prefs_dialog_new (Gimp       *gimp,
           }
       }
 
-    if (themes)
-      g_strfreev (themes);
+    g_strfreev (themes);
 
     g_signal_connect (sel, "changed",
                       G_CALLBACK (prefs_theme_select_callback),
@@ -1793,7 +1881,7 @@ prefs_dialog_new (Gimp       *gimp,
   gtk_box_pack_start (GTK_BOX (vbox2), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
-  button = prefs_button_add (GTK_STOCK_REFRESH,
+  button = prefs_button_add (GIMP_ICON_VIEW_REFRESH,
                              _("Reload C_urrent Theme"),
                              GTK_BOX (hbox));
   g_signal_connect (button, "clicked",
@@ -1801,19 +1889,490 @@ prefs_dialog_new (Gimp       *gimp,
                     gimp);
 
 
-  /*****************/
-  /*  Help System  */
-  /*****************/
-  vbox = prefs_notebook_append_page (gimp,
-                                     GTK_NOTEBOOK (notebook),
-                                     _("Help System"),
-                                     "help-system",
-                                     GTK_TREE_STORE (tree),
-                                     NULL,
-                                     GIMP_HELP_PREFS_HELP,
-                                     NULL,
-                                     &top_iter,
-                                     page_index++);
+  /****************************/
+  /*  Interface / Icon Theme  */
+  /****************************/
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-icon-theme",
+                                  _("Icon Theme"),
+                                  _("Icon Theme"),
+                                  GIMP_HELP_PREFS_ICON_THEME,
+                                  &top_iter,
+                                  &child_iter);
+
+  vbox2 = prefs_frame_new (_("Select an Icon Theme"), GTK_CONTAINER (vbox), TRUE);
+
+  {
+    GtkWidget         *scrolled_win;
+    GtkWidget         *icon_size_scale;
+    GtkListStore      *list_store;
+    GtkWidget         *view;
+    GtkTreeSelection  *sel;
+    gchar            **icon_themes;
+    gint               n_icon_themes;
+    gint               i;
+
+    scrolled_win = gtk_scrolled_window_new (NULL, NULL);
+    gtk_widget_set_size_request (scrolled_win, -1, 80);
+    gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolled_win),
+                                         GTK_SHADOW_IN);
+    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_win),
+                                    GTK_POLICY_NEVER,
+                                    GTK_POLICY_AUTOMATIC);
+    gtk_box_pack_start (GTK_BOX (vbox2), scrolled_win, TRUE, TRUE, 0);
+    gtk_widget_show (scrolled_win);
+
+    list_store = gtk_list_store_new (3, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING);
+
+    view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
+    gtk_container_add (GTK_CONTAINER (scrolled_win), view);
+    gtk_widget_show (view);
+
+    g_object_unref (list_store);
+
+    gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view), 0,
+                                                 NULL,
+                                                 gtk_cell_renderer_pixbuf_new (),
+                                                 "pixbuf", 0,
+                                                 NULL);
+    gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view), 1,
+                                                 _("Icon Theme"),
+                                                 gtk_cell_renderer_text_new (),
+                                                 "text", 1,
+                                                 NULL);
+    gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view), 2,
+                                                 _("Folder"),
+                                                 gtk_cell_renderer_text_new (),
+                                                 "text", 2,
+                                                 NULL);
+
+    sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (view));
+
+    icon_themes = icon_themes_list_themes (gimp, &n_icon_themes);
+
+    for (i = 0; i < n_icon_themes; i++)
+      {
+        GtkTreeIter   iter;
+        GFile        *icon_theme_dir = icon_themes_get_theme_dir (gimp, icon_themes[i]);
+        GFile        *icon_theme_search_path = g_file_get_parent (icon_theme_dir);
+        GtkIconTheme *theme;
+        gchar        *example;
+        GdkPixbuf    *pixbuf;
+
+        theme = gtk_icon_theme_new ();
+        gtk_icon_theme_prepend_search_path (theme, gimp_file_get_utf8_name(icon_theme_search_path));
+        g_object_unref (icon_theme_search_path);
+        gtk_icon_theme_set_custom_theme (theme, icon_themes[i]);
+
+        example = gtk_icon_theme_get_example_icon_name (theme);
+        if (! example)
+          {
+            /* If the icon theme didn't explicitly specify an example
+             * icon, try "gimp-wilber".
+             */
+            example = g_strdup ("gimp-wilber");
+          }
+        pixbuf = gtk_icon_theme_load_icon (theme, example, 16, 0, NULL);
+
+        gtk_list_store_append (list_store, &iter);
+        gtk_list_store_set (list_store, &iter,
+                            0, pixbuf,
+                            1, icon_themes[i],
+                            2, gimp_file_get_utf8_name (icon_theme_dir),
+                            -1);
+        g_object_unref (theme);
+        g_object_unref (pixbuf);
+        g_free (example);
+
+        if (GIMP_GUI_CONFIG (object)->icon_theme &&
+            ! strcmp (GIMP_GUI_CONFIG (object)->icon_theme, icon_themes[i]))
+          {
+            GtkTreePath *path;
+
+            path = gtk_tree_model_get_path (GTK_TREE_MODEL (list_store), &iter);
+
+            gtk_tree_view_set_cursor (GTK_TREE_VIEW (view), path, NULL, FALSE);
+            gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (view), path,
+                                          NULL, FALSE, 0.0, 0.0);
+
+            gtk_tree_path_free (path);
+          }
+      }
+
+    g_strfreev (icon_themes);
+
+    g_signal_connect (sel, "changed",
+                      G_CALLBACK (prefs_icon_theme_select_callback),
+                      gimp);
+
+    icon_size_scale = gimp_icon_size_scale_new (gimp);
+    gtk_box_pack_start (GTK_BOX (vbox), icon_size_scale, FALSE, FALSE, 0);
+    gtk_widget_show (icon_size_scale);
+  }
+
+  /*************************/
+  /*  Interface / Toolbox  */
+  /*************************/
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-toolbox",
+                                  _("Toolbox"),
+                                  _("Toolbox"),
+                                  GIMP_HELP_PREFS_TOOLBOX,
+                                  &top_iter,
+                                  &child_iter);
+
+  size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
+
+  /*  Appearance  */
+  vbox2 = prefs_frame_new (_("Appearance"),
+                           GTK_CONTAINER (vbox), FALSE);
+
+  prefs_check_button_add_with_icon (object, "toolbox-wilber",
+                                    _("Show GIMP _logo (drag-and-drop target)"),
+                                    GIMP_ICON_WILBER,
+                                    GTK_BOX (vbox2), size_group);
+  prefs_check_button_add_with_icon (object, "toolbox-color-area",
+                                    _("Show _foreground & background color"),
+                                    GIMP_ICON_COLORS_DEFAULT,
+                                    GTK_BOX (vbox2), size_group);
+  prefs_check_button_add_with_icon (object, "toolbox-foo-area",
+                                    _("Show active _brush, pattern & gradient"),
+                                    GIMP_ICON_BRUSH,
+                                    GTK_BOX (vbox2), size_group);
+  prefs_check_button_add_with_icon (object, "toolbox-image-area",
+                                    _("Show active _image"),
+                                    GIMP_ICON_IMAGE,
+                                    GTK_BOX (vbox2), size_group);
+
+  g_object_unref (size_group);
+  size_group = NULL;
+
+  /* Tool Editor */
+  vbox2 = prefs_frame_new (_("Tools Configuration"),
+                           GTK_CONTAINER (vbox), TRUE);
+  tool_editor = gimp_tool_editor_new (gimp->tool_info_list, gimp->user_context,
+                                      gimp_tools_get_default_order (gimp),
+                                      GIMP_VIEW_SIZE_SMALL, 1);
+
+  gtk_box_pack_start (GTK_BOX (vbox2), tool_editor, TRUE, TRUE, 0);
+  gtk_widget_show (tool_editor);
+
+
+  /*********************************/
+  /*  Interface / Dialog Defaults  */
+  /*********************************/
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  /* FIXME need an icon */
+                                  "gimp-prefs-controllers",
+                                  _("Dialog Defaults"),
+                                  _("Dialog Defaults"),
+                                  GIMP_HELP_PREFS_DIALOG_DEFAULTS,
+                                  &top_iter,
+                                  &child_iter);
+
+  gimp_prefs_box_set_page_scrollable (GIMP_PREFS_BOX (prefs_box), vbox, TRUE);
+
+  button = gimp_prefs_box_set_page_resettable (GIMP_PREFS_BOX (prefs_box),
+                                               vbox,
+                                               _("Reset Dialog Defaults"));
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (prefs_dialog_defaults_reset),
+                    config);
+
+  size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
+
+  /*  Color profile import dialog  */
+  vbox2 = prefs_frame_new (_("Color Profile Import Dialog"), GTK_CONTAINER (vbox),
+                           FALSE);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+  button = prefs_enum_combo_box_add (object, "color-profile-policy", 0, 0,
+                                     _("Color profile policy:"),
+                                     GTK_TABLE (table), 0, size_group);
+
+  /*  All color profile chooser dialogs  */
+  vbox2 = prefs_frame_new (_("Color Profile File Dialogs"), GTK_CONTAINER (vbox),
+                           FALSE);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+  prefs_file_chooser_button_add (object, "color-profile-path",
+                                 _("Profile folder:"),
+                                 _("Select Default Folder for Color Profiles"),
+                                 GTK_TABLE (table), 0, size_group);
+
+  /*  Convert to Color Profile Dialog  */
+  vbox2 = prefs_frame_new (_("Convert to Color Profile Dialog"),
+                           GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+  prefs_enum_combo_box_add (object, "image-convert-profile-intent", 0, 0,
+                            _("Rendering intent:"),
+                            GTK_TABLE (table), 0, size_group);
+
+  prefs_check_button_add (object, "image-convert-profile-black-point-compensation",
+                          _("Black point compensation"),
+                          GTK_BOX (vbox2));
+
+  /*  Convert Precision Dialog  */
+  vbox2 = prefs_frame_new (_("Precision Conversion Dialog"),
+                           GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (3, GTK_CONTAINER (vbox2));
+
+  prefs_enum_combo_box_add (object,
+                            "image-convert-precision-layer-dither-method",
+                            0, 0,
+                            _("Dither layers:"),
+                            GTK_TABLE (table), 0, size_group);
+  prefs_enum_combo_box_add (object,
+                            "image-convert-precision-text-layer-dither-method",
+                            0, 0,
+                            _("Dither text layers:"),
+                            GTK_TABLE (table), 1, size_group);
+  prefs_enum_combo_box_add (object,
+                            "image-convert-precision-channel-dither-method",
+                            0, 0,
+                            _("Dither channels/masks:"),
+                            GTK_TABLE (table), 2, size_group);
+
+  /*  Convert Indexed Dialog  */
+  vbox2 = prefs_frame_new (_("Indexed Conversion Dialog"),
+                           GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (2, GTK_CONTAINER (vbox2));
+
+  prefs_enum_combo_box_add (object, "image-convert-indexed-palette-type", 0, 0,
+                            _("Colormap:"),
+                            GTK_TABLE (table), 0, size_group);
+  prefs_spin_button_add (object, "image-convert-indexed-max-colors", 1.0, 8.0, 0,
+                         _("Maximum number of colors:"),
+                         GTK_TABLE (table), 1, size_group);
+
+  prefs_check_button_add (object, "image-convert-indexed-remove-duplicates",
+                          _("Remove unused and duplicate colors "
+                            "from colormap"),
+                          GTK_BOX (vbox2));
+
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+  prefs_enum_combo_box_add (object, "image-convert-indexed-dither-type", 0, 0,
+                            _("Color dithering:"),
+                            GTK_TABLE (table), 0, size_group);
+
+  prefs_check_button_add (object, "image-convert-indexed-dither-alpha",
+                          _("Enable dithering of transparency"),
+                          GTK_BOX (vbox2));
+  prefs_check_button_add (object, "image-convert-indexed-dither-text-layers",
+                          _("Enable dithering of text layers"),
+                          GTK_BOX (vbox2));
+
+  /*  Canvas Size Dialog  */
+  vbox2 = prefs_frame_new (_("Canvas Size Dialog"),
+                           GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (2, GTK_CONTAINER (vbox2));
+
+  prefs_enum_combo_box_add (object, "image-resize-fill-type", 0, 0,
+                            _("Fill with:"),
+                            GTK_TABLE (table), 0, size_group);
+  prefs_enum_combo_box_add (object, "image-resize-layer-set", 0, 0,
+                            _("Resize layers:"),
+                            GTK_TABLE (table), 1, size_group);
+
+  prefs_check_button_add (object, "image-resize-resize-text-layers",
+                          _("Resize text layers"),
+                          GTK_BOX (vbox2));
+
+  /*  New Layer Dialog  */
+  vbox2 = prefs_frame_new (_("New Layer Dialog"),
+                           GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (2, GTK_CONTAINER (vbox2));
+
+  prefs_entry_add (object, "layer-new-name",
+                   _("Layer name:"),
+                   GTK_TABLE (table), 0, size_group);
+
+  prefs_enum_combo_box_add (object, "layer-new-fill-type", 0, 0,
+                            _("Fill type:"),
+                            GTK_TABLE (table), 1, size_group);
+
+  /*  Layer Boundary Size Dialog  */
+  vbox2 = prefs_frame_new (_("Layer Boundary Size Dialog"),
+                           GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+  prefs_enum_combo_box_add (object, "layer-resize-fill-type", 0, 0,
+                            _("Fill with:"),
+                            GTK_TABLE (table), 0, size_group);
+
+  /*  Add Layer Mask Dialog  */
+  vbox2 = prefs_frame_new (_("Add Layer Mask Dialog"),
+                           GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+  prefs_enum_combo_box_add (object, "layer-add-mask-type", 0, 0,
+                            _("Layer mask type:"),
+                            GTK_TABLE (table), 0, size_group);
+
+  prefs_check_button_add (object, "layer-add-mask-invert",
+                          _("Invert mask"),
+                          GTK_BOX (vbox2));
+
+  /*  Merge Layers Dialog  */
+  vbox2 = prefs_frame_new (_("Merge Layers Dialog"),
+                           GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+  prefs_enum_combo_box_add (object, "layer-merge-type",
+                            GIMP_EXPAND_AS_NECESSARY,
+                            GIMP_CLIP_TO_BOTTOM_LAYER,
+                            _("Merged layer size:"),
+                            GTK_TABLE (table), 0, size_group);
+
+  prefs_check_button_add (object, "layer-merge-active-group-only",
+                          _("Merge within active group only"),
+                          GTK_BOX (vbox2));
+  prefs_check_button_add (object, "layer-merge-discard-invisible",
+                          _("Discard invisible layers"),
+                          GTK_BOX (vbox2));
+
+  /*  New Channel Dialog  */
+  vbox2 = prefs_frame_new (_("New Channel Dialog"),
+                           GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (2, GTK_CONTAINER (vbox2));
+
+  prefs_entry_add (object, "channel-new-name",
+                   _("Channel name:"),
+                   GTK_TABLE (table), 0, size_group);
+
+  prefs_color_button_add (object, "channel-new-color",
+                          _("Color and opacity:"),
+                          _("Default New Channel Color and Opacity"),
+                          GTK_TABLE (table), 1, size_group,
+                          gimp_get_user_context (gimp));
+
+  /*  New Path Dialog  */
+  vbox2 = prefs_frame_new (_("New Path Dialog"),
+                           GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+  prefs_entry_add (object, "path-new-name",
+                   _("Path name:"),
+                   GTK_TABLE (table), 0, size_group);
+
+  /*  Export Path Dialog  */
+  vbox2 = prefs_frame_new (_("Export Paths Dialog"),
+                           GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+  prefs_file_chooser_button_add (object, "path-export-path",
+                                 _("Export folder:"),
+                                 _("Select Default Folder for Exporting Paths"),
+                                 GTK_TABLE (table), 0, size_group);
+
+  prefs_check_button_add (object, "path-export-active-only",
+                          _("Export the active path only"),
+                          GTK_BOX (vbox2));
+
+  /*  Import Path Dialog  */
+  vbox2 = prefs_frame_new (_("Import Paths Dialog"),
+                           GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+  prefs_file_chooser_button_add (object, "path-import-path",
+                                 _("Import folder:"),
+                                 _("Select Default Folder for Importing Paths"),
+                                 GTK_TABLE (table), 0, size_group);
+
+  prefs_check_button_add (object, "path-import-merge",
+                          _("Merge imported paths"),
+                          GTK_BOX (vbox2));
+  prefs_check_button_add (object, "path-import-scale",
+                          _("Scale imported paths"),
+                          GTK_BOX (vbox2));
+
+  /*  Feather Selection Dialog  */
+  vbox2 = prefs_frame_new (_("Feather Selection Dialog"),
+                           GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+  prefs_spin_button_add (object, "selection-feather-radius", 1.0, 10.0, 2,
+                         _("Feather radius:"),
+                         GTK_TABLE (table), 0, size_group);
+
+  /*  Grow Selection Dialog  */
+  vbox2 = prefs_frame_new (_("Grow Selection Dialog"),
+                           GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+  prefs_spin_button_add (object, "selection-grow-radius", 1.0, 10.0, 0,
+                         _("Grow radius:"),
+                         GTK_TABLE (table), 0, size_group);
+
+  /*  Shrink Selection Dialog  */
+  vbox2 = prefs_frame_new (_("Shrink Selection Dialog"),
+                           GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+  prefs_spin_button_add (object, "selection-shrink-radius", 1.0, 10.0, 0,
+                         _("Shrink radius:"),
+                         GTK_TABLE (table), 0, size_group);
+
+  prefs_check_button_add (object, "selection-shrink-edge-lock",
+                          _("Selected areas continue outside the image"),
+                          GTK_BOX (vbox2));
+
+  /*  Border Selection Dialog  */
+  vbox2 = prefs_frame_new (_("Border Selection Dialog"),
+                           GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (2, GTK_CONTAINER (vbox2));
+
+  prefs_spin_button_add (object, "selection-border-radius", 1.0, 10.0, 0,
+                         _("Border radius:"),
+                         GTK_TABLE (table), 0, size_group);
+
+  prefs_enum_combo_box_add (object, "selection-border-style", 0, 0,
+                            _("Border style:"),
+                            GTK_TABLE (table), 1, size_group);
+
+  prefs_check_button_add (object, "selection-border-edge-lock",
+                          _("Selected areas continue outside the image"),
+                          GTK_BOX (vbox2));
+
+  /*  Fill Options Dialog  */
+  vbox2 = prefs_frame_new (_("Fill Selection Outline & Fill Path Dialogs"),
+                           GTK_CONTAINER (vbox), FALSE);
+
+  table = gimp_fill_editor_new (GIMP_DIALOG_CONFIG (object)->fill_options,
+                                FALSE);
+  gtk_box_pack_start (GTK_BOX (vbox2), table, FALSE, FALSE, 0);
+  gtk_widget_show (table);
+
+  /*  Stroke Options Dialog  */
+  vbox2 = prefs_frame_new (_("Stroke Selection & Stroke Path Dialogs"),
+                           GTK_CONTAINER (vbox), FALSE);
+
+  /* The stroke line width physical values could be based on either the
+   * x or y resolution, some average, or whatever which makes a bit of
+   * sense. There is no perfect answer. The actual stroke dialog though
+   * uses the y resolution on the opened image. So using the y resolution
+   * of the default image seems like the best compromise in the preferences.
+   */
+  table = gimp_stroke_editor_new (GIMP_DIALOG_CONFIG (object)->stroke_options,
+                                  gimp_template_get_resolution_y (core_config->default_image),
+                                  FALSE);
+  gtk_box_pack_start (GTK_BOX (vbox2), table, FALSE, FALSE, 0);
+  gtk_widget_show (table);
+
+  g_object_unref (size_group);
+
+
+  /*****************************/
+  /*  Interface / Help System  */
+  /*****************************/
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-help-system",
+                                  _("Help System"),
+                                  _("Help System"),
+                                  GIMP_HELP_PREFS_HELP,
+                                  &top_iter,
+                                  &child_iter);
 
   size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
@@ -1827,7 +2386,7 @@ prefs_dialog_new (Gimp       *gimp,
                           _("Show help _buttons"),
                           GTK_BOX (vbox2));
 
-  table = prefs_table_new (2, GTK_CONTAINER (vbox2));
+  table = prefs_table_new (3, GTK_CONTAINER (vbox2));
   button = prefs_boolean_combo_box_add (object, "user-manual-online",
                                         _("Use the online version"),
                                         _("Use a locally installed copy"),
@@ -1835,20 +2394,64 @@ prefs_dialog_new (Gimp       *gimp,
                                         GTK_TABLE (table), 0, size_group);
   gimp_help_set_help_data (button, NULL, NULL);
 
+  manuals = gimp_help_get_installed_languages ();
+  entry   = NULL;
+  if (manuals != NULL)
+    {
+      gchar *help_locales = NULL;
+
+      entry = gimp_language_combo_box_new (TRUE,
+                                           _("User interface language"));
+
+      g_object_get (config, "help-locales", &help_locales, NULL);
+      if (help_locales && strlen (help_locales))
+        {
+          gchar *sep;
+
+          sep = strchr (help_locales, ':');
+          if (sep)
+            *sep = '\0';
+        }
+      if (help_locales)
+        {
+          gimp_language_combo_box_set_code (GIMP_LANGUAGE_COMBO_BOX (entry),
+                                            help_locales);
+          g_free (help_locales);
+        }
+      else
+        {
+          gimp_language_combo_box_set_code (GIMP_LANGUAGE_COMBO_BOX (entry),
+                                            "");
+        }
+      g_signal_connect (entry, "changed",
+                        G_CALLBACK (prefs_help_language_change_callback),
+                        gimp);
+      gtk_table_attach_defaults (GTK_TABLE (table), entry, 1, 2, 1, 2);
+      gtk_widget_show (entry);
+    }
+
   if (gimp_help_user_manual_is_installed (gimp))
     {
-      hbox = prefs_hint_box_new (GIMP_STOCK_INFO,
+      hbox = prefs_hint_box_new (GIMP_ICON_DIALOG_INFORMATION,
                                  _("There's a local installation "
                                    "of the user manual."));
     }
   else
     {
-      hbox = prefs_hint_box_new (GIMP_STOCK_WARNING,
+      hbox = prefs_hint_box_new (GIMP_ICON_DIALOG_WARNING,
                                  _("The user manual is not installed "
                                    "locally."));
     }
+  if (manuals)
+    {
+      g_object_set_data (G_OBJECT (hbox), "gimp", gimp);
+      g_signal_connect (entry, "changed",
+                        G_CALLBACK (prefs_help_language_change_callback2),
+                        hbox);
+      g_list_free_full (manuals, g_free);
+    }
 
-  gtk_table_attach_defaults (GTK_TABLE (table), hbox, 1, 2, 1, 2);
+  gtk_table_attach_defaults (GTK_TABLE (table), hbox, 1, 2, 2, 3);
   gtk_widget_show (hbox);
 
   /*  Help Browser  */
@@ -1869,7 +2472,7 @@ prefs_dialog_new (Gimp       *gimp,
     }
   else
     {
-      hbox = prefs_hint_box_new (GIMP_STOCK_WARNING,
+      hbox = prefs_hint_box_new (GIMP_ICON_DIALOG_WARNING,
                                  _("The GIMP help browser doesn't seem to "
                                    "be installed. Using the web browser "
                                    "instead."));
@@ -1886,236 +2489,218 @@ prefs_dialog_new (Gimp       *gimp,
                 NULL);
 #endif /* HAVE_WEBKIT */
 
+  /* Action Search */
+  vbox2 = prefs_frame_new (_("Action Search"), GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+  prefs_check_button_add (object, "search-show-unavailable-actions",
+                          _("Show _unavailable actions"),
+                          GTK_BOX (vbox2));
+  prefs_spin_button_add (object, "action-history-size", 1.0, 10.0, 0,
+                         _("Maximum History Size:"),
+                         GTK_TABLE (table), 0, size_group);
+
+  button = prefs_button_add (GIMP_ICON_SHRED,
+                             _("Clear Action History"),
+                             GTK_BOX (vbox2));
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (prefs_search_clear_callback),
+                    gimp);
+
   g_object_unref (size_group);
   size_group = NULL;
 
 
-  /******************/
-  /*  Tool Options  */
-  /******************/
-  vbox = prefs_notebook_append_page (gimp,
-                                     GTK_NOTEBOOK (notebook),
-                                     _("Tool Options"),
-                                     "tool-options",
-                                     GTK_TREE_STORE (tree),
-                                     NULL,
-                                     GIMP_HELP_PREFS_TOOL_OPTIONS,
-                                     NULL,
-                                     &top_iter,
-                                     page_index++);
+  /*************************/
+  /*  Interface / Display  */
+  /*************************/
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-display",
+                                  _("Display"),
+                                  _("Display"),
+                                  GIMP_HELP_PREFS_DISPLAY,
+                                  &top_iter,
+                                  &child_iter);
 
   size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
-  /*  General  */
-  vbox2 = prefs_frame_new (_("General"), GTK_CONTAINER (vbox), FALSE);
+  /*  Transparency  */
+  vbox2 = prefs_frame_new (_("Transparency"), GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (2, GTK_CONTAINER (vbox2));
 
-  prefs_check_button_add (object, "save-tool-options",
-                          _("_Save tool options on exit"),
+  prefs_enum_combo_box_add (object, "transparency-type", 0, 0,
+                            _("_Check style:"),
+                            GTK_TABLE (table), 0, size_group);
+  prefs_enum_combo_box_add (object, "transparency-size", 0, 0,
+                            _("Check _size:"),
+                            GTK_TABLE (table), 1, size_group);
+
+  vbox2 = prefs_frame_new (_("Monitor Resolution"),
+                           GTK_CONTAINER (vbox), FALSE);
+
+  {
+    gchar *pixels_per_unit = g_strconcat (_("Pixels"), "/%s", NULL);
+
+    entry = gimp_prop_coordinates_new (object,
+                                       "monitor-xresolution",
+                                       "monitor-yresolution",
+                                       NULL,
+                                       pixels_per_unit,
+                                       GIMP_SIZE_ENTRY_UPDATE_RESOLUTION,
+                                       0.0, 0.0,
+                                       TRUE);
+
+    g_free (pixels_per_unit);
+  }
+
+  gtk_table_set_col_spacings (GTK_TABLE (entry), 2);
+  gtk_table_set_row_spacings (GTK_TABLE (entry), 2);
+
+  gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (entry),
+                                _("Horizontal"), 0, 1, 0.0);
+  gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (entry),
+                                _("Vertical"), 0, 2, 0.0);
+  gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (entry),
+                                _("ppi"), 1, 4, 0.0);
+
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+
+  gtk_box_pack_start (GTK_BOX (hbox), entry, FALSE, FALSE, 24);
+  gtk_widget_show (entry);
+  gtk_widget_set_sensitive (entry, ! display_config->monitor_res_from_gdk);
+
+  group = NULL;
+
+  {
+    gdouble  xres;
+    gdouble  yres;
+    gchar   *str;
+
+    gimp_get_monitor_resolution (gdk_screen_get_default (), /* FIXME monitor */
+                                 0, /* FIXME monitor */
+                                 &xres, &yres);
+
+    str = g_strdup_printf (_("_Detect automatically (currently %d × %d ppi)"),
+                           ROUND (xres), ROUND (yres));
+
+    button = gtk_radio_button_new_with_mnemonic (group, str);
+
+    g_free (str);
+  }
+
+  group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));
+  gtk_box_pack_start (GTK_BOX (vbox2), button, FALSE, FALSE, 0);
+  gtk_widget_show (button);
+
+  g_object_set_data (G_OBJECT (button), "monitor_resolution_sizeentry", entry);
+
+  g_signal_connect (button, "toggled",
+                    G_CALLBACK (prefs_resolution_source_callback),
+                    config);
+
+  button = gtk_radio_button_new_with_mnemonic (group, _("_Enter manually"));
+  group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));
+  gtk_box_pack_start (GTK_BOX (vbox2), button, FALSE, FALSE, 0);
+  gtk_widget_show (button);
+
+  gtk_box_pack_start (GTK_BOX (vbox2), hbox, FALSE, FALSE, 0);
+  gtk_widget_show (hbox);
+
+  if (! display_config->monitor_res_from_gdk)
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
+
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2), hbox, FALSE, FALSE, 0);
+  gtk_widget_show (hbox);
+
+  calibrate_button = gtk_button_new_with_mnemonic (_("C_alibrate..."));
+  label = gtk_bin_get_child (GTK_BIN (calibrate_button));
+  gtk_misc_set_padding (GTK_MISC (label), 4, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), calibrate_button, FALSE, FALSE, 0);
+  gtk_widget_show (calibrate_button);
+  gtk_widget_set_sensitive (calibrate_button,
+                            ! display_config->monitor_res_from_gdk);
+
+  g_object_bind_property (button, "active",
+                          entry,  "sensitive",
+                          G_BINDING_SYNC_CREATE);
+  g_object_bind_property (button,           "active",
+                          calibrate_button, "sensitive",
+                          G_BINDING_SYNC_CREATE);
+
+  g_signal_connect (calibrate_button, "clicked",
+                    G_CALLBACK (prefs_resolution_calibrate_callback),
+                    entry);
+
+  g_object_unref (size_group);
+  size_group = NULL;
+
+
+  /***********************************/
+  /*  Interface / Window Management  */
+  /***********************************/
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-window-management",
+                                  _("Window Management"),
+                                  _("Window Management"),
+                                  GIMP_HELP_PREFS_WINDOW_MANAGEMENT,
+                                  &top_iter,
+                                  &child_iter);
+
+  vbox2 = prefs_frame_new (_("Window Manager Hints"),
+                           GTK_CONTAINER (vbox), FALSE);
+
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+  prefs_enum_combo_box_add (object, "dock-window-hint", 0, 0,
+                            _("Hint for _docks and toolbox:"),
+                            GTK_TABLE (table), 1, size_group);
+
+  vbox2 = prefs_frame_new (_("Focus"),
+                           GTK_CONTAINER (vbox), FALSE);
+
+  prefs_check_button_add (object, "activate-on-focus",
+                          _("Activate the _focused image"),
                           GTK_BOX (vbox2));
 
-  button = prefs_button_add (GTK_STOCK_SAVE,
-                             _("Save Tool Options _Now"),
+  /* Window Positions */
+  vbox2 = prefs_frame_new (_("Window Positions"), GTK_CONTAINER (vbox), FALSE);
+
+  prefs_check_button_add (object, "save-session-info",
+                          _("_Save window positions on exit"),
+                          GTK_BOX (vbox2));
+  prefs_check_button_add (object, "restore-monitor",
+                          _("Open windows on the same _monitor they were open before"),
+                          GTK_BOX (vbox2));
+
+  button = prefs_button_add (GIMP_ICON_DOCUMENT_SAVE,
+                             _("Save Window Positions _Now"),
                              GTK_BOX (vbox2));
   g_signal_connect (button, "clicked",
-                    G_CALLBACK (prefs_tool_options_save_callback),
+                    G_CALLBACK (prefs_session_save_callback),
                     gimp);
 
-  button2 = prefs_button_add (GIMP_STOCK_RESET,
-                              _("_Reset Saved Tool Options to "
+  button2 = prefs_button_add (GIMP_ICON_RESET,
+                              _("_Reset Saved Window Positions to "
                                 "Default Values"),
                               GTK_BOX (vbox2));
   g_signal_connect (button2, "clicked",
-                    G_CALLBACK (prefs_tool_options_clear_callback),
+                    G_CALLBACK (prefs_session_clear_callback),
                     gimp);
 
   g_object_set_data (G_OBJECT (button), "clear-button", button2);
-
-  /*  Snapping Distance  */
-  vbox2 = prefs_frame_new (_("Guide & Grid Snapping"),
-                           GTK_CONTAINER (vbox), FALSE);
-  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
-
-  prefs_spin_button_add (object, "snap-distance", 1.0, 5.0, 0,
-                         _("_Snap distance:"),
-                         GTK_TABLE (table), 0, size_group);
-
-  /*  Scaling  */
-  vbox2 = prefs_frame_new (_("Scaling"), GTK_CONTAINER (vbox), FALSE);
-  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
-
-  prefs_enum_combo_box_add (object, "interpolation-type", 0, 0,
-                            _("Default _interpolation:"),
-                            GTK_TABLE (table), 0, size_group);
-
-  g_object_unref (size_group);
-  size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
-
-  /*  Global Brush, Pattern, ...  */
-  vbox2 = prefs_frame_new (_("Paint Options Shared Between Tools"),
-                           GTK_CONTAINER (vbox), FALSE);
-
-  prefs_check_button_add_with_icon (object, "global-brush",
-                                    _("_Brush"),    GIMP_STOCK_BRUSH,
-                                    GTK_BOX (vbox2), size_group);
-  prefs_check_button_add_with_icon (object, "global-dynamics",
-                                    _("_Dynamics"), GIMP_STOCK_DYNAMICS,
-                                    GTK_BOX (vbox2), size_group);
-  prefs_check_button_add_with_icon (object, "global-pattern",
-                                    _("_Pattern"),  GIMP_STOCK_PATTERN,
-                                    GTK_BOX (vbox2), size_group);
-  prefs_check_button_add_with_icon (object, "global-gradient",
-                                    _("_Gradient"), GIMP_STOCK_GRADIENT,
-                                    GTK_BOX (vbox2), size_group);
-
-  /*  Move Tool */
-  vbox2 = prefs_frame_new (_("Move Tool"),
-                           GTK_CONTAINER (vbox), FALSE);
-
-  prefs_check_button_add_with_icon (object, "move-tool-changes-active",
-                                    _("Set layer or path as active"),
-                                    GIMP_STOCK_TOOL_MOVE,
-                                    GTK_BOX (vbox2), size_group);
-
-  g_object_unref (size_group);
-  size_group = NULL;
-
-
-  /*************/
-  /*  Toolbox  */
-  /*************/
-  vbox = prefs_notebook_append_page (gimp,
-                                     GTK_NOTEBOOK (notebook),
-                                     _("Toolbox"),
-                                     "toolbox",
-                                     GTK_TREE_STORE (tree),
-                                     NULL,
-                                     GIMP_HELP_PREFS_TOOLBOX,
-                                     NULL,
-                                     &top_iter,
-                                     page_index++);
-
-  size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
-
-  /*  Appearance  */
-  vbox2 = prefs_frame_new (_("Appearance"),
-                           GTK_CONTAINER (vbox), FALSE);
-
-  prefs_check_button_add_with_icon (object, "toolbox-color-area",
-                                    _("Show _foreground & background color"),
-                                    GIMP_STOCK_DEFAULT_COLORS,
-                                    GTK_BOX (vbox2), size_group);
-  prefs_check_button_add_with_icon (object, "toolbox-foo-area",
-                                    _("Show active _brush, pattern & gradient"),
-                                    GIMP_STOCK_BRUSH,
-                                    GTK_BOX (vbox2), size_group);
-  prefs_check_button_add_with_icon (object, "toolbox-image-area",
-                                    _("Show active _image"),
-                                    GIMP_STOCK_IMAGE,
-                                    GTK_BOX (vbox2), size_group);
-
-  g_object_unref (size_group);
-  size_group = NULL;
-
-  /* Tool Editor */
-  vbox2 = prefs_frame_new (_("Tools configuration"),
-                           GTK_CONTAINER (vbox), TRUE);
-  tool_editor = gimp_tool_editor_new (gimp->tool_info_list, gimp->user_context,
-                                      gimp_tools_get_default_order (gimp),
-                                      GIMP_VIEW_SIZE_SMALL, 1);
-
-  gtk_box_pack_start (GTK_BOX (vbox2), tool_editor, TRUE, TRUE, 0);
-  gtk_widget_show (tool_editor);
-
-
-  /***********************/
-  /*  Default New Image  */
-  /***********************/
-  vbox = prefs_notebook_append_page (gimp,
-                                     GTK_NOTEBOOK (notebook),
-                                     _("Default New Image"),
-                                     "new-image",
-                                     GTK_TREE_STORE (tree),
-                                     _("Default Image"),
-                                     GIMP_HELP_PREFS_NEW_IMAGE,
-                                     NULL,
-                                     &top_iter,
-                                     page_index++);
-
-  table = prefs_table_new (1, GTK_CONTAINER (vbox));
-
-  {
-    GtkWidget *combo;
-
-    combo = gimp_container_combo_box_new (gimp->templates,
-                                          gimp_get_user_context (gimp),
-                                          16, 0);
-    gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
-                               _("_Template:"),  0.0, 0.5,
-                               combo, 1, FALSE);
-
-    gimp_container_view_select_item (GIMP_CONTAINER_VIEW (combo), NULL);
-
-    g_signal_connect (combo, "select-item",
-                      G_CALLBACK (prefs_template_select_callback),
-                      core_config->default_image);
-  }
-
-  editor = gimp_template_editor_new (core_config->default_image, gimp, FALSE);
-  gimp_template_editor_show_advanced (GIMP_TEMPLATE_EDITOR (editor), TRUE);
-  gtk_box_pack_start (GTK_BOX (vbox), editor, FALSE, FALSE, 0);
-  gtk_widget_show (editor);
-
-  /*  Quick Mask Color */
-  vbox2 = prefs_frame_new (_("Quick Mask"), GTK_CONTAINER (vbox), FALSE);
-  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
-  button = gimp_prop_color_button_new (object, "quick-mask-color",
-                                       _("Set the default Quick Mask color"),
-                                       COLOR_BUTTON_WIDTH,
-                                       COLOR_BUTTON_HEIGHT,
-                                       GIMP_COLOR_AREA_SMALL_CHECKS);
-  gimp_color_panel_set_context (GIMP_COLOR_PANEL (button),
-                                gimp_get_user_context (gimp));
-  prefs_widget_add_aligned (button, _("Quick Mask color:"),
-                            GTK_TABLE (table), 0, TRUE, NULL);
-
-
-
-  /******************/
-  /*  Default Grid  */
-  /******************/
-  vbox = prefs_notebook_append_page (gimp,
-                                     GTK_NOTEBOOK (notebook),
-                                     _("Default Image Grid"),
-                                     "default-grid",
-                                     GTK_TREE_STORE (tree),
-                                     _("Default Grid"),
-                                     GIMP_HELP_PREFS_DEFAULT_GRID,
-                                     NULL,
-                                     &top_iter,
-                                     page_index++);
-
-  /*  Grid  */
-  editor = gimp_grid_editor_new (core_config->default_grid,
-                                 gimp_get_user_context (gimp),
-                                 gimp_template_get_resolution_x (core_config->default_image),
-                                 gimp_template_get_resolution_y (core_config->default_image));
-  gtk_box_pack_start (GTK_BOX (vbox), editor, TRUE, TRUE, 0);
-  gtk_widget_show (editor);
 
 
   /*******************/
   /*  Image Windows  */
   /*******************/
-  vbox = prefs_notebook_append_page (gimp,
-                                     GTK_NOTEBOOK (notebook),
-                                     _("Image Windows"),
-                                     "image-windows",
-                                     GTK_TREE_STORE (tree),
-                                     NULL,
-                                     GIMP_HELP_PREFS_IMAGE_WINDOW,
-                                     NULL,
-                                     &top_iter,
-                                     page_index++);
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-image-windows",
+                                  _("Image Windows"),
+                                  _("Image Windows"),
+                                  GIMP_HELP_PREFS_IMAGE_WINDOW,
+                                  NULL,
+                                  &top_iter);
 
   size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
@@ -2146,7 +2731,7 @@ prefs_dialog_new (Gimp       *gimp,
   table = prefs_table_new (1, GTK_CONTAINER (vbox2));
 
   prefs_boolean_combo_box_add (object, "initial-zoom-to-fit",
-                               _("Fit to window"),
+                               _("Show entire image"),
                                "1:1",
                                _("Initial zoom _ratio:"),
                                GTK_TABLE (table), 0, size_group);
@@ -2172,17 +2757,14 @@ prefs_dialog_new (Gimp       *gimp,
                           _("Show pointer for paint _tools"),
                           GTK_BOX (vbox2));
 
-  table = prefs_table_new (3, GTK_CONTAINER (vbox2));
+  table = prefs_table_new (2, GTK_CONTAINER (vbox2));
 
   prefs_enum_combo_box_add (object, "cursor-mode", 0, 0,
                             _("Pointer _mode:"),
                             GTK_TABLE (table), 0, size_group);
-  prefs_enum_combo_box_add (object, "cursor-format", 0, 0,
-                            _("Pointer re_ndering:"),
-                            GTK_TABLE (table), 1, size_group);
   prefs_enum_combo_box_add (object, "cursor-handedness", 0, 0,
                             _("Pointer _handedness:"),
-                            GTK_TABLE (table), 2, NULL);
+                            GTK_TABLE (table), 1, NULL);
 
   g_object_unref (size_group);
   size_group = NULL;
@@ -2191,16 +2773,13 @@ prefs_dialog_new (Gimp       *gimp,
   /********************************/
   /*  Image Windows / Appearance  */
   /********************************/
-  vbox = prefs_notebook_append_page (gimp,
-                                     GTK_NOTEBOOK (notebook),
-                                     _("Image Window Appearance"),
-                                     "image-windows",
-                                     GTK_TREE_STORE (tree),
-                                     _("Appearance"),
-                                     GIMP_HELP_PREFS_IMAGE_WINDOW_APPEARANCE,
-                                     &top_iter,
-                                     &child_iter,
-                                     page_index++);
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-image-windows-appearance",
+                                  _("Image Window Appearance"),
+                                  _("Appearance"),
+                                  GIMP_HELP_PREFS_IMAGE_WINDOW_APPEARANCE,
+                                  &top_iter,
+                                  &child_iter);
 
   prefs_display_options_frame_add (gimp,
                                    G_OBJECT (display_config->default_view),
@@ -2216,16 +2795,13 @@ prefs_dialog_new (Gimp       *gimp,
   /****************************************************/
   /*  Image Windows / Image Title & Statusbar Format  */
   /****************************************************/
-  vbox = prefs_notebook_append_page (gimp,
-                                     GTK_NOTEBOOK (notebook),
-                                     _("Image Title & Statusbar Format"),
-                                     "image-title",
-                                     GTK_TREE_STORE (tree),
-                                     _("Title & Status"),
-                                     GIMP_HELP_PREFS_IMAGE_WINDOW_TITLE,
-                                     &top_iter,
-                                     &child_iter,
-                                     page_index++);
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-image-title",
+                                  _("Image Title & Statusbar Format"),
+                                  _("Title & Status"),
+                                  GIMP_HELP_PREFS_IMAGE_WINDOW_TITLE,
+                                  &top_iter,
+                                  &child_iter);
 
   {
     const gchar *format_strings[] =
@@ -2234,7 +2810,8 @@ prefs_dialog_new (Gimp       *gimp,
       NULL,
       "%f-%p.%i (%t) %z%%",
       "%f-%p.%i (%t) %d:%s",
-      "%f-%p.%i (%t) %wx%h"
+      "%f-%p.%i (%t) %wx%h",
+      "%f-%p-%i (%t) %wx%h (%xx%y)"
     };
 
     const gchar *format_names[] =
@@ -2243,7 +2820,8 @@ prefs_dialog_new (Gimp       *gimp,
       N_("Default format"),
       N_("Show zoom percentage"),
       N_("Show zoom ratio"),
-      N_("Show image size")
+      N_("Show image size"),
+      N_("Show drawable size")
     };
 
     struct
@@ -2263,7 +2841,7 @@ prefs_dialog_new (Gimp       *gimp,
 
     gint format;
 
-    g_assert (G_N_ELEMENTS (format_strings) == G_N_ELEMENTS (format_names));
+    gimp_assert (G_N_ELEMENTS (format_strings) == G_N_ELEMENTS (format_names));
 
     formats[0].current_setting = display_config->image_title_format;
     formats[1].current_setting = display_config->image_status_format;
@@ -2337,281 +2915,56 @@ prefs_dialog_new (Gimp       *gimp,
       }
   }
 
+  /******************************/
+  /*  Image Windows / Snapping  */
+  /******************************/
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-image-windows-snapping",
+                                  _("Image Window Snapping Behavior"),
+                                  _("Snapping"),
+                                  GIMP_HELP_PREFS_IMAGE_WINDOW_APPEARANCE,
+                                  &top_iter,
+                                  &child_iter);
 
-  /*************/
-  /*  Display  */
-  /*************/
-  vbox = prefs_notebook_append_page (gimp,
-                                     GTK_NOTEBOOK (notebook),
-                                     _("Display"),
-                                     "display",
-                                     GTK_TREE_STORE (tree),
-                                     NULL,
-                                     GIMP_HELP_PREFS_DISPLAY,
-                                     NULL,
-                                     &top_iter,
-                                     page_index++);
+  prefs_behavior_options_frame_add (gimp,
+                                    G_OBJECT (display_config->default_view),
+                                    _("Default Behavior in Normal Mode"),
+                                    GTK_CONTAINER (vbox));
+  prefs_behavior_options_frame_add (gimp,
+                                    G_OBJECT (display_config->default_fullscreen_view),
+                                    _("Default Behavior in Fullscreen Mode"),
+                                    GTK_CONTAINER (vbox));
 
-  size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
-
-  /*  Transparency  */
-  vbox2 = prefs_frame_new (_("Transparency"), GTK_CONTAINER (vbox), FALSE);
-  table = prefs_table_new (2, GTK_CONTAINER (vbox2));
-
-  prefs_enum_combo_box_add (object, "transparency-type", 0, 0,
-                            _("_Check style:"),
-                            GTK_TABLE (table), 0, size_group);
-  prefs_enum_combo_box_add (object, "transparency-size", 0, 0,
-                            _("Check _size:"),
-                            GTK_TABLE (table), 1, size_group);
-
-  vbox2 = prefs_frame_new (_("Monitor Resolution"),
+  /*  Snapping Distance  */
+  vbox2 = prefs_frame_new (_("General"),
                            GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
 
-  {
-    gchar *pixels_per_unit = g_strconcat (_("Pixels"), "/%s", NULL);
-
-    entry = gimp_prop_coordinates_new (object,
-                                       "monitor-xresolution",
-                                       "monitor-yresolution",
-                                       NULL,
-                                       pixels_per_unit,
-                                       GIMP_SIZE_ENTRY_UPDATE_RESOLUTION,
-                                       0.0, 0.0,
-                                       TRUE);
-
-    g_free (pixels_per_unit);
-  }
-
-  gtk_table_set_col_spacings (GTK_TABLE (entry), 2);
-  gtk_table_set_row_spacings (GTK_TABLE (entry), 2);
-
-  gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (entry),
-                                _("Horizontal"), 0, 1, 0.0);
-  gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (entry),
-                                _("Vertical"), 0, 2, 0.0);
-  gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (entry),
-                                _("ppi"), 1, 4, 0.0);
-
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-
-  gtk_box_pack_start (GTK_BOX (hbox), entry, FALSE, FALSE, 24);
-  gtk_widget_show (entry);
-  gtk_widget_set_sensitive (entry, ! display_config->monitor_res_from_gdk);
-
-  group = NULL;
-
-  {
-    gdouble  xres, yres;
-    gchar   *str;
-
-    gimp_get_screen_resolution (NULL, &xres, &yres);
-
-    str = g_strdup_printf (_("_Detect automatically (currently %d × %d ppi)"),
-                           ROUND (xres), ROUND (yres));
-
-    button = gtk_radio_button_new_with_mnemonic (group, str);
-
-    g_free (str);
-  }
-
-  group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));
-  gtk_box_pack_start (GTK_BOX (vbox2), button, FALSE, FALSE, 0);
-  gtk_widget_show (button);
-
-  g_object_set_data (G_OBJECT (button), "monitor_resolution_sizeentry", entry);
-
-  g_signal_connect (button, "toggled",
-                    G_CALLBACK (prefs_resolution_source_callback),
-                    config);
-
-  button = gtk_radio_button_new_with_mnemonic (group, _("_Enter manually"));
-  group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));
-  gtk_box_pack_start (GTK_BOX (vbox2), button, FALSE, FALSE, 0);
-  gtk_widget_show (button);
-
-  gtk_box_pack_start (GTK_BOX (vbox2), hbox, FALSE, FALSE, 0);
-  gtk_widget_show (hbox);
-
-  if (! display_config->monitor_res_from_gdk)
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
-
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  gtk_box_pack_start (GTK_BOX (vbox2), hbox, FALSE, FALSE, 0);
-  gtk_widget_show (hbox);
-
-  calibrate_button = gtk_button_new_with_mnemonic (_("C_alibrate..."));
-  label = gtk_bin_get_child (GTK_BIN (calibrate_button));
-  gtk_misc_set_padding (GTK_MISC (label), 4, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), calibrate_button, FALSE, FALSE, 0);
-  gtk_widget_show (calibrate_button);
-  gtk_widget_set_sensitive (calibrate_button,
-                            ! display_config->monitor_res_from_gdk);
-
-  g_object_bind_property (button, "active",
-                          entry,  "sensitive",
-                          G_BINDING_SYNC_CREATE);
-  g_object_bind_property (button,           "active",
-                          calibrate_button, "sensitive",
-                          G_BINDING_SYNC_CREATE);
-
-  g_signal_connect (calibrate_button, "clicked",
-                    G_CALLBACK (prefs_resolution_calibrate_callback),
-                    entry);
-
-  g_object_unref (size_group);
-  size_group = NULL;
-
-
-  /**********************/
-  /*  Color Management  */
-  /**********************/
-  vbox = prefs_notebook_append_page (gimp,
-                                     GTK_NOTEBOOK (notebook),
-                                     _("Color Management"),
-                                     "color-management",
-                                     GTK_TREE_STORE (tree),
-                                     NULL,
-                                     GIMP_HELP_PREFS_COLOR_MANAGEMENT,
-                                     NULL,
-                                     &top_iter,
-                                     page_index++);
-
-  table = prefs_table_new (10, GTK_CONTAINER (vbox));
-
-  {
-    static const struct
-    {
-      const gchar *label;
-      const gchar *fs_label;
-      const gchar *property_name;
-    }
-    profiles[] =
-    {
-      { N_("_RGB profile:"),
-        N_("Select RGB Color Profile"),     "rgb-profile"     },
-      { N_("_CMYK profile:"),
-        N_("Select CMYK Color Profile"),    "cmyk-profile"    },
-      { N_("_Monitor profile:"),
-        N_("Select Monitor Color Profile"), "display-profile" },
-      { N_("_Print simulation profile:"),
-        N_("Select Printer Color Profile"), "printer-profile" }
-    };
-
-    GObject      *color_config;
-    GtkListStore *store;
-    gchar        *filename;
-    gint          row = 0;
-
-    g_object_get (object, "color-management", &color_config, NULL);
-
-    prefs_enum_combo_box_add (color_config, "mode", 0, 0,
-                              _("_Mode of operation:"),
-                              GTK_TABLE (table), row++, NULL);
-    gtk_table_set_row_spacing (GTK_TABLE (table), row - 1, 12);
-
-    filename = gimp_personal_rc_file ("profilerc");
-    store = gimp_color_profile_store_new (filename);
-    g_free (filename);
-
-    gimp_color_profile_store_add (GIMP_COLOR_PROFILE_STORE (store), NULL, NULL);
-
-    for (i = 0; i < G_N_ELEMENTS (profiles); i++)
-      {
-        button = prefs_profile_combo_box_new (gimp,
-                                              color_config,
-                                              store,
-                                              gettext (profiles[i].fs_label),
-                                              profiles[i].property_name);
-
-        gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
-                                   gettext (profiles[i].label), 0.0, 0.5,
-                                   button, 1, FALSE);
-
-
-        if (i == 2) /* display profile */
-          {
-            gtk_table_set_row_spacing (GTK_TABLE (table), row - 2, 12);
-
-            button =
-              gimp_prop_check_button_new (color_config,
-                                          "display-profile-from-gdk",
-                                          _("_Try to use the system monitor "
-                                            "profile"));
-
-            gtk_table_attach_defaults (GTK_TABLE (table),
-                                       button, 1, 2, row, row + 1);
-            gtk_widget_show (button);
-            row++;
-
-            prefs_enum_combo_box_add (color_config,
-                                      "display-rendering-intent", 0, 0,
-                                      _("_Display rendering intent:"),
-                                      GTK_TABLE (table), row++, NULL);
-            gtk_table_set_row_spacing (GTK_TABLE (table), row - 1, 12);
-          }
-
-        if (i == 3) /* printer profile */
-          {
-            prefs_enum_combo_box_add (color_config,
-                                      "simulation-rendering-intent", 0, 0,
-                                      _("_Softproof rendering intent:"),
-                                      GTK_TABLE (table), row++, NULL);
-          }
-      }
-
-    g_object_unref (store);
-
-    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-    gtk_table_attach_defaults (GTK_TABLE (table), hbox, 1, 2, row, row + 1);
-    gtk_widget_show (hbox);
-    row++;
-
-    button = gimp_prop_check_button_new (color_config, "simulation-gamut-check",
-                                         _("Mark out of gamut colors"));
-    gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
-    gtk_widget_show (button);
-
-    button = gimp_prop_color_button_new (color_config, "out-of-gamut-color",
-                                         _("Select Warning Color"),
-                                         COLOR_BUTTON_WIDTH,
-                                         COLOR_BUTTON_HEIGHT,
-                                         GIMP_COLOR_AREA_FLAT);
-    gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
-    gtk_widget_show (button);
-
-    gimp_color_panel_set_context (GIMP_COLOR_PANEL (button),
-                                  gimp_get_user_context (gimp));
-
-    gtk_table_set_row_spacing (GTK_TABLE (table), row - 1, 12);
-
-    button = prefs_enum_combo_box_add (object, "color-profile-policy", 0, 0,
-                                       _("File Open behaviour:"),
-                                       GTK_TABLE (table), row++, NULL);
-
-    g_object_unref (color_config);
-  }
+  prefs_spin_button_add (object, "snap-distance", 1.0, 5.0, 0,
+                         _("_Snapping distance:"),
+                         GTK_TABLE (table), 0, size_group);
 
 
   /*******************/
   /*  Input Devices  */
   /*******************/
-  vbox = prefs_notebook_append_page (gimp,
-                                     GTK_NOTEBOOK (notebook),
-                                     _("Input Devices"),
-                                     "input-devices",
-                                     GTK_TREE_STORE (tree),
-                                     NULL,
-                                     GIMP_HELP_PREFS_INPUT_DEVICES,
-                                     NULL,
-                                     &top_iter,
-                                     page_index++);
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-input-devices",
+                                  _("Input Devices"),
+                                  _("Input Devices"),
+                                  GIMP_HELP_PREFS_INPUT_DEVICES,
+                                  NULL,
+                                  &top_iter);
 
   /*  Extended Input Devices  */
   vbox2 = prefs_frame_new (_("Extended Input Devices"),
                            GTK_CONTAINER (vbox), FALSE);
 
-  button = prefs_button_add (GTK_STOCK_PREFERENCES,
+  prefs_check_button_add (object, "devices-share-tool",
+                          _("S_hare tool and tool options between input devices"),
+                          GTK_BOX (vbox2));
+
+  button = prefs_button_add (GIMP_ICON_PREFERENCES_SYSTEM,
                              _("Configure E_xtended Input Devices..."),
                              GTK_BOX (vbox2));
   g_signal_connect (button, "clicked",
@@ -2622,14 +2975,14 @@ prefs_dialog_new (Gimp       *gimp,
                           _("_Save input device settings on exit"),
                           GTK_BOX (vbox2));
 
-  button = prefs_button_add (GTK_STOCK_SAVE,
+  button = prefs_button_add (GIMP_ICON_DOCUMENT_SAVE,
                              _("Save Input Device Settings _Now"),
                              GTK_BOX (vbox2));
   g_signal_connect (button, "clicked",
                     G_CALLBACK (prefs_devices_save_callback),
                     gimp);
 
-  button2 = prefs_button_add (GIMP_STOCK_RESET,
+  button2 = prefs_button_add (GIMP_ICON_RESET,
                               _("_Reset Saved Input Device Settings to "
                                 "Default Values"),
                               GTK_BOX (vbox2));
@@ -2643,97 +2996,36 @@ prefs_dialog_new (Gimp       *gimp,
   /****************************/
   /*  Additional Controllers  */
   /****************************/
-  vbox = prefs_notebook_append_page (gimp,
-                                     GTK_NOTEBOOK (notebook),
-                                     _("Additional Input Controllers"),
-                                     "controllers",
-                                     GTK_TREE_STORE (tree),
-                                     _("Input Controllers"),
-                                     GIMP_HELP_PREFS_INPUT_CONTROLLERS,
-                                     &top_iter,
-                                     &child_iter,
-                                     page_index++);
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-controllers",
+                                  _("Additional Input Controllers"),
+                                  _("Input Controllers"),
+                                  GIMP_HELP_PREFS_INPUT_CONTROLLERS,
+                                  &top_iter,
+                                  &child_iter);
 
   vbox2 = gimp_controller_list_new (gimp);
   gtk_box_pack_start (GTK_BOX (vbox), vbox2, TRUE, TRUE, 0);
   gtk_widget_show (vbox2);
 
 
-  /***********************/
-  /*  Window Management  */
-  /***********************/
-  vbox = prefs_notebook_append_page (gimp,
-                                     GTK_NOTEBOOK (notebook),
-                                     _("Window Management"),
-                                     "window-management",
-                                     GTK_TREE_STORE (tree),
-                                     NULL,
-                                     GIMP_HELP_PREFS_WINDOW_MANAGEMENT,
-                                     NULL,
-                                     &top_iter,
-                                     page_index++);
-
-  vbox2 = prefs_frame_new (_("Window Manager Hints"),
-                           GTK_CONTAINER (vbox), FALSE);
-
-  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
-
-  prefs_enum_combo_box_add (object, "dock-window-hint", 0, 0,
-                            _("Hint for _docks and toolbox:"),
-                            GTK_TABLE (table), 1, size_group);
-
-  vbox2 = prefs_frame_new (_("Focus"),
-                           GTK_CONTAINER (vbox), FALSE);
-
-  prefs_check_button_add (object, "activate-on-focus",
-                          _("Activate the _focused image"),
-                          GTK_BOX (vbox2));
-
-  /* Window Positions */
-  vbox2 = prefs_frame_new (_("Window Positions"), GTK_CONTAINER (vbox), FALSE);
-
-  prefs_check_button_add (object, "save-session-info",
-                          _("_Save window positions on exit"),
-                          GTK_BOX (vbox2));
-
-  button = prefs_button_add (GTK_STOCK_SAVE,
-                             _("Save Window Positions _Now"),
-                             GTK_BOX (vbox2));
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (prefs_session_save_callback),
-                    gimp);
-
-  button2 = prefs_button_add (GIMP_STOCK_RESET,
-                              _("_Reset Saved Window Positions to "
-                                "Default Values"),
-                              GTK_BOX (vbox2));
-  g_signal_connect (button2, "clicked",
-                    G_CALLBACK (prefs_session_clear_callback),
-                    gimp);
-
-  g_object_set_data (G_OBJECT (button), "clear-button", button2);
-
-
   /*************/
   /*  Folders  */
   /*************/
-  vbox = prefs_notebook_append_page (gimp,
-                                     GTK_NOTEBOOK (notebook),
-                                     _("Folders"),
-                                     "folders",
-                                     GTK_TREE_STORE (tree),
-                                     NULL,
-                                     GIMP_HELP_PREFS_FOLDERS,
-                                     NULL,
-                                     &top_iter,
-                                     page_index++);
+  vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                  "gimp-prefs-folders",
+                                  _("Folders"),
+                                  _("Folders"),
+                                  GIMP_HELP_PREFS_FOLDERS,
+                                  NULL,
+                                  &top_iter);
 
   {
     static const struct
     {
       const gchar *property_name;
       const gchar *label;
-      const gchar *fs_label;
+      const gchar *dialog_title;
     }
     dirs[] =
     {
@@ -2753,13 +3045,10 @@ prefs_dialog_new (Gimp       *gimp,
 
     for (i = 0; i < G_N_ELEMENTS (dirs); i++)
       {
-        button = gimp_prop_file_chooser_button_new (object,
-                                                    dirs[i].property_name,
-                                                    gettext (dirs[i].fs_label),
-                                                    GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-        gimp_table_attach_aligned (GTK_TABLE (table), 0, i,
-                                   gettext (dirs[i].label), 0.0, 0.5,
-                                   button, 1, FALSE);
+        prefs_file_chooser_button_add (object, dirs[i].property_name,
+                                       gettext (dirs[i].label),
+                                       gettext (dirs[i].dialog_title),
+                                       GTK_TABLE (table), i, NULL);
       }
   }
 
@@ -2808,9 +3097,13 @@ prefs_dialog_new (Gimp       *gimp,
         GIMP_HELP_PREFS_FOLDERS_TOOL_PRESETS,
         N_("Select Tool Preset Folders"),
         "tool-preset-path", "tool-preset-path-writable" },
-      { N_("Plug-Ins"), N_("Plug-In Folders"), "folders-plug-ins",
+      { N_("MyPaint Brushes"), N_("MyPaint Brush Folders"), "folders-mypaint-brushes",
+        GIMP_HELP_PREFS_FOLDERS_MYPAINT_BRUSHES,
+        N_("Select MyPaint Brush Folders"),
+        "mypaint-brush-path", "mypaint-brush-path-writable" },
+      { N_("Plug-ins"), N_("Plug-in Folders"), "folders-plug-ins",
         GIMP_HELP_PREFS_FOLDERS_PLUG_INS,
-        N_("Select Plug-In Folders"),
+        N_("Select plug-in Folders"),
         "plug-in-path", NULL },
       { N_("Scripts"), N_("Script-Fu Folders"), "folders-scripts",
         GIMP_HELP_PREFS_FOLDERS_SCRIPTS,
@@ -2831,23 +3124,27 @@ prefs_dialog_new (Gimp       *gimp,
       { N_("Themes"), N_("Theme Folders"), "folders-themes",
         GIMP_HELP_PREFS_FOLDERS_THEMES,
         N_("Select Theme Folders"),
-        "theme-path", NULL }
+        "theme-path", NULL },
+      { N_("Icon Themes"), N_("Icon Theme Folders"), "folders-icon-themes",
+        GIMP_HELP_PREFS_FOLDERS_ICON_THEMES,
+        N_("Select Icon Theme Folders"),
+        "icon-theme-path", NULL }
     };
 
     for (i = 0; i < G_N_ELEMENTS (paths); i++)
       {
         GtkWidget *editor;
+        gchar     *icon_name;
 
-        vbox = prefs_notebook_append_page (gimp,
-                                           GTK_NOTEBOOK (notebook),
-                                           gettext (paths[i].label),
-                                           paths[i].icon,
-                                           GTK_TREE_STORE (tree),
-                                           gettext (paths[i].tree_label),
-                                           paths[i].help_data,
-                                           &top_iter,
-                                           &child_iter,
-                                           page_index++);
+        icon_name = g_strconcat ("gimp-prefs-", paths[i].icon, NULL);
+        vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
+                                        icon_name,
+                                        gettext (paths[i].label),
+                                        gettext (paths[i].tree_label),
+                                        paths[i].help_data,
+                                        &top_iter,
+                                        &child_iter);
+        g_free (icon_name);
 
         editor = gimp_prop_path_editor_new (object,
                                             paths[i].path_property_name,
@@ -2858,15 +3155,20 @@ prefs_dialog_new (Gimp       *gimp,
       }
   }
 
-  gtk_tree_view_expand_all (GTK_TREE_VIEW (tv));
+  {
+    GtkWidget    *tv;
+    GtkTreeModel *model;
+    GtkTreePath  *path;
 
-  /*  collapse the Folders subtree */
-  path = gtk_tree_model_get_path (GTK_TREE_MODEL (tree), &top_iter);
-  gtk_tree_view_collapse_row (GTK_TREE_VIEW (tv), path);
-  gtk_tree_path_free (path);
+    tv = gimp_prefs_box_get_tree_view (GIMP_PREFS_BOX (prefs_box));
+    gtk_tree_view_expand_all (GTK_TREE_VIEW (tv));
 
-  gtk_widget_show (tv);
-  gtk_widget_show (notebook);
+    /*  collapse the Folders subtree */
+    model = gtk_tree_view_get_model (GTK_TREE_VIEW (tv));
+    path = gtk_tree_model_get_path (model, &top_iter);
+    gtk_tree_view_collapse_row (GTK_TREE_VIEW (tv), path);
+    gtk_tree_path_free (path);
+  }
 
   return dialog;
 }

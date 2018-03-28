@@ -32,11 +32,22 @@
 #include "core/gimp.h"
 #include "core/gimpimage.h"
 #include "core/gimplayer.h"
+#include "core/gimplayer-new.h"
 
 #include "tests.h"
 
 #include "gimp-app-test-utils.h"
 
+#ifdef G_OS_WIN32
+/* SendInput() requirement is Windows 2000 pro or over.
+ * We may need to set WINVER to make sure the compiler does not try to
+ * compile for on older version of win32, thus breaking the build.
+ * See
+ * http://msdn.microsoft.com/en-us/library/aa383745%28v=vs.85%29.aspx#setting_winver_or__win32_winnt
+ */
+#define WINVER 0x0500
+#include <windows.h>
+#endif /* G_OS_WIN32 */
 
 void
 gimp_test_utils_set_env_to_subpath (const gchar *root_env_var,
@@ -118,18 +129,16 @@ gimp_test_utils_create_image (Gimp *gimp,
   GimpImage *image;
   GimpLayer *layer;
 
-  image = gimp_image_new (gimp,
-                          width,
-                          height,
-                          GIMP_RGB);
+  image = gimp_image_new (gimp, width, height,
+                          GIMP_RGB, GIMP_PRECISION_U8_GAMMA);
 
   layer = gimp_layer_new (image,
                           width,
                           height,
-                          GIMP_RGBA_IMAGE,
+                          gimp_image_get_layer_format (image, TRUE),
                           "layer1",
                           1.0,
-                          GIMP_NORMAL_MODE);
+                          GIMP_LAYER_MODE_NORMAL);
 
   gimp_image_add_layer (image,
                         layer,
@@ -140,7 +149,8 @@ gimp_test_utils_create_image (Gimp *gimp,
   gimp_create_display (gimp,
                        image,
                        GIMP_UNIT_PIXEL,
-                       1.0 /*scale*/);
+                       1.0 /*scale*/,
+                       NULL, 0);
 }
 
 /**
@@ -154,6 +164,72 @@ void
 gimp_test_utils_synthesize_key_event (GtkWidget *widget,
                                       guint      keyval)
 {
+#if defined G_OS_WIN32 && ! GTK_CHECK_VERSION (2, 24, 25)
+  /* gdk_test_simulate_key() has no implementation for win32 until
+   * GTK+ 2.24.25.
+   * TODO: remove the below hack when our GTK+ requirement is over 2.24.25. */
+  GdkKeymapKey *keys   = NULL;
+  gint          n_keys = 0;
+  INPUT         ip;
+  gint          i;
+
+  ip.type = INPUT_KEYBOARD;
+  ip.ki.wScan = 0;
+  ip.ki.time = 0;
+  ip.ki.dwExtraInfo = 0;
+  if (gdk_keymap_get_entries_for_keyval (gdk_keymap_get_default (), keyval, &keys, &n_keys))
+    {
+      for (i = 0; i < n_keys; i++)
+        {
+          ip.ki.dwFlags = 0;
+          /* AltGr press. */
+          if (keys[i].group)
+            {
+              /* According to some virtualbox code I found, AltGr is
+               * simulated on win32 with LCtrl+RAlt */
+              ip.ki.wVk = VK_CONTROL;
+              SendInput(1, &ip, sizeof(INPUT));
+              ip.ki.wVk = VK_MENU;
+              SendInput(1, &ip, sizeof(INPUT));
+            }
+          /* Shift press. */
+          if (keys[i].level)
+            {
+              ip.ki.wVk = VK_SHIFT;
+              SendInput(1, &ip, sizeof(INPUT));
+            }
+          /* Key pressed. */
+          ip.ki.wVk = keys[i].keycode;
+          SendInput(1, &ip, sizeof(INPUT));
+
+          ip.ki.dwFlags = KEYEVENTF_KEYUP;
+          /* Key released. */
+          SendInput(1, &ip, sizeof(INPUT));
+          /* Shift release. */
+          if (keys[i].level)
+            {
+              ip.ki.wVk = VK_SHIFT;
+              SendInput(1, &ip, sizeof(INPUT));
+            }
+          /* AltrGr release. */
+          if (keys[i].group)
+            {
+              ip.ki.wVk = VK_MENU;
+              SendInput(1, &ip, sizeof(INPUT));
+              ip.ki.wVk = VK_CONTROL;
+              SendInput(1, &ip, sizeof(INPUT));
+            }
+          /* No need to loop for alternative keycodes. We want only one
+           * key generated. */
+          break;
+        }
+      g_free (keys);
+    }
+  else
+    {
+      g_warning ("%s: no win32 key mapping found for keyval %d.", G_STRFUNC, keyval);
+    }
+#else /* G_OS_WIN32  && ! GTK_CHECK_VERSION (2, 24, 25) */
   gdk_test_simulate_key (gtk_widget_get_window (widget),
                          -1, -1, /*x, y*/
                          keyval,
@@ -164,6 +240,7 @@ gimp_test_utils_synthesize_key_event (GtkWidget *widget,
                          keyval,
                          0 /*modifiers*/,
                          GDK_KEY_RELEASE);
+#endif /* G_OS_WIN32  && ! GTK_CHECK_VERSION (2, 24, 25) */
 }
 
 /**
@@ -211,7 +288,7 @@ gimp_test_utils_get_ui_manager (Gimp *gimp)
  * Returns: The created #GimpImage.
  **/
 GimpImage *
-gimp_test_utils_create_image_from_dalog (Gimp *gimp)
+gimp_test_utils_create_image_from_dialog (Gimp *gimp)
 {
   GimpImage     *image            = NULL;
   GtkWidget     *new_image_dialog = NULL;
@@ -229,7 +306,7 @@ gimp_test_utils_create_image_from_dalog (Gimp *gimp)
   /* Get the GtkWindow of the dialog */
   new_image_dialog =
     gimp_dialog_factory_dialog_raise (gimp_dialog_factory_get_singleton (),
-                                      gdk_screen_get_default (),
+                                      gdk_screen_get_default (), 0,
                                       "gimp-image-new-dialog",
                                       -1 /*view_size*/);
 

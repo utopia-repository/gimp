@@ -17,13 +17,16 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include "libgimpconfig/gimpconfig.h"
 
 #include "paint-types.h"
 
 #include "gimperaseroptions.h"
+
+#include "gimp-intl.h"
 
 
 #define ERASER_DEFAULT_ANTI_ERASE FALSE
@@ -58,10 +61,12 @@ gimp_eraser_options_class_init (GimpEraserOptionsClass *klass)
   object_class->set_property = gimp_eraser_options_set_property;
   object_class->get_property = gimp_eraser_options_get_property;
 
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_ANTI_ERASE,
-                                    "anti-erase", NULL,
-                                    ERASER_DEFAULT_ANTI_ERASE,
-                                    GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_ANTI_ERASE,
+                            "anti-erase",
+                            _("Anti erase"),
+                            NULL,
+                            ERASER_DEFAULT_ANTI_ERASE,
+                            GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void

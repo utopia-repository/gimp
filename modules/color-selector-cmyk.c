@@ -1,5 +1,5 @@
-/* GIMP CMYK ColorSelector
- * Copyright (C) 2003  Sven Neumann <sven@gimp.org>
+/* GIMP CMYK ColorSelector using littleCMS
+ * Copyright (C) 2006  Sven Neumann <sven@gimp.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,9 +17,11 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpcolor/gimpcolor.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpmodule/gimpmodule.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
@@ -40,11 +42,17 @@ typedef struct _ColorselCmykClass ColorselCmykClass;
 
 struct _ColorselCmyk
 {
-  GimpColorSelector  parent_instance;
+  GimpColorSelector   parent_instance;
 
-  GimpCMYK           cmyk;
-  gdouble            pullout;
-  GtkAdjustment     *adj[5];
+  GimpColorConfig    *config;
+  GimpColorTransform *rgb2cmyk;
+  GimpColorTransform *cmyk2rgb;
+
+  GimpCMYK            cmyk;
+  GtkAdjustment      *adj[4];
+  GtkWidget          *name_label;
+
+  gboolean            in_destruction;
 };
 
 struct _ColorselCmykClass
@@ -53,25 +61,29 @@ struct _ColorselCmykClass
 };
 
 
-GType         colorsel_cmyk_get_type       (void);
+static GType  colorsel_cmyk_get_type       (void);
+
+static void   colorsel_cmyk_dispose        (GObject           *object);
 
 static void   colorsel_cmyk_set_color      (GimpColorSelector *selector,
                                             const GimpRGB     *rgb,
                                             const GimpHSV     *hsv);
+static void   colorsel_cmyk_set_config     (GimpColorSelector *selector,
+                                            GimpColorConfig   *config);
+
 static void   colorsel_cmyk_adj_update     (GtkAdjustment     *adj,
                                             ColorselCmyk      *module);
-static void   colorsel_cmyk_pullout_update (GtkAdjustment     *adj,
-                                            ColorselCmyk      *module);
+static void   colorsel_cmyk_config_changed (ColorselCmyk      *module);
 
 
 static const GimpModuleInfo colorsel_cmyk_info =
 {
   GIMP_MODULE_ABI_VERSION,
-  N_("CMYK color selector"),
+  N_("CMYK color selector (using color profile)"),
   "Sven Neumann <sven@gimp.org>",
-  "v0.2",
-  "(c) 2003, released under the GPL",
-  "July 2003"
+  "v0.1",
+  "(c) 2006, released under the GPL",
+  "September 2006"
 };
 
 
@@ -96,12 +108,16 @@ gimp_module_register (GTypeModule *module)
 static void
 colorsel_cmyk_class_init (ColorselCmykClass *klass)
 {
+  GObjectClass           *object_class   = G_OBJECT_CLASS (klass);
   GimpColorSelectorClass *selector_class = GIMP_COLOR_SELECTOR_CLASS (klass);
 
-  selector_class->name      = _("CMYK");
-  selector_class->help_id   = "gimp-colorselector-cmyk";
-  selector_class->stock_id  = GTK_STOCK_PRINT;  /* FIXME */
-  selector_class->set_color = colorsel_cmyk_set_color;
+  object_class->dispose      = colorsel_cmyk_dispose;
+
+  selector_class->name       = _("CMYK");
+  selector_class->help_id    = "gimp-colorselector-cmyk";
+  selector_class->icon_name  = GIMP_ICON_COLOR_SELECTOR_CMYK;
+  selector_class->set_color  = colorsel_cmyk_set_color;
+  selector_class->set_config = colorsel_cmyk_set_config;
 }
 
 static void
@@ -113,8 +129,6 @@ static void
 colorsel_cmyk_init (ColorselCmyk *module)
 {
   GtkWidget *table;
-  GtkWidget *label;
-  GtkWidget *spinbutton;
   GtkObject *adj;
   gint       i;
 
@@ -137,16 +151,20 @@ colorsel_cmyk_init (ColorselCmyk *module)
     N_("Black")
   };
 
-  module->pullout = 1.0;
+  module->config   = NULL;
+  module->rgb2cmyk = NULL;
+  module->cmyk2rgb = NULL;
 
-  table = gtk_table_new (5, 4, FALSE);
+  gtk_box_set_spacing (GTK_BOX (module), 6);
+
+  table = gtk_table_new (4, 4, FALSE);
 
   gtk_table_set_row_spacings (GTK_TABLE (table), 1);
   gtk_table_set_col_spacings (GTK_TABLE (table), 2);
   gtk_table_set_col_spacing (GTK_TABLE (table), 0, 0);
-  gtk_table_set_row_spacing (GTK_TABLE (table), 3, 4);
 
-  gtk_box_pack_start (GTK_BOX (module), table, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (module), table, FALSE, FALSE, 0);
+  gtk_widget_show (table);
 
   for (i = 0; i < 4; i++)
     {
@@ -168,34 +186,26 @@ colorsel_cmyk_init (ColorselCmyk *module)
       module->adj[i] = GTK_ADJUSTMENT (adj);
     }
 
-  label = gtk_label_new_with_mnemonic (_("Black _pullout:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_table_attach (GTK_TABLE (table), label,
-                    1, 3, i, i + 1,
-                    GTK_FILL, GTK_FILL, 0, 0);
-  gtk_widget_show (label);
+  module->name_label = gtk_label_new (NULL);
+  gtk_label_set_xalign (GTK_LABEL (module->name_label), 0.0);
+  gtk_label_set_ellipsize (GTK_LABEL (module->name_label), PANGO_ELLIPSIZE_END);
+  gimp_label_set_attributes (GTK_LABEL (module->name_label),
+                             PANGO_ATTR_SCALE, PANGO_SCALE_SMALL,
+                             -1);
+  gtk_box_pack_start (GTK_BOX (module), module->name_label, FALSE, FALSE, 0);
+  gtk_widget_show (module->name_label);
+}
 
-  spinbutton = gimp_spin_button_new (&adj, module->pullout * 100.0,
-                                     0.0, 100.0, 1.0, 10.0, 0.0,
-                                     1.0, 0);
+static void
+colorsel_cmyk_dispose (GObject *object)
+{
+  ColorselCmyk *module = COLORSEL_CMYK (object);
 
-  gtk_table_attach (GTK_TABLE (table), spinbutton,
-                    3, 4, i, i + 1,
-                    GTK_SHRINK, GTK_SHRINK, 0, 0);
-  gtk_widget_show (spinbutton);
+  module->in_destruction = TRUE;
 
-  gimp_help_set_help_data (spinbutton,
-                           _("The percentage of black to pull out "
-                             "of the colored inks."), NULL);
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label), spinbutton);
+  colorsel_cmyk_set_config (GIMP_COLOR_SELECTOR (object), NULL);
 
-  g_signal_connect (adj, "value-changed",
-                    G_CALLBACK (colorsel_cmyk_pullout_update),
-                    module);
-
-  module->adj[i] = GTK_ADJUSTMENT (adj);
-
-  gtk_widget_show (table);
+  G_OBJECT_CLASS (colorsel_cmyk_parent_class)->dispose (object);
 }
 
 static void
@@ -204,13 +214,82 @@ colorsel_cmyk_set_color (GimpColorSelector *selector,
                          const GimpHSV     *hsv)
 {
   ColorselCmyk *module = COLORSEL_CMYK (selector);
+  gdouble       values[4];
+  gint          i;
 
-  gimp_rgb_to_cmyk (rgb, module->pullout, &module->cmyk);
+  if (module->rgb2cmyk)
+    {
+      gdouble rgb_values[3];
+      gdouble cmyk_values[4];
 
-  gtk_adjustment_set_value (module->adj[0], module->cmyk.c * 100.0);
-  gtk_adjustment_set_value (module->adj[1], module->cmyk.m * 100.0);
-  gtk_adjustment_set_value (module->adj[2], module->cmyk.y * 100.0);
-  gtk_adjustment_set_value (module->adj[3], module->cmyk.k * 100.0);
+      rgb_values[0] = rgb->r;
+      rgb_values[1] = rgb->g;
+      rgb_values[2] = rgb->b;
+
+      gimp_color_transform_process_pixels (module->rgb2cmyk,
+                                           babl_format ("R'G'B' double"),
+                                           rgb_values,
+                                           babl_format ("CMYK double"),
+                                           cmyk_values,
+                                           1);
+
+      module->cmyk.c = cmyk_values[0] / 100.0;
+      module->cmyk.m = cmyk_values[1] / 100.0;
+      module->cmyk.y = cmyk_values[2] / 100.0;
+      module->cmyk.k = cmyk_values[3] / 100.0;
+    }
+  else
+    {
+      gimp_rgb_to_cmyk (rgb, 1.0, &module->cmyk);
+    }
+
+  values[0] = module->cmyk.c * 100.0;
+  values[1] = module->cmyk.m * 100.0;
+  values[2] = module->cmyk.y * 100.0;
+  values[3] = module->cmyk.k * 100.0;
+
+  for (i = 0; i < 4; i++)
+    {
+      g_signal_handlers_block_by_func (module->adj[i],
+                                       colorsel_cmyk_adj_update,
+                                       module);
+
+      gtk_adjustment_set_value (module->adj[i], values[i]);
+
+      g_signal_handlers_unblock_by_func (module->adj[i],
+                                         colorsel_cmyk_adj_update,
+                                         module);
+    }
+}
+
+static void
+colorsel_cmyk_set_config (GimpColorSelector *selector,
+                          GimpColorConfig   *config)
+{
+  ColorselCmyk *module = COLORSEL_CMYK (selector);
+
+  if (config != module->config)
+    {
+      if (module->config)
+        {
+          g_signal_handlers_disconnect_by_func (module->config,
+                                                colorsel_cmyk_config_changed,
+                                                module);
+          g_object_unref (module->config);
+        }
+
+      module->config = config;
+
+      if (module->config)
+        {
+          g_object_ref (module->config);
+          g_signal_connect_swapped (module->config, "notify",
+                                    G_CALLBACK (colorsel_cmyk_config_changed),
+                                    module);
+        }
+
+      colorsel_cmyk_config_changed (module);
+    }
 }
 
 static void
@@ -218,46 +297,131 @@ colorsel_cmyk_adj_update (GtkAdjustment *adj,
                           ColorselCmyk  *module)
 {
   GimpColorSelector *selector = GIMP_COLOR_SELECTOR (module);
-  gdouble            value;
   gint               i;
+  gdouble            value;
 
   for (i = 0; i < 4; i++)
     if (module->adj[i] == adj)
       break;
 
-  value = gtk_adjustment_get_value (adj);
+  value = gtk_adjustment_get_value (adj) / 100.0;
 
   switch (i)
     {
     case 0:
-      module->cmyk.c = value / 100.0;
+      module->cmyk.c = value;
       break;
     case 1:
-      module->cmyk.m = value / 100.0;
+      module->cmyk.m = value;
       break;
     case 2:
-      module->cmyk.y = value / 100.0;
+      module->cmyk.y = value;
       break;
     case 3:
-      module->cmyk.k = value / 100.0;
+      module->cmyk.k = value;
       break;
     default:
       return;
     }
 
-  gimp_cmyk_to_rgb (&module->cmyk, &selector->rgb);
+  if (module->cmyk2rgb)
+    {
+      gdouble cmyk_values[4];
+      gdouble rgb_values[3];
+
+      cmyk_values[0] = module->cmyk.c * 100.0;
+      cmyk_values[1] = module->cmyk.m * 100.0;
+      cmyk_values[2] = module->cmyk.y * 100.0;
+      cmyk_values[3] = module->cmyk.k * 100.0;
+
+      gimp_color_transform_process_pixels (module->cmyk2rgb,
+                                           babl_format ("CMYK double"),
+                                           cmyk_values,
+                                           babl_format ("R'G'B' double"),
+                                           rgb_values,
+                                           1);
+
+      selector->rgb.r = rgb_values[0];
+      selector->rgb.g = rgb_values[1];
+      selector->rgb.b = rgb_values[2];
+    }
+  else
+    {
+      gimp_cmyk_to_rgb (&module->cmyk, &selector->rgb);
+    }
+
   gimp_rgb_to_hsv (&selector->rgb, &selector->hsv);
 
   gimp_color_selector_color_changed (selector);
 }
 
 static void
-colorsel_cmyk_pullout_update (GtkAdjustment *adj,
-                              ColorselCmyk  *module)
+colorsel_cmyk_config_changed (ColorselCmyk *module)
 {
-  GimpColorSelector *selector = GIMP_COLOR_SELECTOR (module);
+  GimpColorSelector       *selector     = GIMP_COLOR_SELECTOR (module);
+  GimpColorConfig         *config       = module->config;
+  GimpColorTransformFlags  flags        = 0;
+  GimpColorProfile        *rgb_profile  = NULL;
+  GimpColorProfile        *cmyk_profile = NULL;
+  gchar                   *text;
 
-  module->pullout = gtk_adjustment_get_value (adj) / 100.0;
+  if (module->rgb2cmyk)
+    {
+      g_object_unref (module->rgb2cmyk);
+      module->rgb2cmyk = NULL;
+    }
 
-  gimp_color_selector_set_color (selector, &selector->rgb, &selector->hsv);
+  if (module->cmyk2rgb)
+    {
+      g_object_unref (module->cmyk2rgb);
+      module->cmyk2rgb = NULL;
+    }
+
+  gtk_label_set_text (GTK_LABEL (module->name_label), _("Profile: (none)"));
+  gimp_help_set_help_data (module->name_label, NULL, NULL);
+
+  if (! config)
+    goto out;
+
+  cmyk_profile = gimp_color_config_get_cmyk_color_profile (config, NULL);
+  if (! cmyk_profile)
+    goto out;
+
+  rgb_profile = gimp_color_profile_new_rgb_srgb ();
+
+  text = g_strdup_printf (_("Profile: %s"),
+                          gimp_color_profile_get_label (cmyk_profile));
+  gtk_label_set_text (GTK_LABEL (module->name_label), text);
+  g_free (text);
+
+  gimp_help_set_help_data (module->name_label,
+                           gimp_color_profile_get_summary (cmyk_profile),
+                           NULL);
+
+  flags |= GIMP_COLOR_TRANSFORM_FLAGS_NOOPTIMIZE;
+  flags |= GIMP_COLOR_TRANSFORM_FLAGS_BLACK_POINT_COMPENSATION;
+
+  module->rgb2cmyk = gimp_color_transform_new (rgb_profile,
+                                               babl_format ("R'G'B' double"),
+                                               cmyk_profile,
+                                               babl_format ("CMYK double"),
+                                               GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL,
+                                               flags);
+  module->cmyk2rgb = gimp_color_transform_new (cmyk_profile,
+                                               babl_format ("CMYK double"),
+                                               rgb_profile,
+                                               babl_format ("R'G'B' double"),
+                                               GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL,
+                                               flags);
+
+ out:
+
+  if (rgb_profile)
+    g_object_unref (rgb_profile);
+
+  if (cmyk_profile)
+    g_object_unref (cmyk_profile);
+
+  if (! module->in_destruction)
+    colorsel_cmyk_set_color (selector, &selector->rgb, &selector->hsv);
 }

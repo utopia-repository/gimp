@@ -25,11 +25,12 @@
 #include "tools-types.h"
 
 #include "core/gimp.h"
+#include "core/gimp-edit.h"
 #include "core/gimpdrawable-bucket-fill.h"
 #include "core/gimperror.h"
+#include "core/gimpfilloptions.h"
 #include "core/gimpimage.h"
 #include "core/gimpitem.h"
-#include "core/gimppickable.h"
 
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpwidgets-utils.h"
@@ -77,17 +78,17 @@ gimp_bucket_fill_tool_register (GimpToolRegisterCallback  callback,
   (* callback) (GIMP_TYPE_BUCKET_FILL_TOOL,
                 GIMP_TYPE_BUCKET_FILL_OPTIONS,
                 gimp_bucket_fill_options_gui,
-                GIMP_CONTEXT_FOREGROUND_MASK |
-                GIMP_CONTEXT_BACKGROUND_MASK |
-                GIMP_CONTEXT_OPACITY_MASK    |
-                GIMP_CONTEXT_PAINT_MODE_MASK |
-                GIMP_CONTEXT_PATTERN_MASK,
+                GIMP_CONTEXT_PROP_MASK_FOREGROUND |
+                GIMP_CONTEXT_PROP_MASK_BACKGROUND |
+                GIMP_CONTEXT_PROP_MASK_OPACITY    |
+                GIMP_CONTEXT_PROP_MASK_PAINT_MODE |
+                GIMP_CONTEXT_PROP_MASK_PATTERN,
                 "gimp-bucket-fill-tool",
                 _("Bucket Fill"),
                 _("Bucket Fill Tool: Fill selected area with a color or pattern"),
                 N_("_Bucket Fill"), "<shift>B",
                 NULL, GIMP_HELP_TOOL_BUCKET_FILL,
-                GIMP_STOCK_TOOL_BUCKET_FILL,
+                GIMP_ICON_TOOL_BUCKET_FILL,
                 data);
 }
 
@@ -111,7 +112,7 @@ gimp_bucket_fill_tool_init (GimpBucketFillTool *bucket_fill_tool)
   gimp_tool_control_set_wants_click     (tool->control, TRUE);
   gimp_tool_control_set_tool_cursor     (tool->control,
                                          GIMP_TOOL_CURSOR_BUCKET_FILL);
-  gimp_tool_control_set_action_value_1  (tool->control,
+  gimp_tool_control_set_action_opacity  (tool->control,
                                          "context/context-opacity-set");
   gimp_tool_control_set_action_object_1 (tool->control,
                                          "context/context-pattern-select-set");
@@ -133,14 +134,21 @@ gimp_bucket_fill_tool_initialize (GimpTool     *tool,
   if (gimp_viewable_get_children (GIMP_VIEWABLE (drawable)))
     {
       g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
-			   _("Cannot modify the pixels of layer groups."));
+                           _("Cannot modify the pixels of layer groups."));
       return FALSE;
     }
 
   if (gimp_item_is_content_locked (GIMP_ITEM (drawable)))
     {
       g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
-			   _("The active layer's pixels are locked."));
+                           _("The active layer's pixels are locked."));
+      return FALSE;
+    }
+
+  if (! gimp_item_is_visible (GIMP_ITEM (drawable)))
+    {
+      g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+                           _("The active layer is not visible."));
       return FALSE;
     }
 
@@ -163,44 +171,62 @@ gimp_bucket_fill_tool_button_release (GimpTool              *tool,
       gimp_image_coords_in_active_pickable (image, coords,
                                             options->sample_merged, TRUE))
     {
-      GimpDrawable *drawable = gimp_image_get_active_drawable (image);
-      GimpContext  *context  = GIMP_CONTEXT (options);
-      gint          x, y;
-      GError       *error    = NULL;
+      GimpDrawable    *drawable = gimp_image_get_active_drawable (image);
+      GimpContext     *context  = GIMP_CONTEXT (options);
+      GimpFillOptions *fill_options;
+      GError          *error = NULL;
 
-      x = coords->x;
-      y = coords->y;
+      fill_options = gimp_fill_options_new (image->gimp, NULL, FALSE);
 
-      if (! options->sample_merged)
+      if (gimp_fill_options_set_by_fill_mode (fill_options, context,
+                                              options->fill_mode,
+                                              &error))
         {
-          gint off_x, off_y;
+          gimp_fill_options_set_antialias (fill_options, options->antialias);
 
-          gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
+          gimp_context_set_opacity (GIMP_CONTEXT (fill_options),
+                                    gimp_context_get_opacity (context));
+          gimp_context_set_paint_mode (GIMP_CONTEXT (fill_options),
+                                       gimp_context_get_paint_mode (context));
 
-          x -= off_x;
-          y -= off_y;
+          if (options->fill_selection)
+            {
+              gimp_edit_fill (image, drawable, fill_options, NULL);
+            }
+          else
+            {
+              gint x = coords->x;
+              gint y = coords->y;
+
+              if (! options->sample_merged)
+                {
+                  gint off_x, off_y;
+
+                  gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
+
+                  x -= off_x;
+                  y -= off_y;
+                }
+
+              gimp_drawable_bucket_fill (drawable, fill_options,
+                                         options->fill_transparent,
+                                         options->fill_criterion,
+                                         options->threshold / 255.0,
+                                         options->sample_merged,
+                                         options->diagonal_neighbors,
+                                         x, y);
+            }
+
+          gimp_image_flush (image);
         }
-
-      if (! gimp_drawable_bucket_fill (drawable,
-                                       context,
-                                       options->fill_mode,
-                                       gimp_context_get_paint_mode (context),
-                                       gimp_context_get_opacity (context),
-                                       ! options->fill_selection,
-                                       options->fill_transparent,
-                                       options->fill_criterion,
-                                       options->threshold,
-                                       options->sample_merged,
-                                       x, y, &error))
+      else
         {
           gimp_message_literal (display->gimp, G_OBJECT (display),
                                 GIMP_MESSAGE_WARNING, error->message);
           g_clear_error (&error);
         }
-      else
-        {
-          gimp_image_flush (image);
-        }
+
+      g_object_unref (fill_options);
     }
 
   GIMP_TOOL_CLASS (parent_class)->button_release (tool, coords, time, state,
@@ -223,19 +249,19 @@ gimp_bucket_fill_tool_modifier_key (GimpTool        *tool,
     {
       switch (options->fill_mode)
         {
-        case GIMP_FG_BUCKET_FILL:
-          g_object_set (options, "fill-mode", GIMP_BG_BUCKET_FILL, NULL);
+        case GIMP_BUCKET_FILL_FG:
+          g_object_set (options, "fill-mode", GIMP_BUCKET_FILL_BG, NULL);
           break;
 
-        case GIMP_BG_BUCKET_FILL:
-          g_object_set (options, "fill-mode", GIMP_FG_BUCKET_FILL, NULL);
+        case GIMP_BUCKET_FILL_BG:
+          g_object_set (options, "fill-mode", GIMP_BUCKET_FILL_FG, NULL);
           break;
 
         default:
           break;
         }
     }
-  else if (key == GDK_SHIFT_MASK)
+  else if (key == gimp_get_extend_selection_mask ())
     {
       g_object_set (options, "fill-selection", ! options->fill_selection, NULL);
     }
@@ -257,19 +283,20 @@ gimp_bucket_fill_tool_cursor_update (GimpTool         *tool,
       GimpDrawable *drawable = gimp_image_get_active_drawable (image);
 
       if (! gimp_viewable_get_children (GIMP_VIEWABLE (drawable)) &&
-          ! gimp_item_is_content_locked (GIMP_ITEM (drawable)))
+          ! gimp_item_is_content_locked (GIMP_ITEM (drawable))    &&
+          gimp_item_is_visible (GIMP_ITEM (drawable)))
         {
           switch (options->fill_mode)
             {
-            case GIMP_FG_BUCKET_FILL:
+            case GIMP_BUCKET_FILL_FG:
               modifier = GIMP_CURSOR_MODIFIER_FOREGROUND;
               break;
 
-            case GIMP_BG_BUCKET_FILL:
+            case GIMP_BUCKET_FILL_BG:
               modifier = GIMP_CURSOR_MODIFIER_BACKGROUND;
               break;
 
-            case GIMP_PATTERN_BUCKET_FILL:
+            case GIMP_BUCKET_FILL_PATTERN:
               modifier = GIMP_CURSOR_MODIFIER_PATTERN;
               break;
             }

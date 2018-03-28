@@ -266,7 +266,7 @@ object_draw(Object_t *obj, cairo_t *cr)
       fg = &colors->normal_fg;
       bg = &colors->normal_bg;
    }
-   
+
    cairo_save (cr);
    gdk_cairo_set_source_color (cr, bg);
    obj->class->draw(obj, cr);
@@ -533,9 +533,11 @@ ObjectList_t*
 object_list_append_list(ObjectList_t *des, ObjectList_t *src)
 {
    GList *p;
+   if (!src)
+     return des;
    for (p = src->list; p; p = p->next)
       object_list_append(des, object_clone((Object_t*) p->data));
-   object_list_set_changed(des, (src) ? TRUE : FALSE);
+   object_list_set_changed(des, TRUE);
    return des;
 }
 

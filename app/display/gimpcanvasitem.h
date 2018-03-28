@@ -33,11 +33,14 @@
 #define GIMP_CANVAS_ITEM_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CANVAS_ITEM, GimpCanvasItemClass))
 
 
-typedef struct _GimpCanvasItemClass GimpCanvasItemClass;
+typedef struct _GimpCanvasItemPrivate GimpCanvasItemPrivate;
+typedef struct _GimpCanvasItemClass   GimpCanvasItemClass;
 
 struct _GimpCanvasItem
 {
-  GimpObject       parent_instance;
+  GimpObject             parent_instance;
+
+  GimpCanvasItemPrivate *private;
 };
 
 struct _GimpCanvasItemClass
@@ -50,26 +53,25 @@ struct _GimpCanvasItemClass
 
   /*  virtual functions  */
   void             (* draw)        (GimpCanvasItem   *item,
-                                    GimpDisplayShell *shell,
                                     cairo_t          *cr);
-  cairo_region_t * (* get_extents) (GimpCanvasItem   *item,
-                                    GimpDisplayShell *shell);
+  cairo_region_t * (* get_extents) (GimpCanvasItem   *item);
 
   void             (* stroke)      (GimpCanvasItem   *item,
-                                    GimpDisplayShell *shell,
                                     cairo_t          *cr);
   void             (* fill)        (GimpCanvasItem   *item,
-                                    GimpDisplayShell *shell,
                                     cairo_t          *cr);
 
   gboolean         (* hit)         (GimpCanvasItem   *item,
-                                    GimpDisplayShell *shell,
                                     gdouble           x,
                                     gdouble           y);
 };
 
 
 GType            gimp_canvas_item_get_type         (void) G_GNUC_CONST;
+
+GimpDisplayShell * gimp_canvas_item_get_shell      (GimpCanvasItem   *item);
+GimpImage      * gimp_canvas_item_get_image        (GimpCanvasItem   *item);
+GtkWidget      * gimp_canvas_item_get_canvas       (GimpCanvasItem   *item);
 
 void             gimp_canvas_item_draw             (GimpCanvasItem   *item,
                                                     cairo_t          *cr);
@@ -98,6 +100,31 @@ void             gimp_canvas_item_resume_stroking  (GimpCanvasItem   *item);
 
 void             gimp_canvas_item_suspend_filling  (GimpCanvasItem   *item);
 void             gimp_canvas_item_resume_filling   (GimpCanvasItem   *item);
+
+void             gimp_canvas_item_transform        (GimpCanvasItem   *item,
+                                                    cairo_t          *cr);
+void             gimp_canvas_item_transform_xy     (GimpCanvasItem   *item,
+                                                    gdouble           x,
+                                                    gdouble           y,
+                                                    gint             *tx,
+                                                    gint             *ty);
+void             gimp_canvas_item_transform_xy_f   (GimpCanvasItem   *item,
+                                                    gdouble           x,
+                                                    gdouble           y,
+                                                    gdouble          *tx,
+                                                    gdouble          *ty);
+gdouble          gimp_canvas_item_transform_distance
+                                                   (GimpCanvasItem   *item,
+                                                    gdouble           x1,
+                                                    gdouble           y1,
+                                                    gdouble           x2,
+                                                    gdouble           y2);
+gdouble          gimp_canvas_item_transform_distance_square
+                                                   (GimpCanvasItem   *item,
+                                                    gdouble           x1,
+                                                    gdouble           y1,
+                                                    gdouble           x2,
+                                                    gdouble           y2);
 
 
 /*  protected  */

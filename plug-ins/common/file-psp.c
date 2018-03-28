@@ -1,4 +1,4 @@
-/* GIMP plug-in to load and save Paint Shop Pro files (.PSP and .TUB)
+/* GIMP plug-in to load and export Paint Shop Pro files (.PSP and .TUB)
  *
  * Copyright (C) 1999 Tor Lillqvist
  *
@@ -18,7 +18,7 @@
 
 /*
  *
- * Work in progress! Doesn't handle saving yet.
+ * Work in progress! Doesn't handle exporting yet.
  *
  * For a copy of the PSP file format documentation, surf to
  * http://www.jasc.com.
@@ -434,7 +434,7 @@ typedef enum {
   PSP_XDATA_TRNS_INDEX = 0,     /* Transparency index field */
   PSP_XDATA_GRID,               /* Image grid information (since PSP7) */
   PSP_XDATA_GUIDE,              /* Image guide information (since PSP7) */
-  PSP_XDATA_EXIF,               /* Image EXIF information (since PSP8) */
+  PSP_XDATA_EXIF,               /* Image Exif information (since PSP8) */
 } PSPExtendedDataID;
 
 /* Creator field types.
@@ -515,7 +515,7 @@ typedef struct
   guchar metric;
   guint16 compression;
   guint16 depth;
-  guchar greyscale;
+  guchar grayscale;
   guint32 active_layer;
   guint16 layer_count;
 } PSPimage;
@@ -580,18 +580,18 @@ query (void)
   {
     { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",        "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save" },
-    { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
-    { GIMP_PDB_STRING,   "raw-filename", "The name of the file to save the image in" },
+    { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to export" },
+    { GIMP_PDB_STRING,   "filename",     "The name of the file to export the image in" },
+    { GIMP_PDB_STRING,   "raw-filename", "The name of the file to export the image in" },
     { GIMP_PDB_INT32,    "compression",  "Specify 0 for no compression, 1 for RLE, and 2 for LZ77" }
   };
 #endif
 
   gimp_install_procedure (LOAD_PROC,
                           "loads images from the Paint Shop Pro PSP file format",
-                          "This plug-in loads and saves images in "
+                          "This plug-in loads and exports images in "
                           "Paint Shop Pro's native PSP format. "
-                          "Vector layers aren't handled. Saving isn't "
+                          "Vector layers aren't handled. Exporting isn't "
                           "yet implemented.",
                           "Tor Lillqvist",
                           "Tor Lillqvist",
@@ -609,13 +609,13 @@ query (void)
                                     "",
                                     "0,string,Paint\\040Shop\\040Pro\\040Image\\040File\n\032");
 
-  /* commented out until saving is implemented */
+  /* commented out until exporting is implemented */
 #if 0
   gimp_install_procedure (SAVE_PROC,
-                          "saves images in the Paint Shop Pro PSP file format",
-                          "This plug-in loads and saves images in "
+                          "exports images in the Paint Shop Pro PSP file format",
+                          "This plug-in loads and exports images in "
                           "Paint Shop Pro's native PSP format. "
-                          "Vector layers aren't handled. Saving isn't "
+                          "Vector layers aren't handled. Exporting isn't "
                           "yet implemented.",
                           "Tor Lillqvist",
                           "Tor Lillqvist",
@@ -707,9 +707,10 @@ block_name (gint id)
  * reading has a valid header. Fills the variables init_len and total_len
  */
 static gint
-read_block_header (FILE    *f,
-                   guint32 *init_len,
-                   guint32 *total_len)
+read_block_header (FILE     *f,
+                   guint32  *init_len,
+                   guint32  *total_len,
+                   GError  **error)
 {
   guchar buf[4];
   guint16 id;
@@ -723,15 +724,18 @@ read_block_header (FILE    *f,
       || fread (&len, 4, 1, f) < 1
       || (psp_ver_major < 4 && fread (total_len, 4, 1, f) < 1))
     {
-      g_message ("Error reading block header");
+      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                   _("Error reading block header"));
       return -1;
     }
   if (memcmp (buf, "~BK\0", 4) != 0)
     {
       IFDBG(3)
-        g_message ("Invalid block header at %ld", header_start);
+        g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                     _("Invalid block header at %ld"), header_start);
       else
-        g_message ("Invalid block header");
+        g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                     _("Invalid block header"));
       return -1;
     }
 
@@ -776,7 +780,7 @@ read_general_image_attribute_block (FILE     *f,
       /* TODO: This causes the chunk size to be ignored. Better verify if it is
        *       valid since it might create read offset problems with the
        *       "expansion field" (which follows after the "graphics content" and
-       *       is of unkown size).
+       *       is of unknown size).
        */
       fseek (f, 4, SEEK_CUR);
     }
@@ -787,8 +791,8 @@ read_general_image_attribute_block (FILE     *f,
       || fread (&ia->metric, 1, 1, f) < 1
       || fread (&ia->compression, 2, 1, f) < 1
       || fread (&ia->depth, 2, 1, f) < 1
-      || fread (buf, 2+4, 1, f) < 1 /* Skip plane and colour count */
-      || fread (&ia->greyscale, 1, 1, f) < 1
+      || fread (buf, 2+4, 1, f) < 1 /* Skip plane and color count */
+      || fread (&ia->grayscale, 1, 1, f) < 1
       || fread (buf, 4, 1, f) < 1 /* Skip total image size */
       || fread (&ia->active_layer, 4, 1, f) < 1
       || fread (&ia->layer_count, 2, 1, f) < 1
@@ -826,13 +830,15 @@ read_general_image_attribute_block (FILE     *f,
 }
 
 static gint
-try_fseek (FILE  *f,
-           glong  pos,
-           gint   whence)
+try_fseek (FILE    *f,
+           glong    pos,
+           gint     whence,
+           GError **error)
 {
   if (fseek (f, pos, whence) < 0)
     {
-      g_message ("Seek error: %s", g_strerror (errno));
+      g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
+                   _("Seek error: %s"), g_strerror (errno));
       fclose (f);
       return -1;
     }
@@ -842,10 +848,11 @@ try_fseek (FILE  *f,
 
 
 static gint
-read_creator_block (FILE     *f,
-                    gint      image_ID,
-                    guint     total_len,
-                    PSPimage *ia)
+read_creator_block (FILE      *f,
+                    gint       image_ID,
+                    guint      total_len,
+                    PSPimage  *ia,
+                    GError   **error)
 {
   long          data_start;
   guchar        buf[4];
@@ -854,7 +861,10 @@ read_creator_block (FILE     *f,
   gchar        *string;
   gchar        *title = NULL, *artist = NULL, *copyright = NULL, *description = NULL;
   guint32       dword;
-  guint32       cdate = 0, mdate = 0, appid, appver;
+  guint32       __attribute__((unused))cdate = 0;
+  guint32       __attribute__((unused))mdate = 0;
+  guint32       __attribute__((unused))appid;
+  guint32       __attribute__((unused))appver;
   GString      *comment;
   GimpParasite *comment_parasite;
 
@@ -867,12 +877,14 @@ read_creator_block (FILE     *f,
           || fread (&keyword, 2, 1, f) < 1
           || fread (&length, 4, 1, f) < 1)
         {
-          g_message ("Error reading creator keyword chunk");
+          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                       _("Error reading creator keyword chunk"));
           return -1;
         }
       if (memcmp (buf, "~FL\0", 4) != 0)
         {
-          g_message ("Invalid keyword chunk header");
+          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                       _("Invalid keyword chunk header"));
           return -1;
         }
       keyword = GUINT16_FROM_LE (keyword);
@@ -886,7 +898,15 @@ read_creator_block (FILE     *f,
           string = g_malloc (length + 1);
           if (fread (string, length, 1, f) < 1)
             {
-              g_message ("Error reading creator keyword data");
+              g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                           _("Error reading creator keyword data"));
+              g_free (string);
+              return -1;
+            }
+          if (string[length - 1] != '\0')
+            {
+              g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                           _("Creator keyword data not nul-terminated"));
               g_free (string);
               return -1;
             }
@@ -910,7 +930,8 @@ read_creator_block (FILE     *f,
         case PSP_CRTR_FLD_APP_VER:
           if (fread (&dword, 4, 1, f) < 1)
             {
-              g_message ("Error reading creator keyword data");
+              g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                           _("Error reading creator keyword data"));
               return -1;
             }
           switch (keyword)
@@ -926,7 +947,7 @@ read_creator_block (FILE     *f,
             }
           break;
         default:
-          if (try_fseek (f, length, SEEK_CUR) < 0)
+          if (try_fseek (f, length, SEEK_CUR, error) < 0)
             {
               return -1;
             }
@@ -983,53 +1004,74 @@ swab_rect (guint32 *rect)
   rect[3] = GUINT32_FROM_LE (rect[3]);
 }
 
-static GimpLayerModeEffects
+static GimpLayerMode
 gimp_layer_mode_from_psp_blend_mode (PSPBlendModes mode)
 {
   switch (mode)
     {
     case PSP_BLEND_NORMAL:
-      return GIMP_NORMAL_MODE;
+      return GIMP_LAYER_MODE_NORMAL_LEGACY;
+
     case PSP_BLEND_DARKEN:
-      return GIMP_DARKEN_ONLY_MODE;
+      return GIMP_LAYER_MODE_DARKEN_ONLY_LEGACY;
+
     case PSP_BLEND_LIGHTEN:
-      return GIMP_LIGHTEN_ONLY_MODE;
+      return GIMP_LAYER_MODE_LIGHTEN_ONLY_LEGACY;
+
     case PSP_BLEND_HUE:
-      return GIMP_HUE_MODE;
+      return GIMP_LAYER_MODE_HSV_HUE_LEGACY;
+
     case PSP_BLEND_SATURATION:
-      return GIMP_SATURATION_MODE;
+      return GIMP_LAYER_MODE_HSV_SATURATION_LEGACY;
+
     case PSP_BLEND_COLOR:
-      return GIMP_COLOR_MODE;
+      return GIMP_LAYER_MODE_HSL_COLOR_LEGACY;
+
     case PSP_BLEND_LUMINOSITY:
-      return GIMP_VALUE_MODE;   /* ??? */
+      return GIMP_LAYER_MODE_HSV_VALUE_LEGACY;   /* ??? */
+
     case PSP_BLEND_MULTIPLY:
-      return GIMP_MULTIPLY_MODE;
+      return GIMP_LAYER_MODE_MULTIPLY_LEGACY;
+
     case PSP_BLEND_SCREEN:
-      return GIMP_SCREEN_MODE;
+      return GIMP_LAYER_MODE_SCREEN_LEGACY;
+
     case PSP_BLEND_DISSOLVE:
-      return GIMP_DISSOLVE_MODE;
+      return GIMP_LAYER_MODE_DISSOLVE;
+
     case PSP_BLEND_OVERLAY:
-      return GIMP_OVERLAY_MODE;
+      return GIMP_LAYER_MODE_OVERLAY;
+
     case PSP_BLEND_HARD_LIGHT:
-      return GIMP_HARDLIGHT_MODE;
+      return GIMP_LAYER_MODE_HARDLIGHT_LEGACY;
+
     case PSP_BLEND_SOFT_LIGHT:
-      return GIMP_SOFTLIGHT_MODE;
+      return GIMP_LAYER_MODE_SOFTLIGHT_LEGACY;
+
     case PSP_BLEND_DIFFERENCE:
-      return GIMP_DIFFERENCE_MODE;
+      return GIMP_LAYER_MODE_DIFFERENCE_LEGACY;
+
     case PSP_BLEND_DODGE:
-      return GIMP_DODGE_MODE;
+      return GIMP_LAYER_MODE_DODGE_LEGACY;
+
     case PSP_BLEND_BURN:
-      return GIMP_BURN_MODE;
+      return GIMP_LAYER_MODE_BURN_LEGACY;
+
     case PSP_BLEND_EXCLUSION:
       return -1;                /* ??? */
+
     case PSP_BLEND_ADJUST:
       return -1;                /* ??? */
+
     case PSP_BLEND_TRUE_HUE:
       return -1;                /* ??? */
+
     case PSP_BLEND_TRUE_SATURATION:
       return -1;                /* ??? */
+
     case PSP_BLEND_TRUE_COLOR:
       return -1;                /* ??? */
+
     case PSP_BLEND_TRUE_LIGHTNESS:
       return -1;                /* ??? */
     }
@@ -1131,15 +1173,18 @@ psp_zfree (void *opaque,
 }
 
 static int
-read_channel_data (FILE       *f,
-                   PSPimage   *ia,
-                   guchar    **pixels,
-                   guint       bytespp,
-                   guint       offset,
-                   GimpDrawable  *drawable,
-                   guint32     compressed_len)
+read_channel_data (FILE        *f,
+                   PSPimage    *ia,
+                   guchar     **pixels,
+                   guint        bytespp,
+                   guint        offset,
+                   GeglBuffer  *buffer,
+                   guint32      compressed_len,
+                   GError     **error)
 {
-  gint i, y, width = drawable->width, height = drawable->height;
+  gint i, y;
+  gint width = gegl_buffer_get_width (buffer);
+  gint height = gegl_buffer_get_height (buffer);
   gint npixels = width * height;
   guchar *buf;
   guchar *buf2 = NULL;  /* please the compiler */
@@ -1236,7 +1281,8 @@ read_channel_data (FILE       *f,
       zstream.opaque = f;
       if (inflateInit (&zstream) != Z_OK)
         {
-          g_message ("zlib error");
+          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                       _("zlib error"));
           return -1;
         }
       if (bytespp == 1)
@@ -1249,7 +1295,8 @@ read_channel_data (FILE       *f,
       zstream.avail_out = npixels;
       if (inflate (&zstream, Z_FINISH) != Z_STREAM_END)
         {
-          g_message ("zlib error");
+          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                       _("zlib error"));
           inflateEnd (&zstream);
           return -1;
         }
@@ -1276,10 +1323,11 @@ read_channel_data (FILE       *f,
 }
 
 static gint
-read_layer_block (FILE     *f,
-                  gint      image_ID,
-                  guint     total_len,
-                  PSPimage *ia)
+read_layer_block (FILE      *f,
+                  gint       image_ID,
+                  guint      total_len,
+                  PSPimage  *ia,
+                  GError   **error)
 {
   gint i;
   long block_start, sub_block_start, channel_start;
@@ -1294,28 +1342,28 @@ read_layer_block (FILE     *f,
   guint16 bitmap_count, channel_count;
   GimpImageType drawable_type;
   guint32 layer_ID = 0;
-  GimpLayerModeEffects layer_mode;
+  GimpLayerMode layer_mode;
   guint32 channel_init_len, channel_total_len;
   guint32 compressed_len, uncompressed_len;
   guint16 bitmap_type, channel_type;
   gint width, height, bytespp, offset;
   guchar **pixels, *pixel;
-  GimpDrawable *drawable;
-  GimpPixelRgn pixel_rgn;
+  GeglBuffer *buffer;
 
   block_start = ftell (f);
 
   while (ftell (f) < block_start + total_len)
     {
       /* Read the layer sub-block header */
-      sub_id = read_block_header (f, &sub_init_len, &sub_total_len);
+      sub_id = read_block_header (f, &sub_init_len, &sub_total_len, error);
       if (sub_id == -1)
         return -1;
 
       if (sub_id != PSP_LAYER_BLOCK)
         {
-          g_message ("Invalid layer sub-block %s, should be LAYER",
-                     block_name (sub_id));
+          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                       _("Invalid layer sub-block %s, should be LAYER"),
+                       block_name (sub_id));
           return -1;
         }
 
@@ -1345,7 +1393,8 @@ read_layer_block (FILE     *f,
               || fread (&bitmap_count, 2, 1, f) < 1
               || fread (&channel_count, 2, 1, f) < 1)
             {
-              g_message ("Error reading layer information chunk");
+              g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                           _("Error reading layer information chunk"));
               g_free (name);
               return -1;
             }
@@ -1375,7 +1424,8 @@ read_layer_block (FILE     *f,
               || fread (&bitmap_count, 2, 1, f) < 1
               || fread (&channel_count, 2, 1, f) < 1)
             {
-              g_message ("Error reading layer information chunk");
+              g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                           _("Error reading layer information chunk"));
               g_free (name);
               return -1;
             }
@@ -1397,7 +1447,7 @@ read_layer_block (FILE     *f,
           g_message ("Unsupported PSP layer blend mode %s "
                      "for layer %s, setting layer invisible",
                      blend_mode_name (blend_mode), name);
-          layer_mode = GIMP_NORMAL_MODE;
+          layer_mode = GIMP_LAYER_MODE_NORMAL_LEGACY;
           visibility = FALSE;
         }
 
@@ -1408,7 +1458,9 @@ read_layer_block (FILE     *f,
           || (height < 0) || (height > GIMP_MAX_IMAGE_SIZE)  /* h <= 2^18 */
           || ((width / 256) * (height / 256) >= 8192))       /* w * h < 2^29 */
         {
-          g_message ("Invalid layer dimensions: %dx%d", width, height);
+          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                       _("Invalid layer dimensions: %dx%d"),
+                       width, height);
           return -1;
         }
 
@@ -1441,7 +1493,7 @@ read_layer_block (FILE     *f,
           null_layer = TRUE;
         }
 
-      if (ia->greyscale)
+      if (ia->grayscale)
         if (!null_layer && bitmap_count == 1)
           drawable_type = GIMP_GRAY_IMAGE, bytespp = 1;
         else
@@ -1459,7 +1511,8 @@ read_layer_block (FILE     *f,
                                  layer_mode);
       if (layer_ID == -1)
         {
-          g_message ("Error creating layer");
+          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                       _("Error creating layer"));
           return -1;
         }
 
@@ -1477,7 +1530,7 @@ read_layer_block (FILE     *f,
       gimp_layer_set_lock_alpha (layer_ID, transparency_protected);
 
       if (psp_ver_major < 4)
-        if (try_fseek (f, sub_block_start + sub_init_len, SEEK_SET) < 0)
+        if (try_fseek (f, sub_block_start + sub_init_len, SEEK_SET, error) < 0)
           {
             return -1;
           }
@@ -1494,17 +1547,13 @@ read_layer_block (FILE     *f,
             pixels[i] = pixel + width * bytespp * i;
         }
 
-      drawable = gimp_drawable_get (layer_ID);
-      gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0,
-                           width, height, TRUE, FALSE);
-
-      gimp_tile_cache_size (gimp_tile_height () * width * bytespp);
+      buffer = gimp_drawable_get_buffer (layer_ID);
 
       /* Read the layer channel sub-blocks */
       while (ftell (f) < sub_block_start + sub_total_len)
         {
           sub_id = read_block_header (f, &channel_init_len,
-                                      &channel_total_len);
+                                      &channel_total_len, error);
           if (sub_id == -1)
             {
               gimp_image_delete (image_ID);
@@ -1513,8 +1562,9 @@ read_layer_block (FILE     *f,
 
           if (sub_id != PSP_CHANNEL_BLOCK)
             {
-              g_message ("Invalid layer sub-block %s, should be CHANNEL",
-                         block_name (sub_id));
+              g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                           _("Invalid layer sub-block %s, should be CHANNEL"),
+                           block_name (sub_id));
               return -1;
             }
 
@@ -1528,7 +1578,8 @@ read_layer_block (FILE     *f,
               || fread (&bitmap_type, 2, 1, f) < 1
               || fread (&channel_type, 2, 1, f) < 1)
             {
-              g_message ("Error reading channel information chunk");
+              g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                           _("Error reading channel information chunk"));
               return -1;
             }
 
@@ -1539,15 +1590,17 @@ read_layer_block (FILE     *f,
 
           if (bitmap_type > PSP_DIB_USER_MASK)
             {
-              g_message ("Invalid bitmap type %d in channel information chunk",
-                         bitmap_type);
+              g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                           _("Invalid bitmap type %d in channel information chunk"),
+                           bitmap_type);
               return -1;
             }
 
           if (channel_type > PSP_CHANNEL_BLUE)
             {
-              g_message ("Invalid channel type %d in channel information chunk",
-                         channel_type);
+              g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                           _("Invalid channel type %d in channel information chunk"),
+                           channel_type);
               return -1;
             }
 
@@ -1563,34 +1616,34 @@ read_layer_block (FILE     *f,
             offset = channel_type - PSP_CHANNEL_RED;
 
           if (psp_ver_major < 4)
-            if (try_fseek (f, channel_start + channel_init_len, SEEK_SET) < 0)
+            if (try_fseek (f, channel_start + channel_init_len, SEEK_SET, error) < 0)
               {
                 return -1;
               }
 
           if (!null_layer)
-            if (read_channel_data (f, ia, pixels, bytespp,
-                                   offset, drawable, compressed_len) == -1)
+            if (read_channel_data (f, ia, pixels, bytespp, offset,
+                                   buffer, compressed_len, error) == -1)
               {
                 return -1;
               }
 
-          if (try_fseek (f, channel_start + channel_total_len, SEEK_SET) < 0)
+          if (try_fseek (f, channel_start + channel_total_len, SEEK_SET, error) < 0)
             {
               return -1;
             }
         }
 
-      gimp_pixel_rgn_set_rect (&pixel_rgn, pixel, 0, 0, width, height);
+      gegl_buffer_set (buffer, GEGL_RECTANGLE (0, 0, width, height), 0,
+                       NULL, pixel, GEGL_AUTO_ROWSTRIDE);
 
-      gimp_drawable_flush (drawable);
-      gimp_drawable_detach (drawable);
+      g_object_unref (buffer);
 
       g_free (pixels);
       g_free (pixel);
     }
 
-  if (try_fseek (f, block_start + total_len, SEEK_SET) < 0)
+  if (try_fseek (f, block_start + total_len, SEEK_SET, error) < 0)
     {
       return -1;
     }
@@ -1599,10 +1652,11 @@ read_layer_block (FILE     *f,
 }
 
 static gint
-read_tube_block (FILE     *f,
-                 gint      image_ID,
-                 guint     total_len,
-                 PSPimage *ia)
+read_tube_block (FILE      *f,
+                 gint       image_ID,
+                 guint      total_len,
+                 PSPimage  *ia,
+                 GError   **error)
 {
   guint16            version;
   guchar             name[514];
@@ -1624,7 +1678,8 @@ read_tube_block (FILE     *f,
       || fread (&placement_mode, 4, 1, f) < 1
       || fread (&selection_mode, 4, 1, f) < 1)
     {
-      g_message ("Error reading tube data chunk");
+      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                   _("Error reading tube data chunk"));
       return -1;
     }
 
@@ -1644,7 +1699,7 @@ read_tube_block (FILE     *f,
 
   /* We use a parasite to pass in the tube (pipe) parameters in
    * case we will have any use of those, for instance in the gpb
-   * plug-in that saves a GIMP image pipe.
+   * plug-in that exports a GIMP image pipe.
    */
   params.dim = 1;
   params.cellwidth = ia->width / params.cols;
@@ -1724,13 +1779,15 @@ load_image (const gchar  *filename,
       || fread (&psp_ver_major, 2, 1, f) < 1
       || fread (&psp_ver_minor, 2, 1, f) < 1)
     {
-      g_message ("Error reading file header");
+      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                   _("Error reading file header."));
       goto error;
     }
 
   if (memcmp (buf, "Paint Shop Pro Image File\n\032\0\0\0\0\0", 32) != 0)
     {
-      g_message ("Incorrect file signature");
+      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                   _("Incorrect file signature."));
       goto error;
     }
 
@@ -1742,22 +1799,14 @@ load_image (const gchar  *filename,
    * Earlier versions probably don't have all the fields I expect
    * so don't accept those.
    */
-  if (psp_ver_major < 3)
+  if (psp_ver_major != 3 &&
+      psp_ver_major != 4 &&
+      psp_ver_major != 5 &&
+      psp_ver_major != 6)
     {
-      g_message ("Unsupported PSP file format version "
-                 "%d.%d, only knows 3.0 (and later?)",
-                 psp_ver_major, psp_ver_minor);
-      goto error;
-    }
-  else if ((psp_ver_major == 3)
-        || (psp_ver_major == 4)
-        || (psp_ver_major == 5)
-        || (psp_ver_major == 6))
-    ; /* OK */
-  else
-    {
-      g_message ("Unsupported PSP file format version %d.%d",
-                 psp_ver_major, psp_ver_minor);
+      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                   _("Unsupported PSP file format version %d.%d."),
+                   psp_ver_major, psp_ver_minor);
       goto error;
     }
 
@@ -1767,15 +1816,25 @@ load_image (const gchar  *filename,
   IFDBG(3) g_message ("size = %d", (int)st.st_size);
   while (ftell (f) != st.st_size
          && (id = read_block_header (f, &block_init_len,
-                                     &block_total_len)) != -1)
+                                     &block_total_len, error)) != -1)
     {
       block_start = ftell (f);
+
+      if (block_start + block_total_len > st.st_size)
+        {
+          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                       _("Could not open '%s' for reading: %s"),
+                       gimp_filename_to_utf8 (filename),
+                       _("invalid block size"));
+          goto error;
+        }
 
       if (id == PSP_IMAGE_BLOCK)
         {
           if (block_number != 0)
             {
-              g_message ("Duplicate General Image Attributes block");
+              g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                           _("Duplicate General Image Attributes block."));
               goto error;
             }
           if (read_general_image_attribute_block (f, block_init_len,
@@ -1790,7 +1849,7 @@ load_image (const gchar  *filename,
                               compression_name (ia.compression));
 
           image_ID = gimp_image_new (ia.width, ia.height,
-                                     ia.greyscale ? GIMP_GRAY : GIMP_RGB);
+                                     ia.grayscale ? GIMP_GRAY : GIMP_RGB);
           if (image_ID == -1)
             {
               goto error;
@@ -1804,14 +1863,15 @@ load_image (const gchar  *filename,
         {
           if (block_number == 0)
             {
-              g_message ("Missing General Image Attributes block");
+              g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                           _("Missing General Image Attributes block."));
               goto error;
             }
 
           switch (id)
             {
             case PSP_CREATOR_BLOCK:
-              if (read_creator_block (f, image_ID, block_total_len, &ia) == -1)
+              if (read_creator_block (f, image_ID, block_total_len, &ia, error) == -1)
                 goto error;
               break;
 
@@ -1819,7 +1879,7 @@ load_image (const gchar  *filename,
               break;            /* Not yet implemented */
 
             case PSP_LAYER_START_BLOCK:
-              if (read_layer_block (f, image_ID, block_total_len, &ia) == -1)
+              if (read_layer_block (f, image_ID, block_total_len, &ia, error) == -1)
                 goto error;
               break;
 
@@ -1836,7 +1896,7 @@ load_image (const gchar  *filename,
               break;            /* Not yet implemented */
 
             case PSP_TUBE_BLOCK:
-              if (read_tube_block (f, image_ID, block_total_len, &ia) == -1)
+              if (read_tube_block (f, image_ID, block_total_len, &ia, error) == -1)
                 goto error;
               break;
 
@@ -1866,7 +1926,7 @@ load_image (const gchar  *filename,
       if (block_start + block_total_len >= st.st_size)
         break;
 
-      if (try_fseek (f, block_start + block_total_len, SEEK_SET) < 0)
+      if (try_fseek (f, block_start + block_total_len, SEEK_SET, error) < 0)
         goto error;
 
       block_number++;
@@ -1892,7 +1952,8 @@ save_image (const gchar  *filename,
             gint32        drawable_ID,
             GError      **error)
 {
-  g_message ("Saving not implemented yet");
+  g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+               _("Exporting not implemented yet."));
 
   return FALSE;
 }
@@ -1913,6 +1974,7 @@ run (const gchar      *name,
   GError            *error  = NULL;
 
   INIT_I18N ();
+  gegl_init (NULL, NULL);
 
   run_mode = param[0].data.d_int32;
 

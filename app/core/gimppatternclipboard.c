@@ -20,23 +20,22 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "core-types.h"
-
-#include "base/temp-buf.h"
-#include "base/pixel-region.h"
-
-#include "paint-funcs/paint-funcs.h"
 
 #include "gimp.h"
 #include "gimpbuffer.h"
 #include "gimppatternclipboard.h"
 #include "gimpimage.h"
 #include "gimppickable.h"
+#include "gimptempbuf.h"
 
 #include "gimp-intl.h"
 
+
+#define PATTERN_MAX_SIZE 1024
 
 enum
 {
@@ -60,7 +59,7 @@ static void       gimp_pattern_clipboard_get_property (GObject      *object,
 static GimpData * gimp_pattern_clipboard_duplicate    (GimpData     *data);
 #endif
 
-static void     gimp_pattern_clipboard_buffer_changed (Gimp         *gimp,
+static void       gimp_pattern_clipboard_changed      (Gimp         *gimp,
                                                        GimpPattern  *pattern);
 
 
@@ -95,7 +94,6 @@ gimp_pattern_clipboard_class_init (GimpPatternClipboardClass *klass)
 static void
 gimp_pattern_clipboard_init (GimpPatternClipboard *pattern)
 {
-  pattern->gimp = NULL;
 }
 
 static void
@@ -103,16 +101,15 @@ gimp_pattern_clipboard_constructed (GObject *object)
 {
   GimpPatternClipboard *pattern = GIMP_PATTERN_CLIPBOARD (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_GIMP (pattern->gimp));
+  gimp_assert (GIMP_IS_GIMP (pattern->gimp));
 
-  g_signal_connect_object (pattern->gimp, "buffer-changed",
-                           G_CALLBACK (gimp_pattern_clipboard_buffer_changed),
+  g_signal_connect_object (pattern->gimp, "clipboard-changed",
+                           G_CALLBACK (gimp_pattern_clipboard_changed),
                            pattern, 0);
 
-  gimp_pattern_clipboard_buffer_changed (pattern->gimp, GIMP_PATTERN (pattern));
+  gimp_pattern_clipboard_changed (pattern->gimp, GIMP_PATTERN (pattern));
 }
 
 static void
@@ -169,7 +166,7 @@ gimp_pattern_clipboard_new (Gimp *gimp)
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
 
   return g_object_new (GIMP_TYPE_PATTERN_CLIPBOARD,
-                       "name", _("Clipboard"),
+                       "name", _("Clipboard Image"),
                        "gimp", gimp,
                        NULL);
 }
@@ -178,42 +175,44 @@ gimp_pattern_clipboard_new (Gimp *gimp)
 /*  private functions  */
 
 static void
-gimp_pattern_clipboard_buffer_changed (Gimp        *gimp,
-                                       GimpPattern *pattern)
+gimp_pattern_clipboard_changed (Gimp        *gimp,
+                                GimpPattern *pattern)
 {
-  if (pattern->mask)
+  GimpObject *paste;
+  GeglBuffer *buffer = NULL;
+
+  g_clear_pointer (&pattern->mask, gimp_temp_buf_unref);
+
+  paste = gimp_get_clipboard_object (gimp);
+
+  if (GIMP_IS_IMAGE (paste))
     {
-      temp_buf_free (pattern->mask);
-      pattern->mask = NULL;
+      gimp_pickable_flush (GIMP_PICKABLE (paste));
+      buffer = gimp_pickable_get_buffer (GIMP_PICKABLE (paste));
+    }
+  else if (GIMP_IS_BUFFER (paste))
+    {
+      buffer = gimp_buffer_get_buffer (GIMP_BUFFER (paste));
     }
 
-  if (gimp->global_buffer)
+  if (buffer)
     {
-      gint         width;
-      gint         height;
-      gint         bytes;
-      PixelRegion  bufferPR;
-      PixelRegion  maskPR;
+      gint width  = MIN (gegl_buffer_get_width  (buffer), PATTERN_MAX_SIZE);
+      gint height = MIN (gegl_buffer_get_height (buffer), PATTERN_MAX_SIZE);
 
-      width  = MIN (gimp_buffer_get_width  (gimp->global_buffer), 1024);
-      height = MIN (gimp_buffer_get_height (gimp->global_buffer), 1024);
-      bytes  = gimp_buffer_get_bytes (gimp->global_buffer);
+      pattern->mask = gimp_temp_buf_new (width, height,
+                                         gegl_buffer_get_format (buffer));
 
-      pattern->mask = temp_buf_new (width, height, bytes, 0, 0, NULL);
-
-      pixel_region_init (&bufferPR,
-                         gimp_buffer_get_tiles (gimp->global_buffer),
-                         0, 0, width, height, FALSE);
-      pixel_region_init_temp_buf (&maskPR, pattern->mask,
-                                  0, 0, width, height);
-
-      copy_region (&bufferPR, &maskPR);
+      gegl_buffer_get (buffer,
+                       GEGL_RECTANGLE (0, 0, width, height), 1.0,
+                       NULL,
+                       gimp_temp_buf_get_data (pattern->mask),
+                       GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
     }
   else
     {
-      guchar color[3] = { 255, 255, 255 };
-
-      pattern->mask = temp_buf_new (16, 16, 3, 0, 0, color);
+      pattern->mask = gimp_temp_buf_new (16, 16, babl_format ("R'G'B' u8"));
+      memset (gimp_temp_buf_get_data (pattern->mask), 255, 16 * 16 * 3);
     }
 
   gimp_data_dirty (GIMP_DATA (pattern));

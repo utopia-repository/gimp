@@ -21,6 +21,10 @@
 
 #include <gegl.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
+#include "libgimpbase/gimpbase.h"
+
 #include "pdb-types.h"
 
 #include "core/gimp.h"
@@ -34,34 +38,34 @@
 #include "internal-procs.h"
 
 
-static GValueArray *
-fonts_refresh_invoker (GimpProcedure      *procedure,
-                       Gimp               *gimp,
-                       GimpContext        *context,
-                       GimpProgress       *progress,
-                       const GValueArray  *args,
-                       GError            **error)
+static GimpValueArray *
+fonts_refresh_invoker (GimpProcedure         *procedure,
+                       Gimp                  *gimp,
+                       GimpContext           *context,
+                       GimpProgress          *progress,
+                       const GimpValueArray  *args,
+                       GError               **error)
 {
-  gimp_fonts_load (gimp);
+  gimp_fonts_load (gimp, NULL);
 
   return gimp_procedure_get_return_values (procedure, TRUE, NULL);
 }
 
-static GValueArray *
-fonts_get_list_invoker (GimpProcedure      *procedure,
-                        Gimp               *gimp,
-                        GimpContext        *context,
-                        GimpProgress       *progress,
-                        const GValueArray  *args,
-                        GError            **error)
+static GimpValueArray *
+fonts_get_list_invoker (GimpProcedure         *procedure,
+                        Gimp                  *gimp,
+                        GimpContext           *context,
+                        GimpProgress          *progress,
+                        const GimpValueArray  *args,
+                        GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   const gchar *filter;
   gint32 num_fonts = 0;
   gchar **font_list = NULL;
 
-  filter = g_value_get_string (&args->values[0]);
+  filter = g_value_get_string (gimp_value_array_index (args, 0));
 
   if (success)
     {
@@ -74,8 +78,8 @@ fonts_get_list_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_int (&return_vals->values[1], num_fonts);
-      gimp_value_take_stringarray (&return_vals->values[2], font_list, num_fonts);
+      g_value_set_int (gimp_value_array_index (return_vals, 1), num_fonts);
+      gimp_value_take_stringarray (gimp_value_array_index (return_vals, 2), font_list, num_fonts);
     }
 
   return return_vals;
@@ -95,7 +99,7 @@ register_fonts_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-fonts-refresh",
                                      "Refresh current fonts. This function always succeeds.",
-                                     "This procedure retrieves all fonts currently in the user's font path and updates the font dialogs accordingly.",
+                                     "This procedure retrieves all fonts currently in the user's font path and updates the font dialogs accordingly. Depending on the amount of fonts on the system, this can take considerable time.",
                                      "Sven Neumann <sven@gimp.org>",
                                      "Sven Neumann",
                                      "2003",

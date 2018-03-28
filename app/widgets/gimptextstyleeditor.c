@@ -41,6 +41,7 @@
 #include "gimptextbuffer.h"
 #include "gimptextstyleeditor.h"
 #include "gimptexttag.h"
+#include "gimpwidgets-utils.h"
 
 #include "gimp-intl.h"
 
@@ -71,7 +72,7 @@ static void      gimp_text_style_editor_get_property      (GObject             *
 
 static GtkWidget * gimp_text_style_editor_create_toggle   (GimpTextStyleEditor *editor,
                                                            GtkTextTag          *tag,
-                                                           const gchar         *stock_id,
+                                                           const gchar         *icon_name,
                                                            const gchar         *tooltip);
 
 static void      gimp_text_style_editor_clear_tags        (GtkButton           *button,
@@ -239,7 +240,7 @@ gimp_text_style_editor_init (GimpTextStyleEditor *editor)
                     G_CALLBACK (gimp_text_style_editor_clear_tags),
                     editor);
 
-  image = gtk_image_new_from_stock (GTK_STOCK_CLEAR, GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name ("edit-clear", GTK_ICON_SIZE_MENU);
   gtk_container_add (GTK_CONTAINER (editor->clear_button), image);
   gtk_widget_show (image);
 
@@ -247,6 +248,7 @@ gimp_text_style_editor_init (GimpTextStyleEditor *editor)
   editor->color_button = gimp_color_panel_new (_("Change color of selected text"),
                                                &color,
                                                GIMP_COLOR_AREA_FLAT, 20, 20);
+  gimp_widget_set_fully_opaque (editor->color_button, TRUE);
 
   gtk_box_pack_end (GTK_BOX (editor->lower_hbox), editor->color_button,
                     FALSE, FALSE, 0);
@@ -297,13 +299,12 @@ gimp_text_style_editor_constructed (GObject *object)
 {
   GimpTextStyleEditor *editor = GIMP_TEXT_STYLE_EDITOR (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_GIMP (editor->gimp));
-  g_assert (GIMP_IS_FONT_LIST (editor->fonts));
-  g_assert (GIMP_IS_TEXT (editor->text));
-  g_assert (GIMP_IS_TEXT_BUFFER (editor->buffer));
+  gimp_assert (GIMP_IS_GIMP (editor->gimp));
+  gimp_assert (GIMP_IS_FONT_LIST (editor->fonts));
+  gimp_assert (GIMP_IS_TEXT (editor->text));
+  gimp_assert (GIMP_IS_TEXT_BUFFER (editor->buffer));
 
   editor->context = gimp_context_new (editor->gimp, "text style editor", NULL);
 
@@ -324,16 +325,16 @@ gimp_text_style_editor_constructed (GObject *object)
                                    editor->context);
 
   gimp_text_style_editor_create_toggle (editor, editor->buffer->bold_tag,
-                                        GTK_STOCK_BOLD,
+                                        GIMP_ICON_FORMAT_TEXT_BOLD,
                                         _("Bold"));
   gimp_text_style_editor_create_toggle (editor, editor->buffer->italic_tag,
-                                        GTK_STOCK_ITALIC,
+                                        GIMP_ICON_FORMAT_TEXT_ITALIC,
                                         _("Italic"));
   gimp_text_style_editor_create_toggle (editor, editor->buffer->underline_tag,
-                                        GTK_STOCK_UNDERLINE,
+                                        GIMP_ICON_FORMAT_TEXT_UNDERLINE,
                                         _("Underline"));
   gimp_text_style_editor_create_toggle (editor, editor->buffer->strikethrough_tag,
-                                        GTK_STOCK_STRIKETHROUGH,
+                                        GIMP_ICON_FORMAT_TEXT_STRIKETHROUGH,
                                         _("Strikethrough"));
 
   g_signal_connect_swapped (editor->text, "notify::font",
@@ -402,29 +403,10 @@ gimp_text_style_editor_finalize (GObject *object)
 {
   GimpTextStyleEditor *editor = GIMP_TEXT_STYLE_EDITOR (object);
 
-  if (editor->context)
-    {
-      g_object_unref (editor->context);
-      editor->context = NULL;
-    }
-
-  if (editor->text)
-    {
-      g_object_unref (editor->text);
-      editor->text = NULL;
-    }
-
-  if (editor->buffer)
-    {
-      g_object_unref (editor->buffer);
-      editor->buffer = NULL;
-    }
-
-  if (editor->fonts)
-    {
-      g_object_unref (editor->fonts);
-      editor->fonts = NULL;
-    }
+  g_clear_object (&editor->context);
+  g_clear_object (&editor->text);
+  g_clear_object (&editor->buffer);
+  g_clear_object (&editor->fonts);
 
   if (editor->toggles)
     {
@@ -632,7 +614,7 @@ gimp_text_style_editor_list_tags (GimpTextStyleEditor  *editor,
 static GtkWidget *
 gimp_text_style_editor_create_toggle (GimpTextStyleEditor *editor,
                                       GtkTextTag          *tag,
-                                      const gchar         *stock_id,
+                                      const gchar         *icon_name,
                                       const gchar         *tooltip)
 {
   GtkWidget *toggle;
@@ -652,7 +634,7 @@ gimp_text_style_editor_create_toggle (GimpTextStyleEditor *editor,
                     G_CALLBACK (gimp_text_style_editor_tag_toggled),
                     editor);
 
-  image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name (icon_name, GTK_ICON_SIZE_MENU);
   gtk_container_add (GTK_CONTAINER (toggle), image);
   gtk_widget_show (image);
 
@@ -770,7 +752,7 @@ gimp_text_style_editor_set_color (GimpTextStyleEditor *editor,
   gimp_rgba_set (&color, 0.0, 0.0, 0.0, 1.0);
 
   if (color_tag)
-    gimp_text_tag_get_color (color_tag, &color);
+    gimp_text_tag_get_fg_color (color_tag, &color);
 
   g_signal_handlers_block_by_func (editor->color_button,
                                    gimp_text_style_editor_color_changed,
@@ -1296,6 +1278,24 @@ gimp_text_style_editor_update_idle (GimpTextStyleEditor *editor)
       g_slist_free (tags);
       g_slist_free (tags_on);
       g_slist_free (tags_off);
+    }
+
+  if (editor->context->font_name &&
+      g_strcmp0 (editor->context->font_name,
+                 gimp_object_get_name (gimp_context_get_font (editor->context))))
+    {
+      /* A font is set, but is unavailable; change the help text. */
+      gchar *help_text;
+
+      help_text = g_strdup_printf (_("Font \"%s\" unavailable on this system"),
+                                   editor->context->font_name);
+      gimp_help_set_help_data (editor->font_entry, help_text, NULL);
+      g_free (help_text);
+    }
+  else
+    {
+      gimp_help_set_help_data (editor->font_entry,
+                               _("Change font of selected text"), NULL);
     }
 
   return FALSE;

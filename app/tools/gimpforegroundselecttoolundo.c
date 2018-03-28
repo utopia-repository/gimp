@@ -15,8 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#if 0
+
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "tools-types.h"
@@ -86,12 +89,11 @@ gimp_foreground_select_tool_undo_constructed (GObject *object)
 {
   GimpForegroundSelectToolUndo *fg_select_tool_undo;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   fg_select_tool_undo = GIMP_FOREGROUND_SELECT_TOOL_UNDO (object);
 
-  g_assert (GIMP_IS_FOREGROUND_SELECT_TOOL (fg_select_tool_undo->foreground_select_tool));
+  gimp_assert (GIMP_IS_FOREGROUND_SELECT_TOOL (fg_select_tool_undo->foreground_select_tool));
 
   g_object_add_weak_pointer (G_OBJECT (fg_select_tool_undo->foreground_select_tool),
                              (gpointer) &fg_select_tool_undo->foreground_select_tool);
@@ -162,3 +164,5 @@ gimp_foreground_select_tool_undo_free (GimpUndo     *undo,
 
   GIMP_UNDO_CLASS (parent_class)->free (undo, undo_mode);
 }
+
+#endif

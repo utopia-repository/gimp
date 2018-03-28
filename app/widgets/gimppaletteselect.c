@@ -20,8 +20,10 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
@@ -38,12 +40,12 @@
 #include "gimppaletteselect.h"
 
 
-static void          gimp_palette_select_constructed  (GObject        *object);
+static void             gimp_palette_select_constructed  (GObject        *object);
 
-static GValueArray * gimp_palette_select_run_callback (GimpPdbDialog  *dialog,
-                                                       GimpObject     *object,
-                                                       gboolean        closing,
-                                                       GError        **error);
+static GimpValueArray * gimp_palette_select_run_callback (GimpPdbDialog  *dialog,
+                                                          GimpObject     *object,
+                                                          gboolean        closing,
+                                                          GError        **error);
 
 
 G_DEFINE_TYPE (GimpPaletteSelect, gimp_palette_select, GIMP_TYPE_PDB_DIALOG)
@@ -73,8 +75,7 @@ gimp_palette_select_constructed (GObject *object)
   GimpPdbDialog *dialog = GIMP_PDB_DIALOG (object);
   GtkWidget     *content_area;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   dialog->view =
     gimp_data_factory_view_new (GIMP_VIEW_TYPE_LIST,
@@ -96,7 +97,7 @@ gimp_palette_select_constructed (GObject *object)
   gtk_widget_show (dialog->view);
 }
 
-static GValueArray *
+static GimpValueArray *
 gimp_palette_select_run_callback (GimpPdbDialog  *dialog,
                                   GimpObject     *object,
                                   gboolean        closing,

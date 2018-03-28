@@ -33,10 +33,12 @@ G_BEGIN_DECLS
  * GimpIntStoreColumns:
  * @GIMP_INT_STORE_VALUE:       the integer value
  * @GIMP_INT_STORE_LABEL:       a human-readable label
- * @GIMP_INT_STORE_STOCK_ID:    a stock ID
+ * @GIMP_INT_STORE_ICON_NAME:   an icon name
  * @GIMP_INT_STORE_PIXBUF:      a #GdkPixbuf
  * @GIMP_INT_STORE_USER_DATA:   arbitrary user data
+ * @GIMP_INT_STORE_ABBREV:      an abbreviated label
  * @GIMP_INT_STORE_NUM_COLUMNS: the number of columns
+ * @GIMP_INT_STORE_STOCK_ID:    compat alias for @GIMP_INT_STORE_ICON_NAME
  *
  * The column types of #GimpIntStore.
  **/
@@ -44,10 +46,14 @@ typedef enum
 {
   GIMP_INT_STORE_VALUE,
   GIMP_INT_STORE_LABEL,
-  GIMP_INT_STORE_STOCK_ID,
+  GIMP_INT_STORE_ICON_NAME,
   GIMP_INT_STORE_PIXBUF,
   GIMP_INT_STORE_USER_DATA,
-  GIMP_INT_STORE_NUM_COLUMNS
+  GIMP_INT_STORE_ABBREV,
+  GIMP_INT_STORE_NUM_COLUMNS,
+
+  /* deprecated */
+  GIMP_INT_STORE_STOCK_ID = GIMP_INT_STORE_ICON_NAME
 } GimpIntStoreColumns;
 
 
@@ -87,6 +93,9 @@ GtkListStore * gimp_int_store_new             (void);
 
 gboolean       gimp_int_store_lookup_by_value (GtkTreeModel  *model,
                                                gint           value,
+                                               GtkTreeIter   *iter);
+gboolean   gimp_int_store_lookup_by_user_data (GtkTreeModel  *model,
+                                               gpointer       user_data,
                                                GtkTreeIter   *iter);
 
 

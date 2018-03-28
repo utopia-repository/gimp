@@ -18,7 +18,8 @@
 #include "config.h"
 
 #include <cairo.h>
-#include <glib-object.h>
+#include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpbase/gimpprotocol.h"
@@ -33,7 +34,7 @@
 #include "plug-in-params.h"
 
 
-GValueArray *
+GimpValueArray *
 plug_in_params_to_args (GParamSpec **pspecs,
                         gint         n_pspecs,
                         GPParam     *params,
@@ -41,19 +42,19 @@ plug_in_params_to_args (GParamSpec **pspecs,
                         gboolean     return_values,
                         gboolean     full_copy)
 {
-  GValueArray *args;
-  gint         i;
+  GimpValueArray *args;
+  gint            i;
 
   g_return_val_if_fail ((pspecs != NULL && n_pspecs  > 0) ||
                         (pspecs == NULL && n_pspecs == 0), NULL);
   g_return_val_if_fail ((params != NULL && n_params  > 0) ||
                         (params == NULL && n_params == 0), NULL);
 
-  args = g_value_array_new (n_params);
+  args = gimp_value_array_new (n_params);
 
   for (i = 0; i < n_params; i++)
     {
-      GValue value = { 0, };
+      GValue value = G_VALUE_INIT;
       GType  type;
       gint   count;
 
@@ -74,18 +75,17 @@ plug_in_params_to_args (GParamSpec **pspecs,
           /*  are there param specs left?  */
           if (pspec_index < n_pspecs)
             {
+              GType          pspec_gtype;
               GimpPDBArgType pspec_arg_type;
 
-              pspec_arg_type = gimp_pdb_compat_arg_type_from_gtype
-                (G_PARAM_SPEC_VALUE_TYPE (pspecs[pspec_index]));
+              pspec_gtype    = G_PARAM_SPEC_VALUE_TYPE (pspecs[pspec_index]);
+              pspec_arg_type = gimp_pdb_compat_arg_type_from_gtype (pspec_gtype);
 
               /*  if the param spec's GType, mapped to a pdb type, matches
                *  the passed pdb type, use the param spec's GType
                */
               if (pspec_arg_type == params[i].type)
-                {
-                  type = G_PARAM_SPEC_VALUE_TYPE (pspecs[pspec_index]);
-                }
+                type = pspec_gtype;
             }
         }
 
@@ -130,7 +130,7 @@ plug_in_params_to_args (GParamSpec **pspecs,
           break;
 
         case GIMP_PDB_INT32ARRAY:
-          count = g_value_get_int (&args->values[i - 1]);
+          count = g_value_get_int (gimp_value_array_index (args, i - 1));
           if (full_copy)
             gimp_value_set_int32array (&value,
                                        params[i].data.d_int32array,
@@ -142,7 +142,7 @@ plug_in_params_to_args (GParamSpec **pspecs,
           break;
 
         case GIMP_PDB_INT16ARRAY:
-          count = g_value_get_int (&args->values[i - 1]);
+          count = g_value_get_int (gimp_value_array_index (args, i - 1));
           if (full_copy)
             gimp_value_set_int16array (&value,
                                        params[i].data.d_int16array,
@@ -154,7 +154,7 @@ plug_in_params_to_args (GParamSpec **pspecs,
           break;
 
         case GIMP_PDB_INT8ARRAY:
-          count = g_value_get_int (&args->values[i - 1]);
+          count = g_value_get_int (gimp_value_array_index (args, i - 1));
           if (full_copy)
             gimp_value_set_int8array (&value,
                                       params[i].data.d_int8array,
@@ -166,7 +166,7 @@ plug_in_params_to_args (GParamSpec **pspecs,
           break;
 
         case GIMP_PDB_FLOATARRAY:
-          count = g_value_get_int (&args->values[i - 1]);
+          count = g_value_get_int (gimp_value_array_index (args, i - 1));
           if (full_copy)
             gimp_value_set_floatarray (&value,
                                        params[i].data.d_floatarray,
@@ -178,7 +178,7 @@ plug_in_params_to_args (GParamSpec **pspecs,
           break;
 
         case GIMP_PDB_STRINGARRAY:
-          count = g_value_get_int (&args->values[i - 1]);
+          count = g_value_get_int (gimp_value_array_index (args, i - 1));
           if (full_copy)
             gimp_value_set_stringarray (&value,
                                         (const gchar **) params[i].data.d_stringarray,
@@ -222,7 +222,7 @@ plug_in_params_to_args (GParamSpec **pspecs,
           break;
 
         case GIMP_PDB_COLORARRAY:
-          count = g_value_get_int (&args->values[i - 1]);
+          count = g_value_get_int (gimp_value_array_index (args, i - 1));
           if (full_copy)
             gimp_value_set_colorarray (&value,
                                       params[i].data.d_colorarray,
@@ -252,7 +252,7 @@ plug_in_params_to_args (GParamSpec **pspecs,
           break;
         }
 
-      g_value_array_append (args, &value);
+      gimp_value_array_append (args, &value);
       g_value_unset (&value);
     }
 
@@ -260,19 +260,22 @@ plug_in_params_to_args (GParamSpec **pspecs,
 }
 
 GPParam *
-plug_in_args_to_params (GValueArray *args,
-                        gboolean     full_copy)
+plug_in_args_to_params (GimpValueArray *args,
+                        gboolean        full_copy)
 {
   GPParam *params;
+  gint     length;
   gint     i;
 
   g_return_val_if_fail (args != NULL, NULL);
 
-  params = g_new0 (GPParam, args->n_values);
+  params = g_new0 (GPParam, gimp_value_array_length (args));
 
-  for (i = 0; i < args->n_values; i++)
+  length = gimp_value_array_length (args);
+
+  for (i = 0; i < length; i++)
     {
-      GValue *value = &args->values[i];
+      GValue *value = gimp_value_array_index (args, i);
 
       params[i].type =
         gimp_pdb_compat_arg_type_from_gtype (G_VALUE_TYPE (value));

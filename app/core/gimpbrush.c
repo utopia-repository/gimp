@@ -17,25 +17,27 @@
 
 #include "config.h"
 
-#include <glib-object.h>
 #include <cairo.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
 
 #include "core-types.h"
 
-#include "base/temp-buf.h"
-
 #include "gimpbezierdesc.h"
 #include "gimpbrush.h"
 #include "gimpbrush-boundary.h"
 #include "gimpbrush-load.h"
+#include "gimpbrush-private.h"
 #include "gimpbrush-transform.h"
 #include "gimpbrushcache.h"
 #include "gimpbrushgenerated.h"
+#include "gimpbrushpipe.h"
 #include "gimpmarshal.h"
 #include "gimptagged.h"
+#include "gimptempbuf.h"
 
 #include "gimp-intl.h"
 
@@ -71,7 +73,7 @@ static gint64        gimp_brush_get_memsize           (GimpObject           *obj
 static gboolean      gimp_brush_get_size              (GimpViewable         *viewable,
                                                        gint                 *width,
                                                        gint                 *height);
-static TempBuf     * gimp_brush_get_new_preview       (GimpViewable         *viewable,
+static GimpTempBuf * gimp_brush_get_new_preview       (GimpViewable         *viewable,
                                                        GimpContext          *context,
                                                        gint                  width,
                                                        gint                  height);
@@ -119,29 +121,29 @@ gimp_brush_class_init (GimpBrushClass *klass)
                   gimp_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
-  object_class->finalize           = gimp_brush_finalize;
-  object_class->get_property       = gimp_brush_get_property;
-  object_class->set_property       = gimp_brush_set_property;
+  object_class->finalize            = gimp_brush_finalize;
+  object_class->get_property        = gimp_brush_get_property;
+  object_class->set_property        = gimp_brush_set_property;
 
-  gimp_object_class->get_memsize   = gimp_brush_get_memsize;
+  gimp_object_class->get_memsize    = gimp_brush_get_memsize;
 
-  viewable_class->default_stock_id = "gimp-tool-paintbrush";
-  viewable_class->get_size         = gimp_brush_get_size;
-  viewable_class->get_new_preview  = gimp_brush_get_new_preview;
-  viewable_class->get_description  = gimp_brush_get_description;
+  viewable_class->default_icon_name = "gimp-tool-paintbrush";
+  viewable_class->get_size          = gimp_brush_get_size;
+  viewable_class->get_new_preview   = gimp_brush_get_new_preview;
+  viewable_class->get_description   = gimp_brush_get_description;
 
-  data_class->dirty                = gimp_brush_dirty;
-  data_class->get_extension        = gimp_brush_get_extension;
+  data_class->dirty                 = gimp_brush_dirty;
+  data_class->get_extension         = gimp_brush_get_extension;
 
-  klass->begin_use                 = gimp_brush_real_begin_use;
-  klass->end_use                   = gimp_brush_real_end_use;
-  klass->select_brush              = gimp_brush_real_select_brush;
-  klass->want_null_motion          = gimp_brush_real_want_null_motion;
-  klass->transform_size            = gimp_brush_real_transform_size;
-  klass->transform_mask            = gimp_brush_real_transform_mask;
-  klass->transform_pixmap          = gimp_brush_real_transform_pixmap;
-  klass->transform_boundary        = gimp_brush_real_transform_boundary;
-  klass->spacing_changed           = NULL;
+  klass->begin_use                  = gimp_brush_real_begin_use;
+  klass->end_use                    = gimp_brush_real_end_use;
+  klass->select_brush               = gimp_brush_real_select_brush;
+  klass->want_null_motion           = gimp_brush_real_want_null_motion;
+  klass->transform_size             = gimp_brush_real_transform_size;
+  klass->transform_mask             = gimp_brush_real_transform_mask;
+  klass->transform_pixmap           = gimp_brush_real_transform_pixmap;
+  klass->transform_boundary         = gimp_brush_real_transform_boundary;
+  klass->spacing_changed            = NULL;
 
   g_object_class_install_property (object_class, PROP_SPACING,
                                    g_param_spec_double ("spacing", NULL,
@@ -149,6 +151,8 @@ gimp_brush_class_init (GimpBrushClass *klass)
                                                         1.0, 5000.0, 20.0,
                                                         GIMP_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT));
+
+  g_type_class_add_private (klass, sizeof (GimpBrushPrivate));
 }
 
 static void
@@ -160,14 +164,17 @@ gimp_brush_tagged_iface_init (GimpTaggedInterface *iface)
 static void
 gimp_brush_init (GimpBrush *brush)
 {
-  brush->mask     = NULL;
-  brush->pixmap   = NULL;
+  brush->priv = G_TYPE_INSTANCE_GET_PRIVATE (brush,
+                                             GIMP_TYPE_BRUSH,
+                                             GimpBrushPrivate);
 
-  brush->spacing  = 20;
-  brush->x_axis.x = 15.0;
-  brush->x_axis.y =  0.0;
-  brush->y_axis.x =  0.0;
-  brush->y_axis.y = 15.0;
+  brush->priv->spacing  = 20;
+  brush->priv->x_axis.x = 15.0;
+  brush->priv->x_axis.y =  0.0;
+  brush->priv->y_axis.x =  0.0;
+  brush->priv->y_axis.y = 15.0;
+
+  brush->priv->blur_hardness = 1.0;
 }
 
 static void
@@ -175,35 +182,14 @@ gimp_brush_finalize (GObject *object)
 {
   GimpBrush *brush = GIMP_BRUSH (object);
 
-  if (brush->mask)
-    {
-      temp_buf_free (brush->mask);
-      brush->mask = NULL;
-    }
+  g_clear_pointer (&brush->priv->mask,          gimp_temp_buf_unref);
+  g_clear_pointer (&brush->priv->pixmap,        gimp_temp_buf_unref);
+  g_clear_pointer (&brush->priv->blured_mask,   gimp_temp_buf_unref);
+  g_clear_pointer (&brush->priv->blured_pixmap, gimp_temp_buf_unref);
 
-  if (brush->pixmap)
-    {
-      temp_buf_free (brush->pixmap);
-      brush->pixmap = NULL;
-    }
-
-  if (brush->mask_cache)
-    {
-      g_object_unref (brush->mask_cache);
-      brush->mask_cache = NULL;
-    }
-
-  if (brush->pixmap_cache)
-    {
-      g_object_unref (brush->pixmap_cache);
-      brush->pixmap_cache = NULL;
-    }
-
-  if (brush->boundary_cache)
-    {
-      g_object_unref (brush->boundary_cache);
-      brush->boundary_cache = NULL;
-    }
+  g_clear_object (&brush->priv->mask_cache);
+  g_clear_object (&brush->priv->pixmap_cache);
+  g_clear_object (&brush->priv->boundary_cache);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -239,7 +225,7 @@ gimp_brush_get_property (GObject    *object,
   switch (property_id)
     {
     case PROP_SPACING:
-      g_value_set_double (value, brush->spacing);
+      g_value_set_double (value, gimp_brush_get_spacing (brush));
       break;
 
     default:
@@ -255,8 +241,8 @@ gimp_brush_get_memsize (GimpObject *object,
   GimpBrush *brush   = GIMP_BRUSH (object);
   gint64     memsize = 0;
 
-  memsize += temp_buf_get_memsize (brush->mask);
-  memsize += temp_buf_get_memsize (brush->pixmap);
+  memsize += gimp_temp_buf_get_memsize (brush->priv->mask);
+  memsize += gimp_temp_buf_get_memsize (brush->priv->pixmap);
 
   return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
                                                                   gui_size);
@@ -269,36 +255,31 @@ gimp_brush_get_size (GimpViewable *viewable,
 {
   GimpBrush *brush = GIMP_BRUSH (viewable);
 
-  *width  = brush->mask->width;
-  *height = brush->mask->height;
+  *width  = gimp_temp_buf_get_width  (brush->priv->mask);
+  *height = gimp_temp_buf_get_height (brush->priv->mask);
 
   return TRUE;
 }
 
-static TempBuf *
+static GimpTempBuf *
 gimp_brush_get_new_preview (GimpViewable *viewable,
                             GimpContext  *context,
                             gint          width,
                             gint          height)
 {
-  GimpBrush     *brush       = GIMP_BRUSH (viewable);
-  const TempBuf *mask_buf    = NULL;
-  gboolean       free_mask   = FALSE;
-  const TempBuf *pixmap_buf  = NULL;
-  TempBuf       *return_buf  = NULL;
-  gint           mask_width;
-  gint           mask_height;
-  guchar         transp[4]   = { 0, 0, 0, 0 };
-  guchar        *mask;
-  guchar        *buf;
-  gint           x, y;
-  gboolean       scaled = FALSE;
+  GimpBrush         *brush       = GIMP_BRUSH (viewable);
+  const GimpTempBuf *mask_buf    = brush->priv->mask;
+  const GimpTempBuf *pixmap_buf  = brush->priv->pixmap;
+  GimpTempBuf       *return_buf  = NULL;
+  gint               mask_width;
+  gint               mask_height;
+  guchar            *mask;
+  guchar            *buf;
+  gint               x, y;
+  gboolean           scaled = FALSE;
 
-  mask_buf   = brush->mask;
-  pixmap_buf = brush->pixmap;
-
-  mask_width  = mask_buf->width;
-  mask_height = mask_buf->height;
+  mask_width  = gimp_temp_buf_get_width  (mask_buf);
+  mask_height = gimp_temp_buf_get_height (mask_buf);
 
   if (mask_width > width || mask_height > height)
     {
@@ -310,34 +291,51 @@ gimp_brush_get_new_preview (GimpViewable *viewable,
         {
           gimp_brush_begin_use (brush);
 
-          mask_buf = gimp_brush_transform_mask (brush, scale,
-                                                0.0, 0.0, 1.0);
+          if (GIMP_IS_BRUSH_GENERATED (brush))
+            {
+               GimpBrushGenerated *gen_brush = GIMP_BRUSH_GENERATED (brush);
+
+               mask_buf = gimp_brush_transform_mask (brush, NULL, scale,
+                                                     (gimp_brush_generated_get_aspect_ratio (gen_brush) - 1.0) * 20.0 / 19.0,
+                                                     gimp_brush_generated_get_angle (gen_brush) / 360.0,
+                                                     FALSE,
+                                                     gimp_brush_generated_get_hardness (gen_brush));
+            }
+          else
+            mask_buf = gimp_brush_transform_mask (brush, NULL, scale,
+                                                  0.0, 0.0, FALSE, 1.0);
 
           if (! mask_buf)
             {
-              mask_buf = temp_buf_new (1, 1, 1, 0, 0, transp);
-              free_mask = TRUE;
+              mask_buf = gimp_temp_buf_new (1, 1, babl_format ("Y u8"));
+              gimp_temp_buf_data_clear ((GimpTempBuf *) mask_buf);
+            }
+          else
+            {
+              gimp_temp_buf_ref ((GimpTempBuf *) mask_buf);
             }
 
           if (pixmap_buf)
-            pixmap_buf = gimp_brush_transform_pixmap (brush, scale,
-                                                      0.0, 0.0, 1.0);
+            pixmap_buf = gimp_brush_transform_pixmap (brush, NULL, scale,
+                                                      0.0, 0.0, FALSE, 1.0);
 
-          mask_width  = mask_buf->width;
-          mask_height = mask_buf->height;
+          mask_width  = gimp_temp_buf_get_width  (mask_buf);
+          mask_height = gimp_temp_buf_get_height (mask_buf);
 
           scaled = TRUE;
         }
     }
 
-  return_buf = temp_buf_new (mask_width, mask_height, 4, 0, 0, transp);
+  return_buf = gimp_temp_buf_new (mask_width, mask_height,
+                                  babl_format ("R'G'B'A u8"));
+  gimp_temp_buf_data_clear (return_buf);
 
-  mask = temp_buf_get_data (mask_buf);
-  buf  = temp_buf_get_data (return_buf);
+  mask = gimp_temp_buf_get_data (mask_buf);
+  buf  = gimp_temp_buf_get_data (return_buf);
 
   if (pixmap_buf)
     {
-      guchar *pixmap = temp_buf_get_data (pixmap_buf);
+      guchar *pixmap = gimp_temp_buf_get_data (pixmap_buf);
 
       for (y = 0; y < mask_height; y++)
         {
@@ -366,8 +364,7 @@ gimp_brush_get_new_preview (GimpViewable *viewable,
 
   if (scaled)
     {
-      if (free_mask)
-        temp_buf_free ((TempBuf *) mask_buf);
+      gimp_temp_buf_unref ((GimpTempBuf *) mask_buf);
 
       gimp_brush_end_use (brush);
     }
@@ -383,8 +380,8 @@ gimp_brush_get_description (GimpViewable  *viewable,
 
   return g_strdup_printf ("%s (%d × %d)",
                           gimp_object_get_name (brush),
-                          brush->mask->width,
-                          brush->mask->height);
+                          gimp_temp_buf_get_width  (brush->priv->mask),
+                          gimp_temp_buf_get_height (brush->priv->mask));
 }
 
 static void
@@ -392,14 +389,17 @@ gimp_brush_dirty (GimpData *data)
 {
   GimpBrush *brush = GIMP_BRUSH (data);
 
-  if (brush->mask_cache)
-    gimp_brush_cache_clear (brush->mask_cache);
+  if (brush->priv->mask_cache)
+    gimp_brush_cache_clear (brush->priv->mask_cache);
 
-  if (brush->pixmap_cache)
-    gimp_brush_cache_clear (brush->pixmap_cache);
+  if (brush->priv->pixmap_cache)
+    gimp_brush_cache_clear (brush->priv->pixmap_cache);
 
-  if (brush->boundary_cache)
-    gimp_brush_cache_clear (brush->boundary_cache);
+  if (brush->priv->boundary_cache)
+    gimp_brush_cache_clear (brush->priv->boundary_cache);
+
+  g_clear_pointer (&brush->priv->blured_mask,   gimp_temp_buf_unref);
+  g_clear_pointer (&brush->priv->blured_pixmap, gimp_temp_buf_unref);
 
   GIMP_DATA_CLASS (parent_class)->dirty (data);
 }
@@ -413,27 +413,25 @@ gimp_brush_get_extension (GimpData *data)
 static void
 gimp_brush_real_begin_use (GimpBrush *brush)
 {
-  brush->mask_cache =
-    gimp_brush_cache_new ((GDestroyNotify) temp_buf_free, 'M', 'm');
+  brush->priv->mask_cache =
+    gimp_brush_cache_new ((GDestroyNotify) gimp_temp_buf_unref, 'M', 'm');
 
-  brush->pixmap_cache =
-    gimp_brush_cache_new ((GDestroyNotify) temp_buf_free, 'P', 'p');
+  brush->priv->pixmap_cache =
+    gimp_brush_cache_new ((GDestroyNotify) gimp_temp_buf_unref, 'P', 'p');
 
-  brush->boundary_cache =
+  brush->priv->boundary_cache =
     gimp_brush_cache_new ((GDestroyNotify) gimp_bezier_desc_free, 'B', 'b');
 }
 
 static void
 gimp_brush_real_end_use (GimpBrush *brush)
 {
-  g_object_unref (brush->mask_cache);
-  brush->mask_cache = NULL;
+  g_clear_object (&brush->priv->mask_cache);
+  g_clear_object (&brush->priv->pixmap_cache);
+  g_clear_object (&brush->priv->boundary_cache);
 
-  g_object_unref (brush->pixmap_cache);
-  brush->pixmap_cache = NULL;
-
-  g_object_unref (brush->boundary_cache);
-  brush->boundary_cache = NULL;
+  g_clear_pointer (&brush->priv->blured_mask,   gimp_temp_buf_unref);
+  g_clear_pointer (&brush->priv->blured_pixmap, gimp_temp_buf_unref);
 }
 
 static GimpBrush *
@@ -458,16 +456,26 @@ gimp_brush_get_checksum (GimpTagged *tagged)
   GimpBrush *brush           = GIMP_BRUSH (tagged);
   gchar     *checksum_string = NULL;
 
-  if (brush->mask)
+  if (brush->priv->mask)
     {
       GChecksum *checksum = g_checksum_new (G_CHECKSUM_MD5);
 
-      g_checksum_update (checksum, temp_buf_get_data (brush->mask), temp_buf_get_data_size (brush->mask));
-      if (brush->pixmap)
-        g_checksum_update (checksum, temp_buf_get_data (brush->pixmap), temp_buf_get_data_size (brush->pixmap));
-      g_checksum_update (checksum, (const guchar *) &brush->spacing, sizeof (brush->spacing));
-      g_checksum_update (checksum, (const guchar *) &brush->x_axis, sizeof (brush->x_axis));
-      g_checksum_update (checksum, (const guchar *) &brush->y_axis, sizeof (brush->y_axis));
+      g_checksum_update (checksum,
+                         gimp_temp_buf_get_data (brush->priv->mask),
+                         gimp_temp_buf_get_data_size (brush->priv->mask));
+      if (brush->priv->pixmap)
+        g_checksum_update (checksum,
+                           gimp_temp_buf_get_data (brush->priv->pixmap),
+                           gimp_temp_buf_get_data_size (brush->priv->pixmap));
+      g_checksum_update (checksum,
+                         (const guchar *) &brush->priv->spacing,
+                         sizeof (brush->priv->spacing));
+      g_checksum_update (checksum,
+                         (const guchar *) &brush->priv->x_axis,
+                         sizeof (brush->priv->x_axis));
+      g_checksum_update (checksum,
+                         (const guchar *) &brush->priv->y_axis,
+                         sizeof (brush->priv->y_axis));
 
       checksum_string = g_strdup (g_checksum_get_string (checksum));
 
@@ -514,9 +522,9 @@ gimp_brush_begin_use (GimpBrush *brush)
 {
   g_return_if_fail (GIMP_IS_BRUSH (brush));
 
-  brush->use_count++;
+  brush->priv->use_count++;
 
-  if (brush->use_count == 1)
+  if (brush->priv->use_count == 1)
     GIMP_BRUSH_GET_CLASS (brush)->begin_use (brush);
 }
 
@@ -524,11 +532,11 @@ void
 gimp_brush_end_use (GimpBrush *brush)
 {
   g_return_if_fail (GIMP_IS_BRUSH (brush));
-  g_return_if_fail (brush->use_count > 0);
+  g_return_if_fail (brush->priv->use_count > 0);
 
-  brush->use_count--;
+  brush->priv->use_count--;
 
-  if (brush->use_count == 0)
+  if (brush->priv->use_count == 0)
     GIMP_BRUSH_GET_CLASS (brush)->end_use (brush);
 }
 
@@ -565,6 +573,7 @@ gimp_brush_transform_size (GimpBrush     *brush,
                            gdouble        scale,
                            gdouble        aspect_ratio,
                            gdouble        angle,
+                           gboolean       reflect,
                            gint          *width,
                            gint          *height)
 {
@@ -573,115 +582,203 @@ gimp_brush_transform_size (GimpBrush     *brush,
   g_return_if_fail (width != NULL);
   g_return_if_fail (height != NULL);
 
-  if (scale        == 1.0 &&
-      aspect_ratio == 0.0 &&
-      ((angle == 0.0) || (angle == 0.5) || (angle == 1.0)))
+  if (scale             == 1.0 &&
+      aspect_ratio      == 0.0 &&
+      fmod (angle, 0.5) == 0.0)
     {
-      *width  = brush->mask->width;
-      *height = brush->mask->height;
+      *width  = gimp_temp_buf_get_width  (brush->priv->mask);
+      *height = gimp_temp_buf_get_height (brush->priv->mask);
 
       return;
     }
 
   GIMP_BRUSH_GET_CLASS (brush)->transform_size (brush,
-                                                scale, aspect_ratio, angle,
+                                                scale, aspect_ratio, angle, reflect,
                                                 width, height);
 }
 
-const TempBuf *
+const GimpTempBuf *
 gimp_brush_transform_mask (GimpBrush *brush,
+                           GeglNode  *op,
                            gdouble    scale,
                            gdouble    aspect_ratio,
                            gdouble    angle,
+                           gboolean   reflect,
                            gdouble    hardness)
 {
-  const TempBuf *mask;
-  gint           width;
-  gint           height;
+  const GimpTempBuf *mask;
+  gint               width;
+  gint               height;
+  gdouble            effective_hardness = hardness;
 
   g_return_val_if_fail (GIMP_IS_BRUSH (brush), NULL);
   g_return_val_if_fail (scale > 0.0, NULL);
 
   gimp_brush_transform_size (brush,
-                             scale, aspect_ratio, angle,
+                             scale, aspect_ratio, angle, reflect,
                              &width, &height);
 
-  mask = gimp_brush_cache_get (brush->mask_cache,
-                               width, height,
-                               scale, aspect_ratio, angle, hardness);
+  mask = gimp_brush_cache_get (brush->priv->mask_cache,
+                               op, width, height,
+                               scale, aspect_ratio, angle, reflect, hardness);
 
   if (! mask)
     {
-      if (scale        == 1.0 &&
-          aspect_ratio == 0.0 &&
-          angle        == 0.0 &&
-          hardness     == 1.0)
+#if 0
+      /* This code makes sure that brushes using blur for hardness
+       * (all of them but generated) are blurred once and no more.
+       * It also makes hardnes dynamics not work for these brushes.
+       * This is intentional. Confoliving for each stamp is too expensive.*/
+      if (! brush->priv->blured_mask &&
+          ! GIMP_IS_BRUSH_GENERATED(brush) &&
+          ! GIMP_IS_BRUSH_PIPE(brush) && /*Cant cache pipes. Sanely anway*/
+          hardness < 1.0)
         {
-          mask = temp_buf_copy (brush->mask, NULL);
-        }
-      else
-        {
-          mask = GIMP_BRUSH_GET_CLASS (brush)->transform_mask (brush,
-                                                               scale,
-                                                               aspect_ratio,
-                                                               angle,
-                                                               hardness);
+           brush->priv->blured_mask = GIMP_BRUSH_GET_CLASS (brush)->transform_mask (brush,
+                                                             1.0,
+                                                             0.0,
+                                                             0.0,
+                                                             FALSE,
+                                                             hardness);
+           brush->priv->blur_hardness = hardness;
         }
 
-      gimp_brush_cache_add (brush->mask_cache,
+      if (brush->priv->blured_mask)
+        {
+          effective_hardness = 1.0; /*Hardness has already been applied*/
+        }
+#endif
+
+      mask = GIMP_BRUSH_GET_CLASS (brush)->transform_mask (brush,
+                                                           scale,
+                                                           aspect_ratio,
+                                                           angle,
+                                                           reflect,
+                                                           effective_hardness);
+
+      if (op)
+        {
+          GeglNode   *graph, *source, *target;
+          GeglBuffer *buffer = gimp_temp_buf_create_buffer ((GimpTempBuf *) mask);
+
+          graph  = gegl_node_new ();
+          source = gegl_node_new_child (graph,
+                                        "operation", "gegl:buffer-source",
+                                        "buffer", buffer,
+                                        NULL);
+          gegl_node_add_child (graph, op);
+          target = gegl_node_new_child (graph,
+                                        "operation", "gegl:write-buffer",
+                                        "buffer", buffer,
+                                        NULL);
+
+          gegl_node_link_many (source, op, target, NULL);
+          gegl_node_blit (target, 1.0,
+                          GEGL_RECTANGLE (0, 0,
+                                          gegl_buffer_get_width (buffer),
+                                          gegl_buffer_get_height (buffer)),
+                          NULL, NULL, 0, GEGL_BLIT_DEFAULT);
+
+
+          g_object_unref (graph);
+          g_object_unref (buffer);
+        }
+
+      gimp_brush_cache_add (brush->priv->mask_cache,
                             (gpointer) mask,
-                            width, height,
-                            scale, aspect_ratio, angle, hardness);
+                            op, width, height,
+                            scale, aspect_ratio, angle, reflect, effective_hardness);
     }
 
   return mask;
 }
 
-const TempBuf *
+const GimpTempBuf *
 gimp_brush_transform_pixmap (GimpBrush *brush,
+                             GeglNode  *op,
                              gdouble    scale,
                              gdouble    aspect_ratio,
                              gdouble    angle,
+                             gboolean   reflect,
                              gdouble    hardness)
 {
-  const TempBuf *pixmap;
-  gint           width;
-  gint           height;
+  const GimpTempBuf *pixmap;
+  gint               width;
+  gint               height;
+  gdouble            effective_hardness = hardness;
 
   g_return_val_if_fail (GIMP_IS_BRUSH (brush), NULL);
-  g_return_val_if_fail (brush->pixmap != NULL, NULL);
+  g_return_val_if_fail (brush->priv->pixmap != NULL, NULL);
   g_return_val_if_fail (scale > 0.0, NULL);
 
   gimp_brush_transform_size (brush,
-                             scale, aspect_ratio, angle,
+                             scale, aspect_ratio, angle, reflect,
                              &width, &height);
 
-  pixmap = gimp_brush_cache_get (brush->pixmap_cache,
-                                 width, height,
-                                 scale, aspect_ratio, angle, hardness);
+  pixmap = gimp_brush_cache_get (brush->priv->pixmap_cache,
+                                 op, width, height,
+                                 scale, aspect_ratio, angle, reflect, hardness);
 
   if (! pixmap)
     {
-      if (scale        == 1.0 &&
-          aspect_ratio == 0.0 &&
-          angle        == 0.0 &&
-          hardness     == 1.0)
+#if 0
+     if (! brush->priv->blured_pixmap &&
+         ! GIMP_IS_BRUSH_GENERATED(brush) &&
+         ! GIMP_IS_BRUSH_PIPE(brush) /*Cant cache pipes. Sanely anway*/
+         && hardness < 1.0)
+      {
+         brush->priv->blured_pixmap = GIMP_BRUSH_GET_CLASS (brush)->transform_pixmap (brush,
+                                                                  1.0,
+                                                                  0.0,
+                                                                  0.0,
+                                                                  FALSE,
+                                                                  hardness);
+         brush->priv->blur_hardness = hardness;
+       }
+
+      if (brush->priv->blured_pixmap) {
+        effective_hardness = 1.0; /*Hardness has already been applied*/
+      }
+#endif
+
+      pixmap = GIMP_BRUSH_GET_CLASS (brush)->transform_pixmap (brush,
+                                                               scale,
+                                                               aspect_ratio,
+                                                               angle,
+                                                               reflect,
+                                                               effective_hardness);
+
+      if (op)
         {
-          pixmap = temp_buf_copy (brush->pixmap, NULL);
-        }
-      else
-        {
-          pixmap = GIMP_BRUSH_GET_CLASS (brush)->transform_pixmap (brush,
-                                                                   scale,
-                                                                   aspect_ratio,
-                                                                   angle,
-                                                                   hardness);
+          GeglNode   *graph, *source, *target;
+          GeglBuffer *buffer = gimp_temp_buf_create_buffer ((GimpTempBuf *) pixmap);
+
+          graph  = gegl_node_new ();
+          source = gegl_node_new_child (graph,
+                                        "operation", "gegl:buffer-source",
+                                        "buffer", buffer,
+                                        NULL);
+          gegl_node_add_child (graph, op);
+          target = gegl_node_new_child (graph,
+                                        "operation", "gegl:write-buffer",
+                                        "buffer", buffer,
+                                        NULL);
+
+          gegl_node_link_many (source, op, target, NULL);
+          gegl_node_blit (target, 1.0,
+                          GEGL_RECTANGLE (0, 0,
+                                          gegl_buffer_get_width (buffer),
+                                          gegl_buffer_get_height (buffer)),
+                          NULL, NULL, 0, GEGL_BLIT_DEFAULT);
+
+          g_object_unref (graph);
+          g_object_unref (buffer);
         }
 
-      gimp_brush_cache_add (brush->pixmap_cache,
+      gimp_brush_cache_add (brush->priv->pixmap_cache,
                             (gpointer) pixmap,
-                            width, height,
-                            scale, aspect_ratio, angle, hardness);
+                            op, width, height,
+                            scale, aspect_ratio, angle, reflect, effective_hardness);
     }
 
   return pixmap;
@@ -692,6 +789,7 @@ gimp_brush_transform_boundary (GimpBrush *brush,
                                gdouble    scale,
                                gdouble    aspect_ratio,
                                gdouble    angle,
+                               gboolean   reflect,
                                gdouble    hardness,
                                gint      *width,
                                gint      *height)
@@ -704,12 +802,12 @@ gimp_brush_transform_boundary (GimpBrush *brush,
   g_return_val_if_fail (height != NULL, NULL);
 
   gimp_brush_transform_size (brush,
-                             scale, aspect_ratio, angle,
+                             scale, aspect_ratio, angle, reflect,
                              width, height);
 
-  boundary = gimp_brush_cache_get (brush->boundary_cache,
-                                   *width, *height,
-                                   scale, aspect_ratio, angle, hardness);
+  boundary = gimp_brush_cache_get (brush->priv->boundary_cache,
+                                   NULL, *width, *height,
+                                   scale, aspect_ratio, angle, reflect, hardness);
 
   if (! boundary)
     {
@@ -717,6 +815,7 @@ gimp_brush_transform_boundary (GimpBrush *brush,
                                                                    scale,
                                                                    aspect_ratio,
                                                                    angle,
+                                                                   reflect,
                                                                    hardness,
                                                                    width,
                                                                    height);
@@ -728,39 +827,101 @@ gimp_brush_transform_boundary (GimpBrush *brush,
        *         properly implemented
        */
       if (boundary)
-        gimp_brush_cache_add (brush->boundary_cache,
+        gimp_brush_cache_add (brush->priv->boundary_cache,
                               (gpointer) boundary,
-                              *width, *height,
-                              scale, aspect_ratio, angle, hardness);
+                              NULL, *width, *height,
+                              scale, aspect_ratio, angle, reflect, hardness);
     }
 
   return boundary;
 }
 
-TempBuf *
-gimp_brush_get_mask (const GimpBrush *brush)
+GimpTempBuf *
+gimp_brush_get_mask (GimpBrush *brush)
 {
   g_return_val_if_fail (brush != NULL, NULL);
   g_return_val_if_fail (GIMP_IS_BRUSH (brush), NULL);
 
-  return brush->mask;
+  if (brush->priv->blured_mask)
+    {
+      return brush->priv->blured_mask;
+    }
+  return brush->priv->mask;
 }
 
-TempBuf *
-gimp_brush_get_pixmap (const GimpBrush *brush)
+GimpTempBuf *
+gimp_brush_get_pixmap (GimpBrush *brush)
 {
   g_return_val_if_fail (brush != NULL, NULL);
   g_return_val_if_fail (GIMP_IS_BRUSH (brush), NULL);
 
-  return brush->pixmap;
+  if(brush->priv->blured_pixmap)
+    {
+      return brush->priv->blured_pixmap;
+    }
+  return brush->priv->pixmap;
 }
 
-gint
-gimp_brush_get_spacing (const GimpBrush *brush)
+void
+gimp_brush_flush_blur_caches (GimpBrush *brush)
+{
+#if 0
+  g_clear_pointer (&brush->priv->blured_mask,   gimp_temp_buf_unref);
+  g_clear_pointer (&brush->priv->blured_pixmap, gimp_temp_buf_unref);
+
+  if (brush->priv->mask_cache)
+    gimp_brush_cache_clear (brush->priv->mask_cache);
+
+  if (brush->priv->pixmap_cache)
+    gimp_brush_cache_clear (brush->priv->pixmap_cache);
+
+  if (brush->priv->boundary_cache)
+    gimp_brush_cache_clear (brush->priv->boundary_cache);
+#endif
+}
+
+gdouble
+gimp_brush_get_blur_hardness (GimpBrush *brush)
 {
   g_return_val_if_fail (GIMP_IS_BRUSH (brush), 0);
 
-  return brush->spacing;
+  return brush->priv->blur_hardness;
+}
+
+gint
+gimp_brush_get_width (GimpBrush *brush)
+{
+  g_return_val_if_fail (GIMP_IS_BRUSH (brush), 0);
+
+  if (brush->priv->blured_mask)
+    return gimp_temp_buf_get_width (brush->priv->blured_mask);
+
+  if (brush->priv->blured_pixmap)
+    return gimp_temp_buf_get_width (brush->priv->blured_pixmap);
+
+  return gimp_temp_buf_get_width (brush->priv->mask);
+}
+
+gint
+gimp_brush_get_height (GimpBrush *brush)
+{
+  g_return_val_if_fail (GIMP_IS_BRUSH (brush), 0);
+
+  if (brush->priv->blured_mask)
+    return gimp_temp_buf_get_height (brush->priv->blured_mask);
+
+  if (brush->priv->blured_pixmap)
+    return gimp_temp_buf_get_height (brush->priv->blured_pixmap);
+
+  return gimp_temp_buf_get_height (brush->priv->mask);
+}
+
+gint
+gimp_brush_get_spacing (GimpBrush *brush)
+{
+  g_return_val_if_fail (GIMP_IS_BRUSH (brush), 0);
+
+  return brush->priv->spacing;
 }
 
 void
@@ -769,11 +930,29 @@ gimp_brush_set_spacing (GimpBrush *brush,
 {
   g_return_if_fail (GIMP_IS_BRUSH (brush));
 
-  if (brush->spacing != spacing)
+  if (brush->priv->spacing != spacing)
     {
-      brush->spacing = spacing;
+      brush->priv->spacing = spacing;
 
       g_signal_emit (brush, brush_signals[SPACING_CHANGED], 0);
       g_object_notify (G_OBJECT (brush), "spacing");
     }
+}
+
+static const GimpVector2 fail = { 0.0, 0.0 };
+
+GimpVector2
+gimp_brush_get_x_axis (GimpBrush *brush)
+{
+  g_return_val_if_fail (GIMP_IS_BRUSH (brush), fail);
+
+  return brush->priv->x_axis;
+}
+
+GimpVector2
+gimp_brush_get_y_axis (GimpBrush *brush)
+{
+  g_return_val_if_fail (GIMP_IS_BRUSH (brush), fail);
+
+  return brush->priv->y_axis;
 }

@@ -5,7 +5,7 @@
 #include <glib-object.h>
 #include "gimpthumb-enums.h"
 
-/* enumerations from "./gimpthumb-enums.h" */
+/* enumerations from "gimpthumb-enums.h" */
 GType
 gimp_thumb_file_type_get_type (void)
 {

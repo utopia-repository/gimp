@@ -21,24 +21,29 @@
 
 /*  virtual functions of GimpDrawable, don't call directly  */
 
-void   gimp_drawable_real_apply_region   (GimpDrawable         *drawable,
-                                          PixelRegion          *src2PR,
-                                          gboolean              push_undo,
-                                          const gchar          *undo_desc,
-                                          gdouble               opacity,
-                                          GimpLayerModeEffects  mode,
-                                          TileManager          *src1_tiles,
-                                          PixelRegion          *destPR,
-                                          gint                  x,
-                                          gint                  y);
-void   gimp_drawable_real_replace_region (GimpDrawable         *drawable,
-                                          PixelRegion          *src2PR,
-                                          gboolean              push_undo,
-                                          const gchar          *undo_desc,
-                                          gdouble               opacity,
-                                          PixelRegion          *maskPR,
-                                          gint                  x,
-                                          gint                  y);
+void   gimp_drawable_real_apply_buffer   (GimpDrawable           *drawable,
+                                          GeglBuffer             *buffer,
+                                          const GeglRectangle    *buffer_region,
+                                          gboolean                push_undo,
+                                          const gchar            *undo_desc,
+                                          gdouble                 opacity,
+                                          GimpLayerMode           mode,
+                                          GimpLayerColorSpace     blend_space,
+                                          GimpLayerColorSpace     composite_space,
+                                          GimpLayerCompositeMode  composite_mode,
+                                          GeglBuffer             *base_buffer,
+                                          gint                    base_x,
+                                          gint                    base_y);
+void   gimp_drawable_real_replace_buffer (GimpDrawable           *drawable,
+                                          GeglBuffer             *buffer,
+                                          const GeglRectangle    *buffer_region,
+                                          gboolean                push_undo,
+                                          const gchar            *undo_desc,
+                                          gdouble                 opacity,
+                                          GeglBuffer             *mask,
+                                          const GeglRectangle    *mask_region,
+                                          gint                    x,
+                                          gint                    y);
 
 
 #endif /* __GIMP_DRAWABLE_COMBINE_H__ */

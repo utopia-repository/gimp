@@ -20,6 +20,15 @@
 #define EMBED_PAGE_SETUP 1
 #endif
 
+#define GIMP_PLUGIN_PRINT_ERROR gimp_plugin_print_error_quark ()
+
+typedef enum
+{
+  GIMP_PLUGIN_PRINT_ERROR_FAILED
+} GimpPluginPrintError;
+
+GQuark gimp_plugin_print_error_quark (void);
+
 typedef enum
 {
   CENTER_NONE         = 0,
@@ -35,6 +44,8 @@ typedef struct
   GimpUnit            unit;
   gdouble             xres;
   gdouble             yres;
+  gdouble             min_xres;
+  gdouble             min_yres;
   GimpUnit            image_unit;
   gdouble             offset_x;
   gdouble             offset_y;

@@ -116,13 +116,13 @@ static GtkActionEntry actions[] =
     "Unit Editor Toolbar", NULL, NULL, NULL
   },
 
-  { "unit-editor-new", GTK_STOCK_NEW,
+  { "unit-editor-new", GIMP_ICON_DOCUMENT_NEW,
     NULL, "<control>N",
     N_("Create a new unit from scratch"),
     G_CALLBACK (new_callback)
   },
 
-  { "unit-editor-duplicate", GIMP_STOCK_DUPLICATE,
+  { "unit-editor-duplicate", GIMP_ICON_OBJECT_DUPLICATE,
     NULL,  "<control>D",
     N_("Create a new unit using the currently selected unit as template"),
     G_CALLBACK (duplicate_callback)
@@ -154,8 +154,8 @@ query (void)
                           args, NULL);
 
   gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Edit/Preferences");
-  gimp_plugin_icon_register (PLUG_IN_PROC, GIMP_ICON_TYPE_STOCK_ID,
-                             (const guint8 *) GIMP_STOCK_TOOL_MEASURE);
+  gimp_plugin_icon_register (PLUG_IN_PROC, GIMP_ICON_TYPE_ICON_NAME,
+                             (const guint8 *) GIMP_ICON_TOOL_MEASURE);
 }
 
 static void
@@ -187,27 +187,27 @@ static GimpUnit
 new_unit_dialog (GtkWidget *main_dialog,
                  GimpUnit   template)
 {
-  GtkWidget *dialog;
-  GtkWidget *table;
-  GtkWidget *entry;
-  GtkWidget *spinbutton;
+  GtkWidget     *dialog;
+  GtkWidget     *table;
+  GtkWidget     *entry;
+  GtkWidget     *spinbutton;
 
-  GtkWidget *identifier_entry;
-  GtkObject *factor_adj;
-  GtkObject *digits_adj;
-  GtkWidget *symbol_entry;
-  GtkWidget *abbreviation_entry;
-  GtkWidget *singular_entry;
-  GtkWidget *plural_entry;
+  GtkWidget     *identifier_entry;
+  GtkAdjustment *factor_adj;
+  GtkAdjustment *digits_adj;
+  GtkWidget     *symbol_entry;
+  GtkWidget     *abbreviation_entry;
+  GtkWidget     *singular_entry;
+  GtkWidget     *plural_entry;
 
-  GimpUnit   unit = GIMP_UNIT_PIXEL;
+  GimpUnit       unit = GIMP_UNIT_PIXEL;
 
   dialog = gimp_dialog_new (_("Add a New Unit"), PLUG_IN_ROLE,
                             main_dialog, GTK_DIALOG_MODAL,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_ADD,    GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_Add"),    GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -236,21 +236,25 @@ new_unit_dialog (GtkWidget *main_dialog,
 
   gimp_help_set_help_data (entry, gettext (columns[IDENTIFIER].help), NULL);
 
-  spinbutton = gimp_spin_button_new (&factor_adj,
-                                     (template != GIMP_UNIT_PIXEL) ?
-                                     gimp_unit_get_factor (template) : 1.0,
-                                     GIMP_MIN_RESOLUTION, GIMP_MAX_RESOLUTION,
-                                     0.01, 0.1, 0.0, 0.01, 5);
+  factor_adj = (GtkAdjustment *)
+    gtk_adjustment_new ((template != GIMP_UNIT_PIXEL) ?
+                        gimp_unit_get_factor (template) : 1.0,
+                        GIMP_MIN_RESOLUTION, GIMP_MAX_RESOLUTION,
+                        0.01, 0.1, 0.0);
+  spinbutton = gtk_spin_button_new (factor_adj, 0.01, 5);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 1,
                              _("_Factor:"), 0.0, 0.5,
                              spinbutton, 1, TRUE);
 
   gimp_help_set_help_data (spinbutton, gettext (columns[FACTOR].help), NULL);
 
-  spinbutton = gimp_spin_button_new (&digits_adj,
-                                     (template != GIMP_UNIT_PIXEL) ?
-                                     gimp_unit_get_digits (template) : 2.0,
-                                     0, 5, 1, 1, 0, 1, 0);
+  digits_adj = (GtkAdjustment *)
+    gtk_adjustment_new ((template != GIMP_UNIT_PIXEL) ?
+                        gimp_unit_get_digits (template) : 2.0,
+                        0, 5, 1, 1, 0);
+  spinbutton = gtk_spin_button_new (digits_adj, 0, 0);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 2,
                              _("_Digits:"), 0.0, 0.5,
                              spinbutton, 1, TRUE);
@@ -409,8 +413,8 @@ unit_editor_dialog (void)
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
-                            GTK_STOCK_REFRESH, RESPONSE_REFRESH,
-                            GTK_STOCK_CLOSE,   GTK_RESPONSE_CLOSE,
+                            _("_Refresh"), RESPONSE_REFRESH,
+                            _("_Close"),   GTK_RESPONSE_CLOSE,
 
                             NULL);
 

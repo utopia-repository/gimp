@@ -30,6 +30,7 @@
 #define GIMP_ITEM_PROP_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_ITEM_PROP_UNDO, GimpItemPropUndoClass))
 
 
+typedef struct _GimpItemPropUndo      GimpItemPropUndo;
 typedef struct _GimpItemPropUndoClass GimpItemPropUndoClass;
 
 struct _GimpItemPropUndo
@@ -41,8 +42,11 @@ struct _GimpItemPropUndo
   gchar        *name;
   gint          offset_x;
   gint          offset_y;
-  gboolean      visible;
-  gboolean      linked;
+  guint         visible       : 1;
+  guint         linked        : 1;
+  guint         lock_content  : 1;
+  guint         lock_position : 1;
+  GimpColorTag  color_tag;
   gchar        *parasite_name;
   GimpParasite *parasite;
 };

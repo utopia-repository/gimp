@@ -33,6 +33,7 @@
 #include "core/gimpimage.h"
 #include "core/gimplist.h"
 
+#include "widgets/gimpaction.h"
 #include "widgets/gimpactiongroup.h"
 #include "widgets/gimpdialogfactory.h"
 #include "widgets/gimpdock.h"
@@ -54,6 +55,10 @@ static void  windows_actions_display_add               (GimpContainer     *conta
                                                         GimpActionGroup   *group);
 static void  windows_actions_display_remove            (GimpContainer     *container,
                                                         GimpDisplay       *display,
+                                                        GimpActionGroup   *group);
+static void  windows_actions_display_reorder           (GimpContainer     *container,
+                                                        GimpDisplay       *display,
+                                                        gint               position,
                                                         GimpActionGroup   *group);
 static void  windows_actions_image_notify              (GimpDisplay       *display,
                                                         const GParamSpec  *unused,
@@ -83,7 +88,7 @@ static void  windows_actions_single_window_mode_notify (GimpDisplayConfig *confi
 /* The only reason we have "Tab" in the action entries below is to
  * give away the hardcoded keyboard shortcut. If the user changes the
  * shortcut to something else, both that shortcut and Tab will
- * work. The reason we have the shortcut hardcoded is beccause
+ * work. The reason we have the shortcut hardcoded is because
  * gtk_accelerator_valid() returns FALSE for GDK_tab.
  */
 
@@ -106,26 +111,51 @@ static const GimpActionEntry windows_actions[] =
     NC_("windows-action", "Previous Image"), "<alt><shift>Tab",
     NC_("windows-action", "Switch to the previous image"),
     G_CALLBACK (windows_show_display_previous_cmd_callback),
-    NULL }
+    NULL },
+
+  { "windows-tab-position",        NULL, NC_("windows-action",
+                                             "_Tabs Position")   },
 };
 
 static const GimpToggleActionEntry windows_toggle_actions[] =
 {
   { "windows-hide-docks", NULL,
     NC_("windows-action", "Hide Docks"), "Tab",
-    NC_("windows-action", "When enabled docks and other dialogs are hidden, leaving only image windows."),
+    NC_("windows-action", "When enabled, docks and other dialogs are hidden, leaving only image windows."),
     G_CALLBACK (windows_hide_docks_cmd_callback),
     FALSE,
     GIMP_HELP_WINDOWS_HIDE_DOCKS },
 
   { "windows-use-single-window-mode", NULL,
     NC_("windows-action", "Single-Window Mode"), NULL,
-    NC_("windows-action", "When enabled GIMP is in a single-window mode."),
+    NC_("windows-action", "When enabled, GIMP is in a single-window mode."),
     G_CALLBACK (windows_use_single_window_mode_cmd_callback),
     FALSE,
     GIMP_HELP_WINDOWS_USE_SINGLE_WINDOW_MODE }
 };
 
+static const GimpRadioActionEntry windows_tabs_position_actions[] =
+{
+  { "windows-tabs-position-top", GIMP_ICON_GO_TOP,
+    NC_("windows-tabs-position-action", "_Top"), NULL,
+    NC_("windows-tabs-position-action", "Position the tabs on the top"),
+    GIMP_POSITION_TOP, GIMP_HELP_WINDOWS_TABS_POSITION },
+
+  { "windows-tabs-position-bottom", GIMP_ICON_GO_BOTTOM,
+    NC_("windows-tabs-position-action", "_Bottom"), NULL,
+    NC_("windows-tabs-position-action", "Position the tabs on the bottom"),
+    GIMP_POSITION_BOTTOM, GIMP_HELP_WINDOWS_TABS_POSITION },
+
+  { "windows-tabs-position-left", GIMP_ICON_GO_FIRST,
+    NC_("windows-tabs-position-action", "_Left"), NULL,
+    NC_("windows-tabs-position-action", "Position the tabs on the left"),
+    GIMP_POSITION_LEFT, GIMP_HELP_WINDOWS_TABS_POSITION },
+
+  { "windows-tabs-position-right", GIMP_ICON_GO_LAST,
+    NC_("windows-tabs-position-action", "_Right"), NULL,
+    NC_("windows-tabs-position-action", "Position the tabs on the right"),
+    GIMP_POSITION_RIGHT, GIMP_HELP_WINDOWS_TABS_POSITION },
+};
 
 void
 windows_actions_setup (GimpActionGroup *group)
@@ -140,6 +170,12 @@ windows_actions_setup (GimpActionGroup *group)
                                         windows_toggle_actions,
                                         G_N_ELEMENTS (windows_toggle_actions));
 
+  gimp_action_group_add_radio_actions (group, "windows-tabs-position-action",
+                                       windows_tabs_position_actions,
+                                       G_N_ELEMENTS (windows_tabs_position_actions),
+                                       NULL, 0,
+                                       G_CALLBACK (windows_set_tabs_position_cmd_callback));
+
   gimp_action_group_set_action_hide_empty (group, "windows-docks-menu", FALSE);
 
   g_signal_connect_object (group->gimp->displays, "add",
@@ -147,6 +183,9 @@ windows_actions_setup (GimpActionGroup *group)
                            group, 0);
   g_signal_connect_object (group->gimp->displays, "remove",
                            G_CALLBACK (windows_actions_display_remove),
+                           group, 0);
+  g_signal_connect_object (group->gimp->displays, "reorder",
+                           G_CALLBACK (windows_actions_display_reorder),
                            group, 0);
 
   for (list = gimp_get_display_iter (group->gimp);
@@ -184,7 +223,7 @@ windows_actions_setup (GimpActionGroup *group)
                            G_CALLBACK (windows_actions_recent_remove),
                            group, 0);
 
-  for (list = GIMP_LIST (global_recent_docks)->list;
+  for (list = GIMP_LIST (global_recent_docks)->queue->head;
        list;
        list = g_list_next (list))
     {
@@ -203,12 +242,35 @@ windows_actions_update (GimpActionGroup *group,
                         gpointer         data)
 {
   GimpGuiConfig *config = GIMP_GUI_CONFIG (group->gimp->config);
+  const gchar   *action = NULL;
 
 #define SET_ACTIVE(action,condition) \
         gimp_action_group_set_action_active (group, action, (condition) != 0)
 
   SET_ACTIVE ("windows-use-single-window-mode", config->single_window_mode);
   SET_ACTIVE ("windows-hide-docks", config->hide_docks);
+
+  switch (config->tabs_position)
+    {
+    case GIMP_POSITION_TOP:
+      action = "windows-tabs-position-top";
+      break;
+    case GIMP_POSITION_BOTTOM:
+      action = "windows-tabs-position-bottom";
+      break;
+    case GIMP_POSITION_LEFT:
+      action = "windows-tabs-position-left";
+      break;
+    case GIMP_POSITION_RIGHT:
+      action = "windows-tabs-position-right";
+      break;
+    default:
+      action = "windows-tabs-position-top";
+      break;
+    }
+
+  gimp_action_group_set_action_active (group, action, TRUE);
+  gimp_action_group_set_action_sensitive (group, "windows-tab-position", config->single_window_mode);
 
 #undef SET_ACTIVE
 }
@@ -247,10 +309,19 @@ windows_actions_display_remove (GimpContainer   *container,
   action = gtk_action_group_get_action (GTK_ACTION_GROUP (group), action_name);
 
   if (action)
-    gtk_action_group_remove_action (GTK_ACTION_GROUP (group), action);
-
+    gimp_action_group_remove_action (group,
+                                     GIMP_ACTION (action));
   g_free (action_name);
 
+  windows_actions_update_display_accels (group);
+}
+
+static void
+windows_actions_display_reorder (GimpContainer   *container,
+                                 GimpDisplay     *display,
+                                 gint             new_index,
+                                 GimpActionGroup *group)
+{
   windows_actions_update_display_accels (group);
 }
 
@@ -274,7 +345,7 @@ windows_actions_image_notify (GimpDisplay      *display,
           GimpActionEntry entry;
 
           entry.name        = action_name;
-          entry.stock_id    = GIMP_STOCK_IMAGE;
+          entry.icon_name   = GIMP_ICON_IMAGE;
           entry.label       = "";
           entry.accelerator = NULL;
           entry.tooltip     = NULL;
@@ -377,7 +448,7 @@ windows_actions_dock_window_added (GimpDialogFactory *factory,
   gchar           *action_name = windows_actions_dock_window_to_action_name (dock_window);
 
   entry.name        = action_name;
-  entry.stock_id    = NULL;
+  entry.icon_name   = NULL;
   entry.label       = "";
   entry.accelerator = NULL;
   entry.tooltip     = NULL;
@@ -416,7 +487,7 @@ windows_actions_dock_window_removed (GimpDialogFactory *factory,
   action = gtk_action_group_get_action (GTK_ACTION_GROUP (group), action_name);
 
   if (action)
-    gtk_action_group_remove_action (GTK_ACTION_GROUP (group), action);
+    gimp_action_group_remove_action (group, GIMP_ACTION (action));
 
   g_free (action_name);
 }
@@ -465,7 +536,7 @@ windows_actions_recent_add (GimpContainer   *container,
   action_name = g_strdup_printf ("windows-recent-%04d", info_id);
 
   entry.name        = action_name;
-  entry.stock_id    = NULL;
+  entry.icon_name   = NULL;
   entry.label       = gimp_object_get_name (info);
   entry.accelerator = NULL;
   entry.tooltip     = gimp_object_get_name (info);
@@ -504,7 +575,7 @@ windows_actions_recent_remove (GimpContainer   *container,
   action = gtk_action_group_get_action (GTK_ACTION_GROUP (group), action_name);
 
   if (action)
-    gtk_action_group_remove_action (GTK_ACTION_GROUP (group), action);
+    gimp_action_group_remove_action (group, GIMP_ACTION (action));
 
   g_free (action_name);
 }

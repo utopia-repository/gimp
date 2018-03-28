@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
@@ -239,11 +240,11 @@ gimp_help_set_help_data (GtkWidget   *widget,
  * @tooltip: The markup for this widget's tooltip (or %NULL).
  * @help_id: The @help_id for the #GtkTipsQuery tooltips inspector.
  *
- * Just like gimp_help_set_help_data(), but it allows to pass text which
- * is marked up with
- * <link linkend="PangoMarkupFormat">Pango text markup language</link>.
+ * Just like gimp_help_set_help_data(), but supports to pass text
+ * which is marked up with <link linkend="PangoMarkupFormat">Pango
+ * text markup language</link>.
  *
- * Since: GIMP 2.6
+ * Since: 2.6
  **/
 void
 gimp_help_set_help_data_with_markup (GtkWidget   *widget,
@@ -294,7 +295,7 @@ gimp_context_help (GtkWidget *widget)
  *
  * Return value: The #GQuark.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 GQuark
 gimp_help_id_quark (void)
@@ -423,7 +424,7 @@ gimp_help_menu_item_query_tooltip (GtkWidget  *widget,
   label = gtk_label_new (text);
   gtk_label_set_use_markup (GTK_LABEL (label), use_markup);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_box_pack_start (GTK_BOX (vbox), label, TRUE, TRUE, 0);
   gtk_widget_show (label);
 
@@ -434,7 +435,7 @@ gimp_help_menu_item_query_tooltip (GtkWidget  *widget,
                              PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
                              PANGO_ATTR_SCALE, PANGO_SCALE_SMALL,
                              -1);
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.0);
+  gtk_label_set_xalign (GTK_LABEL (label), 1.0);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 

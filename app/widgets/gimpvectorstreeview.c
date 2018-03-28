@@ -41,6 +41,7 @@
 #include "gimpactiongroup.h"
 #include "gimpcontainerview.h"
 #include "gimpdnd.h"
+#include "gimphelp-ids.h"
 #include "gimpuimanager.h"
 #include "gimpvectorstreeview.h"
 #include "gimpwidgets-utils.h"
@@ -96,19 +97,22 @@ gimp_vectors_tree_view_class_init (GimpVectorsTreeViewClass *klass)
   iv_class->remove_item     = (GimpRemoveItemFunc) gimp_image_remove_vectors;
   iv_class->new_item        = gimp_vectors_tree_view_item_new;
 
-  iv_class->action_group          = "vectors";
-  iv_class->activate_action       = "vectors-path-tool";
-  iv_class->edit_action           = "vectors-edit-attributes";
-  iv_class->new_action            = "vectors-new";
-  iv_class->new_default_action    = "vectors-new-last-values";
-  iv_class->raise_action          = "vectors-raise";
-  iv_class->raise_top_action      = "vectors-raise-to-top";
-  iv_class->lower_action          = "vectors-lower";
-  iv_class->lower_bottom_action   = "vectors-lower-to-bottom";
-  iv_class->duplicate_action      = "vectors-duplicate";
-  iv_class->delete_action         = "vectors-delete";
-  iv_class->lock_content_stock_id = GIMP_STOCK_TOOL_PATH;
-  iv_class->lock_content_tooltip  = _("Lock path strokes");
+  iv_class->action_group            = "vectors";
+  iv_class->activate_action         = "vectors-edit";
+  iv_class->new_action              = "vectors-new";
+  iv_class->new_default_action      = "vectors-new-last-values";
+  iv_class->raise_action            = "vectors-raise";
+  iv_class->raise_top_action        = "vectors-raise-to-top";
+  iv_class->lower_action            = "vectors-lower";
+  iv_class->lower_bottom_action     = "vectors-lower-to-bottom";
+  iv_class->duplicate_action        = "vectors-duplicate";
+  iv_class->delete_action           = "vectors-delete";
+  iv_class->lock_content_icon_name  = GIMP_ICON_TOOL_PATH;
+  iv_class->lock_content_tooltip    = _("Lock path strokes");
+  iv_class->lock_content_help_id    = GIMP_HELP_PATH_LOCK_STROKES;
+  iv_class->lock_position_icon_name = GIMP_ICON_TOOL_MOVE;
+  iv_class->lock_position_tooltip   = _("Lock path position");
+  iv_class->lock_position_help_id   = GIMP_HELP_PATH_LOCK_POSITION;
 }
 
 static void
@@ -133,16 +137,12 @@ gimp_vectors_tree_view_constructed (GObject *object)
   GdkModifierType        extend_mask;
   GdkModifierType        modify_mask;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   extend_mask = gtk_widget_get_modifier_mask (GTK_WIDGET (object),
                                               GDK_MODIFIER_INTENT_EXTEND_SELECTION);
   modify_mask = gtk_widget_get_modifier_mask (GTK_WIDGET (object),
                                               GDK_MODIFIER_INTENT_MODIFY_SELECTION);
-
-  /*  hide basically useless edit button  */
-  gtk_widget_hide (gimp_item_tree_view_get_edit_button (GIMP_ITEM_TREE_VIEW (view)));
 
   view->toselection_button =
     gimp_editor_add_action_button (editor, "vectors",
@@ -158,7 +158,7 @@ gimp_vectors_tree_view_constructed (GObject *object)
                                   GTK_BUTTON (view->toselection_button),
                                   GIMP_TYPE_VECTORS);
   gtk_box_reorder_child (gimp_editor_get_button_box (editor),
-                         view->toselection_button, 5);
+                         view->toselection_button, 4);
 
   view->tovectors_button =
     gimp_editor_add_action_button (editor, "vectors",
@@ -167,7 +167,7 @@ gimp_vectors_tree_view_constructed (GObject *object)
                                    GDK_SHIFT_MASK,
                                    NULL);
   gtk_box_reorder_child (gimp_editor_get_button_box (editor),
-                         view->tovectors_button, 6);
+                         view->tovectors_button, 5);
 
   view->stroke_button =
     gimp_editor_add_action_button (editor, "vectors",
@@ -179,7 +179,7 @@ gimp_vectors_tree_view_constructed (GObject *object)
                                   GTK_BUTTON (view->stroke_button),
                                   GIMP_TYPE_VECTORS);
   gtk_box_reorder_child (gimp_editor_get_button_box (editor),
-                         view->stroke_button, 7);
+                         view->stroke_button, 6);
 
   gimp_dnd_svg_dest_add (GTK_WIDGET (tree_view->view), NULL, view);
 }
@@ -232,8 +232,8 @@ gimp_vectors_tree_view_drop_svg (GimpContainerTreeView   *tree_view,
                                     TRUE, FALSE, parent, index, NULL, &error))
     {
       gimp_message_literal (image->gimp,
-			    G_OBJECT (tree_view), GIMP_MESSAGE_ERROR,
-			    error->message);
+                            G_OBJECT (tree_view), GIMP_MESSAGE_ERROR,
+                            error->message);
       g_clear_error (&error);
     }
   else

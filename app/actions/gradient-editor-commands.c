@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -82,7 +83,7 @@ gradient_editor_left_color_cmd_callback (GtkAction *action,
     gimp_color_dialog_new (GIMP_VIEWABLE (gradient),
                            GIMP_DATA_EDITOR (editor)->context,
                            _("Left Endpoint Color"),
-                           GIMP_STOCK_GRADIENT,
+                           GIMP_ICON_GRADIENT,
                            _("Gradient Segment's Left Endpoint Color"),
                            GTK_WIDGET (editor),
                            gimp_dialog_factory_get_singleton (),
@@ -112,22 +113,23 @@ gradient_editor_left_color_type_cmd_callback (GtkAction *action,
 {
   GimpGradientEditor *editor = GIMP_GRADIENT_EDITOR (data);
   GimpGradient       *gradient;
-  gint                value;
+  GimpGradientColor   color_type;
 
   gradient = GIMP_GRADIENT (GIMP_DATA_EDITOR (editor)->data);
 
-  value = gtk_radio_action_get_current_value (GTK_RADIO_ACTION (action));
+  color_type = gtk_radio_action_get_current_value (GTK_RADIO_ACTION (action));
 
-  if (gradient && value >= 0)
+  if (gradient        &&
+      color_type >= 0 &&
+      color_type !=
+      gimp_gradient_segment_get_left_color_type (gradient,
+                                                 editor->control_sel_l))
     {
-      GimpGradientColor color_type = value;
-      GimpRGB           color;
+      GimpRGB color;
 
-      gimp_gradient_get_color_at (gradient,
-                                  GIMP_DATA_EDITOR (editor)->context,
-                                  editor->control_sel_l,
-                                  editor->control_sel_l->left, FALSE,
-                                  &color);
+      gimp_gradient_segment_get_left_flat_color (
+        gradient, GIMP_DATA_EDITOR (editor)->context, editor->control_sel_l,
+        &color);
 
       gimp_data_freeze (GIMP_DATA (gradient));
 
@@ -233,7 +235,7 @@ gradient_editor_right_color_cmd_callback (GtkAction *action,
     gimp_color_dialog_new (GIMP_VIEWABLE (gradient),
                            GIMP_DATA_EDITOR (editor)->context,
                            _("Right Endpoint Color"),
-                           GIMP_STOCK_GRADIENT,
+                           GIMP_ICON_GRADIENT,
                            _("Gradient Segment's Right Endpoint Color"),
                            GTK_WIDGET (editor),
                            gimp_dialog_factory_get_singleton (),
@@ -263,22 +265,23 @@ gradient_editor_right_color_type_cmd_callback (GtkAction *action,
 {
   GimpGradientEditor *editor = GIMP_GRADIENT_EDITOR (data);
   GimpGradient       *gradient;
-  gint                value;
+  GimpGradientColor   color_type;
 
   gradient = GIMP_GRADIENT (GIMP_DATA_EDITOR (editor)->data);
 
-  value = gtk_radio_action_get_current_value (GTK_RADIO_ACTION (action));
+  color_type = gtk_radio_action_get_current_value (GTK_RADIO_ACTION (action));
 
-  if (gradient && value >= 0)
+  if (gradient        &&
+      color_type >= 0 &&
+      color_type !=
+      gimp_gradient_segment_get_right_color_type (gradient,
+                                                  editor->control_sel_r))
     {
-      GimpGradientColor color_type = value;
-      GimpRGB           color;
+      GimpRGB color;
 
-      gimp_gradient_get_color_at (gradient,
-                                  GIMP_DATA_EDITOR (editor)->context,
-                                  editor->control_sel_r,
-                                  editor->control_sel_r->right, FALSE,
-                                  &color);
+      gimp_gradient_segment_get_right_flat_color (
+        gradient, GIMP_DATA_EDITOR (editor)->context, editor->control_sel_r,
+        &color);
 
       gimp_data_freeze (GIMP_DATA (gradient));
 
@@ -373,23 +376,26 @@ gradient_editor_blending_func_cmd_callback (GtkAction *action,
                                             GtkAction *current,
                                             gpointer   data)
 {
-  GimpGradientEditor *editor = GIMP_GRADIENT_EDITOR (data);
-  GimpGradient       *gradient;
-  gint                value;
+  GimpGradientEditor      *editor = GIMP_GRADIENT_EDITOR (data);
+  GimpGradient            *gradient;
+  GEnumClass              *enum_class = NULL;
+  GimpGradientSegmentType  type;
 
   gradient = GIMP_GRADIENT (GIMP_DATA_EDITOR (editor)->data);
 
-  value = gtk_radio_action_get_current_value (GTK_RADIO_ACTION (action));
+  type = gtk_radio_action_get_current_value (GTK_RADIO_ACTION (action));
 
-  if (gradient && value >= 0)
+  enum_class = g_type_class_ref (GIMP_TYPE_GRADIENT_SEGMENT_TYPE);
+
+  if (gradient && g_enum_get_value (enum_class, type))
     {
-      GimpGradientSegmentType type = value;
-
       gimp_gradient_segment_range_set_blending_function (gradient,
                                                          editor->control_sel_l,
                                                          editor->control_sel_r,
                                                          type);
     }
+
+  g_type_class_unref (enum_class);
 }
 
 void
@@ -397,23 +403,26 @@ gradient_editor_coloring_type_cmd_callback (GtkAction *action,
                                             GtkAction *current,
                                             gpointer   data)
 {
-  GimpGradientEditor *editor = GIMP_GRADIENT_EDITOR (data);
-  GimpGradient       *gradient;
-  gint                value;
+  GimpGradientEditor       *editor = GIMP_GRADIENT_EDITOR (data);
+  GimpGradient             *gradient;
+  GEnumClass               *enum_class = NULL;
+  GimpGradientSegmentColor  color;
 
   gradient = GIMP_GRADIENT (GIMP_DATA_EDITOR (editor)->data);
 
-  value = gtk_radio_action_get_current_value (GTK_RADIO_ACTION (action));
+  color = gtk_radio_action_get_current_value (GTK_RADIO_ACTION (action));
 
-  if (gradient && value >= 0)
+  enum_class = g_type_class_ref (GIMP_TYPE_GRADIENT_SEGMENT_COLOR);
+
+  if (gradient && g_enum_get_value (enum_class, color))
     {
-      GimpGradientSegmentColor color = value;
-
       gimp_gradient_segment_range_set_coloring_type (gradient,
                                                      editor->control_sel_l,
                                                      editor->control_sel_r,
                                                      color);
     }
+
+  g_type_class_unref (enum_class);
 }
 
 void
@@ -461,13 +470,13 @@ gradient_editor_replicate_cmd_callback (GtkAction *action,
     gimp_viewable_dialog_new (GIMP_VIEWABLE (data_editor->data),
                               data_editor->context,
                               title, "gimp-gradient-segment-replicate",
-                              GIMP_STOCK_GRADIENT, desc,
+                              GIMP_ICON_GRADIENT, desc,
                               GTK_WIDGET (editor),
                               gimp_standard_help_func,
                               GIMP_HELP_GRADIENT_EDITOR_REPLICATE,
 
-                              GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                              _("Replicate"),   GTK_RESPONSE_OK,
+                              _("_Cancel"),    GTK_RESPONSE_CANCEL,
+                              _("_Replicate"), GTK_RESPONSE_OK,
 
                               NULL);
 
@@ -563,13 +572,13 @@ gradient_editor_split_uniformly_cmd_callback (GtkAction *action,
     gimp_viewable_dialog_new (GIMP_VIEWABLE (data_editor->data),
                               data_editor->context,
                               title, "gimp-gradient-segment-split-uniformly",
-                              GIMP_STOCK_GRADIENT, desc,
+                              GIMP_ICON_GRADIENT, desc,
                               GTK_WIDGET (editor),
                               gimp_standard_help_func,
                               GIMP_HELP_GRADIENT_EDITOR_SPLIT_UNIFORM,
 
-                              GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                              _("Split"),       GTK_RESPONSE_OK,
+                              _("_Cancel"), GTK_RESPONSE_CANCEL,
+                              _("_Split"),  GTK_RESPONSE_OK,
 
                               NULL);
 

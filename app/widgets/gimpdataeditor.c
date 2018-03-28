@@ -22,6 +22,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
@@ -97,10 +98,6 @@ static gboolean   gimp_data_editor_name_focus_out    (GtkWidget      *widget,
 static void       gimp_data_editor_data_name_changed (GimpObject     *object,
                                                       GimpDataEditor *editor);
 
-static void       gimp_data_editor_save_clicked      (GtkWidget      *widget,
-                                                      GimpDataEditor *editor);
-static void       gimp_data_editor_revert_clicked    (GtkWidget      *widget,
-                                                      GimpDataEditor *editor);
 static void       gimp_data_editor_save_dirty        (GimpDataEditor *editor);
 
 
@@ -201,31 +198,12 @@ gimp_data_editor_constructed (GObject *object)
 {
   GimpDataEditor *editor = GIMP_DATA_EDITOR (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_DATA_FACTORY (editor->data_factory));
-  g_assert (GIMP_IS_CONTEXT (editor->context));
+  gimp_assert (GIMP_IS_DATA_FACTORY (editor->data_factory));
+  gimp_assert (GIMP_IS_CONTEXT (editor->context));
 
   gimp_data_editor_set_edit_active (editor, TRUE);
-
-  editor->save_button =
-    gimp_editor_add_button (GIMP_EDITOR (editor),
-                            GTK_STOCK_SAVE,
-                            _("Save"), NULL,
-                            G_CALLBACK (gimp_data_editor_save_clicked),
-                            NULL,
-                            editor);
-
-  editor->revert_button =
-    gimp_editor_add_button (GIMP_EDITOR (editor),
-                            GTK_STOCK_REVERT_TO_SAVED,
-                            _("Revert"), NULL,
-                            G_CALLBACK (gimp_data_editor_revert_clicked),
-                            NULL,
-                            editor);
-  /* Hide because revert buttons are not yet implemented */
-  gtk_widget_hide (editor->revert_button);
 }
 
 static void
@@ -344,7 +322,7 @@ gimp_data_editor_set_context (GimpDocked  *docked,
 
       g_object_ref (editor->context);
 
-      data_type = gimp_container_get_children_type (gimp_data_factory_get_container (editor->data_factory));
+      data_type = gimp_data_factory_get_data_type (editor->data_factory);
       data = GIMP_DATA (gimp_context_get_by_type (editor->context, data_type));
 
       g_signal_connect (editor->context,
@@ -443,6 +421,8 @@ gimp_data_editor_real_set_data (GimpDataEditor *editor,
 
   if (editor->data)
     {
+      gimp_data_editor_save_dirty (editor);
+
       g_signal_handlers_disconnect_by_func (editor->data,
                                             gimp_data_editor_data_name_changed,
                                             editor);
@@ -468,13 +448,17 @@ gimp_data_editor_real_set_data (GimpDataEditor *editor,
       gtk_entry_set_text (GTK_ENTRY (editor->name_entry), "");
     }
 
+  gtk_editable_set_editable (
+    GTK_EDITABLE (editor->name_entry),
+    editor->data &&
+    gimp_viewable_is_name_editable (GIMP_VIEWABLE (editor->data)));
+
   editable = (editor->data && gimp_data_is_writable (editor->data));
 
   if (editor->data_editable != editable)
     {
       editor->data_editable = editable;
 
-      gtk_editable_set_editable (GTK_EDITABLE (editor->name_entry), editable);
       gimp_docked_title_changed (GIMP_DOCKED (editor));
     }
 }
@@ -487,7 +471,7 @@ gimp_data_editor_set_data (GimpDataEditor *editor,
   g_return_if_fail (data == NULL || GIMP_IS_DATA (data));
   g_return_if_fail (data == NULL ||
                     g_type_is_a (G_TYPE_FROM_INSTANCE (data),
-                                 gimp_container_get_children_type (gimp_data_factory_get_container (editor->data_factory))));
+                                 gimp_data_factory_get_data_type (editor->data_factory)));
 
   if (editor->data != data)
     {
@@ -524,7 +508,7 @@ gimp_data_editor_set_edit_active (GimpDataEditor *editor,
           GType     data_type;
           GimpData *data;
 
-          data_type = gimp_container_get_children_type (gimp_data_factory_get_container (editor->data_factory));
+          data_type = gimp_data_factory_get_data_type (editor->data_factory);
           data = GIMP_DATA (gimp_context_get_by_type (editor->context,
                                                       data_type));
 
@@ -579,7 +563,8 @@ gimp_data_editor_name_activate (GtkWidget      *widget,
       new_name = g_strdup (gtk_entry_get_text (GTK_ENTRY (widget)));
       new_name = g_strstrip (new_name);
 
-      if (strlen (new_name))
+      if (strlen (new_name) &&
+          g_strcmp0 (new_name, gimp_object_get_name (editor->data)))
         {
           gimp_object_take_name (GIMP_OBJECT (editor->data), new_name);
         }
@@ -611,20 +596,6 @@ gimp_data_editor_data_name_changed (GimpObject     *object,
 }
 
 static void
-gimp_data_editor_save_clicked (GtkWidget      *widget,
-                               GimpDataEditor *editor)
-{
-  gimp_data_editor_save_dirty (editor);
-}
-
-static void
-gimp_data_editor_revert_clicked (GtkWidget      *widget,
-                                 GimpDataEditor *editor)
-{
-  g_print ("TODO: implement revert\n");
-}
-
-static void
 gimp_data_editor_save_dirty (GimpDataEditor *editor)
 {
   GimpData *data = editor->data;
@@ -640,8 +611,8 @@ gimp_data_editor_save_dirty (GimpDataEditor *editor)
         {
           gimp_message_literal (gimp_data_factory_get_gimp (editor->data_factory),
                                 G_OBJECT (editor),
-				GIMP_MESSAGE_ERROR,
-				error->message);
+                                GIMP_MESSAGE_ERROR,
+                                error->message);
           g_clear_error (&error);
         }
     }

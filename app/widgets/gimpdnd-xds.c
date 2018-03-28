@@ -33,18 +33,18 @@
 #include <gegl.h>
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
 
 #include "core/gimp.h"
+#include "core/gimp-utils.h"
 #include "core/gimpimage.h"
 
-#include "plug-in/gimppluginmanager.h"
+#include "plug-in/gimppluginmanager-file.h"
 
-#include "file/file-procedure.h"
 #include "file/file-save.h"
-#include "file/file-utils.h"
 
 #include "gimpdnd-xds.h"
 #include "gimpfiledialog.h"
@@ -60,8 +60,8 @@
 
 /*  local function prototypes  */
 
-static gboolean   gimp_file_overwrite_dialog (GtkWidget   *parent,
-                                              const gchar *uri);
+static gboolean   gimp_file_overwrite_dialog (GtkWidget *parent,
+                                              GFile     *file);
 
 
 /*  public functions  */
@@ -81,21 +81,29 @@ gimp_dnd_xds_source_set (GdkDragContext *context,
 
   if (image)
     {
-      GdkAtom  type     = gdk_atom_intern_static_string ("text/plain");
-      gchar   *filename = gimp_image_get_filename (image);
+      GdkAtom  type = gdk_atom_intern_static_string ("text/plain");
+      GFile   *untitled;
+      GFile   *file;
       gchar   *basename;
 
-      if (filename)
+      basename = g_strconcat (_("Untitled"), ".xcf", NULL);
+      untitled = g_file_new_for_path (basename);
+      g_free (basename);
+
+      file = gimp_image_get_any_file (image);
+
+      if (file)
         {
-          basename = g_path_get_basename (filename);
+          GFile *xcf_file = gimp_file_with_new_extension (file, untitled);
+          basename = g_file_get_basename (xcf_file);
+          g_object_unref (xcf_file);
         }
       else
         {
-          gchar *tmp = g_strconcat (_("Untitled"), ".xcf", NULL);
-          basename = g_filename_from_utf8 (tmp, -1, NULL, NULL, NULL);
-          g_free (tmp);
+          basename = g_file_get_path (untitled);
         }
 
+      g_object_unref (untitled);
 
       gdk_property_change (context->source_window,
                            property, type, 8, GDK_PROP_MODE_REPLACE,
@@ -103,7 +111,6 @@ gimp_dnd_xds_source_set (GdkDragContext *context,
                            basename ? strlen (basename) : 0);
 
       g_free (basename);
-      g_free (filename);
     }
   else
     {
@@ -122,6 +129,7 @@ gimp_dnd_xds_save_image (GdkDragContext   *context,
   gint                 length;
   guchar              *data;
   gchar               *uri;
+  GFile               *file;
   gboolean             export = FALSE;
   GError              *error  = NULL;
 
@@ -142,29 +150,27 @@ gimp_dnd_xds_save_image (GdkDragContext   *context,
   uri = g_strndup ((const gchar *) data, length);
   g_free (data);
 
-  proc = file_procedure_find (image->gimp->plug_in_manager->save_procs, uri,
-                              NULL);
+  file = g_file_new_for_uri (uri);
+
+  proc = gimp_plug_in_manager_file_procedure_find (image->gimp->plug_in_manager,
+                                                   GIMP_FILE_PROCEDURE_GROUP_SAVE,
+                                                   file, NULL);
   if (! proc)
     {
-      proc = file_procedure_find (image->gimp->plug_in_manager->export_procs, uri,
-                                  NULL);
-
+      proc = gimp_plug_in_manager_file_procedure_find (image->gimp->plug_in_manager,
+                                                       GIMP_FILE_PROCEDURE_GROUP_EXPORT,
+                                                       file, NULL);
       export = TRUE;
     }
 
   if (proc)
     {
-      gchar *filename = file_utils_filename_from_uri (uri);
-
-      /*  FIXME: shouldn't overwrite non-local files w/o confirmation  */
-
-      if (! filename ||
-          ! g_file_test (filename, G_FILE_TEST_EXISTS) ||
-          gimp_file_overwrite_dialog (NULL, uri))
+      if (! g_file_query_exists (file, NULL) ||
+          gimp_file_overwrite_dialog (NULL, file))
         {
           if (file_save (image->gimp,
                          image, NULL,
-                         uri, proc, GIMP_RUN_INTERACTIVE,
+                         file, proc, GIMP_RUN_INTERACTIVE,
                          ! export, FALSE, export,
                          &error) == GIMP_PDB_SUCCESS)
             {
@@ -180,19 +186,14 @@ gimp_dnd_xds_save_image (GdkDragContext   *context,
 
               if (error)
                 {
-                  gchar *filename = file_utils_uri_display_name (uri);
-
                   gimp_message (image->gimp, NULL, GIMP_MESSAGE_ERROR,
                                 _("Saving '%s' failed:\n\n%s"),
-                                filename, error->message);
-
-                  g_free (filename);
-                  g_error_free (error);
+                                gimp_file_get_utf8_name (file),
+                                error->message);
+                  g_clear_error (&error);
                 }
             }
         }
-
-      g_free (filename);
     }
   else
     {
@@ -201,10 +202,11 @@ gimp_dnd_xds_save_image (GdkDragContext   *context,
                               8, (const guchar *) "E", 1);
 
       gimp_message_literal (image->gimp, NULL, GIMP_MESSAGE_ERROR,
-			    _("The given filename does not have any known "
-			      "file extension."));
+                            _("The given filename does not have any known "
+                              "file extension."));
     }
 
+  g_object_unref (file);
   g_free (uri);
 }
 
@@ -212,19 +214,19 @@ gimp_dnd_xds_save_image (GdkDragContext   *context,
 /*  private functions  */
 
 static gboolean
-gimp_file_overwrite_dialog (GtkWidget   *parent,
-                            const gchar *uri)
+gimp_file_overwrite_dialog (GtkWidget *parent,
+                            GFile     *file)
 {
   GtkWidget *dialog;
-  gchar     *filename;
   gboolean   overwrite = FALSE;
 
-  dialog = gimp_message_dialog_new (_("File Exists"), GIMP_STOCK_WARNING,
+  dialog = gimp_message_dialog_new (_("File Exists"),
+                                    GIMP_ICON_DIALOG_WARNING,
                                     parent, GTK_DIALOG_DESTROY_WITH_PARENT,
                                     gimp_standard_help_func, NULL,
 
-                                    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                    _("_Replace"),    GTK_RESPONSE_OK,
+                                    _("_Cancel"),  GTK_RESPONSE_CANCEL,
+                                    _("_Replace"), GTK_RESPONSE_OK,
 
                                     NULL);
 
@@ -233,11 +235,9 @@ gimp_file_overwrite_dialog (GtkWidget   *parent,
                                            GTK_RESPONSE_CANCEL,
                                            -1);
 
-  filename = file_utils_uri_display_name (uri);
   gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
                                      _("A file named '%s' already exists."),
-                                     filename);
-  g_free (filename);
+                                     gimp_file_get_utf8_name (file));
 
   gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box,
                              _("Do you want to replace it with the image "

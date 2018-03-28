@@ -142,7 +142,7 @@ gfig_preview_realize (GtkWidget *widget)
 
   gdk_window_set_cursor (gtk_widget_get_window (gfig_context->preview),
                          gdk_cursor_new_for_display (display, GDK_CROSSHAIR));
-  gfig_grid_colours (widget);
+  gfig_grid_colors (widget);
 }
 
 static void
@@ -217,7 +217,7 @@ gfig_preview_events (GtkWidget *widget,
           /* If constraining save start pnt */
           if (selvals.opts.snap2grid)
             {
-              /* Save point to constained point ... if button 3 down */
+              /* Save point to constrained point ... if button 3 down */
               if (bevent->button == 3)
                 {
                   find_grid_pos (&point, &point, FALSE);
@@ -227,16 +227,7 @@ gfig_preview_events (GtkWidget *widget,
       else
         {
           if (selvals.opts.snap2grid)
-            {
-              if (bevent->button == 3)
-                {
-                  find_grid_pos (&point, &point, FALSE);
-                }
-              else
-                {
-                  find_grid_pos (&point, &point, FALSE);
-                }
-            }
+            find_grid_pos (&point, &point, FALSE);
           object_start (&point, bevent->state & GDK_SHIFT_MASK);
 
           gtk_widget_queue_draw (widget);

@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -61,7 +62,7 @@ GimpContainer *global_recent_docks = NULL;
   { id                     /* identifier       */, \
     NULL                   /* name             */, \
     NULL                   /* blurb            */, \
-    NULL                   /* stock_id         */, \
+    NULL                   /* icon_name        */, \
     NULL                   /* help_id          */, \
     NULL                   /* new_func         */, \
     dialogs_restore_dialog /* restore_func     */, \
@@ -78,7 +79,7 @@ GimpContainer *global_recent_docks = NULL;
   { id                     /* identifier       */, \
     NULL                   /* name             */, \
     NULL                   /* blurb            */, \
-    NULL                   /* stock_id         */, \
+    NULL                   /* icon_name        */, \
     NULL                   /* help_id          */, \
     NULL                   /* new_func         */, \
     dialogs_restore_window /* restore_func     */, \
@@ -95,7 +96,7 @@ GimpContainer *global_recent_docks = NULL;
   { id                     /* identifier       */, \
     NULL                   /* name             */, \
     NULL                   /* blurb            */, \
-    NULL                   /* stock_id         */, \
+    NULL                   /* icon_name        */, \
     NULL                   /* help_id          */, \
     new_func               /* new_func         */, \
     dialogs_restore_dialog /* restore_func     */, \
@@ -108,11 +109,11 @@ GimpContainer *global_recent_docks = NULL;
     FALSE                  /* image_window     */, \
     FALSE                  /* dockable         */}
 
-#define DOCKABLE(id, name, blurb, stock_id, help_id, new_func, view_size, singleton) \
+#define DOCKABLE(id, name, blurb, icon_name, help_id, new_func, view_size, singleton) \
   { id                     /* identifier       */, \
     name                   /* name             */, \
     blurb                  /* blurb            */, \
-    stock_id               /* stock_id         */, \
+    icon_name              /* icon_name        */, \
     help_id                /* help_id          */, \
     new_func               /* new_func         */, \
     NULL                   /* restore_func     */, \
@@ -129,7 +130,7 @@ GimpContainer *global_recent_docks = NULL;
   { id                     /* identifier       */, \
     NULL                   /* name             */, \
     NULL                   /* blurb            */, \
-    NULL                   /* stock_id         */, \
+    NULL                   /* icon_name        */, \
     NULL                   /* help_id          */, \
     new_func               /* new_func         */, \
     dialogs_restore_dialog /* restore_func     */, \
@@ -146,7 +147,7 @@ GimpContainer *global_recent_docks = NULL;
   { id                     /* identifier       */, \
     NULL                   /* name             */, \
     NULL                   /* blurb            */, \
-    NULL                   /* stock_id         */, \
+    NULL                   /* icon_name        */, \
     NULL                   /* help_id          */, \
     new_func               /* new_func         */, \
     dialogs_restore_dialog /* restore_func     */, \
@@ -159,13 +160,13 @@ GimpContainer *global_recent_docks = NULL;
     FALSE                  /* image_window     */, \
     FALSE                  /* dockable         */}
 
-#define LISTGRID(id, name, blurb, stock_id, help_id, view_size) \
+#define LISTGRID(id, new_func, name, blurb, icon_name, help_id, view_size) \
   { "gimp-"#id"-list"             /* identifier       */,  \
     name                          /* name             */,  \
     blurb                         /* blurb            */,  \
-    stock_id                      /* stock_id         */,  \
+    icon_name                     /* icon_name        */,  \
     help_id                       /* help_id          */,  \
-    dialogs_##id##_list_view_new  /* new_func         */,  \
+    dialogs_##new_func##_list_view_new /* new_func         */,  \
     NULL                          /* restore_func     */,  \
     view_size                     /* view_size        */,  \
     FALSE                         /* singleton        */,  \
@@ -178,9 +179,9 @@ GimpContainer *global_recent_docks = NULL;
   { "gimp-"#id"-grid"             /* identifier       */,  \
     name                          /* name             */,  \
     blurb                         /* blurb            */,  \
-    stock_id                      /* stock_id         */,  \
+    icon_name                     /* icon_name        */,  \
     help_id                       /* help_id          */,  \
-    dialogs_##id##_grid_view_new  /* new_func         */,  \
+    dialogs_##new_func##_grid_view_new /* new_func         */,  \
     NULL                          /* restore_func     */,  \
     view_size                     /* view_size        */,  \
     FALSE                         /* singleton        */,  \
@@ -191,11 +192,11 @@ GimpContainer *global_recent_docks = NULL;
     FALSE                         /* image_window     */,  \
     TRUE                          /* dockable         */}
 
-#define LIST(id, new_func, name, blurb, stock_id, help_id, view_size) \
+#define LIST(id, new_func, name, blurb, icon_name, help_id, view_size) \
   { "gimp-"#id"-list"                   /* identifier       */, \
     name                                /* name             */, \
     blurb                               /* blurb            */, \
-    stock_id                            /* stock_id         */, \
+    icon_name                            /* icon_name         */, \
     help_id                             /* help_id          */, \
     dialogs_##new_func##_list_view_new  /* new_func         */, \
     NULL                                /* restore_func     */, \
@@ -211,15 +212,18 @@ GimpContainer *global_recent_docks = NULL;
 
 static GtkWidget * dialogs_restore_dialog (GimpDialogFactory *factory,
                                            GdkScreen         *screen,
+                                           gint               monitor,
                                            GimpSessionInfo   *info);
 static GtkWidget * dialogs_restore_window (GimpDialogFactory *factory,
                                            GdkScreen         *screen,
+                                           gint               monitor,
                                            GimpSessionInfo   *info);
 
 
 static const GimpDialogFactoryEntry entries[] =
 {
   /*  foreign toplevels without constructor  */
+  FOREIGN ("gimp-blend-tool-dialog",               TRUE,  FALSE),
   FOREIGN ("gimp-brightness-contrast-tool-dialog", TRUE,  FALSE),
   FOREIGN ("gimp-color-balance-tool-dialog",       TRUE,  FALSE),
   FOREIGN ("gimp-color-picker-tool-dialog",        TRUE,  TRUE),
@@ -227,10 +231,12 @@ static const GimpDialogFactoryEntry entries[] =
   FOREIGN ("gimp-crop-tool-dialog",                TRUE,  FALSE),
   FOREIGN ("gimp-curves-tool-dialog",              TRUE,  TRUE),
   FOREIGN ("gimp-desaturate-tool-dialog",          TRUE,  FALSE),
+  FOREIGN ("gimp-foreground-select-tool-dialog",   TRUE,  FALSE),
   FOREIGN ("gimp-gegl-tool-dialog",                TRUE,  FALSE),
   FOREIGN ("gimp-hue-saturation-tool-dialog",      TRUE,  FALSE),
   FOREIGN ("gimp-levels-tool-dialog",              TRUE,  TRUE),
   FOREIGN ("gimp-measure-tool-dialog",             TRUE,  FALSE),
+  FOREIGN ("gimp-operation-tool-dialog",           TRUE,  FALSE),
   FOREIGN ("gimp-posterize-tool-dialog",           TRUE,  FALSE),
   FOREIGN ("gimp-rotate-tool-dialog",              TRUE,  FALSE),
   FOREIGN ("gimp-scale-tool-dialog",               TRUE,  FALSE),
@@ -238,6 +244,8 @@ static const GimpDialogFactoryEntry entries[] =
   FOREIGN ("gimp-text-tool-dialog",                TRUE,  TRUE),
   FOREIGN ("gimp-threshold-tool-dialog",           TRUE,  FALSE),
   FOREIGN ("gimp-perspective-tool-dialog",         TRUE,  FALSE),
+  FOREIGN ("gimp-unified-transform-tool-dialog",   TRUE,  FALSE),
+  FOREIGN ("gimp-handle-transform-tool-dialog",    TRUE,  FALSE),
 
   FOREIGN ("gimp-toolbox-color-dialog",            TRUE,  FALSE),
   FOREIGN ("gimp-gradient-editor-color-dialog",    TRUE,  FALSE),
@@ -261,7 +269,7 @@ static const GimpDialogFactoryEntry entries[] =
 
   /*  singleton toplevels  */
   TOPLEVEL ("gimp-preferences-dialog",
-            dialogs_preferences_get,        TRUE, TRUE,  FALSE),
+            dialogs_preferences_get,        TRUE, TRUE,  TRUE),
   TOPLEVEL ("gimp-input-devices-dialog",
             dialogs_input_devices_get,      TRUE, TRUE,  FALSE),
   TOPLEVEL ("gimp-keyboard-shortcuts-dialog",
@@ -274,8 +282,12 @@ static const GimpDialogFactoryEntry entries[] =
             dialogs_tips_get,               TRUE, FALSE, FALSE),
   TOPLEVEL ("gimp-about-dialog",
             dialogs_about_get,              TRUE, FALSE, FALSE),
+  TOPLEVEL ("gimp-action-search-dialog",
+            dialogs_action_search_get,      TRUE, TRUE,  TRUE),
   TOPLEVEL ("gimp-error-dialog",
             dialogs_error_get,              TRUE, FALSE, FALSE),
+  TOPLEVEL ("gimp-critical-dialog",
+            dialogs_critical_get,           TRUE, FALSE, FALSE),
   TOPLEVEL ("gimp-close-all-dialog",
             dialogs_close_all_get,          TRUE, FALSE, FALSE),
   TOPLEVEL ("gimp-quit-dialog",
@@ -295,113 +307,133 @@ static const GimpDialogFactoryEntry entries[] =
 
   /*  singleton dockables  */
   DOCKABLE ("gimp-tool-options",
-            N_("Tool Options"), NULL, GIMP_STOCK_TOOL_OPTIONS,
+            N_("Tool Options"), NULL, GIMP_ICON_DIALOG_TOOL_OPTIONS,
             GIMP_HELP_TOOL_OPTIONS_DIALOG,
             dialogs_tool_options_new, 0, TRUE),
   DOCKABLE ("gimp-device-status",
-            N_("Devices"), N_("Device Status"), GIMP_STOCK_DEVICE_STATUS,
+            N_("Devices"), N_("Device Status"), GIMP_ICON_DIALOG_DEVICE_STATUS,
             GIMP_HELP_DEVICE_STATUS_DIALOG,
             dialogs_device_status_new, 0, TRUE),
   DOCKABLE ("gimp-error-console",
-            N_("Errors"), N_("Error Console"), GIMP_STOCK_WARNING,
+            N_("Errors"), N_("Error Console"), GIMP_ICON_DIALOG_WARNING,
             GIMP_HELP_ERRORS_DIALOG,
             dialogs_error_console_new, 0, TRUE),
   DOCKABLE ("gimp-cursor-view",
-            N_("Pointer"), N_("Pointer Information"), GIMP_STOCK_CURSOR,
+            N_("Pointer"), N_("Pointer Information"), GIMP_ICON_CURSOR,
             GIMP_HELP_POINTER_INFO_DIALOG,
             dialogs_cursor_view_new, 0, TRUE),
+  DOCKABLE ("gimp-dashboard",
+            N_("Dashboard"), N_("Dashboard"), GIMP_ICON_DIALOG_DASHBOARD,
+            GIMP_HELP_ERRORS_DIALOG,
+            dialogs_dashboard_new, 0, TRUE),
 
   /*  list & grid views  */
-  LISTGRID (image, N_("Images"), NULL, GIMP_STOCK_IMAGES,
+  LISTGRID (image, image,
+            N_("Images"), NULL, GIMP_ICON_DIALOG_IMAGES,
             GIMP_HELP_IMAGE_DIALOG, GIMP_VIEW_SIZE_MEDIUM),
-  LISTGRID (brush, N_("Brushes"), NULL, GIMP_STOCK_BRUSH,
+  LISTGRID (brush, brush,
+            N_("Brushes"), NULL, GIMP_ICON_BRUSH,
             GIMP_HELP_BRUSH_DIALOG, GIMP_VIEW_SIZE_MEDIUM),
-  LISTGRID (pattern, N_("Patterns"), NULL, GIMP_STOCK_PATTERN,
+  LISTGRID (dynamics, dynamics,
+            N_("Paint Dynamics"), NULL, GIMP_ICON_DYNAMICS,
+            GIMP_HELP_DYNAMICS_DIALOG, GIMP_VIEW_SIZE_MEDIUM),
+  LISTGRID (mypaint-brush, mypaint_brush,
+            N_("MyPaint Brushes"), NULL, GIMP_ICON_MYPAINT_BRUSH,
+            GIMP_HELP_MYPAINT_BRUSH_DIALOG, GIMP_VIEW_SIZE_LARGE),
+  LISTGRID (pattern, pattern,
+            N_("Patterns"), NULL, GIMP_ICON_PATTERN,
             GIMP_HELP_PATTERN_DIALOG, GIMP_VIEW_SIZE_MEDIUM),
-  LISTGRID (gradient, N_("Gradients"), NULL, GIMP_STOCK_GRADIENT,
+  LISTGRID (gradient, gradient,
+            N_("Gradients"), NULL, GIMP_ICON_GRADIENT,
             GIMP_HELP_GRADIENT_DIALOG, GIMP_VIEW_SIZE_MEDIUM),
-  LISTGRID (palette, N_("Palettes"), NULL, GIMP_STOCK_PALETTE,
+  LISTGRID (palette, palette,
+            N_("Palettes"), NULL, GIMP_ICON_PALETTE,
             GIMP_HELP_PALETTE_DIALOG, GIMP_VIEW_SIZE_MEDIUM),
-  LISTGRID (font, N_("Fonts"), NULL, GIMP_STOCK_FONT,
+  LISTGRID (font, font,
+            N_("Fonts"), NULL, GIMP_ICON_FONT,
             GIMP_HELP_FONT_DIALOG, GIMP_VIEW_SIZE_MEDIUM),
-  LISTGRID (buffer, N_("Buffers"), NULL, GIMP_STOCK_BUFFER,
+  LISTGRID (buffer, buffer,
+            N_("Buffers"), NULL, GIMP_ICON_BUFFER,
             GIMP_HELP_BUFFER_DIALOG, GIMP_VIEW_SIZE_MEDIUM),
-  LISTGRID (document, N_("History"), N_("Document History"), "document-open-recent",
+  LISTGRID (tool-preset, tool_preset,
+            N_("Tool Presets"), NULL, GIMP_ICON_TOOL_PRESET,
+            GIMP_HELP_TOOL_PRESET_DIALOG, GIMP_VIEW_SIZE_MEDIUM),
+  LISTGRID (document, document,
+            N_("History"), N_("Document History"), GIMP_ICON_DOCUMENT_OPEN_RECENT,
             GIMP_HELP_DOCUMENT_DIALOG, GIMP_VIEW_SIZE_LARGE),
-  LISTGRID (template, N_("Templates"), N_("Image Templates"), GIMP_STOCK_TEMPLATE,
+  LISTGRID (template, template,
+            N_("Templates"), N_("Image Templates"), GIMP_ICON_TEMPLATE,
             GIMP_HELP_TEMPLATE_DIALOG, GIMP_VIEW_SIZE_SMALL),
-
-  /* Some things do not have grids, so just list */
-  LIST (dynamics, dynamics, N_("Paint Dynamics"), NULL, GIMP_STOCK_DYNAMICS,
-        GIMP_HELP_DYNAMICS_DIALOG, GIMP_VIEW_SIZE_MEDIUM),
-  LIST (tool-preset, tool_preset, N_("Tool Presets"), NULL, GIMP_STOCK_TOOL_PRESET,
-        GIMP_HELP_TOOL_PRESET_DIALOG, GIMP_VIEW_SIZE_MEDIUM),
 
   /*  image related  */
   DOCKABLE ("gimp-layer-list",
-            N_("Layers"), NULL, GIMP_STOCK_LAYERS,
+            N_("Layers"), NULL, GIMP_ICON_DIALOG_LAYERS,
             GIMP_HELP_LAYER_DIALOG,
             dialogs_layer_list_view_new, 0, FALSE),
   DOCKABLE ("gimp-channel-list",
-            N_("Channels"), NULL, GIMP_STOCK_CHANNELS,
+            N_("Channels"), NULL, GIMP_ICON_DIALOG_CHANNELS,
             GIMP_HELP_CHANNEL_DIALOG,
             dialogs_channel_list_view_new, 0, FALSE),
   DOCKABLE ("gimp-vectors-list",
-            N_("Paths"), NULL, GIMP_STOCK_PATHS,
+            N_("Paths"), NULL, GIMP_ICON_DIALOG_PATHS,
             GIMP_HELP_PATH_DIALOG,
             dialogs_vectors_list_view_new, 0, FALSE),
   DOCKABLE ("gimp-indexed-palette",
-            N_("Colormap"), NULL, GIMP_STOCK_COLORMAP,
+            N_("Colormap"), NULL, GIMP_ICON_COLORMAP,
             GIMP_HELP_INDEXED_PALETTE_DIALOG,
             dialogs_colormap_editor_new, 0, FALSE),
   DOCKABLE ("gimp-histogram-editor",
-            N_("Histogram"), NULL, GIMP_STOCK_HISTOGRAM,
+            N_("Histogram"), NULL, GIMP_ICON_HISTOGRAM,
             GIMP_HELP_HISTOGRAM_DIALOG,
             dialogs_histogram_editor_new, 0, FALSE),
   DOCKABLE ("gimp-selection-editor",
-            N_("Selection"), N_("Selection Editor"), GIMP_STOCK_SELECTION,
+            N_("Selection"), N_("Selection Editor"), GIMP_ICON_SELECTION,
             GIMP_HELP_SELECTION_DIALOG,
             dialogs_selection_editor_new, 0, FALSE),
+  DOCKABLE ("gimp-symmetry-editor",
+            N_("Symmetry Painting"), NULL, GIMP_ICON_SYMMETRY,
+            GIMP_HELP_SYMMETRY_DIALOG,
+            dialogs_symmetry_editor_new, 0, FALSE),
   DOCKABLE ("gimp-undo-history",
-            N_("Undo"), N_("Undo History"), GIMP_STOCK_UNDO_HISTORY,
+            N_("Undo"), N_("Undo History"), GIMP_ICON_DIALOG_UNDO_HISTORY,
             GIMP_HELP_UNDO_DIALOG,
             dialogs_undo_editor_new, 0, FALSE),
   DOCKABLE ("gimp-sample-point-editor",
-            N_("Sample Points"), N_("Sample Points"), GIMP_STOCK_SAMPLE_POINT,
+            N_("Sample Points"), N_("Sample Points"), GIMP_ICON_SAMPLE_POINT,
             GIMP_HELP_SAMPLE_POINT_DIALOG,
             dialogs_sample_point_editor_new, 0, FALSE),
 
   /*  display related  */
   DOCKABLE ("gimp-navigation-view",
-            N_("Navigation"), N_("Display Navigation"), GIMP_STOCK_NAVIGATION,
+            N_("Navigation"), N_("Display Navigation"), GIMP_ICON_DIALOG_NAVIGATION,
             GIMP_HELP_NAVIGATION_DIALOG,
             dialogs_navigation_editor_new, 0, FALSE),
 
   /*  editors  */
   DOCKABLE ("gimp-color-editor",
-            N_("FG/BG"), N_("FG/BG Color"), GIMP_STOCK_DEFAULT_COLORS,
+            N_("FG/BG"), N_("FG/BG Color"), GIMP_ICON_COLORS_DEFAULT,
             GIMP_HELP_COLOR_DIALOG,
             dialogs_color_editor_new, 0, FALSE),
 
   /*  singleton editors  */
   DOCKABLE ("gimp-brush-editor",
-            N_("Brush Editor"), NULL, GIMP_STOCK_BRUSH,
+            N_("Brush Editor"), NULL, GIMP_ICON_BRUSH,
             GIMP_HELP_BRUSH_EDITOR_DIALOG,
             dialogs_brush_editor_get, 0, TRUE),
   DOCKABLE ("gimp-dynamics-editor",
-            N_("Paint Dynamics Editor"), NULL, GIMP_STOCK_DYNAMICS,
+            N_("Paint Dynamics Editor"), NULL, GIMP_ICON_DYNAMICS,
             GIMP_HELP_DYNAMICS_EDITOR_DIALOG,
             dialogs_dynamics_editor_get, 0, TRUE),
   DOCKABLE ("gimp-gradient-editor",
-            N_("Gradient Editor"), NULL, GIMP_STOCK_GRADIENT,
+            N_("Gradient Editor"), NULL, GIMP_ICON_GRADIENT,
             GIMP_HELP_GRADIENT_EDITOR_DIALOG,
             dialogs_gradient_editor_get, 0, TRUE),
   DOCKABLE ("gimp-palette-editor",
-            N_("Palette Editor"), NULL, GIMP_STOCK_PALETTE,
+            N_("Palette Editor"), NULL, GIMP_ICON_PALETTE,
             GIMP_HELP_PALETTE_EDITOR_DIALOG,
             dialogs_palette_editor_get, 0, TRUE),
   DOCKABLE ("gimp-tool-preset-editor",
-            N_("Tool Preset Editor"), NULL, GIMP_STOCK_TOOL_PRESET,
+            N_("Tool Preset Editor"), NULL, GIMP_ICON_TOOL_PRESET,
             GIMP_HELP_TOOL_PRESET_EDITOR_DIALOG,
             dialogs_tool_preset_editor_get, 0, TRUE),
 
@@ -416,6 +448,7 @@ static const GimpDialogFactoryEntry entries[] =
  * dialogs_restore_dialog:
  * @factory:
  * @screen:
+ * @monitor:
  * @info:
  *
  * Creates a top level widget based on the given session info object
@@ -427,6 +460,7 @@ static const GimpDialogFactoryEntry entries[] =
 static GtkWidget *
 dialogs_restore_dialog (GimpDialogFactory *factory,
                         GdkScreen         *screen,
+                        gint               monitor,
                         GimpSessionInfo   *info)
 {
   GtkWidget      *dialog;
@@ -437,7 +471,7 @@ dialogs_restore_dialog (GimpDialogFactory *factory,
             info);
 
   dialog =
-    gimp_dialog_factory_dialog_new (factory, screen,
+    gimp_dialog_factory_dialog_new (factory, screen, monitor,
                                     NULL /*ui_manager*/,
                                     gimp_session_info_get_factory_entry (info)->identifier,
                                     gimp_session_info_get_factory_entry (info)->view_size,
@@ -455,17 +489,19 @@ dialogs_restore_dialog (GimpDialogFactory *factory,
  * dialogs_restore_window:
  * @factory:
  * @screen:
+ * @monitor:
  * @info:
  *
  * "restores" the image window. We don't really restore anything since
  * the image window is created earlier, so we just look for and return
  * the already-created image window.
  *
- * Returns: 
+ * Returns:
  **/
 static GtkWidget *
 dialogs_restore_window (GimpDialogFactory *factory,
                         GdkScreen         *screen,
+                        gint               monitor,
                         GimpSessionInfo   *info)
 {
   Gimp             *gimp    = gimp_dialog_factory_get_context (factory)->gimp;
@@ -497,11 +533,11 @@ dialogs_init (Gimp            *gimp,
   gimp_dialog_factory_set_singleton (factory);
 
   for (i = 0; i < G_N_ELEMENTS (entries); i++)
-    gimp_dialog_factory_register_entry (gimp_dialog_factory_get_singleton (),
+    gimp_dialog_factory_register_entry (factory,
                                         entries[i].identifier,
                                         gettext (entries[i].name),
                                         gettext (entries[i].blurb),
-                                        entries[i].stock_id,
+                                        entries[i].icon_name,
                                         entries[i].help_id,
                                         entries[i].new_func,
                                         entries[i].restore_func,
@@ -533,11 +569,7 @@ dialogs_exit (Gimp *gimp)
       gimp_dialog_factory_set_singleton (NULL);
     }
 
-  if (global_recent_docks)
-    {
-      g_object_unref (global_recent_docks);
-      global_recent_docks = NULL;
-    }
+  g_clear_object (&global_recent_docks);
 }
 
 static void
@@ -557,8 +589,8 @@ dialogs_ensure_factory_entry_on_recent_dock (GimpSessionInfo *info)
     }
 }
 
-static char *
-dialogs_get_dockrc_filename (void)
+static GFile *
+dialogs_get_dockrc_file (void)
 {
   const gchar *basename;
 
@@ -566,31 +598,33 @@ dialogs_get_dockrc_filename (void)
   if (! basename)
     basename = "dockrc";
 
-  return gimp_personal_rc_file (basename);
+  return gimp_directory_file (basename, NULL);
 }
 
 void
 dialogs_load_recent_docks (Gimp *gimp)
 {
-  gchar  *filename;
+  GFile  *file;
   GError *error = NULL;
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  filename = dialogs_get_dockrc_filename ();
+  file = dialogs_get_dockrc_file ();
 
   if (gimp->be_verbose)
-    g_print ("Parsing '%s'\n", gimp_filename_to_utf8 (filename));
+    g_print ("Parsing '%s'\n", gimp_file_get_utf8_name (file));
 
-  if (! gimp_config_deserialize_file (GIMP_CONFIG (global_recent_docks),
-                                      filename,
-                                      NULL, &error))
+  if (! gimp_config_deserialize_gfile (GIMP_CONFIG (global_recent_docks),
+                                       file,
+                                       NULL, &error))
     {
       if (error->code != GIMP_CONFIG_ERROR_OPEN_ENOENT)
         gimp_message_literal (gimp, NULL, GIMP_MESSAGE_ERROR, error->message);
 
       g_clear_error (&error);
     }
+
+  g_object_unref (file);
 
   /* In GIMP 2.6 dockrc did not contain the factory entries for the
    * session infos, so set that up manually if needed
@@ -600,34 +634,32 @@ dialogs_load_recent_docks (Gimp *gimp)
                           NULL);
 
   gimp_list_reverse (GIMP_LIST (global_recent_docks));
-
-  g_free (filename);
 }
 
 void
 dialogs_save_recent_docks (Gimp *gimp)
 {
-  gchar  *filename;
+  GFile  *file;
   GError *error = NULL;
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  filename = dialogs_get_dockrc_filename ();
+  file = dialogs_get_dockrc_file ();
 
   if (gimp->be_verbose)
-    g_print ("Writing '%s'\n", gimp_filename_to_utf8 (filename));
+    g_print ("Writing '%s'\n", gimp_file_get_utf8_name (file));
 
-  if (! gimp_config_serialize_to_file (GIMP_CONFIG (global_recent_docks),
-                                       filename,
-                                       "recently closed docks",
-                                       "end of recently closed docks",
-                                       NULL, &error))
+  if (! gimp_config_serialize_to_gfile (GIMP_CONFIG (global_recent_docks),
+                                        file,
+                                        "recently closed docks",
+                                        "end of recently closed docks",
+                                        NULL, &error))
     {
       gimp_message_literal (gimp, NULL, GIMP_MESSAGE_ERROR, error->message);
       g_clear_error (&error);
     }
 
-  g_free (filename);
+  g_object_unref (file);
 }
 
 GtkWidget *
@@ -647,4 +679,69 @@ dialogs_get_toolbox (void)
     }
 
   return NULL;
+}
+
+GtkWidget *
+dialogs_get_dialog (GObject     *attach_object,
+                    const gchar *attach_key)
+{
+  g_return_val_if_fail (G_IS_OBJECT (attach_object), NULL);
+  g_return_val_if_fail (attach_key != NULL, NULL);
+
+  return g_object_get_data (attach_object, attach_key);
+}
+
+void
+dialogs_attach_dialog (GObject     *attach_object,
+                       const gchar *attach_key,
+                       GtkWidget   *dialog)
+{
+  g_return_if_fail (G_IS_OBJECT (attach_object));
+  g_return_if_fail (attach_key != NULL);
+  g_return_if_fail (GTK_IS_WIDGET (dialog));
+
+  g_object_set_data (attach_object, attach_key, dialog);
+  g_object_set_data (G_OBJECT (dialog), "gimp-dialogs-attach-key",
+                     (gpointer) attach_key);
+
+  g_signal_connect_object (dialog, "destroy",
+                           G_CALLBACK (dialogs_detach_dialog),
+                           attach_object,
+                           G_CONNECT_SWAPPED);
+}
+
+void
+dialogs_detach_dialog (GObject   *attach_object,
+                       GtkWidget *dialog)
+{
+  const gchar *attach_key;
+
+  g_return_if_fail (G_IS_OBJECT (attach_object));
+  g_return_if_fail (GTK_IS_WIDGET (dialog));
+
+  attach_key = g_object_get_data (G_OBJECT (dialog),
+                                  "gimp-dialogs-attach-key");
+
+  g_return_if_fail (attach_key != NULL);
+
+  g_object_set_data (attach_object, attach_key, NULL);
+
+  g_signal_handlers_disconnect_by_func (dialog,
+                                        dialogs_detach_dialog,
+                                        attach_object);
+}
+
+void
+dialogs_destroy_dialog (GObject     *attach_object,
+                        const gchar *attach_key)
+{
+  GtkWidget *dialog;
+
+  g_return_if_fail (G_IS_OBJECT (attach_object));
+  g_return_if_fail (attach_key != NULL);
+
+  dialog = g_object_get_data (attach_object, attach_key);
+
+  if (dialog)
+    gtk_widget_destroy (dialog);
 }

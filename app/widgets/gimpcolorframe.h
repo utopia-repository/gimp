@@ -37,9 +37,12 @@ struct _GimpColorFrame
   GimpFrame           parent_instance;
 
   gboolean            sample_valid;
-  GimpImageType       sample_type;
+  gboolean            sample_average;
+  const Babl         *sample_format;
+  guchar              pixel[32];
   GimpRGB             color;
-  gint                color_index;
+  gint                x;
+  gint                y;
 
   GimpColorFrameMode  frame_mode;
 
@@ -47,13 +50,21 @@ struct _GimpColorFrame
   gint                number;
 
   gboolean            has_color_area;
+  gboolean            has_coords;
 
   GtkWidget          *menu;
   GtkWidget          *color_area;
+  GtkWidget          *coords_box_x;
+  GtkWidget          *coords_box_y;
+  GtkWidget          *coords_label_x;
+  GtkWidget          *coords_label_y;
   GtkWidget          *name_labels[GIMP_COLOR_FRAME_ROWS];
   GtkWidget          *value_labels[GIMP_COLOR_FRAME_ROWS];
 
   PangoLayout        *number_layout;
+
+  GimpColorConfig    *config;
+  GimpColorTransform *transform;
 };
 
 struct _GimpColorFrameClass
@@ -62,26 +73,34 @@ struct _GimpColorFrameClass
 };
 
 
-GType       gimp_color_frame_get_type    (void) G_GNUC_CONST;
+GType       gimp_color_frame_get_type           (void) G_GNUC_CONST;
 
-GtkWidget * gimp_color_frame_new         (void);
+GtkWidget * gimp_color_frame_new                (void);
 
 void        gimp_color_frame_set_mode           (GimpColorFrame     *frame,
                                                  GimpColorFrameMode  mode);
+
 void        gimp_color_frame_set_has_number     (GimpColorFrame     *frame,
                                                  gboolean            has_number);
 void        gimp_color_frame_set_number         (GimpColorFrame     *frame,
                                                  gint                number);
 
-
 void        gimp_color_frame_set_has_color_area (GimpColorFrame     *frame,
                                                  gboolean            has_color_area);
+void        gimp_color_frame_set_has_coords     (GimpColorFrame     *frame,
+                                                 gboolean            has_coords);
 
 void        gimp_color_frame_set_color          (GimpColorFrame     *frame,
-                                                 GimpImageType       sample_type,
+                                                 gboolean            sample_average,
+                                                 const Babl         *format,
+                                                 gpointer            pixel,
                                                  const GimpRGB      *color,
-                                                 gint                color_index);
+                                                 gint                x,
+                                                 gint                y);
 void        gimp_color_frame_set_invalid        (GimpColorFrame     *frame);
+
+void        gimp_color_frame_set_color_config   (GimpColorFrame     *frame,
+                                                 GimpColorConfig    *config);
 
 
 #endif  /*  __GIMP_COLOR_FRAME_H__  */

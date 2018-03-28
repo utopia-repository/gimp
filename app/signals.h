@@ -23,7 +23,7 @@
 #endif
 
 
-void   gimp_init_signal_handlers (GimpStackTraceMode stack_trace_mode);
+void   gimp_init_signal_handlers (gchar **backtrace_file);
 
 
 #endif /* __SIGNALS_H__ */

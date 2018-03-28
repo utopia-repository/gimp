@@ -24,7 +24,7 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gio/gio.h>
 
 #include "libgimpbase/gimpbase.h"
 
@@ -78,7 +78,7 @@ static const GimpUnitDef gimp_unit_defs[GIMP_UNIT_END] =
  */
 static const GimpUnitDef gimp_unit_percent =
 {
-    FALSE,  0.0, 0, "percent",     "%",  "%", 
+    FALSE,  0.0, 0, "percent",     "%",  "%",
     NC_("singular", "percent"),    NC_("plural", "percent")
 };
 
@@ -162,11 +162,15 @@ gdouble
 _gimp_unit_get_factor (Gimp     *gimp,
                        GimpUnit  unit)
 {
-  g_return_val_if_fail (unit < (GIMP_UNIT_END + gimp->n_user_units),
+  g_return_val_if_fail (unit < (GIMP_UNIT_END + gimp->n_user_units) ||
+                        (unit == GIMP_UNIT_PERCENT),
                         gimp_unit_defs[GIMP_UNIT_INCH].factor);
 
   if (unit < GIMP_UNIT_END)
     return gimp_unit_defs[unit].factor;
+
+  if (unit == GIMP_UNIT_PERCENT)
+    return gimp_unit_percent.factor;
 
   return _gimp_unit_get_user_unit (gimp, unit)->factor;
 }
@@ -175,11 +179,15 @@ gint
 _gimp_unit_get_digits (Gimp     *gimp,
                        GimpUnit  unit)
 {
-  g_return_val_if_fail (unit < (GIMP_UNIT_END + gimp->n_user_units),
+  g_return_val_if_fail (unit < (GIMP_UNIT_END + gimp->n_user_units) ||
+                        (unit == GIMP_UNIT_PERCENT),
                         gimp_unit_defs[GIMP_UNIT_INCH].digits);
 
   if (unit < GIMP_UNIT_END)
     return gimp_unit_defs[unit].digits;
+
+  if (unit == GIMP_UNIT_PERCENT)
+    return gimp_unit_percent.digits;
 
   return _gimp_unit_get_user_unit (gimp, unit)->digits;
 }

@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -140,8 +141,11 @@ static const gchar *const axis_use_strings[] =
   N_("Pressure"),
   N_("X tilt"),
   N_("Y tilt"),
-  /* Wheel as in mouse or input device wheel */
-  N_("Wheel")
+  /* Wheel as in mouse or input device wheel.
+   * Some pens use the same axis for their rotation feature.
+   * See bug 791455.
+   */
+  N_("Wheel/Rotation")
 };
 
 
@@ -331,10 +335,9 @@ gimp_device_info_editor_constructed (GObject *object)
 
   private = GIMP_DEVICE_INFO_EDITOR_GET_PRIVATE (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_DEVICE_INFO (private->info));
+  gimp_assert (GIMP_IS_DEVICE_INFO (private->info));
 
   /*  the mode menu  */
 
@@ -464,8 +467,8 @@ gimp_device_info_editor_constructed (GObject *object)
 
           combo = gimp_prop_enum_combo_box_new (G_OBJECT (curve),
                                                 "curve-type", 0, 0);
-          gimp_enum_combo_box_set_stock_prefix (GIMP_ENUM_COMBO_BOX (combo),
-                                                "gimp-curve");
+          gimp_enum_combo_box_set_icon_prefix (GIMP_ENUM_COMBO_BOX (combo),
+                                               "gimp-curve");
           gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 0);
           gtk_widget_show (combo);
 
@@ -503,11 +506,7 @@ gimp_device_info_editor_finalize (GObject *object)
 
   private = GIMP_DEVICE_INFO_EDITOR_GET_PRIVATE (object);
 
-  if (private->info)
-    {
-      g_object_unref (private->info);
-      private->info = NULL;
-    }
+  g_clear_object (&private->info);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }

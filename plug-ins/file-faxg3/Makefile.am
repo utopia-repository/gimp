@@ -28,10 +28,11 @@ file_faxg3_SOURCES = \
 	g3.c		\
 	g3.h
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir)		\
 	$(CAIRO_CFLAGS)		\
 	$(GDK_PIXBUF_CFLAGS)	\
+	$(GEGL_CFLAGS) \
 	-I$(includedir)
 
 LDADD = \
@@ -42,6 +43,7 @@ LDADD = \
 	$(libgimpmath)		\
 	$(CAIRO_LIBS)		\
 	$(GDK_PIXBUF_LIBS)	\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(file_faxg3_RC)

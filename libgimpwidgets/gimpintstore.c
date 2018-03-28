@@ -100,18 +100,19 @@ gimp_int_store_class_init (GimpIntStoreClass *klass)
   /**
    * GimpIntStore:user-data-type:
    *
-   * Allows to set the #GType for the GIMP_INT_STORE_USER_DATA column.
+   * Sets the #GType for the GIMP_INT_STORE_USER_DATA column.
    *
    * You need to set this property when constructing the store if you want
    * to use the GIMP_INT_STORE_USER_DATA column and want to have the store
    * handle ref-counting of your user data.
    *
-   * Since: GIMP 2.4
+   * Since: 2.4
    */
   g_object_class_install_property (object_class,
                                    PROP_USER_DATA_TYPE,
                                    g_param_spec_gtype ("user-data-type",
-                                                       NULL, NULL,
+                                                       "User Data Type",
+                                                       "The GType of the user_data column",
                                                        G_TYPE_NONE,
                                                        G_PARAM_CONSTRUCT_ONLY |
                                                        GIMP_PARAM_READWRITE));
@@ -141,15 +142,15 @@ gimp_int_store_constructed (GObject *object)
   GimpIntStorePrivate *priv  = GIMP_INT_STORE_GET_PRIVATE (store);
   GType                types[GIMP_INT_STORE_NUM_COLUMNS];
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   types[GIMP_INT_STORE_VALUE]     = G_TYPE_INT;
   types[GIMP_INT_STORE_LABEL]     = G_TYPE_STRING;
-  types[GIMP_INT_STORE_STOCK_ID]  = G_TYPE_STRING;
+  types[GIMP_INT_STORE_ICON_NAME] = G_TYPE_STRING;
   types[GIMP_INT_STORE_PIXBUF]    = GDK_TYPE_PIXBUF;
   types[GIMP_INT_STORE_USER_DATA] = (priv->user_data_type != G_TYPE_NONE ?
                                      priv->user_data_type : G_TYPE_POINTER);
+  types[GIMP_INT_STORE_ABBREV]    = G_TYPE_STRING;
 
   gtk_list_store_set_column_types (GTK_LIST_STORE (store),
                                    GIMP_INT_STORE_NUM_COLUMNS, types);
@@ -223,6 +224,8 @@ gimp_int_store_row_inserted (GtkTreeModel *model,
       memcmp (iter, store->empty_iter, sizeof (GtkTreeIter)))
     {
       gtk_list_store_remove (GTK_LIST_STORE (store), store->empty_iter);
+      gtk_tree_iter_free (store->empty_iter);
+      store->empty_iter = NULL;
     }
 }
 
@@ -230,17 +233,8 @@ static void
 gimp_int_store_row_deleted (GtkTreeModel *model,
                             GtkTreePath  *path)
 {
-  GimpIntStore *store = GIMP_INT_STORE (model);
-
   if (parent_iface->row_deleted)
     parent_iface->row_deleted (model, path);
-
-  if (store->empty_iter)
-    {
-      /* freeing here crashes, no clue why. will be freed in finalize() */
-      /* gtk_tree_iter_free (store->empty_iter); */
-      store->empty_iter = NULL;
-    }
 }
 
 static void
@@ -271,7 +265,7 @@ gimp_int_store_add_empty (GimpIntStore *store)
  *
  * Return value: a new #GimpIntStore.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 GtkListStore *
 gimp_int_store_new (void)
@@ -290,7 +284,7 @@ gimp_int_store_new (void)
  * Return value: %TRUE if the value has been located and @iter is
  *               valid, %FALSE otherwise.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_int_store_lookup_by_value (GtkTreeModel *model,
@@ -316,4 +310,43 @@ gimp_int_store_lookup_by_value (GtkTreeModel *model,
     }
 
   return iter_valid;
+}
+
+/**
+ * gimp_int_store_lookup_by_user_data:
+ * @model: a #GimpIntStore
+ * @user_data: a gpointer "user-data" to lookup in the @model
+ * @iter:  return location for the iter of the given @user_data
+ *
+ * Iterate over the @model looking for @user_data.
+ *
+ * Return value: %TRUE if the user-data has been located and @iter is
+ *               valid, %FALSE otherwise.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_int_store_lookup_by_user_data (GtkTreeModel *model,
+                                    gpointer      user_data,
+                                    GtkTreeIter  *iter)
+{
+  gboolean iter_valid = FALSE;
+
+  g_return_val_if_fail (GTK_IS_TREE_MODEL (model), FALSE);
+  g_return_val_if_fail (iter != NULL, FALSE);
+
+  for (iter_valid = gtk_tree_model_get_iter_first (model, iter);
+       iter_valid;
+       iter_valid = gtk_tree_model_iter_next (model, iter))
+    {
+      gpointer this;
+
+      gtk_tree_model_get (model, iter,
+                          GIMP_INT_STORE_USER_DATA, &this,
+                          -1);
+      if (this == user_data)
+        break;
+    }
+
+  return (gboolean) iter_valid;
 }

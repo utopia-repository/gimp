@@ -46,6 +46,9 @@ gboolean      gimp_item_is_group          (gint32              item_ID);
 gint32        gimp_item_get_parent        (gint32              item_ID);
 gint*         gimp_item_get_children      (gint32              item_ID,
                                            gint               *num_children);
+gboolean      gimp_item_get_expanded      (gint32              item_ID);
+gboolean      gimp_item_set_expanded      (gint32              item_ID,
+                                           gboolean            expanded);
 gchar*        gimp_item_get_name          (gint32              item_ID);
 gboolean      gimp_item_set_name          (gint32              item_ID,
                                            const gchar        *name);
@@ -58,6 +61,12 @@ gboolean      gimp_item_set_linked        (gint32              item_ID,
 gboolean      gimp_item_get_lock_content  (gint32              item_ID);
 gboolean      gimp_item_set_lock_content  (gint32              item_ID,
                                            gboolean            lock_content);
+gboolean      gimp_item_get_lock_position (gint32              item_ID);
+gboolean      gimp_item_set_lock_position (gint32              item_ID,
+                                           gboolean            lock_position);
+GimpColorTag  gimp_item_get_color_tag     (gint32              item_ID);
+gboolean      gimp_item_set_color_tag     (gint32              item_ID,
+                                           GimpColorTag        color_tag);
 gint          gimp_item_get_tattoo        (gint32              item_ID);
 gboolean      gimp_item_set_tattoo        (gint32              item_ID,
                                            gint                tattoo);

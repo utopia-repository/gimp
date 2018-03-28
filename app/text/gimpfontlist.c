@@ -24,9 +24,10 @@
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <pango/pangocairo.h>
 #include <pango/pangofc-fontmap.h>
+#include <gegl.h>
 
 #include "text-types.h"
 
@@ -178,7 +179,7 @@ static void
 gimp_font_list_load_aliases (GimpFontList *list,
                              PangoContext *context)
 {
-  const gchar *families[] = { "Sans", "Serif", "Monospace" };
+  const gchar *families[] = { "Sans-serif", "Serif", "Monospace" };
   gint         i;
 
   for (i = 0; i < 3; i++)

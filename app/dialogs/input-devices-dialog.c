@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -58,8 +59,8 @@ input_devices_dialog_new (Gimp *gimp)
                             gimp_standard_help_func,
                             GIMP_HELP_INPUT_DEVICES,
 
-                            GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
-                            GTK_STOCK_SAVE,  GTK_RESPONSE_OK,
+                            _("_Close"), GTK_RESPONSE_CLOSE,
+                            _("_Save"),  GTK_RESPONSE_OK,
 
                             NULL);
 

@@ -5,10 +5,10 @@
 <title>gimpdatafiles: GIMP Base Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="GIMP Base Library Reference Manual">
-<link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library">
+<link rel="up" href="pt01.html" title="Part I. GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimpcpuaccel.html" title="gimpcpuaccel">
 <link rel="next" href="libgimpbase-gimpenv.html" title="gimpenv">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -18,7 +18,7 @@
                   <a href="#libgimpbase-gimpdatafiles.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<td><a accesskey="u" href="libgimpbase.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="u" href="pt01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="libgimpbase-gimpcpuaccel.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="libgimpbase-gimpenv.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
@@ -49,7 +49,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libgimpbase-gimpdatafiles.html#gimp-datafiles-check-extension" title="gimp_datafiles_check_extension ()">gimp_datafiles_check_extension</a> <span class="c_punctuation">()</span>
@@ -89,23 +89,25 @@
 <a name="GimpDatafileLoaderFunc"></a><h3>GimpDatafileLoaderFunc ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*GimpDatafileLoaderFunc<span class="c_punctuation">)</span> (<em class="parameter"><code>const <a class="link" href="libgimpbase-gimpdatafiles.html#GimpDatafileData" title="GimpDatafileData"><span class="type">GimpDatafileData</span></a> *file_data</code></em>,
-                           <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+                           <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-datafiles-check-extension"></a><h3>gimp_datafiles_check_extension ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gimp_datafiles_check_extension (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *filename</code></em>,
-                                <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *extension</code></em>);</pre>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_datafiles_check_extension (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *filename</code></em>,
+                                <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *extension</code></em>);</pre>
+<div class="warning"><p><code class="literal">gimp_datafiles_check_extension</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-datafiles-read-directories"></a><h3>gimp_datafiles_read_directories ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-gimp_datafiles_read_directories (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *path_str</code></em>,
-                                 <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-File-Utilities.html#GFileTest"><span class="type">GFileTest</span></a> flags</code></em>,
+gimp_datafiles_read_directories (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *path_str</code></em>,
+                                 <em class="parameter"><code><a href="../glib/glib-File-Utilities.html#GFileTest"><span class="type">GFileTest</span></a> flags</code></em>,
                                  <em class="parameter"><code><a class="link" href="libgimpbase-gimpdatafiles.html#GimpDatafileLoaderFunc" title="GimpDatafileLoaderFunc ()"><span class="type">GimpDatafileLoaderFunc</span></a> loader_func</code></em>,
-                                 <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+                                 <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<div class="warning"><p><code class="literal">gimp_datafiles_read_directories</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 </div>
 <div class="refsect1">
@@ -135,17 +137,17 @@ data path.</p>
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GimpDatafileData.filename"></a>filename</code></em>;</p></td>
+<td class="struct_member_name"><p>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GimpDatafileData.filename"></a>filename</code></em>;</p></td>
 <td class="struct_member_description"><p>the data file's full path.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GimpDatafileData.dirname"></a>dirname</code></em>;</p></td>
+<td class="struct_member_name"><p>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GimpDatafileData.dirname"></a>dirname</code></em>;</p></td>
 <td class="struct_member_description"><p>the folder the data file is is.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GimpDatafileData.basename"></a>basename</code></em>;</p></td>
+<td class="struct_member_name"><p>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GimpDatafileData.basename"></a>basename</code></em>;</p></td>
 <td class="struct_member_description"><p>the data file's basename.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -171,6 +173,6 @@ data path.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.27</div>
 </body>
 </html>

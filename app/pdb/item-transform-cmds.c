@@ -21,7 +21,11 @@
 
 #include <gegl.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
 #include "libgimpmath/gimpmath.h"
+
+#include "libgimpbase/gimpbase.h"
 
 #include "pdb-types.h"
 
@@ -43,31 +47,33 @@
 #include "gimp-intl.h"
 
 
-static GValueArray *
-item_transform_flip_simple_invoker (GimpProcedure      *procedure,
-                                    Gimp               *gimp,
-                                    GimpContext        *context,
-                                    GimpProgress       *progress,
-                                    const GValueArray  *args,
-                                    GError            **error)
+static GimpValueArray *
+item_transform_flip_simple_invoker (GimpProcedure         *procedure,
+                                    Gimp                  *gimp,
+                                    GimpContext           *context,
+                                    GimpProgress          *progress,
+                                    const GimpValueArray  *args,
+                                    GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gint32 flip_type;
   gboolean auto_center;
   gdouble axis;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
-  flip_type = g_value_get_enum (&args->values[1]);
-  auto_center = g_value_get_boolean (&args->values[2]);
-  axis = g_value_get_double (&args->values[3]);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  flip_type = g_value_get_enum (gimp_value_array_index (args, 1));
+  auto_center = g_value_get_boolean (gimp_value_array_index (args, 2));
+  axis = g_value_get_double (gimp_value_array_index (args, 3));
 
   if (success)
     {
       gint x, y, width, height;
 
-      success = gimp_pdb_item_is_attached (item, NULL, TRUE, error);
+      success = gimp_pdb_item_is_attached (item, NULL,
+                                           GIMP_PDB_ITEM_CONTENT |
+                                           GIMP_PDB_ITEM_POSITION, error);
 
       if (success &&
           gimp_item_mask_intersect (item, &x, &y, &width, &height))
@@ -110,38 +116,40 @@ item_transform_flip_simple_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_item (&return_vals->values[1], item);
+    gimp_value_set_item (gimp_value_array_index (return_vals, 1), item);
 
   return return_vals;
 }
 
-static GValueArray *
-item_transform_flip_invoker (GimpProcedure      *procedure,
-                             Gimp               *gimp,
-                             GimpContext        *context,
-                             GimpProgress       *progress,
-                             const GValueArray  *args,
-                             GError            **error)
+static GimpValueArray *
+item_transform_flip_invoker (GimpProcedure         *procedure,
+                             Gimp                  *gimp,
+                             GimpContext           *context,
+                             GimpProgress          *progress,
+                             const GimpValueArray  *args,
+                             GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gdouble x0;
   gdouble y0;
   gdouble x1;
   gdouble y1;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
-  x0 = g_value_get_double (&args->values[1]);
-  y0 = g_value_get_double (&args->values[2]);
-  x1 = g_value_get_double (&args->values[3]);
-  y1 = g_value_get_double (&args->values[4]);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  x0 = g_value_get_double (gimp_value_array_index (args, 1));
+  y0 = g_value_get_double (gimp_value_array_index (args, 2));
+  x1 = g_value_get_double (gimp_value_array_index (args, 3));
+  y1 = g_value_get_double (gimp_value_array_index (args, 4));
 
   if (success)
     {
       gint x, y, width, height;
 
-      success = gimp_pdb_item_is_attached (item, NULL, TRUE, error);
+      success = gimp_pdb_item_is_attached (item, NULL,
+                                                        GIMP_PDB_ITEM_CONTENT |
+                                                        GIMP_PDB_ITEM_POSITION, error);
 
       if (success &&
           gimp_item_mask_intersect (item, &x, &y, &width, &height))
@@ -159,7 +167,7 @@ item_transform_flip_invoker (GimpProcedure      *procedure,
           gimp_transform_matrix_flip_free (&matrix, x0, y0, x1, y1);
 
           if (progress)
-            gimp_progress_start (progress, _("Flipping"), FALSE);
+            gimp_progress_start (progress, FALSE, _("Flipping"));
 
           if (GIMP_IS_DRAWABLE (item) &&
               ! gimp_viewable_get_children (GIMP_VIEWABLE (item)) &&
@@ -171,7 +179,6 @@ item_transform_flip_invoker (GimpProcedure      *procedure,
                                                          context, &matrix,
                                                          pdb_context->transform_direction,
                                                          pdb_context->interpolation,
-                                                         pdb_context->transform_recursion,
                                                          pdb_context->transform_resize,
                                                          progress);
 
@@ -185,7 +192,6 @@ item_transform_flip_invoker (GimpProcedure      *procedure,
               gimp_item_transform (item, context, &matrix,
                                    pdb_context->transform_direction,
                                    pdb_context->interpolation,
-                                   pdb_context->transform_recursion,
                                    pdb_context->transform_resize,
                                    progress);
             }
@@ -199,21 +205,21 @@ item_transform_flip_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_item (&return_vals->values[1], item);
+    gimp_value_set_item (gimp_value_array_index (return_vals, 1), item);
 
   return return_vals;
 }
 
-static GValueArray *
-item_transform_perspective_invoker (GimpProcedure      *procedure,
-                                    Gimp               *gimp,
-                                    GimpContext        *context,
-                                    GimpProgress       *progress,
-                                    const GValueArray  *args,
-                                    GError            **error)
+static GimpValueArray *
+item_transform_perspective_invoker (GimpProcedure         *procedure,
+                                    Gimp                  *gimp,
+                                    GimpContext           *context,
+                                    GimpProgress          *progress,
+                                    const GimpValueArray  *args,
+                                    GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gdouble x0;
   gdouble y0;
@@ -224,21 +230,23 @@ item_transform_perspective_invoker (GimpProcedure      *procedure,
   gdouble x3;
   gdouble y3;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
-  x0 = g_value_get_double (&args->values[1]);
-  y0 = g_value_get_double (&args->values[2]);
-  x1 = g_value_get_double (&args->values[3]);
-  y1 = g_value_get_double (&args->values[4]);
-  x2 = g_value_get_double (&args->values[5]);
-  y2 = g_value_get_double (&args->values[6]);
-  x3 = g_value_get_double (&args->values[7]);
-  y3 = g_value_get_double (&args->values[8]);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  x0 = g_value_get_double (gimp_value_array_index (args, 1));
+  y0 = g_value_get_double (gimp_value_array_index (args, 2));
+  x1 = g_value_get_double (gimp_value_array_index (args, 3));
+  y1 = g_value_get_double (gimp_value_array_index (args, 4));
+  x2 = g_value_get_double (gimp_value_array_index (args, 5));
+  y2 = g_value_get_double (gimp_value_array_index (args, 6));
+  x3 = g_value_get_double (gimp_value_array_index (args, 7));
+  y3 = g_value_get_double (gimp_value_array_index (args, 8));
 
   if (success)
     {
       gint x, y, width, height;
 
-      success = gimp_pdb_item_is_attached (item, NULL, TRUE, error);
+      success = gimp_pdb_item_is_attached (item, NULL,
+                                                        GIMP_PDB_ITEM_CONTENT |
+                                                        GIMP_PDB_ITEM_POSITION, error);
 
       if (success &&
           gimp_item_mask_intersect (item, &x, &y, &width, &height))
@@ -259,7 +267,7 @@ item_transform_perspective_invoker (GimpProcedure      *procedure,
                                              x2, y2, x3, y3);
 
           if (progress)
-            gimp_progress_start (progress, _("Perspective"), FALSE);
+            gimp_progress_start (progress, FALSE, _("Perspective"));
 
           if (GIMP_IS_DRAWABLE (item) &&
               ! gimp_viewable_get_children (GIMP_VIEWABLE (item)) &&
@@ -271,7 +279,6 @@ item_transform_perspective_invoker (GimpProcedure      *procedure,
                                                          context, &matrix,
                                                          pdb_context->transform_direction,
                                                          pdb_context->interpolation,
-                                                         pdb_context->transform_recursion,
                                                          pdb_context->transform_resize,
                                                          progress);
 
@@ -285,7 +292,6 @@ item_transform_perspective_invoker (GimpProcedure      *procedure,
               gimp_item_transform (item, context, &matrix,
                                    pdb_context->transform_direction,
                                    pdb_context->interpolation,
-                                   pdb_context->transform_recursion,
                                    pdb_context->transform_resize,
                                    progress);
             }
@@ -299,38 +305,40 @@ item_transform_perspective_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_item (&return_vals->values[1], item);
+    gimp_value_set_item (gimp_value_array_index (return_vals, 1), item);
 
   return return_vals;
 }
 
-static GValueArray *
-item_transform_rotate_simple_invoker (GimpProcedure      *procedure,
-                                      Gimp               *gimp,
-                                      GimpContext        *context,
-                                      GimpProgress       *progress,
-                                      const GValueArray  *args,
-                                      GError            **error)
+static GimpValueArray *
+item_transform_rotate_simple_invoker (GimpProcedure         *procedure,
+                                      Gimp                  *gimp,
+                                      GimpContext           *context,
+                                      GimpProgress          *progress,
+                                      const GimpValueArray  *args,
+                                      GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gint32 rotate_type;
   gboolean auto_center;
   gdouble center_x;
   gdouble center_y;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
-  rotate_type = g_value_get_enum (&args->values[1]);
-  auto_center = g_value_get_boolean (&args->values[2]);
-  center_x = g_value_get_double (&args->values[3]);
-  center_y = g_value_get_double (&args->values[4]);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  rotate_type = g_value_get_enum (gimp_value_array_index (args, 1));
+  auto_center = g_value_get_boolean (gimp_value_array_index (args, 2));
+  center_x = g_value_get_double (gimp_value_array_index (args, 3));
+  center_y = g_value_get_double (gimp_value_array_index (args, 4));
 
   if (success)
     {
       gint x, y, width, height;
 
-      success = gimp_pdb_item_is_attached (item, NULL, FALSE, error);
+      success = gimp_pdb_item_is_attached (item, NULL,
+                                           GIMP_PDB_ITEM_CONTENT |
+                                           GIMP_PDB_ITEM_POSITION, error);
 
       if (success &&
           gimp_item_mask_intersect (item, &x, &y, &width, &height))
@@ -376,38 +384,40 @@ item_transform_rotate_simple_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_item (&return_vals->values[1], item);
+    gimp_value_set_item (gimp_value_array_index (return_vals, 1), item);
 
   return return_vals;
 }
 
-static GValueArray *
-item_transform_rotate_invoker (GimpProcedure      *procedure,
-                               Gimp               *gimp,
-                               GimpContext        *context,
-                               GimpProgress       *progress,
-                               const GValueArray  *args,
-                               GError            **error)
+static GimpValueArray *
+item_transform_rotate_invoker (GimpProcedure         *procedure,
+                               Gimp                  *gimp,
+                               GimpContext           *context,
+                               GimpProgress          *progress,
+                               const GimpValueArray  *args,
+                               GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gdouble angle;
   gboolean auto_center;
   gdouble center_x;
   gdouble center_y;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
-  angle = g_value_get_double (&args->values[1]);
-  auto_center = g_value_get_boolean (&args->values[2]);
-  center_x = g_value_get_double (&args->values[3]);
-  center_y = g_value_get_double (&args->values[4]);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  angle = g_value_get_double (gimp_value_array_index (args, 1));
+  auto_center = g_value_get_boolean (gimp_value_array_index (args, 2));
+  center_x = g_value_get_double (gimp_value_array_index (args, 3));
+  center_y = g_value_get_double (gimp_value_array_index (args, 4));
 
   if (success)
     {
       gint x, y, width, height;
 
-      success = gimp_pdb_item_is_attached (item, NULL, TRUE, error);
+      success = gimp_pdb_item_is_attached (item, NULL,
+                                                        GIMP_PDB_ITEM_CONTENT |
+                                                        GIMP_PDB_ITEM_POSITION, error);
 
       if (success &&
           gimp_item_mask_intersect (item, &x, &y, &width, &height))
@@ -430,7 +440,7 @@ item_transform_rotate_invoker (GimpProcedure      *procedure,
                                                  center_x, center_y, angle);
 
           if (progress)
-            gimp_progress_start (progress, _("Rotating"), FALSE);
+            gimp_progress_start (progress, FALSE, _("Rotating"));
 
           if (GIMP_IS_DRAWABLE (item) &&
               ! gimp_viewable_get_children (GIMP_VIEWABLE (item)) &&
@@ -442,7 +452,6 @@ item_transform_rotate_invoker (GimpProcedure      *procedure,
                                                          context, &matrix,
                                                          pdb_context->transform_direction,
                                                          pdb_context->interpolation,
-                                                         pdb_context->transform_recursion,
                                                          pdb_context->transform_resize,
                                                          progress);
 
@@ -456,7 +465,6 @@ item_transform_rotate_invoker (GimpProcedure      *procedure,
               gimp_item_transform (item, context, &matrix,
                                    pdb_context->transform_direction,
                                    pdb_context->interpolation,
-                                   pdb_context->transform_recursion,
                                    pdb_context->transform_resize,
                                    progress);
             }
@@ -470,38 +478,40 @@ item_transform_rotate_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_item (&return_vals->values[1], item);
+    gimp_value_set_item (gimp_value_array_index (return_vals, 1), item);
 
   return return_vals;
 }
 
-static GValueArray *
-item_transform_scale_invoker (GimpProcedure      *procedure,
-                              Gimp               *gimp,
-                              GimpContext        *context,
-                              GimpProgress       *progress,
-                              const GValueArray  *args,
-                              GError            **error)
+static GimpValueArray *
+item_transform_scale_invoker (GimpProcedure         *procedure,
+                              Gimp                  *gimp,
+                              GimpContext           *context,
+                              GimpProgress          *progress,
+                              const GimpValueArray  *args,
+                              GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gdouble x0;
   gdouble y0;
   gdouble x1;
   gdouble y1;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
-  x0 = g_value_get_double (&args->values[1]);
-  y0 = g_value_get_double (&args->values[2]);
-  x1 = g_value_get_double (&args->values[3]);
-  y1 = g_value_get_double (&args->values[4]);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  x0 = g_value_get_double (gimp_value_array_index (args, 1));
+  y0 = g_value_get_double (gimp_value_array_index (args, 2));
+  x1 = g_value_get_double (gimp_value_array_index (args, 3));
+  y1 = g_value_get_double (gimp_value_array_index (args, 4));
 
   if (success)
     {
       gint x, y, width, height;
 
-      success = (gimp_pdb_item_is_attached (item, NULL, TRUE, error) && x0 < x1 && y0 < y1);
+      success = (gimp_pdb_item_is_attached (item, NULL,
+                                                          GIMP_PDB_ITEM_CONTENT |
+                                                          GIMP_PDB_ITEM_POSITION, error) && x0 < x1 && y0 < y1);
 
       if (success &&
           gimp_item_mask_intersect (item, &x, &y, &width, &height))
@@ -521,7 +531,7 @@ item_transform_scale_invoker (GimpProcedure      *procedure,
                                        x0, y0, x1 - x0, y1 - y0);
 
           if (progress)
-            gimp_progress_start (progress, _("Scaling"), FALSE);
+            gimp_progress_start (progress, FALSE, _("Scaling"));
 
           if (GIMP_IS_DRAWABLE (item) &&
               ! gimp_viewable_get_children (GIMP_VIEWABLE (item)) &&
@@ -533,7 +543,6 @@ item_transform_scale_invoker (GimpProcedure      *procedure,
                                                          context, &matrix,
                                                          pdb_context->transform_direction,
                                                          pdb_context->interpolation,
-                                                         pdb_context->transform_recursion,
                                                          pdb_context->transform_resize,
                                                          progress);
 
@@ -547,7 +556,6 @@ item_transform_scale_invoker (GimpProcedure      *procedure,
               gimp_item_transform (item, context, &matrix,
                                    pdb_context->transform_direction,
                                    pdb_context->interpolation,
-                                   pdb_context->transform_recursion,
                                    pdb_context->transform_resize,
                                    progress);
             }
@@ -561,34 +569,36 @@ item_transform_scale_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_item (&return_vals->values[1], item);
+    gimp_value_set_item (gimp_value_array_index (return_vals, 1), item);
 
   return return_vals;
 }
 
-static GValueArray *
-item_transform_shear_invoker (GimpProcedure      *procedure,
-                              Gimp               *gimp,
-                              GimpContext        *context,
-                              GimpProgress       *progress,
-                              const GValueArray  *args,
-                              GError            **error)
+static GimpValueArray *
+item_transform_shear_invoker (GimpProcedure         *procedure,
+                              Gimp                  *gimp,
+                              GimpContext           *context,
+                              GimpProgress          *progress,
+                              const GimpValueArray  *args,
+                              GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gint32 shear_type;
   gdouble magnitude;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
-  shear_type = g_value_get_enum (&args->values[1]);
-  magnitude = g_value_get_double (&args->values[2]);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  shear_type = g_value_get_enum (gimp_value_array_index (args, 1));
+  magnitude = g_value_get_double (gimp_value_array_index (args, 2));
 
   if (success)
     {
       gint x, y, width, height;
 
-      success = gimp_pdb_item_is_attached (item, NULL, TRUE, error);
+      success = gimp_pdb_item_is_attached (item, NULL,
+                                                        GIMP_PDB_ITEM_CONTENT |
+                                                        GIMP_PDB_ITEM_POSITION, error);
 
       if (success &&
           gimp_item_mask_intersect (item, &x, &y, &width, &height))
@@ -608,7 +618,7 @@ item_transform_shear_invoker (GimpProcedure      *procedure,
                                        shear_type, magnitude);
 
           if (progress)
-            gimp_progress_start (progress, _("Shearing"), FALSE);
+            gimp_progress_start (progress, FALSE, _("Shearing"));
 
           if (GIMP_IS_DRAWABLE (item) &&
               ! gimp_viewable_get_children (GIMP_VIEWABLE (item)) &&
@@ -620,7 +630,6 @@ item_transform_shear_invoker (GimpProcedure      *procedure,
                                                          context, &matrix,
                                                          pdb_context->transform_direction,
                                                          pdb_context->interpolation,
-                                                         pdb_context->transform_recursion,
                                                          pdb_context->transform_resize,
                                                          progress);
 
@@ -634,7 +643,6 @@ item_transform_shear_invoker (GimpProcedure      *procedure,
               gimp_item_transform (item, context, &matrix,
                                    pdb_context->transform_direction,
                                    pdb_context->interpolation,
-                                   pdb_context->transform_recursion,
                                    pdb_context->transform_resize,
                                    progress);
             }
@@ -648,21 +656,21 @@ item_transform_shear_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_item (&return_vals->values[1], item);
+    gimp_value_set_item (gimp_value_array_index (return_vals, 1), item);
 
   return return_vals;
 }
 
-static GValueArray *
-item_transform_2d_invoker (GimpProcedure      *procedure,
-                           Gimp               *gimp,
-                           GimpContext        *context,
-                           GimpProgress       *progress,
-                           const GValueArray  *args,
-                           GError            **error)
+static GimpValueArray *
+item_transform_2d_invoker (GimpProcedure         *procedure,
+                           Gimp                  *gimp,
+                           GimpContext           *context,
+                           GimpProgress          *progress,
+                           const GimpValueArray  *args,
+                           GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gdouble source_x;
   gdouble source_y;
@@ -672,20 +680,22 @@ item_transform_2d_invoker (GimpProcedure      *procedure,
   gdouble dest_x;
   gdouble dest_y;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
-  source_x = g_value_get_double (&args->values[1]);
-  source_y = g_value_get_double (&args->values[2]);
-  scale_x = g_value_get_double (&args->values[3]);
-  scale_y = g_value_get_double (&args->values[4]);
-  angle = g_value_get_double (&args->values[5]);
-  dest_x = g_value_get_double (&args->values[6]);
-  dest_y = g_value_get_double (&args->values[7]);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  source_x = g_value_get_double (gimp_value_array_index (args, 1));
+  source_y = g_value_get_double (gimp_value_array_index (args, 2));
+  scale_x = g_value_get_double (gimp_value_array_index (args, 3));
+  scale_y = g_value_get_double (gimp_value_array_index (args, 4));
+  angle = g_value_get_double (gimp_value_array_index (args, 5));
+  dest_x = g_value_get_double (gimp_value_array_index (args, 6));
+  dest_y = g_value_get_double (gimp_value_array_index (args, 7));
 
   if (success)
     {
       gint x, y, width, height;
 
-      success = gimp_pdb_item_is_attached (item, NULL, TRUE, error);
+      success = gimp_pdb_item_is_attached (item, NULL,
+                                                        GIMP_PDB_ITEM_CONTENT |
+                                                        GIMP_PDB_ITEM_POSITION, error);
 
       if (success &&
           gimp_item_mask_intersect (item, &x, &y, &width, &height))
@@ -706,7 +716,7 @@ item_transform_2d_invoker (GimpProcedure      *procedure,
           gimp_matrix3_translate (&matrix, dest_x, dest_y);
 
           if (progress)
-            gimp_progress_start (progress, _("2D Transform"), FALSE);
+            gimp_progress_start (progress, FALSE, _("2D Transform"));
 
           if (GIMP_IS_DRAWABLE (item) &&
               ! gimp_viewable_get_children (GIMP_VIEWABLE (item)) &&
@@ -718,7 +728,6 @@ item_transform_2d_invoker (GimpProcedure      *procedure,
                                                          context, &matrix,
                                                          pdb_context->transform_direction,
                                                          pdb_context->interpolation,
-                                                         pdb_context->transform_recursion,
                                                          pdb_context->transform_resize,
                                                          progress);
 
@@ -732,7 +741,6 @@ item_transform_2d_invoker (GimpProcedure      *procedure,
               gimp_item_transform (item, context, &matrix,
                                    pdb_context->transform_direction,
                                    pdb_context->interpolation,
-                                   pdb_context->transform_recursion,
                                    pdb_context->transform_resize,
                                    progress);
             }
@@ -746,21 +754,21 @@ item_transform_2d_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_item (&return_vals->values[1], item);
+    gimp_value_set_item (gimp_value_array_index (return_vals, 1), item);
 
   return return_vals;
 }
 
-static GValueArray *
-item_transform_matrix_invoker (GimpProcedure      *procedure,
-                               Gimp               *gimp,
-                               GimpContext        *context,
-                               GimpProgress       *progress,
-                               const GValueArray  *args,
-                               GError            **error)
+static GimpValueArray *
+item_transform_matrix_invoker (GimpProcedure         *procedure,
+                               Gimp                  *gimp,
+                               GimpContext           *context,
+                               GimpProgress          *progress,
+                               const GimpValueArray  *args,
+                               GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpItem *item;
   gdouble coeff_0_0;
   gdouble coeff_0_1;
@@ -772,22 +780,24 @@ item_transform_matrix_invoker (GimpProcedure      *procedure,
   gdouble coeff_2_1;
   gdouble coeff_2_2;
 
-  item = gimp_value_get_item (&args->values[0], gimp);
-  coeff_0_0 = g_value_get_double (&args->values[1]);
-  coeff_0_1 = g_value_get_double (&args->values[2]);
-  coeff_0_2 = g_value_get_double (&args->values[3]);
-  coeff_1_0 = g_value_get_double (&args->values[4]);
-  coeff_1_1 = g_value_get_double (&args->values[5]);
-  coeff_1_2 = g_value_get_double (&args->values[6]);
-  coeff_2_0 = g_value_get_double (&args->values[7]);
-  coeff_2_1 = g_value_get_double (&args->values[8]);
-  coeff_2_2 = g_value_get_double (&args->values[9]);
+  item = gimp_value_get_item (gimp_value_array_index (args, 0), gimp);
+  coeff_0_0 = g_value_get_double (gimp_value_array_index (args, 1));
+  coeff_0_1 = g_value_get_double (gimp_value_array_index (args, 2));
+  coeff_0_2 = g_value_get_double (gimp_value_array_index (args, 3));
+  coeff_1_0 = g_value_get_double (gimp_value_array_index (args, 4));
+  coeff_1_1 = g_value_get_double (gimp_value_array_index (args, 5));
+  coeff_1_2 = g_value_get_double (gimp_value_array_index (args, 6));
+  coeff_2_0 = g_value_get_double (gimp_value_array_index (args, 7));
+  coeff_2_1 = g_value_get_double (gimp_value_array_index (args, 8));
+  coeff_2_2 = g_value_get_double (gimp_value_array_index (args, 9));
 
   if (success)
     {
       gint x, y, width, height;
 
-      success = gimp_pdb_item_is_attached (item, NULL, TRUE, error);
+      success = gimp_pdb_item_is_attached (item, NULL,
+                                                        GIMP_PDB_ITEM_CONTENT |
+                                                        GIMP_PDB_ITEM_POSITION, error);
 
       if (success &&
           gimp_item_mask_intersect (item, &x, &y, &width, &height))
@@ -812,7 +822,7 @@ item_transform_matrix_invoker (GimpProcedure      *procedure,
           matrix.coeff[2][2] = coeff_2_2;
 
           if (progress)
-            gimp_progress_start (progress, _("2D Transforming"), FALSE);
+            gimp_progress_start (progress, FALSE, _("2D Transforming"));
 
           if (GIMP_IS_DRAWABLE (item) &&
               ! gimp_viewable_get_children (GIMP_VIEWABLE (item)) &&
@@ -824,7 +834,6 @@ item_transform_matrix_invoker (GimpProcedure      *procedure,
                                                          context, &matrix,
                                                          pdb_context->transform_direction,
                                                          pdb_context->interpolation,
-                                                         pdb_context->transform_recursion,
                                                          pdb_context->transform_resize,
                                                          progress);
 
@@ -838,7 +847,6 @@ item_transform_matrix_invoker (GimpProcedure      *procedure,
               gimp_item_transform (item, context, &matrix,
                                    pdb_context->transform_direction,
                                    pdb_context->interpolation,
-                                   pdb_context->transform_recursion,
                                    pdb_context->transform_resize,
                                    progress);
             }
@@ -852,7 +860,7 @@ item_transform_matrix_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_item (&return_vals->values[1], item);
+    gimp_value_set_item (gimp_value_array_index (return_vals, 1), item);
 
   return return_vals;
 }
@@ -871,7 +879,8 @@ register_item_transform_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-item-transform-flip-simple",
                                      "Flip the specified item either vertically or horizontally.",
-                                     "This procedure flips the specified item. If a selection exists and the item is a drawable, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then flipped. If auto_center is set to TRUE, the flip is around the selection's center. Otherwise, the coordinate of the axis needs to be specified. The return value is the ID of the flipped item. If there was no selection or the item is not a drawable, this will be equal to the item ID supplied as input. Otherwise, this will be the newly created and flipped drawable. This procedure is affected by the following context setters: 'gimp-context-set-transform-resize'.",
+                                     "This procedure flips the specified item. If a selection exists and the item is a drawable, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then flipped. If auto_center is set to TRUE, the flip is around the selection's center. Otherwise, the coordinate of the axis needs to be specified. The return value is the ID of the flipped item. If there was no selection or the item is not a drawable, this will be equal to the item ID supplied as input. Otherwise, this will be the newly created and flipped drawable.\n"
+                                     "This procedure is affected by the following context setters: 'gimp-context-set-transform-resize'.",
                                      "Michael Natterer <mitch@gimp.org>",
                                      "Michael Natterer",
                                      "2004",
@@ -921,7 +930,8 @@ register_item_transform_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-item-transform-flip",
                                      "Flip the specified item around a given line.",
-                                     "This procedure flips the specified item. If a selection exists and the item is a drawable , the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then flipped. The axis to flip around is specified by specifying two points from that line. The return value is the ID of the flipped item. If there was no selection or the item is not a drawable, this will be equal to the item ID supplied as input. Otherwise, this will be the newly created and flipped drawable. This procedure is affected by the following context setters: 'gimp-context-set-interpolation', 'gimp-context-set-transform-direction', 'gimp-context-set-transform-resize', 'gimp-context-set-transform-recursion'.",
+                                     "This procedure flips the specified item. If a selection exists and the item is a drawable , the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then flipped. The axis to flip around is specified by specifying two points from that line. The return value is the ID of the flipped item. If there was no selection or the item is not a drawable, this will be equal to the item ID supplied as input. Otherwise, this will be the newly created and flipped drawable.\n"
+                                     "This procedure is affected by the following context setters: 'gimp-context-set-interpolation', 'gimp-context-set-transform-direction', 'gimp-context-set-transform-resize'.",
                                      "Michael Natterer <mitch@gimp.org>",
                                      "Michael Natterer",
                                      "2010",
@@ -974,8 +984,9 @@ register_item_transform_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-item-transform-perspective",
                                      "Perform a possibly non-affine transformation on the specified item.",
-                                     "This procedure performs a possibly non-affine transformation on the specified item by allowing the corners of the original bounding box to be arbitrarily remapped to any values. The specified item is remapped if no selection exists or it is not a drawable. However, if a selection exists and the item is a drawable, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then remapped as specified. The return value is the ID of the remapped item. If there was no selection or the item is not a drawable, this will be equal to the item ID supplied as input. Otherwise, this will be the newly created and remapped drawable. The 4 coordinates specify the new locations of each corner of the original bounding box. By specifying these values, any affine transformation (rotation, scaling, translation) can be affected. Additionally, these values can be specified such that the resulting transformed item will appear to have"
-  "been projected via a perspective transform. This procedure is affected by the following context setters: 'gimp-context-set-interpolation', 'gimp-context-set-transform-direction', 'gimp-context-set-transform-resize', 'gimp-context-set-transform-recursion'.",
+                                     "This procedure performs a possibly non-affine transformation on the specified item by allowing the corners of the original bounding box to be arbitrarily remapped to any values. The specified item is remapped if no selection exists or it is not a drawable. However, if a selection exists and the item is a drawable, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then remapped as specified. The return value is the ID of the remapped item. If there was no selection or the item is not a drawable, this will be equal to the item ID supplied as input. Otherwise, this will be the newly created and remapped drawable. The 4 coordinates specify the new locations of each corner of the original bounding box. By specifying these values, any affine transformation (rotation, scaling, translation) can be affected. Additionally, these values can be specified such that the resulting transformed item will appear to have\n"
+                                     "been projected via a perspective transform.\n"
+                                     "This procedure is affected by the following context setters: 'gimp-context-set-interpolation', 'gimp-context-set-transform-direction', 'gimp-context-set-transform-resize'.",
                                      "Michael Natterer <mitch@gimp.org>",
                                      "Michael Natterer",
                                      "2010",
@@ -1052,7 +1063,8 @@ register_item_transform_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-item-transform-rotate-simple",
                                      "Rotate the specified item about given coordinates through the specified angle.",
-                                     "This function rotates the specified item. If a selection exists and the item is a drawable, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then rotated by the specified amount. The return value is the ID of the rotated item. If there was no selection or the item is not a drawable, this will be equal to the item ID supplied as input. Otherwise, this will be the newly created and rotated drawable. This procedure is affected by the following context setters: 'gimp-context-set-transform-resize'.",
+                                     "This function rotates the specified item. If a selection exists and the item is a drawable, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then rotated by the specified amount. The return value is the ID of the rotated item. If there was no selection or the item is not a drawable, this will be equal to the item ID supplied as input. Otherwise, this will be the newly created and rotated drawable.\n"
+                                     "This procedure is affected by the following context setters: 'gimp-context-set-transform-resize'.",
                                      "Michael Natterer <mitch@gimp.org>",
                                      "Michael Natterer",
                                      "2010",
@@ -1106,7 +1118,8 @@ register_item_transform_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-item-transform-rotate",
                                      "Rotate the specified item about given coordinates through the specified angle.",
-                                     "This function rotates the specified item. If a selection exists and the item is a drawable, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then rotated by the specified amount. The return value is the ID of the rotated item. If there was no selection or the item is not a drawable, this will be equal to the item ID supplied as input. Otherwise, this will be the newly created and rotated drawable. This procedure is affected by the following context setters: 'gimp-context-set-interpolation', 'gimp-context-set-transform-direction', 'gimp-context-set-transform-resize', 'gimp-context-set-transform-recursion'.",
+                                     "This function rotates the specified item. If a selection exists and the item is a drawable, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then rotated by the specified amount. The return value is the ID of the rotated item. If there was no selection or the item is not a drawable, this will be equal to the item ID supplied as input. Otherwise, this will be the newly created and rotated drawable.\n"
+                                     "This procedure is affected by the following context setters: 'gimp-context-set-interpolation', 'gimp-context-set-transform-direction', 'gimp-context-set-transform-resize'.",
                                      "Michael Natterer <mitch@gimp.org>",
                                      "Michael Natterer",
                                      "2010",
@@ -1159,7 +1172,8 @@ register_item_transform_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-item-transform-scale",
                                      "Scale the specified item.",
-                                     "This procedure scales the specified item. If a selection exists and the item is a drawable, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then scaled by the specified amount. The return value is the ID of the scaled item. If there was no selection or the item is not a drawable, this will be equal to the item ID supplied as input. Otherwise, this will be the newly created and scaled drawable. This procedure is affected by the following context setters: 'gimp-context-set-interpolation', 'gimp-context-set-transform-direction', 'gimp-context-set-transform-resize', 'gimp-context-set-transform-recursion'.",
+                                     "This procedure scales the specified item. If a selection exists and the item is a drawable, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then scaled by the specified amount. The return value is the ID of the scaled item. If there was no selection or the item is not a drawable, this will be equal to the item ID supplied as input. Otherwise, this will be the newly created and scaled drawable.\n"
+                                     "This procedure is affected by the following context setters: 'gimp-context-set-interpolation', 'gimp-context-set-transform-direction', 'gimp-context-set-transform-resize'.",
                                      "Michael Natterer <mitch@gimp.org>",
                                      "Michael Natterer",
                                      "2010",
@@ -1212,7 +1226,8 @@ register_item_transform_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-item-transform-shear",
                                      "Shear the specified item about its center by the specified magnitude.",
-                                     "This procedure shears the specified item. If a selection exists and the item is a drawable, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then sheard by the specified amount. The return value is the ID of the sheard item. If there was no selection or the item is not a drawable, this will be equal to the item ID supplied as input. Otherwise, this will be the newly created and sheard drawable. The shear type parameter indicates whether the shear will be applied horizontally or vertically. The magnitude can be either positive or negative and indicates the extent (in pixels) to shear by. This procedure is affected by the following context setters: 'gimp-context-set-interpolation', 'gimp-context-set-transform-direction', 'gimp-context-set-transform-resize', 'gimp-context-set-transform-recursion'.",
+                                     "This procedure shears the specified item. If a selection exists and the item is a drawable, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then sheard by the specified amount. The return value is the ID of the sheard item. If there was no selection or the item is not a drawable, this will be equal to the item ID supplied as input. Otherwise, this will be the newly created and sheard drawable. The shear type parameter indicates whether the shear will be applied horizontally or vertically. The magnitude can be either positive or negative and indicates the extent (in pixels) to shear by.\n"
+                                     "This procedure is affected by the following context setters: 'gimp-context-set-interpolation', 'gimp-context-set-transform-direction', 'gimp-context-set-transform-resize'.",
                                      "Michael Natterer <mitch@gimp.org>",
                                      "Michael Natterer",
                                      "2010",
@@ -1256,7 +1271,8 @@ register_item_transform_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-item-transform-2d",
                                      "Transform the specified item in 2d.",
-                                     "This procedure transforms the specified item. If a selection exists and the item is a drawable, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then transformed. The transformation is done by scaling the image by the x and y scale factors about the point (source_x, source_y), then rotating around the same point, then translating that point to the new position (dest_x, dest_y). The return value is the ID of the rotated drawable. If there was no selection or the item is not a drawable, this will be equal to the item ID supplied as input. Otherwise, this will be the newly created and transformed drawable. This procedure is affected by the following context setters: 'gimp-context-set-interpolation', 'gimp-context-set-transform-direction', 'gimp-context-set-transform-resize', 'gimp-context-set-transform-recursion'.",
+                                     "This procedure transforms the specified item. If a selection exists and the item is a drawable, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then transformed. The transformation is done by scaling the image by the x and y scale factors about the point (source_x, source_y), then rotating around the same point, then translating that point to the new position (dest_x, dest_y). The return value is the ID of the rotated drawable. If there was no selection or the item is not a drawable, this will be equal to the item ID supplied as input. Otherwise, this will be the newly created and transformed drawable.\n"
+                                     "This procedure is affected by the following context setters: 'gimp-context-set-interpolation', 'gimp-context-set-transform-direction', 'gimp-context-set-transform-resize'.",
                                      "Michael Natterer <mitch@gimp.org>",
                                      "Michael Natterer",
                                      "2010",
@@ -1327,7 +1343,8 @@ register_item_transform_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-item-transform-matrix",
                                      "Transform the specified item in 2d.",
-                                     "This procedure transforms the specified item. If a selection exists and the item is a drawable, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then transformed. The transformation is done by assembling a 3x3 matrix from the coefficients passed. The return value is the ID of the transformed item. If there was no selection or the item is not a drawable, this will be equal to the item ID supplied as input. Otherwise, this will be the newly created and transformed drawable. This procedure is affected by the following context setters: 'gimp-context-set-interpolation', 'gimp-context-set-transform-direction', 'gimp-context-set-transform-resize', 'gimp-context-set-transform-recursion'.",
+                                     "This procedure transforms the specified item. If a selection exists and the item is a drawable, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then transformed. The transformation is done by assembling a 3x3 matrix from the coefficients passed. The return value is the ID of the transformed item. If there was no selection or the item is not a drawable, this will be equal to the item ID supplied as input. Otherwise, this will be the newly created and transformed drawable.\n"
+                                     "This procedure is affected by the following context setters: 'gimp-context-set-interpolation', 'gimp-context-set-transform-direction', 'gimp-context-set-transform-resize'.",
                                      "Michael Natterer <mitch@gimp.org>",
                                      "Michael Natterer",
                                      "2010",

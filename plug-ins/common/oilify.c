@@ -122,7 +122,7 @@ query (void)
                           "Torsten Martinsen",
                           "Torsten Martinsen",
                           "1996",
-                          N_("Oili_fy..."),
+                          N_("Oili_fy (legacy)..."),
                           "RGB*, GRAY*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
@@ -473,9 +473,12 @@ oilify (GimpDrawable *drawable,
     }
   else
     {
-      gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
-      width  = x2 - x1;
-      height = y2 - y1;
+      if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                          &x1, &y1, &width, &height))
+        return;
+
+      x2 = x1 + width;
+      y2 = y1 + height;
     }
 
   progress = 0;
@@ -779,8 +782,8 @@ oilify_dialog (GimpDrawable *drawable)
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -797,7 +800,7 @@ oilify_dialog (GimpDrawable *drawable)
                       main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_drawable_preview_new (drawable, NULL);
+  preview = gimp_drawable_preview_new_from_drawable_id (drawable->drawable_id);
   gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
   g_signal_connect_swapped (preview, "invalidated",

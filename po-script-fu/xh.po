@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gimp20-script-fu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-04 00:47+1200\n"
+"POT-Creation-Date: 2014-05-03 22:00+1200\n"
 "PO-Revision-Date: 2005-03-31 09:03+0200\n"
 "Last-Translator: Canonical Ltd <translations@canonical.com>\n"
 "Language-Team: Xhosa <xh-translate@ubuntu.com>\n"
@@ -218,306 +218,36 @@ msgstr ""
 "%s\n"
 "%s"
 
-#: ../plug-ins/script-fu/script-fu-server.c:824
+#: ../plug-ins/script-fu/script-fu-server.c:827
 msgid "Script-Fu Server Options"
 msgstr "Ekunokukhethwa kuko kweseva ye-Skripti-Fu"
 
-#: ../plug-ins/script-fu/script-fu-server.c:829
+#: ../plug-ins/script-fu/script-fu-server.c:832
 #, fuzzy
 msgid "_Start Server"
 msgstr "_Qalaq iseva..."
 
-#: ../plug-ins/script-fu/script-fu-server.c:862
+#: ../plug-ins/script-fu/script-fu-server.c:865
 msgid "Listen on IP:"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu-server.c:869
+#: ../plug-ins/script-fu/script-fu-server.c:872
 #, fuzzy
 msgid "Server port:"
 msgstr "iSiqhagamsheli seSeva:"
 
-#: ../plug-ins/script-fu/script-fu-server.c:875
+#: ../plug-ins/script-fu/script-fu-server.c:878
 #, fuzzy
 msgid "Server logfile:"
 msgstr "Iseva yefayili yokungena:"
 
-#: ../plug-ins/script-fu/script-fu-server.c:887
+#: ../plug-ins/script-fu/script-fu-server.c:890
 msgid ""
 "Listening on an IP address other than 127.0.0.1 (especially 0.0.0.0) can "
 "allow attackers to remotely execute arbitrary code on this machine."
 msgstr ""
 
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:120
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:166
-msgid "3D _Outline..."
-msgstr "_Umphandle we-3D..."
-
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:121
-msgid ""
-"Outline the selected region (or alpha) with a pattern and add a drop shadow"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:128
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:172
-#: ../plug-ins/script-fu/scripts/beveled-pattern-arrow.scm:157
-#: ../plug-ins/script-fu/scripts/beveled-pattern-bullet.scm:91
-#: ../plug-ins/script-fu/scripts/beveled-pattern-button.scm:130
-#: ../plug-ins/script-fu/scripts/beveled-pattern-heading.scm:116
-#: ../plug-ins/script-fu/scripts/beveled-pattern-hrule.scm:85
-#: ../plug-ins/script-fu/scripts/chip-away.scm:155
-#: ../plug-ins/script-fu/scripts/chip-away.scm:202
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:128
-msgid "Pattern"
-msgstr "iPateni"
-
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:129
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:176
-msgid "Outline blur radius"
-msgstr "Umphandle kamakha-sangqa omfiliba"
-
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:130
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:177
-msgid "Shadow blur radius"
-msgstr "Umakha-sangqa omfiliba wesithunzi"
-
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:131
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:178
-msgid "Bumpmap (alpha layer) blur radius"
-msgstr "Umakha-sangqa omfiliba we-Bumpmap (umaleko we-alpha)"
-
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:132
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:179
-#: ../plug-ins/script-fu/scripts/glossy.scm:216
-#: ../plug-ins/script-fu/scripts/glossy.scm:288
-msgid "Default bumpmap settings"
-msgstr "Imimiselo emiselweyo ye-bumpmap"
-
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:133
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:180
-#: ../plug-ins/script-fu/scripts/glossy.scm:218
-#: ../plug-ins/script-fu/scripts/glossy.scm:290
-#: ../plug-ins/script-fu/scripts/round-corners.scm:139
-msgid "Shadow X offset"
-msgstr "Okungamiselwanga kwesithunzi X"
-
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:134
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:181
-#: ../plug-ins/script-fu/scripts/glossy.scm:219
-#: ../plug-ins/script-fu/scripts/glossy.scm:291
-#: ../plug-ins/script-fu/scripts/round-corners.scm:140
-msgid "Shadow Y offset"
-msgstr "Okungamiselwanga kwesithunzi se-Y"
-
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:167
-msgid "Create a logo with outlined text and a drop shadow"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:173
-#: ../plug-ins/script-fu/scripts/alien-glow-button.scm:156
-#: ../plug-ins/script-fu/scripts/alien-glow-logo.scm:111
-#: ../plug-ins/script-fu/scripts/alien-neon-logo.scm:175
-#: ../plug-ins/script-fu/scripts/basic1-logo.scm:98
-#: ../plug-ins/script-fu/scripts/basic2-logo.scm:120
-#: ../plug-ins/script-fu/scripts/beveled-button.scm:148
-#: ../plug-ins/script-fu/scripts/beveled-pattern-button.scm:126
-#: ../plug-ins/script-fu/scripts/beveled-pattern-heading.scm:113
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:190
-#: ../plug-ins/script-fu/scripts/bovinated-logo.scm:131
-#: ../plug-ins/script-fu/scripts/carved-logo.scm:168
-#: ../plug-ins/script-fu/scripts/chalk.scm:128
-#: ../plug-ins/script-fu/scripts/chip-away.scm:192
-#: ../plug-ins/script-fu/scripts/chrome-logo.scm:126
-#: ../plug-ins/script-fu/scripts/comic-logo.scm:158
-#: ../plug-ins/script-fu/scripts/coolmetal-logo.scm:184
-#: ../plug-ins/script-fu/scripts/crystal-logo.scm:216
-#: ../plug-ins/script-fu/scripts/frosty-logo.scm:203
-#: ../plug-ins/script-fu/scripts/glossy.scm:273
-#: ../plug-ins/script-fu/scripts/glowing-logo.scm:115
-#: ../plug-ins/script-fu/scripts/gradient-bevel-logo.scm:139
-#: ../plug-ins/script-fu/scripts/i26-gunya2.scm:98
-#: ../plug-ins/script-fu/scripts/neon-logo.scm:286
-#: ../plug-ins/script-fu/scripts/news-text.scm:83
-#: ../plug-ins/script-fu/scripts/pupi-button.scm:193
-#: ../plug-ins/script-fu/scripts/slide.scm:244
-#: ../plug-ins/script-fu/scripts/sota-chrome-logo.scm:213
-#: ../plug-ins/script-fu/scripts/speed-text.scm:92
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm:145
-#: ../plug-ins/script-fu/scripts/text-circle.scm:213
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:167
-#: ../plug-ins/script-fu/scripts/title-header.scm:171
-#: ../plug-ins/script-fu/scripts/t-o-p-logo.scm:144
-msgid "Text"
-msgstr "Umbhalo"
-
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:174
-#: ../plug-ins/script-fu/scripts/alien-glow-button.scm:158
-#: ../plug-ins/script-fu/scripts/alien-glow-logo.scm:112
-#: ../plug-ins/script-fu/scripts/alien-neon-logo.scm:176
-#: ../plug-ins/script-fu/scripts/basic1-logo.scm:99
-#: ../plug-ins/script-fu/scripts/basic2-logo.scm:121
-#: ../plug-ins/script-fu/scripts/beveled-button.scm:149
-#: ../plug-ins/script-fu/scripts/beveled-pattern-button.scm:127
-#: ../plug-ins/script-fu/scripts/beveled-pattern-heading.scm:114
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:191
-#: ../plug-ins/script-fu/scripts/bovinated-logo.scm:132
-#: ../plug-ins/script-fu/scripts/carved-logo.scm:169
-#: ../plug-ins/script-fu/scripts/chalk.scm:129
-#: ../plug-ins/script-fu/scripts/chip-away.scm:194
-#: ../plug-ins/script-fu/scripts/chrome-logo.scm:127
-#: ../plug-ins/script-fu/scripts/comic-logo.scm:159
-#: ../plug-ins/script-fu/scripts/coolmetal-logo.scm:185
-#: ../plug-ins/script-fu/scripts/crystal-logo.scm:217
-#: ../plug-ins/script-fu/scripts/frosty-logo.scm:204
-#: ../plug-ins/script-fu/scripts/glossy.scm:274
-#: ../plug-ins/script-fu/scripts/glowing-logo.scm:116
-#: ../plug-ins/script-fu/scripts/gradient-bevel-logo.scm:140
-#: ../plug-ins/script-fu/scripts/i26-gunya2.scm:102
-#: ../plug-ins/script-fu/scripts/neon-logo.scm:287
-#: ../plug-ins/script-fu/scripts/news-text.scm:85
-#: ../plug-ins/script-fu/scripts/pupi-button.scm:194
-#: ../plug-ins/script-fu/scripts/sota-chrome-logo.scm:214
-#: ../plug-ins/script-fu/scripts/speed-text.scm:94
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm:146
-#: ../plug-ins/script-fu/scripts/text-circle.scm:217
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:168
-#: ../plug-ins/script-fu/scripts/title-header.scm:172
-#: ../plug-ins/script-fu/scripts/t-o-p-logo.scm:145
-msgid "Font size (pixels)"
-msgstr "Isayizi yefonti (ii-pixels)"
-
-#: ../plug-ins/script-fu/scripts/3d-outline.scm:175
-#: ../plug-ins/script-fu/scripts/alien-glow-button.scm:157
-#: ../plug-ins/script-fu/scripts/alien-glow-logo.scm:113
-#: ../plug-ins/script-fu/scripts/alien-neon-logo.scm:177
-#: ../plug-ins/script-fu/scripts/basic1-logo.scm:100
-#: ../plug-ins/script-fu/scripts/basic2-logo.scm:122
-#: ../plug-ins/script-fu/scripts/beveled-button.scm:150
-#: ../plug-ins/script-fu/scripts/beveled-pattern-button.scm:128
-#: ../plug-ins/script-fu/scripts/beveled-pattern-heading.scm:115
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:192
-#: ../plug-ins/script-fu/scripts/bovinated-logo.scm:133
-#: ../plug-ins/script-fu/scripts/carved-logo.scm:170
-#: ../plug-ins/script-fu/scripts/chalk.scm:130
-#: ../plug-ins/script-fu/scripts/chip-away.scm:193
-#: ../plug-ins/script-fu/scripts/chrome-logo.scm:128
-#: ../plug-ins/script-fu/scripts/comic-logo.scm:160
-#: ../plug-ins/script-fu/scripts/coolmetal-logo.scm:186
-#: ../plug-ins/script-fu/scripts/crystal-logo.scm:218
-#: ../plug-ins/script-fu/scripts/frosty-logo.scm:205
-#: ../plug-ins/script-fu/scripts/glossy.scm:275
-#: ../plug-ins/script-fu/scripts/glowing-logo.scm:117
-#: ../plug-ins/script-fu/scripts/gradient-bevel-logo.scm:141
-#: ../plug-ins/script-fu/scripts/i26-gunya2.scm:101
-#: ../plug-ins/script-fu/scripts/neon-logo.scm:288
-#: ../plug-ins/script-fu/scripts/news-text.scm:84
-#: ../plug-ins/script-fu/scripts/pupi-button.scm:195
-#: ../plug-ins/script-fu/scripts/slide.scm:246
-#: ../plug-ins/script-fu/scripts/sota-chrome-logo.scm:215
-#: ../plug-ins/script-fu/scripts/speed-text.scm:93
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm:147
-#: ../plug-ins/script-fu/scripts/text-circle.scm:219
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:169
-#: ../plug-ins/script-fu/scripts/title-header.scm:173
-#: ../plug-ins/script-fu/scripts/t-o-p-logo.scm:146
-msgid "Font"
-msgstr "iFonti"
-
-#: ../plug-ins/script-fu/scripts/3dTruchet.scm:225
-msgid "3_D Truchet..."
-msgstr "i-3_D Truchet..."
-
-#: ../plug-ins/script-fu/scripts/3dTruchet.scm:226
-msgid "Create an image filled with a 3D Truchet pattern"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/3dTruchet.scm:231
-#: ../plug-ins/script-fu/scripts/truchet.scm:171
-msgid "Block size"
-msgstr "Misa isayizi"
-
-#: ../plug-ins/script-fu/scripts/3dTruchet.scm:232
-#: ../plug-ins/script-fu/scripts/add-bevel.scm:193
-#: ../plug-ins/script-fu/scripts/truchet.scm:172
-msgid "Thickness"
-msgstr "Ubungqindilili"
-
-#: ../plug-ins/script-fu/scripts/3dTruchet.scm:233
-#: ../plug-ins/script-fu/scripts/alien-glow-arrow.scm:184
-#: ../plug-ins/script-fu/scripts/alien-glow-bar.scm:95
-#: ../plug-ins/script-fu/scripts/alien-glow-bullet.scm:107
-#: ../plug-ins/script-fu/scripts/alien-glow-button.scm:161
-#: ../plug-ins/script-fu/scripts/alien-neon-logo.scm:135
-#: ../plug-ins/script-fu/scripts/alien-neon-logo.scm:179
-#: ../plug-ins/script-fu/scripts/basic1-logo.scm:67
-#: ../plug-ins/script-fu/scripts/basic1-logo.scm:101
-#: ../plug-ins/script-fu/scripts/basic2-logo.scm:89
-#: ../plug-ins/script-fu/scripts/basic2-logo.scm:123
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:135
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:194
-#: ../plug-ins/script-fu/scripts/bovinated-logo.scm:136
-#: ../plug-ins/script-fu/scripts/chalk.scm:89
-#: ../plug-ins/script-fu/scripts/chalk.scm:131
-#: ../plug-ins/script-fu/scripts/chrome-logo.scm:129
-#: ../plug-ins/script-fu/scripts/comic-logo.scm:124
-#: ../plug-ins/script-fu/scripts/comic-logo.scm:165
-#: ../plug-ins/script-fu/scripts/coolmetal-logo.scm:149
-#: ../plug-ins/script-fu/scripts/coolmetal-logo.scm:187
-#: ../plug-ins/script-fu/scripts/frosty-logo.scm:144
-#: ../plug-ins/script-fu/scripts/frosty-logo.scm:206
-#: ../plug-ins/script-fu/scripts/glossy.scm:209
-#: ../plug-ins/script-fu/scripts/glossy.scm:281
-#: ../plug-ins/script-fu/scripts/glowing-logo.scm:85
-#: ../plug-ins/script-fu/scripts/glowing-logo.scm:118
-#: ../plug-ins/script-fu/scripts/gradient-bevel-logo.scm:105
-#: ../plug-ins/script-fu/scripts/gradient-bevel-logo.scm:144
-#: ../plug-ins/script-fu/scripts/neon-logo.scm:253
-#: ../plug-ins/script-fu/scripts/neon-logo.scm:289
-#: ../plug-ins/script-fu/scripts/news-text.scm:90
-#: ../plug-ins/script-fu/scripts/speed-text.scm:97
-#: ../plug-ins/script-fu/scripts/swirltile.scm:65
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:132
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:174
-#: ../plug-ins/script-fu/scripts/t-o-p-logo.scm:111
-#: ../plug-ins/script-fu/scripts/t-o-p-logo.scm:151
-#: ../plug-ins/script-fu/scripts/truchet.scm:173
-msgid "Background color"
-msgstr "Umbala wokuNgasemva"
-
-#: ../plug-ins/script-fu/scripts/3dTruchet.scm:234
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:140
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:199
-msgid "Start blend"
-msgstr "Qala uxubo"
-
-#: ../plug-ins/script-fu/scripts/3dTruchet.scm:235
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:141
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:200
-msgid "End blend"
-msgstr "Phelisa uxubo"
-
-#: ../plug-ins/script-fu/scripts/3dTruchet.scm:236
-msgid "Supersample"
-msgstr "Isampuli enkulu"
-
-# leethayili?
-#: ../plug-ins/script-fu/scripts/3dTruchet.scm:237
-#: ../plug-ins/script-fu/scripts/truchet.scm:175
-msgid "Number of X tiles"
-msgstr "iNani leethayili X"
-
-# leethayili?
-#: ../plug-ins/script-fu/scripts/3dTruchet.scm:238
-#: ../plug-ins/script-fu/scripts/truchet.scm:176
-msgid "Number of Y tiles"
-msgstr "iNani leethayili Y"
-
 #: ../plug-ins/script-fu/scripts/add-bevel.scm:76
-#: ../plug-ins/script-fu/scripts/beveled-button.scm:77
-#: ../plug-ins/script-fu/scripts/beveled-pattern-arrow.scm:79
-#: ../plug-ins/script-fu/scripts/beveled-pattern-bullet.scm:26
-#: ../plug-ins/script-fu/scripts/beveled-pattern-button.scm:57
-#: ../plug-ins/script-fu/scripts/beveled-pattern-heading.scm:44
-#: ../plug-ins/script-fu/scripts/beveled-pattern-hrule.scm:30
 msgid "Bumpmap"
 msgstr ""
 
@@ -529,6 +259,10 @@ msgstr "Yongeza iN_am..."
 msgid "Add a beveled border to an image"
 msgstr ""
 
+#: ../plug-ins/script-fu/scripts/add-bevel.scm:193
+msgid "Thickness"
+msgstr "Ubungqindilili"
+
 #: ../plug-ins/script-fu/scripts/add-bevel.scm:194
 #: ../plug-ins/script-fu/scripts/fuzzyborder.scm:160
 #: ../plug-ins/script-fu/scripts/old-photo.scm:104
@@ -539,8 +273,6 @@ msgid "Work on copy"
 msgstr "Sebenza kwikopi"
 
 #: ../plug-ins/script-fu/scripts/add-bevel.scm:195
-#: ../plug-ins/script-fu/scripts/chip-away.scm:152
-#: ../plug-ins/script-fu/scripts/chip-away.scm:199
 msgid "Keep bump layer"
 msgstr "Gcina umaleko wesigingqi"
 
@@ -573,359 +305,6 @@ msgstr "Umbala womda"
 msgid "Delta value on color"
 msgstr "Ixabiso le-Delta kumbala"
 
-#: ../plug-ins/script-fu/scripts/alien-glow-arrow.scm:118
-#: ../plug-ins/script-fu/scripts/beveled-pattern-arrow.scm:78
-#, fuzzy
-msgid "Arrow"
-msgstr "_Utolo..."
-
-#: ../plug-ins/script-fu/scripts/alien-glow-arrow.scm:121
-#: ../plug-ins/script-fu/scripts/alien-glow-bar.scm:35
-#: ../plug-ins/script-fu/scripts/alien-glow-bullet.scm:46
-#, fuzzy
-msgid "Alien Glow"
-msgstr "Ukumenyezela _kwe-Alien..."
-
-#: ../plug-ins/script-fu/scripts/alien-glow-arrow.scm:124
-#: ../plug-ins/script-fu/scripts/alien-glow-bar.scm:38
-#: ../plug-ins/script-fu/scripts/alien-glow-bullet.scm:48
-#: ../plug-ins/script-fu/scripts/alien-glow-button.scm:78
-#: ../plug-ins/script-fu/scripts/beveled-pattern-button.scm:56
-#: ../plug-ins/script-fu/scripts/beveled-pattern-heading.scm:41
-#: ../plug-ins/script-fu/scripts/chrome-it.scm:103
-#, fuzzy
-msgid "Background"
-msgstr "Umbala wokuNgasemva"
-
-#: ../plug-ins/script-fu/scripts/alien-glow-arrow.scm:175
-#: ../plug-ins/script-fu/scripts/beveled-pattern-arrow.scm:149
-msgid "_Arrow..."
-msgstr "_Utolo..."
-
-#: ../plug-ins/script-fu/scripts/alien-glow-arrow.scm:176
-msgid "Create an arrow graphic with an eerie glow for web pages"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/alien-glow-arrow.scm:181
-#: ../plug-ins/script-fu/scripts/beveled-pattern-arrow.scm:155
-#: ../plug-ins/script-fu/scripts/lava.scm:126
-msgid "Size"
-msgstr "Isayizi"
-
-#: ../plug-ins/script-fu/scripts/alien-glow-arrow.scm:182
-#: ../plug-ins/script-fu/scripts/beveled-pattern-arrow.scm:156
-msgid "Orientation"
-msgstr "Uqhelaniso"
-
-#: ../plug-ins/script-fu/scripts/alien-glow-arrow.scm:182
-#: ../plug-ins/script-fu/scripts/beveled-pattern-arrow.scm:156
-msgid "Right"
-msgstr "eKunene"
-
-#: ../plug-ins/script-fu/scripts/alien-glow-arrow.scm:182
-#: ../plug-ins/script-fu/scripts/beveled-pattern-arrow.scm:156
-msgid "Left"
-msgstr "eKhohlo"
-
-#: ../plug-ins/script-fu/scripts/alien-glow-arrow.scm:182
-#: ../plug-ins/script-fu/scripts/beveled-pattern-arrow.scm:156
-msgid "Up"
-msgstr "Phezulu"
-
-#: ../plug-ins/script-fu/scripts/alien-glow-arrow.scm:182
-#: ../plug-ins/script-fu/scripts/beveled-pattern-arrow.scm:156
-msgid "Down"
-msgstr "eZantsi"
-
-#: ../plug-ins/script-fu/scripts/alien-glow-arrow.scm:183
-#: ../plug-ins/script-fu/scripts/alien-glow-bar.scm:94
-#: ../plug-ins/script-fu/scripts/alien-glow-bullet.scm:106
-#: ../plug-ins/script-fu/scripts/alien-glow-button.scm:160
-#: ../plug-ins/script-fu/scripts/alien-glow-logo.scm:74
-#: ../plug-ins/script-fu/scripts/alien-glow-logo.scm:114
-#: ../plug-ins/script-fu/scripts/alien-neon-logo.scm:134
-#: ../plug-ins/script-fu/scripts/alien-neon-logo.scm:178
-#: ../plug-ins/script-fu/scripts/burn-in-anim.scm:227
-#: ../plug-ins/script-fu/scripts/neon-logo.scm:254
-#: ../plug-ins/script-fu/scripts/neon-logo.scm:290
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm:148
-msgid "Glow color"
-msgstr "Umbala omenyezelayo"
-
-#: ../plug-ins/script-fu/scripts/alien-glow-arrow.scm:185
-#: ../plug-ins/script-fu/scripts/alien-glow-bar.scm:96
-#: ../plug-ins/script-fu/scripts/alien-glow-bullet.scm:108
-#: ../plug-ins/script-fu/scripts/alien-glow-button.scm:164
-#: ../plug-ins/script-fu/scripts/camo.scm:106
-#: ../plug-ins/script-fu/scripts/fuzzyborder.scm:161
-msgid "Flatten image"
-msgstr "Yenza mcaba umfanekiso"
-
-#: ../plug-ins/script-fu/scripts/alien-glow-bar.scm:32
-msgid "Bar"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/alien-glow-bar.scm:86
-#: ../plug-ins/script-fu/scripts/beveled-pattern-hrule.scm:77
-msgid "_Hrule..."
-msgstr "i-_Hrule..."
-
-#: ../plug-ins/script-fu/scripts/alien-glow-bar.scm:87
-msgid "Create an Hrule graphic with an eerie glow for web pages"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/alien-glow-bar.scm:92
-msgid "Bar length"
-msgstr "Ubude be-Bar"
-
-#: ../plug-ins/script-fu/scripts/alien-glow-bar.scm:93
-msgid "Bar height"
-msgstr "Ukuphakama kwe-Bar"
-
-#: ../plug-ins/script-fu/scripts/alien-glow-bullet.scm:44
-#: ../plug-ins/script-fu/scripts/beveled-pattern-bullet.scm:25
-#, fuzzy
-msgid "Bullet"
-msgstr "i_Mbumbulu..."
-
-#: ../plug-ins/script-fu/scripts/alien-glow-bullet.scm:99
-#: ../plug-ins/script-fu/scripts/beveled-pattern-bullet.scm:84
-msgid "_Bullet..."
-msgstr "i_Mbumbulu..."
-
-#: ../plug-ins/script-fu/scripts/alien-glow-bullet.scm:100
-msgid "Create a bullet graphic with an eerie glow for web pages"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/alien-glow-bullet.scm:105
-#: ../plug-ins/script-fu/scripts/text-circle.scm:214
-#: ../plug-ins/script-fu/scripts/tileblur.scm:76
-msgid "Radius"
-msgstr "Umakha-sangqa"
-
-#: ../plug-ins/script-fu/scripts/alien-glow-button.scm:81
-msgid "Glow"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/alien-glow-button.scm:84
-#, fuzzy
-msgid "Button"
-msgstr "iQ_hosha..."
-
-#: ../plug-ins/script-fu/scripts/alien-glow-button.scm:150
-#: ../plug-ins/script-fu/scripts/beveled-pattern-button.scm:120
-msgid "B_utton..."
-msgstr "iQ_hosha..."
-
-#: ../plug-ins/script-fu/scripts/alien-glow-button.scm:151
-msgid "Create a button graphic with an eerie glow for web pages"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/alien-glow-button.scm:159
-#: ../plug-ins/script-fu/scripts/basic1-logo.scm:68
-#: ../plug-ins/script-fu/scripts/basic1-logo.scm:102
-#: ../plug-ins/script-fu/scripts/basic2-logo.scm:90
-#: ../plug-ins/script-fu/scripts/basic2-logo.scm:124
-#: ../plug-ins/script-fu/scripts/beveled-button.scm:153
-#: ../plug-ins/script-fu/scripts/beveled-pattern-button.scm:129
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:193
-#: ../plug-ins/script-fu/scripts/i26-gunya2.scm:99
-#: ../plug-ins/script-fu/scripts/news-text.scm:89
-#: ../plug-ins/script-fu/scripts/pupi-button.scm:198
-#: ../plug-ins/script-fu/scripts/speed-text.scm:96
-msgid "Text color"
-msgstr "Umbala woMbhalo"
-
-#: ../plug-ins/script-fu/scripts/alien-glow-button.scm:162
-#: ../plug-ins/script-fu/scripts/beveled-button.scm:154
-msgid "Padding"
-msgstr "Isongezo senkcukacha"
-
-#: ../plug-ins/script-fu/scripts/alien-glow-button.scm:163
-msgid "Glow radius"
-msgstr "Umakha-sangqa wokumenyezela"
-
-#: ../plug-ins/script-fu/scripts/alien-glow-logo.scm:65
-#: ../plug-ins/script-fu/scripts/alien-glow-logo.scm:105
-msgid "Alien _Glow..."
-msgstr "Ukumenyezela _kwe-Alien..."
-
-#: ../plug-ins/script-fu/scripts/alien-glow-logo.scm:66
-msgid "Add an eerie glow around the selected region (or alpha)"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/alien-glow-logo.scm:73
-msgid "Glow size (pixels * 4)"
-msgstr "Isayizi yokumenyezela (ii-pixels * 4)"
-
-#: ../plug-ins/script-fu/scripts/alien-glow-logo.scm:106
-msgid "Create a logo with an alien glow around the text"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/alien-neon-logo.scm:126
-#: ../plug-ins/script-fu/scripts/alien-neon-logo.scm:169
-msgid "Alien _Neon..."
-msgstr "i-Alien _Neon..."
-
-#: ../plug-ins/script-fu/scripts/alien-neon-logo.scm:127
-msgid "Add psychedelic outlines to the selected region (or alpha)"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/alien-neon-logo.scm:136
-#: ../plug-ins/script-fu/scripts/alien-neon-logo.scm:180
-msgid "Width of bands"
-msgstr "Ububanzi bamabhanti"
-
-#: ../plug-ins/script-fu/scripts/alien-neon-logo.scm:137
-#: ../plug-ins/script-fu/scripts/alien-neon-logo.scm:181
-msgid "Width of gaps"
-msgstr "Ububanzi bezithuba"
-
-#: ../plug-ins/script-fu/scripts/alien-neon-logo.scm:138
-#: ../plug-ins/script-fu/scripts/alien-neon-logo.scm:182
-msgid "Number of bands"
-msgstr "iNani lamabhanti"
-
-#: ../plug-ins/script-fu/scripts/alien-neon-logo.scm:139
-#: ../plug-ins/script-fu/scripts/alien-neon-logo.scm:183
-msgid "Fade away"
-msgstr "Cima"
-
-#: ../plug-ins/script-fu/scripts/alien-neon-logo.scm:170
-msgid "Create a logo with psychedelic outlines around the text"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/basic1-logo.scm:59
-#: ../plug-ins/script-fu/scripts/basic1-logo.scm:92
-msgid "_Basic I..."
-msgstr "i_Siseko I..."
-
-#: ../plug-ins/script-fu/scripts/basic1-logo.scm:60
-msgid ""
-"Add a gradient effect, a drop shadow, and a background to the selected "
-"region (or alpha)"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/basic1-logo.scm:93
-msgid ""
-"Create a plain text logo with a gradient effect, a drop shadow, and a "
-"background"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/basic2-logo.scm:81
-#: ../plug-ins/script-fu/scripts/basic2-logo.scm:114
-msgid "B_asic II..."
-msgstr "iS_iseko II..."
-
-#: ../plug-ins/script-fu/scripts/basic2-logo.scm:82
-msgid "Add a shadow and a highlight to the selected region (or alpha)"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/basic2-logo.scm:115
-msgid "Create a simple logo with a shadow and a highlight"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/beveled-button.scm:80
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:142
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:201
-#: ../plug-ins/script-fu/scripts/comic-logo.scm:120
-#: ../plug-ins/script-fu/scripts/comic-logo.scm:161
-#: ../plug-ins/script-fu/scripts/coolmetal-logo.scm:150
-#: ../plug-ins/script-fu/scripts/coolmetal-logo.scm:188
-#: ../plug-ins/script-fu/scripts/land.scm:87
-#: ../plug-ins/script-fu/scripts/lava.scm:128
-#: ../plug-ins/script-fu/scripts/rendermap.scm:88
-#: ../plug-ins/script-fu/scripts/spyrogimp.scm:351
-msgid "Gradient"
-msgstr "i-Gradient"
-
-#: ../plug-ins/script-fu/scripts/beveled-button.scm:142
-msgid "Simple _Beveled Button..."
-msgstr "iQosha elineNcam _eliLula..."
-
-#: ../plug-ins/script-fu/scripts/beveled-button.scm:143
-msgid "Create a simple, beveled button graphic for webpages"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/beveled-button.scm:151
-msgid "Upper-left color"
-msgstr "Umbala ophezulu ekhohlo"
-
-#: ../plug-ins/script-fu/scripts/beveled-button.scm:152
-msgid "Lower-right color"
-msgstr "Umbala osezantsi ekhohlo"
-
-#: ../plug-ins/script-fu/scripts/beveled-button.scm:155
-#: ../plug-ins/script-fu/scripts/gradient-bevel-logo.scm:104
-#: ../plug-ins/script-fu/scripts/gradient-bevel-logo.scm:143
-#: ../plug-ins/script-fu/scripts/pupi-button.scm:204
-msgid "Bevel width"
-msgstr "Ububanzi beNcam"
-
-#: ../plug-ins/script-fu/scripts/beveled-button.scm:156
-#: ../plug-ins/script-fu/scripts/beveled-pattern-button.scm:131
-#: ../plug-ins/script-fu/scripts/pupi-button.scm:208
-msgid "Pressed"
-msgstr "Cinezelwe"
-
-#: ../plug-ins/script-fu/scripts/beveled-pattern-arrow.scm:150
-msgid "Create a beveled pattern arrow for webpages"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/beveled-pattern-bullet.scm:85
-msgid "Create a beveled pattern bullet for webpages"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/beveled-pattern-bullet.scm:90
-msgid "Diameter"
-msgstr "Isinqumla-sangqa"
-
-#: ../plug-ins/script-fu/scripts/beveled-pattern-bullet.scm:92
-#: ../plug-ins/script-fu/scripts/beveled-pattern-heading.scm:117
-#: ../plug-ins/script-fu/scripts/spinning-globe.scm:104
-msgid "Transparent background"
-msgstr "Okungasemva okucacileyo"
-
-#: ../plug-ins/script-fu/scripts/beveled-pattern-button.scm:121
-msgid "Create a beveled pattern button for webpages"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/beveled-pattern-heading.scm:107
-msgid "H_eading..."
-msgstr "iS_ihloko..."
-
-#: ../plug-ins/script-fu/scripts/beveled-pattern-heading.scm:108
-msgid "Create a beveled pattern heading for webpages"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/beveled-pattern-hrule.scm:27
-msgid "Rule"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/beveled-pattern-hrule.scm:78
-msgid "Create a beveled pattern hrule for webpages"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/beveled-pattern-hrule.scm:83
-#: ../plug-ins/script-fu/scripts/gradient-example.scm:69
-#: ../plug-ins/script-fu/scripts/mkbrush.scm:70
-#: ../plug-ins/script-fu/scripts/mkbrush.scm:138
-#: ../plug-ins/script-fu/scripts/mkbrush.scm:194
-#: ../plug-ins/script-fu/scripts/mkbrush.scm:263
-#: ../plug-ins/script-fu/scripts/swirltile.scm:62
-msgid "Width"
-msgstr "Ububanzi"
-
-#: ../plug-ins/script-fu/scripts/beveled-pattern-hrule.scm:84
-#: ../plug-ins/script-fu/scripts/gradient-example.scm:70
-#: ../plug-ins/script-fu/scripts/mkbrush.scm:71
-#: ../plug-ins/script-fu/scripts/mkbrush.scm:139
-#: ../plug-ins/script-fu/scripts/mkbrush.scm:195
-#: ../plug-ins/script-fu/scripts/mkbrush.scm:264
-#: ../plug-ins/script-fu/scripts/swirltile.scm:61
-msgid "Height"
-msgstr "Ukuphakama"
-
 #: ../plug-ins/script-fu/scripts/blend-anim.scm:206
 #: ../plug-ins/script-fu/scripts/spyrogimp.scm:327
 msgid "Frame"
@@ -957,90 +336,6 @@ msgstr "Ubukhulu. bukamakha-sangqa omfiliba"
 msgid "Looped"
 msgstr "Ifakwe kwiseti yeengxelo"
 
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:126
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:184
-msgid "Blen_ded..."
-msgstr "Ixuty_iwe..."
-
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:127
-msgid ""
-"Add blended backgrounds, highlights, and shadows to the selected region (or "
-"alpha)"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:134
-msgid "Offset (pixels)"
-msgstr "Okungamiselwanga (ii-pixels)"
-
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:136
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:195
-msgid "Blend mode"
-msgstr "Xuba inkqubo"
-
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:136
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:195
-msgid "FG-BG-RGB"
-msgstr "i-FG-BG-RGB"
-
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:137
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:196
-msgid "FG-BG-HSV"
-msgstr "i-FG-BG-HSV"
-
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:138
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:197
-msgid "FG-Transparent"
-msgstr "i-FG-eCacileyo"
-
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:139
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:198
-msgid "Custom Gradient"
-msgstr "i-Gradient ozenzeleyo"
-
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:143
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:202
-#: ../plug-ins/script-fu/scripts/comic-logo.scm:121
-#: ../plug-ins/script-fu/scripts/comic-logo.scm:162
-#: ../plug-ins/script-fu/scripts/coolmetal-logo.scm:151
-#: ../plug-ins/script-fu/scripts/coolmetal-logo.scm:189
-#: ../plug-ins/script-fu/scripts/gradient-example.scm:71
-#: ../plug-ins/script-fu/scripts/rendermap.scm:89
-#: ../plug-ins/script-fu/scripts/title-header.scm:174
-msgid "Gradient reverse"
-msgstr "Ukubuyiselwa umva kwe-Gradient"
-
-#: ../plug-ins/script-fu/scripts/blended-logo.scm:185
-msgid "Create a logo with blended backgrounds, highlights, and shadows"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/bovinated-logo.scm:91
-#: ../plug-ins/script-fu/scripts/bovinated-logo.scm:125
-msgid "Bo_vination..."
-msgstr "i-Bo_vination..."
-
-#: ../plug-ins/script-fu/scripts/bovinated-logo.scm:92
-msgid "Add 'cow spots' to the selected region (or alpha)"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/bovinated-logo.scm:99
-#: ../plug-ins/script-fu/scripts/bovinated-logo.scm:134
-msgid "Spots density X"
-msgstr "Ubunzima-mthamo bamachokoza ka-X"
-
-#: ../plug-ins/script-fu/scripts/bovinated-logo.scm:100
-#: ../plug-ins/script-fu/scripts/bovinated-logo.scm:135
-msgid "Spots density Y"
-msgstr "Ubunzima-mthamo bamachokoza ka-Y"
-
-#: ../plug-ins/script-fu/scripts/bovinated-logo.scm:101
-#: ../plug-ins/script-fu/scripts/chrome-logo.scm:96
-msgid "Background Color"
-msgstr "Umbala wokungasemva"
-
-#: ../plug-ins/script-fu/scripts/bovinated-logo.scm:126
-msgid "Create a logo with text in the style of 'cow spots'"
-msgstr ""
-
 #. --- false form of "if-1"
 #: ../plug-ins/script-fu/scripts/burn-in-anim.scm:212
 msgid ""
@@ -1057,6 +352,10 @@ msgid ""
 "Create intermediate layers to produce an animated 'burn-in' transition "
 "between two layers"
 msgstr ""
+
+#: ../plug-ins/script-fu/scripts/burn-in-anim.scm:227
+msgid "Glow color"
+msgstr "Umbala omenyezelayo"
 
 #: ../plug-ins/script-fu/scripts/burn-in-anim.scm:228
 msgid "Fadeout"
@@ -1086,95 +385,38 @@ msgstr "Lungiselela i-GIF"
 msgid "Speed (pixels/frame)"
 msgstr "Isantya (ii-pixels/i-frame)"
 
-#: ../plug-ins/script-fu/scripts/camo.scm:94
-msgid "_Camouflage..."
-msgstr "_Okujika imbonakalo..."
-
-#: ../plug-ins/script-fu/scripts/camo.scm:95
-msgid "Create an image filled with a camouflage pattern"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/camo.scm:100
-#: ../plug-ins/script-fu/scripts/rendermap.scm:86
-msgid "Image size"
-msgstr "Isayizi yomfanekiso"
-
-#: ../plug-ins/script-fu/scripts/camo.scm:101
-#: ../plug-ins/script-fu/scripts/rendermap.scm:87
-msgid "Granularity"
-msgstr "Okuziinkozo"
-
-#: ../plug-ins/script-fu/scripts/camo.scm:102
-msgid "Color 1"
-msgstr "Umbala woku-1"
-
-#: ../plug-ins/script-fu/scripts/camo.scm:103
-msgid "Color 2"
-msgstr "Umbala wesi-2"
-
-#: ../plug-ins/script-fu/scripts/camo.scm:104
-msgid "Color 3"
-msgstr "Umbala wesi-3"
-
-#: ../plug-ins/script-fu/scripts/camo.scm:105
-#: ../plug-ins/script-fu/scripts/distress-selection.scm:113
-msgid "Smooth"
-msgstr "Gudile"
-
-#: ../plug-ins/script-fu/scripts/carved-logo.scm:148
 #: ../plug-ins/script-fu/scripts/carve-it.scm:168
 msgid "Carved Surface"
 msgstr ""
 
-#: ../plug-ins/script-fu/scripts/carved-logo.scm:149
 #: ../plug-ins/script-fu/scripts/carve-it.scm:169
 #, fuzzy
 msgid "Bevel Shadow"
 msgstr "Isithunzi"
 
-#: ../plug-ins/script-fu/scripts/carved-logo.scm:150
 #: ../plug-ins/script-fu/scripts/carve-it.scm:170
 #, fuzzy
 msgid "Bevel Highlight"
 msgstr "Ububanzi beNcam"
 
-#: ../plug-ins/script-fu/scripts/carved-logo.scm:151
 #: ../plug-ins/script-fu/scripts/carve-it.scm:171
 #, fuzzy
 msgid "Cast Shadow"
 msgstr "Dala isithunzi"
 
-#: ../plug-ins/script-fu/scripts/carved-logo.scm:152
 #: ../plug-ins/script-fu/scripts/carve-it.scm:172
 msgid "Inset"
 msgstr ""
-
-#: ../plug-ins/script-fu/scripts/carved-logo.scm:162
-msgid "Carved..."
-msgstr "Qingqiweyo..."
-
-#: ../plug-ins/script-fu/scripts/carved-logo.scm:163
-msgid ""
-"Create a logo with text raised above or carved in to the specified "
-"background image"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/carved-logo.scm:171
-msgid "Background Image"
-msgstr "Umfanekiso wokungasemva"
-
-#: ../plug-ins/script-fu/scripts/carved-logo.scm:174
-msgid "Carve raised text"
-msgstr "Umbhalo oqinqgiweyo ophakanyisiweyo"
-
-#: ../plug-ins/script-fu/scripts/carved-logo.scm:175
-msgid "Padding around text"
-msgstr "Isongezo seenkcukacha esijikeleze umbhalo"
 
 #: ../plug-ins/script-fu/scripts/carve-it.scm:182
 #, fuzzy
 msgid "Stencil C_arve..."
 msgstr "Y_iqingqe..."
+
+#: ../plug-ins/script-fu/scripts/carve-it.scm:183
+msgid ""
+"Use the specified drawable as a stencil to carve from the specified image."
+msgstr ""
 
 #: ../plug-ins/script-fu/scripts/carve-it.scm:190
 msgid "Image to carve"
@@ -1184,65 +426,10 @@ msgstr "Umfanekiso omawuqingqwe"
 msgid "Carve white areas"
 msgstr "Qingqa imimandla emhlophe kuphela"
 
-#: ../plug-ins/script-fu/scripts/chalk.scm:81
-#: ../plug-ins/script-fu/scripts/chalk.scm:122
-msgid "_Chalk..."
-msgstr "i_Tshokhwe..."
-
-#: ../plug-ins/script-fu/scripts/chalk.scm:82
-msgid "Create a chalk drawing effect for the selected region (or alpha)"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/chalk.scm:123
-msgid "Create a logo resembling chalk scribbled on a blackboard"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/chalk.scm:132
-msgid "Chalk color"
-msgstr "Umbala wetshokhwe"
-
-#: ../plug-ins/script-fu/scripts/chip-away.scm:140
-#: ../plug-ins/script-fu/scripts/chip-away.scm:186
-msgid "Chip Awa_y..."
-msgstr "i-Chip Awa_y..."
-
-#: ../plug-ins/script-fu/scripts/chip-away.scm:141
-msgid "Add a chipped woodcarving effect to the selected region (or alpha)"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/chip-away.scm:148
-#: ../plug-ins/script-fu/scripts/chip-away.scm:195
-msgid "Chip amount"
-msgstr "Ubungakanani be-Chip"
-
-#: ../plug-ins/script-fu/scripts/chip-away.scm:149
-#: ../plug-ins/script-fu/scripts/chip-away.scm:196
-msgid "Blur amount"
-msgstr "Umthamo omfiliba"
-
-#: ../plug-ins/script-fu/scripts/chip-away.scm:150
-#: ../plug-ins/script-fu/scripts/chip-away.scm:197
-msgid "Invert"
-msgstr "Guqula"
-
-#: ../plug-ins/script-fu/scripts/chip-away.scm:151
-#: ../plug-ins/script-fu/scripts/chip-away.scm:198
-msgid "Drop shadow"
-msgstr "Faka isithunzi"
-
-#: ../plug-ins/script-fu/scripts/chip-away.scm:153
-#: ../plug-ins/script-fu/scripts/chip-away.scm:200
-msgid "Fill BG with pattern"
-msgstr "Gcwalisa i-BG ngepateni"
-
-#: ../plug-ins/script-fu/scripts/chip-away.scm:154
-#: ../plug-ins/script-fu/scripts/chip-away.scm:201
-msgid "Keep background"
-msgstr "Gcina okungasemva"
-
-#: ../plug-ins/script-fu/scripts/chip-away.scm:187
-msgid "Create a logo resembling a chipped wood carving"
-msgstr ""
+#: ../plug-ins/script-fu/scripts/chrome-it.scm:103
+#, fuzzy
+msgid "Background"
+msgstr "Umbala wokuNgasemva"
 
 #: ../plug-ins/script-fu/scripts/chrome-it.scm:104
 msgid "Layer 1"
@@ -1284,57 +471,32 @@ msgid ""
 msgstr ""
 
 #: ../plug-ins/script-fu/scripts/chrome-it.scm:222
-#: ../plug-ins/script-fu/scripts/sota-chrome-logo.scm:210
 msgid "Chrome saturation"
 msgstr "Yenza i-Chrome ekugcwaleni"
 
 #: ../plug-ins/script-fu/scripts/chrome-it.scm:223
-#: ../plug-ins/script-fu/scripts/sota-chrome-logo.scm:211
 msgid "Chrome lightness"
 msgstr "Yenza i-Chrome kubulula"
 
 #: ../plug-ins/script-fu/scripts/chrome-it.scm:224
-#: ../plug-ins/script-fu/scripts/crystal-logo.scm:215
-#: ../plug-ins/script-fu/scripts/sota-chrome-logo.scm:212
 msgid "Chrome factor"
 msgstr "iFekta ye-Chrome"
 
 #: ../plug-ins/script-fu/scripts/chrome-it.scm:225
-#: ../plug-ins/script-fu/scripts/crystal-logo.scm:222
-#: ../plug-ins/script-fu/scripts/sota-chrome-logo.scm:216
 msgid "Environment map"
 msgstr "Imaphu yemo"
 
 #: ../plug-ins/script-fu/scripts/chrome-it.scm:228
-#: ../plug-ins/script-fu/scripts/sota-chrome-logo.scm:219
 msgid "Highlight balance"
 msgstr "Qaqambisa ungqinelwano"
 
 #: ../plug-ins/script-fu/scripts/chrome-it.scm:229
-#: ../plug-ins/script-fu/scripts/sota-chrome-logo.scm:220
 msgid "Chrome balance"
 msgstr "Ungqinelwano lwe-Chrome"
 
 #: ../plug-ins/script-fu/scripts/chrome-it.scm:230
 msgid "Chrome white areas"
 msgstr "Yenza i-Chrome kwiindawo ezimhlophe"
-
-#: ../plug-ins/script-fu/scripts/chrome-logo.scm:87
-#: ../plug-ins/script-fu/scripts/chrome-logo.scm:120
-msgid "C_hrome..."
-msgstr "i-C_hrome..."
-
-#: ../plug-ins/script-fu/scripts/chrome-logo.scm:88
-msgid "Add a simple chrome effect to the selected region (or alpha)"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/chrome-logo.scm:95
-msgid "Offsets (pixels * 2)"
-msgstr "Okungamiselwanga (ii-pixels * 2)"
-
-#: ../plug-ins/script-fu/scripts/chrome-logo.scm:121
-msgid "Create a simplistic, but cool, chromed logo"
-msgstr ""
 
 #: ../plug-ins/script-fu/scripts/circuit.scm:81
 #, fuzzy
@@ -1392,17 +554,14 @@ msgid "Blur Y"
 msgstr "Ubumfiliba Y"
 
 #: ../plug-ins/script-fu/scripts/clothify.scm:61
-#: ../plug-ins/script-fu/scripts/swirltile.scm:58
 msgid "Azimuth"
 msgstr "i-Azimuth"
 
 #: ../plug-ins/script-fu/scripts/clothify.scm:62
-#: ../plug-ins/script-fu/scripts/swirltile.scm:59
 msgid "Elevation"
 msgstr "Ukuphakamisa"
 
 #: ../plug-ins/script-fu/scripts/clothify.scm:63
-#: ../plug-ins/script-fu/scripts/swirltile.scm:57
 msgid "Depth"
 msgstr "Ubunzulu"
 
@@ -1427,69 +586,6 @@ msgstr "Amachaphaza"
 #, fuzzy
 msgid "Darken only"
 msgstr "Umbala omdaka"
-
-#: ../plug-ins/script-fu/scripts/comic-logo.scm:112
-#: ../plug-ins/script-fu/scripts/comic-logo.scm:152
-msgid "Comic Boo_k..."
-msgstr "INcwad_i eHlekisayo..."
-
-#: ../plug-ins/script-fu/scripts/comic-logo.scm:113
-msgid ""
-"Add a comic-book effect to the selected region (or alpha) by outlining and "
-"filling with a gradient"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/comic-logo.scm:122
-#: ../plug-ins/script-fu/scripts/comic-logo.scm:163
-#: ../plug-ins/script-fu/scripts/glossy.scm:208
-#: ../plug-ins/script-fu/scripts/glossy.scm:280
-msgid "Outline size"
-msgstr "Isayizi yomphandle"
-
-#: ../plug-ins/script-fu/scripts/comic-logo.scm:123
-#: ../plug-ins/script-fu/scripts/comic-logo.scm:164
-msgid "Outline color"
-msgstr "Umbala womphandle"
-
-#: ../plug-ins/script-fu/scripts/comic-logo.scm:153
-msgid "Create a comic-book style logo by outlining and filling with a gradient"
-msgstr ""
-
-# Incorrect translation?
-#: ../plug-ins/script-fu/scripts/coolmetal-logo.scm:140
-#: ../plug-ins/script-fu/scripts/coolmetal-logo.scm:178
-#, fuzzy
-msgid "Cool _Metal..."
-msgstr "Isayizi yomphandle"
-
-#: ../plug-ins/script-fu/scripts/coolmetal-logo.scm:141
-msgid ""
-"Add a metallic effect to the selected region (or alpha) with reflections and "
-"perspective shadows"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/coolmetal-logo.scm:148
-#: ../plug-ins/script-fu/scripts/frosty-logo.scm:143
-#: ../plug-ins/script-fu/scripts/glowing-logo.scm:84
-#: ../plug-ins/script-fu/scripts/neon-logo.scm:252
-msgid "Effect size (pixels)"
-msgstr "Isayizi yesiphumo (ii-pixels)"
-
-#: ../plug-ins/script-fu/scripts/coolmetal-logo.scm:179
-msgid "Create a metallic logo with reflections and perspective shadows"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/crystal-logo.scm:209
-msgid "Crystal..."
-msgstr "iKhristali..."
-
-#: ../plug-ins/script-fu/scripts/crystal-logo.scm:210
-msgid "Create a logo with a crystal/gel effect displacing the image underneath"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/crystal-logo.scm:219
-msgid "Background image"
-msgstr "Umfanekiso wokungasemva"
 
 #: ../plug-ins/script-fu/scripts/difference-clouds.scm:67
 msgid "Difference Clouds..."
@@ -1522,6 +618,10 @@ msgstr "Sasaza"
 msgid "Granularity (1 is low)"
 msgstr "Ukuba neenkozo (isi-1 sisezantsi)"
 
+#: ../plug-ins/script-fu/scripts/distress-selection.scm:113
+msgid "Smooth"
+msgstr "Gudile"
+
 #: ../plug-ins/script-fu/scripts/distress-selection.scm:114
 msgid "Smooth horizontally"
 msgstr "Kugude mtyaba"
@@ -1548,10 +648,8 @@ msgid "Offset Y"
 msgstr "Okungamiselwanga kuka-Y"
 
 #: ../plug-ins/script-fu/scripts/drop-shadow.scm:180
-#: ../plug-ins/script-fu/scripts/news-text.scm:88
 #: ../plug-ins/script-fu/scripts/perspective-shadow.scm:209
 #: ../plug-ins/script-fu/scripts/round-corners.scm:141
-#: ../plug-ins/script-fu/scripts/swirltile.scm:60
 msgid "Blur radius"
 msgstr "Umakha-sangqa omfiliba"
 
@@ -1618,44 +716,6 @@ msgstr "Cima"
 msgid "Fill with BG"
 msgstr "Gcwalisa nge-BG"
 
-#: ../plug-ins/script-fu/scripts/flatland.scm:60
-msgid "_Flatland..."
-msgstr "_Umhlaba othe tyaba..."
-
-#: ../plug-ins/script-fu/scripts/flatland.scm:61
-msgid "Create an image filled with a Land Pattern"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/flatland.scm:66
-#: ../plug-ins/script-fu/scripts/land.scm:79
-msgid "Image width"
-msgstr "Ububanzi bomfanekiso"
-
-#: ../plug-ins/script-fu/scripts/flatland.scm:67
-#: ../plug-ins/script-fu/scripts/land.scm:80
-msgid "Image height"
-msgstr "Ubude bomfanekiso"
-
-#: ../plug-ins/script-fu/scripts/flatland.scm:68
-#: ../plug-ins/script-fu/scripts/land.scm:81
-msgid "Random seed"
-msgstr "iMbewu engekhethiyo"
-
-#: ../plug-ins/script-fu/scripts/flatland.scm:69
-#: ../plug-ins/script-fu/scripts/land.scm:82
-msgid "Detail level"
-msgstr "Inqanaba lenkcukacha"
-
-#: ../plug-ins/script-fu/scripts/flatland.scm:70
-#: ../plug-ins/script-fu/scripts/land.scm:85
-msgid "Scale X"
-msgstr "Umlinganiselo X"
-
-#: ../plug-ins/script-fu/scripts/flatland.scm:71
-#: ../plug-ins/script-fu/scripts/land.scm:86
-msgid "Scale Y"
-msgstr "Umlinganiselo Y"
-
 #: ../plug-ins/script-fu/scripts/font-map.scm:152
 #, fuzzy
 msgid "Render _Font Map..."
@@ -1702,21 +762,6 @@ msgstr "Ubumnyama kubumhlophe"
 msgid "Active colors"
 msgstr "Imibala esebenzayo"
 
-#: ../plug-ins/script-fu/scripts/frosty-logo.scm:135
-#: ../plug-ins/script-fu/scripts/frosty-logo.scm:197
-msgid "_Frosty..."
-msgstr "_Bandayo..."
-
-#: ../plug-ins/script-fu/scripts/frosty-logo.scm:136
-msgid ""
-"Add a frost effect to the selected region (or alpha) with an added drop "
-"shadow"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/frosty-logo.scm:198
-msgid "Create frozen logo with an added drop shadow"
-msgstr ""
-
 #: ../plug-ins/script-fu/scripts/fuzzyborder.scm:146
 msgid "_Fuzzy Border..."
 msgstr "_Umda ongacacanga..."
@@ -1745,6 +790,10 @@ msgstr "Yongeza isithunzi"
 #: ../plug-ins/script-fu/scripts/fuzzyborder.scm:159
 msgid "Shadow weight (%)"
 msgstr "Ubunzima besithunzi (%)"
+
+#: ../plug-ins/script-fu/scripts/fuzzyborder.scm:161
+msgid "Flatten image"
+msgstr "Yenza mcaba umfanekiso"
 
 #: ../plug-ins/script-fu/scripts/gimp-online.scm:59
 msgid "Using _Paths"
@@ -1814,114 +863,6 @@ msgstr "i-Web Site engu_Ndoqo"
 msgid "Plug-in _Registry"
 msgstr "Ngenisa i_Rejistri"
 
-#: ../plug-ins/script-fu/scripts/glossy.scm:196
-#: ../plug-ins/script-fu/scripts/glossy.scm:267
-msgid "Glo_ssy..."
-msgstr "Menye_zelayo..."
-
-#: ../plug-ins/script-fu/scripts/glossy.scm:197
-msgid ""
-"Add gradients, patterns, shadows, and bump maps to the selected region (or "
-"alpha)"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/glossy.scm:204
-#: ../plug-ins/script-fu/scripts/glossy.scm:276
-msgid "Blend gradient (text)"
-msgstr "Xuba i-gradient (umbhalo)"
-
-#: ../plug-ins/script-fu/scripts/glossy.scm:205
-#: ../plug-ins/script-fu/scripts/glossy.scm:277
-msgid "Text gradient reverse"
-msgstr "Uphindiselo-mva lombhalo we-gradient"
-
-#: ../plug-ins/script-fu/scripts/glossy.scm:206
-#: ../plug-ins/script-fu/scripts/glossy.scm:278
-msgid "Blend gradient (outline)"
-msgstr "Xuba i-gradient (umphandle)"
-
-#: ../plug-ins/script-fu/scripts/glossy.scm:207
-#: ../plug-ins/script-fu/scripts/glossy.scm:279
-msgid "Outline gradient reverse"
-msgstr "Beka phandle ukuphindela umva kwe-gradient"
-
-#: ../plug-ins/script-fu/scripts/glossy.scm:210
-#: ../plug-ins/script-fu/scripts/glossy.scm:282
-msgid "Use pattern for text instead of gradient"
-msgstr "Sebenzisa ipateni kumbhalo endaweni ye-gradient"
-
-#: ../plug-ins/script-fu/scripts/glossy.scm:211
-#: ../plug-ins/script-fu/scripts/glossy.scm:283
-msgid "Pattern (text)"
-msgstr "iPateni (umbhalo)"
-
-#: ../plug-ins/script-fu/scripts/glossy.scm:212
-#: ../plug-ins/script-fu/scripts/glossy.scm:284
-msgid "Use pattern for outline instead of gradient"
-msgstr "Sebenzisa ipateni kumphandle endaweni ye-gradient"
-
-#: ../plug-ins/script-fu/scripts/glossy.scm:213
-#: ../plug-ins/script-fu/scripts/glossy.scm:285
-msgid "Pattern (outline)"
-msgstr "iPateni (umphandle)"
-
-#: ../plug-ins/script-fu/scripts/glossy.scm:214
-#: ../plug-ins/script-fu/scripts/glossy.scm:286
-msgid "Use pattern overlay"
-msgstr "Sebenzisa isigqubuthelo sepateni"
-
-#: ../plug-ins/script-fu/scripts/glossy.scm:215
-#: ../plug-ins/script-fu/scripts/glossy.scm:287
-msgid "Pattern (overlay)"
-msgstr "iPateni (isigqubuthelo)"
-
-#: ../plug-ins/script-fu/scripts/glossy.scm:217
-#: ../plug-ins/script-fu/scripts/glossy.scm:289
-#: ../plug-ins/script-fu/scripts/xach-effect.scm:92
-msgid "Shadow"
-msgstr "Isithunzi"
-
-#: ../plug-ins/script-fu/scripts/glossy.scm:268
-msgid "Create a logo with gradients, patterns, shadows, and bump maps"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/glowing-logo.scm:76
-#: ../plug-ins/script-fu/scripts/glowing-logo.scm:109
-msgid "Glo_wing Hot..."
-msgstr "iMenye_zela iShushu..."
-
-#: ../plug-ins/script-fu/scripts/glowing-logo.scm:77
-msgid "Add a glowing hot metal effect to the selected region (or alpha)"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/glowing-logo.scm:110
-msgid "Create a logo that looks like glowing hot metal"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/gradient-bevel-logo.scm:94
-#: ../plug-ins/script-fu/scripts/gradient-bevel-logo.scm:133
-msgid "Gradient Beve_l..."
-msgstr "i-Nca_m ye-Gradient..."
-
-#: ../plug-ins/script-fu/scripts/gradient-bevel-logo.scm:95
-msgid "Add a shiny look and bevel effect to the selected region (or alpha)"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/gradient-bevel-logo.scm:102
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:127
-#: ../plug-ins/script-fu/scripts/t-o-p-logo.scm:106
-msgid "Border size (pixels)"
-msgstr "Isayizi yomda (ii-pixels)"
-
-#: ../plug-ins/script-fu/scripts/gradient-bevel-logo.scm:103
-#: ../plug-ins/script-fu/scripts/gradient-bevel-logo.scm:142
-msgid "Bevel height (sharpness)"
-msgstr "Ubude bencam (ubukhali)"
-
-#: ../plug-ins/script-fu/scripts/gradient-bevel-logo.scm:134
-msgid "Create a logo with a shiny look and beveled edges"
-msgstr ""
-
 #: ../plug-ins/script-fu/scripts/gradient-example.scm:63
 msgid "Custom _Gradient..."
 msgstr "Ozenzeleyo i-_Gradient..."
@@ -1929,6 +870,26 @@ msgstr "Ozenzeleyo i-_Gradient..."
 #: ../plug-ins/script-fu/scripts/gradient-example.scm:64
 msgid "Create an image filled with an example of the current gradient"
 msgstr ""
+
+#: ../plug-ins/script-fu/scripts/gradient-example.scm:69
+#: ../plug-ins/script-fu/scripts/mkbrush.scm:70
+#: ../plug-ins/script-fu/scripts/mkbrush.scm:138
+#: ../plug-ins/script-fu/scripts/mkbrush.scm:194
+#: ../plug-ins/script-fu/scripts/mkbrush.scm:263
+msgid "Width"
+msgstr "Ububanzi"
+
+#: ../plug-ins/script-fu/scripts/gradient-example.scm:70
+#: ../plug-ins/script-fu/scripts/mkbrush.scm:71
+#: ../plug-ins/script-fu/scripts/mkbrush.scm:139
+#: ../plug-ins/script-fu/scripts/mkbrush.scm:195
+#: ../plug-ins/script-fu/scripts/mkbrush.scm:264
+msgid "Height"
+msgstr "Ukuphakama"
+
+#: ../plug-ins/script-fu/scripts/gradient-example.scm:71
+msgid "Gradient reverse"
+msgstr "Ukubuyiselwa umva kwe-Gradient"
 
 #: ../plug-ins/script-fu/scripts/grid-system.scm:84
 msgid "_Grid..."
@@ -2006,39 +967,6 @@ msgstr "_Susa zonke iziKhokelo"
 msgid "Remove all horizontal and vertical guides"
 msgstr ""
 
-#: ../plug-ins/script-fu/scripts/i26-gunya2.scm:92
-#, fuzzy
-msgid "Imigre-_26..."
-msgstr "i-Imigre-26..."
-
-#: ../plug-ins/script-fu/scripts/i26-gunya2.scm:93
-msgid "Create a logo in a two-color, scribbled text style"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/i26-gunya2.scm:100
-msgid "Frame color"
-msgstr "Umbala we-Frame"
-
-#: ../plug-ins/script-fu/scripts/i26-gunya2.scm:103
-msgid "Frame size"
-msgstr "iSayizi ye-Frame"
-
-#: ../plug-ins/script-fu/scripts/land.scm:73
-msgid "_Land..."
-msgstr "_Umhlaba..."
-
-#: ../plug-ins/script-fu/scripts/land.scm:74
-msgid "Create an image filled with a topographic map pattern"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/land.scm:83
-msgid "Land height"
-msgstr "Ubude bomhlaba"
-
-#: ../plug-ins/script-fu/scripts/land.scm:84
-msgid "Sea depth"
-msgstr "Ubunzulu bolwandle"
-
 #: ../plug-ins/script-fu/scripts/lava.scm:117
 msgid "_Lava..."
 msgstr "i_Lava..."
@@ -2051,10 +979,18 @@ msgstr ""
 msgid "Seed"
 msgstr "Imbewu"
 
+#: ../plug-ins/script-fu/scripts/lava.scm:126
+msgid "Size"
+msgstr "Isayizi"
+
 #: ../plug-ins/script-fu/scripts/lava.scm:127
-#: ../plug-ins/script-fu/scripts/swirltile.scm:64
 msgid "Roughness"
 msgstr "Uburhabaxa"
+
+#: ../plug-ins/script-fu/scripts/lava.scm:128
+#: ../plug-ins/script-fu/scripts/spyrogimp.scm:351
+msgid "Gradient"
+msgstr "i-Gradient"
 
 #: ../plug-ins/script-fu/scripts/lava.scm:131
 msgid "Use current gradient"
@@ -2138,42 +1074,6 @@ msgstr "Mbho_xo, kuFakwe iintsiba..."
 #: ../plug-ins/script-fu/scripts/mkbrush.scm:257
 msgid "Create an elliptical brush with feathered edges"
 msgstr ""
-
-#: ../plug-ins/script-fu/scripts/neon-logo.scm:244
-#: ../plug-ins/script-fu/scripts/neon-logo.scm:280
-msgid "N_eon..."
-msgstr "i-N_eon..."
-
-#: ../plug-ins/script-fu/scripts/neon-logo.scm:245
-msgid "Convert the selected region (or alpha) into a neon-sign like object"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/neon-logo.scm:255
-#: ../plug-ins/script-fu/scripts/neon-logo.scm:291
-msgid "Create shadow"
-msgstr "Dala isithunzi"
-
-#: ../plug-ins/script-fu/scripts/neon-logo.scm:281
-msgid "Create a logo in the style of a neon sign"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/news-text.scm:77
-#, fuzzy
-msgid "Newsprint Te_xt..."
-msgstr "Umbhalo woshicilelo lweendaba..."
-
-#: ../plug-ins/script-fu/scripts/news-text.scm:78
-msgid "Create a logo in the style of newspaper printing"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/news-text.scm:86
-msgid "Cell size (pixels)"
-msgstr "Isayizi yeseli (ii-pixels)"
-
-#: ../plug-ins/script-fu/scripts/news-text.scm:87
-#: ../plug-ins/script-fu/scripts/speed-text.scm:95
-msgid "Density (%)"
-msgstr "Ubunzima-mthamo (%)"
 
 #: ../plug-ins/script-fu/scripts/old-photo.scm:89
 msgid "_Old Photo..."
@@ -2326,75 +1226,6 @@ msgstr "Yenza ii-pixels"
 msgid "Pixel amount"
 msgstr "Umthamo we-pixel"
 
-#: ../plug-ins/script-fu/scripts/pupi-button.scm:187
-msgid "_Round Button..."
-msgstr "_Umzantsi oNgqukuva..."
-
-#: ../plug-ins/script-fu/scripts/pupi-button.scm:188
-msgid "Create images, each containing an oval button graphic"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/pupi-button.scm:196
-msgid "Upper color"
-msgstr "Umbala ophezulu"
-
-#: ../plug-ins/script-fu/scripts/pupi-button.scm:197
-msgid "Lower color"
-msgstr "Umbala osezantsi"
-
-#: ../plug-ins/script-fu/scripts/pupi-button.scm:199
-msgid "Upper color (active)"
-msgstr "Umbala ophezulu (uyasebenza)"
-
-#: ../plug-ins/script-fu/scripts/pupi-button.scm:200
-msgid "Lower color (active)"
-msgstr "Umbala osezantsi (uyasebenza)"
-
-#: ../plug-ins/script-fu/scripts/pupi-button.scm:201
-msgid "Text color (active)"
-msgstr "Umbala wombhalo (uyasebenza)"
-
-#: ../plug-ins/script-fu/scripts/pupi-button.scm:202
-msgid "Padding X"
-msgstr "Isongezo seenkcukacha X"
-
-#: ../plug-ins/script-fu/scripts/pupi-button.scm:203
-msgid "Padding Y"
-msgstr "Isongezo seenkcukacha Y"
-
-#: ../plug-ins/script-fu/scripts/pupi-button.scm:205
-msgid "Round ratio"
-msgstr "Ulwalamano olungqukuva"
-
-#: ../plug-ins/script-fu/scripts/pupi-button.scm:206
-msgid "Not pressed"
-msgstr "Ayicinezelwanga"
-
-#: ../plug-ins/script-fu/scripts/pupi-button.scm:207
-msgid "Not pressed (active)"
-msgstr "Ayicinerzelwanga (iyasebenza)"
-
-#: ../plug-ins/script-fu/scripts/rendermap.scm:80
-msgid "Render _Map..."
-msgstr "Nikezela nge_Maphu..."
-
-#: ../plug-ins/script-fu/scripts/rendermap.scm:81
-msgid "Create an image filled with an Earth-like map pattern"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/rendermap.scm:90
-#, fuzzy
-msgid "Behavior"
-msgstr "Ukuziphatha"
-
-#: ../plug-ins/script-fu/scripts/rendermap.scm:90
-msgid "Tile"
-msgstr "Ithayili"
-
-#: ../plug-ins/script-fu/scripts/rendermap.scm:90
-msgid "Detail in Middle"
-msgstr "Iinkcukacha ngaPhakathi"
-
 #: ../plug-ins/script-fu/scripts/reverse-layers.scm:42
 msgid "Reverse Layer Order"
 msgstr ""
@@ -2454,6 +1285,14 @@ msgstr "Umakha-sangqa woMphetho"
 #: ../plug-ins/script-fu/scripts/round-corners.scm:138
 msgid "Add drop-shadow"
 msgstr "Yongeza isithunzi-sokufaka"
+
+#: ../plug-ins/script-fu/scripts/round-corners.scm:139
+msgid "Shadow X offset"
+msgstr "Okungamiselwanga kwesithunzi X"
+
+#: ../plug-ins/script-fu/scripts/round-corners.scm:140
+msgid "Shadow Y offset"
+msgstr "Okungamiselwanga kwesithunzi se-Y"
 
 #: ../plug-ins/script-fu/scripts/round-corners.scm:142
 msgid "Add background"
@@ -2521,29 +1360,21 @@ msgstr "i_Silayidi..."
 msgid "Add a slide-film like frame, sprocket holes, and labels to an image"
 msgstr ""
 
+#: ../plug-ins/script-fu/scripts/slide.scm:244
+msgid "Text"
+msgstr "Umbhalo"
+
 #: ../plug-ins/script-fu/scripts/slide.scm:245
 msgid "Number"
 msgstr "Inombolo"
 
+#: ../plug-ins/script-fu/scripts/slide.scm:246
+msgid "Font"
+msgstr "iFonti"
+
 #: ../plug-ins/script-fu/scripts/slide.scm:247
 msgid "Font color"
 msgstr "Umbala wefonti"
-
-#: ../plug-ins/script-fu/scripts/sota-chrome-logo.scm:204
-msgid "SOTA Chrome..."
-msgstr "i-SOTA Chrome..."
-
-#: ../plug-ins/script-fu/scripts/sota-chrome-logo.scm:205
-msgid "Create a State Of The Art chromed logo"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/speed-text.scm:86
-msgid "Speed Text..."
-msgstr "Umbhalo weSantya..."
-
-#: ../plug-ins/script-fu/scripts/speed-text.scm:87
-msgid "Create a logo with a speedy text effect"
-msgstr ""
 
 #: ../plug-ins/script-fu/scripts/spinning-globe.scm:94
 msgid "_Spinning Globe..."
@@ -2560,6 +1391,10 @@ msgstr "ii-Frames"
 #: ../plug-ins/script-fu/scripts/spinning-globe.scm:103
 msgid "Turn from left to right"
 msgstr "Jika usuka ekhohlo uye ekunene"
+
+#: ../plug-ins/script-fu/scripts/spinning-globe.scm:104
+msgid "Transparent background"
+msgstr "Okungasemva okucacileyo"
 
 #: ../plug-ins/script-fu/scripts/spinning-globe.scm:105
 msgid "Index to n colors (0 = remain RGB)"
@@ -2654,7 +1489,6 @@ msgid "Hole ratio"
 msgstr "Izinga lomngxunya"
 
 #: ../plug-ins/script-fu/scripts/spyrogimp.scm:340
-#: ../plug-ins/script-fu/scripts/text-circle.scm:215
 msgid "Start angle"
 msgstr "Qala i-engile"
 
@@ -2691,117 +1525,9 @@ msgstr "i-Gradient: Isarha ebuzinyo yeseti yeengxelo"
 msgid "Gradient: Loop Triangle"
 msgstr "i-Gradient: Unxanthathu weseti yeengxelo"
 
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm:139
-msgid "Sta_rscape..."
-msgstr "i-Sta_rscape..."
-
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm:140
-msgid "Create a logo using a rock-like texture, a nova glow, and shadow"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/swirltile.scm:51
-msgid "Swirl-_Tile..."
-msgstr "i_Thayili-yokujikeleza..."
-
-#: ../plug-ins/script-fu/scripts/swirltile.scm:52
-msgid "Create an image filled with a swirled tile effect"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/swirltile.scm:63
-msgid "Whirl amount"
-msgstr "Umthamo wokujikeleza"
-
-#: ../plug-ins/script-fu/scripts/swirly-pattern.scm:82
-msgid "_Swirly..."
-msgstr "_Jikeleza..."
-
-#: ../plug-ins/script-fu/scripts/swirly-pattern.scm:83
-msgid "Create an image filled with a swirly pattern"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/swirly-pattern.scm:88
-msgid "Quarter size"
-msgstr "iSayizi yesiQingatha"
-
-#: ../plug-ins/script-fu/scripts/swirly-pattern.scm:89
-msgid "Whirl angle"
-msgstr "i-Engile ejikelezayo"
-
-#: ../plug-ins/script-fu/scripts/swirly-pattern.scm:90
-msgid "Number of times to whirl"
-msgstr "Inani lamaxesha okujikeleza"
-
 #: ../plug-ins/script-fu/scripts/test-sphere.scm:267
 msgid "_Sphere..."
 msgstr "_Ingqukumba..."
-
-#: ../plug-ins/script-fu/scripts/text-circle.scm:207
-#, fuzzy
-msgid "Text C_ircle..."
-msgstr "Isangqa sombhalo..."
-
-#: ../plug-ins/script-fu/scripts/text-circle.scm:208
-msgid ""
-"Create a logo by rendering the specified text along the perimeter of a circle"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/text-circle.scm:216
-msgid "Fill angle"
-msgstr "Gcwalisa i-engile"
-
-#: ../plug-ins/script-fu/scripts/text-circle.scm:218
-msgid "Antialias"
-msgstr "i-Antialias"
-
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:119
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:161
-msgid "_Textured..."
-msgstr "_Yombhalo..."
-
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:120
-msgid ""
-"Fill the selected region (or alpha) with a texture and add highlights, "
-"shadows, and a mosaic background"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:129
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:171
-msgid "Mosaic tile type"
-msgstr "Uhlobo lwethayili ye-Mosaic"
-
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:129
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:171
-msgid "Squares"
-msgstr "Izikwere"
-
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:130
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:172
-msgid "Hexagons"
-msgstr "Oonxantathu abaValekileyo"
-
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:131
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:173
-msgid "Octagons"
-msgstr "Umbombo-sibhozo"
-
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:133
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:175
-msgid "Starting blend"
-msgstr "Iqala uxubo"
-
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:134
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:176
-msgid "Ending blend"
-msgstr "Iphelisa uxubo"
-
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:162
-msgid ""
-"Create a textured logo with highlights, shadows, and a mosaic background"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/textured-logo.scm:170
-msgid "Text pattern"
-msgstr "Ipateni yombhalo"
 
 #: ../plug-ins/script-fu/scripts/tileblur.scm:68
 msgid "_Tileable Blur..."
@@ -2810,6 +1536,10 @@ msgstr "_Ubumfiliba obunokufakwa ithayili..."
 #: ../plug-ins/script-fu/scripts/tileblur.scm:69
 msgid "Blur the edges of an image so the result tiles seamlessly"
 msgstr ""
+
+#: ../plug-ins/script-fu/scripts/tileblur.scm:76
+msgid "Radius"
+msgstr "Umakha-sangqa"
 
 #: ../plug-ins/script-fu/scripts/tileblur.scm:77
 msgid "Blur vertically"
@@ -2830,59 +1560,6 @@ msgstr "i-IIR"
 #: ../plug-ins/script-fu/scripts/tileblur.scm:79
 msgid "RLE"
 msgstr "i-RLE"
-
-#: ../plug-ins/script-fu/scripts/title-header.scm:165
-msgid "Web Title Header..."
-msgstr "Isihloko sokubhalwe emantla ephepha le-Web..."
-
-#: ../plug-ins/script-fu/scripts/title-header.scm:166
-msgid "Create a decorative web title header"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/t-o-p-logo.scm:98
-#: ../plug-ins/script-fu/scripts/t-o-p-logo.scm:138
-msgid "_Particle Trace..."
-msgstr "_Umkhondo weSuntswana..."
-
-#: ../plug-ins/script-fu/scripts/t-o-p-logo.scm:99
-msgid "Add a Trace of Particles effect to the selected region (or alpha)"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/t-o-p-logo.scm:107
-#: ../plug-ins/script-fu/scripts/t-o-p-logo.scm:147
-msgid "Hit rate"
-msgstr "Izinga le-Hit"
-
-#: ../plug-ins/script-fu/scripts/t-o-p-logo.scm:108
-#: ../plug-ins/script-fu/scripts/t-o-p-logo.scm:148
-msgid "Edge width"
-msgstr "Ububanzi bomphetho"
-
-#: ../plug-ins/script-fu/scripts/t-o-p-logo.scm:109
-#: ../plug-ins/script-fu/scripts/t-o-p-logo.scm:149
-msgid "Edge only"
-msgstr "uMphetho kuphela"
-
-#: ../plug-ins/script-fu/scripts/t-o-p-logo.scm:110
-#: ../plug-ins/script-fu/scripts/t-o-p-logo.scm:150
-msgid "Base color"
-msgstr "Umbala weSiseko"
-
-#: ../plug-ins/script-fu/scripts/t-o-p-logo.scm:139
-msgid "Create a logo using a Trace Of Particles effect"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/truchet.scm:165
-msgid "T_ruchet..."
-msgstr "i-T_ruchet..."
-
-#: ../plug-ins/script-fu/scripts/truchet.scm:166
-msgid "Create an image filled with a Truchet pattern"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/truchet.scm:174
-msgid "Foreground color"
-msgstr "uMbala wokuNgaphambili"
 
 #: ../plug-ins/script-fu/scripts/unsharp-mask.scm:82
 msgid "Mask size"
@@ -2951,6 +1628,10 @@ msgstr "Ubunzima mthamo bomgca"
 #: ../plug-ins/script-fu/scripts/weave.scm:403
 msgid "Thread intensity"
 msgstr "Ubunzulu bomgca"
+
+#: ../plug-ins/script-fu/scripts/xach-effect.scm:92
+msgid "Shadow"
+msgstr "Isithunzi"
 
 #: ../plug-ins/script-fu/scripts/xach-effect.scm:121
 msgid "_Xach-Effect..."
@@ -3097,11 +1778,232 @@ msgstr "Faka isithunzi sokungamiselwanga kuka-Y"
 #~ msgid "Temporary Procedure"
 #~ msgstr "Inkqubo yeXeshana"
 
+#~ msgid "3D _Outline..."
+#~ msgstr "_Umphandle we-3D..."
+
+#~ msgid "Bumpmap (alpha layer) blur radius"
+#~ msgstr "Umakha-sangqa omfiliba we-Bumpmap (umaleko we-alpha)"
+
+#~ msgid "Default bumpmap settings"
+#~ msgstr "Imimiselo emiselweyo ye-bumpmap"
+
+#~ msgid "Font size (pixels)"
+#~ msgstr "Isayizi yefonti (ii-pixels)"
+
+#~ msgid "Outline blur radius"
+#~ msgstr "Umphandle kamakha-sangqa omfiliba"
+
+#~ msgid "Pattern"
+#~ msgstr "iPateni"
+
+#~ msgid "Shadow blur radius"
+#~ msgstr "Umakha-sangqa omfiliba wesithunzi"
+
+#~ msgid "3_D Truchet..."
+#~ msgstr "i-3_D Truchet..."
+
+#~ msgid "Block size"
+#~ msgstr "Misa isayizi"
+
+#~ msgid "End blend"
+#~ msgstr "Phelisa uxubo"
+
+# leethayili?
+#~ msgid "Number of X tiles"
+#~ msgstr "iNani leethayili X"
+
+# leethayili?
+#~ msgid "Number of Y tiles"
+#~ msgstr "iNani leethayili Y"
+
+#~ msgid "Start blend"
+#~ msgstr "Qala uxubo"
+
+#~ msgid "Supersample"
+#~ msgstr "Isampuli enkulu"
+
+#~ msgid "Down"
+#~ msgstr "eZantsi"
+
+#~ msgid "Left"
+#~ msgstr "eKhohlo"
+
+#~ msgid "Orientation"
+#~ msgstr "Uqhelaniso"
+
+#~ msgid "Right"
+#~ msgstr "eKunene"
+
+#~ msgid "Up"
+#~ msgstr "Phezulu"
+
+#~ msgid "_Arrow..."
+#~ msgstr "_Utolo..."
+
+#~ msgid "Bar height"
+#~ msgstr "Ukuphakama kwe-Bar"
+
+#~ msgid "Bar length"
+#~ msgstr "Ubude be-Bar"
+
+#~ msgid "_Hrule..."
+#~ msgstr "i-_Hrule..."
+
+#~ msgid "_Bullet..."
+#~ msgstr "i_Mbumbulu..."
+
+#~ msgid "B_utton..."
+#~ msgstr "iQ_hosha..."
+
+#~ msgid "Glow radius"
+#~ msgstr "Umakha-sangqa wokumenyezela"
+
+#~ msgid "Padding"
+#~ msgstr "Isongezo senkcukacha"
+
+#~ msgid "Text color"
+#~ msgstr "Umbala woMbhalo"
+
+#~ msgid "Alien _Glow..."
+#~ msgstr "Ukumenyezela _kwe-Alien..."
+
+#~ msgid "Glow size (pixels * 4)"
+#~ msgstr "Isayizi yokumenyezela (ii-pixels * 4)"
+
+#~ msgid "Alien _Neon..."
+#~ msgstr "i-Alien _Neon..."
+
+#~ msgid "Fade away"
+#~ msgstr "Cima"
+
+#~ msgid "Number of bands"
+#~ msgstr "iNani lamabhanti"
+
+#~ msgid "Width of bands"
+#~ msgstr "Ububanzi bamabhanti"
+
+#~ msgid "Width of gaps"
+#~ msgstr "Ububanzi bezithuba"
+
+#~ msgid "_Basic I..."
+#~ msgstr "i_Siseko I..."
+
+#~ msgid "B_asic II..."
+#~ msgstr "iS_iseko II..."
+
+#~ msgid "Lower-right color"
+#~ msgstr "Umbala osezantsi ekhohlo"
+
+#~ msgid "Pressed"
+#~ msgstr "Cinezelwe"
+
+#~ msgid "Simple _Beveled Button..."
+#~ msgstr "iQosha elineNcam _eliLula..."
+
+#~ msgid "Upper-left color"
+#~ msgstr "Umbala ophezulu ekhohlo"
+
+#~ msgid "Diameter"
+#~ msgstr "Isinqumla-sangqa"
+
+#~ msgid "H_eading..."
+#~ msgstr "iS_ihloko..."
+
+#~ msgid "Blen_ded..."
+#~ msgstr "Ixuty_iwe..."
+
+#~ msgid "Blend mode"
+#~ msgstr "Xuba inkqubo"
+
+#~ msgid "Custom Gradient"
+#~ msgstr "i-Gradient ozenzeleyo"
+
+#~ msgid "FG-BG-HSV"
+#~ msgstr "i-FG-BG-HSV"
+
+#~ msgid "FG-BG-RGB"
+#~ msgstr "i-FG-BG-RGB"
+
+#~ msgid "FG-Transparent"
+#~ msgstr "i-FG-eCacileyo"
+
+#~ msgid "Offset (pixels)"
+#~ msgstr "Okungamiselwanga (ii-pixels)"
+
+#~ msgid "Background Color"
+#~ msgstr "Umbala wokungasemva"
+
+#~ msgid "Bo_vination..."
+#~ msgstr "i-Bo_vination..."
+
+#~ msgid "Spots density X"
+#~ msgstr "Ubunzima-mthamo bamachokoza ka-X"
+
+#~ msgid "Spots density Y"
+#~ msgstr "Ubunzima-mthamo bamachokoza ka-Y"
+
 #~ msgid "Burn-In: Need two layers in total!"
 #~ msgstr "Ukutshisa ngaPhakathi: Kufuna iimaleko ezimbini ziphelele!"
 
+#~ msgid "Color 1"
+#~ msgstr "Umbala woku-1"
+
+#~ msgid "Color 2"
+#~ msgstr "Umbala wesi-2"
+
+#~ msgid "Color 3"
+#~ msgstr "Umbala wesi-3"
+
+#~ msgid "Granularity"
+#~ msgstr "Okuziinkozo"
+
+#~ msgid "Image size"
+#~ msgstr "Isayizi yomfanekiso"
+
+#~ msgid "_Camouflage..."
+#~ msgstr "_Okujika imbonakalo..."
+
+#~ msgid "Background Image"
+#~ msgstr "Umfanekiso wokungasemva"
+
+#~ msgid "Carve raised text"
+#~ msgstr "Umbhalo oqinqgiweyo ophakanyisiweyo"
+
+#~ msgid "Carved..."
+#~ msgstr "Qingqiweyo..."
+
+#~ msgid "Padding around text"
+#~ msgstr "Isongezo seenkcukacha esijikeleze umbhalo"
+
+#~ msgid "Chalk color"
+#~ msgstr "Umbala wetshokhwe"
+
+#~ msgid "_Chalk..."
+#~ msgstr "i_Tshokhwe..."
+
+#~ msgid "Blur amount"
+#~ msgstr "Umthamo omfiliba"
+
+#~ msgid "Chip Awa_y..."
+#~ msgstr "i-Chip Awa_y..."
+
+#~ msgid "Chip amount"
+#~ msgstr "Ubungakanani be-Chip"
+
+#~ msgid "Fill BG with pattern"
+#~ msgstr "Gcwalisa i-BG ngepateni"
+
+#~ msgid "Invert"
+#~ msgstr "Guqula"
+
+#~ msgid "Keep background"
+#~ msgstr "Gcina okungasemva"
+
 #~ msgid "C_hrome-It..."
 #~ msgstr "Yifake kwi-C_hrome..."
+
+#~ msgid "Offsets (pixels * 2)"
+#~ msgstr "Okungamiselwanga (ii-pixels * 2)"
 
 #~ msgid ""
 #~ "Darken only\n"
@@ -3109,6 +2011,29 @@ msgstr "Faka isithunzi sokungamiselwanga kuka-Y"
 #~ msgstr ""
 #~ "Yenza mnyama kuphela\n"
 #~ "(Kungcono, kodwa kuphela kwimifanekiso enobumhlophe obuninzi)"
+
+#~ msgid "Comic Boo_k..."
+#~ msgstr "INcwad_i eHlekisayo..."
+
+#~ msgid "Outline color"
+#~ msgstr "Umbala womphandle"
+
+#~ msgid "Outline size"
+#~ msgstr "Isayizi yomphandle"
+
+# Incorrect translation?
+#, fuzzy
+#~ msgid "Cool _Metal..."
+#~ msgstr "Isayizi yomphandle"
+
+#~ msgid "Effect size (pixels)"
+#~ msgstr "Isayizi yesiphumo (ii-pixels)"
+
+#~ msgid "Background image"
+#~ msgstr "Umfanekiso wokungasemva"
+
+#~ msgid "Crystal..."
+#~ msgstr "iKhristali..."
 
 #~ msgid "Apply generated layermask"
 #~ msgstr "Sebenzisa umaleko wemaski owenziweyo"
@@ -3128,8 +2053,32 @@ msgstr "Faka isithunzi sokungamiselwanga kuka-Y"
 #~ msgid "_Fade Outline..."
 #~ msgstr "_Cima okungaphandle..."
 
+#~ msgid "Detail level"
+#~ msgstr "Inqanaba lenkcukacha"
+
+#~ msgid "Image height"
+#~ msgstr "Ubude bomfanekiso"
+
+#~ msgid "Image width"
+#~ msgstr "Ububanzi bomfanekiso"
+
+#~ msgid "Random seed"
+#~ msgstr "iMbewu engekhethiyo"
+
+#~ msgid "Scale X"
+#~ msgstr "Umlinganiselo X"
+
+#~ msgid "Scale Y"
+#~ msgstr "Umlinganiselo Y"
+
+#~ msgid "_Flatland..."
+#~ msgstr "_Umhlaba othe tyaba..."
+
 #~ msgid "_Font Map..."
 #~ msgstr "iMaphu ye_Fonti..."
+
+#~ msgid "_Frosty..."
+#~ msgstr "_Bandayo..."
 
 #~ msgid "Autocrop"
 #~ msgstr "i-Autocrop"
@@ -3170,11 +2119,56 @@ msgstr "Faka isithunzi sokungamiselwanga kuka-Y"
 #~ msgid "Blend gradient (Text)"
 #~ msgstr "Xuba i-gradient (Umbhalo)"
 
+#~ msgid "Blend gradient (outline)"
+#~ msgstr "Xuba i-gradient (umphandle)"
+
+#~ msgid "Blend gradient (text)"
+#~ msgstr "Xuba i-gradient (umbhalo)"
+
+#~ msgid "Glo_ssy..."
+#~ msgstr "Menye_zelayo..."
+
+#~ msgid "Outline gradient reverse"
+#~ msgstr "Beka phandle ukuphindela umva kwe-gradient"
+
+#~ msgid "Pattern (outline)"
+#~ msgstr "iPateni (umphandle)"
+
+#~ msgid "Pattern (overlay)"
+#~ msgstr "iPateni (isigqubuthelo)"
+
+#~ msgid "Pattern (text)"
+#~ msgstr "iPateni (umbhalo)"
+
+#~ msgid "Text gradient reverse"
+#~ msgstr "Uphindiselo-mva lombhalo we-gradient"
+
+#~ msgid "Use pattern for outline instead of gradient"
+#~ msgstr "Sebenzisa ipateni kumphandle endaweni ye-gradient"
+
+#~ msgid "Use pattern for text instead of gradient"
+#~ msgstr "Sebenzisa ipateni kumbhalo endaweni ye-gradient"
+
+#~ msgid "Use pattern overlay"
+#~ msgstr "Sebenzisa isigqubuthelo sepateni"
+
 #~ msgid "Effect size (pixels * 3)"
 #~ msgstr "Isayizi yesiphumo (ii-pixels * 3)"
 
+#~ msgid "Glo_wing Hot..."
+#~ msgstr "iMenye_zela iShushu..."
+
 #~ msgid "Bevel height (Sharpness)"
 #~ msgstr "Ubude beNcam (Ubukhali)"
+
+#~ msgid "Bevel height (sharpness)"
+#~ msgstr "Ubude bencam (ubukhali)"
+
+#~ msgid "Border size (pixels)"
+#~ msgstr "Isayizi yomda (ii-pixels)"
+
+#~ msgid "Gradient Beve_l..."
+#~ msgstr "i-Nca_m ye-Gradient..."
 
 #~ msgid "BG opacity"
 #~ msgstr "Ulwalamano lotshintshiselwano lwe-BG"
@@ -3202,6 +2196,16 @@ msgstr "Faka isithunzi sokungamiselwanga kuka-Y"
 
 #~ msgid "Use selection bounds instead of belows"
 #~ msgstr "Sebenzisa imida yokhetho endaweni yokungasezantsi"
+
+#~ msgid "Frame color"
+#~ msgstr "Umbala we-Frame"
+
+#~ msgid "Frame size"
+#~ msgstr "iSayizi ye-Frame"
+
+#, fuzzy
+#~ msgid "Imigre-_26..."
+#~ msgstr "i-Imigre-26..."
 
 #~ msgid "Apply layer mask (or discard)"
 #~ msgstr "Sebenzisa imaski yemaleko (okanye uyeke)"
@@ -3236,11 +2240,82 @@ msgstr "Faka isithunzi sokungamiselwanga kuka-Y"
 #~ msgid "Space between layers"
 #~ msgstr "Izithuba phakathi kwemaleko"
 
+#~ msgid "Land height"
+#~ msgstr "Ubude bomhlaba"
+
+#~ msgid "Sea depth"
+#~ msgstr "Ubunzulu bolwandle"
+
+#~ msgid "_Land..."
+#~ msgstr "_Umhlaba..."
+
 #~ msgid "Effect size (pixels * 5)"
 #~ msgstr "Isayizi yesiphumo (ii-pixels * 5)"
 
+#~ msgid "N_eon..."
+#~ msgstr "i-N_eon..."
+
+#~ msgid "Cell size (pixels)"
+#~ msgstr "Isayizi yeseli (ii-pixels)"
+
+#~ msgid "Density (%)"
+#~ msgstr "Ubunzima-mthamo (%)"
+
+#, fuzzy
+#~ msgid "Newsprint Te_xt..."
+#~ msgstr "Umbhalo woshicilelo lweendaba..."
+
+#~ msgid "Lower color"
+#~ msgstr "Umbala osezantsi"
+
+#~ msgid "Lower color (active)"
+#~ msgstr "Umbala osezantsi (uyasebenza)"
+
+#~ msgid "Not pressed"
+#~ msgstr "Ayicinezelwanga"
+
+#~ msgid "Not pressed (active)"
+#~ msgstr "Ayicinerzelwanga (iyasebenza)"
+
+#~ msgid "Padding X"
+#~ msgstr "Isongezo seenkcukacha X"
+
+#~ msgid "Padding Y"
+#~ msgstr "Isongezo seenkcukacha Y"
+
+#~ msgid "Round ratio"
+#~ msgstr "Ulwalamano olungqukuva"
+
+#~ msgid "Text color (active)"
+#~ msgstr "Umbala wombhalo (uyasebenza)"
+
+#~ msgid "Upper color"
+#~ msgstr "Umbala ophezulu"
+
+#~ msgid "Upper color (active)"
+#~ msgstr "Umbala ophezulu (uyasebenza)"
+
+#~ msgid "_Round Button..."
+#~ msgstr "_Umzantsi oNgqukuva..."
+
+#, fuzzy
+#~ msgid "Behavior"
+#~ msgstr "Ukuziphatha"
+
+#~ msgid "Detail in Middle"
+#~ msgstr "Iinkcukacha ngaPhakathi"
+
+#~ msgid "Tile"
+#~ msgstr "Ithayili"
+
 #~ msgid "Filename"
 #~ msgstr "Igama leFayili"
+
+#~ msgid "SOTA Chrome..."
+#~ msgstr "i-SOTA Chrome..."
+
+#~ msgid "Speed Text..."
+#~ msgstr "Umbhalo weSantya..."
 
 #~ msgid "Lighting (degrees)"
 #~ msgstr "Ukukhanyisa (amaqondo)"
@@ -3262,6 +2337,85 @@ msgstr "Faka isithunzi sokungamiselwanga kuka-Y"
 
 #~ msgid "Effect size (pixels * 4)"
 #~ msgstr "Isayizi yesiphumo (ii-pixels * 4)"
+
+#~ msgid "Sta_rscape..."
+#~ msgstr "i-Sta_rscape..."
+
+#~ msgid "Swirl-_Tile..."
+#~ msgstr "i_Thayili-yokujikeleza..."
+
+#~ msgid "Whirl amount"
+#~ msgstr "Umthamo wokujikeleza"
+
+#~ msgid "Number of times to whirl"
+#~ msgstr "Inani lamaxesha okujikeleza"
+
+#~ msgid "Quarter size"
+#~ msgstr "iSayizi yesiQingatha"
+
+#~ msgid "Whirl angle"
+#~ msgstr "i-Engile ejikelezayo"
+
+#~ msgid "_Swirly..."
+#~ msgstr "_Jikeleza..."
+
+#~ msgid "Base color"
+#~ msgstr "Umbala weSiseko"
+
+#~ msgid "Edge only"
+#~ msgstr "uMphetho kuphela"
+
+#~ msgid "Edge width"
+#~ msgstr "Ububanzi bomphetho"
+
+#~ msgid "Hit rate"
+#~ msgstr "Izinga le-Hit"
+
+#~ msgid "_Particle Trace..."
+#~ msgstr "_Umkhondo weSuntswana..."
+
+#~ msgid "Antialias"
+#~ msgstr "i-Antialias"
+
+#~ msgid "Fill angle"
+#~ msgstr "Gcwalisa i-engile"
+
+#, fuzzy
+#~ msgid "Text C_ircle..."
+#~ msgstr "Isangqa sombhalo..."
+
+#~ msgid "Ending blend"
+#~ msgstr "Iphelisa uxubo"
+
+#~ msgid "Hexagons"
+#~ msgstr "Oonxantathu abaValekileyo"
+
+#~ msgid "Mosaic tile type"
+#~ msgstr "Uhlobo lwethayili ye-Mosaic"
+
+#~ msgid "Octagons"
+#~ msgstr "Umbombo-sibhozo"
+
+#~ msgid "Squares"
+#~ msgstr "Izikwere"
+
+#~ msgid "Starting blend"
+#~ msgstr "Iqala uxubo"
+
+#~ msgid "Text pattern"
+#~ msgstr "Ipateni yombhalo"
+
+#~ msgid "_Textured..."
+#~ msgstr "_Yombhalo..."
+
+#~ msgid "Web Title Header..."
+#~ msgstr "Isihloko sokubhalwe emantla ephepha le-Web..."
+
+#~ msgid "Foreground color"
+#~ msgstr "uMbala wokuNgaphambili"
+
+#~ msgid "T_ruchet..."
+#~ msgstr "i-T_ruchet..."
 
 #~ msgid "_Unsharp Mask..."
 #~ msgstr "iMaski _ebuThuntu..."

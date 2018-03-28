@@ -19,7 +19,8 @@
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include "paint-types.h"
 
@@ -57,6 +58,7 @@ gimp_ink_undo_class_init (GimpInkUndoClass *klass)
 static void
 gimp_ink_undo_init (GimpInkUndo *undo)
 {
+  undo->last_blobs = NULL;
 }
 
 static void
@@ -65,15 +67,26 @@ gimp_ink_undo_constructed (GObject *object)
   GimpInkUndo *ink_undo = GIMP_INK_UNDO (object);
   GimpInk     *ink;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_INK (GIMP_PAINT_CORE_UNDO (ink_undo)->paint_core));
+  gimp_assert (GIMP_IS_INK (GIMP_PAINT_CORE_UNDO (ink_undo)->paint_core));
 
   ink = GIMP_INK (GIMP_PAINT_CORE_UNDO (ink_undo)->paint_core);
 
-  if (ink->start_blob)
-    ink_undo->last_blob = gimp_blob_duplicate (ink->start_blob);
+  if (ink->start_blobs)
+    {
+      gint      i;
+      GimpBlob *blob;
+
+      for (i = 0; i < g_list_length (ink->start_blobs); i++)
+        {
+          blob = g_list_nth_data (ink->start_blobs, i);
+
+          ink_undo->last_blobs = g_list_prepend (ink_undo->last_blobs,
+                                                 gimp_blob_duplicate (blob));
+        }
+      ink_undo->last_blobs = g_list_reverse (ink_undo->last_blobs);
+    }
 }
 
 static void
@@ -88,12 +101,11 @@ gimp_ink_undo_pop (GimpUndo              *undo,
   if (GIMP_PAINT_CORE_UNDO (ink_undo)->paint_core)
     {
       GimpInk  *ink = GIMP_INK (GIMP_PAINT_CORE_UNDO (ink_undo)->paint_core);
-      GimpBlob *tmp_blob;
+      GList    *tmp_blobs;
 
-      tmp_blob = ink->last_blob;
-      ink->last_blob = ink_undo->last_blob;
-      ink_undo->last_blob = tmp_blob;
-
+      tmp_blobs = ink->last_blobs;
+      ink->last_blobs = ink_undo->last_blobs;
+      ink_undo->last_blobs = tmp_blobs;
     }
 }
 
@@ -103,10 +115,10 @@ gimp_ink_undo_free (GimpUndo     *undo,
 {
   GimpInkUndo *ink_undo = GIMP_INK_UNDO (undo);
 
-  if (ink_undo->last_blob)
+  if (ink_undo->last_blobs)
     {
-      g_free (ink_undo->last_blob);
-      ink_undo->last_blob = NULL;
+      g_list_free_full (ink_undo->last_blobs, g_free);
+      ink_undo->last_blobs = NULL;
     }
 
   GIMP_UNDO_CLASS (parent_class)->free (undo, undo_mode);

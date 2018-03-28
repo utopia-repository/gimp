@@ -1,7 +1,7 @@
 ;
 ; fuzzy-border
 ;
-; Do a cool fade to a given colour at the border of an image (optional shadow)
+; Do a cool fade to a given color at the border of an image (optional shadow)
 ; Will make image RGB if it isn't already.
 ;
 ; Chris Gutteridge (cjg@ecs.soton.ac.uk)
@@ -39,7 +39,7 @@
     (gimp-selection-shrink inImage inSize)
     (gimp-selection-invert inImage)
     (gimp-context-set-background inColor)
-    (gimp-edit-fill inLayer BACKGROUND-FILL)
+    (gimp-edit-fill inLayer FILL-BACKGROUND)
     (gimp-selection-none inImage)
   )
 
@@ -69,7 +69,7 @@
                                         RGBA-IMAGE
                                         "layer 1"
                                         100
-                                        NORMAL-MODE)))
+                                        LAYER-MODE-NORMAL)))
 
     (gimp-image-insert-layer theImage theLayer 0 0)
 
@@ -96,7 +96,7 @@
     (gimp-selection-invert theImage)
     (gimp-edit-clear theLayer)
     (gimp-context-set-background inColor)
-    (gimp-edit-fill theLayer BACKGROUND-FILL)
+    (gimp-edit-fill theLayer FILL-BACKGROUND)
     (gimp-selection-none inImage)
     (chris-color-edge theImage theLayer inColor 1)
 
@@ -110,9 +110,9 @@
                                    (car (gimp-layer-copy theLayer FALSE)) 0 -1)
           (gimp-layer-scale theLayer
                             (- theWidth inSize) (- theHeight inSize) TRUE)
-          (gimp-desaturate theLayer)
-          (gimp-brightness-contrast theLayer 127 127)
-          (gimp-invert theLayer)
+          (gimp-drawable-desaturate theLayer DESATURATE-LIGHTNESS)
+          (gimp-drawable-brightness-contrast theLayer 0.5 0.5)
+          (gimp-drawable-invert theLayer FALSE)
           (gimp-layer-resize theLayer
                              theWidth
                              theHeight

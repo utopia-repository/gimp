@@ -20,18 +20,19 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
-
-#include "base/temp-buf.h"
 
 #include "core/gimp.h"
 #include "core/gimpcontext.h"
 #include "core/gimpparamspecs.h"
 #include "core/gimppattern.h"
+#include "core/gimptempbuf.h"
 
 #include "pdb/gimppdb.h"
 
@@ -40,12 +41,12 @@
 #include "gimppatternselect.h"
 
 
-static void          gimp_pattern_select_constructed  (GObject        *object);
+static void             gimp_pattern_select_constructed  (GObject        *object);
 
-static GValueArray * gimp_pattern_select_run_callback (GimpPdbDialog  *dialog,
-                                                       GimpObject     *object,
-                                                       gboolean        closing,
-                                                       GError        **error);
+static GimpValueArray * gimp_pattern_select_run_callback (GimpPdbDialog  *dialog,
+                                                          GimpObject     *object,
+                                                          gboolean        closing,
+                                                          GError        **error);
 
 
 G_DEFINE_TYPE (GimpPatternSelect, gimp_pattern_select, GIMP_TYPE_PDB_DIALOG)
@@ -75,8 +76,7 @@ gimp_pattern_select_constructed (GObject *object)
   GimpPdbDialog *dialog = GIMP_PDB_DIALOG (object);
   GtkWidget     *content_area;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   dialog->view =
     gimp_pattern_factory_view_new (GIMP_VIEW_TYPE_GRID,
@@ -96,18 +96,18 @@ gimp_pattern_select_constructed (GObject *object)
   gtk_widget_show (dialog->view);
 }
 
-static GValueArray *
+static GimpValueArray *
 gimp_pattern_select_run_callback (GimpPdbDialog  *dialog,
                                   GimpObject     *object,
                                   gboolean        closing,
                                   GError        **error)
 {
-  GimpPattern *pattern = GIMP_PATTERN (object);
-  GimpArray   *array;
-  GValueArray *return_vals;
+  GimpPattern    *pattern = GIMP_PATTERN (object);
+  GimpArray      *array;
+  GimpValueArray *return_vals;
 
-  array = gimp_array_new (temp_buf_get_data (pattern->mask),
-                          temp_buf_get_data_size (pattern->mask),
+  array = gimp_array_new (gimp_temp_buf_get_data (pattern->mask),
+                          gimp_temp_buf_get_data_size (pattern->mask),
                           TRUE);
 
   return_vals =
@@ -116,9 +116,9 @@ gimp_pattern_select_run_callback (GimpPdbDialog  *dialog,
                                         NULL, error,
                                         dialog->callback_name,
                                         G_TYPE_STRING,        gimp_object_get_name (object),
-                                        GIMP_TYPE_INT32,      pattern->mask->width,
-                                        GIMP_TYPE_INT32,      pattern->mask->height,
-                                        GIMP_TYPE_INT32,      pattern->mask->bytes,
+                                        GIMP_TYPE_INT32,      gimp_temp_buf_get_width  (pattern->mask),
+                                        GIMP_TYPE_INT32,      gimp_temp_buf_get_height (pattern->mask),
+                                        GIMP_TYPE_INT32,      babl_format_get_bytes_per_pixel (gimp_temp_buf_get_format (pattern->mask)),
                                         GIMP_TYPE_INT32,      array->length,
                                         GIMP_TYPE_INT8_ARRAY, array,
                                         GIMP_TYPE_INT32,      closing,

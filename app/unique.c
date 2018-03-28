@@ -17,7 +17,7 @@
 
 #include "config.h"
 
-#include <gio/gio.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #ifdef G_OS_WIN32
 #include <windows.h>
@@ -25,21 +25,26 @@
 
 #include "core/core-types.h"
 
-#include "file/file-utils.h"
+#ifndef GIMP_CONSOLE_COMPILATION
+/*  for the DBus service names  */
+#include "gui/gimpdbusservice.h"
+#endif
 
 #include "unique.h"
 
 
 static gboolean  gimp_unique_dbus_open  (const gchar **filenames,
-					 gboolean      as_new);
+                                         gboolean      as_new);
 #ifdef G_OS_WIN32
 static gboolean  gimp_unique_win32_open (const gchar **filenames,
-					 gboolean      as_new);
+                                         gboolean      as_new);
 #endif
+static gboolean  gimp_unique_dbus_batch_run (const gchar  *batch_interpreter,
+                                             const gchar **batch_commands);
 
 gboolean
 gimp_unique_open (const gchar **filenames,
-		  gboolean      as_new)
+                  gboolean      as_new)
 {
 #ifdef G_OS_WIN32
   return gimp_unique_win32_open (filenames, as_new);
@@ -48,48 +53,24 @@ gimp_unique_open (const gchar **filenames,
 #endif
 }
 
-#ifndef GIMP_CONSOLE_COMPILATION
-static gchar *
-gimp_unique_filename_to_uri (const gchar  *filename,
-			     const gchar  *cwd,
-			     GError      **error)
+gboolean
+gimp_unique_batch_run (const gchar  *batch_interpreter,
+                       const gchar **batch_commands)
 {
-  gchar *uri = NULL;
-
-  if (file_utils_filename_is_uri (filename, error))
-    {
-      uri = g_strdup (filename);
-    }
-  else if (! *error)
-    {
-      if (! g_path_is_absolute (filename))
-	{
-	  gchar *absolute = g_build_filename (cwd, filename, NULL);
-
-	  uri = g_filename_to_uri (absolute, NULL, error);
-
-	  g_free (absolute);
-	}
-      else
-	{
-	  uri = g_filename_to_uri (filename, NULL, error);
-	}
-    }
-
-  return uri;
-}
+#ifdef G_OS_WIN32
+  g_printerr ("Batch commands cannot be run in existing instance in Win32.\n");
+  return FALSE;
+#else
+  return gimp_unique_dbus_batch_run (batch_interpreter,
+                                     batch_commands);
 #endif
-
+}
 
 static gboolean
 gimp_unique_dbus_open (const gchar **filenames,
-		       gboolean      as_new)
+                       gboolean      as_new)
 {
 #ifndef GIMP_CONSOLE_COMPILATION
-#if HAVE_DBUS_GLIB
-
-/*  for the DBus service names  */
-#include "gui/gimpdbusservice.h"
 
   GDBusConnection *connection;
   GError          *error = NULL;
@@ -108,18 +89,19 @@ gimp_unique_dbus_open (const gchar **filenames,
 
           for (i = 0; filenames[i] && success; i++)
             {
-              GError *error = NULL;
-	      gchar  *uri   = gimp_unique_filename_to_uri (filenames[i],
-                                                           cwd, &error);
+              GFile *file;
 
-              if (uri)
+              file = g_file_new_for_commandline_arg_and_cwd (filenames[i], cwd);
+
+              if (file)
                 {
                   GVariant *result;
+                  gchar    *uri = g_file_get_uri (file);
 
                   result = g_dbus_connection_call_sync (connection,
                                                         GIMP_DBUS_SERVICE_NAME,
                                                         GIMP_DBUS_SERVICE_PATH,
-                                                        GIMP_DBUS_SERVICE_INTERFACE,
+                                                        GIMP_DBUS_INTERFACE_NAME,
                                                         method,
                                                         g_variant_new ("(s)",
                                                                        uri),
@@ -127,17 +109,20 @@ gimp_unique_dbus_open (const gchar **filenames,
                                                         G_DBUS_CALL_FLAGS_NO_AUTO_START,
                                                         -1,
                                                         NULL, NULL);
+
+                  g_free (uri);
+
                   if (result)
                     g_variant_unref (result);
                   else
                     success = FALSE;
 
-                  g_free (uri);
+                  g_object_unref (file);
                 }
               else
                 {
-                  g_printerr ("conversion to uri failed: %s\n", error->message);
-                  g_clear_error (&error);
+                  g_printerr ("conversion to uri failed for '%s'\n",
+                              filenames[i]);
                 }
             }
 
@@ -150,7 +135,7 @@ gimp_unique_dbus_open (const gchar **filenames,
           result = g_dbus_connection_call_sync (connection,
                                                 GIMP_DBUS_SERVICE_NAME,
                                                 GIMP_DBUS_SERVICE_PATH,
-                                                GIMP_DBUS_SERVICE_INTERFACE,
+                                                GIMP_DBUS_INTERFACE_NAME,
                                                 "Activate",
                                                 NULL,
                                                 NULL,
@@ -172,8 +157,7 @@ gimp_unique_dbus_open (const gchar **filenames,
       g_printerr ("%s\n", error->message);
       g_clear_error (&error);
     }
-#endif /* GIMP_CONSOLE_COMPILATION */
-#endif /* HAVE_DBUS_GLIB */
+#endif
 
   return FALSE;
 }
@@ -182,7 +166,7 @@ gimp_unique_dbus_open (const gchar **filenames,
 
 static gboolean
 gimp_unique_win32_open (const gchar **filenames,
-			gboolean      as_new)
+                        gboolean      as_new)
 {
 #ifndef GIMP_CONSOLE_COMPILATION
 
@@ -190,7 +174,7 @@ gimp_unique_win32_open (const gchar **filenames,
 #include "gui/gui-unique.h"
 
   HWND  window_handle = FindWindowW (GIMP_UNIQUE_WIN32_WINDOW_CLASS,
-				     GIMP_UNIQUE_WIN32_WINDOW_NAME);
+                                     GIMP_UNIQUE_WIN32_WINDOW_NAME);
 
   if (window_handle)
     {
@@ -199,28 +183,31 @@ gimp_unique_win32_open (const gchar **filenames,
       if (filenames)
         {
           gchar  *cwd   = g_get_current_dir ();
-          GError *error = NULL;
           gint    i;
 
           for (i = 0; filenames[i]; i++)
             {
-              gchar *uri;
+              GFile *file;
+              file = g_file_new_for_commandline_arg_and_cwd (filenames[i], cwd);
 
-              uri = gimp_unique_filename_to_uri (filenames[i], cwd, &error);
-
-              if (uri)
+              if (file)
                 {
+                  gchar *uri = g_file_get_uri (file);
+
                   copydata.lpData = uri;
                   copydata.cbData = strlen (uri) + 1;  /* size in bytes   */
                   copydata.dwData = (long) as_new;
 
                   SendMessage (window_handle,
                                WM_COPYDATA, (WPARAM) window_handle, (LPARAM) &copydata);
+
+                  g_free (uri);
+                  g_object_unref (file);
                 }
               else
                 {
-                  g_printerr ("conversion to uri failed: %s\n", error->message);
-                  g_clear_error (&error);
+                  g_printerr ("conversion to uri failed for '%s'\n",
+                              filenames[i]);
                 }
             }
 
@@ -241,3 +228,62 @@ gimp_unique_win32_open (const gchar **filenames,
 }
 
 #endif  /* G_OS_WIN32 */
+
+static gboolean
+gimp_unique_dbus_batch_run (const gchar  *batch_interpreter,
+                            const gchar **batch_commands)
+{
+#ifndef GIMP_CONSOLE_COMPILATION
+
+  GDBusConnection *connection;
+  GError          *error = NULL;
+
+  connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
+
+  if (connection)
+    {
+      const gchar *method = "BatchRun";
+      gboolean     success = TRUE;
+      gint         i;
+
+      for (i = 0; batch_commands[i] && success; i++)
+        {
+          GVariant    *result;
+          const gchar *interpreter;
+
+          /* NULL is not a valid string GVariant. */
+          interpreter = batch_interpreter ? batch_interpreter : "";
+
+          result = g_dbus_connection_call_sync (connection,
+                                                GIMP_DBUS_SERVICE_NAME,
+                                                GIMP_DBUS_SERVICE_PATH,
+                                                GIMP_DBUS_INTERFACE_NAME,
+                                                method,
+                                                g_variant_new ("(ss)",
+                                                               interpreter,
+                                                               batch_commands[i]),
+                                                NULL,
+                                                G_DBUS_CALL_FLAGS_NO_AUTO_START,
+                                                -1,
+                                                NULL, NULL);
+
+
+          if (result)
+            g_variant_unref (result);
+          else
+            success = FALSE;
+        }
+
+      g_object_unref (connection);
+
+      return success;
+    }
+  else
+    {
+      g_printerr ("%s\n", error->message);
+      g_clear_error (&error);
+    }
+#endif
+
+  return FALSE;
+}

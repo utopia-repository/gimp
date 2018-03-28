@@ -31,8 +31,6 @@
 #include "core/gimpimage.h"
 #include "core/gimpitem.h"
 
-#include "file/file-utils.h"
-
 #include "gimpview.h"
 #include "gimpviewabledialog.h"
 #include "gimpviewrenderer.h"
@@ -43,7 +41,7 @@ enum
   PROP_0,
   PROP_VIEWABLE,
   PROP_CONTEXT,
-  PROP_STOCK_ID,
+  PROP_ICON_NAME,
   PROP_DESC
 };
 
@@ -85,13 +83,14 @@ gimp_viewable_dialog_class_init (GimpViewableDialogClass *klass)
   g_object_class_install_property (object_class, PROP_CONTEXT,
                                    g_param_spec_object ("context", NULL, NULL,
                                                         GIMP_TYPE_CONTEXT,
-                                                        GIMP_PARAM_READWRITE));
+                                                        GIMP_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT));
 
-  g_object_class_install_property (object_class, PROP_STOCK_ID,
-                                   g_param_spec_string ("stock-id", NULL, NULL,
+  g_object_class_install_property (object_class, PROP_ICON_NAME,
+                                   g_param_spec_string ("icon-name", NULL, NULL,
                                                         NULL,
                                                         GIMP_PARAM_WRITABLE |
-                                                        G_PARAM_CONSTRUCT_ONLY));
+                                                        G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (object_class, PROP_DESC,
                                    g_param_spec_string ("description", NULL, NULL,
@@ -128,7 +127,7 @@ gimp_viewable_dialog_init (GimpViewableDialog *dialog)
   gtk_widget_show (vbox);
 
   dialog->desc_label = gtk_label_new (NULL);
-  gtk_misc_set_alignment (GTK_MISC (dialog->desc_label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (dialog->desc_label), 0.0);
   gimp_label_set_attributes (GTK_LABEL (dialog->desc_label),
                              PANGO_ATTR_SCALE,  PANGO_SCALE_LARGE,
                              PANGO_ATTR_WEIGHT, PANGO_WEIGHT_BOLD,
@@ -183,10 +182,10 @@ gimp_viewable_dialog_set_property (GObject      *object,
                                          g_value_get_object (value));
       break;
 
-    case PROP_STOCK_ID:
-      gtk_image_set_from_stock (GTK_IMAGE (dialog->icon),
-                                g_value_get_string (value),
-                                GTK_ICON_SIZE_LARGE_TOOLBAR);
+    case PROP_ICON_NAME:
+      gtk_image_set_from_icon_name (GTK_IMAGE (dialog->icon),
+                                    g_value_get_string (value),
+                                    GTK_ICON_SIZE_LARGE_TOOLBAR);
       break;
 
     case PROP_DESC:
@@ -231,7 +230,7 @@ gimp_viewable_dialog_new (GimpViewable *viewable,
                           GimpContext  *context,
                           const gchar  *title,
                           const gchar  *role,
-                          const gchar  *stock_id,
+                          const gchar  *icon_name,
                           const gchar  *desc,
                           GtkWidget    *parent,
                           GimpHelpFunc  help_func,
@@ -248,7 +247,7 @@ gimp_viewable_dialog_new (GimpViewable *viewable,
   g_return_val_if_fail (parent == NULL || GTK_IS_WIDGET (parent), NULL);
 
   if (! viewable)
-    g_warning ("Use of GimpViewableDialog with a NULL viewable is depecrated!");
+    g_warning ("Use of GimpViewableDialog with a NULL viewable is deprecated!");
 
   dialog = g_object_new (GIMP_TYPE_VIEWABLE_DIALOG,
                          "viewable",    viewable,
@@ -257,7 +256,7 @@ gimp_viewable_dialog_new (GimpViewable *viewable,
                          "role",        role,
                          "help-func",   help_func,
                          "help-id",     help_id,
-                         "stock-id",    stock_id,
+                         "icon-name",   icon_name,
                          "description", desc,
                          "parent",      parent,
                          NULL);

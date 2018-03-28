@@ -51,7 +51,7 @@
 
 #define HAVE_COLORMAP(image) \
         (image != NULL && \
-         gimp_image_base_type (image) == GIMP_INDEXED && \
+         gimp_image_get_base_type (image) == GIMP_INDEXED && \
          gimp_image_get_colormap (image) != NULL)
 
 
@@ -150,7 +150,6 @@ gimp_colormap_editor_init (GimpColormapEditor *editor)
 {
   GtkWidget *frame;
   GtkWidget *table;
-  GtkObject *adj;
 
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
@@ -193,9 +192,13 @@ gimp_colormap_editor_init (GimpColormapEditor *editor)
   gtk_box_pack_end (GTK_BOX (editor), table, FALSE, FALSE, 0);
   gtk_widget_show (table);
 
-  editor->index_spinbutton = gimp_spin_button_new (&adj,
-                                                   0, 0, 0, 1, 10, 0, 1.0, 0);
-  editor->index_adjustment = GTK_ADJUSTMENT (adj);
+  editor->index_adjustment = (GtkAdjustment *)
+    gtk_adjustment_new (0, 0, 0, 1, 10, 0);
+  editor->index_spinbutton = gtk_spin_button_new (editor->index_adjustment,
+                                                  1.0, 0);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (editor->index_spinbutton),
+                               TRUE);
+
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
                              _("Color index:"), 0.0, 0.5,
                              editor->index_spinbutton, 1, TRUE);
@@ -219,9 +222,15 @@ static void
 gimp_colormap_editor_constructed (GObject *object)
 {
   GimpColormapEditor *editor = GIMP_COLORMAP_EDITOR (object);
+  GdkModifierType     extend_mask;
+  GdkModifierType     modify_mask;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
+
+  extend_mask = gtk_widget_get_modifier_mask (GTK_WIDGET (object),
+                                              GDK_MODIFIER_INTENT_EXTEND_SELECTION);
+  modify_mask = gtk_widget_get_modifier_mask (GTK_WIDGET (object),
+                                              GDK_MODIFIER_INTENT_MODIFY_SELECTION);
 
   gimp_editor_add_action_button (GIMP_EDITOR (editor), "colormap",
                                  "colormap-edit-color",
@@ -231,6 +240,16 @@ gimp_colormap_editor_constructed (GObject *object)
                                  "colormap-add-color-from-fg",
                                  "colormap-add-color-from-bg",
                                  gimp_get_toggle_behavior_mask (),
+                                 NULL);
+
+  gimp_editor_add_action_button (GIMP_EDITOR (editor), "colormap",
+                                 "colormap-selection-replace",
+                                 "colormap-selection-add",
+                                 extend_mask,
+                                 "colormap-selection-subtract",
+                                 modify_mask,
+                                 "colormap-selection-intersect",
+                                 extend_mask | modify_mask,
                                  NULL);
 }
 
@@ -253,11 +272,7 @@ gimp_colormap_editor_finalize (GObject *object)
 {
   GimpColormapEditor *editor = GIMP_COLORMAP_EDITOR (object);
 
-  if (editor->layout)
-    {
-      g_object_unref (editor->layout);
-      editor->layout = NULL;
-    }
+  g_clear_object (&editor->layout);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -494,7 +509,7 @@ gimp_colormap_preview_expose (GtkWidget          *widget,
   gint             y;
 
   if (image_editor->image == NULL ||
-      gimp_image_base_type (image_editor->image) == GIMP_INDEXED)
+      gimp_image_get_base_type (image_editor->image) == GIMP_INDEXED)
     return FALSE;
 
   cr = gdk_cairo_create (event->window);

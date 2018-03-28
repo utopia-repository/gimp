@@ -137,7 +137,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Render/Nature");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Render/Fractals");
 }
 
 static void
@@ -470,18 +470,18 @@ make_file_dialog (const gchar *title,
                                              GTK_FILE_CHOOSER_ACTION_OPEN :
                                              GTK_FILE_CHOOSER_ACTION_SAVE,
 
-                                             GTK_STOCK_CANCEL, GTK_STOCK_CANCEL,
+                                             _("_Cancel"), GTK_RESPONSE_CANCEL,
                                              load_save ?
-                                             GTK_STOCK_OPEN : GTK_STOCK_SAVE,
+                                             _("_Open") : _("_Save"),
                                              GTK_RESPONSE_OK,
 
                                              NULL);
 
+  gtk_dialog_set_default_response (GTK_DIALOG (file_dialog), GTK_RESPONSE_OK);
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (file_dialog),
                                            GTK_RESPONSE_OK,
                                            GTK_RESPONSE_CANCEL,
                                            -1);
-  gtk_dialog_set_default_response (GTK_DIALOG (file_dialog), GTK_RESPONSE_OK);
 
   if (! load_save)
     gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (file_dialog),
@@ -646,8 +646,8 @@ edit_callback (GtkWidget *widget,
                                      parent, GTK_DIALOG_DESTROY_WITH_PARENT,
                                      gimp_standard_help_func, PLUG_IN_PROC,
 
-                                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                     GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                                     _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                     _("_OK"),     GTK_RESPONSE_OK,
 
                                      NULL);
 
@@ -968,8 +968,8 @@ flame_dialog (void)
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -1034,7 +1034,7 @@ flame_dialog (void)
     gtk_box_pack_start (GTK_BOX (vbox), vbbox, FALSE, FALSE, 0);
     gtk_widget_show (vbbox);
 
-    button = gtk_button_new_from_stock (GTK_STOCK_EDIT);
+    button = gtk_button_new_with_mnemonic (_("_Edit"));
     gtk_box_pack_start (GTK_BOX (vbbox), button, FALSE, FALSE, 0);
     gtk_widget_show (button);
 
@@ -1042,7 +1042,7 @@ flame_dialog (void)
                       G_CALLBACK (edit_callback),
                       dialog);
 
-    load_button = button = gtk_button_new_from_stock (GTK_STOCK_OPEN);
+    load_button = button = gtk_button_new_with_mnemonic (_("_Open"));
     gtk_box_pack_start (GTK_BOX (vbbox), button, FALSE, FALSE, 0);
     gtk_widget_show (button);
 
@@ -1050,7 +1050,7 @@ flame_dialog (void)
                       G_CALLBACK (load_callback),
                       NULL);
 
-    save_button = button = gtk_button_new_from_stock (GTK_STOCK_SAVE);
+    save_button = button = gtk_button_new_with_mnemonic (_("_Save"));
     gtk_box_pack_start (GTK_BOX (vbbox), button, FALSE, FALSE, 0);
     gtk_widget_show (button);
 
@@ -1201,9 +1201,9 @@ flame_dialog (void)
     }
 
     gimp_int_combo_box_prepend (GIMP_INT_COMBO_BOX (combo),
-                                GIMP_INT_STORE_VALUE,    GRADIENT_DRAWABLE,
-                                GIMP_INT_STORE_LABEL,    _("Custom gradient"),
-                                GIMP_INT_STORE_STOCK_ID, GIMP_STOCK_GRADIENT,
+                                GIMP_INT_STORE_VALUE,     GRADIENT_DRAWABLE,
+                                GIMP_INT_STORE_LABEL,     _("Custom gradient"),
+                                GIMP_INT_STORE_ICON_NAME, GIMP_ICON_GRADIENT,
                                 -1);
 
     gimp_int_combo_box_connect (GIMP_INT_COMBO_BOX (combo),

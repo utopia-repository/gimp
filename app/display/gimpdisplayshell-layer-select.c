@@ -33,6 +33,7 @@
 #include "core/gimplayer.h"
 
 #include "widgets/gimpview.h"
+#include "widgets/gimpviewrenderer.h"
 
 #include "gimpdisplay.h"
 #include "gimpdisplayshell.h"
@@ -54,16 +55,17 @@ typedef struct
 
 /*  local function prototypes  */
 
-static LayerSelect * layer_select_new       (GimpImage   *image,
-                                             GimpLayer   *layer,
-                                             gint         view_size);
-static void          layer_select_destroy   (LayerSelect *layer_select,
-                                             guint32      time);
-static void          layer_select_advance   (LayerSelect *layer_select,
-                                             gint         move);
-static gboolean      layer_select_events    (GtkWidget   *widget,
-                                             GdkEvent    *event,
-                                             LayerSelect *layer_select);
+static LayerSelect * layer_select_new       (GimpDisplayShell *shell,
+                                             GimpImage        *image,
+                                             GimpLayer        *layer,
+                                             gint              view_size);
+static void          layer_select_destroy   (LayerSelect      *layer_select,
+                                             guint32           time);
+static void          layer_select_advance   (LayerSelect      *layer_select,
+                                             gint              move);
+static gboolean      layer_select_events    (GtkWidget        *widget,
+                                             GdkEvent         *event,
+                                             LayerSelect      *layer_select);
 
 
 /*  public functions  */
@@ -73,9 +75,10 @@ gimp_display_shell_layer_select_init (GimpDisplayShell *shell,
                                       gint              move,
                                       guint32           time)
 {
-  LayerSelect *layer_select;
-  GimpImage   *image;
-  GimpLayer   *layer;
+  LayerSelect   *layer_select;
+  GimpImage     *image;
+  GimpLayer     *layer;
+  GdkGrabStatus  status;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
@@ -86,7 +89,7 @@ gimp_display_shell_layer_select_init (GimpDisplayShell *shell,
   if (! layer)
     return;
 
-  layer_select = layer_select_new (image, layer,
+  layer_select = layer_select_new (shell, image, layer,
                                    image->gimp->config->layer_preview_size);
   layer_select_advance (layer_select, move);
 
@@ -95,16 +98,19 @@ gimp_display_shell_layer_select_init (GimpDisplayShell *shell,
 
   gtk_widget_show (layer_select->window);
 
-  gdk_keyboard_grab (gtk_widget_get_window (layer_select->window), FALSE, time);
+  status = gdk_keyboard_grab (gtk_widget_get_window (layer_select->window), FALSE, time);
+  if (status != GDK_GRAB_SUCCESS)
+    g_printerr ("gdk_keyboard_grab failed with status %d\n", status);
 }
 
 
 /*  private functions  */
 
 static LayerSelect *
-layer_select_new (GimpImage *image,
-                  GimpLayer *layer,
-                  gint       view_size)
+layer_select_new (GimpDisplayShell *shell,
+                  GimpImage        *image,
+                  GimpLayer        *layer,
+                  gint              view_size)
 {
   LayerSelect *layer_select;
   GtkWidget   *frame1;
@@ -155,6 +161,8 @@ layer_select_new (GimpImage *image,
                             GIMP_TYPE_VIEW,
                             GIMP_TYPE_LAYER,
                             view_size, 1, FALSE);
+  gimp_view_renderer_set_color_config (GIMP_VIEW (layer_select->view)->renderer,
+                                       gimp_display_shell_get_color_config (shell));
   gimp_view_set_viewable (GIMP_VIEW (layer_select->view),
                           GIMP_VIEWABLE (layer));
   gtk_container_add (GTK_CONTAINER (alignment), layer_select->view);

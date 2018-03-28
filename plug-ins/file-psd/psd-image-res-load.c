@@ -25,19 +25,19 @@
 
   PSD_PS2_IMAGE_INFO    = 1000,    Dropped    * 0x03e8 - Obsolete - ps 2.0 image info *
   PSD_MAC_PRINT_INFO    = 1001,    PS Only    * 0x03e9 - Optional - Mac print manager print info record *
-  PSD_PS2_COLOR_TAB     = 1003,    Dropped    * 0x03eb - Obsolete - ps 2.0 indexed colour table *
+  PSD_PS2_COLOR_TAB     = 1003,    Dropped    * 0x03eb - Obsolete - ps 2.0 indexed color table *
   PSD_RESN_INFO         = 1005,    Loaded     * 0x03ed - ResolutionInfo structure *
   PSD_ALPHA_NAMES       = 1006,    Loaded     * 0x03ee - Alpha channel names *
   PSD_DISPLAY_INFO      = 1007,    Loaded     * 0x03ef - DisplayInfo structure *
   PSD_CAPTION           = 1008,    Loaded     * 0x03f0 - Optional - Caption string *
   PSD_BORDER_INFO       = 1009,               * 0x03f1 - Border info *
-  PSD_BACKGROUND_COL    = 1010,               * 0x03f2 - Background colour *
+  PSD_BACKGROUND_COL    = 1010,               * 0x03f2 - Background color *
   PSD_PRINT_FLAGS       = 1011,               * 0x03f3 - Print flags *
   PSD_GREY_HALFTONE     = 1012,               * 0x03f4 - Greyscale and multichannel halftoning info *
-  PSD_COLOR_HALFTONE    = 1013,               * 0x03f5 - Colour halftoning info *
+  PSD_COLOR_HALFTONE    = 1013,               * 0x03f5 - Color halftoning info *
   PSD_DUOTONE_HALFTONE  = 1014,               * 0x03f6 - Duotone halftoning info *
   PSD_GREY_XFER         = 1015,               * 0x03f7 - Greyscale and multichannel transfer functions *
-  PSD_COLOR_XFER        = 1016,               * 0x03f8 - Colour transfer functions *
+  PSD_COLOR_XFER        = 1016,               * 0x03f8 - Color transfer functions *
   PSD_DUOTONE_XFER      = 1017,               * 0x03f9 - Duotone transfer functions *
   PSD_DUOTONE_INFO      = 1018,               * 0x03fa - Duotone image information *
   PSD_EFFECTIVE_BW      = 1019,               * 0x03fb - Effective black & white values for dot range *
@@ -58,7 +58,7 @@
   PSD_URL               = 1035,               * 0x040b - URL string *
   PSD_THUMB_RES2        = 1036,    Special    * 0x040c - Thumbnail resource *
   PSD_GLOBAL_ANGLE      = 1037,               * 0x040d - Global angle *
-  PSD_COLOR_SAMPLER     = 1038,               * 0x040e - Colour samplers resource *
+  PSD_COLOR_SAMPLER     = 1038,               * 0x040e - Color samplers resource *
   PSD_ICC_PROFILE       = 1039,    Loaded     * 0x040f - ICC Profile *
   PSD_WATERMARK         = 1040,               * 0x0410 - Watermark *
   PSD_ICC_UNTAGGED      = 1041,               * 0x0411 - Do not use ICC profile flag *
@@ -66,8 +66,8 @@
   PSD_SPOT_HALFTONE     = 1043,               * 0x0413 - Spot halftone *
   PSD_DOC_IDS           = 1044,               * 0x0414 - Document specific IDs *
   PSD_ALPHA_NAMES_UNI   = 1045,    Loaded     * 0x0415 - Unicode alpha names *
-  PSD_IDX_COL_TAB_CNT   = 1046,    Loaded     * 0x0416 - Indexed colour table count *
-  PSD_IDX_TRANSPARENT   = 1047,               * 0x0417 - Index of transparent colour (if any) *
+  PSD_IDX_COL_TAB_CNT   = 1046,    Loaded     * 0x0416 - Indexed color table count *
+  PSD_IDX_TRANSPARENT   = 1047,               * 0x0417 - Index of transparent color (if any) *
   PSD_GLOBAL_ALT        = 1049,               * 0x0419 - Global altitude *
   PSD_SLICES            = 1050,               * 0x041a - Slices *
   PSD_WORKFLOW_URL_UNI  = 1051,               * 0x041b - Workflow URL - Unicode string *
@@ -75,11 +75,40 @@
   PSD_ALPHA_ID          = 1053,    Loaded     * 0x041d - Alpha IDs *
   PSD_URL_LIST_UNI      = 1054,               * 0x041e - URL list - unicode *
   PSD_VERSION_INFO      = 1057,               * 0x0421 - Version info *
-  PSD_EXIF_DATA         = 1058,    Loaded     * 0x0422 - Exif data block *
+  PSD_EXIF_DATA         = 1058,    Loaded     * 0x0422 - Exif data block 1 *
+  PSD_EXIF_DATA_3       = 1059                * 0X0423 - Exif data block 3 (?) *
   PSD_XMP_DATA          = 1060,    Loaded     * 0x0424 - XMP data block *
+  PSD_CAPTION_DIGEST    = 1061,               * 0x0425 - Caption digest *
+  PSD_PRINT_SCALE       = 1062,               * 0x0426 - Print scale *
+  PSD_PIXEL_AR          = 1064,               * 0x0428 - Pixel aspect ratio *
+  PSD_LAYER_COMPS       = 1065,               * 0x0429 - Layer comps *
+  PSD_ALT_DUOTONE_COLOR = 1066,               * 0x042A - Alternative Duotone colors *
+  PSD_ALT_SPOT_COLOR    = 1067,               * 0x042B - Alternative Spot colors *
+  PSD_LAYER_SELECT_ID   = 1069,               * 0x042D - Layer selection ID *
+  PSD_HDR_TONING_INFO   = 1070,               * 0x042E - HDR toning information *
+  PSD_PRINT_INFO_SCALE  = 1071,               * 0x042F - Print scale *
+  PSD_LAYER_GROUP_E_ID  = 1072,               * 0x0430 - Layer group(s) enabled ID *
+  PSD_COLOR_SAMPLER_NEW = 1073,               * 0x0431 - Color sampler resource for ps CS3 and higher PSD files *
+  PSD_MEASURE_SCALE     = 1074,               * 0x0432 - Measurement scale *
+  PSD_TIMELINE_INFO     = 1075,               * 0x0433 - Timeline information *
+  PSD_SHEET_DISCLOSE    = 1076,               * 0x0434 - Sheet discloser *
+  PSD_DISPLAY_INFO_NEW  = 1077,    Loaded     * 0x0435 - DisplayInfo structure for ps CS3 and higher PSD files *
+  PSD_ONION_SKINS       = 1078,               * 0x0436 - Onion skins *
+  PSD_COUNT_INFO        = 1080,               * 0x0438 - Count information*
+  PSD_PRINT_INFO        = 1082,               * 0x043A - Print information added in ps CS5*
+  PSD_PRINT_STYLE       = 1083,               * 0x043B - Print style *
+  PSD_MAC_NSPRINTINFO   = 1084,               * 0x043C - Mac NSPrintInfo*
+  PSD_WIN_DEVMODE       = 1085,               * 0x043D - Windows DEVMODE *
+  PSD_AUTO_SAVE_PATH    = 1086,               * 0x043E - Auto save file path *
+  PSD_AUTO_SAVE_FORMAT  = 1087,               * 0x043F - Auto save format *
   PSD_PATH_INFO_FIRST   = 2000,    Loaded     * 0x07d0 - First path info block *
   PSD_PATH_INFO_LAST    = 2998,    Loaded     * 0x0bb6 - Last path info block *
   PSD_CLIPPING_PATH     = 2999,               * 0x0bb7 - Name of clipping path *
+  PSD_PLUGIN_R_FIRST    = 4000,               * 0x0FA0 - First plugin resource *
+  PSD_PLUGIN_R_LAST     = 4999,               * 0x1387 - Last plugin resource *
+  PSD_IMAGEREADY_VARS   = 7000,    PS Only    * 0x1B58 - Imageready variables *
+  PSD_IMAGEREADY_DATA   = 7001,    PS Only    * 0x1B59 - Imageready data sets *
+  PSD_LIGHTROOM_WORK    = 8000,    PS Only    * 0x1F40 - Lightroom workflow *
   PSD_PRINT_FLAGS_2     = 10000               * 0x2710 - Print flags *
 */
 
@@ -94,9 +123,6 @@
 #include <jpeglib.h>
 #include <jerror.h>
 
-#ifdef HAVE_LIBEXIF
-#include <libexif/exif-data.h>
-#endif /* HAVE_LIBEXIF */
 #ifdef HAVE_IPTCDATA
 #include <libiptcdata/iptc-data.h>
 #endif /* HAVE_IPTCDATA */
@@ -111,98 +137,99 @@
 
 /*  Local function prototypes  */
 static gint     load_resource_unknown  (const PSDimageres     *res_a,
-                                        const gint32           image_id,
+                                        gint32                 image_id,
                                         FILE                  *f,
                                         GError               **error);
 
 static gint     load_resource_ps_only  (const PSDimageres     *res_a,
-                                        const gint32           image_id,
+                                        gint32                 image_id,
                                         FILE                  *f,
                                         GError               **error);
 
 static gint     load_resource_1005     (const PSDimageres     *res_a,
-                                        const gint32           image_id,
+                                        gint32                 image_id,
                                         FILE                  *f,
                                         GError               **error);
 
 static gint     load_resource_1006     (const PSDimageres     *res_a,
-                                        const gint32           image_id,
+                                        gint32                 image_id,
                                         PSDimage              *img_a,
                                         FILE                  *f,
                                         GError               **error);
 
 static gint     load_resource_1007     (const PSDimageres     *res_a,
-                                        const gint32           image_id,
+                                        gint32                 image_id,
                                         PSDimage              *img_a,
                                         FILE                  *f,
                                         GError               **error);
 
 static gint     load_resource_1008     (const PSDimageres     *res_a,
-                                        const gint32           image_id,
+                                        gint32                 image_id,
                                         FILE                  *f,
                                         GError               **error);
 
 static gint     load_resource_1022     (const PSDimageres     *res_a,
-                                        const gint32           image_id,
+                                        gint32                 image_id,
                                         PSDimage              *img_a,
                                         FILE                  *f,
                                         GError               **error);
 
 static gint     load_resource_1024     (const PSDimageres     *res_a,
-                                        const gint32           image_id,
+                                        gint32                 image_id,
                                         PSDimage              *img_a,
                                         FILE                  *f,
                                         GError               **error);
 
 static gint     load_resource_1028     (const PSDimageres     *res_a,
-                                        const gint32           image_id,
+                                        gint32                 image_id,
                                         FILE                  *f,
                                         GError               **error);
 
 static gint     load_resource_1032     (const PSDimageres     *res_a,
-                                        const gint32           image_id,
+                                        gint32                 image_id,
                                         FILE                  *f,
                                         GError               **error);
 
 static gint     load_resource_1033     (const PSDimageres     *res_a,
-                                        const gint32           image_id,
+                                        gint32                 image_id,
                                         FILE                  *f,
                                         GError               **error);
 
 static gint     load_resource_1039     (const PSDimageres     *res_a,
-                                        const gint32           image_id,
+                                        gint32                 image_id,
                                         FILE                  *f,
                                         GError               **error);
 
 static gint     load_resource_1045     (const PSDimageres     *res_a,
-                                        const gint32           image_id,
+                                        gint32                 image_id,
                                         PSDimage              *img_a,
                                         FILE                  *f,
                                         GError               **error);
 
 static gint     load_resource_1046     (const PSDimageres     *res_a,
-                                        const gint32           image_id,
+                                        gint32                 image_id,
                                         FILE                  *f,
                                         GError               **error);
 
 static gint     load_resource_1053     (const PSDimageres     *res_a,
-                                        const gint32           image_id,
+                                        gint32                 image_id,
                                         PSDimage              *img_a,
                                         FILE                  *f,
                                         GError               **error);
 
 static gint     load_resource_1058     (const PSDimageres     *res_a,
-                                        const gint32           image_id,
+                                        gint32                 image_id,
                                         FILE                  *f,
                                         GError               **error);
 
-static gint     load_resource_1060     (const PSDimageres     *res_a,
-                                        const gint32           image_id,
+static gint     load_resource_1077     (const PSDimageres     *res_a,
+                                        gint32                 image_id,
+                                        PSDimage              *img_a,
                                         FILE                  *f,
                                         GError               **error);
 
 static gint     load_resource_2000     (const PSDimageres     *res_a,
-                                        const gint32           image_id,
+                                        gint32                 image_id,
                                         FILE                  *f,
                                         GError               **error);
 
@@ -246,11 +273,12 @@ get_image_resource_header (PSDimageres  *res_a,
 }
 
 gint
-load_image_resource (PSDimageres   *res_a,
-                     const gint32   image_id,
-                     PSDimage      *img_a,
-                     FILE          *f,
-                     GError       **error)
+load_image_resource (PSDimageres  *res_a,
+                     gint32        image_id,
+                     PSDimage     *img_a,
+                     FILE         *f,
+                     gboolean     *resolution_loaded,
+                     GError      **error)
 {
   gint  pad;
 
@@ -261,7 +289,7 @@ load_image_resource (PSDimageres   *res_a,
       return -1;
     }
 
-   /* Process image resource blocks */
+  /* Process image resource blocks */
   if (memcmp (res_a->type, "8BIM", 4) != 0 &&
       memcmp (res_a->type, "MeSa", 4) !=0)
     {
@@ -297,7 +325,8 @@ load_image_resource (PSDimageres   *res_a,
             break;
 
           case PSD_RESN_INFO:
-            load_resource_1005 (res_a, image_id, f, error);
+            if (! load_resource_1005 (res_a, image_id, f, error))
+              *resolution_loaded = TRUE;
             break;
 
           case PSD_ALPHA_NAMES:
@@ -353,7 +382,10 @@ load_image_resource (PSDimageres   *res_a,
             break;
 
           case PSD_XMP_DATA:
-            load_resource_1060 (res_a, image_id, f, error);
+            break;
+
+          case PSD_DISPLAY_INFO_NEW:
+            load_resource_1077 (res_a, image_id, img_a, f, error);
             break;
 
           default:
@@ -382,10 +414,10 @@ load_image_resource (PSDimageres   *res_a,
 }
 
 gint
-load_thumbnail_resource (PSDimageres   *res_a,
-                         const gint32   image_id,
-                         FILE          *f,
-                         GError       **error)
+load_thumbnail_resource (PSDimageres  *res_a,
+                         gint32        image_id,
+                         FILE         *f,
+                         GError      **error)
 {
   gint  rtn = 0;
   gint  pad;
@@ -397,14 +429,14 @@ load_thumbnail_resource (PSDimageres   *res_a,
       return -1;
     }
 
-   /* Process image resource blocks */
- if (res_a->id == PSD_THUMB_RES
-     || res_a->id == PSD_THUMB_RES2)
-   {
-        /* Load thumbnails from standard file load */
-        load_resource_1033 (res_a, image_id, f, error);
-        rtn = 1;
-   }
+  /* Process image resource blocks */
+  if (res_a->id == PSD_THUMB_RES
+      || res_a->id == PSD_THUMB_RES2)
+    {
+      /* Load thumbnails from standard file load */
+      load_resource_1033 (res_a, image_id, f, error);
+      rtn = 1;
+    }
 
   /* Image blocks are null padded to even length */
   if (res_a->data_len % 2 == 0)
@@ -426,7 +458,7 @@ load_thumbnail_resource (PSDimageres   *res_a,
 
 static gint
 load_resource_unknown (const PSDimageres  *res_a,
-                       const gint32        image_id,
+                       gint32              image_id,
                        FILE               *f,
                        GError            **error)
 {
@@ -446,7 +478,7 @@ load_resource_unknown (const PSDimageres  *res_a,
     }
 
   name = g_strdup_printf ("psd-image-resource-%.4s-%.4x",
-                            res_a->type, res_a->id);
+                           res_a->type, res_a->id);
   IFDBG(2) g_debug ("Parasite name: %s", name);
 
   parasite = gimp_parasite_new (name, 0, res_a->data_len, data);
@@ -460,7 +492,7 @@ load_resource_unknown (const PSDimageres  *res_a,
 
 static gint
 load_resource_ps_only (const PSDimageres  *res_a,
-                       const gint32        image_id,
+                       gint32              image_id,
                        FILE               *f,
                        GError            **error)
 {
@@ -481,7 +513,7 @@ load_resource_ps_only (const PSDimageres  *res_a,
     }
 
   name = g_strdup_printf ("psd-image-resource-%.4s-%.4x",
-                            res_a->type, res_a->id);
+                           res_a->type, res_a->id);
   IFDBG(2) g_debug ("Parasite name: %s", name);
 
   parasite = gimp_parasite_new (name, 0, res_a->data_len, data);
@@ -495,7 +527,7 @@ load_resource_ps_only (const PSDimageres  *res_a,
 
 static gint
 load_resource_1005 (const PSDimageres  *res_a,
-                    const gint32        image_id,
+                    gint32              image_id,
                     FILE               *f,
                     GError            **error)
 {
@@ -526,12 +558,12 @@ load_resource_1005 (const PSDimageres  *res_a,
   res_info.heightUnit = GINT16_FROM_BE (res_info.heightUnit);
 
   IFDBG(3) g_debug ("Resolution: %d, %d, %d, %d, %d, %d",
-                      res_info.hRes,
-                      res_info.hResUnit,
-                      res_info.widthUnit,
-                      res_info.vRes,
-                      res_info.vResUnit,
-                      res_info.heightUnit);
+                     res_info.hRes,
+                     res_info.hResUnit,
+                     res_info.widthUnit,
+                     res_info.vRes,
+                     res_info.vResUnit,
+                     res_info.heightUnit);
 
   /* Resolution always recorded as pixels / inch in a fixed point implied
      decimal int32 with 16 bits before point and 16 after (i.e. cast as
@@ -542,14 +574,14 @@ load_resource_1005 (const PSDimageres  *res_a,
   /* GIMP only has one display unit so use ps horizontal resolution unit */
   switch (res_info.hResUnit)
     {
-      case PSD_RES_INCH:
-        image_unit = GIMP_UNIT_INCH;
-        break;
-      case PSD_RES_CM:
-        image_unit = GIMP_UNIT_MM;
-        break;
-      default:
-        image_unit = GIMP_UNIT_INCH;
+    case PSD_RES_INCH:
+      image_unit = GIMP_UNIT_INCH;
+      break;
+    case PSD_RES_CM:
+      image_unit = GIMP_UNIT_MM;
+      break;
+    default:
+      image_unit = GIMP_UNIT_INCH;
     }
 
   gimp_image_set_unit (image_id, image_unit);
@@ -559,7 +591,7 @@ load_resource_1005 (const PSDimageres  *res_a,
 
 static gint
 load_resource_1006 (const PSDimageres  *res_a,
-                    const gint32        image_id,
+                    gint32              image_id,
                     PSDimage           *img_a,
                     FILE               *f,
                     GError            **error)
@@ -601,7 +633,7 @@ load_resource_1006 (const PSDimageres  *res_a,
 
 static gint
 load_resource_1007 (const PSDimageres  *res_a,
-                    const gint32        image_id,
+                    gint32              image_id,
                     PSDimage           *img_a,
                     FILE               *f,
                     GError            **error)
@@ -688,13 +720,13 @@ load_resource_1007 (const PSDimageres  *res_a,
       gimp_rgb_set_alpha (&gimp_rgb, 1.0);
 
       IFDBG(2) g_debug ("PS cSpace: %d, col: %d %d %d %d, opacity: %d, kind: %d",
-             dsp_info.colorSpace, ps_color.cmyk.cyan, ps_color.cmyk.magenta,
-             ps_color.cmyk.yellow, ps_color.cmyk.black, dsp_info.opacity,
-             dsp_info.kind);
+                        dsp_info.colorSpace, ps_color.cmyk.cyan, ps_color.cmyk.magenta,
+                        ps_color.cmyk.yellow, ps_color.cmyk.black, dsp_info.opacity,
+                        dsp_info.kind);
 
       IFDBG(2) g_debug ("cSpace: %d, col: %g %g %g, opacity: %d, kind: %d",
-             dsp_info.colorSpace, gimp_rgb.r * 255 , gimp_rgb.g * 255,
-             gimp_rgb.b * 255, dsp_info.opacity, dsp_info.kind);
+                        dsp_info.colorSpace, gimp_rgb.r * 255 , gimp_rgb.g * 255,
+                        gimp_rgb.b * 255, dsp_info.opacity, dsp_info.kind);
 
       img_a->alpha_display_info[cidx] = g_malloc (sizeof (PSDchanneldata));
       img_a->alpha_display_info[cidx]->gimp_color = gimp_rgb;
@@ -709,7 +741,7 @@ load_resource_1007 (const PSDimageres  *res_a,
 
 static gint
 load_resource_1008 (const PSDimageres  *res_a,
-                    const gint32        image_id,
+                    gint32              image_id,
                     FILE               *f,
                     GError            **error)
 {
@@ -736,7 +768,7 @@ load_resource_1008 (const PSDimageres  *res_a,
 
 static gint
 load_resource_1022 (const PSDimageres  *res_a,
-                    const gint32        image_id,
+                    gint32              image_id,
                     PSDimage           *img_a,
                     FILE               *f,
                     GError            **error)
@@ -755,15 +787,15 @@ load_resource_1022 (const PSDimageres  *res_a,
   img_a->quick_mask_id = GUINT16_FROM_BE (img_a->quick_mask_id);
 
   IFDBG(3) g_debug ("Quick mask channel: %d, empty: %d",
-                      img_a->quick_mask_id,
-                      quick_mask_empty);
+                    img_a->quick_mask_id,
+                    quick_mask_empty);
 
   return 0;
 }
 
 static gint
 load_resource_1024 (const PSDimageres  *res_a,
-                    const gint32        image_id,
+                    gint32              image_id,
                     PSDimage           *img_a,
                     FILE               *f,
                     GError            **error)
@@ -783,7 +815,7 @@ load_resource_1024 (const PSDimageres  *res_a,
 
 static gint
 load_resource_1028 (const PSDimageres  *res_a,
-                    const gint32        image_id,
+                    gint32              image_id,
                     FILE               *f,
                     GError            **error)
 {
@@ -851,7 +883,7 @@ load_resource_1028 (const PSDimageres  *res_a,
 
 static gint
 load_resource_1032 (const PSDimageres  *res_a,
-                    const gint32        image_id,
+                    gint32              image_id,
                     FILE               *f,
                     GError            **error)
 {
@@ -910,7 +942,7 @@ load_resource_1032 (const PSDimageres  *res_a,
 
 static gint
 load_resource_1033 (const PSDimageres  *res_a,
-                    const gint32        image_id,
+                    gint32              image_id,
                     FILE               *f,
                     GError            **error)
 {
@@ -920,8 +952,8 @@ load_resource_1033 (const PSDimageres  *res_a,
   struct jpeg_error_mgr         jerr;
 
   ThumbnailInfo         thumb_info;
-  GimpDrawable         *drawable;
-  GimpPixelRgn          pixel_rgn;
+  GeglBuffer           *buffer;
+  const Babl           *format;
   gint32                layer_id;
   guchar               *buf;
   guchar               *rgb_buf;
@@ -955,9 +987,9 @@ load_resource_1033 (const PSDimageres  *res_a,
   IFDBG(2) g_debug ("\nThumbnail:\n"
                     "\tFormat: %d\n"
                     "\tDimensions: %d x %d\n",
-                      thumb_info.format,
-                      thumb_info.width,
-                      thumb_info.height);
+                     thumb_info.format,
+                     thumb_info.width,
+                     thumb_info.height);
 
   if (thumb_info.format != 1)
     {
@@ -1001,10 +1033,11 @@ load_resource_1033 (const PSDimageres  *res_a,
   layer_id = gimp_layer_new (image_id, _("Background"),
                              cinfo.output_width,
                              cinfo.output_height,
-                             GIMP_RGB_IMAGE, 100, GIMP_NORMAL_MODE);
-  drawable = gimp_drawable_get (layer_id);
-  gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0,
-                       drawable->width, drawable->height, TRUE, FALSE);
+                             GIMP_RGB_IMAGE,
+                             100,
+                             gimp_image_get_default_new_layer_mode (image_id));
+  buffer = gimp_drawable_get_buffer (layer_id);
+  format = babl_format ("R'G'B' u8");
 
   /* Step 6: while (scan lines remain to be read) */
   /*           jpeg_read_scanlines(...); */
@@ -1012,27 +1045,30 @@ load_resource_1033 (const PSDimageres  *res_a,
     {
       jpeg_read_scanlines (&cinfo,
                            (JSAMPARRAY) &rowbuf[cinfo.output_scanline], 1);
-
-      if (res_a->id == PSD_THUMB_RES)   /* Order is BGR for resource 1033 */
-        {
-          guchar *dst = rgb_buf;
-          guchar *src = buf;
-
-          for (i = 0; i < drawable->width * drawable->height; ++i)
-            {
-              guchar r, g, b;
-
-              r = *(src++);
-              g = *(src++);
-              b = *(src++);
-              *(dst++) = b;
-              *(dst++) = g;
-              *(dst++) = r;
-            }
-        }
-      gimp_pixel_rgn_set_rect (&pixel_rgn, rgb_buf ? rgb_buf : buf,
-                               0, 0, drawable->width, drawable->height);
     }
+
+  if (res_a->id == PSD_THUMB_RES)   /* Order is BGR for resource 1033 */
+    {
+      guchar *dst = rgb_buf;
+      guchar *src = buf;
+
+      for (i = 0; i < gegl_buffer_get_width (buffer) * gegl_buffer_get_height (buffer); ++i)
+        {
+          guchar r, g, b;
+
+          r = *(src++);
+          g = *(src++);
+          b = *(src++);
+          *(dst++) = b;
+          *(dst++) = g;
+          *(dst++) = r;
+        }
+    }
+
+  gegl_buffer_set (buffer, GEGL_RECTANGLE (0, 0,
+                                           gegl_buffer_get_width (buffer),
+                                           gegl_buffer_get_height (buffer)),
+                   0, format, rgb_buf ? rgb_buf : buf, GEGL_AUTO_ROWSTRIDE);
 
   /* Step 7: Finish decompression */
   jpeg_finish_decompress (&cinfo);
@@ -1053,20 +1089,20 @@ load_resource_1033 (const PSDimageres  *res_a,
    * jerr.num_warnings is nonzero).
    */
   gimp_image_insert_layer (image_id, layer_id, -1, 0);
-  gimp_drawable_detach (drawable);
+  g_object_unref (buffer);
 
   return 0;
 }
 
 static gint
 load_resource_1039 (const PSDimageres  *res_a,
-                    const gint32        image_id,
+                    gint32              image_id,
                     FILE               *f,
                     GError            **error)
 {
   /* Load ICC profile */
-  GimpParasite  *parasite;
-  gchar         *icc_profile;
+  GimpColorProfile *profile;
+  gchar            *icc_profile;
 
   IFDBG(2) g_debug ("Process image resource block: 1039: ICC Profile");
 
@@ -1078,11 +1114,15 @@ load_resource_1039 (const PSDimageres  *res_a,
       return -1;
     }
 
-  parasite = gimp_parasite_new (GIMP_PARASITE_ICC_PROFILE,
-                                GIMP_PARASITE_PERSISTENT,
-                                res_a->data_len, icc_profile);
-  gimp_image_attach_parasite (image_id, parasite);
-  gimp_parasite_free (parasite);
+  profile = gimp_color_profile_new_from_icc_profile ((guint8 *) icc_profile,
+                                                     res_a->data_len,
+                                                     NULL);
+  if (profile)
+    {
+      gimp_image_set_color_profile (image_id, profile);
+      g_object_unref (profile);
+    }
+
   g_free (icc_profile);
 
   return 0;
@@ -1090,7 +1130,7 @@ load_resource_1039 (const PSDimageres  *res_a,
 
 static gint
 load_resource_1045 (const PSDimageres  *res_a,
-                    const gint32        image_id,
+                    gint32              image_id,
                     PSDimage           *img_a,
                     FILE               *f,
                     GError            **error)
@@ -1139,7 +1179,7 @@ load_resource_1045 (const PSDimageres  *res_a,
 
 static gint
 load_resource_1046 (const PSDimageres  *res_a,
-                    const gint32        image_id,
+                    gint32              image_id,
                     FILE               *f,
                     GError            **error)
 {
@@ -1171,7 +1211,7 @@ load_resource_1046 (const PSDimageres  *res_a,
 
 static gint
 load_resource_1053 (const PSDimageres  *res_a,
-                    const gint32        image_id,
+                    gint32              image_id,
                     PSDimage           *img_a,
                     FILE               *f,
                     GError            **error)
@@ -1205,30 +1245,16 @@ load_resource_1053 (const PSDimageres  *res_a,
 
 static gint
 load_resource_1058 (const PSDimageres  *res_a,
-                    const gint32        image_id,
+                    gint32              image_id,
                     FILE               *f,
                     GError            **error)
 {
-  /* Load EXIF data block */
-
-#ifdef HAVE_LIBEXIF
-  ExifData     *exif_data;
-  ExifEntry    *exif_entry;
-  guchar       *exif_buf;
-  guchar       *tmp_data;
-  guint         exif_buf_len;
-  gint16        jpeg_len;
-  gint16        jpeg_fill = 0;
-  GimpParam    *return_vals;
-  gint          nreturn_vals;
-#else
   gchar        *name;
-#endif /* HAVE_LIBEXIF */
 
   GimpParasite *parasite;
   gchar        *res_data;
 
-  IFDBG(2) g_debug ("Process image resource block: 1058: EXIF data");
+  IFDBG(2) g_debug ("Process image resource block: 1058: Exif data");
 
   res_data = g_malloc (res_a->data_len);
   if (fread (res_data, res_a->data_len, 1, f) < 1)
@@ -1238,79 +1264,6 @@ load_resource_1058 (const PSDimageres  *res_a,
       return -1;
     }
 
-#ifdef HAVE_LIBEXIF
-  /* Add JPEG header & trailer to the TIFF Exif data held in PSD
-     resource to allow us to use libexif to serialize the data
-     in the same manner as the JPEG load.
-  */
-  jpeg_len = res_a->data_len + 8;
-  tmp_data = g_malloc (res_a->data_len + 12);
-  /* SOI & APP1 markers */
-  memcpy (tmp_data, "\xFF\xD8\xFF\xE1", 4);
-  /* APP1 block len */
-  memcpy (tmp_data + 4, &jpeg_len, 2);
-  /* Exif marker */
-  memcpy (tmp_data + 6, "Exif", 4);
-  /* Filler */
-  memcpy (tmp_data + 10, &jpeg_fill, 2);
-  /* Exif data */
-  memcpy (tmp_data + 12, res_data, res_a->data_len);
-
-  /* Create Exif data structure */
-  exif_data = exif_data_new_from_data (tmp_data, res_a->data_len + 12);
-  g_free (tmp_data);
-  IFDBG (3) exif_data_dump (exif_data);
-
-  /* Check for XMP data block in Exif data - PS7 */
-  if ((exif_entry = exif_content_get_entry (exif_data->ifd[EXIF_IFD_0],
-                                            EXIF_TAG_XML_PACKET)))
-    {
-      IFDBG(3) g_debug ("Processing Exif XMP data block");
-      /*Create NULL terminated EXIF data block */
-      tmp_data = g_malloc (exif_entry->size + 1);
-      memcpy (tmp_data, exif_entry->data, exif_entry->size);
-      tmp_data[exif_entry->size] = 0;
-      /* Merge with existing XMP data block */
-      return_vals = gimp_run_procedure (DECODE_XMP_PROC,
-                                        &nreturn_vals,
-                                        GIMP_PDB_IMAGE,  image_id,
-                                        GIMP_PDB_STRING, tmp_data,
-                                        GIMP_PDB_END);
-      g_free (tmp_data);
-      gimp_destroy_params (return_vals, nreturn_vals);
-      IFDBG(3) g_debug ("Deleting XMP block from Exif data");
-      /* Delete XMP data from Exif block */
-      exif_content_remove_entry (exif_data->ifd[EXIF_IFD_0],
-                                 exif_entry);
-    }
-
-  /* Check for Photoshp Image Resource data block in Exif data - PS7 */
-  if ((exif_entry = exif_content_get_entry (exif_data->ifd[EXIF_IFD_0],
-                                            EXIF_TAG_IMAGE_RESOURCES)))
-    {
-      IFDBG(3) g_debug ("Deleting PS Image Resource block from Exif data");
-      /* Delete PS Image Resource data from Exif block */
-      exif_content_remove_entry (exif_data->ifd[EXIF_IFD_0],
-                                 exif_entry);
-    }
-
-  IFDBG (3) exif_data_dump (exif_data);
-  /* Store resource data as a GIMP Exif parasite */
-  IFDBG (2) g_debug ("Processing exif data as GIMP Exif parasite");
-  /* Serialize exif data */
-  exif_data_save_data (exif_data, &exif_buf, &exif_buf_len);
-  if (exif_buf_len > EXIF_HEADER_SIZE)
-    {
-      parasite = gimp_parasite_new (GIMP_PARASITE_EXIF,
-                                    GIMP_PARASITE_PERSISTENT,
-                                    exif_buf_len, exif_buf);
-      gimp_image_attach_parasite (image_id, parasite);
-      gimp_parasite_free (parasite);
-    }
-  exif_data_unref (exif_data);
-  g_free (exif_buf);
-
-#else
   /* Store resource data as a standard psd parasite */
   IFDBG (2) g_debug ("Processing exif data as psd parasite");
   name = g_strdup_printf ("psd-image-resource-%.4s-%.4x",
@@ -1322,48 +1275,125 @@ load_resource_1058 (const PSDimageres  *res_a,
   gimp_parasite_free (parasite);
   g_free (name);
 
-#endif /* HAVE_LIBEXIF */
-
   g_free (res_data);
   return 0;
 }
 
 static gint
-load_resource_1060 (const PSDimageres  *res_a,
-                    const gint32        image_id,
+load_resource_1077 (const PSDimageres  *res_a,
+                    gint32              image_id,
+                    PSDimage           *img_a,
                     FILE               *f,
                     GError            **error)
 {
-  /* Load XMP Metadata block */
-  GimpParam    *return_vals;
-  gint          nreturn_vals;
-  gchar        *res_data;
+  /* Load alpha channel display info */
 
-  IFDBG(2) g_debug ("Process image resource block: 1060: XMP Data");
+  DisplayInfoNew    dsp_info;
+  CMColor           ps_color;
+  GimpRGB           gimp_rgb;
+  GimpHSV           gimp_hsv;
+  GimpCMYK          gimp_cmyk;
+  gint16            tot_rec;
+  gint              cidx;
 
-  res_data = g_malloc (res_a->data_len + 1);
-  if (fread (res_data, res_a->data_len, 1, f) < 1)
+  IFDBG(2) g_debug ("Process image resource block 1077: Display Info New");
+
+  /* For now, skip first 4 bytes since intention is unclear. Seems to be
+     a version number that is always one, but who knows. */
+  fseek (f, 4, SEEK_CUR);
+
+  tot_rec = res_a->data_len / 13;
+  if (tot_rec == 0)
+    return 0;
+
+  img_a->alpha_display_info = g_new (PSDchanneldata *, tot_rec);
+  img_a->alpha_display_count = tot_rec;
+  for (cidx = 0; cidx < tot_rec; ++cidx)
     {
-      psd_set_error (feof (f), errno, error);
-      g_free (res_data);
-      return -1;
-    }
-  /* Null terminate metadata block for decode procedure */
-  res_data[res_a->data_len] = 0;
+      if (fread (&dsp_info.colorSpace, 2, 1, f) < 1
+          || fread (&dsp_info.color, 8, 1, f) < 1
+          || fread (&dsp_info.opacity, 2, 1, f) < 1
+          || fread (&dsp_info.mode, 1, 1, f) < 1)
+        {
+          psd_set_error (feof (f), errno, error);
+          return -1;
+        }
+      dsp_info.colorSpace = GINT16_FROM_BE (dsp_info.colorSpace);
+      ps_color.cmyk.cyan = GUINT16_FROM_BE (dsp_info.color[0]);
+      ps_color.cmyk.magenta = GUINT16_FROM_BE (dsp_info.color[1]);
+      ps_color.cmyk.yellow = GUINT16_FROM_BE (dsp_info.color[2]);
+      ps_color.cmyk.black = GUINT16_FROM_BE (dsp_info.color[3]);
+      dsp_info.opacity = GINT16_FROM_BE (dsp_info.opacity);
 
-  return_vals = gimp_run_procedure (DECODE_XMP_PROC,
-                                    &nreturn_vals,
-                                    GIMP_PDB_IMAGE,  image_id,
-                                    GIMP_PDB_STRING, res_data,
-                                    GIMP_PDB_END);
-  g_free (res_data);
-  gimp_destroy_params (return_vals, nreturn_vals);
+      switch (dsp_info.colorSpace)
+        {
+          case PSD_CS_RGB:
+            gimp_rgb_set (&gimp_rgb, ps_color.rgb.red / 65535.0,
+                          ps_color.rgb.green / 65535.0,
+                          ps_color.rgb.blue / 65535.0);
+            break;
+
+          case PSD_CS_HSB:
+            gimp_hsv_set (&gimp_hsv, ps_color.hsv.hue / 65535.0,
+                          ps_color.hsv.saturation / 65535.0,
+                          ps_color.hsv.value / 65535.0);
+            gimp_hsv_to_rgb (&gimp_hsv, &gimp_rgb);
+            break;
+
+          case PSD_CS_CMYK:
+            gimp_cmyk_set (&gimp_cmyk, 1.0 - ps_color.cmyk.cyan / 65535.0,
+                           1.0 - ps_color.cmyk.magenta / 65535.0,
+                           1.0 - ps_color.cmyk.yellow / 65535.0,
+                           1.0 - ps_color.cmyk.black / 65535.0);
+            gimp_cmyk_to_rgb (&gimp_cmyk, &gimp_rgb);
+            break;
+
+          case PSD_CS_GRAYSCALE:
+            gimp_rgb_set (&gimp_rgb, ps_color.gray.gray / 10000.0,
+                          ps_color.gray.gray / 10000.0,
+                          ps_color.gray.gray / 10000.0);
+            break;
+
+          case PSD_CS_FOCOLTONE:
+          case PSD_CS_TRUMATCH:
+          case PSD_CS_HKS:
+          case PSD_CS_LAB:
+          case PSD_CS_PANTONE:
+          case PSD_CS_TOYO:
+          case PSD_CS_DIC:
+          case PSD_CS_ANPA:
+          default:
+            if (CONVERSION_WARNINGS)
+              g_message ("Unsupported color space: %d",
+                          dsp_info.colorSpace);
+            gimp_rgb_set (&gimp_rgb, 1.0, 0.0, 0.0);
+        }
+
+      gimp_rgb_set_alpha (&gimp_rgb, 1.0);
+
+      IFDBG(2) g_debug ("PS cSpace: %d, col: %d %d %d %d, opacity: %d, kind: %d",
+                        dsp_info.colorSpace, ps_color.cmyk.cyan, ps_color.cmyk.magenta,
+                        ps_color.cmyk.yellow, ps_color.cmyk.black, dsp_info.opacity,
+                        dsp_info.kind);
+
+      IFDBG(2) g_debug ("cSpace: %d, col: %g %g %g, opacity: %d, kind: %d",
+                        dsp_info.colorSpace, gimp_rgb.r * 255 , gimp_rgb.g * 255,
+                        gimp_rgb.b * 255, dsp_info.opacity, dsp_info.kind);
+
+      img_a->alpha_display_info[cidx] = g_malloc (sizeof (PSDchanneldata));
+      img_a->alpha_display_info[cidx]->gimp_color = gimp_rgb;
+      img_a->alpha_display_info[cidx]->opacity = dsp_info.opacity;
+      img_a->alpha_display_info[cidx]->ps_mode = dsp_info.mode;
+      img_a->alpha_display_info[cidx]->ps_cspace = dsp_info.colorSpace;
+      img_a->alpha_display_info[cidx]->ps_color = ps_color;
+    }
+
   return 0;
 }
 
 static gint
 load_resource_2000 (const PSDimageres  *res_a,
-                    const gint32        image_id,
+                    gint32              image_id,
                     FILE               *f,
                     GError            **error)
 {
@@ -1506,11 +1536,11 @@ load_resource_2000 (const PSDimageres  *res_a,
                   || type == PSD_PATH_OP_UNLNK)
                 {
                   if (fread (&y[0], 4, 1, f) < 1
-                    || fread (&x[0], 4, 1, f) < 1
-                    || fread (&y[1], 4, 1, f) < 1
-                    || fread (&x[1], 4, 1, f) < 1
-                    || fread (&y[2], 4, 1, f) < 1
-                    || fread (&x[2], 4, 1, f) < 1)
+                      || fread (&x[0], 4, 1, f) < 1
+                      || fread (&y[1], 4, 1, f) < 1
+                      || fread (&x[1], 4, 1, f) < 1
+                      || fread (&y[2], 4, 1, f) < 1
+                      || fread (&x[2], 4, 1, f) < 1)
                     {
                       psd_set_error (feof (f), errno, error);
                       return -1;
@@ -1558,5 +1588,5 @@ load_resource_2000 (const PSDimageres  *res_a,
       path_rec--;
     }
 
- return 0;
+  return 0;
 }

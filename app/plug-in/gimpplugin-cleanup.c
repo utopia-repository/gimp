@@ -19,6 +19,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "plug-in-types.h"
@@ -57,7 +58,7 @@ struct _GimpPlugInCleanupItem
   GimpItem *item;
   gint      item_ID;
 
-  gboolean  shadow_tiles;
+  gboolean  shadow_buffer;
 };
 
 
@@ -157,7 +158,7 @@ gimp_plug_in_cleanup_add_shadow (GimpPlugIn   *plug_in,
                                                   cleanup);
     }
 
-  cleanup->shadow_tiles = TRUE;
+  cleanup->shadow_buffer = TRUE;
 
   return TRUE;
 }
@@ -178,7 +179,7 @@ gimp_plug_in_cleanup_remove_shadow (GimpPlugIn   *plug_in,
   if (! cleanup)
     return FALSE;
 
-  if (! cleanup->shadow_tiles)
+  if (! cleanup->shadow_buffer)
     return FALSE;
 
   proc_frame->item_cleanups = g_list_remove (proc_frame->item_cleanups,
@@ -278,11 +279,9 @@ gimp_plug_in_cleanup_image (GimpPlugInProcFrame    *proc_frame,
 
   if (cleanup->undo_group_count != gimp_image_get_undo_group_count (image))
     {
-      GimpProcedure *proc = proc_frame->procedure;
-
-      g_message ("Plug-In '%s' left image undo in inconsistent state, "
+      g_message ("Plug-in '%s' left image undo in inconsistent state, "
                  "closing open undo groups.",
-                 gimp_plug_in_procedure_get_label (GIMP_PLUG_IN_PROCEDURE (proc)));
+                 gimp_procedure_get_label (proc_frame->procedure));
 
       while (cleanup->undo_group_count < gimp_image_get_undo_group_count (image))
         {
@@ -332,15 +331,13 @@ gimp_plug_in_cleanup_item (GimpPlugInProcFrame   *proc_frame,
 {
   GimpItem *item = cleanup->item;
 
-  if (cleanup->shadow_tiles)
+  if (cleanup->shadow_buffer)
     {
-      GimpProcedure *proc = proc_frame->procedure;
-
       GIMP_LOG (SHADOW_TILES,
-                "Freeing shadow tiles of drawable '%s' on behalf of '%s'.",
+                "Freeing shadow buffer of drawable '%s' on behalf of '%s'.",
                 gimp_object_get_name (item),
-                gimp_plug_in_procedure_get_label (GIMP_PLUG_IN_PROCEDURE (proc)));
+                gimp_procedure_get_label (proc_frame->procedure));
 
-      gimp_drawable_free_shadow_tiles (GIMP_DRAWABLE (item));
+      gimp_drawable_free_shadow_buffer (GIMP_DRAWABLE (item));
     }
 }

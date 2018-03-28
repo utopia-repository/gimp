@@ -22,6 +22,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -71,6 +72,7 @@ struct _GimpContainerViewPrivate
   GtkWidget       *dnd_widget;
 
   GimpTreeHandler *name_changed_handler;
+  GimpTreeHandler *expanded_changed_handler;
 };
 
 
@@ -115,6 +117,8 @@ static void   gimp_container_view_freeze           (GimpContainerView  *view,
 static void   gimp_container_view_thaw             (GimpContainerView  *view,
                                                     GimpContainer      *container);
 static void   gimp_container_view_name_changed     (GimpViewable       *viewable,
+                                                    GimpContainerView  *view);
+static void   gimp_container_view_expanded_changed (GimpViewable       *viewable,
                                                     GimpContainerView  *view);
 
 static void   gimp_container_view_connect_context    (GimpContainerView *view);
@@ -216,6 +220,7 @@ gimp_container_view_iface_base_init (GimpContainerViewInterface *view_iface)
   view_iface->remove_item        = NULL;
   view_iface->reorder_item       = NULL;
   view_iface->rename_item        = NULL;
+  view_iface->expand_item        = NULL;
   view_iface->clear_items        = gimp_container_view_real_clear_items;
   view_iface->set_view_size      = NULL;
   view_iface->get_selected       = gimp_container_view_real_get_selected;
@@ -285,6 +290,10 @@ gimp_container_view_private_finalize (GimpContainerViewPrivate *private)
       g_hash_table_destroy (private->item_hash);
       private->item_hash = NULL;
     }
+  g_clear_pointer (&private->name_changed_handler,
+                   gimp_tree_handler_disconnect);
+  g_clear_pointer (&private->expanded_changed_handler,
+                   gimp_tree_handler_disconnect);
 
   g_slice_free (GimpContainerViewPrivate, private);
 }
@@ -979,6 +988,15 @@ gimp_container_view_add_container (GimpContainerView *view,
                                    G_CALLBACK (gimp_container_view_name_changed),
                                    view);
 
+      if (GIMP_CONTAINER_VIEW_GET_INTERFACE (view)->expand_item)
+        {
+          private->expanded_changed_handler =
+            gimp_tree_handler_connect (container,
+                                       "expanded-changed",
+                                       G_CALLBACK (gimp_container_view_expanded_changed),
+                                       view);
+        }
+
       g_type_class_unref (viewable_class);
     }
 
@@ -1071,13 +1089,9 @@ static void
 gimp_container_view_remove_container (GimpContainerView *view,
                                       GimpContainer     *container)
 {
-  GimpContainerViewInterface *view_iface;
-  GimpContainerViewPrivate   *private;
+  GimpContainerViewPrivate *private = GIMP_CONTAINER_VIEW_GET_PRIVATE (view);
 
   g_object_ref (container);
-
-  view_iface = GIMP_CONTAINER_VIEW_GET_INTERFACE (view);
-  private    = GIMP_CONTAINER_VIEW_GET_PRIVATE (view);
 
   g_signal_handlers_disconnect_by_func (container,
                                         gimp_container_view_add,
@@ -1091,20 +1105,24 @@ gimp_container_view_remove_container (GimpContainerView *view,
 
   if (container == private->container)
     {
-      gimp_tree_handler_disconnect (private->name_changed_handler);
-      private->name_changed_handler = NULL;
-    }
+      g_clear_pointer (&private->name_changed_handler,
+                       gimp_tree_handler_disconnect);
+      g_clear_pointer (&private->expanded_changed_handler,
+                       gimp_tree_handler_disconnect);
 
-  if (! view_iface->model_is_tree && container == private->container)
-    {
+      /* optimization: when the toplevel container gets removed, call
+       * clear_items() which will get rid of all view widget stuff
+       * *and* empty private->item_hash, so below call to
+       * remove_foreach() will only disconnect all containers but not
+       * remove all items individually (because they are gone from
+       * item_hash).
+       */
       gimp_container_view_clear_items (view);
     }
-  else
-    {
-      gimp_container_foreach (container,
-                              (GFunc) gimp_container_view_remove_foreach,
-                              view);
-    }
+
+  gimp_container_foreach (container,
+                          (GFunc) gimp_container_view_remove_foreach,
+                          view);
 
   g_object_unref (container);
 }
@@ -1208,6 +1226,23 @@ gimp_container_view_name_changed (GimpViewable      *viewable,
   if (insert_data)
     {
       GIMP_CONTAINER_VIEW_GET_INTERFACE (view)->rename_item (view,
+                                                             viewable,
+                                                             insert_data);
+    }
+}
+
+static void
+gimp_container_view_expanded_changed (GimpViewable      *viewable,
+                                      GimpContainerView *view)
+{
+  GimpContainerViewPrivate *private = GIMP_CONTAINER_VIEW_GET_PRIVATE (view);
+  gpointer                  insert_data;
+
+  insert_data = g_hash_table_lookup (private->item_hash, viewable);
+
+  if (insert_data)
+    {
+      GIMP_CONTAINER_VIEW_GET_INTERFACE (view)->expand_item (view,
                                                              viewable,
                                                              insert_data);
     }

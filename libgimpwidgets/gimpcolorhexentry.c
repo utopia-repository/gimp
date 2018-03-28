@@ -23,6 +23,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
@@ -57,13 +58,15 @@ enum
 };
 
 
-static gboolean  gimp_color_hex_entry_events     (GtkWidget          *widget,
-                                                  GdkEvent           *event);
+static void      gimp_color_hex_entry_constructed (GObject            *object);
 
-static gboolean  gimp_color_hex_entry_matched    (GtkEntryCompletion *completion,
-                                                  GtkTreeModel       *model,
-                                                  GtkTreeIter        *iter,
-                                                  GimpColorHexEntry  *entry);
+static gboolean  gimp_color_hex_entry_events      (GtkWidget          *widget,
+                                                   GdkEvent           *event);
+
+static gboolean  gimp_color_hex_entry_matched     (GtkEntryCompletion *completion,
+                                                   GtkTreeModel       *model,
+                                                   GtkTreeIter        *iter,
+                                                   GimpColorHexEntry  *entry);
 
 
 G_DEFINE_TYPE (GimpColorHexEntry, gimp_color_hex_entry, GTK_TYPE_ENTRY)
@@ -76,6 +79,8 @@ static guint entry_signals[LAST_SIGNAL] = { 0 };
 static void
 gimp_color_hex_entry_class_init (GimpColorHexEntryClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
   entry_signals[COLOR_CHANGED] =
     g_signal_new ("color-changed",
                   G_TYPE_FROM_CLASS (klass),
@@ -85,7 +90,9 @@ gimp_color_hex_entry_class_init (GimpColorHexEntryClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
-  klass->color_changed = NULL;
+  object_class->constructed = gimp_color_hex_entry_constructed;
+
+  klass->color_changed      = NULL;
 }
 
 static void
@@ -140,8 +147,6 @@ gimp_color_hex_entry_init (GimpColorHexEntry *entry)
   gtk_entry_set_completion (GTK_ENTRY (entry), completion);
   g_object_unref (completion);
 
-  gtk_entry_set_text (GTK_ENTRY (entry), "000000");
-
   g_signal_connect (entry, "focus-out-event",
                     G_CALLBACK (gimp_color_hex_entry_events),
                     NULL);
@@ -154,12 +159,20 @@ gimp_color_hex_entry_init (GimpColorHexEntry *entry)
                     entry);
 }
 
+static void
+gimp_color_hex_entry_constructed (GObject *object)
+{
+  G_OBJECT_CLASS (parent_class)->constructed (object);
+
+  gtk_entry_set_text (GTK_ENTRY (object), "000000");
+}
+
 /**
  * gimp_color_hex_entry_new:
  *
  * Return value: a new #GimpColorHexEntry widget
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 GtkWidget *
 gimp_color_hex_entry_new (void)
@@ -176,7 +189,7 @@ gimp_color_hex_entry_new (void)
  * is different to the previously set color, the "color-changed"
  * signal is emitted.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 void
 gimp_color_hex_entry_set_color (GimpColorHexEntry *entry,
@@ -212,7 +225,7 @@ gimp_color_hex_entry_set_color (GimpColorHexEntry *entry,
  *
  * Retrieves the color value displayed by a #GimpColorHexEntry.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 void
 gimp_color_hex_entry_get_color (GimpColorHexEntry *entry,

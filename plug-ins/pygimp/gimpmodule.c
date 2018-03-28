@@ -21,6 +21,7 @@
 #endif
 
 #undef GIMP_DISABLE_DEPRECATED
+#define GIMP_DISABLE_DEPRECATION_WARNINGS
 #include "pygimp.h"
 
 #include "pygimpcolor-api.h"
@@ -34,6 +35,12 @@
 #include "pygimp-util.h"
 
 #include "pygimp-intl.h"
+
+#include "libgimp/gimpui.h"
+
+#include <gtk/gtk.h>
+
+#include <gegl.h>
 
 
 PyObject *pygimp_error;
@@ -188,10 +195,10 @@ pygimp_main(PyObject *self, PyObject *args)
     PyObject *av;
     int argc, i;
     char **argv;
-    PyObject *ip;  /* init proc */
-    PyObject *qp;  /* quit proc */
-    PyObject *query;  /* query proc */
-    PyObject *rp;  /* run proc */
+    PyObject *ip;  // init proc
+    PyObject *qp;  // quit proc
+    PyObject *query;  // query proc
+    PyObject *rp;  // run proc
 
     if (!PyArg_ParseTuple(args, "OOOO:main", &ip, &qp, &query, &rp))
         return NULL;
@@ -910,10 +917,9 @@ pygimp_gradients_get_list(PyObject *self, PyObject *args, PyObject *kwargs)
 
     for (i = 0; i < num; i++) {
         PyList_SetItem(ret, i, PyString_FromString(list[i]));
-        g_free(list[i]);
     }
 
-    g_free(list);
+    g_strfreev(list);
 
     return ret;
 }
@@ -1315,12 +1321,10 @@ pygimp_parasite_list(PyObject *self)
 
     ret = PyTuple_New(num_parasites);
 
-    for (i = 0; i < num_parasites; i++) {
+    for (i = 0; i < num_parasites; i++)
         PyTuple_SetItem(ret, i, PyString_FromString(parasites[i]));
-        g_free(parasites[i]);
-    }
 
-    g_free(parasites);
+    g_strfreev(parasites);
     return ret;
 }
 
@@ -1395,7 +1399,8 @@ pygimp_user_directory(PyObject *self, PyObject *args, PyObject *kwargs)
     if (pyg_enum_get_value(GIMP_TYPE_USER_DIRECTORY, py_type, (gpointer)&type))
         return NULL;
 
-    user_dir = gimp_user_directory(type);
+    /* GimpUserDirectory and GUserDirectory are compatible */
+    user_dir = g_get_user_special_dir((GUserDirectory)type);
 
     if (user_dir) {
         ret = PyString_FromString(user_dir);
@@ -1467,10 +1472,9 @@ pygimp_fonts_get_list(PyObject *self, PyObject *args, PyObject *kwargs)
 
     for (i = 0; i < num; i++) {
         PyList_SetItem(ret, i, PyString_FromString(list[i]));
-        g_free(list[i]);
     }
 
-    g_free(list);
+    g_strfreev(list);
 
     return ret;
 }
@@ -1675,6 +1679,107 @@ id2vectors(PyObject *self, PyObject *args)
     return Py_None;
 }
 
+static PyObject *
+pygimp_export_image (PyObject *self, PyObject *args, PyObject *kwargs)
+{
+    PyGimpImage *img;
+    PyGimpDrawable *drw = NULL;
+    gchar *format_name = NULL;
+    unsigned int capabilities = -1;
+    GimpExportReturn result;
+    gint32  img_id;
+    gint32  drw_id;
+    PyObject *return_values;
+
+    static char *kwlist[] = { "image", "drawable", "format_name", "capabilities", NULL };
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!|OsI:export_image", kwlist,
+                                    &PyGimpImage_Type, &img,
+                                    &drw,
+                                    &format_name,
+                                    &capabilities))
+        return NULL;
+    if (capabilities == -1) {
+         PyErr_SetString(PyExc_TypeError,
+                         "the \"capabilities\" (4th) parameter must be set with "
+                         "a combination of the "
+                         "EXPORT_CAN_HANDLE_*/EXPORT_NEEDS_ALPHA values. "
+                         "(check developer documentation on the C function "
+                         "gimp_export_image for details)"
+                         );
+        return NULL;
+    }
+
+    /* If no drawable is given, assume the active drawable */
+    if (drw == NULL) {
+        drw = (PyGimpDrawable *)PyObject_GetAttrString((PyObject *)img,
+                                                       "active_drawable");
+        if ((PyObject *)drw == Py_None) {
+            PyErr_SetString(PyExc_ValueError,
+                            "No active drawable in the image and no drawable "
+                            " specified for export."
+                           );
+            return NULL;
+        }
+    }
+    img_id = img->ID;
+    drw_id = drw->ID;
+
+    result = gimp_export_image(&img_id, &drw_id, format_name, capabilities);
+
+    if (img_id != img->ID) {
+        img = (PyGimpImage *)pygimp_image_new(img_id);
+    }
+    else {
+        Py_INCREF(img);
+    }
+    if (drw_id != drw->ID) {
+        drw = (PyGimpDrawable *)pygimp_drawable_new(NULL, drw_id);
+    }
+    else {
+        Py_INCREF(drw);
+    }
+
+    return_values = PyTuple_New(3);
+    PyTuple_SetItem(return_values, 0, PyInt_FromLong(result));
+    PyTuple_SetItem(return_values, 1, (PyObject *)img);
+    PyTuple_SetItem(return_values, 2, (PyObject *)drw);
+
+    return return_values;
+}
+
+static PyObject *
+pygimp_export_dialog_new (PyObject *self, PyObject *args, PyObject *kwargs)
+{
+    gchar *format_name;
+    gchar *role = NULL;
+    gchar *help_id = NULL;
+    GtkWidget *dialog = NULL;
+
+    static char *kwlist[] = { "format_name", "role", "help_id", NULL };
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s|ss:export_dialog", kwlist,
+                                     &format_name,
+                                     &role,
+                                     &help_id))
+        return NULL;
+
+    if (role == NULL) {
+        role = "gimp_export_image";
+    }
+
+    dialog = gimp_export_dialog_new(format_name, role, help_id);
+
+    /* pyobject_new handles NULL values */
+
+    return pygobject_new((GObject *)dialog);
+
+}
+
+/* No need to expose "gimp_export_dialog_get_content_area",
+ * because one just have to call the "get_content_area" method
+ * on the returned export_dialog
+ */
+
+
 /* List of methods defined in the module */
 
 static struct PyMethodDef gimp_methods[] = {
@@ -1749,6 +1854,8 @@ static struct PyMethodDef gimp_methods[] = {
     {"_id2drawable", (PyCFunction)id2drawable, METH_VARARGS},
     {"_id2display", (PyCFunction)id2display, METH_VARARGS},
     {"_id2vectors", (PyCFunction)id2vectors, METH_VARARGS},
+    {"export_image", (PyCFunction)pygimp_export_image, METH_VARARGS | METH_KEYWORDS},
+    {"export_dialog", (PyCFunction)pygimp_export_dialog_new, METH_VARARGS | METH_KEYWORDS},
     {NULL,       (PyCFunction)NULL, 0, NULL}            /* sentinel */
 };
 
@@ -1776,7 +1883,7 @@ static struct _PyGimp_Functions pygimp_api_functions = {
 /* Initialization function for the module (*must* be called initgimp) */
 
 static char gimp_module_documentation[] =
-"This module provides interfaces to allow you to write gimp plugins"
+"This module provides interfaces to allow you to write gimp plug-ins"
 ;
 
 void initgimp(void);
@@ -1880,6 +1987,9 @@ initgimp(void)
     /* set the default python encoding to utf-8 */
     PyUnicode_SetDefaultEncoding("utf-8");
 
+    /* initialize gegl */
+    gegl_init(0, NULL);
+
     /* Create the module and add the functions */
     m = Py_InitModule4("gimp", gimp_methods,
                        gimp_module_documentation,
@@ -1903,7 +2013,7 @@ initgimp(void)
 
     Py_INCREF(&PyGimpLayer_Type);
     PyModule_AddObject(m, "Layer", (PyObject *)&PyGimpLayer_Type);
-    
+
     Py_INCREF(&PyGimpGroupLayer_Type);
     PyModule_AddObject(m, "GroupLayer", (PyObject *)&PyGimpGroupLayer_Type);
 

@@ -30,23 +30,24 @@
 #define GIMP_DRAWABLE_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DRAWABLE_UNDO, GimpDrawableUndoClass))
 
 
+typedef struct _GimpDrawableUndo      GimpDrawableUndo;
 typedef struct _GimpDrawableUndoClass GimpDrawableUndoClass;
 
 struct _GimpDrawableUndo
 {
   GimpItemUndo  parent_instance;
 
-  TileManager  *tiles;
-  gboolean      sparse;
+  GeglBuffer   *buffer;
   gint          x;
   gint          y;
-  gint          width;
-  gint          height;
 
   /* stuff for "Fade" */
-  TileManager          *src2_tiles;
-  GimpLayerModeEffects  paint_mode;
-  gdouble               opacity;
+  GeglBuffer             *applied_buffer;
+  GimpLayerMode           paint_mode;
+  GimpLayerColorSpace     blend_space;
+  GimpLayerColorSpace     composite_space;
+  GimpLayerCompositeMode  composite_mode;
+  gdouble                 opacity;
 };
 
 struct _GimpDrawableUndoClass

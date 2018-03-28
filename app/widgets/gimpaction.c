@@ -22,6 +22,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -30,12 +31,16 @@
 
 #include "widgets-types.h"
 
+#include "config/gimpcoreconfig.h"
+
+#include "core/gimp.h"
 #include "core/gimpcontext.h"
 #include "core/gimpmarshal.h"
 #include "core/gimpimagefile.h"  /* eek */
 #include "core/gimpviewable.h"
 
 #include "gimpaction.h"
+#include "gimpaction-history.h"
 #include "gimpview.h"
 #include "gimpviewrenderer.h"
 
@@ -51,6 +56,7 @@ enum
 };
 
 
+static void   gimp_action_constructed       (GObject          *object);
 static void   gimp_action_finalize          (GObject          *object);
 static void   gimp_action_set_property      (GObject          *object,
                                              guint             prop_id,
@@ -84,6 +90,7 @@ gimp_action_class_init (GimpActionClass *klass)
   GtkActionClass *action_class = GTK_ACTION_CLASS (klass);
   GimpRGB         black;
 
+  object_class->constructed   = gimp_action_constructed;
   object_class->finalize      = gimp_action_finalize;
   object_class->set_property  = gimp_action_set_property;
   object_class->get_property  = gimp_action_get_property;
@@ -138,27 +145,23 @@ gimp_action_init (GimpAction *action)
 }
 
 static void
+gimp_action_constructed (GObject *object)
+{
+  GimpAction *action = GIMP_ACTION (object);
+
+  g_signal_connect (action, "activate",
+                    (GCallback) gimp_action_history_activate_callback,
+                    NULL);
+}
+
+static void
 gimp_action_finalize (GObject *object)
 {
   GimpAction *action = GIMP_ACTION (object);
 
-  if (action->context)
-    {
-      g_object_unref (action->context);
-      action->context = NULL;
-    }
-
-  if (action->color)
-    {
-      g_free (action->color);
-      action->color = NULL;
-    }
-
-  if (action->viewable)
-    {
-      g_object_unref (action->viewable);
-      action->viewable = NULL;
-    }
+  g_clear_object (&action->context);
+  g_clear_pointer (&action->color, g_free);
+  g_clear_object (&action->viewable);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -275,22 +278,16 @@ GimpAction *
 gimp_action_new (const gchar *name,
                  const gchar *label,
                  const gchar *tooltip,
-                 const gchar *stock_id)
+                 const gchar *icon_name)
 {
   GimpAction *action;
 
   action = g_object_new (GIMP_TYPE_ACTION,
-                         "name",     name,
-                         "label",    label,
-                         "tooltip",  tooltip,
-                         "stock-id", stock_id,
+                         "name",      name,
+                         "label",     label,
+                         "tooltip",   tooltip,
+                         "icon-name", icon_name,
                          NULL);
-
-  if (stock_id)
-    {
-      if (gtk_icon_theme_has_icon (gtk_icon_theme_get_default (), stock_id))
-        gtk_action_set_icon_name (GTK_ACTION (action), stock_id);
-    }
 
   return action;
 }
@@ -301,6 +298,70 @@ gimp_action_name_compare (GimpAction  *action1,
 {
   return strcmp (gtk_action_get_name ((GtkAction *) action1),
                  gtk_action_get_name ((GtkAction *) action2));
+}
+
+gboolean
+gimp_action_is_gui_blacklisted (const gchar *action_name)
+{
+  static const gchar *suffixes[] =
+    {
+      "-menu",
+      "-popup"
+    };
+
+  static const gchar *prefixes[] =
+    {
+      "<",
+      "tools-color-average-radius-",
+      "tools-paintbrush-size-",
+      "tools-paintbrush-aspect-ratio-",
+      "tools-paintbrush-angle-",
+      "tools-paintbrush-spacing-",
+      "tools-paintbrush-hardness-",
+      "tools-paintbrush-force-",
+      "tools-ink-blob-size-",
+      "tools-ink-blob-aspect-",
+      "tools-ink-blob-angle-",
+      "tools-mypaint-brush-radius-",
+      "tools-mypaint-brush-hardness-",
+      "tools-foreground-select-brush-size-",
+      "tools-transform-preview-opacity-",
+      "tools-warp-effect-size-",
+      "tools-warp-effect-hardness-"
+    };
+
+  static const gchar *actions[] =
+    {
+      "tools-brightness-contrast",
+      "tools-curves",
+      "tools-levels",
+      "tools-threshold"
+    };
+
+  gint i;
+
+  if (! (action_name && *action_name))
+    return TRUE;
+
+  for (i = 0; i < G_N_ELEMENTS (suffixes); i++)
+    {
+      if (g_str_has_suffix (action_name, suffixes[i]))
+        return TRUE;
+    }
+
+  for (i = 0; i < G_N_ELEMENTS (prefixes); i++)
+    {
+      if (g_str_has_prefix (action_name, prefixes[i]))
+        return TRUE;
+    }
+
+  for (i = 0; i < G_N_ELEMENTS (actions); i++)
+    {
+      if (! strcmp (action_name, actions[i]))
+        return TRUE;
+    }
+
+  return FALSE;
 }
 
 
@@ -331,12 +392,18 @@ gimp_action_set_proxy (GimpAction *action,
                                       GIMP_COLOR_AREA_SMALL_CHECKS, 0);
           gimp_color_area_set_draw_border (GIMP_COLOR_AREA (area), TRUE);
 
+          if (action->context)
+            gimp_color_area_set_color_config (GIMP_COLOR_AREA (area),
+                                              action->context->gimp->config->color_management);
+
           gtk_icon_size_lookup_for_settings (gtk_widget_get_settings (proxy),
                                              GTK_ICON_SIZE_MENU,
                                              &width, &height);
 
           gtk_widget_set_size_request (area, width, height);
           gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (proxy), area);
+          gtk_image_menu_item_set_always_show_image (GTK_IMAGE_MENU_ITEM (proxy),
+                                                     TRUE);
           gtk_widget_show (area);
         }
     }
@@ -376,6 +443,8 @@ gimp_action_set_proxy (GimpAction *action,
                                      width, height, border_width,
                                      FALSE, FALSE, FALSE);
           gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (proxy), view);
+          gtk_image_menu_item_set_always_show_image (GTK_IMAGE_MENU_ITEM (proxy),
+                                                     TRUE);
           gtk_widget_show (view);
         }
     }
@@ -388,7 +457,9 @@ gimp_action_set_proxy (GimpAction *action,
       if (GIMP_IS_VIEW (image) || GIMP_IS_COLOR_AREA (image))
         {
           gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (proxy), NULL);
-          g_object_notify (G_OBJECT (action), "stock-id");
+          gtk_image_menu_item_set_always_show_image (GTK_IMAGE_MENU_ITEM (proxy),
+                                                     FALSE);
+          g_object_notify (G_OBJECT (action), "icon-name");
         }
     }
 

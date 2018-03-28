@@ -20,6 +20,7 @@
 #include <string.h>
 
 #include <gtk/gtk.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 
@@ -98,13 +99,13 @@ plug_in_menus_setup (GimpUIManager *manager,
 
   merge_id = gtk_ui_manager_new_merge_id (GTK_UI_MANAGER (manager));
 
-  for (i = 0; i < manager->gimp->config->plug_in_history_size; i++)
+  for (i = 0; i < manager->gimp->config->filter_history_size; i++)
     {
       gchar *action_name;
       gchar *action_path;
 
-      action_name = g_strdup_printf ("plug-in-recent-%02d", i + 1);
-      action_path = g_strdup_printf ("%s/Filters/Recently Used/Plug-Ins",
+      action_name = g_strdup_printf ("filter-recent-%02d", i + 1);
+      action_path = g_strdup_printf ("%s/Filters/Recently Used/Plug-ins",
                                      ui_path);
 
       gtk_ui_manager_add_ui (GTK_UI_MANAGER (manager), merge_id,
@@ -126,7 +127,7 @@ plug_in_menus_setup (GimpUIManager *manager,
     {
       GimpPlugInProcedure *plug_in_proc = list->data;
 
-      if (! plug_in_proc->prog)
+      if (! plug_in_proc->file)
         continue;
 
       g_signal_connect_object (plug_in_proc, "menu-path-added",
@@ -143,17 +144,17 @@ plug_in_menus_setup (GimpUIManager *manager,
               if (g_str_has_prefix (path->data, manager->name))
                 {
                   PlugInMenuEntry *entry = g_slice_new0 (PlugInMenuEntry);
-                  const gchar     *progname;
+                  GFile           *file;
                   const gchar     *locale_domain;
 
                   entry->proc      = plug_in_proc;
                   entry->menu_path = path->data;
 
-                  progname = gimp_plug_in_procedure_get_progname (plug_in_proc);
+                  file = gimp_plug_in_procedure_get_file (plug_in_proc);
 
                   locale_domain =
                     gimp_plug_in_manager_get_locale_domain (plug_in_manager,
-                                                            progname, NULL);
+                                                            file, NULL);
 
                   if (plug_in_proc->menu_label)
                     {
@@ -292,11 +293,6 @@ plug_in_menus_menu_path_added (GimpPlugInProcedure *plug_in_proc,
           plug_in_menus_add_proc (manager, "/dummy-menubar/image-popup",
                                   plug_in_proc, menu_path);
         }
-      else if (! strcmp (manager->name, "<Toolbox>"))
-        {
-          plug_in_menus_add_proc (manager, "/toolbox-menubar",
-                                  plug_in_proc, menu_path);
-        }
       else if (! strcmp (manager->name, "<Layers>"))
         {
           plug_in_menus_add_proc (manager, "/layers-popup",
@@ -325,6 +321,11 @@ plug_in_menus_menu_path_added (GimpPlugInProcedure *plug_in_proc,
       else if (! strcmp (manager->name, "<Dynamics>"))
         {
           plug_in_menus_add_proc (manager, "/dynamics-popup",
+                                  plug_in_proc, menu_path);
+        }
+      else if (! strcmp (manager->name, "<MyPaintBrushes>"))
+        {
+          plug_in_menus_add_proc (manager, "/mypaint-brushes-popup",
                                   plug_in_proc, menu_path);
         }
       else if (! strcmp (manager->name, "<Gradients>"))
@@ -500,12 +501,15 @@ plug_in_menus_build_path (GimpUIManager *manager,
       gchar *menu_item_name;
 
       menu_item_name = strrchr (parent_menu_path, '/');
-      *menu_item_name++ = '\0';
 
       if (menu_item_name)
-        parent_action_path = plug_in_menus_build_path (manager,
-                                                       ui_path, merge_id,
-                                                       parent_menu_path, TRUE);
+        {
+          *menu_item_name++ = '\0';
+
+          parent_action_path = plug_in_menus_build_path (manager,
+                                                         ui_path, merge_id,
+                                                         parent_menu_path, TRUE);
+        }
 
       if (parent_action_path)
         {

@@ -17,7 +17,8 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include "paint-types.h"
 
@@ -33,6 +34,7 @@
 #include "gimperaser.h"
 #include "gimpheal.h"
 #include "gimpink.h"
+#include "gimpmybrushcore.h"
 #include "gimppaintoptions.h"
 #include "gimppaintbrush.h"
 #include "gimppencil.h"
@@ -47,7 +49,7 @@ static void   gimp_paint_register (Gimp        *gimp,
                                    GType        paint_options_type,
                                    const gchar *identifier,
                                    const gchar *blurb,
-                                   const gchar *stock_id);
+                                   const gchar *icon_name);
 
 
 /*  public functions  */
@@ -63,6 +65,7 @@ gimp_paint_init (Gimp *gimp)
     gimp_perspective_clone_register,
     gimp_heal_register,
     gimp_clone_register,
+    gimp_mybrush_core_register,
     gimp_ink_register,
     gimp_airbrush_register,
     gimp_eraser_register,
@@ -99,8 +102,7 @@ gimp_paint_exit (Gimp *gimp)
     {
       gimp_container_foreach (gimp->paint_info_list,
                               (GFunc) g_object_run_dispose, NULL);
-      g_object_unref (gimp->paint_info_list);
-      gimp->paint_info_list = NULL;
+      g_clear_object (&gimp->paint_info_list);
     }
 }
 
@@ -113,7 +115,7 @@ gimp_paint_register (Gimp        *gimp,
                      GType        paint_options_type,
                      const gchar *identifier,
                      const gchar *blurb,
-                     const gchar *stock_id)
+                     const gchar *icon_name)
 {
   GimpPaintInfo *paint_info;
 
@@ -128,7 +130,7 @@ gimp_paint_register (Gimp        *gimp,
                                     paint_options_type,
                                     identifier,
                                     blurb,
-                                    stock_id);
+                                    icon_name);
 
   gimp_container_add (gimp->paint_info_list, GIMP_OBJECT (paint_info));
   g_object_unref (paint_info);

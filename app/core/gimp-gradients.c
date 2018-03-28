@@ -20,7 +20,8 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include "core-types.h"
 
@@ -34,6 +35,7 @@
 #include "gimp-intl.h"
 
 
+#define CUSTOM_KEY         "gimp-gradient-custom"
 #define FG_BG_RGB_KEY      "gimp-gradient-fg-bg-rgb"
 #define FG_BG_HARDEDGE_KEY "gimp-gradient-fg-bg-rgb-hardedge"
 #define FG_BG_HSV_CCW_KEY  "gimp-gradient-fg-bg-hsv-ccw"
@@ -56,6 +58,16 @@ gimp_gradients_init (Gimp *gimp)
   GimpGradient *gradient;
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
+
+  /* Custom */
+  gradient = gimp_gradients_add_gradient (gimp,
+                                          _("Custom"),
+                                          CUSTOM_KEY);
+  g_object_set (gradient,
+                "writable", TRUE,
+                NULL);
+  gradient->segments->left_color_type  = GIMP_GRADIENT_COLOR_FOREGROUND;
+  gradient->segments->right_color_type = GIMP_GRADIENT_COLOR_BACKGROUND;
 
   /* FG to BG (RGB) */
   gradient = gimp_gradients_add_gradient (gimp,
@@ -104,6 +116,46 @@ gimp_gradients_init (Gimp *gimp)
                                           FG_TRANSPARENT_KEY);
   gradient->segments->left_color_type  = GIMP_GRADIENT_COLOR_FOREGROUND;
   gradient->segments->right_color_type = GIMP_GRADIENT_COLOR_FOREGROUND_TRANSPARENT;
+}
+
+GimpGradient *
+gimp_gradients_get_custom (Gimp *gimp)
+{
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+
+  return g_object_get_data (G_OBJECT (gimp), CUSTOM_KEY);
+}
+
+GimpGradient *
+gimp_gradients_get_fg_bg_rgb (Gimp *gimp)
+{
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+
+  return g_object_get_data (G_OBJECT (gimp), FG_BG_RGB_KEY);
+}
+
+GimpGradient *
+gimp_gradients_get_fg_bg_hsv_ccw (Gimp *gimp)
+{
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+
+  return g_object_get_data (G_OBJECT (gimp), FG_BG_HSV_CCW_KEY);
+}
+
+GimpGradient *
+gimp_gradients_get_fg_bg_hsv_cw (Gimp *gimp)
+{
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+
+  return g_object_get_data (G_OBJECT (gimp), FG_BG_HSV_CW_KEY);
+}
+
+GimpGradient *
+gimp_gradients_get_fg_transparent (Gimp *gimp)
+{
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+
+  return g_object_get_data (G_OBJECT (gimp), FG_TRANSPARENT_KEY);
 }
 
 

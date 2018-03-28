@@ -19,6 +19,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -288,6 +289,7 @@ gimp_color_bar_set_channel (GimpColorBar         *bar,
   switch (channel)
     {
     case GIMP_HISTOGRAM_VALUE:
+    case GIMP_HISTOGRAM_LUMINANCE:
     case GIMP_HISTOGRAM_ALPHA:
     case GIMP_HISTOGRAM_RGB:
       gimp_rgb_set (&color, 1.0, 1.0, 1.0);

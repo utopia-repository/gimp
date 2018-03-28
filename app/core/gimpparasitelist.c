@@ -17,22 +17,16 @@
 #include "config.h"
 
 #include <string.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 
-#include <glib-object.h>
-
-#ifdef G_OS_WIN32
-#include <io.h>
-#endif
+#include <gio/gio.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpconfig/gimpconfig.h"
 
 #include "core-types.h"
 
-#include "gimp-utils.h"
+#include "gimp-memsize.h"
 #include "gimpmarshal.h"
 #include "gimpparasitelist.h"
 
@@ -298,7 +292,7 @@ gimp_parasite_list_new (void)
 }
 
 GimpParasiteList *
-gimp_parasite_list_copy (const GimpParasiteList *list)
+gimp_parasite_list_copy (GimpParasiteList *list)
 {
   GimpParasiteList *newlist;
 

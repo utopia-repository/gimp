@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -35,18 +36,18 @@
 
 static const GimpActionEntry text_editor_actions[] =
 {
-  { "text-editor-toolbar", GTK_STOCK_EDIT,
+  { "text-editor-toolbar", GIMP_ICON_EDIT,
     "Text Editor Toolbar", NULL, NULL, NULL,
     GIMP_HELP_TEXT_EDITOR_DIALOG },
 
-  { "text-editor-load", GTK_STOCK_OPEN,
-    NC_("text-editor-action", "Open"), "",
+  { "text-editor-load", GIMP_ICON_DOCUMENT_OPEN,
+    NC_("text-editor-action", "Open"), NULL,
     NC_("text-editor-action", "Load text from file"),
     G_CALLBACK (text_editor_load_cmd_callback),
     NULL },
 
-  { "text-editor-clear", GTK_STOCK_CLEAR,
-    NC_("text-editor-action", "Clear"), "",
+  { "text-editor-clear", GIMP_ICON_EDIT_CLEAR,
+    NC_("text-editor-action", "Clear"), NULL,
     NC_("text-editor-action", "Clear all text"),
     G_CALLBACK (text_editor_clear_cmd_callback),
     NULL }
@@ -54,14 +55,14 @@ static const GimpActionEntry text_editor_actions[] =
 
 static const GimpRadioActionEntry text_editor_direction_actions[] =
 {
-  { "text-editor-direction-ltr", GIMP_STOCK_TEXT_DIR_LTR,
-    NC_("text-editor-action", "LTR"), "",
+  { "text-editor-direction-ltr", GIMP_ICON_FORMAT_TEXT_DIRECTION_LTR,
+    NC_("text-editor-action", "LTR"), NULL,
     NC_("text-editor-action", "From left to right"),
     GIMP_TEXT_DIRECTION_LTR,
     NULL },
 
-  { "text-editor-direction-rtl", GIMP_STOCK_TEXT_DIR_RTL,
-    NC_("text-editor-action", "RTL"), "",
+  { "text-editor-direction-rtl", GIMP_ICON_FORMAT_TEXT_DIRECTION_RTL,
+    NC_("text-editor-action", "RTL"), NULL,
     NC_("text-editor-action", "From right to left"),
     GIMP_TEXT_DIRECTION_RTL,
     NULL }

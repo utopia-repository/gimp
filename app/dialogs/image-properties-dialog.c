@@ -59,13 +59,13 @@ image_properties_dialog_new (GimpImage   *image,
   dialog = gimp_viewable_dialog_new (GIMP_VIEWABLE (image), context,
                                      _("Image Properties"),
                                      "gimp-image-properties",
-                                     GTK_STOCK_INFO,
+                                     "dialog-information",
                                      _("Image Properties"),
                                      parent,
                                      gimp_standard_help_func,
                                      GIMP_HELP_IMAGE_PROPERTIES,
 
-                                     GTK_STOCK_CLOSE, GTK_RESPONSE_OK,
+                                     _("_Close"), GTK_RESPONSE_OK,
 
                                      NULL);
 

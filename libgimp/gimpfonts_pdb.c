@@ -40,7 +40,8 @@
  * Refresh current fonts. This function always succeeds.
  *
  * This procedure retrieves all fonts currently in the user's font path
- * and updates the font dialogs accordingly.
+ * and updates the font dialogs accordingly. Depending on the amount of
+ * fonts on the system, this can take considerable time.
  *
  * Returns: TRUE on success.
  **/
@@ -72,7 +73,8 @@ gimp_fonts_refresh (void)
  * This procedure returns a list of the fonts that are currently
  * available.
  *
- * Returns: The list of font names.
+ * Returns: The list of font names. The returned value must be freed
+ * with g_strfreev().
  **/
 gchar **
 gimp_fonts_get_list (const gchar *filter,
@@ -93,9 +95,12 @@ gimp_fonts_get_list (const gchar *filter,
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
     {
       *num_fonts = return_vals[1].data.d_int32;
-      font_list = g_new (gchar *, *num_fonts);
-      for (i = 0; i < *num_fonts; i++)
-        font_list[i] = g_strdup (return_vals[2].data.d_stringarray[i]);
+      if (*num_fonts > 0)
+        {
+          font_list = g_new0 (gchar *, *num_fonts + 1);
+          for (i = 0; i < *num_fonts; i++)
+            font_list[i] = g_strdup (return_vals[2].data.d_stringarray[i]);
+        }
     }
 
   gimp_destroy_params (return_vals, nreturn_vals);

@@ -19,109 +19,108 @@
 
 #include <string.h>
 
+#include <cairo.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
+#include "libgimpcolor/gimpcolor.h"
 #include "libgimpmath/gimpmath.h"
 
 #include "core-types.h"
 
-#include "base/pixel-region.h"
-#include "base/temp-buf.h"
-#include "base/tile-manager-preview.h"
-
-#include "paint-funcs/subsample-region.h"
-
 #include "config/gimpcoreconfig.h"
+
+#include "gegl/gimp-babl.h"
+#include "gegl/gimp-gegl-loops.h"
 
 #include "gimp.h"
 #include "gimpchannel.h"
 #include "gimpimage.h"
+#include "gimpimage-color-profile.h"
 #include "gimpdrawable-preview.h"
 #include "gimpdrawable-private.h"
 #include "gimplayer.h"
-#include "gimppreviewcache.h"
-
-
-/*  local function prototypes  */
-
-static TempBuf * gimp_drawable_preview_private (GimpDrawable *drawable,
-                                                gint          width,
-                                                gint          height);
-static TempBuf * gimp_drawable_indexed_preview (GimpDrawable *drawable,
-                                                const guchar *cmap,
-                                                gint          src_x,
-                                                gint          src_y,
-                                                gint          src_width,
-                                                gint          src_height,
-                                                gint          dest_width,
-                                                gint          dest_height);
+#include "gimptempbuf.h"
 
 
 /*  public functions  */
 
-TempBuf *
-gimp_drawable_get_preview (GimpViewable *viewable,
-                           GimpContext  *context,
-                           gint          width,
-                           gint          height)
+GimpTempBuf *
+gimp_drawable_get_new_preview (GimpViewable *viewable,
+                               GimpContext  *context,
+                               gint          width,
+                               gint          height)
 {
-  GimpDrawable *drawable;
-  GimpImage    *image;
-
-  drawable = GIMP_DRAWABLE (viewable);
-  image    = gimp_item_get_image (GIMP_ITEM (drawable));
+  GimpItem  *item  = GIMP_ITEM (viewable);
+  GimpImage *image = gimp_item_get_image (item);
 
   if (! image->gimp->config->layer_previews)
     return NULL;
 
-  /* Ok prime the cache with a large preview if the cache is invalid */
-  if (! drawable->private->preview_valid                        &&
-      width  <= PREVIEW_CACHE_PRIME_WIDTH                       &&
-      height <= PREVIEW_CACHE_PRIME_HEIGHT                      &&
-      image                                                     &&
-      gimp_image_get_width  (image) > PREVIEW_CACHE_PRIME_WIDTH &&
-      gimp_image_get_height (image) > PREVIEW_CACHE_PRIME_HEIGHT)
-    {
-      TempBuf *tb = gimp_drawable_preview_private (drawable,
-                                                   PREVIEW_CACHE_PRIME_WIDTH,
-                                                   PREVIEW_CACHE_PRIME_HEIGHT);
-
-      /* Save the 2nd call */
-      if (width  == PREVIEW_CACHE_PRIME_WIDTH &&
-          height == PREVIEW_CACHE_PRIME_HEIGHT)
-        return tb;
-    }
-
-  /* Second call - should NOT visit the tile cache...*/
-  return gimp_drawable_preview_private (drawable, width, height);
+  return gimp_drawable_get_sub_preview (GIMP_DRAWABLE (viewable),
+                                        0, 0,
+                                        gimp_item_get_width  (item),
+                                        gimp_item_get_height (item),
+                                        width,
+                                        height);
 }
 
-gint
-gimp_drawable_preview_bytes (GimpDrawable *drawable)
+GdkPixbuf *
+gimp_drawable_get_new_pixbuf (GimpViewable *viewable,
+                              GimpContext  *context,
+                              gint          width,
+                              gint          height)
 {
-  GimpImageBaseType base_type;
-  gint              bytes = 0;
+  GimpItem  *item  = GIMP_ITEM (viewable);
+  GimpImage *image = gimp_item_get_image (item);
 
-  g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), 0);
+  if (! image->gimp->config->layer_previews)
+    return NULL;
 
-  base_type = GIMP_IMAGE_TYPE_BASE_TYPE (gimp_drawable_type (drawable));
+  return gimp_drawable_get_sub_pixbuf (GIMP_DRAWABLE (viewable),
+                                       0, 0,
+                                       gimp_item_get_width  (item),
+                                       gimp_item_get_height (item),
+                                       width,
+                                       height);
+}
 
-  switch (base_type)
+const Babl *
+gimp_drawable_get_preview_format (GimpDrawable *drawable)
+{
+  gboolean alpha;
+  gboolean linear;
+
+  g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
+
+  alpha  = gimp_drawable_has_alpha (drawable);
+  linear = gimp_drawable_get_linear (drawable);
+
+  switch (gimp_drawable_get_base_type (drawable))
     {
-    case GIMP_RGB:
     case GIMP_GRAY:
-      bytes = gimp_drawable_bytes (drawable);
-      break;
+      return gimp_babl_format (GIMP_GRAY,
+                               gimp_babl_precision (GIMP_COMPONENT_TYPE_U8,
+                                                    linear),
+                               alpha);
+
+    case GIMP_RGB:
+      return gimp_babl_format (GIMP_RGB,
+                               gimp_babl_precision (GIMP_COMPONENT_TYPE_U8,
+                                                    linear),
+                               alpha);
 
     case GIMP_INDEXED:
-      bytes = gimp_drawable_has_alpha (drawable) ? 4 : 3;
-      break;
+      if (alpha)
+        return babl_format ("R'G'B'A u8");
+      else
+        return babl_format ("R'G'B' u8");
     }
 
-  return bytes;
+  g_return_val_if_reached (NULL);
 }
 
-TempBuf *
+GimpTempBuf *
 gimp_drawable_get_sub_preview (GimpDrawable *drawable,
                                gint          src_x,
                                gint          src_y,
@@ -132,6 +131,11 @@ gimp_drawable_get_sub_preview (GimpDrawable *drawable,
 {
   GimpItem    *item;
   GimpImage   *image;
+  GeglBuffer  *buffer;
+  GimpTempBuf *preview;
+  gdouble      scale;
+  gint         scaled_x;
+  gint         scaled_y;
 
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
   g_return_val_if_fail (src_x >= 0, NULL);
@@ -151,82 +155,119 @@ gimp_drawable_get_sub_preview (GimpDrawable *drawable,
   if (! image->gimp->config->layer_previews)
     return NULL;
 
-  if (GIMP_IMAGE_TYPE_BASE_TYPE (gimp_drawable_type (drawable)) == GIMP_INDEXED)
-    return gimp_drawable_indexed_preview (drawable,
-                                          gimp_drawable_get_colormap (drawable),
-                                          src_x, src_y, src_width, src_height,
-                                          dest_width, dest_height);
+  buffer = gimp_drawable_get_buffer (drawable);
 
-  return tile_manager_get_sub_preview (gimp_drawable_get_tiles (drawable),
-                                       src_x, src_y, src_width, src_height,
-                                       dest_width, dest_height);
+  preview = gimp_temp_buf_new (dest_width, dest_height,
+                               gimp_drawable_get_preview_format (drawable));
+
+  scale = MIN ((gdouble) dest_width  / (gdouble) src_width,
+               (gdouble) dest_height / (gdouble) src_height);
+
+  scaled_x = RINT ((gdouble) src_x * scale);
+  scaled_y = RINT ((gdouble) src_y * scale);
+
+  gegl_buffer_get (buffer,
+                   GEGL_RECTANGLE (scaled_x, scaled_y, dest_width, dest_height),
+                   scale,
+                   gimp_temp_buf_get_format (preview),
+                   gimp_temp_buf_get_data (preview),
+                   GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_CLAMP);
+
+  return preview;
 }
 
-
-/*  private functions  */
-
-static TempBuf *
-gimp_drawable_preview_private (GimpDrawable *drawable,
-                               gint          width,
-                               gint          height)
+GdkPixbuf *
+gimp_drawable_get_sub_pixbuf (GimpDrawable *drawable,
+                              gint          src_x,
+                              gint          src_y,
+                              gint          src_width,
+                              gint          src_height,
+                              gint          dest_width,
+                              gint          dest_height)
 {
-  TempBuf *ret_buf;
+  GimpItem           *item;
+  GimpImage          *image;
+  GeglBuffer         *buffer;
+  GdkPixbuf          *pixbuf;
+  gdouble             scale;
+  gint                scaled_x;
+  gint                scaled_y;
+  GimpColorTransform *transform;
 
-  if (! drawable->private->preview_valid ||
-      ! (ret_buf = gimp_preview_cache_get (&drawable->private->preview_cache,
-                                           width, height)))
+  g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
+  g_return_val_if_fail (src_x >= 0, NULL);
+  g_return_val_if_fail (src_y >= 0, NULL);
+  g_return_val_if_fail (src_width  > 0, NULL);
+  g_return_val_if_fail (src_height > 0, NULL);
+  g_return_val_if_fail (dest_width  > 0, NULL);
+  g_return_val_if_fail (dest_height > 0, NULL);
+
+  item = GIMP_ITEM (drawable);
+
+  g_return_val_if_fail ((src_x + src_width)  <= gimp_item_get_width  (item), NULL);
+  g_return_val_if_fail ((src_y + src_height) <= gimp_item_get_height (item), NULL);
+
+  image = gimp_item_get_image (item);
+
+  if (! image->gimp->config->layer_previews)
+    return NULL;
+
+  buffer = gimp_drawable_get_buffer (drawable);
+
+  pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8,
+                           dest_width, dest_height);
+
+  scale = MIN ((gdouble) dest_width  / (gdouble) src_width,
+               (gdouble) dest_height / (gdouble) src_height);
+
+  scaled_x = RINT ((gdouble) src_x * scale);
+  scaled_y = RINT ((gdouble) src_y * scale);
+
+  transform = gimp_image_get_color_transform_to_srgb_u8 (image);
+
+  if (transform)
     {
-      GimpItem *item = GIMP_ITEM (drawable);
+      GimpTempBuf *temp_buf;
+      GeglBuffer  *src_buf;
+      GeglBuffer  *dest_buf;
 
-      ret_buf = gimp_drawable_get_sub_preview (drawable,
-                                               0, 0,
-                                               gimp_item_get_width (item),
-                                               gimp_item_get_height (item),
-                                               width,
-                                               height);
+      temp_buf = gimp_temp_buf_new (dest_width, dest_height,
+                                    gimp_drawable_get_format (drawable));
 
-      if (! drawable->private->preview_valid)
-        gimp_preview_cache_invalidate (&drawable->private->preview_cache);
+      gegl_buffer_get (buffer,
+                       GEGL_RECTANGLE (scaled_x, scaled_y,
+                                       dest_width, dest_height),
+                       scale,
+                       gimp_temp_buf_get_format (temp_buf),
+                       gimp_temp_buf_get_data (temp_buf),
+                       GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_CLAMP);
 
-      drawable->private->preview_valid = TRUE;
+      src_buf  = gimp_temp_buf_create_buffer (temp_buf);
+      dest_buf = gimp_pixbuf_create_buffer (pixbuf);
 
-      gimp_preview_cache_add (&drawable->private->preview_cache, ret_buf);
+      gimp_temp_buf_unref (temp_buf);
+
+      gimp_color_transform_process_buffer (transform,
+                                           src_buf,
+                                           GEGL_RECTANGLE (0, 0,
+                                                           dest_width, dest_height),
+                                           dest_buf,
+                                           GEGL_RECTANGLE (0, 0, 0, 0));
+
+      g_object_unref (src_buf);
+      g_object_unref (dest_buf);
+    }
+  else
+    {
+      gegl_buffer_get (buffer,
+                       GEGL_RECTANGLE (scaled_x, scaled_y,
+                                       dest_width, dest_height),
+                       scale,
+                       gimp_pixbuf_get_format (pixbuf),
+                       gdk_pixbuf_get_pixels (pixbuf),
+                       gdk_pixbuf_get_rowstride (pixbuf),
+                       GEGL_ABYSS_CLAMP);
     }
 
-  return ret_buf;
-}
-
-static TempBuf *
-gimp_drawable_indexed_preview (GimpDrawable *drawable,
-                               const guchar *cmap,
-                               gint          src_x,
-                               gint          src_y,
-                               gint          src_width,
-                               gint          src_height,
-                               gint          dest_width,
-                               gint          dest_height)
-{
-  TempBuf     *preview_buf;
-  PixelRegion  srcPR;
-  PixelRegion  destPR;
-  gint         bytes     = gimp_drawable_preview_bytes (drawable);
-  gint         subsample = 1;
-
-  /*  calculate 'acceptable' subsample  */
-  while ((dest_width  * (subsample + 1) * 2 < src_width) &&
-         (dest_height * (subsample + 1) * 2 < src_width))
-    subsample += 1;
-
-  pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
-                     src_x, src_y, src_width, src_height,
-                     FALSE);
-
-  preview_buf = temp_buf_new (dest_width, dest_height, bytes, 0, 0, NULL);
-
-  pixel_region_init_temp_buf (&destPR, preview_buf,
-                              0, 0, dest_width, dest_height);
-
-  subsample_indexed_region (&srcPR, &destPR, cmap, subsample);
-
-  return preview_buf;
+  return pixbuf;
 }

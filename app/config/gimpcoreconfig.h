@@ -21,9 +21,10 @@
 #ifndef __GIMP_CORE_CONFIG_H__
 #define __GIMP_CORE_CONFIG_H__
 
+#include "operations/operations-enums.h"
 #include "core/core-enums.h"
 
-#include "config/gimpbaseconfig.h"
+#include "config/gimpgeglconfig.h"
 
 
 #define GIMP_TYPE_CORE_CONFIG            (gimp_core_config_get_type ())
@@ -37,7 +38,7 @@ typedef struct _GimpCoreConfigClass GimpCoreConfigClass;
 
 struct _GimpCoreConfig
 {
-  GimpBaseConfig          parent_instance;
+  GimpGeglConfig          parent_instance;
 
   gchar                  *language;
   GimpInterpolationType   interpolation_type;
@@ -50,6 +51,8 @@ struct _GimpCoreConfig
   gchar                  *brush_path_writable;
   gchar                  *dynamics_path;
   gchar                  *dynamics_path_writable;
+  gchar                  *mypaint_brush_path;
+  gchar                  *mypaint_brush_path_writable;
   gchar                  *pattern_path;
   gchar                  *pattern_path_writable;
   gchar                  *palette_path;
@@ -62,6 +65,7 @@ struct _GimpCoreConfig
   gchar                  *font_path_writable;  /*  unused  */
   gchar                  *default_brush;
   gchar                  *default_dynamics;
+  gchar                  *default_mypaint_brush;
   gchar                  *default_pattern;
   gchar                  *default_palette;
   gchar                  *default_tool_preset;
@@ -78,22 +82,28 @@ struct _GimpCoreConfig
   gint                    levels_of_undo;
   guint64                 undo_size;
   GimpViewSize            undo_preview_size;
-  gint                    plug_in_history_size;
+  gint                    filter_history_size;
   gchar                  *plug_in_rc_path;
   gboolean                layer_previews;
   GimpViewSize            layer_preview_size;
   GimpThumbnailSize       thumbnail_size;
   guint64                 thumbnail_filesize_limit;
   GimpColorConfig        *color_management;
-  GimpColorProfilePolicy  color_profile_policy;
   gboolean                save_document_history;
   GimpRGB                 quick_mask_color;
-  gboolean                use_gegl;
+  gboolean                import_promote_float;
+  gboolean                import_promote_dither;
+  gboolean                import_add_alpha;
+  gchar                  *import_raw_plug_in;
+  gboolean                export_metadata_exif;
+  gboolean                export_metadata_xmp;
+  gboolean                export_metadata_iptc;
+  GimpDebugPolicy         debug_policy;
 };
 
 struct _GimpCoreConfigClass
 {
-  GimpBaseConfigClass  parent_class;
+  GimpGeglConfigClass  parent_class;
 };
 
 

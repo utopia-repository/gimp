@@ -47,13 +47,16 @@ struct _GimpPDBContext
   GimpSelectCriterion     sample_criterion;
   gdouble                 sample_threshold;
   gboolean                sample_transparent;
+  gboolean                diagonal_neighbors;
 
   GimpInterpolationType   interpolation;
   GimpTransformDirection  transform_direction;
   GimpTransformResize     transform_resize;
-  gint                    transform_recursion;
 
   GimpContainer          *paint_options_list;
+  GimpStrokeOptions      *stroke_options;
+
+  GeglDistanceMetric      distance_metric;
 };
 
 struct _GimpPDBContextClass
@@ -62,15 +65,17 @@ struct _GimpPDBContextClass
 };
 
 
-GType              gimp_pdb_context_get_type          (void) G_GNUC_CONST;
+GType               gimp_pdb_context_get_type           (void) G_GNUC_CONST;
 
-GimpContext      * gimp_pdb_context_new               (Gimp           *gimp,
-                                                       GimpContext    *parent,
-                                                       gboolean        set_parent);
+GimpContext       * gimp_pdb_context_new                (Gimp           *gimp,
+                                                         GimpContext    *parent,
+                                                         gboolean        set_parent);
 
-GimpPaintOptions * gimp_pdb_context_get_paint_options (GimpPDBContext *context,
-                                                       const gchar    *name);
-GList            * gimp_pdb_context_get_brush_options (GimpPDBContext *context);
+GimpPaintOptions  * gimp_pdb_context_get_paint_options  (GimpPDBContext *context,
+                                                         const gchar    *name);
+GList             * gimp_pdb_context_get_brush_options  (GimpPDBContext *context);
+
+GimpStrokeOptions * gimp_pdb_context_get_stroke_options (GimpPDBContext *context);
 
 
 #endif  /*  __GIMP_PDB_CONTEXT_H__  */

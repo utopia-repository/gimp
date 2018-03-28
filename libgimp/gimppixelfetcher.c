@@ -20,6 +20,8 @@
 
 #include "config.h"
 
+#define GIMP_DISABLE_DEPRECATION_WARNINGS
+
 #include "gimp.h"
 
 
@@ -119,7 +121,7 @@ gimp_pixel_fetcher_new (GimpDrawable *drawable,
  * gimp_pixel_fetcher_destroy:
  * @pf: a pointer to a previously initialized #GimpPixelFetcher.
  *
- * Close a previously initializd pixel region.
+ * Close a previously initialized pixel region.
  **/
 void
 gimp_pixel_fetcher_destroy (GimpPixelFetcher *pf)
@@ -137,7 +139,7 @@ gimp_pixel_fetcher_destroy (GimpPixelFetcher *pf)
  * @pf:   a pointer to a previously initialized #GimpPixelFetcher.
  * @mode: the new edge mode from #GimpPixelFetcherEdgeMode.
  *
- * Change the edage mode of a previously initialized pixel region.
+ * Change the edge mode of a previously initialized pixel region.
  **/
 void
 gimp_pixel_fetcher_set_edge_mode (GimpPixelFetcher         *pf,

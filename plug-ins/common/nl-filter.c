@@ -119,7 +119,7 @@ query (void)
                           N_("Nonlinear swiss army knife filter"),
                           "This is the pnmnlfilt, in gimp's clothing.  "
                           "See the pnmnlfilt manpage for details.",
-                          "Graeme W. Gill, gimp 0.99 plugin by Eric L. Hernes",
+                          "Graeme W. Gill, gimp 0.99 plug-in by Eric L. Hernes",
                           "Graeme W. Gill, Eric L. Hernes",
                           "1997",
                           N_("_NL Filter..."),
@@ -905,7 +905,7 @@ nlfilter (GimpDrawable *drawable,
   GimpPixelRgn  srcPr, dstPr;
   guchar       *srcbuf, *dstbuf;
   guchar       *lastrow, *thisrow, *nextrow, *temprow;
-  gint          x1, x2, y1, y2;
+  gint          x1, y1, y2;
   gint          width, height, bpp;
   gint          filtno, y, rowsize, exrowsize, p_update;
 
@@ -913,14 +913,15 @@ nlfilter (GimpDrawable *drawable,
     {
       gimp_preview_get_position (preview, &x1, &y1);
       gimp_preview_get_size (preview, &width, &height);
-      x2 = x1 + width;
       y2 = y1 + height;
     }
   else
     {
-      gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
-      width = x2 - x1;
-      height = y2 - y1;
+      if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                          &x1, &y1, &width, &height))
+        return;
+
+      y2 = y1 + height;
     }
 
   bpp = drawable->bpp;
@@ -1014,13 +1015,13 @@ nlfilter_dialog (GimpDrawable *drawable)
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
   dialog = gimp_dialog_new (_("NL Filter"), PLUG_IN_ROLE,
-                         NULL, 0,
-                         gimp_standard_help_func, PLUG_IN_PROC,
+                            NULL, 0,
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
-                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                         GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
-                         NULL);
+                            NULL);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
                                            GTK_RESPONSE_OK,
@@ -1035,7 +1036,7 @@ nlfilter_dialog (GimpDrawable *drawable)
                       main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_drawable_preview_new (drawable, NULL);
+  preview = gimp_drawable_preview_new_from_drawable_id (drawable->drawable_id);
   gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
 

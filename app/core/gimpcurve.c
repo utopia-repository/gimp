@@ -20,8 +20,10 @@
 #include <stdlib.h>
 #include <string.h> /* memcmp */
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
 #include "libgimpconfig/gimpconfig.h"
 
@@ -30,6 +32,7 @@
 #include "gimpcurve.h"
 #include "gimpcurve-load.h"
 #include "gimpcurve-save.h"
+#include "gimpparamspecs.h"
 
 #include "gimp-intl.h"
 
@@ -74,7 +77,7 @@ static gboolean      gimp_curve_get_popup_size    (GimpViewable     *viewable,
                                                    gboolean          dot_for_dot,
                                                    gint             *popup_width,
                                                    gint             *popup_height);
-static TempBuf     * gimp_curve_get_new_preview   (GimpViewable     *viewable,
+static GimpTempBuf * gimp_curve_get_new_preview   (GimpViewable     *viewable,
                                                    GimpContext      *context,
                                                    gint              width,
                                                    gint              height);
@@ -83,7 +86,8 @@ static gchar       * gimp_curve_get_description   (GimpViewable     *viewable,
 
 static void          gimp_curve_dirty             (GimpData         *data);
 static const gchar * gimp_curve_get_extension     (GimpData         *data);
-static GimpData    * gimp_curve_duplicate         (GimpData         *data);
+static void          gimp_curve_data_copy         (GimpData         *data,
+                                                   GimpData         *src_data);
 
 static gboolean      gimp_curve_serialize         (GimpConfig       *config,
                                                    GimpConfigWriter *writer,
@@ -95,14 +99,9 @@ static gboolean      gimp_curve_deserialize       (GimpConfig       *config,
 static gboolean      gimp_curve_equal             (GimpConfig       *a,
                                                    GimpConfig       *b);
 static void          _gimp_curve_reset            (GimpConfig       *config);
-static gboolean      gimp_curve_copy              (GimpConfig       *src,
+static gboolean      gimp_curve_config_copy       (GimpConfig       *src,
                                                    GimpConfig       *dest,
                                                    GParamFlags       flags);
-
-static void          gimp_curve_set_n_points      (GimpCurve        *curve,
-                                                   gint              n_points);
-static void          gimp_curve_set_n_samples     (GimpCurve        *curve,
-                                                   gint              n_samples);
 
 static void          gimp_curve_calculate         (GimpCurve        *curve);
 static void          gimp_curve_plot              (GimpCurve        *curve,
@@ -128,56 +127,59 @@ gimp_curve_class_init (GimpCurveClass *klass)
   GimpDataClass     *data_class        = GIMP_DATA_CLASS (klass);
   GParamSpec        *array_spec;
 
-  object_class->finalize           = gimp_curve_finalize;
-  object_class->set_property       = gimp_curve_set_property;
-  object_class->get_property       = gimp_curve_get_property;
+  object_class->finalize            = gimp_curve_finalize;
+  object_class->set_property        = gimp_curve_set_property;
+  object_class->get_property        = gimp_curve_get_property;
 
-  gimp_object_class->get_memsize   = gimp_curve_get_memsize;
+  gimp_object_class->get_memsize    = gimp_curve_get_memsize;
 
-  viewable_class->default_stock_id = "FIXME";
-  viewable_class->get_preview_size = gimp_curve_get_preview_size;
-  viewable_class->get_popup_size   = gimp_curve_get_popup_size;
-  viewable_class->get_new_preview  = gimp_curve_get_new_preview;
-  viewable_class->get_description  = gimp_curve_get_description;
+  viewable_class->default_icon_name = "FIXME icon name";
+  viewable_class->get_preview_size  = gimp_curve_get_preview_size;
+  viewable_class->get_popup_size    = gimp_curve_get_popup_size;
+  viewable_class->get_new_preview   = gimp_curve_get_new_preview;
+  viewable_class->get_description   = gimp_curve_get_description;
 
-  data_class->dirty                = gimp_curve_dirty;
-  data_class->save                 = gimp_curve_save;
-  data_class->get_extension        = gimp_curve_get_extension;
-  data_class->duplicate            = gimp_curve_duplicate;
+  data_class->dirty                 = gimp_curve_dirty;
+  data_class->save                  = gimp_curve_save;
+  data_class->get_extension         = gimp_curve_get_extension;
+  data_class->copy                  = gimp_curve_data_copy;
 
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_CURVE_TYPE,
-                                 "curve-type",
-                                 "The curve type",
-                                 GIMP_TYPE_CURVE_TYPE,
-                                 GIMP_CURVE_SMOOTH, 0);
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_CURVE_TYPE,
+                         "curve-type",
+                         "Curve Type",
+                         "The curve type",
+                         GIMP_TYPE_CURVE_TYPE,
+                         GIMP_CURVE_SMOOTH, 0);
 
-  GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_N_POINTS,
-                                "n-points",
-                                "The number of points",
-                                17, 17, 17, 0);
+  GIMP_CONFIG_PROP_INT (object_class, PROP_N_POINTS,
+                        "n-points",
+                        "Number of Points",
+                        "The number of points",
+                        17, 17, 17, 0);
 
   array_spec = g_param_spec_double ("point", NULL, NULL,
                                     -1.0, 1.0, 0.0, GIMP_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_POINTS,
-                                   g_param_spec_value_array ("points",
-                                                             NULL, NULL,
-                                                             array_spec,
-                                                             GIMP_PARAM_STATIC_STRINGS |
-                                                             GIMP_CONFIG_PARAM_FLAGS));
+                                   gimp_param_spec_value_array ("points",
+                                                                NULL, NULL,
+                                                                array_spec,
+                                                                GIMP_PARAM_STATIC_STRINGS |
+                                                                GIMP_CONFIG_PARAM_FLAGS));
 
-  GIMP_CONFIG_INSTALL_PROP_INT  (object_class, PROP_N_SAMPLES,
-                                 "n-samples",
-                                 "The number of samples",
-                                 256, 256, 256, 0);
+  GIMP_CONFIG_PROP_INT  (object_class, PROP_N_SAMPLES,
+                         "n-samples",
+                         "Number of Samples",
+                         "The number of samples",
+                         256, 256, 256, 0);
 
   array_spec = g_param_spec_double ("sample", NULL, NULL,
                                     0.0, 1.0, 0.0, GIMP_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_SAMPLES,
-                                   g_param_spec_value_array ("samples",
-                                                             NULL, NULL,
-                                                             array_spec,
-                                                             GIMP_PARAM_STATIC_STRINGS |
-                                                             GIMP_CONFIG_PARAM_FLAGS));
+                                   gimp_param_spec_value_array ("samples",
+                                                                NULL, NULL,
+                                                                array_spec,
+                                                                GIMP_PARAM_STATIC_STRINGS |
+                                                                GIMP_CONFIG_PARAM_FLAGS));
 }
 
 static void
@@ -187,7 +189,7 @@ gimp_curve_config_iface_init (GimpConfigInterface *iface)
   iface->deserialize = gimp_curve_deserialize;
   iface->equal       = gimp_curve_equal;
   iface->reset       = _gimp_curve_reset;
-  iface->copy        = gimp_curve_copy;
+  iface->copy        = gimp_curve_config_copy;
 }
 
 static void
@@ -240,16 +242,19 @@ gimp_curve_set_property (GObject      *object,
 
     case PROP_POINTS:
       {
-        GValueArray *array = g_value_get_boxed (value);
-        gint         i;
+        GimpValueArray *array = g_value_get_boxed (value);
+        gint            length;
+        gint            i;
 
         if (! array)
           break;
 
-        for (i = 0; i < curve->n_points && i * 2 < array->n_values; i++)
+        length = gimp_value_array_length (array);
+
+        for (i = 0; i < curve->n_points && i * 2 < length; i++)
           {
-            GValue *x = g_value_array_get_nth (array, i * 2);
-            GValue *y = g_value_array_get_nth (array, i * 2 + 1);
+            GValue *x = gimp_value_array_index (array, i * 2);
+            GValue *y = gimp_value_array_index (array, i * 2 + 1);
 
             curve->points[i].x = g_value_get_double (x);
             curve->points[i].y = g_value_get_double (y);
@@ -263,15 +268,18 @@ gimp_curve_set_property (GObject      *object,
 
     case PROP_SAMPLES:
       {
-        GValueArray *array = g_value_get_boxed (value);
-        gint         i;
+        GimpValueArray *array = g_value_get_boxed (value);
+        gint            length;
+        gint            i;
 
         if (! array)
           break;
 
-        for (i = 0; i < curve->n_samples && i < array->n_values; i++)
+        length = gimp_value_array_length (array);
+
+        for (i = 0; i < curve->n_samples && i < length; i++)
           {
-            GValue *v = g_value_array_get_nth (array, i);
+            GValue *v = gimp_value_array_index (array, i);
 
             curve->samples[i] = g_value_get_double (v);
           }
@@ -304,19 +312,19 @@ gimp_curve_get_property (GObject    *object,
 
     case PROP_POINTS:
       {
-        GValueArray *array = g_value_array_new (curve->n_points * 2);
-        GValue       v     = { 0, };
-        gint         i;
+        GimpValueArray *array = gimp_value_array_new (curve->n_points * 2);
+        GValue          v     = G_VALUE_INIT;
+        gint            i;
 
         g_value_init (&v, G_TYPE_DOUBLE);
 
         for (i = 0; i < curve->n_points; i++)
           {
             g_value_set_double (&v, curve->points[i].x);
-            g_value_array_append (array, &v);
+            gimp_value_array_append (array, &v);
 
             g_value_set_double (&v, curve->points[i].y);
-            g_value_array_append (array, &v);
+            gimp_value_array_append (array, &v);
           }
 
         g_value_unset (&v);
@@ -331,16 +339,16 @@ gimp_curve_get_property (GObject    *object,
 
     case PROP_SAMPLES:
       {
-        GValueArray *array = g_value_array_new (curve->n_samples);
-        GValue       v     = { 0, };
-        gint         i;
+        GimpValueArray *array = gimp_value_array_new (curve->n_samples);
+        GValue          v     = G_VALUE_INIT;
+        gint            i;
 
         g_value_init (&v, G_TYPE_DOUBLE);
 
         for (i = 0; i < curve->n_samples; i++)
           {
             g_value_set_double (&v, curve->samples[i]);
-            g_value_array_append (array, &v);
+            gimp_value_array_append (array, &v);
           }
 
         g_value_unset (&v);
@@ -395,7 +403,7 @@ gimp_curve_get_popup_size (GimpViewable *viewable,
   return TRUE;
 }
 
-static TempBuf *
+static GimpTempBuf *
 gimp_curve_get_new_preview (GimpViewable *viewable,
                             GimpContext  *context,
                             gint          width,
@@ -431,15 +439,16 @@ gimp_curve_get_extension (GimpData *data)
   return GIMP_CURVE_FILE_EXTENSION;
 }
 
-static GimpData *
-gimp_curve_duplicate (GimpData *data)
+static void
+gimp_curve_data_copy (GimpData *data,
+                      GimpData *src_data)
 {
-  GimpCurve *new = g_object_new (GIMP_TYPE_CURVE, NULL);
+  gimp_data_freeze (data);
 
-  gimp_config_copy (GIMP_CONFIG (data),
-                    GIMP_CONFIG (new), 0);
+  gimp_config_copy (GIMP_CONFIG (src_data),
+                    GIMP_CONFIG (data), 0);
 
-  return GIMP_DATA (new);
+  gimp_data_thaw (data);
 }
 
 static gboolean
@@ -491,9 +500,9 @@ _gimp_curve_reset (GimpConfig *config)
 }
 
 static gboolean
-gimp_curve_copy (GimpConfig  *src,
-                 GimpConfig  *dest,
-                 GParamFlags  flags)
+gimp_curve_config_copy (GimpConfig  *src,
+                        GimpConfig  *dest,
+                        GParamFlags  flags)
 {
   GimpCurve *src_curve  = GIMP_CURVE (src);
   GimpCurve *dest_curve = GIMP_CURVE (dest);
@@ -639,11 +648,13 @@ gimp_curve_get_curve_type (GimpCurve *curve)
   return curve->curve_type;
 }
 
-static void
+void
 gimp_curve_set_n_points (GimpCurve *curve,
                          gint       n_points)
 {
   g_return_if_fail (GIMP_IS_CURVE (curve));
+  g_return_if_fail (n_points >= 2);
+  g_return_if_fail (n_points <= 1024);
 
   if (n_points != curve->n_points)
     {
@@ -685,11 +696,13 @@ gimp_curve_get_n_points (GimpCurve *curve)
   return curve->n_points;
 }
 
-static void
+void
 gimp_curve_set_n_samples (GimpCurve *curve,
                           gint       n_samples)
 {
   g_return_if_fail (GIMP_IS_CURVE (curve));
+  g_return_if_fail (n_samples >= 256);
+  g_return_if_fail (n_samples <= 4096);
 
   if (n_samples != curve->n_samples)
     {
@@ -762,14 +775,10 @@ gimp_curve_set_point (GimpCurve *curve,
   if (curve->curve_type == GIMP_CURVE_FREE)
     return;
 
-  g_object_freeze_notify (G_OBJECT (curve));
-
   curve->points[point].x = x;
   curve->points[point].y = y;
 
   g_object_notify (G_OBJECT (curve), "points");
-
-  g_object_thaw_notify (G_OBJECT (curve));
 
   gimp_data_dirty (GIMP_DATA (curve));
 }
@@ -786,13 +795,9 @@ gimp_curve_move_point (GimpCurve *curve,
   if (curve->curve_type == GIMP_CURVE_FREE)
     return;
 
-  g_object_freeze_notify (G_OBJECT (curve));
-
   curve->points[point].y = y;
 
   g_object_notify (G_OBJECT (curve), "points");
-
-  g_object_thaw_notify (G_OBJECT (curve));
 
   gimp_data_dirty (GIMP_DATA (curve));
 }
@@ -858,13 +863,9 @@ gimp_curve_set_curve (GimpCurve *curve,
   if (curve->curve_type == GIMP_CURVE_SMOOTH)
     return;
 
-  g_object_freeze_notify (G_OBJECT (curve));
-
   curve->samples[ROUND (x * (gdouble) (curve->n_samples - 1))] = y;
 
   g_object_notify (G_OBJECT (curve), "samples");
-
-  g_object_thaw_notify (G_OBJECT (curve));
 
   gimp_data_dirty (GIMP_DATA (curve));
 }

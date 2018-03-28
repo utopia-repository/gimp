@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "core-types.h"
@@ -81,10 +82,9 @@ gimp_item_undo_constructed (GObject *object)
 {
   GimpItemUndo *item_undo = GIMP_ITEM_UNDO (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_ITEM (item_undo->item));
+  gimp_assert (GIMP_IS_ITEM (item_undo->item));
 }
 
 static void
@@ -133,11 +133,7 @@ gimp_item_undo_free (GimpUndo     *undo,
 {
   GimpItemUndo *item_undo = GIMP_ITEM_UNDO (undo);
 
-  if (item_undo->item)
-    {
-      g_object_unref (item_undo->item);
-      item_undo->item = NULL;
-    }
+  g_clear_object (&item_undo->item);
 
   GIMP_UNDO_CLASS (parent_class)->free (undo, undo_mode);
 }

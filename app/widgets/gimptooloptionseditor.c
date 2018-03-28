@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -157,12 +158,12 @@ gimp_tool_options_editor_init (GimpToolOptionsEditor *editor)
 
   /*  The label containing the tool options title */
   editor->p->title_label = gtk_label_new (NULL);
-  gtk_misc_set_alignment (GTK_MISC (editor->p->title_label), 0.0, 0.0);
+  gtk_label_set_xalign (GTK_LABEL (editor->p->title_label), 0.0);
   gimp_label_set_attributes (GTK_LABEL (editor->p->title_label),
                              PANGO_ATTR_WEIGHT, PANGO_WEIGHT_BOLD,
                              -1);
-  gtk_box_pack_start (GTK_BOX (editor),
-                      editor->p->title_label, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (editor), editor->p->title_label,
+                      FALSE, FALSE, 0);
   gtk_widget_show (editor->p->title_label);
 
   editor->p->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
@@ -194,11 +195,11 @@ gimp_tool_options_editor_constructed (GObject *object)
   GimpToolOptionsEditor *editor = GIMP_TOOL_OPTIONS_EDITOR (object);
   GimpContext           *user_context;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   editor->p->save_button =
-    gimp_editor_add_button (GIMP_EDITOR (editor), GTK_STOCK_SAVE,
+    gimp_editor_add_button (GIMP_EDITOR (editor),
+                            GIMP_ICON_DOCUMENT_SAVE,
                             _("Save Tool Preset..."),
                             GIMP_HELP_TOOL_OPTIONS_SAVE,
                             G_CALLBACK (gimp_tool_options_editor_save_clicked),
@@ -206,7 +207,8 @@ gimp_tool_options_editor_constructed (GObject *object)
                             editor);
 
   editor->p->restore_button =
-    gimp_editor_add_button (GIMP_EDITOR (editor), GTK_STOCK_REVERT_TO_SAVED,
+    gimp_editor_add_button (GIMP_EDITOR (editor),
+                            GIMP_ICON_DOCUMENT_REVERT,
                             _("Restore Tool Preset..."),
                             GIMP_HELP_TOOL_OPTIONS_RESTORE,
                             G_CALLBACK (gimp_tool_options_editor_restore_clicked),
@@ -214,7 +216,8 @@ gimp_tool_options_editor_constructed (GObject *object)
                             editor);
 
   editor->p->delete_button =
-    gimp_editor_add_button (GIMP_EDITOR (editor), GTK_STOCK_DELETE,
+    gimp_editor_add_button (GIMP_EDITOR (editor),
+                            GIMP_ICON_EDIT_DELETE,
                             _("Delete Tool Preset..."),
                             GIMP_HELP_TOOL_OPTIONS_DELETE,
                             G_CALLBACK (gimp_tool_options_editor_delete_clicked),
@@ -255,7 +258,6 @@ gimp_tool_options_editor_dispose (GObject *object)
 
       for (list = options; list; list = g_list_next (list))
         {
-          g_object_ref (list->data);
           gtk_container_remove (GTK_CONTAINER (editor->p->options_vbox),
                                 GTK_WIDGET (list->data));
         }
@@ -338,7 +340,7 @@ gimp_tool_options_editor_get_title (GimpDocked *docked)
 
   tool_info = gimp_context_get_tool (context);
 
-  return tool_info ? g_strdup (tool_info->blurb) : NULL;
+  return tool_info ? g_strdup (tool_info->label) : NULL;
 }
 
 static gboolean
@@ -460,12 +462,6 @@ gimp_tool_options_editor_tool_changed (GimpContext           *context,
 {
   GimpContainer *presets;
   GtkWidget     *options_gui;
-  
-  /* This will warn if tool info is changed to nothing.
-   * This seems to happen if starting in SWM with tool editor visible
-   * Maybe its normal, and the code should just be writen to
-   * handle this case, but someone smarter needs to take a look*/
-  g_return_if_fail(GIMP_IS_TOOL_INFO(tool_info));
 
   if (tool_info && tool_info->tool_options == editor->p->visible_tool_options)
     return;

@@ -83,35 +83,44 @@ struct _GimpColorDisplayClass
   /*  signals  */
   void               (* changed)         (GimpColorDisplay *display);
 
-  const gchar  *stock_id;
+#ifdef GIMP_DISABLE_DEPRECATED
+  gpointer     deprecated_stock_id;
+#else
+  const gchar *stock_id;
+#endif
 
+  /*  implementing the GimpColorDisplay::convert_surface method is deprecated  */
   void               (* convert_surface) (GimpColorDisplay *display,
                                           cairo_surface_t  *surface);
 
-  /* Padding for future expansion */
-  void (* _gimp_reserved3) (void);
-  void (* _gimp_reserved4) (void);
+  void               (* convert_buffer)  (GimpColorDisplay *display,
+                                          GeglBuffer       *buffer,
+                                          GeglRectangle    *area);
+
+  /*  icon name  */
+  const gchar *icon_name;
 };
 
 
 GType              gimp_color_display_get_type    (void) G_GNUC_CONST;
 
-#ifndef GIMP_DISABLE_DEPRECATED
+GIMP_DEPRECATED_FOR(g_object_new)
 GimpColorDisplay * gimp_color_display_new         (GType             display_type);
-#endif
-
 GimpColorDisplay * gimp_color_display_clone       (GimpColorDisplay *display);
 
+void           gimp_color_display_convert_buffer  (GimpColorDisplay *display,
+                                                   GeglBuffer       *buffer,
+                                                   GeglRectangle    *area);
+GIMP_DEPRECATED_FOR(gimp_color_display_convert_buffer)
 void           gimp_color_display_convert_surface (GimpColorDisplay *display,
                                                    cairo_surface_t  *surface);
-#ifndef GIMP_DISABLE_DEPRECATED
+GIMP_DEPRECATED_FOR(gimp_color_display_convert_buffer)
 void           gimp_color_display_convert         (GimpColorDisplay *display,
                                                    guchar           *buf,
                                                    gint              width,
                                                    gint              height,
                                                    gint              bpp,
                                                    gint              bpl);
-#endif
 void           gimp_color_display_load_state      (GimpColorDisplay *display,
                                                    GimpParasite     *state);
 GimpParasite * gimp_color_display_save_state      (GimpColorDisplay *display);

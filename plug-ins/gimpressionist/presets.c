@@ -635,20 +635,19 @@ create_save_preset (GtkWidget *parent)
       return;
     }
 
-  window =
-    gimp_dialog_new (_("Save Current"), PLUG_IN_ROLE,
-                     gtk_widget_get_toplevel (parent), 0,
-                     gimp_standard_help_func, PLUG_IN_PROC,
+  window = gimp_dialog_new (_("Save Current"), PLUG_IN_ROLE,
+                            gtk_widget_get_toplevel (parent), 0,
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
-                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                     GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
-                     NULL);
+                            NULL);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (window),
-                                              GTK_RESPONSE_OK,
-                                              GTK_RESPONSE_CANCEL,
-                                              -1);
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   g_signal_connect (window, "response",
                     G_CALLBACK (save_preset_response),
@@ -664,7 +663,7 @@ create_save_preset (GtkWidget *parent)
   gtk_widget_show (box);
 
   label = gtk_label_new (_("Description:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_box_pack_start (GTK_BOX (box), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
@@ -1029,8 +1028,8 @@ create_presetpage (GtkNotebook *notebook)
 
   presetsavebutton = tmpw = gtk_button_new_with_label ( _("Save Current..."));
   gtk_button_set_image (GTK_BUTTON (presetsavebutton),
-                        gtk_image_new_from_stock (GTK_STOCK_SAVE,
-                                                  GTK_ICON_SIZE_BUTTON));
+                        gtk_image_new_from_icon_name (GIMP_ICON_DOCUMENT_SAVE,
+                                                      GTK_ICON_SIZE_BUTTON));
   gtk_box_pack_start (GTK_BOX (box1), tmpw, FALSE, FALSE, 0);
   gtk_widget_show (tmpw);
   g_signal_connect (tmpw, "clicked", G_CALLBACK (create_save_preset), NULL);
@@ -1058,20 +1057,20 @@ create_presetpage (GtkNotebook *notebook)
   gtk_box_pack_start (GTK_BOX (hbox), box2, FALSE, FALSE, 0);
   gtk_widget_show (box2);
 
-  tmpw = gtk_button_new_from_stock (GTK_STOCK_APPLY);
+  tmpw = gtk_button_new_with_mnemonic (_("_Apply"));
   gtk_box_pack_start (GTK_BOX (box2), tmpw, FALSE, FALSE, 0);
   gtk_widget_show (tmpw);
   g_signal_connect (tmpw, "clicked", G_CALLBACK (apply_preset), selection);
   gimp_help_set_help_data
     (tmpw, _("Reads the selected Preset into memory"), NULL);
 
-  tmpw = delete_button = gtk_button_new_from_stock (GTK_STOCK_DELETE);
+  tmpw = delete_button = gtk_button_new_with_mnemonic (_("_Delete"));
   gtk_box_pack_start (GTK_BOX (box2), tmpw, FALSE, FALSE,0);
   gtk_widget_show (tmpw);
   g_signal_connect (tmpw, "clicked", G_CALLBACK (delete_preset), selection);
   gimp_help_set_help_data (tmpw, _("Deletes the selected Preset"), NULL);
 
-  tmpw = gtk_button_new_from_stock (GTK_STOCK_REFRESH);
+  tmpw = gtk_button_new_with_mnemonic (_("_Refresh"));
   gtk_box_pack_start (GTK_BOX (box2), tmpw, FALSE, FALSE,0);
   gtk_widget_show (tmpw);
   g_signal_connect (tmpw, "clicked", G_CALLBACK (preset_refresh_presets), NULL);
@@ -1088,7 +1087,8 @@ create_presetpage (GtkNotebook *notebook)
    * */
   gtk_widget_set_size_request (tmpw, 240, -1);
 
-  gtk_misc_set_alignment (GTK_MISC (tmpw), 0.0, 0.0);
+  gtk_label_set_xalign (GTK_LABEL (tmpw), 0.0);
+  gtk_label_set_yalign (GTK_LABEL (tmpw), 0.0);
   gtk_box_pack_start (GTK_BOX (vbox), tmpw, TRUE, TRUE, 0);
   gtk_widget_show (tmpw);
 

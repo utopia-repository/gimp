@@ -24,6 +24,10 @@
 
 #include <gegl.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
+#include "libgimpbase/gimpbase.h"
+
 #include "libgimpbase/gimpbase.h"
 
 #include "pdb-types.h"
@@ -42,15 +46,15 @@
 #include "internal-procs.h"
 
 
-static GValueArray *
-plugins_query_invoker (GimpProcedure      *procedure,
-                       Gimp               *gimp,
-                       GimpContext        *context,
-                       GimpProgress       *progress,
-                       const GValueArray  *args,
-                       GError            **error)
+static GimpValueArray *
+plugins_query_invoker (GimpProcedure         *procedure,
+                       Gimp                  *gimp,
+                       GimpContext           *context,
+                       GimpProgress          *progress,
+                       const GimpValueArray  *args,
+                       GError               **error)
 {
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   const gchar *search_string;
   gint32 num_plugins = 0;
   gchar **menu_path = NULL;
@@ -60,7 +64,7 @@ plugins_query_invoker (GimpProcedure      *procedure,
   gint32 *plugin_install_time = NULL;
   gchar **plugin_real_name = NULL;
 
-  search_string = g_value_get_string (&args->values[0]);
+  search_string = g_value_get_string (gimp_value_array_index (args, 0));
 
   num_plugins = gimp_plug_in_manager_query (gimp->plug_in_manager,
                                             search_string,
@@ -73,36 +77,36 @@ plugins_query_invoker (GimpProcedure      *procedure,
 
   return_vals = gimp_procedure_get_return_values (procedure, TRUE, NULL);
 
-  g_value_set_int (&return_vals->values[1], num_plugins);
-  gimp_value_take_stringarray (&return_vals->values[2], menu_path, num_plugins);
-  g_value_set_int (&return_vals->values[3], num_plugins);
-  gimp_value_take_stringarray (&return_vals->values[4], plugin_accelerator, num_plugins);
-  g_value_set_int (&return_vals->values[5], num_plugins);
-  gimp_value_take_stringarray (&return_vals->values[6], plugin_location, num_plugins);
-  g_value_set_int (&return_vals->values[7], num_plugins);
-  gimp_value_take_stringarray (&return_vals->values[8], plugin_image_type, num_plugins);
-  g_value_set_int (&return_vals->values[9], num_plugins);
-  gimp_value_take_int32array (&return_vals->values[10], plugin_install_time, num_plugins);
-  g_value_set_int (&return_vals->values[11], num_plugins);
-  gimp_value_take_stringarray (&return_vals->values[12], plugin_real_name, num_plugins);
+  g_value_set_int (gimp_value_array_index (return_vals, 1), num_plugins);
+  gimp_value_take_stringarray (gimp_value_array_index (return_vals, 2), menu_path, num_plugins);
+  g_value_set_int (gimp_value_array_index (return_vals, 3), num_plugins);
+  gimp_value_take_stringarray (gimp_value_array_index (return_vals, 4), plugin_accelerator, num_plugins);
+  g_value_set_int (gimp_value_array_index (return_vals, 5), num_plugins);
+  gimp_value_take_stringarray (gimp_value_array_index (return_vals, 6), plugin_location, num_plugins);
+  g_value_set_int (gimp_value_array_index (return_vals, 7), num_plugins);
+  gimp_value_take_stringarray (gimp_value_array_index (return_vals, 8), plugin_image_type, num_plugins);
+  g_value_set_int (gimp_value_array_index (return_vals, 9), num_plugins);
+  gimp_value_take_int32array (gimp_value_array_index (return_vals, 10), plugin_install_time, num_plugins);
+  g_value_set_int (gimp_value_array_index (return_vals, 11), num_plugins);
+  gimp_value_take_stringarray (gimp_value_array_index (return_vals, 12), plugin_real_name, num_plugins);
 
   return return_vals;
 }
 
-static GValueArray *
-plugin_domain_register_invoker (GimpProcedure      *procedure,
-                                Gimp               *gimp,
-                                GimpContext        *context,
-                                GimpProgress       *progress,
-                                const GValueArray  *args,
-                                GError            **error)
+static GimpValueArray *
+plugin_domain_register_invoker (GimpProcedure         *procedure,
+                                Gimp                  *gimp,
+                                GimpContext           *context,
+                                GimpProgress          *progress,
+                                const GimpValueArray  *args,
+                                GError               **error)
 {
   gboolean success = TRUE;
   const gchar *domain_name;
   const gchar *domain_path;
 
-  domain_name = g_value_get_string (&args->values[0]);
-  domain_path = g_value_get_string (&args->values[1]);
+  domain_name = g_value_get_string (gimp_value_array_index (args, 0));
+  domain_path = g_value_get_string (gimp_value_array_index (args, 1));
 
   if (success)
     {
@@ -123,20 +127,20 @@ plugin_domain_register_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-plugin_help_register_invoker (GimpProcedure      *procedure,
-                              Gimp               *gimp,
-                              GimpContext        *context,
-                              GimpProgress       *progress,
-                              const GValueArray  *args,
-                              GError            **error)
+static GimpValueArray *
+plugin_help_register_invoker (GimpProcedure         *procedure,
+                              Gimp                  *gimp,
+                              GimpContext           *context,
+                              GimpProgress          *progress,
+                              const GimpValueArray  *args,
+                              GError               **error)
 {
   gboolean success = TRUE;
   const gchar *domain_name;
   const gchar *domain_uri;
 
-  domain_name = g_value_get_string (&args->values[0]);
-  domain_uri = g_value_get_string (&args->values[1]);
+  domain_name = g_value_get_string (gimp_value_array_index (args, 0));
+  domain_uri = g_value_get_string (gimp_value_array_index (args, 1));
 
   if (success)
     {
@@ -157,20 +161,20 @@ plugin_help_register_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-plugin_menu_register_invoker (GimpProcedure      *procedure,
-                              Gimp               *gimp,
-                              GimpContext        *context,
-                              GimpProgress       *progress,
-                              const GValueArray  *args,
-                              GError            **error)
+static GimpValueArray *
+plugin_menu_register_invoker (GimpProcedure         *procedure,
+                              Gimp                  *gimp,
+                              GimpContext           *context,
+                              GimpProgress          *progress,
+                              const GimpValueArray  *args,
+                              GError               **error)
 {
   gboolean success = TRUE;
   const gchar *procedure_name;
   const gchar *menu_path;
 
-  procedure_name = g_value_get_string (&args->values[0]);
-  menu_path = g_value_get_string (&args->values[1]);
+  procedure_name = g_value_get_string (gimp_value_array_index (args, 0));
+  menu_path = g_value_get_string (gimp_value_array_index (args, 1));
 
   if (success)
     {
@@ -192,20 +196,20 @@ plugin_menu_register_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-plugin_menu_branch_register_invoker (GimpProcedure      *procedure,
-                                     Gimp               *gimp,
-                                     GimpContext        *context,
-                                     GimpProgress       *progress,
-                                     const GValueArray  *args,
-                                     GError            **error)
+static GimpValueArray *
+plugin_menu_branch_register_invoker (GimpProcedure         *procedure,
+                                     Gimp                  *gimp,
+                                     GimpContext           *context,
+                                     GimpProgress          *progress,
+                                     const GimpValueArray  *args,
+                                     GError               **error)
 {
   gboolean success = TRUE;
   const gchar *menu_path;
   const gchar *menu_name;
 
-  menu_path = g_value_get_string (&args->values[0]);
-  menu_name = g_value_get_string (&args->values[1]);
+  menu_path = g_value_get_string (gimp_value_array_index (args, 0));
+  menu_name = g_value_get_string (gimp_value_array_index (args, 1));
 
   if (success)
     {
@@ -214,7 +218,7 @@ plugin_menu_branch_register_invoker (GimpProcedure      *procedure,
       if (plug_in)
         {
           gimp_plug_in_manager_add_menu_branch (gimp->plug_in_manager,
-                                                plug_in->prog, menu_path, menu_name);
+                                                plug_in->file, menu_path, menu_name);
         }
       else
         {
@@ -226,13 +230,13 @@ plugin_menu_branch_register_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-plugin_icon_register_invoker (GimpProcedure      *procedure,
-                              Gimp               *gimp,
-                              GimpContext        *context,
-                              GimpProgress       *progress,
-                              const GValueArray  *args,
-                              GError            **error)
+static GimpValueArray *
+plugin_icon_register_invoker (GimpProcedure         *procedure,
+                              Gimp                  *gimp,
+                              GimpContext           *context,
+                              GimpProgress          *progress,
+                              const GimpValueArray  *args,
+                              GError               **error)
 {
   gboolean success = TRUE;
   const gchar *procedure_name;
@@ -240,10 +244,10 @@ plugin_icon_register_invoker (GimpProcedure      *procedure,
   gint32 icon_data_length;
   const guint8 *icon_data;
 
-  procedure_name = g_value_get_string (&args->values[0]);
-  icon_type = g_value_get_enum (&args->values[1]);
-  icon_data_length = g_value_get_int (&args->values[2]);
-  icon_data = gimp_value_get_int8array (&args->values[3]);
+  procedure_name = g_value_get_string (gimp_value_array_index (args, 0));
+  icon_type = g_value_get_enum (gimp_value_array_index (args, 1));
+  icon_data_length = g_value_get_int (gimp_value_array_index (args, 2));
+  icon_data = gimp_value_get_int8array (gimp_value_array_index (args, 3));
 
   if (success)
     {
@@ -277,18 +281,18 @@ plugin_icon_register_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-plugin_set_pdb_error_handler_invoker (GimpProcedure      *procedure,
-                                      Gimp               *gimp,
-                                      GimpContext        *context,
-                                      GimpProgress       *progress,
-                                      const GValueArray  *args,
-                                      GError            **error)
+static GimpValueArray *
+plugin_set_pdb_error_handler_invoker (GimpProcedure         *procedure,
+                                      Gimp                  *gimp,
+                                      GimpContext           *context,
+                                      GimpProgress          *progress,
+                                      const GimpValueArray  *args,
+                                      GError               **error)
 {
   gboolean success = TRUE;
   gint32 handler;
 
-  handler = g_value_get_enum (&args->values[0]);
+  handler = g_value_get_enum (gimp_value_array_index (args, 0));
 
   if (success)
     {
@@ -308,16 +312,16 @@ plugin_set_pdb_error_handler_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-plugin_get_pdb_error_handler_invoker (GimpProcedure      *procedure,
-                                      Gimp               *gimp,
-                                      GimpContext        *context,
-                                      GimpProgress       *progress,
-                                      const GValueArray  *args,
-                                      GError            **error)
+static GimpValueArray *
+plugin_get_pdb_error_handler_invoker (GimpProcedure         *procedure,
+                                      Gimp                  *gimp,
+                                      GimpContext           *context,
+                                      GimpProgress          *progress,
+                                      const GimpValueArray  *args,
+                                      GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   gint32 handler = 0;
 
   GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
@@ -335,7 +339,63 @@ plugin_get_pdb_error_handler_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_enum (&return_vals->values[1], handler);
+    g_value_set_enum (gimp_value_array_index (return_vals, 1), handler);
+
+  return return_vals;
+}
+
+static GimpValueArray *
+plugin_enable_precision_invoker (GimpProcedure         *procedure,
+                                 Gimp                  *gimp,
+                                 GimpContext           *context,
+                                 GimpProgress          *progress,
+                                 const GimpValueArray  *args,
+                                 GError               **error)
+{
+  gboolean success = TRUE;
+  GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
+
+  if (plug_in)
+    {
+      gimp_plug_in_enable_precision (plug_in);
+    }
+  else
+    {
+      success = FALSE;
+    }
+
+  return gimp_procedure_get_return_values (procedure, success,
+                                           error ? *error : NULL);
+}
+
+static GimpValueArray *
+plugin_precision_enabled_invoker (GimpProcedure         *procedure,
+                                  Gimp                  *gimp,
+                                  GimpContext           *context,
+                                  GimpProgress          *progress,
+                                  const GimpValueArray  *args,
+                                  GError               **error)
+{
+  gboolean success = TRUE;
+  GimpValueArray *return_vals;
+  gboolean enabled = FALSE;
+
+  GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
+
+  if (plug_in)
+    {
+      enabled = gimp_plug_in_precision_enabled (plug_in);
+    }
+  else
+    {
+      success = FALSE;
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success,
+                                                  error ? *error : NULL);
+
+  if (success)
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), enabled);
 
   return return_vals;
 }
@@ -353,8 +413,8 @@ register_plug_in_procs (GimpPDB *pdb)
                                "gimp-plugins-query");
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-plugins-query",
-                                     "Queries the plugin database for its contents.",
-                                     "This procedure queries the contents of the plugin database.",
+                                     "Queries the plug-in database for its contents.",
+                                     "This procedure queries the contents of the plug-in database.",
                                      "Andy Thomas",
                                      "Andy Thomas",
                                      "1998",
@@ -369,18 +429,18 @@ register_plug_in_procs (GimpPDB *pdb)
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_int32 ("num-plugins",
                                                           "num plugins",
-                                                          "The number of plugins",
+                                                          "The number of plug-ins",
                                                           0, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_string_array ("menu-path",
                                                                  "menu path",
-                                                                 "The menu path of the plugin",
+                                                                 "The menu path of the plug-in",
                                                                  GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_int32 ("num-plugins",
                                                           "num plugins",
-                                                          "The number of plugins",
+                                                          "The number of plug-ins",
                                                           0, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
@@ -391,46 +451,46 @@ register_plug_in_procs (GimpPDB *pdb)
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_int32 ("num-plugins",
                                                           "num plugins",
-                                                          "The number of plugins",
+                                                          "The number of plug-ins",
                                                           0, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_string_array ("plugin-location",
                                                                  "plugin location",
-                                                                 "Location of the plugin program",
+                                                                 "Location of the plug-in program",
                                                                  GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_int32 ("num-plugins",
                                                           "num plugins",
-                                                          "The number of plugins",
+                                                          "The number of plug-ins",
                                                           0, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_string_array ("plugin-image-type",
                                                                  "plugin image type",
-                                                                 "Type of image that this plugin will work on",
+                                                                 "Type of image that this plug-in will work on",
                                                                  GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_int32 ("num-plugins",
                                                           "num plugins",
-                                                          "The number of plugins",
+                                                          "The number of plug-ins",
                                                           0, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_int32_array ("plugin-install-time",
                                                                 "plugin install time",
-                                                                "Time that the plugin was installed",
+                                                                "Time that the plug-in was installed",
                                                                 GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_int32 ("num-plugins",
                                                           "num plugins",
-                                                          "The number of plugins",
+                                                          "The number of plug-ins",
                                                           0, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_string_array ("plugin-real-name",
                                                                  "plugin real name",
-                                                                 "The internal name of the plugin",
+                                                                 "The internal name of the plug-in",
                                                                  GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
@@ -585,7 +645,7 @@ register_plug_in_procs (GimpPDB *pdb)
                                                   "icon type",
                                                   "The type of the icon",
                                                   GIMP_TYPE_ICON_TYPE,
-                                                  GIMP_ICON_TYPE_STOCK_ID,
+                                                  GIMP_ICON_TYPE_ICON_NAME,
                                                   GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("icon-data-length",
@@ -646,6 +706,46 @@ register_plug_in_procs (GimpPDB *pdb)
                                                       GIMP_TYPE_PDB_ERROR_HANDLER,
                                                       GIMP_PDB_ERROR_HANDLER_INTERNAL,
                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register_procedure (pdb, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-plugin-enable-precision
+   */
+  procedure = gimp_procedure_new (plugin_enable_precision_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure),
+                               "gimp-plugin-enable-precision");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-plugin-enable-precision",
+                                     "Switches this plug-in to using the real bit depth of drawables.",
+                                     "Switches this plug-in to using the real bit depth of drawables. This setting can only be enabled, and not disabled again during the lifetime of the plug-in. Using 'gimp-drawable-get-buffer', 'gimp-drawable-get-shadow-buffer' or 'gimp-drawable-get-format' will automatically call this function.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2012",
+                                     NULL);
+  gimp_pdb_register_procedure (pdb, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-plugin-precision-enabled
+   */
+  procedure = gimp_procedure_new (plugin_precision_enabled_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure),
+                               "gimp-plugin-precision-enabled");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-plugin-precision-enabled",
+                                     "Whether this plug-in is using the real bit depth of drawables.",
+                                     "Returns whether this plug-in is using the real bit depth of drawables, which can be more than 8 bits per channel.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2012",
+                                     NULL);
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_boolean ("enabled",
+                                                         "enabled",
+                                                         "Whether precision is enabled",
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 }

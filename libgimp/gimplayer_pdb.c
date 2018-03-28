@@ -23,9 +23,6 @@
 #include "config.h"
 
 #include "gimp.h"
-#undef GIMP_DISABLE_DEPRECATED
-#undef __GIMP_LAYER_PDB_H__
-#include "gimplayer_pdb.h"
 
 
 /**
@@ -59,13 +56,13 @@
  * Returns: The newly created layer.
  **/
 gint32
-_gimp_layer_new (gint32                image_ID,
-                 gint                  width,
-                 gint                  height,
-                 GimpImageType         type,
-                 const gchar          *name,
-                 gdouble               opacity,
-                 GimpLayerModeEffects  mode)
+_gimp_layer_new (gint32         image_ID,
+                 gint           width,
+                 gint           height,
+                 GimpImageType  type,
+                 const gchar   *name,
+                 gdouble        opacity,
+                 GimpLayerMode  mode)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
@@ -106,7 +103,7 @@ _gimp_layer_new (gint32                image_ID,
  *
  * Returns: The newly created layer.
  *
- * Since: GIMP 2.6
+ * Since: 2.6
  **/
 gint32
 gimp_layer_new_from_visible (gint32       image_ID,
@@ -178,13 +175,14 @@ gimp_layer_new_from_drawable (gint32 drawable_ID,
  * This procedure creates a new layer group. Attributes such as layer
  * mode and opacity should be set with explicit procedure calls. Add
  * the new layer group (which is a kind of layer) with the
- * gimp_image_insert_layer() command. Other procedures useful with
- * layer groups: gimp_image_reorder_item(), gimp_item_get_parent(),
+ * gimp_image_insert_layer() command.
+ * Other procedures useful with layer groups:
+ * gimp_image_reorder_item(), gimp_item_get_parent(),
  * gimp_item_get_children(), gimp_item_is_group().
  *
  * Returns: The newly created layer group.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gint32
 gimp_layer_group_new (gint32 image_ID)
@@ -290,7 +288,7 @@ gimp_layer_add_alpha (gint32 layer_ID)
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_layer_flatten (gint32 layer_ID)
@@ -366,7 +364,7 @@ gimp_layer_scale (gint32   layer_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.6
+ * Since: 2.6
  **/
 gboolean
 gimp_layer_scale_full (gint32                layer_ID,
@@ -551,18 +549,28 @@ gimp_layer_set_offsets (gint32 layer_ID,
  * @layer_ID: The layer to which to add the mask.
  * @mask_type: The type of mask.
  *
- * Create a layer mask for the specified specified layer.
+ * Create a layer mask for the specified layer.
  *
- * This procedure creates a layer mask for the specified layer. Layer
- * masks serve as an additional alpha channel for a layer. A number of
- * different types of masks are allowed for initialisation: completely
- * white masks (which will leave the layer fully visible), completely
- * black masks (which will give the layer complete transparency, the
- * layer's already existing alpha channel (which will leave the layer
- * fully visible, but which may be more useful than a white mask), the
- * current selection or a grayscale copy of the layer. The layer mask
- * still needs to be added to the layer. This can be done with a call
- * to gimp_layer_add_mask().
+ * This procedure creates a layer mask for the specified layer.
+ * Layer masks serve as an additional alpha channel for a layer.
+ * Different types of masks are allowed for initialisation:
+ * - white mask (leaves the layer fully visible);
+ * - black mask (gives the layer complete transparency);
+ * - the layer's alpha channel (either a copy, or a transfer, which
+ * leaves the layer fully visible, but which may be more useful than a
+ * white mask);
+ * - the current selection;
+ * - a grayscale copy of the layer;
+ * - or a copy of the active channel.
+ *
+ * The layer mask still needs to be added to the layer. This can be
+ * done with a call to gimp_layer_add_mask().
+ *
+ * gimp_layer_create_mask() will fail if there are no active channels
+ * on the image, when called with 'ADD-CHANNEL-MASK'. It will return a
+ * black mask when called with 'ADD-ALPHA-MASK' or
+ * 'ADD-ALPHA-TRANSFER-MASK' on a layer with no alpha channels, or with
+ * 'ADD-SELECTION-MASK' when there is no selection on the image.
  *
  * Returns: The newly created mask.
  **/
@@ -630,7 +638,7 @@ gimp_layer_get_mask (gint32 layer_ID)
  *
  * Returns: The mask's layer.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gint32
 gimp_layer_from_mask (gint32 mask_ID)
@@ -1093,12 +1101,12 @@ gimp_layer_set_opacity (gint32  layer_ID,
  *
  * Returns: The layer combination mode.
  **/
-GimpLayerModeEffects
+GimpLayerMode
 gimp_layer_get_mode (gint32 layer_ID)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
-  GimpLayerModeEffects mode = 0;
+  GimpLayerMode mode = 0;
 
   return_vals = gimp_run_procedure ("gimp-layer-get-mode",
                                     &nreturn_vals,
@@ -1125,8 +1133,8 @@ gimp_layer_get_mode (gint32 layer_ID)
  * Returns: TRUE on success.
  **/
 gboolean
-gimp_layer_set_mode (gint32               layer_ID,
-                     GimpLayerModeEffects mode)
+gimp_layer_set_mode (gint32        layer_ID,
+                     GimpLayerMode mode)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
@@ -1136,6 +1144,204 @@ gimp_layer_set_mode (gint32               layer_ID,
                                     &nreturn_vals,
                                     GIMP_PDB_LAYER, layer_ID,
                                     GIMP_PDB_INT32, mode,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_layer_get_blend_space:
+ * @layer_ID: The layer.
+ *
+ * Get the blend space of the specified layer.
+ *
+ * This procedure returns the specified layer's blend space.
+ *
+ * Returns: The layer blend space.
+ *
+ * Since: 2.10
+ **/
+GimpLayerColorSpace
+gimp_layer_get_blend_space (gint32 layer_ID)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  GimpLayerColorSpace blend_space = 0;
+
+  return_vals = gimp_run_procedure ("gimp-layer-get-blend-space",
+                                    &nreturn_vals,
+                                    GIMP_PDB_LAYER, layer_ID,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    blend_space = return_vals[1].data.d_int32;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return blend_space;
+}
+
+/**
+ * gimp_layer_set_blend_space:
+ * @layer_ID: The layer.
+ * @blend_space: The new layer blend space.
+ *
+ * Set the blend space of the specified layer.
+ *
+ * This procedure sets the specified layer's blend space.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_layer_set_blend_space (gint32              layer_ID,
+                            GimpLayerColorSpace blend_space)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-layer-set-blend-space",
+                                    &nreturn_vals,
+                                    GIMP_PDB_LAYER, layer_ID,
+                                    GIMP_PDB_INT32, blend_space,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_layer_get_composite_space:
+ * @layer_ID: The layer.
+ *
+ * Get the composite space of the specified layer.
+ *
+ * This procedure returns the specified layer's composite space.
+ *
+ * Returns: The layer composite space.
+ *
+ * Since: 2.10
+ **/
+GimpLayerColorSpace
+gimp_layer_get_composite_space (gint32 layer_ID)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  GimpLayerColorSpace composite_space = 0;
+
+  return_vals = gimp_run_procedure ("gimp-layer-get-composite-space",
+                                    &nreturn_vals,
+                                    GIMP_PDB_LAYER, layer_ID,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    composite_space = return_vals[1].data.d_int32;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return composite_space;
+}
+
+/**
+ * gimp_layer_set_composite_space:
+ * @layer_ID: The layer.
+ * @composite_space: The new layer composite space.
+ *
+ * Set the composite space of the specified layer.
+ *
+ * This procedure sets the specified layer's composite space.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_layer_set_composite_space (gint32              layer_ID,
+                                GimpLayerColorSpace composite_space)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-layer-set-composite-space",
+                                    &nreturn_vals,
+                                    GIMP_PDB_LAYER, layer_ID,
+                                    GIMP_PDB_INT32, composite_space,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_layer_get_composite_mode:
+ * @layer_ID: The layer.
+ *
+ * Get the composite mode of the specified layer.
+ *
+ * This procedure returns the specified layer's composite mode.
+ *
+ * Returns: The layer composite mode.
+ *
+ * Since: 2.10
+ **/
+GimpLayerCompositeMode
+gimp_layer_get_composite_mode (gint32 layer_ID)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  GimpLayerCompositeMode composite_mode = 0;
+
+  return_vals = gimp_run_procedure ("gimp-layer-get-composite-mode",
+                                    &nreturn_vals,
+                                    GIMP_PDB_LAYER, layer_ID,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    composite_mode = return_vals[1].data.d_int32;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return composite_mode;
+}
+
+/**
+ * gimp_layer_set_composite_mode:
+ * @layer_ID: The layer.
+ * @composite_mode: The new layer composite mode.
+ *
+ * Set the composite mode of the specified layer.
+ *
+ * This procedure sets the specified layer's composite mode.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_layer_set_composite_mode (gint32                 layer_ID,
+                               GimpLayerCompositeMode composite_mode)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-layer-set-composite-mode",
+                                    &nreturn_vals,
+                                    GIMP_PDB_LAYER, layer_ID,
+                                    GIMP_PDB_INT32, composite_mode,
                                     GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;

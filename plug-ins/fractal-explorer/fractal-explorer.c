@@ -244,7 +244,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Render");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Render/Fractals");
 }
 
 /**********************************************************************
@@ -403,10 +403,10 @@ explorer (GimpDrawable * drawable)
   gint          height;
   gint          bpp;
   gint          row;
-  gint          x1;
-  gint          y1;
-  gint          x2;
-  gint          y2;
+  gint          x;
+  gint          y;
+  gint          w;
+  gint          h;
   guchar       *src_row;
   guchar       *dest_row;
 
@@ -416,7 +416,8 @@ explorer (GimpDrawable * drawable)
    *  need to be done for correct operation. (It simply makes it go
    *  faster, since fewer pixels need to be operated on).
    */
-  gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id, &x, &y, &w, &h))
+    return;
 
   /* Get the size of the input image. (This will/must be the same
    *  as the size of the output image.
@@ -426,8 +427,8 @@ explorer (GimpDrawable * drawable)
   bpp  = drawable->bpp;
 
   /*  allocate row buffers  */
-  src_row  = g_new (guchar, bpp * (x2 - x1));
-  dest_row = g_new (guchar, bpp * (x2 - x1));
+  src_row  = g_new (guchar, bpp * w);
+  dest_row = g_new (guchar, bpp * w);
 
   /*  initialize the pixel regions  */
   gimp_pixel_rgn_init (&srcPR, drawable, 0, 0, width, height, FALSE, FALSE);
@@ -448,28 +449,28 @@ explorer (GimpDrawable * drawable)
                                             colormap[i].b);
     }
 
-  for (row = y1; row < y2; row++)
+  for (row = y; row < y + h; row++)
     {
-      gimp_pixel_rgn_get_row (&srcPR, src_row, x1, row, (x2 - x1));
+      gimp_pixel_rgn_get_row (&srcPR, src_row, x, row, w);
 
       explorer_render_row (src_row,
                            dest_row,
                            row,
-                           (x2 - x1),
+                           w,
                            bpp);
 
       /*  store the dest  */
-      gimp_pixel_rgn_set_row (&destPR, dest_row, x1, row, (x2 - x1));
+      gimp_pixel_rgn_set_row (&destPR, dest_row, x, row, w);
 
       if ((row % 10) == 0)
-        gimp_progress_update ((double) row / (double) (y2 - y1));
+        gimp_progress_update ((double) row / (double) h);
     }
   gimp_progress_update (1.0);
 
   /*  update the processed region  */
   gimp_drawable_flush (drawable);
   gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
-  gimp_drawable_update (drawable->drawable_id, x1, y1, (x2 - x1), (y2 - y1));
+  gimp_drawable_update (drawable->drawable_id, x, y, w, h);
 
   g_free (src_row);
   g_free (dest_row);
@@ -755,9 +756,9 @@ delete_fractal_callback (GtkWidget *widget,
       delete_dialog = gimp_query_boolean_box (_("Delete Fractal"),
                                               gtk_widget_get_toplevel (view),
                                               gimp_standard_help_func, NULL,
-                                              GTK_STOCK_DIALOG_QUESTION,
+                                              GIMP_ICON_DIALOG_QUESTION,
                                               str,
-                                              GTK_STOCK_DELETE, GTK_STOCK_CANCEL,
+                                              _("_Delete"), _("_Cancel"),
                                               G_OBJECT (widget), "destroy",
                                               delete_dialog_callback,
                                               data);
@@ -1054,7 +1055,7 @@ add_objects_list (void)
   g_object_unref (list_store); /* destroy model automatically with view */
 
   /* Put buttons in */
-  button = gtk_button_new_from_stock (GTK_STOCK_REFRESH);
+  button = gtk_button_new_with_mnemonic (_("_Refresh"));
   gtk_table_attach (GTK_TABLE (table), button, 0, 1, 1, 2,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (button);
@@ -1066,7 +1067,7 @@ add_objects_list (void)
                     G_CALLBACK (fractalexplorer_rescan_list),
                     view);
 
-  button = gtk_button_new_from_stock (GTK_STOCK_APPLY);
+  button = gtk_button_new_with_mnemonic (_("_Apply"));
   gtk_table_attach (GTK_TABLE (table), button, 1, 2, 1, 2,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (button);
@@ -1078,7 +1079,7 @@ add_objects_list (void)
                     G_CALLBACK (apply_fractal_callback),
                     view);
 
-  button = gtk_button_new_from_stock (GTK_STOCK_DELETE);
+  button = gtk_button_new_with_mnemonic (_("_Delete"));
   gtk_table_attach (GTK_TABLE (table), button, 2, 3, 1, 2,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (button);
@@ -1112,8 +1113,8 @@ fractalexplorer_rescan_list (GtkWidget *widget,
                          GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                          gimp_standard_help_func, PLUG_IN_PROC,
 
-                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                         GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                         _("_Cancel"), GTK_RESPONSE_CANCEL,
+                         _("_OK"),     GTK_RESPONSE_OK,
 
                          NULL);
 

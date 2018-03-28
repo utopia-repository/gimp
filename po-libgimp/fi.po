@@ -1,46 +1,45 @@
 # Finnish translation of libgimp
 # Copyright (C) 1999-2008 Free Software Foundation, Inc.
 #
-#
-# Ville Hautamäki <villeh@cs.joensuu.fi>, 2000.
-# Tor Lillqvist <tml@iki.fi>, 2000.
-# Mikko Paananen <mikko at ipi.fi>, 2004.
+# Ville Hautamäki <villeh@cs.joensuu.fi>, 2000
+# Tor Lillqvist <tml@iki.fi>, 2000
+# Mikko Paananen <mikko at ipi.fi>, 2004
 # Ilkka Tuohela <hile©iki.fi>, 2008.
-# Juhani Numminen <juhaninumminen0@gmail.com>, 2013.
-# Lasse Liehu <lasse.liehu@gmail.com>, 2014.
+# Juhani Numminen <juhaninumminen0@gmail.com>, 2013
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: libgimp\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gimp&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-05-21 05:23+0000\n"
-"PO-Revision-Date: 2014-11-16 20:01+0200\n"
-"Last-Translator: Lasse Liehu <lasse.liehu@gmail.com>\n"
+"POT-Creation-Date: 2013-09-18 14:38+0000\n"
+"PO-Revision-Date: 2014-11-16 19:59+0200\n"
+"Last-Translator: Juhani Numminen <juhaninumminen0@gmail.com>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
 #. procedure executed successfully
-#: ../libgimp/gimp.c:1102
+#: ../libgimp/gimp.c:1097
 msgid "success"
 msgstr "onnistui"
 
 #. procedure execution failed
-#: ../libgimp/gimp.c:1106
+#: ../libgimp/gimp.c:1101
 msgid "execution error"
 msgstr "suoritusvirhe"
 
 #. procedure called incorrectly
-#: ../libgimp/gimp.c:1110
+#: ../libgimp/gimp.c:1105
 msgid "calling error"
 msgstr "kutsuvirhe"
 
 #. procedure execution cancelled
-#: ../libgimp/gimp.c:1114
+#: ../libgimp/gimp.c:1109
 msgid "cancelled"
 msgstr "peruttu"
 
@@ -186,7 +185,7 @@ msgstr "Tiedoston vienti"
 msgid "_Ignore"
 msgstr "_Ohita"
 
-#: ../libgimp/gimpexport.c:518 ../libgimp/gimpexport.c:1013
+#: ../libgimp/gimpexport.c:518 ../libgimp/gimpexport.c:988
 msgid "_Export"
 msgstr "_Vie"
 
@@ -203,7 +202,7 @@ msgstr "Kuvaasi pitää muokata muotoon %s tallennusta varten:"
 msgid "The export conversion won't modify your original image."
 msgstr "Muokkaus ei vaikuta alkuperäiseen kuvaan."
 
-#: ../libgimp/gimpexport.c:729
+#: ../libgimp/gimpexport.c:725
 #, c-format
 msgid ""
 "You are about to save a layer mask as %s.\n"
@@ -212,7 +211,7 @@ msgstr ""
 "Olet tallentamassa tason maskia nimellä %s.\n"
 "Tämä ei tallenna näkyviä tasoja."
 
-#: ../libgimp/gimpexport.c:735
+#: ../libgimp/gimpexport.c:731
 #, c-format
 msgid ""
 "You are about to save a channel (saved selection) as %s.\n"
@@ -221,13 +220,13 @@ msgstr ""
 "Olet tallentamassa kanavaa (tallennettu valintana) nimellä %s\n"
 "Tämä ei tallenna näkyviä tasoja."
 
-#: ../libgimp/gimpexport.c:1004
+#: ../libgimp/gimpexport.c:979
 msgid "Export Image as "
 msgstr "Vie kuva nimellä"
 
 #: ../libgimp/gimpfontselectbutton.c:138
 msgid "Font Selection"
-msgstr "Fontin valinta"
+msgstr "Kirjasimen valinta"
 
 #: ../libgimp/gimpfontselectbutton.c:153
 msgid "Sans"
@@ -1132,7 +1131,7 @@ msgstr "Pienoiskuvakansiota '%s' ei voitu luoda."
 msgid "Thumbnail contains no Thumb::URI tag"
 msgstr "Pienoiskuva ei sisällä Thumb::URI-merkintää"
 
-#: ../libgimpthumb/gimpthumbnail.c:905
+#: ../libgimpthumb/gimpthumbnail.c:904
 #, c-format
 msgid "Could not create thumbnail for %s: %s"
 msgstr "Pienoiskuvaa %s ei voitu luoda: %s"
@@ -1266,7 +1265,7 @@ msgstr "Kirjoitettavissa"
 msgid "Folder"
 msgstr "Kansio"
 
-#: ../libgimpwidgets/gimppickbutton.c:130
+#: ../libgimpwidgets/gimppickbutton.c:127
 msgid ""
 "Click the eyedropper, then click a color anywhere on your screen to select "
 "that color."

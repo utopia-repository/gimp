@@ -30,6 +30,7 @@
 #define GIMP_TRANSFORM_TOOL_UNDO_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_TRANSFORM_TOOL_UNDO, GimpTransformToolUndoClass))
 
 
+typedef struct _GimpTransformToolUndo      GimpTransformToolUndo;
 typedef struct _GimpTransformToolUndoClass GimpTransformToolUndoClass;
 
 struct _GimpTransformToolUndo
@@ -38,7 +39,9 @@ struct _GimpTransformToolUndo
 
   GimpTransformTool *transform_tool;
   TransInfo          trans_info;
+#if 0
   TileManager       *original;
+#endif
 };
 
 struct _GimpTransformToolUndoClass

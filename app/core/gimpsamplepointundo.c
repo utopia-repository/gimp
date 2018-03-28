@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "core-types.h"
@@ -86,13 +87,13 @@ gimp_sample_point_undo_constructed (GObject *object)
 {
   GimpSamplePointUndo *sample_point_undo = GIMP_SAMPLE_POINT_UNDO (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (sample_point_undo->sample_point != NULL);
+  gimp_assert (sample_point_undo->sample_point != NULL);
 
-  sample_point_undo->x = sample_point_undo->sample_point->x;
-  sample_point_undo->y = sample_point_undo->sample_point->y;
+  gimp_sample_point_get_position (sample_point_undo->sample_point,
+                                  &sample_point_undo->x,
+                                  &sample_point_undo->y);
 }
 
 static void
@@ -146,8 +147,7 @@ gimp_sample_point_undo_pop (GimpUndo              *undo,
 
   GIMP_UNDO_CLASS (parent_class)->pop (undo, undo_mode, accum);
 
-  x = sample_point_undo->sample_point->x;
-  y = sample_point_undo->sample_point->y;
+  gimp_sample_point_get_position (sample_point_undo->sample_point, &x, &y);
 
   if (x == -1)
     {
@@ -163,8 +163,9 @@ gimp_sample_point_undo_pop (GimpUndo              *undo,
     }
   else
     {
-      sample_point_undo->sample_point->x = sample_point_undo->x;
-      sample_point_undo->sample_point->y = sample_point_undo->y;
+      gimp_sample_point_set_position (sample_point_undo->sample_point,
+                                      sample_point_undo->x,
+                                      sample_point_undo->y);
 
       gimp_image_sample_point_moved (undo->image,
                                      sample_point_undo->sample_point);
@@ -180,11 +181,7 @@ gimp_sample_point_undo_free (GimpUndo     *undo,
 {
   GimpSamplePointUndo *sample_point_undo = GIMP_SAMPLE_POINT_UNDO (undo);
 
-  if (sample_point_undo->sample_point)
-    {
-      gimp_sample_point_unref (sample_point_undo->sample_point);
-      sample_point_undo->sample_point = NULL;
-    }
+  g_clear_pointer (&sample_point_undo->sample_point, gimp_sample_point_unref);
 
   GIMP_UNDO_CLASS (parent_class)->free (undo, undo_mode);
 }

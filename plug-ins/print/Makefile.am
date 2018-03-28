@@ -19,9 +19,10 @@ endif
 
 AM_LDFLAGS = $(mwindows)
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir)		\
 	$(GTK_CFLAGS)		\
+	$(GEGL_CFLAGS) \
 	-I$(includedir)
 
 LDADD = \
@@ -33,6 +34,7 @@ LDADD = \
 	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
 	$(print_RC)

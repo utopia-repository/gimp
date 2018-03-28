@@ -23,6 +23,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "gimpwidgetstypes.h"
@@ -96,6 +97,7 @@ gimp_browser_init (GimpBrowser *browser)
   GtkWidget *hbox;
   GtkWidget *label;
   GtkWidget *scrolled_window;
+  GtkWidget *viewport;
 
   browser->search_type = -1;
 
@@ -123,8 +125,8 @@ gimp_browser_init (GimpBrowser *browser)
                     G_CALLBACK (gimp_browser_entry_changed),
                     browser);
 
-  gtk_entry_set_icon_from_stock (GTK_ENTRY (browser->search_entry),
-                                 GTK_ENTRY_ICON_SECONDARY, GTK_STOCK_CLEAR);
+  gtk_entry_set_icon_from_icon_name (GTK_ENTRY (browser->search_entry),
+                                     GTK_ENTRY_ICON_SECONDARY, "edit-clear");
   gtk_entry_set_icon_activatable (GTK_ENTRY (browser->search_entry),
                                   GTK_ENTRY_ICON_SECONDARY, TRUE);
   gtk_entry_set_icon_sensitive (GTK_ENTRY (browser->search_entry),
@@ -137,7 +139,7 @@ gimp_browser_init (GimpBrowser *browser)
   /* count label */
 
   browser->count_label = gtk_label_new (_("No matches"));
-  gtk_misc_set_alignment (GTK_MISC (browser->count_label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (browser->count_label), 0.0);
   gimp_label_set_attributes (GTK_LABEL (browser->count_label),
                              PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
                              -1);
@@ -154,10 +156,13 @@ gimp_browser_init (GimpBrowser *browser)
   gtk_paned_pack2 (GTK_PANED (browser), scrolled_window, TRUE, TRUE);
   gtk_widget_show (scrolled_window);
 
+  viewport = gtk_viewport_new (NULL, NULL);
+  gtk_container_add (GTK_CONTAINER (scrolled_window), viewport);
+  gtk_widget_show (viewport);
+
   browser->right_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_set_border_width (GTK_CONTAINER (browser->right_vbox), 12);
-  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled_window),
-                                         browser->right_vbox);
+  gtk_container_add (GTK_CONTAINER (viewport), browser->right_vbox);
   gtk_widget_show (browser->right_vbox);
 
   gtk_widget_grab_focus (browser->search_entry);
@@ -188,7 +193,7 @@ gimp_browser_dispose (GObject *object)
  *
  * Return Value: a newly created #GimpBrowser.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 GtkWidget *
 gimp_browser_new (void)
@@ -205,7 +210,7 @@ gimp_browser_new (void)
  *
  * Populates the #GtkComboBox with search types.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 void
 gimp_browser_add_search_types (GimpBrowser *browser,
@@ -260,7 +265,7 @@ gimp_browser_add_search_types (GimpBrowser *browser,
  *
  * Sets the widget to appear on the right side of the @browser.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 void
 gimp_browser_set_widget (GimpBrowser *browser,
@@ -295,7 +300,7 @@ gimp_browser_set_widget (GimpBrowser *browser,
  * side already contains a #GtkLabel, the widget previously added with
  * gimp_browser_set_widget() is removed and replaced by a #GtkLabel.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 void
 gimp_browser_show_message (GimpBrowser *browser,

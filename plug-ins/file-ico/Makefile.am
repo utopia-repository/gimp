@@ -35,9 +35,10 @@ file_ico_SOURCES = \
 	ico-save.c	\
 	ico-save.h
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir)	\
 	$(GTK_CFLAGS)	\
+	$(GEGL_CFLAGS) \
 	-I$(includedir)
 
 LDADD = \
@@ -49,6 +50,7 @@ LDADD = \
 	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)             \
+	$(GEGL_LIBS)		\
 	$(PNG_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\

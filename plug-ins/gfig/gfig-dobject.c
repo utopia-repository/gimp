@@ -396,7 +396,7 @@ object_operation_start (GdkPoint *pnt,
             default:
               break;
             }
-          /* Re calc which object point we are lookin at */
+          /* Re calc which object point we are looking at */
           scan_obj_points (operation_obj->points, pnt);
           gtk_widget_queue_draw (gfig_context->preview);
         }
@@ -465,7 +465,7 @@ void
 object_operation (GdkPoint *to_pnt,
                   gboolean  shift_down)
 {
-  /* Must do diffent things depending on object type */
+  /* Must do different things depending on object type */
   /* but must have object to operate on! */
 
   /* Special case - if shift own and move_obj then move ALL objects */
@@ -577,7 +577,7 @@ remove_obj_from_list (GFigObj    *obj,
       gtk_widget_queue_draw (gfig_context->preview);
     }
   else
-    g_warning (_("Hey where has the object gone ?"));
+    g_warning (_("Hey, where has the object gone?"));
 }
 
 static void

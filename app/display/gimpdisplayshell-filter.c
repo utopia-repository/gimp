@@ -17,18 +17,17 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
-#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "display-types.h"
 
-#include "config/gimpcoreconfig.h"
-
 #include "gimpdisplayshell.h"
 #include "gimpdisplayshell-expose.h"
 #include "gimpdisplayshell-filter.h"
+#include "gimpdisplayshell-profile.h"
 
 
 /*  local function prototypes  */
@@ -72,13 +71,34 @@ gimp_display_shell_filter_set (GimpDisplayShell      *shell,
   gimp_display_shell_filter_changed (NULL, shell);
 }
 
+gboolean
+gimp_display_shell_has_filter (GimpDisplayShell *shell)
+{
+  g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
+
+  if (shell->filter_stack)
+    {
+      GList *iter;
+
+      for (iter = shell->filter_stack->filters; iter; iter = g_list_next (iter))
+        {
+          if (gimp_color_display_get_enabled (GIMP_COLOR_DISPLAY (iter->data)))
+            return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
 GimpColorDisplayStack *
-gimp_display_shell_filter_new (GimpDisplayShell *shell,
-                               GimpColorConfig  *config)
+gimp_display_shell_filter_new (GimpDisplayShell *shell)
 {
   g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), NULL);
-  g_return_val_if_fail (GIMP_IS_COLOR_CONFIG (config), NULL);
 
+#if 0
+  /*  disabled because we use gimpdisplayshell-profile now, keep
+   *  the code around for reference.
+   */
   if (config->display_module)
     {
       GType type = g_type_from_name (config->display_module);
@@ -101,6 +121,7 @@ gimp_display_shell_filter_new (GimpDisplayShell *shell,
           return stack;
         }
     }
+#endif
 
   return NULL;
 }
@@ -113,7 +134,9 @@ gimp_display_shell_filter_changed_idle (gpointer data)
 {
   GimpDisplayShell *shell = data;
 
+  gimp_display_shell_profile_update (shell);
   gimp_display_shell_expose_full (shell);
+
   shell->filter_idle_id = 0;
 
   return FALSE;

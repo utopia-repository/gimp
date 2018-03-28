@@ -113,17 +113,18 @@ gimp_channel_tree_view_class_init (GimpChannelTreeViewClass *klass)
   iv_class->remove_item      = (GimpRemoveItemFunc) gimp_image_remove_channel;
   iv_class->new_item         = gimp_channel_tree_view_item_new;
 
-  iv_class->action_group        = "channels";
-  iv_class->activate_action     = "channels-edit-attributes";
-  iv_class->edit_action         = "channels-edit-attributes";
-  iv_class->new_action          = "channels-new";
-  iv_class->new_default_action  = "channels-new-last-values";
-  iv_class->raise_action        = "channels-raise";
-  iv_class->raise_top_action    = "channels-raise-to-top";
-  iv_class->lower_action        = "channels-lower";
-  iv_class->lower_bottom_action = "channels-lower-to-bottom";
-  iv_class->duplicate_action    = "channels-duplicate";
-  iv_class->delete_action       = "channels-delete";
+  iv_class->action_group          = "channels";
+  iv_class->activate_action       = "channels-edit-attributes";
+  iv_class->new_action            = "channels-new";
+  iv_class->new_default_action    = "channels-new-last-values";
+  iv_class->raise_action          = "channels-raise";
+  iv_class->raise_top_action      = "channels-raise-to-top";
+  iv_class->lower_action          = "channels-lower";
+  iv_class->lower_bottom_action   = "channels-lower-to-bottom";
+  iv_class->duplicate_action      = "channels-duplicate";
+  iv_class->delete_action         = "channels-delete";
+  iv_class->lock_content_help_id  = GIMP_HELP_CHANNEL_LOCK_PIXELS;
+  iv_class->lock_position_help_id = GIMP_HELP_CHANNEL_LOCK_POSITION;
 
   g_type_class_add_private (klass, sizeof (GimpChannelTreeViewPriv));
 }
@@ -156,8 +157,7 @@ gimp_channel_tree_view_constructed (GObject *object)
   GdkModifierType        extend_mask;
   GdkModifierType        modify_mask;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   extend_mask = gtk_widget_get_modifier_mask (GTK_WIDGET (object),
                                               GDK_MODIFIER_INTENT_EXTEND_SELECTION);
@@ -185,7 +185,7 @@ gimp_channel_tree_view_constructed (GObject *object)
                                   GTK_BUTTON (view->priv->toselection_button),
                                   GIMP_TYPE_CHANNEL);
   gtk_box_reorder_child (gimp_editor_get_button_box (GIMP_EDITOR (view)),
-                         view->priv->toselection_button, 5);
+                         view->priv->toselection_button, 4);
 }
 
 
@@ -268,7 +268,8 @@ gimp_channel_tree_view_drop_component (GimpContainerTreeView   *tree_view,
   g_free (name);
 
   if (src_image != image)
-    GIMP_ITEM_GET_CLASS (new_item)->convert (new_item, image);
+    GIMP_ITEM_GET_CLASS (new_item)->convert (new_item, image,
+                                             GIMP_TYPE_CHANNEL);
 
   gimp_image_add_channel (image, GIMP_CHANNEL (new_item), parent, index, TRUE);
 

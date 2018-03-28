@@ -40,10 +40,8 @@ struct _GimpErrorDialog
 
   GtkWidget       *vbox;
 
-  GtkWidget       *last_box;
-  gchar           *last_domain;
-  gchar           *last_message;
-  gint             num_messages;
+  GList           *messages;
+  gboolean         overflow;
 };
 
 struct _GimpErrorDialogClass
@@ -56,7 +54,7 @@ GType       gimp_error_dialog_get_type (void) G_GNUC_CONST;
 
 GtkWidget * gimp_error_dialog_new      (const gchar     *title);
 void        gimp_error_dialog_add      (GimpErrorDialog *dialog,
-                                        const gchar     *stock_id,
+                                        const gchar     *icon_name,
                                         const gchar     *domain,
                                         const gchar     *message);
 

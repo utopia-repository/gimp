@@ -5,7 +5,7 @@
 
  ( ) Announce a string freeze on the GIMP Developer mailing list.
 
-     Mention that a release is planned, what brach will be frozen, and
+     Mention that a release is planned, what branch will be frozen, and
      how long the string freeze is going to last. Plan for a couple of
      weeks at least. No translatable strings must be touched during
      this time. An example announcement message is:
@@ -16,6 +16,24 @@
      Let them know about the planned release, what branch it's based
      on, and how many changes to expect. An example message is:
      https://mail.gnome.org/archives/gnome-i18n/2016-October/msg00035.html
+
+ ( ) Also notify the maintainers of the official builds for Windows,
+     Mac OS and flatpak of the upcoming release so they have some time
+     to sort out issues with their builds.
+
+ ( ) Make sure we have a <release> tag inside
+     desktop/org.gimp.GIMP.appdata.xml.in for this upcoming version,
+     with type="development" for development or RC releases (set
+     type="stable", or just no type for stable releases).
+
+     Some installers may feature more prominently software with recent
+     releases if the appropriate tag was set (e.g. GNOME Software has a
+     "Recent Releases" category).
+
+     If a description is added, it may be featured in installers and
+     will be translatable (use <_p> or <_li> tags to make the strings
+     localizable). So it is better to prepare the description text as
+     early as possible.
 
  ( ) Wait until the date specified in the announcements, use this time
      to get bug fixes applied which don't modify strings.
@@ -38,6 +56,20 @@
      2.x" to the gtk-doc generated devel-docs.
 
  ( ) Does the splash screen need to be changed?
+
+     Splash requirements:
+
+     [ ] Accepted license: a libre license, such as CC 0, CC by, CC
+         by-sa or Free Art.
+     [ ] XCF file must be provided.
+     [ ] Minimum size: full HD (splash images will be scaled down to 2/3
+         of the main display when too bug; but they won't be scaled up.
+         Therefore anything smaller than fullHD will look tiny and
+         unsuited on a 4K or higher res display).
+
+ ( ) If ever the actual release date evolved and is different from the
+     planned date, update the "date" in the <release> tag of the appdata
+     in: desktop/org.gimp.GIMP.appdata.xml.in
 
  ( ) Bump the version number to an even micro in configure.ac and
      commit this change. It should be the version number of the
@@ -104,7 +136,10 @@
          file around.
 
      [ ] Copy the tarball and the .md5 file to its final destination
-         in the download area (/srv/ftp/pub/gimp/v2.x).
+         in the download area (/srv/ftp/pub/gimp/v2.x). Really use
+         "cp" not "mv" or SELinux will make the uploaded file
+         unreadable to the web server unless some obscure status bit
+         is toggled.
 
      [ ] Update the 0.0_LATEST-IS- file in the corresponding directory
          on the download server.
@@ -119,20 +154,21 @@
  ( ) Check out or update the 'gimp-web' module, check out its testing
      branch.
 
-     [ ] Change the file content/downloads/index.md to reference the
-         new source release.
+     [ ] Update the file 'GIMP_VERSIONS' adding the version, release
+         date, tarball name and its MD5 hash under "STABLE".
 
      [ ] Create a news items for the release in content/news/
+
+     [ ] Run `make authors.md` in GIMP repository. This will generate
+         the file `authors.md`. Move it to ./content/about/authors.md on
+         the 'gimp-web' module and commit it.
 
      [ ] Commit and push the changes, the web server should then
          update itself soon (it checks for updates every 5 minutes).
          Go to https://testing.gimp.org to verify the changes.
 
- ( ) Grab a properly chilled beverage and enjoy yourself.
-
- ( ) Give the mirrors a reasonably long time to update, then announce
-     the release on gimp.org and send a release announcement to the
-     gimp-user and gimp-developer mailing lists.
+ ( ) Announce the release on gimp.org and send a release announcement
+     to the gimp-user and gimp-developer mailing lists.
 
      [ ] Check out the gimp-web master branch and merge or cherry-pick
          the changes you did in the testing branch.
@@ -144,3 +180,5 @@
      [ ] Due to the tendency of news sites to front-run release
          articles even before actual announcements appear, publish
          everything as fast as possible.
+
+ ( ) Grab a properly chilled beverage and enjoy yourself.

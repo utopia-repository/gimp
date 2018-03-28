@@ -21,6 +21,10 @@
 
 #include <gegl.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
+#include "libgimpbase/gimpbase.h"
+
 #include "libgimpbase/gimpbase.h"
 
 #include "pdb-types.h"
@@ -37,16 +41,16 @@
 #include "internal-procs.h"
 
 
-static GValueArray *
-text_fontname_invoker (GimpProcedure      *procedure,
-                       Gimp               *gimp,
-                       GimpContext        *context,
-                       GimpProgress       *progress,
-                       const GValueArray  *args,
-                       GError            **error)
+static GimpValueArray *
+text_fontname_invoker (GimpProcedure         *procedure,
+                       Gimp                  *gimp,
+                       GimpContext           *context,
+                       GimpProgress          *progress,
+                       const GimpValueArray  *args,
+                       GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpImage *image;
   GimpDrawable *drawable;
   gdouble x;
@@ -58,20 +62,21 @@ text_fontname_invoker (GimpProcedure      *procedure,
   const gchar *fontname;
   GimpLayer *text_layer = NULL;
 
-  image = gimp_value_get_image (&args->values[0], gimp);
-  drawable = gimp_value_get_drawable (&args->values[1], gimp);
-  x = g_value_get_double (&args->values[2]);
-  y = g_value_get_double (&args->values[3]);
-  text = g_value_get_string (&args->values[4]);
-  border = g_value_get_int (&args->values[5]);
-  antialias = g_value_get_boolean (&args->values[6]);
-  size = g_value_get_double (&args->values[7]);
-  fontname = g_value_get_string (&args->values[9]);
+  image = gimp_value_get_image (gimp_value_array_index (args, 0), gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 1), gimp);
+  x = g_value_get_double (gimp_value_array_index (args, 2));
+  y = g_value_get_double (gimp_value_array_index (args, 3));
+  text = g_value_get_string (gimp_value_array_index (args, 4));
+  border = g_value_get_int (gimp_value_array_index (args, 5));
+  antialias = g_value_get_boolean (gimp_value_array_index (args, 6));
+  size = g_value_get_double (gimp_value_array_index (args, 7));
+  fontname = g_value_get_string (gimp_value_array_index (args, 9));
 
   if (success)
     {
       if (drawable &&
-          (! gimp_pdb_item_is_attached (GIMP_ITEM (drawable), image, TRUE, error) ||
+          (! gimp_pdb_item_is_attached (GIMP_ITEM (drawable), image,
+                                        GIMP_PDB_ITEM_CONTENT, error) ||
            ! gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error)))
         success = FALSE;
 
@@ -91,21 +96,21 @@ text_fontname_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_layer (&return_vals->values[1], text_layer);
+    gimp_value_set_layer (gimp_value_array_index (return_vals, 1), text_layer);
 
   return return_vals;
 }
 
-static GValueArray *
-text_get_extents_fontname_invoker (GimpProcedure      *procedure,
-                                   Gimp               *gimp,
-                                   GimpContext        *context,
-                                   GimpProgress       *progress,
-                                   const GValueArray  *args,
-                                   GError            **error)
+static GimpValueArray *
+text_get_extents_fontname_invoker (GimpProcedure         *procedure,
+                                   Gimp                  *gimp,
+                                   GimpContext           *context,
+                                   GimpProgress          *progress,
+                                   const GimpValueArray  *args,
+                                   GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   const gchar *text;
   gdouble size;
   const gchar *fontname;
@@ -114,9 +119,9 @@ text_get_extents_fontname_invoker (GimpProcedure      *procedure,
   gint32 ascent = 0;
   gint32 descent = 0;
 
-  text = g_value_get_string (&args->values[0]);
-  size = g_value_get_double (&args->values[1]);
-  fontname = g_value_get_string (&args->values[3]);
+  text = g_value_get_string (gimp_value_array_index (args, 0));
+  size = g_value_get_double (gimp_value_array_index (args, 1));
+  fontname = g_value_get_string (gimp_value_array_index (args, 3));
 
   if (success)
     {
@@ -134,25 +139,25 @@ text_get_extents_fontname_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_int (&return_vals->values[1], width);
-      g_value_set_int (&return_vals->values[2], height);
-      g_value_set_int (&return_vals->values[3], ascent);
-      g_value_set_int (&return_vals->values[4], descent);
+      g_value_set_int (gimp_value_array_index (return_vals, 1), width);
+      g_value_set_int (gimp_value_array_index (return_vals, 2), height);
+      g_value_set_int (gimp_value_array_index (return_vals, 3), ascent);
+      g_value_set_int (gimp_value_array_index (return_vals, 4), descent);
     }
 
   return return_vals;
 }
 
-static GValueArray *
-text_invoker (GimpProcedure      *procedure,
-              Gimp               *gimp,
-              GimpContext        *context,
-              GimpProgress       *progress,
-              const GValueArray  *args,
-              GError            **error)
+static GimpValueArray *
+text_invoker (GimpProcedure         *procedure,
+              Gimp                  *gimp,
+              GimpContext           *context,
+              GimpProgress          *progress,
+              const GimpValueArray  *args,
+              GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpImage *image;
   GimpDrawable *drawable;
   gdouble x;
@@ -164,20 +169,21 @@ text_invoker (GimpProcedure      *procedure,
   const gchar *family;
   GimpLayer *text_layer = NULL;
 
-  image = gimp_value_get_image (&args->values[0], gimp);
-  drawable = gimp_value_get_drawable (&args->values[1], gimp);
-  x = g_value_get_double (&args->values[2]);
-  y = g_value_get_double (&args->values[3]);
-  text = g_value_get_string (&args->values[4]);
-  border = g_value_get_int (&args->values[5]);
-  antialias = g_value_get_boolean (&args->values[6]);
-  size = g_value_get_double (&args->values[7]);
-  family = g_value_get_string (&args->values[10]);
+  image = gimp_value_get_image (gimp_value_array_index (args, 0), gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 1), gimp);
+  x = g_value_get_double (gimp_value_array_index (args, 2));
+  y = g_value_get_double (gimp_value_array_index (args, 3));
+  text = g_value_get_string (gimp_value_array_index (args, 4));
+  border = g_value_get_int (gimp_value_array_index (args, 5));
+  antialias = g_value_get_boolean (gimp_value_array_index (args, 6));
+  size = g_value_get_double (gimp_value_array_index (args, 7));
+  family = g_value_get_string (gimp_value_array_index (args, 10));
 
   if (success)
     {
       if (drawable &&
-          (! gimp_pdb_item_is_attached (GIMP_ITEM (drawable), image, TRUE, error) ||
+          (! gimp_pdb_item_is_attached (GIMP_ITEM (drawable), image,
+                                        GIMP_PDB_ITEM_CONTENT, error) ||
            ! gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error)))
         success = FALSE;
 
@@ -197,21 +203,21 @@ text_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_layer (&return_vals->values[1], text_layer);
+    gimp_value_set_layer (gimp_value_array_index (return_vals, 1), text_layer);
 
   return return_vals;
 }
 
-static GValueArray *
-text_get_extents_invoker (GimpProcedure      *procedure,
-                          Gimp               *gimp,
-                          GimpContext        *context,
-                          GimpProgress       *progress,
-                          const GValueArray  *args,
-                          GError            **error)
+static GimpValueArray *
+text_get_extents_invoker (GimpProcedure         *procedure,
+                          Gimp                  *gimp,
+                          GimpContext           *context,
+                          GimpProgress          *progress,
+                          const GimpValueArray  *args,
+                          GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   const gchar *text;
   gdouble size;
   const gchar *family;
@@ -220,9 +226,9 @@ text_get_extents_invoker (GimpProcedure      *procedure,
   gint32 ascent = 0;
   gint32 descent = 0;
 
-  text = g_value_get_string (&args->values[0]);
-  size = g_value_get_double (&args->values[1]);
-  family = g_value_get_string (&args->values[4]);
+  text = g_value_get_string (gimp_value_array_index (args, 0));
+  size = g_value_get_double (gimp_value_array_index (args, 1));
+  family = g_value_get_string (gimp_value_array_index (args, 4));
 
   if (success)
     {
@@ -240,10 +246,10 @@ text_get_extents_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_int (&return_vals->values[1], width);
-      g_value_set_int (&return_vals->values[2], height);
-      g_value_set_int (&return_vals->values[3], ascent);
-      g_value_set_int (&return_vals->values[4], descent);
+      g_value_set_int (gimp_value_array_index (return_vals, 1), width);
+      g_value_set_int (gimp_value_array_index (return_vals, 2), height);
+      g_value_set_int (gimp_value_array_index (return_vals, 3), ascent);
+      g_value_set_int (gimp_value_array_index (return_vals, 4), descent);
     }
 
   return return_vals;

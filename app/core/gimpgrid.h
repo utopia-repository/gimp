@@ -59,6 +59,13 @@ struct _GimpGridClass
 
 GType          gimp_grid_get_type               (void) G_GNUC_CONST;
 
+GimpGridStyle  gimp_grid_get_style              (GimpGrid           *grid);
+
+void           gimp_grid_get_fgcolor            (GimpGrid           *grid,
+                                                 GimpRGB            *fgcolor);
+void           gimp_grid_get_bgcolor            (GimpGrid           *grid,
+                                                 GimpRGB            *bgcolor);
+
 void           gimp_grid_get_spacing            (GimpGrid           *grid,
                                                  gdouble            *xspacing,
                                                  gdouble            *yspacing);
@@ -67,7 +74,7 @@ void           gimp_grid_get_offset             (GimpGrid           *grid,
                                                  gdouble            *yoffset);
 
 const gchar  * gimp_grid_parasite_name          (void) G_GNUC_CONST;
-GimpParasite * gimp_grid_to_parasite            (const GimpGrid     *grid);
+GimpParasite * gimp_grid_to_parasite            (GimpGrid           *grid);
 GimpGrid     * gimp_grid_from_parasite          (const GimpParasite *parasite);
 
 

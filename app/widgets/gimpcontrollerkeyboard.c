@@ -2,7 +2,7 @@
  * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball
  *
  * gimpcontrollerkeyboard.c
- * Copyright (C) 2004 Michael Natterer <mitch@gimp.org>
+ * Copyright (C) 2004-2015 Michael Natterer <mitch@gimp.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 
 #include "config.h"
 
+#include <gegl.h>
+#undef GDK_MULTIHEAD_SAFE /* for gdk_keymap_get_default() */
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
@@ -38,10 +40,11 @@ typedef struct _KeyboardEvent KeyboardEvent;
 
 struct _KeyboardEvent
 {
-  const guint            keyval;
-  const GdkModifierType  modifiers;
-  const gchar           *name;
-  const gchar           *blurb;
+  const guint      keyval;
+  const gchar     *modifier_string;
+  GdkModifierType  modifiers;
+  const gchar     *name;
+  const gchar     *blurb;
 };
 
 
@@ -62,104 +65,104 @@ G_DEFINE_TYPE (GimpControllerKeyboard, gimp_controller_keyboard,
 
 static KeyboardEvent keyboard_events[] =
 {
-  { GDK_KEY_Up, GDK_MOD1_MASK | GDK_CONTROL_MASK | GDK_SHIFT_MASK,
-    "cursor-up-shift-control-alt",
-    N_("Cursor Up") },
-  { GDK_KEY_Up, GDK_MOD1_MASK | GDK_CONTROL_MASK,
-    "cursor-up-control-alt",
-    N_("Cursor Up") },
-  { GDK_KEY_Up, GDK_MOD1_MASK | GDK_SHIFT_MASK,
-    "cursor-up-shift-alt",
-    N_("Cursor Up") },
-  { GDK_KEY_Up, GDK_CONTROL_MASK | GDK_SHIFT_MASK,
-    "cursor-up-shift-control",
-    N_("Cursor Up") },
-  { GDK_KEY_Up, GDK_MOD1_MASK,
-    "cursor-up-alt",
-    N_("Cursor Up") },
-  { GDK_KEY_Up, GDK_CONTROL_MASK,
-    "cursor-up-control",
-    N_("Cursor Up") },
-  { GDK_KEY_Up, GDK_SHIFT_MASK,
-    "cursor-up-shift",
-    N_("Cursor Up") },
-  { GDK_KEY_Up, 0,
+  { GDK_KEY_Up, NULL, 0,
     "cursor-up",
     N_("Cursor Up") },
+  { GDK_KEY_Up, "<Shift>", 0,
+    "cursor-up-shift",
+    N_("Cursor Up") },
+  { GDK_KEY_Up, "<Primary>", 0,
+    "cursor-up-primary",
+    N_("Cursor Up") },
+  { GDK_KEY_Up, "<Alt>", 0,
+    "cursor-up-alt",
+    N_("Cursor Up") },
+  { GDK_KEY_Up, "<Shift><Primary>", 0,
+    "cursor-up-shift-primary",
+    N_("Cursor Up") },
+  { GDK_KEY_Up, "<Shift><Alt>", 0,
+    "cursor-up-shift-alt",
+    N_("Cursor Up") },
+  { GDK_KEY_Up, "<Primary><Alt>", 0,
+    "cursor-up-primary-alt",
+    N_("Cursor Up") },
+  { GDK_KEY_Up, "<Shift><Primary><Alt>", 0,
+    "cursor-up-shift-primary-alt",
+    N_("Cursor Up") },
 
-  { GDK_KEY_Down, GDK_MOD1_MASK | GDK_CONTROL_MASK | GDK_SHIFT_MASK,
-    "cursor-down-shift-control-alt",
-    N_("Cursor Down") },
-  { GDK_KEY_Down, GDK_MOD1_MASK | GDK_CONTROL_MASK,
-    "cursor-down-control-alt",
-    N_("Cursor Down") },
-  { GDK_KEY_Down, GDK_MOD1_MASK | GDK_SHIFT_MASK,
-    "cursor-down-shift-alt",
-    N_("Cursor Down") },
-  { GDK_KEY_Down, GDK_CONTROL_MASK | GDK_SHIFT_MASK,
-    "cursor-down-shift-control",
-    N_("Cursor Down") },
-  { GDK_KEY_Down, GDK_MOD1_MASK,
-    "cursor-down-alt",
-    N_("Cursor Down") },
-  { GDK_KEY_Down, GDK_CONTROL_MASK,
-    "cursor-down-control",
-    N_("Cursor Down") },
-  { GDK_KEY_Down, GDK_SHIFT_MASK,
-    "cursor-down-shift",
-    N_("Cursor Down") },
-  { GDK_KEY_Down, 0,
+  { GDK_KEY_Down, NULL, 0,
     "cursor-down",
     N_("Cursor Down") },
+  { GDK_KEY_Down, "<Shift>", 0,
+    "cursor-down-shift",
+    N_("Cursor Down") },
+  { GDK_KEY_Down, "<Primary>", 0,
+    "cursor-down-primary",
+    N_("Cursor Down") },
+  { GDK_KEY_Down, "<Alt>", 0,
+    "cursor-down-alt",
+    N_("Cursor Down") },
+  { GDK_KEY_Down, "<Shift><Primary>", 0,
+    "cursor-down-shift-primary",
+    N_("Cursor Down") },
+  { GDK_KEY_Down, "<Shift><Alt>", 0,
+    "cursor-down-shift-alt",
+    N_("Cursor Down") },
+  { GDK_KEY_Down, "<Primary><Alt>", 0,
+    "cursor-down-primary-alt",
+    N_("Cursor Down") },
+  { GDK_KEY_Down, "<Shift><Primary><Alt>", 0,
+    "cursor-down-shift-primary-alt",
+    N_("Cursor Down") },
 
-  { GDK_KEY_Left, GDK_MOD1_MASK | GDK_CONTROL_MASK | GDK_SHIFT_MASK,
-    "cursor-left-shift-control-alt",
-    N_("Cursor Left") },
-  { GDK_KEY_Left, GDK_MOD1_MASK | GDK_CONTROL_MASK,
-    "cursor-left-control-alt",
-    N_("Cursor Left") },
-  { GDK_KEY_Left, GDK_MOD1_MASK | GDK_SHIFT_MASK,
-    "cursor-left-shift-alt",
-    N_("Cursor Left") },
-  { GDK_KEY_Left, GDK_CONTROL_MASK | GDK_SHIFT_MASK,
-    "cursor-left-shift-control",
-    N_("Cursor Left") },
-  { GDK_KEY_Left, GDK_MOD1_MASK,
-    "cursor-left-alt",
-    N_("Cursor Left") },
-  { GDK_KEY_Left, GDK_CONTROL_MASK,
-    "cursor-left-control",
-    N_("Cursor Left") },
-  { GDK_KEY_Left, GDK_SHIFT_MASK,
-    "cursor-left-shift",
-    N_("Cursor Left") },
-  { GDK_KEY_Left, 0,
+  { GDK_KEY_Left, NULL, 0,
     "cursor-left",
     N_("Cursor Left") },
+  { GDK_KEY_Left, "<Shift>", 0,
+    "cursor-left-shift",
+    N_("Cursor Left") },
+  { GDK_KEY_Left, "<Primary>", 0,
+    "cursor-left-primary",
+    N_("Cursor Left") },
+  { GDK_KEY_Left, "<Alt>", 0,
+    "cursor-left-alt",
+    N_("Cursor Left") },
+  { GDK_KEY_Left, "<Shift><Primary>", 0,
+    "cursor-left-shift-primary",
+    N_("Cursor Left") },
+  { GDK_KEY_Left, "<Shift><Alt>", 0,
+    "cursor-left-shift-alt",
+    N_("Cursor Left") },
+  { GDK_KEY_Left, "<Primary><Alt>", 0,
+    "cursor-left-primary-alt",
+    N_("Cursor Left") },
+  { GDK_KEY_Left, "<Shift><Primary><Alt>", 0,
+    "cursor-left-shift-primary-alt",
+    N_("Cursor Left") },
 
-  { GDK_KEY_Right, GDK_MOD1_MASK | GDK_CONTROL_MASK | GDK_SHIFT_MASK,
-    "cursor-right-shift-control-alt",
+  { GDK_KEY_Right, NULL, 0,
+    "cursor-right",
     N_("Cursor Right") },
-  { GDK_KEY_Right, GDK_MOD1_MASK | GDK_CONTROL_MASK,
-    "cursor-right-control-alt",
-    N_("Cursor Right") },
-  { GDK_KEY_Right, GDK_MOD1_MASK | GDK_SHIFT_MASK,
-    "cursor-right-shift-alt",
-    N_("Cursor Right") },
-  { GDK_KEY_Right, GDK_CONTROL_MASK | GDK_SHIFT_MASK,
-    "cursor-right-shift-control",
-    N_("Cursor Right") },
-  { GDK_KEY_Right, GDK_MOD1_MASK,
-    "cursor-right-alt",
-    N_("Cursor Right") },
-  { GDK_KEY_Right, GDK_CONTROL_MASK,
-    "cursor-right-control",
-    N_("Cursor Right") },
-  { GDK_KEY_Right, GDK_SHIFT_MASK,
+  { GDK_KEY_Right, "<Shift>", 0,
     "cursor-right-shift",
     N_("Cursor Right") },
-  { GDK_KEY_Right, 0,
-    "cursor-right",
+  { GDK_KEY_Right, "<Primary>", 0,
+    "cursor-right-primary",
+    N_("Cursor Right") },
+  { GDK_KEY_Right, "<Alt>", 0,
+    "cursor-right-alt",
+    N_("Cursor Right") },
+  { GDK_KEY_Right, "<Shift><Primary>", 0,
+    "cursor-right-shift-primary",
+    N_("Cursor Right") },
+  { GDK_KEY_Right, "<Shift><Alt>", 0,
+    "cursor-right-shift-alt",
+    N_("Cursor Right") },
+  { GDK_KEY_Right, "<Primary><Alt>", 0,
+    "cursor-right-primary-alt",
+    N_("Cursor Right") },
+  { GDK_KEY_Right, "<Shift><Primary><Alt>", 0,
+    "cursor-right-shift-primary-alt",
     N_("Cursor Right") }
 };
 
@@ -174,7 +177,7 @@ gimp_controller_keyboard_class_init (GimpControllerKeyboardClass *klass)
 
   controller_class->name            = _("Keyboard");
   controller_class->help_id         = GIMP_HELP_CONTROLLER_KEYBOARD;
-  controller_class->stock_id        = GIMP_STOCK_CONTROLLER_KEYBOARD;
+  controller_class->icon_name       = GIMP_ICON_CONTROLLER_KEYBOARD;
 
   controller_class->get_n_events    = gimp_controller_keyboard_get_n_events;
   controller_class->get_event_name  = gimp_controller_keyboard_get_event_name;
@@ -188,17 +191,29 @@ gimp_controller_keyboard_init (GimpControllerKeyboard *keyboard)
 
   if (! event_names_initialized)
     {
-      gint i;
+      GdkKeymap *keymap = gdk_keymap_get_default ();
+      gint       i;
 
       for (i = 0; i < G_N_ELEMENTS (keyboard_events); i++)
         {
           KeyboardEvent *kevent = &keyboard_events[i];
+
+          if (kevent->modifier_string)
+            {
+              gtk_accelerator_parse (kevent->modifier_string, NULL,
+                                     &kevent->modifiers);
+              gdk_keymap_map_virtual_modifiers (keymap, &kevent->modifiers);
+            }
 
           if (kevent->modifiers != 0)
             {
               kevent->blurb =
                 g_strdup_printf ("%s (%s)", gettext (kevent->blurb),
                                  gimp_get_mod_string (kevent->modifiers));
+            }
+          else
+            {
+              kevent->blurb = gettext (kevent->blurb);
             }
         }
 
@@ -209,8 +224,7 @@ gimp_controller_keyboard_init (GimpControllerKeyboard *keyboard)
 static void
 gimp_controller_keyboard_constructed (GObject *object)
 {
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   g_object_set (object,
                 "name",  _("Keyboard Events"),
@@ -253,28 +267,26 @@ gimp_controller_keyboard_key_press (GimpControllerKeyboard *keyboard,
   g_return_val_if_fail (GIMP_IS_CONTROLLER_KEYBOARD (keyboard), FALSE);
   g_return_val_if_fail (kevent != NULL, FALSE);
 
-  for (i = 0; i < G_N_ELEMENTS (keyboard_events); i++)
+  /*  start with the last event because the last ones in the
+   *  up,down,left,right groups have the most keyboard modifiers
+   */
+  for (i = G_N_ELEMENTS (keyboard_events) - 1; i >= 0; i--)
     {
-      if (keyboard_events[i].keyval == kevent->keyval)
+      if (keyboard_events[i].keyval == kevent->keyval &&
+          (keyboard_events[i].modifiers & kevent->state) ==
+          keyboard_events[i].modifiers)
         {
-          if ((keyboard_events[i].modifiers & kevent->state) ==
-              keyboard_events[i].modifiers)
-            {
-              GimpControllerEvent         controller_event;
-              GimpControllerEventTrigger *trigger;
+          GimpControllerEvent         controller_event;
+          GimpControllerEventTrigger *trigger;
 
-              trigger = (GimpControllerEventTrigger *) &controller_event;
+          trigger = (GimpControllerEventTrigger *) &controller_event;
 
-              trigger->type     = GIMP_CONTROLLER_EVENT_TRIGGER;
-              trigger->source   = GIMP_CONTROLLER (keyboard);
-              trigger->event_id = i;
+          trigger->type     = GIMP_CONTROLLER_EVENT_TRIGGER;
+          trigger->source   = GIMP_CONTROLLER (keyboard);
+          trigger->event_id = i;
 
-              if (gimp_controller_event (GIMP_CONTROLLER (keyboard),
-                                         &controller_event))
-                {
-                  return TRUE;
-                }
-            }
+          return gimp_controller_event (GIMP_CONTROLLER (keyboard),
+                                        &controller_event);
         }
     }
 

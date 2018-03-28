@@ -1,82 +1,79 @@
 ## Process this file with automake to produce Makefile.in
 
+if OS_WIN32
+mwindows = -mwindows
+else
+libm = -lm
+endif
+
 libgimpui = $(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
+libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
 libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
-libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
 
-if OS_WIN32
-mwindows = -mwindows
-endif
-
 if HAVE_WINDRES
 include $(top_srcdir)/build/windows/gimprc-plug-ins.rule
-metadata_RC = metadata.rc.o
+metadata_editor_RC = metadata-editor.rc.o
+metadata_viewer_RC = metadata-viewer.rc.o
 endif
 
 AM_LDFLAGS = $(mwindows)
 
 libexecdir = $(gimpplugindir)/plug-ins
 
-libexec_PROGRAMS = metadata
+libexec_PROGRAMS = \
+	metadata-editor		\
+	metadata-viewer
 
-metadata_SOURCES = \
-	metadata.c		\
-	metadata.h		\
-	xmp-model.h		\
-	xmp-model.c		\
-	xmp-parse.h		\
-	xmp-parse.c		\
-	xmp-encode.h		\
-	xmp-encode.c		\
-	xmp-schemas.h		\
-	xmp-schemas.c		\
-	interface.h		\
-	interface.c		\
-	gimpxmpmodelwidget.h	\
-	gimpxmpmodelwidget.c	\
-	gimpxmpmodelentry.h	\
-	gimpxmpmodelentry.c	\
-	gimpxmpmodeltext.h	\
-	gimpxmpmodeltext.c	\
-	exif-decode.h		\
-	exif-decode.c
-#	exif-encode.h		\
-#	exif-encode.c		\
-#	iptc-decode.h		\
-#	iptc-decode.c	
+metadata_editor_SOURCES = \
+	metadata-editor.c	\
+	metadata-editor.h	\
+	metadata-impexp.c	\
+	metadata-impexp.h	\
+	metadata-misc.h		\
+	metadata-tags.h		\
+	metadata-xml.c		\
+	metadata-xml.h
 
-noinst_PROGRAMS = xmpdump
-xmpdump_SOURCES = \
-	xmpdump.c	\
-	xmp-schemas.h	\
-	xmp-schemas.c	\
-	xmp-encode.h	\
-	xmp-encode.c	\
-	xmp-model.h	\
-	xmp-model.c	\
-	xmp-parse.h	\
-	xmp-parse.c	
+metadata_viewer_SOURCES = \
+	metadata-viewer.c
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir)	\
 	$(GTK_CFLAGS)	\
-	$(EXIF_CFLAGS)	\
+	$(GEGL_CFLAGS)	\
 	-I$(includedir)
 
-LDADD = \
+metadata_viewer_LDADD = \
+	$(libm)			\
 	$(libgimpui)		\
 	$(libgimpwidgets)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
 	$(libgimpconfig)	\
+	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
-	$(EXIF_LIBS)		\
 	$(GTK_LIBS)		\
+	$(GEXIV2_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)		\
-	$(metadata_RC)
+	$(metadata_viewer_RC)
+
+metadata_editor_LDADD = \
+	$(libm)			\
+	$(libgimpui)		\
+	$(libgimpwidgets)	\
+	$(libgimpconfig)	\
+	$(libgimp)		\
+	$(libgimpcolor)		\
+	$(libgimpmath)		\
+	$(libgimpbase)		\
+	$(GTK_LIBS)		\
+	$(GEXIV2_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)		\
+	$(metadata_editor_RC)
+

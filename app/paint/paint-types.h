@@ -36,6 +36,7 @@ typedef struct _GimpDodgeBurn        GimpDodgeBurn;
 typedef struct _GimpEraser           GimpEraser;
 typedef struct _GimpHeal             GimpHeal;
 typedef struct _GimpInk              GimpInk;
+typedef struct _GimpMybrushCore      GimpMybrushCore;
 typedef struct _GimpPaintbrush       GimpPaintbrush;
 typedef struct _GimpPencil           GimpPencil;
 typedef struct _GimpPerspectiveClone GimpPerspectiveClone;
@@ -53,15 +54,10 @@ typedef struct _GimpConvolveOptions         GimpConvolveOptions;
 typedef struct _GimpDodgeBurnOptions        GimpDodgeBurnOptions;
 typedef struct _GimpEraserOptions           GimpEraserOptions;
 typedef struct _GimpInkOptions              GimpInkOptions;
+typedef struct _GimpMybrushOptions          GimpMybrushOptions;
 typedef struct _GimpPencilOptions           GimpPencilOptions;
 typedef struct _GimpPerspectiveCloneOptions GimpPerspectiveCloneOptions;
 typedef struct _GimpSmudgeOptions           GimpSmudgeOptions;
-
-
-/*  paint undos  */
-
-typedef struct _GimpPaintCoreUndo GimpPaintCoreUndo;
-typedef struct _GimpInkUndo       GimpInkUndo;
 
 
 /*  functions  */
@@ -71,7 +67,7 @@ typedef void (* GimpPaintRegisterCallback) (Gimp        *gimp,
                                             GType        paint_options_type,
                                             const gchar *identifier,
                                             const gchar *blurb,
-                                            const gchar *stock_id);
+                                            const gchar *icon_name);
 
 typedef void (* GimpPaintRegisterFunc)     (Gimp                      *gimp,
                                             GimpPaintRegisterCallback  callback);

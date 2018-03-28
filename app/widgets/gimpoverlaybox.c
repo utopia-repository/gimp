@@ -210,14 +210,7 @@ gimp_overlay_box_size_allocate (GtkWidget     *widget,
   GimpOverlayBox *box = GIMP_OVERLAY_BOX (widget);
   GList          *list;
 
-  gtk_widget_set_allocation (widget, allocation);
-
-  if (gtk_widget_get_realized (widget))
-    gdk_window_move_resize (gtk_widget_get_window (widget),
-                            allocation->x,
-                            allocation->y,
-                            allocation->width,
-                            allocation->height);
+  GTK_WIDGET_CLASS (parent_class)->size_allocate (widget, allocation);
 
   for (list = box->children; list; list = g_list_next (list))
     gimp_overlay_child_size_allocate (box, list->data);
@@ -344,25 +337,6 @@ gimp_overlay_box_new (void)
   return g_object_new (GIMP_TYPE_OVERLAY_BOX, NULL);
 }
 
-static void
-unset_double_buffered (GtkWidget *widget)
-{
-  gtk_widget_set_double_buffered (widget, FALSE);
-
-  if (GTK_IS_CONTAINER (widget))
-    {
-      GList *children = gtk_container_get_children (GTK_CONTAINER (widget));
-      GList *list;
-
-      for (list = children; list; list = g_list_next (list))
-        {
-          unset_double_buffered (list->data);
-        }
-
-      g_list_free (children);
-    }
-}
-
 void
 gimp_overlay_box_add_child (GimpOverlayBox *box,
                             GtkWidget      *widget,
@@ -374,9 +348,7 @@ gimp_overlay_box_add_child (GimpOverlayBox *box,
   g_return_if_fail (GIMP_IS_OVERLAY_BOX (box));
   g_return_if_fail (GTK_IS_WIDGET (widget));
 
-  unset_double_buffered (widget);
-
-  child = gimp_overlay_child_new (box, widget, xalign, yalign, 0.0, 0.7);
+  child = gimp_overlay_child_new (box, widget, xalign, yalign, 0.0, 0.85);
 
   box->children = g_list_append (box->children, child);
 }
@@ -495,6 +467,11 @@ gimp_overlay_box_scroll (GimpOverlayBox *box,
   g_return_if_fail (GIMP_IS_OVERLAY_BOX (box));
 
   widget = GTK_WIDGET (box);
+
+  /* bug 761118 */
+  if (! gtk_widget_get_realized (widget))
+    return;
+
   window = gtk_widget_get_window (widget);
 
   /*  Undraw all overlays  */

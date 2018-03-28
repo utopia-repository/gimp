@@ -21,6 +21,10 @@
 
 #include <gegl.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
+#include "libgimpbase/gimpbase.h"
+
 #include "pdb-types.h"
 
 #include "core/gimp.h"
@@ -32,13 +36,13 @@
 #include "internal-procs.h"
 
 
-static GValueArray *
-brushes_popup_invoker (GimpProcedure      *procedure,
-                       Gimp               *gimp,
-                       GimpContext        *context,
-                       GimpProgress       *progress,
-                       const GValueArray  *args,
-                       GError            **error)
+static GimpValueArray *
+brushes_popup_invoker (GimpProcedure         *procedure,
+                       Gimp                  *gimp,
+                       GimpContext           *context,
+                       GimpProgress          *progress,
+                       const GimpValueArray  *args,
+                       GError               **error)
 {
   gboolean success = TRUE;
   const gchar *brush_callback;
@@ -48,15 +52,18 @@ brushes_popup_invoker (GimpProcedure      *procedure,
   gint32 spacing;
   gint32 paint_mode;
 
-  brush_callback = g_value_get_string (&args->values[0]);
-  popup_title = g_value_get_string (&args->values[1]);
-  initial_brush = g_value_get_string (&args->values[2]);
-  opacity = g_value_get_double (&args->values[3]);
-  spacing = g_value_get_int (&args->values[4]);
-  paint_mode = g_value_get_enum (&args->values[5]);
+  brush_callback = g_value_get_string (gimp_value_array_index (args, 0));
+  popup_title = g_value_get_string (gimp_value_array_index (args, 1));
+  initial_brush = g_value_get_string (gimp_value_array_index (args, 2));
+  opacity = g_value_get_double (gimp_value_array_index (args, 3));
+  spacing = g_value_get_int (gimp_value_array_index (args, 4));
+  paint_mode = g_value_get_enum (gimp_value_array_index (args, 5));
 
   if (success)
     {
+      if (paint_mode == GIMP_LAYER_MODE_OVERLAY_LEGACY)
+        paint_mode = GIMP_LAYER_MODE_SOFTLIGHT_LEGACY;
+
       if (gimp->no_interface ||
           ! gimp_pdb_lookup_procedure (gimp->pdb, brush_callback) ||
           ! gimp_pdb_dialog_new (gimp, context, progress,
@@ -73,18 +80,18 @@ brushes_popup_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-brushes_close_popup_invoker (GimpProcedure      *procedure,
-                             Gimp               *gimp,
-                             GimpContext        *context,
-                             GimpProgress       *progress,
-                             const GValueArray  *args,
-                             GError            **error)
+static GimpValueArray *
+brushes_close_popup_invoker (GimpProcedure         *procedure,
+                             Gimp                  *gimp,
+                             GimpContext           *context,
+                             GimpProgress          *progress,
+                             const GimpValueArray  *args,
+                             GError               **error)
 {
   gboolean success = TRUE;
   const gchar *brush_callback;
 
-  brush_callback = g_value_get_string (&args->values[0]);
+  brush_callback = g_value_get_string (gimp_value_array_index (args, 0));
 
   if (success)
     {
@@ -99,13 +106,13 @@ brushes_close_popup_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-brushes_set_popup_invoker (GimpProcedure      *procedure,
-                           Gimp               *gimp,
-                           GimpContext        *context,
-                           GimpProgress       *progress,
-                           const GValueArray  *args,
-                           GError            **error)
+static GimpValueArray *
+brushes_set_popup_invoker (GimpProcedure         *procedure,
+                           Gimp                  *gimp,
+                           GimpContext           *context,
+                           GimpProgress          *progress,
+                           const GimpValueArray  *args,
+                           GError               **error)
 {
   gboolean success = TRUE;
   const gchar *brush_callback;
@@ -114,14 +121,17 @@ brushes_set_popup_invoker (GimpProcedure      *procedure,
   gint32 spacing;
   gint32 paint_mode;
 
-  brush_callback = g_value_get_string (&args->values[0]);
-  brush_name = g_value_get_string (&args->values[1]);
-  opacity = g_value_get_double (&args->values[2]);
-  spacing = g_value_get_int (&args->values[3]);
-  paint_mode = g_value_get_enum (&args->values[4]);
+  brush_callback = g_value_get_string (gimp_value_array_index (args, 0));
+  brush_name = g_value_get_string (gimp_value_array_index (args, 1));
+  opacity = g_value_get_double (gimp_value_array_index (args, 2));
+  spacing = g_value_get_int (gimp_value_array_index (args, 3));
+  paint_mode = g_value_get_enum (gimp_value_array_index (args, 4));
 
   if (success)
     {
+      if (paint_mode == GIMP_LAYER_MODE_OVERLAY_LEGACY)
+        paint_mode = GIMP_LAYER_MODE_SOFTLIGHT_LEGACY;
+
       if (gimp->no_interface ||
           ! gimp_pdb_lookup_procedure (gimp->pdb, brush_callback) ||
           ! gimp_pdb_dialog_set (gimp, gimp_data_factory_get_container (gimp->brush_factory),
@@ -193,8 +203,8 @@ register_brush_select_procs (GimpPDB *pdb)
                                g_param_spec_enum ("paint-mode",
                                                   "paint mode",
                                                   "The initial paint mode",
-                                                  GIMP_TYPE_LAYER_MODE_EFFECTS,
-                                                  GIMP_NORMAL_MODE,
+                                                  GIMP_TYPE_LAYER_MODE,
+                                                  GIMP_LAYER_MODE_NORMAL,
                                                   GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
@@ -267,8 +277,8 @@ register_brush_select_procs (GimpPDB *pdb)
                                g_param_spec_enum ("paint-mode",
                                                   "paint mode",
                                                   "The initial paint mode",
-                                                  GIMP_TYPE_LAYER_MODE_EFFECTS,
-                                                  GIMP_NORMAL_MODE,
+                                                  GIMP_TYPE_LAYER_MODE,
+                                                  GIMP_LAYER_MODE_NORMAL,
                                                   GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);

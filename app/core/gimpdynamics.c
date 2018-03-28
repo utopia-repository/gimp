@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "libgimpmath/gimpmath.h"
@@ -93,7 +94,8 @@ static void
                                                   GParamSpec  **pspecs);
 
 static const gchar * gimp_dynamics_get_extension (GimpData     *data);
-static GimpData *    gimp_dynamics_duplicate     (GimpData     *data);
+static void          gimp_dynamics_copy          (GimpData     *data,
+                                                  GimpData     *src_data);
 
 static GimpDynamicsOutput *
                      gimp_dynamics_create_output (GimpDynamics           *dynamics,
@@ -122,71 +124,83 @@ gimp_dynamics_class_init (GimpDynamicsClass *klass)
   object_class->get_property                = gimp_dynamics_get_property;
   object_class->dispatch_properties_changed = gimp_dynamics_dispatch_properties_changed;
 
-  viewable_class->default_stock_id          = "gimp-dynamics";
+  viewable_class->default_icon_name         = "gimp-dynamics";
 
   data_class->save                          = gimp_dynamics_save;
   data_class->get_extension                 = gimp_dynamics_get_extension;
-  data_class->duplicate                     = gimp_dynamics_duplicate;
+  data_class->copy                          = gimp_dynamics_copy;
 
-  GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_NAME,
-                                   "name", NULL,
-                                   DEFAULT_NAME,
-                                   GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_STRING (object_class, PROP_NAME,
+                           "name",
+                           NULL, NULL,
+                           DEFAULT_NAME,
+                           GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_OPACITY_OUTPUT,
-                                   "opacity-output", NULL,
-                                   GIMP_TYPE_DYNAMICS_OUTPUT,
-                                   GIMP_CONFIG_PARAM_AGGREGATE);
+  GIMP_CONFIG_PROP_OBJECT (object_class, PROP_OPACITY_OUTPUT,
+                           "opacity-output",
+                           NULL, NULL,
+                           GIMP_TYPE_DYNAMICS_OUTPUT,
+                           GIMP_CONFIG_PARAM_AGGREGATE);
 
-  GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_FORCE_OUTPUT,
-                                   "force-output", NULL,
-                                   GIMP_TYPE_DYNAMICS_OUTPUT,
-                                   GIMP_CONFIG_PARAM_AGGREGATE);
+  GIMP_CONFIG_PROP_OBJECT (object_class, PROP_FORCE_OUTPUT,
+                           "force-output",
+                           NULL, NULL,
+                           GIMP_TYPE_DYNAMICS_OUTPUT,
+                           GIMP_CONFIG_PARAM_AGGREGATE);
 
-  GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_HARDNESS_OUTPUT,
-                                   "hardness-output", NULL,
-                                   GIMP_TYPE_DYNAMICS_OUTPUT,
-                                   GIMP_CONFIG_PARAM_AGGREGATE);
+  GIMP_CONFIG_PROP_OBJECT (object_class, PROP_HARDNESS_OUTPUT,
+                           "hardness-output",
+                           NULL, NULL,
+                           GIMP_TYPE_DYNAMICS_OUTPUT,
+                           GIMP_CONFIG_PARAM_AGGREGATE);
 
-  GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_RATE_OUTPUT,
-                                   "rate-output", NULL,
-                                   GIMP_TYPE_DYNAMICS_OUTPUT,
-                                   GIMP_CONFIG_PARAM_AGGREGATE);
+  GIMP_CONFIG_PROP_OBJECT (object_class, PROP_RATE_OUTPUT,
+                           "rate-output",
+                           NULL, NULL,
+                           GIMP_TYPE_DYNAMICS_OUTPUT,
+                           GIMP_CONFIG_PARAM_AGGREGATE);
 
-  GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_FLOW_OUTPUT,
-                                   "flow-output", NULL,
-                                   GIMP_TYPE_DYNAMICS_OUTPUT,
-                                   GIMP_CONFIG_PARAM_AGGREGATE);
+  GIMP_CONFIG_PROP_OBJECT (object_class, PROP_FLOW_OUTPUT,
+                           "flow-output",
+                           NULL, NULL,
+                           GIMP_TYPE_DYNAMICS_OUTPUT,
+                           GIMP_CONFIG_PARAM_AGGREGATE);
 
-  GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_SIZE_OUTPUT,
-                                   "size-output", NULL,
-                                   GIMP_TYPE_DYNAMICS_OUTPUT,
-                                   GIMP_CONFIG_PARAM_AGGREGATE);
+  GIMP_CONFIG_PROP_OBJECT (object_class, PROP_SIZE_OUTPUT,
+                           "size-output",
+                           NULL, NULL,
+                           GIMP_TYPE_DYNAMICS_OUTPUT,
+                           GIMP_CONFIG_PARAM_AGGREGATE);
 
-  GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_ASPECT_RATIO_OUTPUT,
-                                   "aspect-ratio-output", NULL,
-                                   GIMP_TYPE_DYNAMICS_OUTPUT,
-                                   GIMP_CONFIG_PARAM_AGGREGATE);
+  GIMP_CONFIG_PROP_OBJECT (object_class, PROP_ASPECT_RATIO_OUTPUT,
+                           "aspect-ratio-output",
+                           NULL, NULL,
+                           GIMP_TYPE_DYNAMICS_OUTPUT,
+                           GIMP_CONFIG_PARAM_AGGREGATE);
 
-  GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_COLOR_OUTPUT,
-                                   "color-output", NULL,
-                                   GIMP_TYPE_DYNAMICS_OUTPUT,
-                                   GIMP_CONFIG_PARAM_AGGREGATE);
+  GIMP_CONFIG_PROP_OBJECT (object_class, PROP_COLOR_OUTPUT,
+                           "color-output",
+                           NULL, NULL,
+                           GIMP_TYPE_DYNAMICS_OUTPUT,
+                           GIMP_CONFIG_PARAM_AGGREGATE);
 
-  GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_ANGLE_OUTPUT,
-                                   "angle-output", NULL,
-                                   GIMP_TYPE_DYNAMICS_OUTPUT,
-                                   GIMP_CONFIG_PARAM_AGGREGATE);
+  GIMP_CONFIG_PROP_OBJECT (object_class, PROP_ANGLE_OUTPUT,
+                           "angle-output",
+                           NULL, NULL,
+                           GIMP_TYPE_DYNAMICS_OUTPUT,
+                           GIMP_CONFIG_PARAM_AGGREGATE);
 
-  GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_JITTER_OUTPUT,
-                                   "jitter-output", NULL,
-                                   GIMP_TYPE_DYNAMICS_OUTPUT,
-                                   GIMP_CONFIG_PARAM_AGGREGATE);
+  GIMP_CONFIG_PROP_OBJECT (object_class, PROP_JITTER_OUTPUT,
+                           "jitter-output",
+                           NULL, NULL,
+                           GIMP_TYPE_DYNAMICS_OUTPUT,
+                           GIMP_CONFIG_PARAM_AGGREGATE);
 
-  GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_SPACING_OUTPUT,
-                                   "spacing-output", NULL,
-                                   GIMP_TYPE_DYNAMICS_OUTPUT,
-                                   GIMP_CONFIG_PARAM_AGGREGATE);
+  GIMP_CONFIG_PROP_OBJECT (object_class, PROP_SPACING_OUTPUT,
+                           "spacing-output",
+                           NULL, NULL,
+                           GIMP_TYPE_DYNAMICS_OUTPUT,
+                           GIMP_CONFIG_PARAM_AGGREGATE);
 
   g_type_class_add_private (klass, sizeof (GimpDynamicsPrivate));
 }
@@ -257,17 +271,17 @@ gimp_dynamics_finalize (GObject *object)
 {
   GimpDynamicsPrivate *private = GET_PRIVATE (object);
 
-  g_object_unref (private->opacity_output);
-  g_object_unref (private->force_output);
-  g_object_unref (private->hardness_output);
-  g_object_unref (private->rate_output);
-  g_object_unref (private->flow_output);
-  g_object_unref (private->size_output);
-  g_object_unref (private->aspect_ratio_output);
-  g_object_unref (private->color_output);
-  g_object_unref (private->angle_output);
-  g_object_unref (private->jitter_output);
-  g_object_unref (private->spacing_output);
+  g_clear_object (&private->opacity_output);
+  g_clear_object (&private->force_output);
+  g_clear_object (&private->hardness_output);
+  g_clear_object (&private->rate_output);
+  g_clear_object (&private->flow_output);
+  g_clear_object (&private->size_output);
+  g_clear_object (&private->aspect_ratio_output);
+  g_clear_object (&private->color_output);
+  g_clear_object (&private->angle_output);
+  g_clear_object (&private->jitter_output);
+  g_clear_object (&private->spacing_output);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -446,15 +460,16 @@ gimp_dynamics_get_extension (GimpData *data)
   return GIMP_DYNAMICS_FILE_EXTENSION;
 }
 
-static GimpData *
-gimp_dynamics_duplicate (GimpData *data)
+static void
+gimp_dynamics_copy (GimpData *data,
+                    GimpData *src_data)
 {
-  GimpData *dest = g_object_new (GIMP_TYPE_DYNAMICS, NULL);
+  gimp_data_freeze (data);
 
-  gimp_config_copy (GIMP_CONFIG (data),
-                    GIMP_CONFIG (dest), 0);
+  gimp_config_copy (GIMP_CONFIG (src_data),
+                    GIMP_CONFIG (data), 0);
 
-  return GIMP_DATA (dest);
+  gimp_data_thaw (data);
 }
 
 
@@ -548,9 +563,73 @@ gimp_dynamics_get_output (GimpDynamics           *dynamics,
       break;
 
     default:
-      return NULL;
+      g_return_val_if_reached (NULL);
       break;
     }
+}
+
+gboolean
+gimp_dynamics_is_output_enabled (GimpDynamics           *dynamics,
+                                 GimpDynamicsOutputType  type)
+{
+  GimpDynamicsOutput *output;
+
+  g_return_val_if_fail (GIMP_IS_DYNAMICS (dynamics), FALSE);
+
+  output = gimp_dynamics_get_output (dynamics, type);
+
+  return gimp_dynamics_output_is_enabled (output);
+}
+
+gdouble
+gimp_dynamics_get_linear_value (GimpDynamics           *dynamics,
+                                GimpDynamicsOutputType  type,
+                                const GimpCoords       *coords,
+                                GimpPaintOptions       *options,
+                                gdouble                 fade_point)
+{
+  GimpDynamicsOutput *output;
+
+  g_return_val_if_fail (GIMP_IS_DYNAMICS (dynamics), 0.0);
+
+  output = gimp_dynamics_get_output (dynamics, type);
+
+  return gimp_dynamics_output_get_linear_value (output, coords,
+                                                options, fade_point);
+}
+
+gdouble
+gimp_dynamics_get_angular_value (GimpDynamics           *dynamics,
+                                 GimpDynamicsOutputType  type,
+                                 const GimpCoords       *coords,
+                                 GimpPaintOptions       *options,
+                                 gdouble                 fade_point)
+{
+  GimpDynamicsOutput *output;
+
+  g_return_val_if_fail (GIMP_IS_DYNAMICS (dynamics), 0.0);
+
+  output = gimp_dynamics_get_output (dynamics, type);
+
+  return gimp_dynamics_output_get_angular_value (output, coords,
+                                                 options, fade_point);
+}
+
+gdouble
+gimp_dynamics_get_aspect_value (GimpDynamics           *dynamics,
+                                GimpDynamicsOutputType  type,
+                                const GimpCoords       *coords,
+                                GimpPaintOptions       *options,
+                                gdouble                 fade_point)
+{
+  GimpDynamicsOutput *output;
+
+  g_return_val_if_fail (GIMP_IS_DYNAMICS (dynamics), 0.0);
+
+  output = gimp_dynamics_get_output (dynamics, type);
+
+  return gimp_dynamics_output_get_aspect_value (output, coords,
+                                                options, fade_point);
 }
 
 

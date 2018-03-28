@@ -17,6 +17,9 @@
 
 #include "config.h"
 
+#include <string.h>
+
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -29,6 +32,7 @@
 #include "core/gimp.h"
 #include "core/gimpcontainer.h"
 
+#include "widgets/gimpactiongroup.h"
 #include "widgets/gimpdialogfactory.h"
 #include "widgets/gimpsessioninfo.h"
 #include "widgets/gimpwidgets-utils.h"
@@ -39,39 +43,59 @@
 #include "dialogs/dialogs.h"
 
 #include "actions.h"
+#include "dialogs-actions.h"
 #include "windows-commands.h"
+
+#include "gimp-intl.h"
 
 
 void
 windows_hide_docks_cmd_callback (GtkAction *action,
                                  gpointer   data)
 {
-  gboolean  active = gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action));
   Gimp     *gimp;
+  gboolean  active;
   return_if_no_gimp (gimp, data);
 
-  if (GIMP_GUI_CONFIG (gimp->config)->hide_docks == active)
-    return;
+  active = gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action));
 
-  g_object_set (gimp->config,
-                "hide-docks", active,
-                NULL);
+  if (active != GIMP_GUI_CONFIG (gimp->config)->hide_docks)
+    g_object_set (gimp->config,
+                  "hide-docks", active,
+                  NULL);
+}
+
+void
+windows_set_tabs_position_cmd_callback (GtkAction *action,
+                                        GtkAction *current,
+                                        gpointer   data)
+{
+  Gimp         *gimp;
+  GimpPosition  value;
+  return_if_no_gimp (gimp, data);
+
+  value = gtk_radio_action_get_current_value (GTK_RADIO_ACTION (action));
+
+  if (value != GIMP_GUI_CONFIG (gimp->config)->tabs_position)
+    g_object_set (gimp->config,
+                  "tabs-position", value,
+                  NULL);
 }
 
 void
 windows_use_single_window_mode_cmd_callback (GtkAction *action,
                                              gpointer   data)
 {
-  gboolean  active = gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action));
   Gimp     *gimp;
+  gboolean  active;
   return_if_no_gimp (gimp, data);
 
-  if (GIMP_GUI_CONFIG (gimp->config)->single_window_mode == active)
-    return;
+  active = gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action));
 
-  g_object_set (gimp->config,
-                "single-window-mode", active,
-                NULL);
+  if (active != GIMP_GUI_CONFIG (gimp->config)->single_window_mode)
+    g_object_set (gimp->config,
+                  "single-window-mode", active,
+                  NULL);
 }
 
 void
@@ -140,7 +164,26 @@ void
 windows_open_recent_cmd_callback (GtkAction *action,
                                   gpointer   data)
 {
-  GimpSessionInfo *info = g_object_get_data (G_OBJECT (action), "info");
+  GimpSessionInfo        *info;
+  GimpDialogFactoryEntry *entry;
+  Gimp                   *gimp;
+  GtkWidget              *widget;
+  return_if_no_gimp (gimp, data);
+  return_if_no_widget (widget, data);
+
+  info  = g_object_get_data (G_OBJECT (action), "info");
+  entry = gimp_session_info_get_factory_entry (info);
+
+  if (entry && strcmp ("gimp-toolbox-window", entry->identifier) == 0 &&
+      dialogs_actions_toolbox_exists (gimp))
+    {
+      gimp_message (gimp,
+                    G_OBJECT (action_data_get_widget (data)),
+                    GIMP_MESSAGE_WARNING,
+                    _("The chosen recent dock contains a toolbox. Please "
+                      "close the currently open toolbox and try again."));
+      return;
+    }
 
   g_object_ref (info);
 
@@ -149,7 +192,9 @@ windows_open_recent_cmd_callback (GtkAction *action,
   gimp_dialog_factory_add_session_info (gimp_dialog_factory_get_singleton (),
                                         info);
 
-  gimp_session_info_restore (info, gimp_dialog_factory_get_singleton ());
+  gimp_session_info_restore (info, gimp_dialog_factory_get_singleton (),
+                             gtk_widget_get_screen (widget),
+                             gimp_widget_get_monitor (widget));
 
   g_object_unref (info);
 }

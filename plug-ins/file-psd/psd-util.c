@@ -31,18 +31,147 @@
 
 #include "libgimp/stdplugins-intl.h"
 
-/*  Local constants */
+/*  Local constants  */
 #define MIN_RUN     3
 
+/*  Local types  */
+typedef struct
+{
+  const gchar   *name;
+  const gchar   *psd_mode;
+  GimpLayerMode  gimp_mode;
+  gboolean       exact; /* does the modes behave (more-or-less) the same in
+                         * Photoshop and in GIMP?
+                         */
+} LayerModeMapping;
+
 /*  Local function prototypes  */
-static gchar *          gimp_layer_mode_effects_name    (const GimpLayerModeEffects      mode);
+static const gchar * get_enum_value_nick (GType type,
+                                          gint  value);
+
+/*  Local varaibles  */
+
+/* mapping table between Photoshop and GIMP modes.  in case a mode matches more
+ * than one entry (in either direction), the first entry wins.
+ */
+static const LayerModeMapping layer_mode_map[] =
+{
+/*  Name             PSD     GIMP                                   Exact?  */
+
+  /* Normal (ps3) */
+  { "Normal",        "norm", GIMP_LAYER_MODE_NORMAL,                TRUE },
+  { "Normal",        "norm", GIMP_LAYER_MODE_NORMAL_LEGACY,         TRUE },
+
+  /* Dissolve (ps3) */
+  { "Dissolve",      "diss", GIMP_LAYER_MODE_DISSOLVE,              TRUE },
+
+  /* Multiply (ps3) */
+  { "Multiply",      "mul ", GIMP_LAYER_MODE_MULTIPLY,              TRUE },
+  { "Multiply",      "mul ", GIMP_LAYER_MODE_MULTIPLY_LEGACY,       TRUE },
+
+  /* Screen (ps3) */
+  { "Screen",        "scrn", GIMP_LAYER_MODE_SCREEN,                TRUE },
+  { "Screen",        "scrn", GIMP_LAYER_MODE_SCREEN_LEGACY,         TRUE },
+
+  /* Overlay (ps3) */
+  { "Overlay",       "over", GIMP_LAYER_MODE_OVERLAY,               TRUE },
+
+  /* Difference (ps3) */
+  { "Difference",    "diff", GIMP_LAYER_MODE_DIFFERENCE,            TRUE },
+  { "Difference",    "diff", GIMP_LAYER_MODE_DIFFERENCE_LEGACY,     TRUE },
+
+  /* Linear Dodge (cs2) */
+  { "Linear Dodge",  "lddg", GIMP_LAYER_MODE_ADDITION,              TRUE },
+  { "Linear Dodge",  "lddg", GIMP_LAYER_MODE_ADDITION_LEGACY,       TRUE },
+
+  /* Subtract (??) */
+  { "Subtract",      "fsub", GIMP_LAYER_MODE_SUBTRACT,              TRUE },
+  { "Subtract",      "fsub", GIMP_LAYER_MODE_SUBTRACT_LEGACY,       TRUE },
+
+  /* Darken (ps3) */
+  { "Darken",        "dark", GIMP_LAYER_MODE_DARKEN_ONLY,           TRUE },
+  { "Darken",        "dark", GIMP_LAYER_MODE_DARKEN_ONLY_LEGACY,    TRUE },
+
+  /* Lighten (ps3) */
+  { "Ligten",        "lite", GIMP_LAYER_MODE_LIGHTEN_ONLY,          TRUE },
+  { "Ligten",        "lite", GIMP_LAYER_MODE_LIGHTEN_ONLY_LEGACY,   TRUE },
+
+  /* Hue (ps3) */
+  { "Hue",           "hue ", GIMP_LAYER_MODE_LCH_HUE,               FALSE },
+  { "Hue",           "hue ", GIMP_LAYER_MODE_HSV_HUE,               FALSE },
+  { "Hue",           "hue ", GIMP_LAYER_MODE_HSV_HUE_LEGACY,        FALSE },
+
+  /* Stauration (ps3) */
+  { "Saturation",    "sat ", GIMP_LAYER_MODE_LCH_CHROMA,            FALSE },
+  { "Saturation",    "sat ", GIMP_LAYER_MODE_HSV_SATURATION,        FALSE },
+  { "Saturation",    "sat ", GIMP_LAYER_MODE_HSV_SATURATION_LEGACY, FALSE },
+
+  /* Color (ps3) */
+  { "Color",         "colr", GIMP_LAYER_MODE_LCH_COLOR,             FALSE },
+  { "Color",         "colr", GIMP_LAYER_MODE_HSL_COLOR,             FALSE },
+  { "Color",         "colr", GIMP_LAYER_MODE_HSL_COLOR_LEGACY,      FALSE },
+
+  /* Luminosity (ps3) */
+  { "Luminosity",    "lum ", GIMP_LAYER_MODE_LCH_LIGHTNESS,         FALSE },
+  { "Luminosity",    "lum ", GIMP_LAYER_MODE_HSV_VALUE,             FALSE },
+  { "Luminosity",    "lum ", GIMP_LAYER_MODE_HSV_VALUE_LEGACY,      FALSE },
+  { "Luminosity",    "lum ", GIMP_LAYER_MODE_LUMINANCE,             FALSE },
+
+  /* Divide (??) */
+  { "Divide",        "fdiv", GIMP_LAYER_MODE_DIVIDE,                TRUE },
+  { "Divide",        "fdiv", GIMP_LAYER_MODE_DIVIDE_LEGACY,         TRUE },
+
+  /* Color Dodge (ps6) */
+  { "Color Dodge",   "div ", GIMP_LAYER_MODE_DODGE,                 TRUE },
+  { "Color Dodge",   "div ", GIMP_LAYER_MODE_DODGE_LEGACY,          TRUE },
+
+  /* Color Burn (ps6) */
+  { "Color Burn",    "idiv", GIMP_LAYER_MODE_BURN,                  TRUE },
+  { "Color Burn",    "idiv", GIMP_LAYER_MODE_BURN_LEGACY,           TRUE },
+
+  /* Hard Light (ps3) */
+  { "Hard Light",    "hLit", GIMP_LAYER_MODE_HARDLIGHT,             TRUE },
+  { "Hard Light",    "hLit", GIMP_LAYER_MODE_HARDLIGHT_LEGACY,      TRUE },
+
+  /* Soft Light (ps3) */
+  { "Soft Light",    "sLit", GIMP_LAYER_MODE_SOFTLIGHT,             FALSE },
+  { "Soft Light",    "sLit", GIMP_LAYER_MODE_SOFTLIGHT_LEGACY,      FALSE },
+  { "Soft Light",    "sLit", GIMP_LAYER_MODE_OVERLAY_LEGACY,        FALSE },
+
+  /* Vivid Light (ps7)*/
+  { "Vivid Light",   "vLit", GIMP_LAYER_MODE_VIVID_LIGHT,           TRUE },
+
+  /* Pin Light (ps7)*/
+  { "Pin Light",     "pLit", GIMP_LAYER_MODE_PIN_LIGHT,             TRUE },
+
+  /* Linear Light (ps7)*/
+  { "Linear Light",  "lLit", GIMP_LAYER_MODE_LINEAR_LIGHT,          TRUE },
+
+  /* Hard Mix (CS)*/
+  { "Hard Mix",      "hMix", GIMP_LAYER_MODE_HARD_MIX,              TRUE },
+
+  /* Exclusion (ps6) */
+  { "Exclusion",     "smud", GIMP_LAYER_MODE_EXCLUSION,             TRUE },
+
+  /* Linear Burn (ps7)*/
+  { "Linear Burn",   "lbrn", GIMP_LAYER_MODE_LINEAR_BURN,           TRUE },
+
+  /* Darker Color (??)*/
+  { "Darker Color",  "dkCl", GIMP_LAYER_MODE_LUMA_DARKEN_ONLY,      FALSE },
+
+  /* Lighter Color (??)*/
+  { "Lighter Color", "lgCl", GIMP_LAYER_MODE_LUMA_LIGHTEN_ONLY,     FALSE },
+
+  /* Pass Through (CS)*/
+  { "Pass Through",  "pass", GIMP_LAYER_MODE_PASS_THROUGH,          TRUE },
+};
 
 
 /* Utility function */
 void
-psd_set_error (const gboolean   file_eof,
-               const gint       err_no,
-               GError         **error)
+psd_set_error (gboolean   file_eof,
+               gint       err_no,
+               GError   **error)
 {
   if (file_eof)
     {
@@ -59,11 +188,11 @@ psd_set_error (const gboolean   file_eof,
 }
 
 gchar *
-fread_pascal_string (gint32         *bytes_read,
-                     gint32         *bytes_written,
-                     const guint16   mod_len,
-                     FILE           *f,
-                     GError        **error)
+fread_pascal_string (gint32   *bytes_read,
+                     gint32   *bytes_written,
+                     guint16   mod_len,
+                     FILE     *f,
+                     GError  **error)
 {
   /*
    * Reads a pascal string from the file padded to a multiple of mod_len
@@ -134,22 +263,22 @@ fread_pascal_string (gint32         *bytes_read,
 }
 
 gint32
-fwrite_pascal_string (const gchar    *src,
-                      const guint16   mod_len,
-                      FILE           *f,
-                      GError        **error)
+fwrite_pascal_string (const gchar  *src,
+                      guint16       mod_len,
+                      FILE         *f,
+                      GError      **error)
 {
   /*
    *  Converts utf-8 string to current locale and writes as pascal
    *  string with padding to a multiple of mod_len.
    */
 
-  gchar        *str;
-  gchar        *pascal_str;
-  gchar         null_str = 0x0;
-  guchar        pascal_len;
-  gint32        bytes_written = 0;
-  gsize         len;
+  gchar  *str;
+  gchar  *pascal_str;
+  gchar   null_str = 0x0;
+  guchar  pascal_len;
+  gint32  bytes_written = 0;
+  gsize   len;
 
   if (src == NULL)
     {
@@ -203,23 +332,23 @@ fwrite_pascal_string (const gchar    *src,
 }
 
 gchar *
-fread_unicode_string (gint32         *bytes_read,
-                      gint32         *bytes_written,
-                      const guint16   mod_len,
-                      FILE           *f,
-                      GError        **error)
+fread_unicode_string (gint32   *bytes_read,
+                      gint32   *bytes_written,
+                      guint16   mod_len,
+                      FILE     *f,
+                      GError  **error)
 {
   /*
    * Reads a utf-16 string from the file padded to a multiple of mod_len
    * and returns a utf-8 string.
    */
 
-  gchar        *utf8_str;
-  gunichar2    *utf16_str;
-  gint32        len;
-  gint32        i;
-  gint32        padded_len;
-  glong         utf8_str_len;
+  gchar     *utf8_str;
+  gunichar2 *utf16_str;
+  gint32     len;
+  gint32     i;
+  gint32     padded_len;
+  glong      utf8_str_len;
 
   *bytes_read = 0;
   *bytes_written = -1;
@@ -285,22 +414,22 @@ fread_unicode_string (gint32         *bytes_read,
 }
 
 gint32
-fwrite_unicode_string (const gchar    *src,
-                       const guint16   mod_len,
-                       FILE           *f,
-                       GError        **error)
+fwrite_unicode_string (const gchar  *src,
+                       guint16       mod_len,
+                       FILE         *f,
+                       GError      **error)
 {
   /*
    *  Converts utf-8 string to utf-16 and writes 4 byte length
    *  then string padding to multiple of mod_len.
    */
 
-  gunichar2    *utf16_str;
-  gchar         null_str = 0x0;
-  gint32        utf16_len = 0;
-  gint32        bytes_written = 0;
-  gint          i;
-  glong         len;
+  gunichar2 *utf16_str;
+  gchar      null_str = 0x0;
+  gint32     utf16_len = 0;
+  gint32     bytes_written = 0;
+  gint       i;
+  glong      len;
 
   if (src == NULL)
     {
@@ -355,19 +484,20 @@ decode_packbits (const gchar *src,
                  guint16      packed_len,
                  guint32      unpacked_len)
 {
-/*
- *  Decode a PackBits chunk.
- */
-  gint      n;
-  gchar     dat;
-  gint32    unpack_left = unpacked_len;
-  gint32    pack_left = packed_len;
-  gint32    error_code = 0;
-  gint32    return_val = 0;
+  /*
+   *  Decode a PackBits chunk.
+   */
+
+  gint    n;
+  gchar   dat;
+  gint32  unpack_left = unpacked_len;
+  gint32  pack_left = packed_len;
+  gint32  error_code = 0;
+  gint32  return_val = 0;
 
   while (unpack_left > 0 && pack_left > 0)
     {
-      n = *src;
+      n = *(const guchar *) src;
       src++;
       pack_left--;
 
@@ -464,13 +594,14 @@ decode_packbits (const gchar *src,
 }
 
 gchar *
-encode_packbits (const gchar   *src,
-                 const guint32  unpacked_len,
-                 guint16       *packed_len)
+encode_packbits (const gchar *src,
+                 guint32      unpacked_len,
+                 guint16     *packed_len)
 {
-/*
- *  Encode a PackBits chunk.
- */
+  /*
+   *  Encode a PackBits chunk.
+   */
+
   GString *dst_str;                      /* destination string */
   gint     curr_char;                    /* current character */
   gchar    char_buff[128];               /* buffer of already read characters */
@@ -603,306 +734,213 @@ encode_packbits (const gchar   *src,
   return g_string_free (dst_str, FALSE);
 }
 
-GimpLayerModeEffects
-psd_to_gimp_blend_mode (const gchar *psd_mode)
+void
+psd_to_gimp_blend_mode (const gchar   *psd_mode,
+                        LayerModeInfo *mode_info)
 {
-  if (g_ascii_strncasecmp (psd_mode, "norm", 4) == 0)           /* Normal (ps3) */
-    return GIMP_NORMAL_MODE;
-  if (g_ascii_strncasecmp (psd_mode, "dark", 4) == 0)           /* Darken (ps3) */
-    return GIMP_DARKEN_ONLY_MODE;
-  if (g_ascii_strncasecmp (psd_mode, "lite", 4) == 0)           /* Lighten (ps3) */
-      return GIMP_LIGHTEN_ONLY_MODE;
-  if (g_ascii_strncasecmp (psd_mode, "hue ", 4) == 0)           /* Hue (ps3) */
-    return GIMP_HUE_MODE;
-  if (g_ascii_strncasecmp (psd_mode, "sat ", 4) == 0)           /* Saturation (ps3) */
+  gint i;
+
+  mode_info->mode            = GIMP_LAYER_MODE_NORMAL;
+  /* FIXME: use the image mode to select the correct color spaces.  for now,
+   * we use rgb-perceptual blending/compositing unconditionally.
+   */
+  mode_info->blend_space     = GIMP_LAYER_COLOR_SPACE_RGB_PERCEPTUAL;
+  mode_info->composite_space = GIMP_LAYER_COLOR_SPACE_RGB_PERCEPTUAL;
+  mode_info->composite_mode  = GIMP_LAYER_COMPOSITE_UNION;
+
+  for (i = 0; i < G_N_ELEMENTS (layer_mode_map); i++)
     {
-      if (CONVERSION_WARNINGS)
+      if (g_ascii_strncasecmp (psd_mode, layer_mode_map[i].psd_mode, 4) == 0)
         {
-          static gchar  *mode_name = "SATURATION";
-          g_message ("Gimp uses a different equation to photoshop for "
-                     "blend mode: %s. Results will differ.",
-                     mode_name);
+          if (! layer_mode_map[i].exact && CONVERSION_WARNINGS)
+            {
+              g_message ("GIMP uses a different equation than Photoshop for "
+                         "blend mode: %s. Results will differ.",
+                         layer_mode_map[i].name);
+            }
+
+          mode_info->mode = layer_mode_map[i].gimp_mode;
+
+          return;
         }
-      return GIMP_SATURATION_MODE;
-    }
-  if (g_ascii_strncasecmp (psd_mode, "colr", 4) == 0)           /* Color (ps3) */
-    return GIMP_COLOR_MODE;
-  if (g_ascii_strncasecmp (psd_mode, "lum ", 4) == 0)           /* Luminosity (ps3) */
-    {
-      if (CONVERSION_WARNINGS)
-        {
-          static gchar  *mode_name = "LUMINOSITY (VALUE)";
-          g_message ("Gimp uses a different equation to photoshop for "
-                     "blend mode: %s. Results will differ.",
-                     mode_name);
-        }
-      return GIMP_VALUE_MODE;
-    }
-  if (g_ascii_strncasecmp (psd_mode, "mul ", 4) == 0)           /* Multiply (ps3) */
-    return GIMP_MULTIPLY_MODE;
-  if (g_ascii_strncasecmp (psd_mode, "lddg", 4) == 0)           /* Linear Dodge (cs2) */
-    return GIMP_ADDITION_MODE;
-  if (g_ascii_strncasecmp (psd_mode, "scrn", 4) == 0)           /* Screen (ps3) */
-    return GIMP_SCREEN_MODE;
-  if (g_ascii_strncasecmp (psd_mode, "diss", 4) == 0)           /* Dissolve (ps3) */
-    return GIMP_DISSOLVE_MODE;
-  if (g_ascii_strncasecmp (psd_mode, "over", 4) == 0)           /* Overlay (ps3) */
-    {
-      if (CONVERSION_WARNINGS)
-        {
-          static gchar  *mode_name = "OVERLAY";
-          g_message ("Gimp uses a different equation to photoshop for "
-                     "blend mode: %s. Results will differ.",
-                     mode_name);
-        }
-      return GIMP_OVERLAY_MODE;
-    }
-  if (g_ascii_strncasecmp (psd_mode, "hLit", 4) == 0)           /* Hard light (ps3) */
-    return GIMP_HARDLIGHT_MODE;
-  if (g_ascii_strncasecmp (psd_mode, "sLit", 4) == 0)           /* Soft light (ps3) */
-    {
-      if (CONVERSION_WARNINGS)
-        {
-          static gchar  *mode_name = "SOFT LIGHT";
-          g_message ("Gimp uses a different equation to photoshop for "
-                     "blend mode: %s. Results will differ.",
-                     mode_name);
-        }
-    return GIMP_SOFTLIGHT_MODE;
-    }
-  if (g_ascii_strncasecmp (psd_mode, "diff", 4) == 0)           /* Difference (ps3) */
-    return GIMP_DIFFERENCE_MODE;
-  if (g_ascii_strncasecmp (psd_mode, "smud", 4) == 0)           /* Exclusion (ps6) */
-    {
-      if (CONVERSION_WARNINGS)
-        {
-          static gchar  *mode_name = "EXCLUSION";
-          g_message ("Unsupported blend mode: %s. Mode reverts to normal",
-                     mode_name);
-        }
-      return GIMP_NORMAL_MODE;
-    }
-  if (g_ascii_strncasecmp (psd_mode, "div ", 4) == 0)           /* Color dodge (ps6) */
-      return GIMP_DODGE_MODE;
-  if (g_ascii_strncasecmp (psd_mode, "idiv", 4) == 0)           /* Color burn (ps6) */
-      return GIMP_BURN_MODE;
-  if (g_ascii_strncasecmp (psd_mode, "lbrn", 4) == 0)           /* Linear burn (ps7)*/
-    {
-      if (CONVERSION_WARNINGS)
-        {
-          static gchar  *mode_name = "LINEAR BURN";
-          g_message ("Unsupported blend mode: %s. Mode reverts to normal",
-                     mode_name);
-        }
-      return GIMP_NORMAL_MODE;
-    }
-  if (g_ascii_strncasecmp (psd_mode, "lddg", 4) == 0)           /* Linear dodge (ps7)*/
-    return GIMP_ADDITION_MODE;
-  if (g_ascii_strncasecmp (psd_mode, "lLit", 4) == 0)           /* Linear light (ps7)*/
-    {
-      if (CONVERSION_WARNINGS)
-        {
-          static gchar  *mode_name = "LINEAR LIGHT";
-          g_message ("Unsupported blend mode: %s. Mode reverts to normal",
-                     mode_name);
-        }
-      return GIMP_NORMAL_MODE;
-    }
-  if (g_ascii_strncasecmp (psd_mode, "pLit", 4) == 0)           /* Pin light (ps7)*/
-    {
-      if (CONVERSION_WARNINGS)
-        {
-          static gchar  *mode_name = "PIN LIGHT";
-          g_message ("Unsupported blend mode: %s. Mode reverts to normal",
-                     mode_name);
-        }
-      return GIMP_NORMAL_MODE;
-    }
-  if (g_ascii_strncasecmp (psd_mode, "vLit", 4) == 0)           /* Vivid light (ps7)*/
-    {
-      if (CONVERSION_WARNINGS)
-        {
-          static gchar  *mode_name = "VIVID LIGHT";
-          g_message ("Unsupported blend mode: %s. Mode reverts to normal",
-                     mode_name);
-        }
-      return GIMP_NORMAL_MODE;
-    }
-  if (g_ascii_strncasecmp (psd_mode, "hMix", 4) == 0)           /* Hard Mix (CS)*/
-    {
-      if (CONVERSION_WARNINGS)
-        {
-          static gchar  *mode_name = "HARD MIX";
-          g_message ("Unsupported blend mode: %s. Mode reverts to normal",
-                     mode_name);
-        }
-      return GIMP_NORMAL_MODE;
     }
 
   if (CONVERSION_WARNINGS)
     {
-      gchar  *mode_name = g_strndup (psd_mode, 4);
+      gchar *mode_name = g_strndup (psd_mode, 4);
       g_message ("Unsupported blend mode: %s. Mode reverts to normal",
                  mode_name);
       g_free (mode_name);
     }
-  return GIMP_NORMAL_MODE;
 }
 
-gchar *
-gimp_to_psd_blend_mode (const GimpLayerModeEffects gimp_layer_mode)
+const gchar *
+gimp_to_psd_blend_mode (const LayerModeInfo *mode_info)
 {
-  gchar        *psd_mode;
+  gint i;
 
-  switch (gimp_layer_mode)
+  /* FIXME: select the image mode based on the layer mode color spaces.  for
+   * now, we assume rgb-perceptual blending/compositing unconditionally.
+   */
+  if (mode_info->blend_space != GIMP_LAYER_COLOR_SPACE_AUTO &&
+      mode_info->blend_space != GIMP_LAYER_COLOR_SPACE_RGB_PERCEPTUAL)
     {
-      case GIMP_NORMAL_MODE:
-        psd_mode = g_strndup ("norm", 4);                       /* Normal (ps3) */
-        break;
-      case GIMP_DISSOLVE_MODE:
-        psd_mode = g_strndup ("diss", 4);                       /* Dissolve (ps3) */
-        break;
-      case GIMP_BEHIND_MODE:
-        if (CONVERSION_WARNINGS)
-          g_message ("Unsupported blend mode: %s. Mode reverts to normal",
-                     gimp_layer_mode_effects_name (gimp_layer_mode));
-        psd_mode = g_strndup ("norm", 4);
-        break;
-      case GIMP_MULTIPLY_MODE:
-        psd_mode = g_strndup ("mul ", 4);                       /* Multiply (ps3) */
-        break;
-      case GIMP_SCREEN_MODE:
-        psd_mode = g_strndup ("scrn", 4);                       /* Screen (ps3) */
-        break;
-      case GIMP_OVERLAY_MODE:
-        if (CONVERSION_WARNINGS)
-          g_message ("Gimp uses a different equation to photoshop for "
-                     "blend mode: %s. Results will differ.",
-                     gimp_layer_mode_effects_name (gimp_layer_mode));
-        psd_mode = g_strndup ("over", 4);                       /* Overlay (ps3) */
-        break;
-      case GIMP_DIFFERENCE_MODE:
-        psd_mode = g_strndup ("diff", 4);                       /* Difference (ps3) */
-        break;
-      case GIMP_ADDITION_MODE:
-        psd_mode = g_strndup ("lddg", 4);                       /* Linear dodge (ps7)*/
-        break;
-      case GIMP_SUBTRACT_MODE:
-        if (CONVERSION_WARNINGS)
-          g_message ("Unsupported blend mode: %s. Mode reverts to normal",
-                     gimp_layer_mode_effects_name (gimp_layer_mode));
-        psd_mode = g_strndup ("norm", 4);
-        break;
-      case GIMP_DARKEN_ONLY_MODE:
-        psd_mode = g_strndup ("dark", 4);                       /* Darken (ps3) */
-        break;
-      case GIMP_LIGHTEN_ONLY_MODE:
-        psd_mode = g_strndup ("lite", 4);                       /* Lighten (ps3) */
-        break;
-      case GIMP_HUE_MODE:
-        psd_mode = g_strndup ("hue ", 4);                       /* Hue (ps3) */
-        break;
-      case GIMP_SATURATION_MODE:
-        if (CONVERSION_WARNINGS)
-          g_message ("Gimp uses a different equation to photoshop for "
-                     "blend mode: %s. Results will differ.",
-                     gimp_layer_mode_effects_name (gimp_layer_mode));
-        psd_mode = g_strndup ("sat ", 4);                       /* Saturation (ps3) */
-        break;
-      case GIMP_COLOR_MODE:
-        psd_mode = g_strndup ("colr", 4);                       /* Color (ps3) */
-        break;
-      case GIMP_VALUE_MODE:
-        if (CONVERSION_WARNINGS)
-          g_message ("Gimp uses a different equation to photoshop for "
-                     "blend mode: %s. Results will differ.",
-                     gimp_layer_mode_effects_name (gimp_layer_mode));
-        psd_mode = g_strndup ("lum ", 4);                       /* Luminosity (ps3) */
-        break;
-      case GIMP_DIVIDE_MODE:
-        if (CONVERSION_WARNINGS)
-          g_message ("Unsupported blend mode: %s. Mode reverts to normal",
-                     gimp_layer_mode_effects_name (gimp_layer_mode));
-        psd_mode = g_strndup ("norm", 4);
-        break;
-      case GIMP_DODGE_MODE:
-        psd_mode = g_strndup ("div ", 4);                       /* Color Dodge (ps6) */
-        break;
-      case GIMP_BURN_MODE:
-        psd_mode = g_strndup ("idiv", 4);                       /* Color Burn (ps6) */
-        break;
-      case GIMP_HARDLIGHT_MODE:
-        psd_mode = g_strndup ("hLit", 4);                       /* Hard Light (ps3) */
-        break;
-      case GIMP_SOFTLIGHT_MODE:
-        if (CONVERSION_WARNINGS)
-          g_message ("Unsupported blend mode: %s. Mode reverts to normal",
-                     gimp_layer_mode_effects_name (gimp_layer_mode));
-         psd_mode = g_strndup ("sLit", 4);                       /* Soft Light (ps3) */
-        break;
-      case GIMP_GRAIN_EXTRACT_MODE:
-        if (CONVERSION_WARNINGS)
-          g_message ("Unsupported blend mode: %s. Mode reverts to normal",
-                     gimp_layer_mode_effects_name (gimp_layer_mode));
-        psd_mode = g_strndup ("norm", 4);
-        break;
-      case GIMP_GRAIN_MERGE_MODE:
-        if (CONVERSION_WARNINGS)
-          g_message ("Unsupported blend mode: %s. Mode reverts to normal",
-                     gimp_layer_mode_effects_name (gimp_layer_mode));
-        psd_mode = g_strndup ("norm", 4);
-        break;
-      case GIMP_COLOR_ERASE_MODE:
-        if (CONVERSION_WARNINGS)
-          g_message ("Unsupported blend mode: %s. Mode reverts to normal",
-                     gimp_layer_mode_effects_name (gimp_layer_mode));
-        psd_mode = g_strndup ("norm", 4);
-        break;
-
-      default:
-        if (CONVERSION_WARNINGS)
-          g_message ("Unsupported blend mode: %s. Mode reverts to normal",
-                     gimp_layer_mode_effects_name (gimp_layer_mode));
-        psd_mode = g_strndup ("norm", 4);
+      if (CONVERSION_WARNINGS)
+        g_message ("Unsupported blend color space: %s. "
+                   "Blend color space reverts to rgb-perceptual",
+                   get_enum_value_nick (GIMP_TYPE_LAYER_COLOR_SPACE,
+                                        mode_info->blend_space));
     }
 
-  return psd_mode;
+  if (mode_info->composite_space != GIMP_LAYER_COLOR_SPACE_AUTO &&
+      mode_info->composite_space != GIMP_LAYER_COLOR_SPACE_RGB_PERCEPTUAL)
+    {
+      if (CONVERSION_WARNINGS)
+        g_message ("Unsupported composite color space: %s. "
+                   "Composite color space reverts to rgb-perceptual",
+                   get_enum_value_nick (GIMP_TYPE_LAYER_COLOR_SPACE,
+                                        mode_info->composite_space));
+    }
+
+  if (mode_info->composite_mode != GIMP_LAYER_COMPOSITE_AUTO &&
+      mode_info->composite_mode != GIMP_LAYER_COMPOSITE_UNION)
+    {
+      if (CONVERSION_WARNINGS)
+        g_message ("Unsupported composite mode: %s. "
+                   "Composite mode reverts to union",
+                   get_enum_value_nick (GIMP_TYPE_LAYER_COMPOSITE_MODE,
+                                        mode_info->composite_mode));
+    }
+
+  for (i = 0; i < G_N_ELEMENTS (layer_mode_map); i++)
+    {
+      if (layer_mode_map[i].gimp_mode == mode_info->mode)
+        {
+          if (! layer_mode_map[i].exact && CONVERSION_WARNINGS)
+            {
+              g_message ("GIMP uses a different equation than Photoshop for "
+                         "blend mode: %s. Results may differ.",
+                         get_enum_value_nick (GIMP_TYPE_LAYER_MODE,
+                                              mode_info->mode));
+            }
+
+          return layer_mode_map[i].psd_mode;
+        }
+    }
+
+  if (CONVERSION_WARNINGS)
+    g_message ("Unsupported blend mode: %s. Mode reverts to normal",
+               get_enum_value_nick (GIMP_TYPE_LAYER_MODE, mode_info->mode));
+
+  return "norm";
 }
 
-static gchar *
-gimp_layer_mode_effects_name (const GimpLayerModeEffects mode)
+GimpColorTag
+psd_to_gimp_layer_color_tag (guint16 layer_color_tag)
 {
-  static gchar *layer_mode_effects_names[] =
-  {
-    "NORMAL",
-    "DISSOLVE",
-    "BEHIND",
-    "MULTIPLY",
-    "SCREEN",
-    "OVERLAY",
-    "DIFFERENCE",
-    "ADD",
-    "SUBTRACT",
-    "DARKEN",
-    "LIGHTEN",
-    "HUE",
-    "SATURATION",
-    "COLOR",
-    "VALUE",
-    "DIVIDE",
-    "DODGE",
-    "BURN",
-    "HARD LIGHT",
-    "SOFT LIGHT",
-    "GRAIN EXTRACT",
-    "GRAIN MERGE",
-    "COLOR ERASE"
-  };
-  static gchar *err_name = NULL;
-  if (mode >= 0 && mode <= GIMP_COLOR_ERASE_MODE)
-    return layer_mode_effects_names[mode];
-  g_free (err_name);
+  GimpColorTag colorTag;
 
-  err_name = g_strdup_printf ("UNKNOWN (%d)", mode);
-  return err_name;
+  switch (layer_color_tag)
+    {
+    case 1:
+      colorTag = GIMP_COLOR_TAG_RED;
+      break;
+
+    case 2:
+      colorTag = GIMP_COLOR_TAG_ORANGE;
+      break;
+
+    case 3:
+      colorTag = GIMP_COLOR_TAG_YELLOW;
+      break;
+
+    case 4:
+      colorTag = GIMP_COLOR_TAG_GREEN;
+      break;
+
+    case 5:
+      colorTag = GIMP_COLOR_TAG_BLUE;
+      break;
+
+    case 6:
+      colorTag = GIMP_COLOR_TAG_VIOLET;
+      break;
+
+    case 7:
+      colorTag = GIMP_COLOR_TAG_GRAY;
+      break;
+
+    default:
+      if (CONVERSION_WARNINGS)
+        g_message ("Unsupported Photoshop layer color tag: %i. GIMP layer color tag set to none.",
+                       layer_color_tag);
+      colorTag = GIMP_COLOR_TAG_NONE;
+    }
+
+  return colorTag;
+}
+
+guint16
+gimp_to_psd_layer_color_tag (GimpColorTag layer_color_tag)
+{
+  guint16 color_tag;
+
+  switch (layer_color_tag)
+    {
+    case GIMP_COLOR_TAG_RED:
+        color_tag = 1;
+      break;
+
+    case GIMP_COLOR_TAG_ORANGE:
+        color_tag = 2;
+      break;
+
+    case GIMP_COLOR_TAG_YELLOW:
+        color_tag = 3;
+      break;
+
+    case GIMP_COLOR_TAG_GREEN:
+        color_tag = 4;
+      break;
+
+    case GIMP_COLOR_TAG_BLUE:
+        color_tag = 5;
+      break;
+
+    case GIMP_COLOR_TAG_VIOLET:
+        color_tag = 6;
+      break;
+
+    case GIMP_COLOR_TAG_GRAY:
+        color_tag = 7;
+      break;
+
+    default:
+      if (CONVERSION_WARNINGS)
+        g_message ("Photoshop doesn't support GIMP layer color tag: %i. Photoshop layer color tag set to none.",
+                   layer_color_tag);
+        color_tag = 0;
+    }
+
+  return color_tag;
+}
+
+static const gchar *
+get_enum_value_nick (GType type,
+                     gint  value)
+{
+  const gchar *nick;
+
+  if (gimp_enum_get_value (type, value, NULL, &nick, NULL, NULL))
+    {
+      return nick;
+    }
+  else
+    {
+      static gchar err_name[32];
+
+      snprintf (err_name, sizeof (err_name), "UNKNOWN (%d)", value);
+
+      return err_name;
+    }
 }

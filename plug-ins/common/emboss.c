@@ -128,7 +128,7 @@ query (void)
                           "Eric L. Hernes, John Schlag",
                           "Eric L. Hernes",
                           "1997",
-                          N_("_Emboss..."),
+                          N_("_Emboss (legacy)..."),
                           "RGB*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
@@ -353,15 +353,17 @@ emboss (GimpDrawable *drawable,
     }
   else
     {
-      gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
+      if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                          &x1, &y1, &width, &height))
+        return;
 
       /* expand the bounds a little */
       x1 = MAX (0, x1 - evals.depth);
       y1 = MAX (0, y1 - evals.depth);
-      x2 = MIN (drawable->width, x2 + evals.depth);
-      y2 = MIN (drawable->height, y2 + evals.depth);
+      x2 = MIN (drawable->width, x1 + width + evals.depth);
+      y2 = MIN (drawable->height, y1 + height + evals.depth);
 
-      width = x2 - x1;
+      width  = x2 - x1;
       height = y2 - y1;
     }
 
@@ -448,8 +450,8 @@ emboss_dialog (GimpDrawable *drawable)
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -466,7 +468,7 @@ emboss_dialog (GimpDrawable *drawable)
                       main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_drawable_preview_new (drawable, NULL);
+  preview = gimp_drawable_preview_new_from_drawable_id (drawable->drawable_id);
   gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
   g_signal_connect_swapped (preview, "invalidated",

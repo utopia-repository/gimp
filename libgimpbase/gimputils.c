@@ -21,10 +21,40 @@
 
 #include "config.h"
 
+#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
-#include <glib-object.h>
+#ifdef PLATFORM_OSX
+#include <AppKit/AppKit.h>
+#endif
+
+#ifdef HAVE_EXECINFO_H
+/* Allowing backtrace() API. */
+#include <execinfo.h>
+#endif
+
+#include <gio/gio.h>
+#include <glib/gprintf.h>
+
+#if defined(G_OS_WIN32)
+/* This is a hack for Windows known directory support.
+ * DATADIR (autotools-generated constant) is a type defined in objidl.h
+ * so we must #undef it before including shlobj.h in order to avoid a
+ * name clash. */
+#undef DATADIR
+#include <windows.h>
+#include <shlobj.h>
+#else /* G_OS_WIN32 */
+/* For waitpid() */
+#include <sys/wait.h>
+#include <unistd.h>
+#include <errno.h>
+
+#ifdef HAVE_SYS_PRCTL_H
+#include <sys/prctl.h>
+#endif
+#endif /* G_OS_WIN32 */
 
 #include "gimpbasetypes.h"
 #include "gimputils.h"
@@ -40,6 +70,13 @@
  * Utilities of general interest
  **/
 
+static gboolean gimp_utils_generic_available (const gchar *program,
+                                              gint         major,
+                                              gint         minor);
+static gboolean gimp_utils_gdb_available     (gint         major,
+                                              gint         minor);
+static gboolean gimp_utils_lldb_available    (gint         major,
+                                              gint         minor);
 
 /**
  * gimp_utf8_strtrim:
@@ -233,6 +270,251 @@ gimp_filename_to_utf8 (const gchar *filename)
   return filename_utf8;
 }
 
+/**
+ * gimp_file_get_utf8_name:
+ * @file: a #GFile
+ *
+ * This function works like gimp_filename_to_utf8() and returns
+ * a UTF-8 encoded string that does not need to be freed.
+ *
+ * It converts a #GFile's path or uri to UTF-8 temporarily.  The
+ * return value is a pointer to a string that is guaranteed to be
+ * valid only during the current iteration of the main loop or until
+ * the next call to gimp_file_get_utf8_name().
+ *
+ * The only purpose of this function is to provide an easy way to pass
+ * a #GFile's name to a function that expects an UTF-8 encoded string.
+ *
+ * See g_file_get_parse_name().
+ *
+ * Since: 2.10
+ *
+ * Return value: A temporarily valid UTF-8 representation of @file's name.
+ *               This string must not be changed or freed.
+ **/
+const gchar *
+gimp_file_get_utf8_name (GFile *file)
+{
+  gchar *name;
+
+  g_return_val_if_fail (G_IS_FILE (file), NULL);
+
+  name = g_file_get_parse_name (file);
+
+  g_object_set_data_full (G_OBJECT (file), "gimp-parse-name", name,
+                          (GDestroyNotify) g_free);
+
+  return name;
+}
+
+/**
+ * gimp_file_has_extension:
+ * @file:      a #GFile
+ * @extension: an ASCII extension
+ *
+ * This function checks if @file's URI ends with @extension. It behaves
+ * like g_str_has_suffix() on g_file_get_uri(), except that the string
+ * comparison is done case-insensitively using g_ascii_strcasecmp().
+ *
+ * Since: 2.10
+ *
+ * Return value: %TRUE if @file's URI ends with @extension,
+ *               %FALSE otherwise.
+ **/
+gboolean
+gimp_file_has_extension (GFile       *file,
+                         const gchar *extension)
+{
+  gchar    *uri;
+  gint      uri_len;
+  gint      ext_len;
+  gboolean  result = FALSE;
+
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+  g_return_val_if_fail (extension != NULL, FALSE);
+
+  uri = g_file_get_uri (file);
+
+  uri_len = strlen (uri);
+  ext_len = strlen (extension);
+
+  if (uri_len && ext_len && (uri_len > ext_len))
+    {
+      if (g_ascii_strcasecmp (uri + uri_len - ext_len, extension) == 0)
+        result = TRUE;
+    }
+
+  g_free (uri);
+
+  return result;
+}
+
+/**
+ * gimp_file_show_in_file_manager:
+ * @file:  a #GFile
+ * @error: return location for a #GError
+ *
+ * Shows @file in the system file manager.
+ *
+ * Since: 2.10
+ *
+ * Return value: %TRUE on success, %FALSE otherwise. On %FALSE, @error
+ *               is set.
+ **/
+gboolean
+gimp_file_show_in_file_manager (GFile   *file,
+                                GError **error)
+{
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+#if defined(G_OS_WIN32)
+
+  {
+    gboolean ret;
+    char *filename;
+    int n;
+    LPWSTR w_filename = NULL;
+    ITEMIDLIST *pidl = NULL;
+
+    ret = FALSE;
+
+    /* Calling this function multiple times should do no harm, but it is
+       easier to put this here as it needs linking against ole32. */
+    CoInitialize (NULL);
+
+    filename = g_file_get_path (file);
+    if (!filename)
+      {
+        g_set_error_literal (error, G_FILE_ERROR, 0,
+                             _("File path is NULL"));
+        goto out;
+      }
+
+    n = MultiByteToWideChar (CP_UTF8, MB_ERR_INVALID_CHARS,
+                             filename, -1, NULL, 0);
+    if (n == 0)
+      {
+        g_set_error_literal (error, G_FILE_ERROR, 0,
+                             _("Error converting UTF-8 filename to wide char"));
+        goto out;
+      }
+
+    w_filename = g_malloc_n (n + 1, sizeof (wchar_t));
+    n = MultiByteToWideChar (CP_UTF8, MB_ERR_INVALID_CHARS,
+                             filename, -1,
+                             w_filename, (n + 1) * sizeof (wchar_t));
+    if (n == 0)
+      {
+        g_set_error_literal (error, G_FILE_ERROR, 0,
+                             _("Error converting UTF-8 filename to wide char"));
+        goto out;
+      }
+
+    pidl = ILCreateFromPathW (w_filename);
+    if (!pidl)
+      {
+        g_set_error_literal (error, G_FILE_ERROR, 0,
+                             _("ILCreateFromPath() failed"));
+        goto out;
+      }
+
+    SHOpenFolderAndSelectItems (pidl, 0, NULL, 0);
+    ret = TRUE;
+
+  out:
+    if (pidl)
+      ILFree (pidl);
+    g_free (w_filename);
+    g_free (filename);
+
+    return ret;
+  }
+
+#elif defined(PLATFORM_OSX)
+
+  {
+    gchar    *uri;
+    NSString *filename;
+    NSURL    *url;
+    gboolean  retval = TRUE;
+
+    uri = g_file_get_uri (file);
+    filename = [NSString stringWithUTF8String:uri];
+
+    url = [NSURL URLWithString:filename];
+    if (url)
+      {
+        NSArray *url_array = [NSArray arrayWithObject:url];
+
+        [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:url_array];
+      }
+    else
+      {
+        g_set_error (error, G_FILE_ERROR, 0,
+                     _("Cannot convert '%s' into a valid NSURL."), uri);
+        retval = FALSE;
+      }
+
+    g_free (uri);
+
+    return retval;
+  }
+
+#else /* UNIX */
+
+  {
+    GDBusProxy      *proxy;
+    GVariant        *retval;
+    GVariantBuilder *builder;
+    gchar           *uri;
+
+    proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
+                                           G_DBUS_PROXY_FLAGS_NONE,
+                                           NULL,
+                                           "org.freedesktop.FileManager1",
+                                           "/org/freedesktop/FileManager1",
+                                           "org.freedesktop.FileManager1",
+                                           NULL, error);
+
+    if (! proxy)
+      {
+        g_prefix_error (error,
+                        _("Connecting to org.freedesktop.FileManager1 failed: "));
+        return FALSE;
+      }
+
+    uri = g_file_get_uri (file);
+
+    builder = g_variant_builder_new (G_VARIANT_TYPE ("as"));
+    g_variant_builder_add (builder, "s", uri);
+
+    g_free (uri);
+
+    retval = g_dbus_proxy_call_sync (proxy,
+                                     "ShowItems",
+                                     g_variant_new ("(ass)",
+                                                    builder,
+                                                    ""),
+                                     G_DBUS_CALL_FLAGS_NONE,
+                                     -1, NULL, error);
+
+    g_variant_builder_unref (builder);
+    g_object_unref (proxy);
+
+    if (! retval)
+      {
+        g_prefix_error (error, _("Calling ShowItems failed: "));
+        return FALSE;
+      }
+
+    g_variant_unref (retval);
+
+    return TRUE;
+  }
+
+#endif
+}
 
 /**
  * gimp_strip_uline:
@@ -310,7 +592,7 @@ gimp_strip_uline (const gchar *str)
  * Return value: A (possibly escaped) copy of @str which should be
  * freed using g_free() when it is not needed any longer.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gchar *
 gimp_escape_uline (const gchar *str)
@@ -355,7 +637,7 @@ gimp_escape_uline (const gchar *str)
  *               allocated string that should be freed with g_free()
  *               when no longer needed.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gchar *
 gimp_canonicalize_identifier (const gchar *identifier)
@@ -392,7 +674,7 @@ gimp_canonicalize_identifier (const gchar *identifier)
  *
  * Return value: the value's #GimpEnumDesc.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 GimpEnumDesc *
 gimp_enum_get_desc (GEnumClass *enum_class,
@@ -436,7 +718,7 @@ gimp_enum_get_desc (GEnumClass *enum_class,
  * Return value: %TRUE if @value is valid for the @enum_type,
  *               %FALSE otherwise
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_enum_get_value (GType         enum_type,
@@ -518,7 +800,7 @@ gimp_enum_get_value (GType         enum_type,
  *
  * Return value: the translated description of the enum value
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 const gchar *
 gimp_enum_value_get_desc (GEnumClass *enum_class,
@@ -557,7 +839,7 @@ gimp_enum_value_get_desc (GEnumClass *enum_class,
  *
  * Return value: the translated help of the enum value
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 const gchar *
 gimp_enum_value_get_help (GEnumClass *enum_class,
@@ -576,6 +858,38 @@ gimp_enum_value_get_help (GEnumClass *enum_class,
 }
 
 /**
+ * gimp_enum_value_get_abbrev:
+ * @enum_class: a #GEnumClass
+ * @enum_value: a #GEnumValue from @enum_class
+ *
+ * Retrieves the translated abbreviation for a given @enum_value.
+ *
+ * Return value: the translated abbreviation of the enum value
+ *
+ * Since: 2.10
+ **/
+const gchar *
+gimp_enum_value_get_abbrev (GEnumClass *enum_class,
+                            GEnumValue *enum_value)
+{
+  GType         type = G_TYPE_FROM_CLASS (enum_class);
+  GimpEnumDesc *enum_desc;
+
+  enum_desc = gimp_enum_get_desc (enum_class, enum_value->value);
+
+  if (enum_desc                              &&
+      enum_desc[1].value == enum_desc->value &&
+      enum_desc[1].value_desc)
+    {
+      return g_dpgettext2 (gimp_type_get_translation_domain (type),
+                           gimp_type_get_translation_context (type),
+                           enum_desc[1].value_desc);
+    }
+
+  return NULL;
+}
+
+/**
  * gimp_flags_get_first_desc:
  * @flags_class: a #GFlagsClass
  * @value:       a value from @flags_class
@@ -584,7 +898,7 @@ gimp_enum_value_get_help (GEnumClass *enum_class,
  *
  * Return value: the value's #GimpFlagsDesc.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 GimpFlagsDesc *
 gimp_flags_get_first_desc (GFlagsClass *flags_class,
@@ -628,7 +942,7 @@ gimp_flags_get_first_desc (GFlagsClass *flags_class,
  * Return value: %TRUE if @value is valid for the @flags_type,
  *               %FALSE otherwise
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_flags_get_first_value (GType         flags_type,
@@ -688,7 +1002,7 @@ gimp_flags_get_first_value (GType         flags_type,
  *
  * Return value: the translated description of the flags value
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 const gchar *
 gimp_flags_value_get_desc (GFlagsClass *flags_class,
@@ -700,8 +1014,20 @@ gimp_flags_value_get_desc (GFlagsClass *flags_class,
   flags_desc = gimp_flags_get_first_desc (flags_class, flags_value->value);
 
   if (flags_desc->value_desc)
-    return dgettext (gimp_type_get_translation_domain (type),
-                     flags_desc->value_desc);
+    {
+      const gchar *context;
+
+      context = gimp_type_get_translation_context (type);
+
+      if (context)  /*  the new way, using NC_()    */
+        return g_dpgettext2 (gimp_type_get_translation_domain (type),
+                             context,
+                             flags_desc->value_desc);
+      else          /*  for backward compatibility  */
+        return g_strip_context (flags_desc->value_desc,
+                                dgettext (gimp_type_get_translation_domain (type),
+                                          flags_desc->value_desc));
+    }
 
   return flags_value->value_name;
 }
@@ -715,7 +1041,7 @@ gimp_flags_value_get_desc (GFlagsClass *flags_class,
  *
  * Return value: the translated help of the flags value
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 const gchar *
 gimp_flags_value_get_help (GFlagsClass *flags_class,
@@ -731,4 +1057,467 @@ gimp_flags_value_get_help (GFlagsClass *flags_class,
                      flags_desc->value_help);
 
   return NULL;
+}
+
+/**
+ * gimp_flags_value_get_abbrev:
+ * @flags_class: a #GFlagsClass
+ * @flags_value: a #GFlagsValue from @flags_class
+ *
+ * Retrieves the translated abbreviation for a given @flags_value.
+ *
+ * Return value: the translated abbreviation of the flags value
+ *
+ * Since: 2.10
+ **/
+const gchar *
+gimp_flags_value_get_abbrev (GFlagsClass *flags_class,
+                             GFlagsValue *flags_value)
+{
+  GType          type = G_TYPE_FROM_CLASS (flags_class);
+  GimpFlagsDesc *flags_desc;
+
+  flags_desc = gimp_flags_get_first_desc (flags_class, flags_value->value);
+
+  if (flags_desc                               &&
+      flags_desc[1].value == flags_desc->value &&
+      flags_desc[1].value_desc)
+    {
+      return g_dpgettext2 (gimp_type_get_translation_domain (type),
+                           gimp_type_get_translation_context (type),
+                           flags_desc[1].value_desc);
+    }
+
+  return NULL;
+}
+
+/**
+ * gimp_stack_trace_available:
+ * @optimal: whether we get optimal traces.
+ *
+ * Returns #TRUE if we have dependencies to generate backtraces. If
+ * @optimal is #TRUE, the function will return #TRUE only when we
+ * are able to generate optimal traces (i.e. with GDB or LLDB);
+ * otherwise we return #TRUE even if only backtrace() API is available.
+ *
+ * On Win32, we return TRUE if Dr. Mingw is built-in, FALSE otherwise.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_stack_trace_available (gboolean optimal)
+{
+#ifndef G_OS_WIN32
+  if (gimp_utils_gdb_available (7, 0) ||
+      gimp_utils_lldb_available (0, 0))
+    return TRUE;
+#ifdef HAVE_EXECINFO_H
+  if (! optimal)
+    return TRUE;
+#endif
+#else /* G_OS_WIN32 */
+#ifdef HAVE_EXCHNDL
+  return TRUE;
+#endif
+#endif /* G_OS_WIN32 */
+  return FALSE;
+}
+
+/**
+ * gimp_stack_trace_print:
+ * @prog_name: the program to attach to.
+ * @stream: a #FILE * stream.
+ * @trace: location to store a newly allocated string of the trace.
+ *
+ * Attempts to generate a stack trace at current code position in
+ * @prog_name. @prog_name is mostly a helper and can be set to NULL.
+ * Nevertheless if set, it has to be the current program name (argv[0]).
+ * This function is not meant to generate stack trace for third-party
+ * programs, and will attach the current process id only.
+ * Internally, this function uses `gdb` or `lldb` if they are available,
+ * or the stacktrace() API on platforms where it is available. It always
+ * fails on Win32.
+ *
+ * The stack trace, once generated, will either be printed to @stream or
+ * returned as a newly allocated string in @trace, if not #NULL.
+ *
+ * In some error cases (e.g. segmentation fault), trying to allocate
+ * more memory will trigger more segmentation faults and therefore loop
+ * our error handling (which is just wrong). Therefore printing to a
+ * file description is an implementation without any memory allocation.
+
+ * Return value: #TRUE if a stack trace could be generated, #FALSE
+ * otherwise.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_stack_trace_print (const gchar *prog_name,
+                        gpointer     stream,
+                        gchar      **trace)
+{
+  gboolean stack_printed = FALSE;
+
+  /* This works only on UNIX systems. */
+#ifndef G_OS_WIN32
+  GString *gtrace = NULL;
+  gchar    gimp_pid[16];
+  pid_t    pid;
+  gchar    buffer[256];
+  ssize_t  read_n;
+  int      sync_fd[2];
+  int      out_fd[2];
+
+  g_snprintf (gimp_pid, 16, "%u", (guint) getpid ());
+
+  if (pipe (sync_fd) == -1)
+    {
+      return FALSE;
+    }
+
+  if (pipe (out_fd) == -1)
+    {
+      close (sync_fd[0]);
+      close (sync_fd[1]);
+
+      return FALSE;
+    }
+
+  pid = fork ();
+  if (pid == 0)
+    {
+      /* Child process. */
+      gchar *args[7] = { "gdb", "-batch", "-ex", "backtrace full",
+                         (gchar *) prog_name, NULL, NULL };
+
+      if (prog_name == NULL)
+        args[4] = "-p";
+
+      args[5] = gimp_pid;
+
+      /* Wait until the parent enabled us to ptrace it. */
+      {
+        gchar dummy;
+
+        close (sync_fd[1]);
+        while (read (sync_fd[0], &dummy, 1) < 0 && errno == EINTR);
+        close (sync_fd[0]);
+      }
+
+      /* Redirect the debugger output. */
+      dup2 (out_fd[1], STDOUT_FILENO);
+      close (out_fd[0]);
+      close (out_fd[1]);
+
+      /* Run GDB if version 7.0 or over. Why I do such a check is that
+       * it turns out older versions may not only fail, but also have
+       * very undesirable side effects like terminating the debugged
+       * program, at least on FreeBSD where GDB 6.1 is apparently
+       * installed by default on the stable release at day of writing.
+       * See bug 793514. */
+      if (! gimp_utils_gdb_available (7, 0) ||
+          execvp (args[0], args) == -1)
+        {
+          /* LLDB as alternative if the GDB call failed or if it was in
+           * a too-old version. */
+          gchar *args_lldb[11] = { "lldb", "--attach-pid", NULL, "--batch",
+                                   "--one-line", "bt",
+                                   "--one-line-on-crash", "bt",
+                                   "--one-line-on-crash", "quit", NULL };
+
+          args_lldb[2] = gimp_pid;
+
+          execvp (args_lldb[0], args_lldb);
+        }
+
+      _exit (0);
+    }
+  else if (pid > 0)
+    {
+      /* Main process */
+      int status;
+
+      /* Allow the child to ptrace us, and signal it to start. */
+      close (sync_fd[0]);
+#ifdef PR_SET_PTRACER
+      prctl (PR_SET_PTRACER, pid, 0, 0, 0);
+#endif
+      close (sync_fd[1]);
+
+      /* It is important to close the writing side of the pipe, otherwise
+       * the read() will wait forever without getting the information that
+       * writing is finished.
+       */
+      close (out_fd[1]);
+
+      while ((read_n = read (out_fd[0], buffer, 256)) > 0)
+        {
+          /* It's hard to know if the debugger was found since it
+           * happened in the child. Let's just assume that any output
+           * means it succeeded.
+           */
+          stack_printed = TRUE;
+
+          buffer[read_n] = '\0';
+          if (stream)
+            g_fprintf (stream, "%s", buffer);
+          if (trace)
+            {
+              if (! gtrace)
+                gtrace = g_string_new (NULL);
+              g_string_append (gtrace, (const gchar *) buffer);
+            }
+        }
+      close (out_fd[0]);
+
+#ifdef PR_SET_PTRACER
+      /* Clear ptrace permission set above */
+      prctl (PR_SET_PTRACER, 0, 0, 0, 0);
+#endif
+
+      waitpid (pid, &status, 0);
+    }
+  /* else if (pid == (pid_t) -1)
+   * Fork failed!
+   * Just continue, maybe the backtrace() API will succeed.
+   */
+
+#ifdef HAVE_EXECINFO_H
+  if (! stack_printed)
+    {
+      /* As a last resort, try using the backtrace() Linux API. It is a bit
+       * less fancy than gdb or lldb, which is why it is not given priority.
+       */
+      void *bt_buf[100];
+      int   n_symbols;
+
+      n_symbols = backtrace (bt_buf, 100);
+      if (trace && n_symbols)
+        {
+          char **symbols;
+          int    i;
+
+          symbols = backtrace_symbols (bt_buf, n_symbols);
+          if (symbols)
+            {
+              for (i = 0; i < n_symbols; i++)
+                {
+                  if (stream)
+                    g_fprintf (stream, "%s\n", (const gchar *) symbols[i]);
+                  if (trace)
+                    {
+                      if (! gtrace)
+                        gtrace = g_string_new (NULL);
+                      g_string_append (gtrace,
+                                       (const gchar *) symbols[i]);
+                      g_string_append_c (gtrace, '\n');
+                    }
+                }
+              free (symbols);
+            }
+        }
+      else if (n_symbols)
+        {
+          /* This allows to generate traces without memory allocation.
+           * In some cases, this is necessary, especially during
+           * segfault-type crashes.
+           */
+          backtrace_symbols_fd (bt_buf, n_symbols, fileno ((FILE *) stream));
+        }
+      stack_printed = (n_symbols > 0);
+    }
+#endif /* HAVE_EXECINFO_H */
+
+  if (trace)
+    {
+      if (gtrace)
+        *trace = g_string_free (gtrace, FALSE);
+      else
+        *trace = NULL;
+    }
+#endif /* G_OS_WIN32 */
+
+  return stack_printed;
+}
+
+/**
+ * gimp_stack_trace_query:
+ * @prog_name: the program to attach to.
+ *
+ * This is mostly the same as g_on_error_query() except that we use our
+ * own backtrace function, much more complete.
+ * @prog_name must be the current program name (argv[0]).
+ * It does nothing on Win32.
+ *
+ * Since: 2.10
+ **/
+void
+gimp_stack_trace_query (const gchar *prog_name)
+{
+#ifndef G_OS_WIN32
+  gchar buf[16];
+
+ retry:
+
+  g_fprintf (stdout,
+             "%s (pid:%u): %s: ",
+             prog_name,
+             (guint) getpid (),
+             "[E]xit, show [S]tack trace or [P]roceed");
+  fflush (stdout);
+
+  if (isatty(0) && isatty(1))
+    fgets (buf, 8, stdin);
+  else
+    strcpy (buf, "E\n");
+
+  if ((buf[0] == 'E' || buf[0] == 'e')
+      && buf[1] == '\n')
+    _exit (0);
+  else if ((buf[0] == 'P' || buf[0] == 'p')
+           && buf[1] == '\n')
+    return;
+  else if ((buf[0] == 'S' || buf[0] == 's')
+           && buf[1] == '\n')
+    {
+      if (! gimp_stack_trace_print (prog_name, stdout, NULL))
+        g_fprintf (stderr, "%s\n", "Stack trace not available on your system.");
+      goto retry;
+    }
+  else
+    goto retry;
+#endif
+}
+
+
+/* Private functions. */
+
+static gboolean
+gimp_utils_generic_available (const gchar *program,
+                              gint         major,
+                              gint         minor)
+{
+#ifndef G_OS_WIN32
+  pid_t pid;
+  int   out_fd[2];
+
+  if (pipe (out_fd) == -1)
+    {
+      return FALSE;
+    }
+
+  /* XXX: I don't use g_spawn_sync() or similar glib functions because
+   * to read the contents of the stdout, these functions would allocate
+   * memory dynamically. As we know, when debugging crashes, this is a
+   * definite blocker. So instead I simply use a buffer on the stack
+   * with a lower level fork() call.
+   */
+  pid = fork ();
+  if (pid == 0)
+    {
+      /* Child process. */
+      gchar *args[3] = { (gchar *) program, "--version", NULL };
+
+      /* Redirect the debugger output. */
+      dup2 (out_fd[1], STDOUT_FILENO);
+      close (out_fd[0]);
+      close (out_fd[1]);
+
+      /* Run version check. */
+      execvp (args[0], args);
+      _exit (-1);
+    }
+  else if (pid > 0)
+    {
+      /* Main process */
+      gchar    buffer[256];
+      ssize_t  read_n;
+      int      status;
+      gint     installed_major = 0;
+      gint     installed_minor = 0;
+      gboolean major_reading = FALSE;
+      gboolean minor_reading = FALSE;
+      gint     i;
+      gchar    c;
+
+      waitpid (pid, &status, 0);
+
+      if (! WIFEXITED (status) || WEXITSTATUS (status) != 0)
+        return FALSE;
+
+      /* It is important to close the writing side of the pipe, otherwise
+       * the read() will wait forever without getting the information that
+       * writing is finished.
+       */
+      close (out_fd[1]);
+
+      /* I could loop forever until EOL, but I am pretty sure the
+       * version information is stored on the first line and one call to
+       * read() with 256 characters should be more than enough.
+       */
+      read_n = read (out_fd[0], buffer, 256);
+
+      /* This is quite a very stupid parser. I only look for the first
+       * numbers and consider them as version information. This works
+       * fine for both GDB and LLDB as far as I can see for the output
+       * of `${program} --version` but this should obviously not be
+       * considered as a *really* generic version test.
+       */
+      for (i = 0; i < read_n; i++)
+        {
+          c = buffer[i];
+          if (c >= '0' && c <= '9')
+            {
+              if (minor_reading)
+                {
+                  installed_minor = 10 * installed_minor + (c - '0');
+                }
+              else
+                {
+                  major_reading = TRUE;
+                  installed_major = 10 * installed_major + (c - '0');
+                }
+            }
+          else if (c == '.')
+            {
+              if (major_reading)
+                {
+                  minor_reading = TRUE;
+                  major_reading = FALSE;
+                }
+              else if (minor_reading)
+                {
+                  break;
+                }
+            }
+          else if (c == '\n')
+            {
+              /* Version information should be in the first line. */
+              break;
+            }
+        }
+      close (out_fd[0]);
+
+      return (installed_major > 0 &&
+              (installed_major > major ||
+               (installed_major == major && installed_minor >= minor)));
+    }
+#endif
+
+  /* Fork failed, or Win32. */
+  return FALSE;
+}
+
+static gboolean
+gimp_utils_gdb_available (gint major,
+                          gint minor)
+{
+  return gimp_utils_generic_available ("gdb", major, minor);
+}
+
+static gboolean
+gimp_utils_lldb_available (gint major,
+                           gint minor)
+{
+  return gimp_utils_generic_available ("lldb", major, minor);
 }

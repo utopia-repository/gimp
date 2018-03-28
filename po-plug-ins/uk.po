@@ -3882,7 +3882,7 @@ msgstr "Потрібно вибрати файл для збереження!"
 #: ../plug-ins/common/file-pdf-save.c:405
 #, c-format
 msgid ""
-"An error occured while creating the PDF file:\n"
+"An error occurred while creating the PDF file:\n"
 "%s\n"
 "Make sure you entered a valid filename and that the selected location isn't "
 "read only!"
@@ -5827,7 +5827,7 @@ msgstr "_Лишити як є"
 
 #: ../plug-ins/common/lcms.c:1236
 msgid "_Convert"
-msgstr "_Перетворили"
+msgstr "_Перетворити"
 
 #: ../plug-ins/common/lcms.c:1264 ../plug-ins/file-jpeg/jpeg-exif.c:436
 msgid "_Don't ask me again"

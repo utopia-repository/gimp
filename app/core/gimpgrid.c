@@ -23,7 +23,8 @@
 #include <string.h>
 
 #include <cairo.h>
-#include <glib-object.h>
+#include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "libgimpmath/gimpmath.h"
 #include "libgimpbase/gimpbase.h"
@@ -80,55 +81,74 @@ gimp_grid_class_init (GimpGridClass *klass)
   gimp_rgba_set (&black, 0.0, 0.0, 0.0, GIMP_OPACITY_OPAQUE);
   gimp_rgba_set (&white, 1.0, 1.0, 1.0, GIMP_OPACITY_OPAQUE);
 
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_STYLE,
-                                 "style",
-                                 N_("Line style used for the grid."),
-                                 GIMP_TYPE_GRID_STYLE,
-                                 GIMP_GRID_SOLID,
-                                 GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_RGB (object_class, PROP_FGCOLOR,
-                                "fgcolor",
-                                N_("The foreground color of the grid."),
-                                TRUE, &black,
-                                GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_RGB (object_class, PROP_BGCOLOR,
-                                "bgcolor",
-                                N_("The background color of the grid; "
-                                   "only used in double dashed line style."),
-                                TRUE, &white,
-                                GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_XSPACING,
-                                   "xspacing",
-                                   N_("Horizontal spacing of grid lines."),
-                                   1.0, GIMP_MAX_IMAGE_SIZE, 10.0,
-                                   GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_YSPACING,
-                                   "yspacing",
-                                   N_("Vertical spacing of grid lines."),
-                                   1.0, GIMP_MAX_IMAGE_SIZE, 10.0,
-                                   GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_UNIT (object_class, PROP_SPACING_UNIT,
-                                 "spacing-unit", NULL,
-                                 FALSE, FALSE, GIMP_UNIT_INCH,
-                                 GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_XOFFSET,
-                                   "xoffset",
-                                   N_("Horizontal offset of the first grid "
-                                      "line; this may be a negative number."),
-                                   - GIMP_MAX_IMAGE_SIZE,
-                                   GIMP_MAX_IMAGE_SIZE, 0.0,
-                                   GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_YOFFSET,
-                                   "yoffset",
-                                   N_("Vertical offset of the first grid "
-                                      "line; this may be a negative number."),
-                                   - GIMP_MAX_IMAGE_SIZE,
-                                   GIMP_MAX_IMAGE_SIZE, 0.0,
-                                   GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_UNIT (object_class, PROP_OFFSET_UNIT,
-                                 "offset-unit", NULL,
-                                 FALSE, FALSE, GIMP_UNIT_INCH,
-                                 GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_STYLE,
+                         "style",
+                         _("Line style"),
+                         _("Line style used for the grid."),
+                         GIMP_TYPE_GRID_STYLE,
+                         GIMP_GRID_SOLID,
+                         GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_RGB (object_class, PROP_FGCOLOR,
+                        "fgcolor",
+                        _("Foreground color"),
+                        _("The foreground color of the grid."),
+                        TRUE, &black,
+                        GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_RGB (object_class, PROP_BGCOLOR,
+                        "bgcolor",
+                        _("Background color"),
+                        _("The background color of the grid; "
+                          "only used in double dashed line style."),
+                        TRUE, &white,
+                        GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_XSPACING,
+                           "xspacing",
+                           _("Spacing X"),
+                           _("Horizontal spacing of grid lines."),
+                           0.0, GIMP_MAX_IMAGE_SIZE, 10.0,
+                           GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_YSPACING,
+                           "yspacing",
+                           _("Spacing Y"),
+                           _("Vertical spacing of grid lines."),
+                           0.0, GIMP_MAX_IMAGE_SIZE, 10.0,
+                           GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_UNIT (object_class, PROP_SPACING_UNIT,
+                         "spacing-unit",
+                         _("Spacing unit"),
+                         NULL,
+                         FALSE, FALSE, GIMP_UNIT_INCH,
+                         GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_XOFFSET,
+                           "xoffset",
+                           _("Offset X"),
+                           _("Horizontal offset of the first grid "
+                             "line; this may be a negative number."),
+                           - GIMP_MAX_IMAGE_SIZE,
+                           GIMP_MAX_IMAGE_SIZE, 0.0,
+                           GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_YOFFSET,
+                           "yoffset",
+                           _("Offset Y"),
+                           _("Vertical offset of the first grid "
+                             "line; this may be a negative number."),
+                           - GIMP_MAX_IMAGE_SIZE,
+                           GIMP_MAX_IMAGE_SIZE, 0.0,
+                           GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_UNIT (object_class, PROP_OFFSET_UNIT,
+                         "offset-unit",
+                         _("Offset unit"),
+                         NULL,
+                         FALSE, FALSE, GIMP_UNIT_INCH,
+                         GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void
@@ -225,6 +245,37 @@ gimp_grid_set_property (GObject      *object,
     }
 }
 
+
+/*  public functions  */
+
+GimpGridStyle
+gimp_grid_get_style (GimpGrid *grid)
+{
+  g_return_val_if_fail (GIMP_IS_GRID (grid), GIMP_GRID_SOLID);
+
+  return grid->style;
+}
+
+void
+gimp_grid_get_fgcolor (GimpGrid *grid,
+                       GimpRGB  *fgcolor)
+{
+  g_return_if_fail (GIMP_IS_GRID (grid));
+  g_return_if_fail (fgcolor != NULL);
+
+  *fgcolor = grid->fgcolor;
+}
+
+void
+gimp_grid_get_bgcolor (GimpGrid *grid,
+                       GimpRGB  *bgcolor)
+{
+  g_return_if_fail (GIMP_IS_GRID (grid));
+  g_return_if_fail (bgcolor != NULL);
+
+  *bgcolor = grid->bgcolor;
+}
+
 void
 gimp_grid_get_spacing (GimpGrid *grid,
                        gdouble  *xspacing,
@@ -232,9 +283,8 @@ gimp_grid_get_spacing (GimpGrid *grid,
 {
   g_return_if_fail (GIMP_IS_GRID (grid));
 
-  /* FIXME subpixel grid */
-  if (xspacing) *xspacing = RINT (grid->xspacing);
-  if (yspacing) *yspacing = RINT (grid->yspacing);
+  if (xspacing) *xspacing = grid->xspacing;
+  if (yspacing) *yspacing = grid->yspacing;
 }
 
 void
@@ -244,9 +294,8 @@ gimp_grid_get_offset (GimpGrid *grid,
 {
   g_return_if_fail (GIMP_IS_GRID (grid));
 
-  /* FIXME subpixel grid */
-  if (xoffset) *xoffset = RINT (grid->xoffset);
-  if (yoffset) *yoffset = RINT (grid->yoffset);
+  if (xoffset) *xoffset = grid->xoffset;
+  if (yoffset) *yoffset = grid->yoffset;
 }
 
 const gchar *
@@ -256,7 +305,7 @@ gimp_grid_parasite_name (void)
 }
 
 GimpParasite *
-gimp_grid_to_parasite (const GimpGrid *grid)
+gimp_grid_to_parasite (GimpGrid *grid)
 {
   GimpParasite *parasite;
   gchar        *str;

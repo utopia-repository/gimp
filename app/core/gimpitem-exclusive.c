@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "core-types.h"
@@ -254,12 +255,10 @@ gimp_item_exclusive_get_lists (GimpItem     *item,
 
       if (other != item)
         {
-          /* we are only interested in toplevel items that are not
-           * item's ancestor
+          /* we are only interested in same level items.
            */
-          if (! gimp_viewable_get_parent (GIMP_VIEWABLE (other)) &&
-              ! gimp_viewable_is_ancestor (GIMP_VIEWABLE (other),
-                                           GIMP_VIEWABLE (item)))
+          if (gimp_viewable_get_parent (GIMP_VIEWABLE (other)) ==
+              gimp_viewable_get_parent (GIMP_VIEWABLE (item)))
             {
               gboolean value;
 

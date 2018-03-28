@@ -22,6 +22,14 @@
 #include "gimpfreeselecttool.h"
 
 
+typedef enum
+{
+  MATTING_STATE_FREE_SELECT = 0,
+  MATTING_STATE_PAINT_TRIMAP,
+  MATTING_STATE_PREVIEW_MASK,
+} MattingState;
+
+
 #define GIMP_TYPE_FOREGROUND_SELECT_TOOL            (gimp_foreground_select_tool_get_type ())
 #define GIMP_FOREGROUND_SELECT_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_FOREGROUND_SELECT_TOOL, GimpForegroundSelectTool))
 #define GIMP_FOREGROUND_SELECT_TOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_FOREGROUND_SELECT_TOOL, GimpForegroundSelectToolClass))
@@ -39,13 +47,19 @@ struct _GimpForegroundSelectTool
 {
   GimpFreeSelectTool  parent_instance;
 
+  MattingState        state;
+  gboolean            in_double_click;
+
   GimpCoords          last_coords;
-  guint               idle_id;
   GArray             *stroke;
-  GList              *strokes;
-  GimpChannel        *mask;
-  SioxState          *state;
-  SioxRefinementType  refinement;
+  GeglBuffer         *trimap;
+  GeglBuffer         *mask;
+
+  GList              *undo_stack;
+  GList              *redo_stack;
+
+  GimpToolGui        *gui;
+  GtkWidget          *preview_toggle;
 };
 
 struct _GimpForegroundSelectToolClass

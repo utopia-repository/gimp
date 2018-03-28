@@ -26,8 +26,11 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include <cairo.h>
 #include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "libgimpcolor/gimpcolor.h"
 
@@ -36,6 +39,9 @@
 #include "gimpobject.h"
 #include "gimpimage.h"
 #include "gimppickable.h"
+
+
+static void   gimp_pickable_interface_base_init (GimpPickableInterface *iface);
 
 
 GType
@@ -48,7 +54,7 @@ gimp_pickable_interface_get_type (void)
       const GTypeInfo pickable_iface_info =
       {
         sizeof (GimpPickableInterface),
-        (GBaseInitFunc)     NULL,
+        (GBaseInitFunc)     gimp_pickable_interface_base_init,
         (GBaseFinalizeFunc) NULL,
       };
 
@@ -61,6 +67,23 @@ gimp_pickable_interface_get_type (void)
     }
 
   return pickable_iface_type;
+}
+
+static void
+gimp_pickable_interface_base_init (GimpPickableInterface *iface)
+{
+  static gboolean initialized = FALSE;
+
+  if (! initialized)
+    {
+      g_object_interface_install_property (iface,
+                                           g_param_spec_object ("buffer",
+                                                                NULL, NULL,
+                                                                GEGL_TYPE_BUFFER,
+                                                                GIMP_PARAM_READABLE));
+
+      initialized = TRUE;
+    }
 }
 
 void
@@ -91,38 +114,8 @@ gimp_pickable_get_image (GimpPickable *pickable)
   return NULL;
 }
 
-GimpImageType
-gimp_pickable_get_image_type (GimpPickable *pickable)
-{
-  GimpPickableInterface *pickable_iface;
-
-  g_return_val_if_fail (GIMP_IS_PICKABLE (pickable), -1);
-
-  pickable_iface = GIMP_PICKABLE_GET_INTERFACE (pickable);
-
-  if (pickable_iface->get_image_type)
-    return pickable_iface->get_image_type (pickable);
-
-  return -1;
-}
-
-gint
-gimp_pickable_get_bytes (GimpPickable *pickable)
-{
-  GimpPickableInterface *pickable_iface;
-
-  g_return_val_if_fail (GIMP_IS_PICKABLE (pickable), 0);
-
-  pickable_iface = GIMP_PICKABLE_GET_INTERFACE (pickable);
-
-  if (pickable_iface->get_bytes)
-    return pickable_iface->get_bytes (pickable);
-
-  return 0;
-}
-
-TileManager *
-gimp_pickable_get_tiles (GimpPickable *pickable)
+const Babl *
+gimp_pickable_get_format (GimpPickable *pickable)
 {
   GimpPickableInterface *pickable_iface;
 
@@ -130,8 +123,38 @@ gimp_pickable_get_tiles (GimpPickable *pickable)
 
   pickable_iface = GIMP_PICKABLE_GET_INTERFACE (pickable);
 
-  if (pickable_iface->get_tiles)
-    return pickable_iface->get_tiles (pickable);
+  if (pickable_iface->get_format)
+    return pickable_iface->get_format (pickable);
+
+  return NULL;
+}
+
+const Babl *
+gimp_pickable_get_format_with_alpha (GimpPickable *pickable)
+{
+  GimpPickableInterface *pickable_iface;
+
+  g_return_val_if_fail (GIMP_IS_PICKABLE (pickable), NULL);
+
+  pickable_iface = GIMP_PICKABLE_GET_INTERFACE (pickable);
+
+  if (pickable_iface->get_format_with_alpha)
+    return pickable_iface->get_format_with_alpha (pickable);
+
+  return NULL;
+}
+
+GeglBuffer *
+gimp_pickable_get_buffer (GimpPickable *pickable)
+{
+  GimpPickableInterface *pickable_iface;
+
+  g_return_val_if_fail (GIMP_IS_PICKABLE (pickable), NULL);
+
+  pickable_iface = GIMP_PICKABLE_GET_INTERFACE (pickable);
+
+  if (pickable_iface->get_buffer)
+    return pickable_iface->get_buffer (pickable);
 
   return NULL;
 }
@@ -140,17 +163,21 @@ gboolean
 gimp_pickable_get_pixel_at (GimpPickable *pickable,
                             gint          x,
                             gint          y,
-                            guchar       *pixel)
+                            const Babl   *format,
+                            gpointer      pixel)
 {
   GimpPickableInterface *pickable_iface;
 
   g_return_val_if_fail (GIMP_IS_PICKABLE (pickable), FALSE);
   g_return_val_if_fail (pixel != NULL, FALSE);
 
+  if (! format)
+    format = gimp_pickable_get_format (pickable);
+
   pickable_iface = GIMP_PICKABLE_GET_INTERFACE (pickable);
 
   if (pickable_iface->get_pixel_at)
-    return pickable_iface->get_pixel_at (pickable, x, y, pixel);
+    return pickable_iface->get_pixel_at (pickable, x, y, format, pixel);
 
   return FALSE;
 }
@@ -161,39 +188,103 @@ gimp_pickable_get_color_at (GimpPickable *pickable,
                             gint          y,
                             GimpRGB      *color)
 {
-  guchar pixel[4];
-  guchar col[4];
+  guchar pixel[32];
 
   g_return_val_if_fail (GIMP_IS_PICKABLE (pickable), FALSE);
   g_return_val_if_fail (color != NULL, FALSE);
 
-  if (! gimp_pickable_get_pixel_at (pickable, x, y, pixel))
+  if (! gimp_pickable_get_pixel_at (pickable, x, y, NULL, pixel))
     return FALSE;
 
-  gimp_image_get_color (gimp_pickable_get_image (pickable),
-                        gimp_pickable_get_image_type (pickable),
-                        pixel, col);
-
-  gimp_rgba_set_uchar (color, col[0], col[1], col[2], col[3]);
+  gimp_pickable_pixel_to_srgb (pickable, NULL, pixel, color);
 
   return TRUE;
 }
 
-gint
+gdouble
 gimp_pickable_get_opacity_at (GimpPickable *pickable,
                               gint          x,
                               gint          y)
 {
   GimpPickableInterface *pickable_iface;
 
-  g_return_val_if_fail (GIMP_IS_PICKABLE (pickable), 0);
+  g_return_val_if_fail (GIMP_IS_PICKABLE (pickable), GIMP_OPACITY_TRANSPARENT);
 
   pickable_iface = GIMP_PICKABLE_GET_INTERFACE (pickable);
 
   if (pickable_iface->get_opacity_at)
     return pickable_iface->get_opacity_at (pickable, x, y);
 
-  return 0;
+  return GIMP_OPACITY_TRANSPARENT;
+}
+
+void
+gimp_pickable_pixel_to_srgb (GimpPickable *pickable,
+                             const Babl   *format,
+                             gpointer      pixel,
+                             GimpRGB      *color)
+{
+  GimpPickableInterface *pickable_iface;
+
+  g_return_if_fail (GIMP_IS_PICKABLE (pickable));
+  g_return_if_fail (pixel != NULL);
+  g_return_if_fail (color != NULL);
+
+  if (! format)
+    format = gimp_pickable_get_format (pickable);
+
+  pickable_iface = GIMP_PICKABLE_GET_INTERFACE (pickable);
+
+  if (pickable_iface->pixel_to_srgb)
+    {
+      pickable_iface->pixel_to_srgb (pickable, format, pixel, color);
+    }
+  else
+    {
+      gimp_rgba_set_pixel (color, format, pixel);
+    }
+}
+
+void
+gimp_pickable_srgb_to_pixel (GimpPickable  *pickable,
+                             const GimpRGB *color,
+                             const Babl    *format,
+                             gpointer       pixel)
+{
+  GimpPickableInterface *pickable_iface;
+
+  g_return_if_fail (GIMP_IS_PICKABLE (pickable));
+  g_return_if_fail (color != NULL);
+  g_return_if_fail (pixel != NULL);
+
+  if (! format)
+    format = gimp_pickable_get_format (pickable);
+
+  pickable_iface = GIMP_PICKABLE_GET_INTERFACE (pickable);
+
+  if (pickable_iface->srgb_to_pixel)
+    {
+      pickable_iface->srgb_to_pixel (pickable, color, format, pixel);
+    }
+  else
+    {
+      gimp_rgba_get_pixel (color, format, pixel);
+    }
+}
+
+void
+gimp_pickable_srgb_to_image_color (GimpPickable  *pickable,
+                                   const GimpRGB *color,
+                                   GimpRGB       *image_color)
+{
+  g_return_if_fail (GIMP_IS_PICKABLE (pickable));
+  g_return_if_fail (color != NULL);
+  g_return_if_fail (image_color != NULL);
+
+  gimp_pickable_srgb_to_pixel (pickable,
+                               color,
+                               babl_format ("R'G'B'A double"),
+                               image_color);
 }
 
 gboolean
@@ -202,66 +293,51 @@ gimp_pickable_pick_color (GimpPickable *pickable,
                           gint          y,
                           gboolean      sample_average,
                           gdouble       average_radius,
-                          GimpRGB      *color,
-                          gint         *color_index)
+                          gpointer      pixel,
+                          GimpRGB      *color)
 {
-  GimpImage     *image;
-  GimpImageType  type;
-  guchar         pixel[4];
-  guchar         col[4];
+  const Babl *format;
+  gdouble     sample[4];
 
   g_return_val_if_fail (GIMP_IS_PICKABLE (pickable), FALSE);
 
-  if (! gimp_pickable_get_pixel_at (pickable, x, y, pixel))
+  format = gimp_pickable_get_format (pickable);
+
+  if (! gimp_pickable_get_pixel_at (pickable, x, y, format, sample))
     return FALSE;
 
-  image = gimp_pickable_get_image (pickable);
-  type  = gimp_pickable_get_image_type (pickable);
+  gimp_pickable_pixel_to_srgb (pickable, format, sample, color);
+
+  if (pixel)
+    memcpy (pixel, sample, babl_format_get_bytes_per_pixel (format));
 
   if (sample_average)
     {
-      gint count        = 0;
-      gint color_avg[4] = { 0, 0, 0, 0 };
-      gint radius       = (gint) average_radius;
-      gint i, j;
+      gint    count        = 0;
+      gdouble color_avg[4] = { 0.0, 0.0, 0.0, 0.0 };
+      gint    radius       = (gint) average_radius;
+      gint    i, j;
+
+      format = babl_format ("RaGaBaA double");
 
       for (i = x - radius; i <= x + radius; i++)
         for (j = y - radius; j <= y + radius; j++)
-          if (gimp_pickable_get_pixel_at (pickable, i, j, pixel))
+          if (gimp_pickable_get_pixel_at (pickable, i, j, format, sample))
             {
               count++;
 
-              gimp_image_get_color (image, type, pixel, col);
-
-              color_avg[RED]   += col[RED];
-              color_avg[GREEN] += col[GREEN];
-              color_avg[BLUE]  += col[BLUE];
-              color_avg[ALPHA] += col[ALPHA];
+              color_avg[RED]   += sample[RED];
+              color_avg[GREEN] += sample[GREEN];
+              color_avg[BLUE]  += sample[BLUE];
+              color_avg[ALPHA] += sample[ALPHA];
             }
 
-      col[RED]   = (guchar) ((color_avg[RED]   + count / 2) / count);
-      col[GREEN] = (guchar) ((color_avg[GREEN] + count / 2) / count);
-      col[BLUE]  = (guchar) ((color_avg[BLUE]  + count / 2) / count);
-      col[ALPHA] = (guchar) ((color_avg[ALPHA] + count / 2) / count);
-    }
-  else
-    {
-      gimp_image_get_color (image, type, pixel, col);
-    }
+      sample[RED]   = color_avg[RED]   / count;
+      sample[GREEN] = color_avg[GREEN] / count;
+      sample[BLUE]  = color_avg[BLUE]  / count;
+      sample[ALPHA] = color_avg[ALPHA] / count;
 
-
-  gimp_rgba_set_uchar (color,
-                       col[RED],
-                       col[GREEN],
-                       col[BLUE],
-                       col[ALPHA]);
-
-  if (color_index)
-    {
-      if (GIMP_IMAGE_TYPE_IS_INDEXED (type) && ! sample_average)
-        *color_index = pixel[0];
-      else
-        *color_index = -1;
+      gimp_pickable_pixel_to_srgb (pickable, format, sample, color);
     }
 
   return TRUE;

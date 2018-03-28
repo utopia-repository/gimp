@@ -17,11 +17,10 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "tools-types.h"
-
-#include "base/tile-manager.h"
 
 #include "gimptoolcontrol.h"
 #include "gimptransformtool.h"
@@ -90,15 +89,14 @@ gimp_transform_tool_undo_constructed (GObject *object)
   GimpTransformTool     *transform_tool;
   gint                   i;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_TRANSFORM_TOOL (transform_tool_undo->transform_tool));
+  gimp_assert (GIMP_IS_TRANSFORM_TOOL (transform_tool_undo->transform_tool));
 
   transform_tool = transform_tool_undo->transform_tool;
 
   for (i = 0; i < TRANS_INFO_SIZE; i++)
-    transform_tool_undo->trans_info[i] = transform_tool->old_trans_info[i];
+    transform_tool_undo->trans_info[i] = (*transform_tool->old_trans_info)[i];
 
 #if 0
   if (transform_tool->original)

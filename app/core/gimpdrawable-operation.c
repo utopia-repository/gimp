@@ -22,27 +22,18 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "core-types.h"
 
-#include "base/tile-manager.h"
+#include "gegl/gimp-gegl-apply-operation.h"
 
 #include "gimpdrawable.h"
 #include "gimpdrawable-operation.h"
 #include "gimpdrawable-shadow.h"
 #include "gimpprogress.h"
-
-
-/*  local function prototypes  */
-
-static void   gimp_drawable_apply_operation_private (GimpDrawable       *drawable,
-                                                     GimpProgress       *progress,
-                                                     const gchar        *undo_desc,
-                                                     GeglNode           *operation,
-                                                     gboolean            linear,
-                                                     TileManager         *dest_tiles,
-                                                     const GeglRectangle *rect);
+#include "gimpsettings.h"
 
 
 /*  public functions  */
@@ -51,10 +42,10 @@ void
 gimp_drawable_apply_operation (GimpDrawable *drawable,
                                GimpProgress *progress,
                                const gchar  *undo_desc,
-                               GeglNode     *operation,
-                               gboolean      linear)
+                               GeglNode     *operation)
 {
-  GeglRectangle rect;
+  GeglBuffer    *dest_buffer;
+  GeglRectangle  rect;
 
   g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
   g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
@@ -67,16 +58,15 @@ gimp_drawable_apply_operation (GimpDrawable *drawable,
                                   &rect.width, &rect.height))
     return;
 
-  gimp_drawable_apply_operation_private (drawable,
-                                         progress,
-                                         undo_desc,
-                                         operation,
-                                         linear,
-                                         gimp_drawable_get_shadow_tiles (drawable),
-                                         &rect);
+  dest_buffer = gimp_drawable_get_shadow_buffer (drawable);
 
-  gimp_drawable_merge_shadow_tiles (drawable, TRUE, undo_desc);
-  gimp_drawable_free_shadow_tiles (drawable);
+  gimp_gegl_apply_operation (gimp_drawable_get_buffer (drawable),
+                             progress, undo_desc,
+                             operation,
+                             dest_buffer, &rect, FALSE);
+
+  gimp_drawable_merge_shadow_buffer (drawable, TRUE, undo_desc);
+  gimp_drawable_free_shadow_buffer (drawable);
 
   gimp_drawable_update (drawable, rect.x, rect.y, rect.width, rect.height);
 
@@ -85,90 +75,31 @@ gimp_drawable_apply_operation (GimpDrawable *drawable,
 }
 
 void
-gimp_drawable_apply_operation_to_tiles (GimpDrawable *drawable,
-                                        GimpProgress *progress,
-                                        const gchar  *undo_desc,
-                                        GeglNode     *operation,
-                                        gboolean      linear,
-                                        TileManager  *new_tiles)
+gimp_drawable_apply_operation_by_name (GimpDrawable *drawable,
+                                       GimpProgress *progress,
+                                       const gchar  *undo_desc,
+                                       const gchar  *operation_type,
+                                       GObject      *config)
 {
-  GeglRectangle rect;
+  GeglNode *node;
 
   g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
   g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
   g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
   g_return_if_fail (undo_desc != NULL);
-  g_return_if_fail (GEGL_IS_NODE (operation));
-  g_return_if_fail (new_tiles != NULL);
+  g_return_if_fail (operation_type != NULL);
+  g_return_if_fail (config == NULL || GIMP_IS_SETTINGS (config));
 
-  rect.x      = 0;
-  rect.y      = 0;
-  rect.width  = tile_manager_width  (new_tiles);
-  rect.height = tile_manager_height (new_tiles);
+  node = g_object_new (GEGL_TYPE_NODE,
+                       "operation", operation_type,
+                       NULL);
 
-  gimp_drawable_apply_operation_private (drawable,
-                                         progress,
-                                         undo_desc,
-                                         operation,
-                                         linear,
-                                         new_tiles,
-                                         &rect);
+  if (config)
+    gegl_node_set (node,
+                   "config", config,
+                   NULL);
 
-  if (progress)
-    gimp_progress_end (progress);
-}
+  gimp_drawable_apply_operation (drawable, progress, undo_desc, node);
 
-
-/*  private functions  */
-
-static void
-gimp_drawable_apply_operation_private (GimpDrawable       *drawable,
-                                       GimpProgress       *progress,
-                                       const gchar        *undo_desc,
-                                       GeglNode           *operation,
-                                       gboolean            linear,
-                                       TileManager         *dest_tiles,
-                                       const GeglRectangle *rect)
-{
-  GeglNode      *gegl;
-  GeglNode      *input;
-  GeglNode      *output;
-  GeglProcessor *processor;
-  gdouble        value;
-
-  gegl = gegl_node_new ();
-
-  /* Disable caching on all children of the node unless explicitly re-enabled.
-   */
-  g_object_set (gegl,
-                "dont-cache", TRUE,
-                NULL);
-
-  input  = gegl_node_new_child (gegl,
-                                "operation",    "gimp:tilemanager-source",
-                                "tile-manager", gimp_drawable_get_tiles (drawable),
-                                "linear",       linear,
-                                NULL);
-  output = gegl_node_new_child (gegl,
-                                "operation",    "gimp:tilemanager-sink",
-                                "tile-manager", dest_tiles,
-                                "linear",       linear,
-                                NULL);
-
-  gegl_node_add_child (gegl, operation);
-
-  gegl_node_link_many (input, operation, output, NULL);
-
-  processor = gegl_node_new_processor (output, rect);
-
-  if (progress)
-    gimp_progress_start (progress, undo_desc, FALSE);
-
-  while (gegl_processor_work (processor, &value))
-    if (progress)
-      gimp_progress_set_value (progress, value);
-
-  g_object_unref (processor);
-
-  g_object_unref (gegl);
+  g_object_unref (node);
 }

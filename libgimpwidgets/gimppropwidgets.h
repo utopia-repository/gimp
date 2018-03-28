@@ -55,6 +55,11 @@ GtkWidget     * gimp_prop_int_combo_box_new       (GObject      *config,
                                                    const gchar  *property_name,
                                                    GimpIntStore *store);
 
+/*  GParamGType  */
+
+GtkWidget     * gimp_prop_pointer_combo_box_new   (GObject      *config,
+                                                   const gchar  *property_name,
+                                                   GimpIntStore *store);
 
 /*  GParamEnum  */
 
@@ -78,9 +83,17 @@ GtkWidget     * gimp_prop_enum_radio_box_new      (GObject      *config,
                                                    const gchar  *property_name,
                                                    gint          minimum,
                                                    gint          maximum);
+
+GIMP_DEPRECATED_FOR(gimp_prop_enum_icon_box_new)
 GtkWidget     * gimp_prop_enum_stock_box_new      (GObject      *config,
                                                    const gchar  *property_name,
                                                    const gchar  *stock_prefix,
+                                                   gint          minimum,
+                                                   gint          maximum);
+
+GtkWidget     * gimp_prop_enum_icon_box_new       (GObject      *config,
+                                                   const gchar  *property_name,
+                                                   const gchar  *icon_prefix,
                                                    gint          minimum,
                                                    gint          maximum);
 
@@ -208,16 +221,19 @@ GtkWidget     * gimp_prop_color_area_new          (GObject       *config,
 
 GtkWidget     * gimp_prop_unit_combo_box_new      (GObject       *config,
                                                    const gchar   *property_name);
-#ifndef GIMP_DISABLE_DEPRECATED
+GIMP_DEPRECATED_FOR(gimp_prop_unit_combo_box_new)
 GtkWidget     * gimp_prop_unit_menu_new           (GObject       *config,
                                                    const gchar   *property_name,
                                                    const gchar   *unit_format);
-#endif /* GIMP_DISABLE_DEPRECATED */
 
 
-/*  GParamString (stock_id)  */
+/*  GParamString (icon name)  */
 
+GIMP_DEPRECATED_FOR(gimp_prop_stock_image_new)
 GtkWidget     * gimp_prop_stock_image_new         (GObject       *config,
+                                                   const gchar   *property_name,
+                                                   GtkIconSize    icon_size);
+GtkWidget     * gimp_prop_icon_image_new          (GObject       *config,
                                                    const gchar   *property_name,
                                                    GtkIconSize    icon_size);
 

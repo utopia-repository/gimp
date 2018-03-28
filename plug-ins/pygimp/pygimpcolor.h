@@ -21,12 +21,9 @@
 
 #include <Python.h>
 
-#include <cairo.h>
-#include <glib-object.h>
-
 #include <pygobject.h>
 
-#include <libgimpcolor/gimpcolor.h>
+#include <libgimp/gimp.h>
 
 G_BEGIN_DECLS
 

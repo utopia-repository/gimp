@@ -19,6 +19,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -30,6 +31,8 @@
 
 #include "actions.h"
 #include "window-commands.h"
+
+#include "gimp-intl.h"
 
 
 /*  public functions  */
@@ -65,12 +68,12 @@ window_open_display_cmd_callback (GtkAction *action,
   GtkWidget *entry;
   return_if_no_widget (widget, data);
 
-  dialog = gimp_message_dialog_new ("Open Display", GIMP_STOCK_WILBER_EEK,
+  dialog = gimp_message_dialog_new ("Open Display", GIMP_ICON_WILBER_EEK,
                                     widget, GTK_DIALOG_MODAL,
                                     NULL, NULL,
 
-                                    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                    GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                                    _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                    _("_OK"),     GTK_RESPONSE_OK,
 
                                     NULL);
 

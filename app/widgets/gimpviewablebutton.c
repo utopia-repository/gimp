@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -121,10 +122,10 @@ gimp_viewable_button_finalize (GObject *object)
       button->dialog_identifier = NULL;
     }
 
-  if (button->dialog_stock_id)
+  if (button->dialog_icon_name)
     {
-      g_free (button->dialog_stock_id);
-      button->dialog_stock_id = NULL;
+      g_free (button->dialog_icon_name);
+      button->dialog_icon_name = NULL;
     }
 
   if (button->dialog_tooltip)
@@ -244,7 +245,7 @@ gimp_viewable_button_clicked (GtkButton *button)
                                     viewable_button->view_border_width,
                                     viewable_button->dialog_factory,
                                     viewable_button->dialog_identifier,
-                                    viewable_button->dialog_stock_id,
+                                    viewable_button->dialog_icon_name,
                                     viewable_button->dialog_tooltip);
 
   g_signal_connect (popup, "cancel",
@@ -254,7 +255,7 @@ gimp_viewable_button_clicked (GtkButton *button)
                     G_CALLBACK (gimp_viewable_button_popup_closed),
                     button);
 
-  gimp_container_popup_show (GIMP_CONTAINER_POPUP (popup), GTK_WIDGET (button));
+  gimp_popup_show (GIMP_POPUP (popup), GTK_WIDGET (button));
 }
 
 static void
@@ -279,7 +280,7 @@ gimp_viewable_button_new (GimpContainer     *container,
                           gint               view_border_width,
                           GimpDialogFactory *dialog_factory,
                           const gchar       *dialog_identifier,
-                          const gchar       *dialog_stock_id,
+                          const gchar       *dialog_icon_name,
                           const gchar       *dialog_tooltip)
 {
   GimpViewableButton *button;
@@ -297,7 +298,7 @@ gimp_viewable_button_new (GimpContainer     *container,
   if (dialog_factory)
     {
       g_return_val_if_fail (dialog_identifier != NULL, NULL);
-      g_return_val_if_fail (dialog_stock_id != NULL, NULL);
+      g_return_val_if_fail (dialog_icon_name != NULL, NULL);
       g_return_val_if_fail (dialog_tooltip != NULL, NULL);
     }
 
@@ -316,7 +317,7 @@ gimp_viewable_button_new (GimpContainer     *container,
     {
       button->dialog_factory    = dialog_factory;
       button->dialog_identifier = g_strdup (dialog_identifier);
-      button->dialog_stock_id   = g_strdup (dialog_stock_id);
+      button->dialog_icon_name  = g_strdup (dialog_icon_name);
       button->dialog_tooltip    = g_strdup (dialog_tooltip);
     }
 

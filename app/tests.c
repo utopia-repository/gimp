@@ -19,6 +19,7 @@
 
 #include <stdlib.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "gui/gui-types.h"
@@ -31,16 +32,15 @@
 
 #include "widgets/gimpsessioninfo.h"
 
-#include "base/base.h"
-
-#include "config/gimpbaseconfig.h"
+#include "config/gimpgeglconfig.h"
 
 #include "core/gimp.h"
 #include "core/gimp-contexts.h"
 
+#include "gegl/gimp-gegl.h"
+
 #include "gimp-log.h"
 #include "tests.h"
-#include "units.h"
 
 
 static void
@@ -54,25 +54,23 @@ gimp_status_func_dummy (const gchar *text1,
  * gimp_init_for_testing:
  *
  * Initialize the GIMP object system for unit testing. This is a
- * selected subset of the initialization happning in app_run().
+ * selected subset of the initialization happening in app_run().
  **/
 Gimp *
 gimp_init_for_testing (void)
 {
   Gimp *gimp;
-  
+
   gimp_log_init ();
+  gegl_init (NULL, NULL);
 
-  gimp = gimp_new ("Unit Tested GIMP", NULL, FALSE, TRUE, TRUE, TRUE,
-                   FALSE, TRUE, TRUE, FALSE);
-
-  units_init (gimp);
+  gimp = gimp_new ("Unit Tested GIMP", NULL, NULL, FALSE, TRUE, TRUE, TRUE,
+                   FALSE, FALSE, TRUE, FALSE,
+                   GIMP_STACK_TRACE_QUERY, GIMP_PDB_COMPAT_OFF);
 
   gimp_load_config (gimp, NULL, NULL);
 
-  base_init (GIMP_BASE_CONFIG (gimp->config),
-             FALSE /*be_verbose*/,
-             FALSE /*use_cpu_accel*/);
+  gimp_gegl_init (gimp);
   gimp_initialize (gimp, gimp_status_func_dummy);
   gimp_restore (gimp, gimp_status_func_dummy);
 
@@ -82,36 +80,55 @@ gimp_init_for_testing (void)
 
 #ifndef GIMP_CONSOLE_COMPILATION
 
-static Gimp *
-gimp_init_for_gui_testing_internal (gboolean     show_gui,
-                                    const gchar *gimprc)
+static void
+gimp_init_icon_theme_for_testing (void)
 {
-  GimpSessionInfoClass *klass;
-  Gimp                 *gimp;
+  gchar       *icon_root;
+
+  icon_root = g_test_build_filename (G_TEST_BUILT, "gimp-test-icon-theme", NULL);
+  gtk_icon_theme_prepend_search_path (gtk_icon_theme_get_default (),
+                                      icon_root);
+  g_free (icon_root);
+  return;
+}
+
+static Gimp *
+gimp_init_for_gui_testing_internal (gboolean  show_gui,
+                                    GFile    *gimprc)
+{
+  Gimp *gimp;
+
+#if defined (G_OS_WIN32)
+  /* g_test_init() sets warnings always fatal, which is a usually a good
+     testing default. Nevertheless the Windows platform may have a few
+     quirks generating warnings, yet we want to finish tests. So we
+     allow some relaxed rules on this platform. */
+
+  GLogLevelFlags fatal_mask;
+
+  fatal_mask = (GLogLevelFlags) (G_LOG_FATAL_MASK | G_LOG_LEVEL_CRITICAL);
+  g_log_set_always_fatal (fatal_mask);
+#endif
 
   /* from main() */
-  g_thread_init(NULL);
-  g_type_init();
   gimp_log_init ();
+  gegl_init (NULL, NULL);
 
   /* Introduce an error margin for positions written to sessionrc */
-  klass = g_type_class_ref (GIMP_TYPE_SESSION_INFO);
-  gimp_session_info_class_set_position_accuracy (klass, 5);
+  gimp_session_info_set_position_accuracy (5);
 
   /* from app_run() */
-  gimp = gimp_new ("Unit Tested GIMP", NULL, FALSE, TRUE, TRUE, !show_gui,
-                   FALSE, TRUE, TRUE, FALSE);
+  gimp = gimp_new ("Unit Tested GIMP", NULL, NULL, FALSE, TRUE, TRUE, !show_gui,
+                   FALSE, FALSE, TRUE, FALSE,
+                   GIMP_STACK_TRACE_QUERY, GIMP_PDB_COMPAT_OFF);
+
   gimp_set_show_gui (gimp, show_gui);
-  units_init (gimp);
   gimp_load_config (gimp, gimprc, NULL);
-  base_init (GIMP_BASE_CONFIG (gimp->config),
-             FALSE /*be_verbose*/,
-             FALSE /*use_cpu_accel*/);
+  gimp_gegl_init (gimp);
   gui_init (gimp, TRUE);
+  gimp_init_icon_theme_for_testing ();
   gimp_initialize (gimp, gimp_status_func_dummy);
   gimp_restore (gimp, gimp_status_func_dummy);
-
-  g_type_class_unref (klass);
 
   return gimp;
 }
@@ -142,8 +159,8 @@ gimp_init_for_gui_testing (gboolean show_gui)
  * Returns: The #Gimp instance.
  **/
 Gimp *
-gimp_init_for_gui_testing_with_rc (gboolean     show_gui,
-                                   const gchar *gimprc)
+gimp_init_for_gui_testing_with_rc (gboolean  show_gui,
+                                   GFile    *gimprc)
 {
   return gimp_init_for_gui_testing_internal (show_gui, gimprc);
 }

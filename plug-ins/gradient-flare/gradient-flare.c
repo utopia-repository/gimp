@@ -282,7 +282,7 @@ typedef struct
 {
   gint is_color;
   gint has_alpha;
-  gint x1, y1, x2, y2;          /* mask bounds */
+  gint x, y, w, h;          /* mask bounds */
   gint tile_width, tile_height;
   /* these values don't belong to drawable, though. */
 } DrawableInfo;
@@ -850,8 +850,11 @@ plugin_run (const gchar      *name,
   drawable = gimp_drawable_get (param[2].data.d_drawable);
   dinfo.is_color  = gimp_drawable_is_rgb (drawable->drawable_id);
   dinfo.has_alpha = gimp_drawable_has_alpha (drawable->drawable_id);
-  gimp_drawable_mask_bounds (drawable->drawable_id, &dinfo.x1, &dinfo.y1,
-                             &dinfo.x2, &dinfo.y2);
+
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                      &dinfo.x, &dinfo.y, &dinfo.w, &dinfo.h))
+    return;
+
   dinfo.tile_width = gimp_tile_width ();
   dinfo.tile_height = gimp_tile_height ();
 
@@ -1007,8 +1010,8 @@ plugin_do (void)
   calc_deinit ();
   gimp_drawable_flush (drawable);
   gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
-  gimp_drawable_update (drawable->drawable_id, dinfo.x1, dinfo.y1,
-                        (dinfo.x2 - dinfo.x1), (dinfo.y2 - dinfo.y1));
+  gimp_drawable_update (drawable->drawable_id, dinfo.x, dinfo.y,
+                        dinfo.w, dinfo.h);
 }
 
 /* these routines should be almost rewritten anyway */
@@ -1018,19 +1021,16 @@ plugin_do_non_asupsample (void)
 {
   GimpPixelRgn  src_rgn, dest_rgn;
   gpointer      pr;
-  gint          width, height;
   gint          progress, max_progress;
 
-  width  = dinfo.x2 - dinfo.x1;
-  height = dinfo.y2 - dinfo.y1;
 
   progress = 0;
-  max_progress = width * height;
+  max_progress = dinfo.w * dinfo.h;
 
   gimp_pixel_rgn_init (&src_rgn, drawable,
-                       dinfo.x1, dinfo.y1, width, height, FALSE, FALSE);
+                       dinfo.x, dinfo.y, dinfo.w, dinfo.h, FALSE, FALSE);
   gimp_pixel_rgn_init (&dest_rgn, drawable,
-                       dinfo.x1, dinfo.y1, width, height, TRUE, TRUE);
+                       dinfo.x, dinfo.y, dinfo.w, dinfo.h, TRUE, TRUE);
 
   for (pr = gimp_pixel_rgns_register (2, &src_rgn, &dest_rgn);
        pr != NULL; pr = gimp_pixel_rgns_process (pr))
@@ -1093,8 +1093,8 @@ plugin_do_asupsample (void)
 
   tk_write = gimp_pixel_fetcher_new (drawable, TRUE);
 
-  gimp_adaptive_supersample_area (dinfo.x1, dinfo.y1,
-                                  dinfo.x2 - 1, dinfo.y2 - 1,
+  gimp_adaptive_supersample_area (dinfo.x, dinfo.y,
+                                  dinfo.x + dinfo.w - 1, dinfo.y + dinfo.h - 1,
                                   pvals.asupsample_max_depth,
                                   pvals.asupsample_threshold,
                                   plugin_render_func,
@@ -2129,7 +2129,7 @@ calc_rays_pix (guchar *dest_pix, gdouble x, gdouble y)
  *  Calc sflare's pixel (RGBA) value
  *
  *  the sflare (second flares) are needed to be rendered one each
- *  sequencially, onto the source image, such as like usual layer
+ *  sequentially, onto the source image, such as like usual layer
  *  operations. So the function takes src_pix as argment.  glow, rays
  *  routines don't have src_pix as argment, because of convienience.
  *
@@ -2357,8 +2357,8 @@ dlg_run (void)
                                         NULL, 0,
                                         gimp_standard_help_func, PLUG_IN_PROC,
 
-                                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                        GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                                        _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                        _("_OK"),     GTK_RESPONSE_OK,
 
                                         NULL);
 
@@ -2461,7 +2461,7 @@ dlg_setup_gflare (void)
       dlg->gflare = gflares_list_lookup ("Default");
       if (!dlg->gflare)
         {
-          g_warning (_("`Default' is created."));
+          g_warning (_("'Default' is created."));
           dlg->gflare = gflare_new_with_default (_("Default"));
           gflares_list_insert (dlg->gflare);
         }
@@ -2923,10 +2923,10 @@ dlg_make_page_selector (GFlareDialog *dlg,
   }
   buttons[] =
   {
-    { GTK_STOCK_NEW,    G_CALLBACK (dlg_selector_new_callback)    },
-    { GTK_STOCK_EDIT,   G_CALLBACK (dlg_selector_edit_callback)   },
-    { GTK_STOCK_COPY,   G_CALLBACK (dlg_selector_copy_callback)   },
-    { GTK_STOCK_DELETE, G_CALLBACK (dlg_selector_delete_callback) }
+    { N_("_New"),    G_CALLBACK (dlg_selector_new_callback)    },
+    { N_("_Edit"),   G_CALLBACK (dlg_selector_edit_callback)   },
+    { N_("_Copy"),   G_CALLBACK (dlg_selector_copy_callback)   },
+    { N_("_Delete"), G_CALLBACK (dlg_selector_delete_callback) }
   };
 
   DEBUG_PRINT (("dlg_make_page_selector\n"));
@@ -2981,7 +2981,7 @@ dlg_make_page_selector (GFlareDialog *dlg,
 
   for (i = 0; i < G_N_ELEMENTS (buttons); i++)
     {
-      button = gtk_button_new_from_stock (buttons[i].label);
+      button = gtk_button_new_with_mnemonic (gettext (buttons[i].label));
       gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
       gtk_widget_show (button);
 
@@ -3161,7 +3161,7 @@ dlg_selector_copy_ok_callback (GtkWidget   *widget,
 
   if (gflares_list_lookup (copy_name))
     {
-      g_warning (_("The name `%s' is used already!"), copy_name);
+      g_warning (_("The name '%s' is used already!"), copy_name);
       return;
     }
 
@@ -3205,9 +3205,9 @@ dlg_selector_delete_callback (GtkWidget *widget,
   dialog = gimp_query_boolean_box (_("Delete Gradient Flare"),
                                    dlg->shell,
                                    gimp_standard_help_func, PLUG_IN_PROC,
-                                   GTK_STOCK_DIALOG_QUESTION,
+                                   GIMP_ICON_DIALOG_QUESTION,
                                    str,
-                                   GTK_STOCK_DELETE, GTK_STOCK_CANCEL,
+                                   _("_Delete"), _("_Cancel"),
                                    NULL, NULL,
                                    dlg_selector_do_delete_callback,
                                    NULL);
@@ -3286,7 +3286,7 @@ dlg_selector_do_delete_callback (GtkWidget *widget,
 /*************************************************************************/
 
 /*
-        This is gflare editor dilaog, one which opens by clicking
+        This is gflare editor dialog, one which opens by clicking
         "Edit" button on the selector page in the main dialog.
  */
 
@@ -3319,9 +3319,9 @@ ed_run (GtkWindow            *parent,
                              GTK_WIDGET (parent), 0,
                              gimp_standard_help_func, PLUG_IN_PROC,
 
-                             _("Rescan Gradients"), RESPONSE_RESCAN,
-                             GTK_STOCK_CANCEL,      GTK_RESPONSE_CANCEL,
-                             GTK_STOCK_OK,          GTK_RESPONSE_OK,
+                             _("_Rescan Gradients"), RESPONSE_RESCAN,
+                             _("_Cancel"),           GTK_RESPONSE_CANCEL,
+                             _("_OK"),               GTK_RESPONSE_OK,
 
                              NULL);
 
@@ -3936,7 +3936,7 @@ ed_make_page_sflare (GFlareEditor *ed,
   gtk_widget_show (seed_hbox);
 
   label = gtk_label_new (_("Random seed:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_box_pack_start (GTK_BOX (seed_hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
@@ -3983,7 +3983,7 @@ ed_put_gradient_menu (GtkWidget    *table,
   GtkWidget *label;
 
   label = gtk_label_new (caption);
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 1.0);
   gtk_widget_show (label);
 
   gtk_table_attach (GTK_TABLE (table), label,
@@ -4726,6 +4726,8 @@ gradient_get_list (gint *num_gradients)
       gradients[n++] = g_strdup (external_gradients[i]);
     }
 
+  g_strfreev (external_gradients);
+
   return gradients;
 }
 
@@ -4862,7 +4864,7 @@ gradient_get_default (const gchar *name,
   currently 6 gradient menus.)
 
   However, this caching routine is not too good. It picks up just
-  GRADIENT_RESOLUTION samples everytime, and rescales it later.  And
+  GRADIENT_RESOLUTION samples every time, and rescales it later.  And
   cached values are stored in guchar array. No accuracy.
  */
 static void

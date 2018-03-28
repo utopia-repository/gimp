@@ -538,7 +538,7 @@ query (void)
                           "before and rotated back after the bend operation. "
                           "This enables bending in other directions than "
                           "vertical. bending usually changes the size of "
-                          "the handled layer. this plugin sets the offsets "
+                          "the handled layer. this plug-in sets the offsets "
                           "of the handled layer to keep its center at the "
                           "same position",
                           PLUG_IN_AUTHOR,
@@ -1163,21 +1163,20 @@ static BenderDialog *
 bender_new_dialog (GimpDrawable *drawable)
 {
   BenderDialog *cd;
-  GtkWidget  *main_hbox;
-  GtkWidget  *vbox;
-  GtkWidget  *hbox;
-  GtkWidget  *vbox2;
-  GtkWidget  *abox;
-  GtkWidget  *frame;
-  GtkWidget  *upper, *lower;
-  GtkWidget  *smooth, *freew;
-  GtkWidget  *toggle;
-  GtkWidget  *button;
-  GtkWidget  *spinbutton;
-  GtkWidget  *label;
-  GtkObject  *data;
-  GdkDisplay *display;
-  gint        i, j;
+  GtkWidget    *main_hbox;
+  GtkWidget    *vbox;
+  GtkWidget    *hbox;
+  GtkWidget    *vbox2;
+  GtkWidget    *abox;
+  GtkWidget    *frame;
+  GtkWidget    *upper, *lower;
+  GtkWidget    *smooth, *freew;
+  GtkWidget    *toggle;
+  GtkWidget    *button;
+  GtkWidget    *spinbutton;
+  GtkWidget    *label;
+  GdkDisplay   *display;
+  gint          i, j;
 
   cd = g_new (BenderDialog, 1);
 
@@ -1225,8 +1224,8 @@ bender_new_dialog (GimpDrawable *drawable)
                                NULL, 0,
                                gimp_standard_help_func, PLUG_IN_PROC,
 
-                               GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                               GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                               _("_Cancel"), GTK_RESPONSE_CANCEL,
+                               _("_OK"),     GTK_RESPONSE_OK,
 
                                NULL);
 
@@ -1324,11 +1323,11 @@ bender_new_dialog (GimpDrawable *drawable)
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-  spinbutton = gimp_spin_button_new (&data,
-                                     0, 0.0, 360.0, 1, 45, 90,
-                                     0.5, 1);
-  cd->rotate_data = GTK_ADJUSTMENT (data);
+  cd->rotate_data = GTK_ADJUSTMENT (gtk_adjustment_new (0, 0.0, 360.0, 1, 45, 0));
   gtk_adjustment_set_value (cd->rotate_data, cd->rotation);
+
+  spinbutton = gtk_spin_button_new (cd->rotate_data, 0.5, 1);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
   gtk_widget_show (spinbutton);
 
@@ -1401,8 +1400,8 @@ bender_new_dialog (GimpDrawable *drawable)
                                     G_CALLBACK (bender_border_callback),
                                     &cd->outline, cd->outline,
 
-                                    _("_Upper"), OUTLINE_UPPER, &upper,
-                                    _("_Lower"), OUTLINE_LOWER, &lower,
+                                    C_("curve-border", "_Upper"), OUTLINE_UPPER, &upper,
+                                    C_("curve-border", "_Lower"), OUTLINE_LOWER, &lower,
 
                                     NULL);
 
@@ -1469,7 +1468,7 @@ bender_new_dialog (GimpDrawable *drawable)
                     cd);
 
   /*  The Reset button  */
-  button = gtk_button_new_from_stock (GIMP_STOCK_RESET);
+  button = gtk_button_new_with_mnemonic (_("_Reset"));
   gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
   gtk_widget_show (button);
 
@@ -1486,7 +1485,7 @@ bender_new_dialog (GimpDrawable *drawable)
   gtk_widget_show (hbox);
 
   /*  The Load button  */
-  button = gtk_button_new_from_stock (GTK_STOCK_OPEN);
+  button = gtk_button_new_with_mnemonic (_("_Open"));
   gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
   gtk_widget_show (button);
 
@@ -1498,7 +1497,7 @@ bender_new_dialog (GimpDrawable *drawable)
                     cd);
 
   /*  The Save button  */
-  button = gtk_button_new_from_stock (GTK_STOCK_SAVE);
+  button = gtk_button_new_with_mnemonic (_("_Save"));
   gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
   gtk_widget_show (button);
 
@@ -2063,8 +2062,8 @@ bender_load_callback (GtkWidget    *w,
                                      GTK_WINDOW (gtk_widget_get_toplevel (w)),
                                      GTK_FILE_CHOOSER_ACTION_OPEN,
 
-                                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                     GTK_STOCK_OPEN,   GTK_RESPONSE_OK,
+                                     _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                     _("_Open"),   GTK_RESPONSE_OK,
 
                                      NULL);
 
@@ -2098,8 +2097,8 @@ bender_save_callback (GtkWidget    *w,
                                      GTK_WINDOW (gtk_widget_get_toplevel (w)),
                                      GTK_FILE_CHOOSER_ACTION_SAVE,
 
-                                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                     GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
+                                     _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                     _("_Save"),   GTK_RESPONSE_OK,
 
                                      NULL);
 
@@ -2534,17 +2533,26 @@ p_init_gdrw (t_GDRW       *gdrw,
              int           dirty,
              int           shadow)
 {
+  gint w, h;
+
   gdrw->drawable = drawable;
   gdrw->pft = gimp_pixel_fetcher_new (drawable, FALSE);
   gimp_pixel_fetcher_set_edge_mode (gdrw->pft, GIMP_PIXEL_FETCHER_EDGE_BLACK);
   gdrw->tile_width = gimp_tile_width ();
   gdrw->tile_height = gimp_tile_height ();
 
-  gimp_drawable_mask_bounds (drawable->drawable_id, &gdrw->x1,
-                             &gdrw->y1, &gdrw->x2, &gdrw->y2);
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                      &gdrw->x1, &gdrw->y1, &w, &h))
+    {
+      w = 0;
+      h = 0;
+    }
+
+  gdrw->x2 = gdrw->x1 + w;
+  gdrw->y2 = gdrw->y1 + h;
 
   gdrw->bpp = drawable->bpp;
-  if (gimp_drawable_has_alpha(drawable->drawable_id))
+  if (gimp_drawable_has_alpha (drawable->drawable_id))
     {
       /* index of the alpha channelbyte {1|3} */
       gdrw->index_alpha = gdrw->bpp - 1;
@@ -2745,7 +2753,7 @@ p_add_layer (gint       width,
   char      *l_name;
   char      *l_name2;
   gdouble    l_opacity;
-  GimpLayerModeEffects l_mode;
+  GimpLayerMode l_mode;
   gint       l_visible;
   gint32     image_id;
   gint       stack_position;
@@ -2780,7 +2788,7 @@ p_add_layer (gint       width,
   l_new_drawable = gimp_drawable_get (l_new_layer_id);
   if (!l_new_drawable)
     {
-      g_printerr ("p_add_layer: cant get new_drawable\n");
+      g_printerr ("p_add_layer: can't get new_drawable\n");
       return NULL;
     }
 

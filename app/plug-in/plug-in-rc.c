@@ -20,7 +20,8 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpbase/gimpprotocol.h"
@@ -39,6 +40,9 @@
 #include "gimp-intl.h"
 
 
+#define PLUG_IN_RC_FILE_VERSION 5
+
+
 /*
  *  All deserialize functions return G_TOKEN_LEFT_PAREN on success,
  *  or the GTokenType they would have expected but didn't get.
@@ -49,7 +53,7 @@ static GTokenType plug_in_def_deserialize        (Gimp                 *gimp,
                                                   GSList              **plug_in_defs);
 static GTokenType plug_in_procedure_deserialize  (GScanner             *scanner,
                                                   Gimp                 *gimp,
-                                                  const gchar          *prog,
+                                                  GFile                *file,
                                                   GimpPlugInProcedure **proc);
 static GTokenType plug_in_menu_path_deserialize  (GScanner             *scanner,
                                                   GimpPlugInProcedure  *proc);
@@ -72,6 +76,7 @@ static GTokenType plug_in_has_init_deserialize   (GScanner             *scanner,
 enum
 {
   PROTOCOL_VERSION = 1,
+  FILE_VERSION,
   PLUG_IN_DEF,
   PROC_DEF,
   LOCALE_DEF,
@@ -82,30 +87,33 @@ enum
   ICON,
   LOAD_PROC,
   SAVE_PROC,
-  EXTENSION,
-  PREFIX,
-  MAGIC,
-  MIME_TYPE,
+  EXTENSIONS,
+  PREFIXES,
+  MAGICS,
+  MIME_TYPES,
+  HANDLES_URI,
+  HANDLES_RAW,
   THUMB_LOADER
 };
 
 
 GSList *
-plug_in_rc_parse (Gimp         *gimp,
-                  const gchar  *filename,
-                  GError      **error)
+plug_in_rc_parse (Gimp    *gimp,
+                  GFile   *file,
+                  GError **error)
 {
   GScanner   *scanner;
   GEnumClass *enum_class;
-  GSList     *plug_in_defs = NULL;
-  gint        version      = GIMP_PROTOCOL_VERSION;
+  GSList     *plug_in_defs     = NULL;
+  gint        protocol_version = GIMP_PROTOCOL_VERSION;
+  gint        file_version     = PLUG_IN_RC_FILE_VERSION;
   GTokenType  token;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
-  g_return_val_if_fail (filename != NULL, NULL);
+  g_return_val_if_fail (G_IS_FILE (file), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  scanner = gimp_scanner_new_file (filename, error);
+  scanner = gimp_scanner_new_gfile (file, error);
 
   if (! scanner)
     return NULL;
@@ -115,6 +123,9 @@ plug_in_rc_parse (Gimp         *gimp,
   g_scanner_scope_add_symbol (scanner, 0,
                               "protocol-version",
                               GINT_TO_POINTER (PROTOCOL_VERSION));
+  g_scanner_scope_add_symbol (scanner, 0,
+                              "file-version",
+                              GINT_TO_POINTER (FILE_VERSION));
   g_scanner_scope_add_symbol (scanner, 0,
                               "plug-in-def", GINT_TO_POINTER (PLUG_IN_DEF));
 
@@ -138,26 +149,33 @@ plug_in_rc_parse (Gimp         *gimp,
                               "save-proc", GINT_TO_POINTER (SAVE_PROC));
 
   g_scanner_scope_add_symbol (scanner, LOAD_PROC,
-                              "extension", GINT_TO_POINTER (EXTENSION));
+                              "extensions", GINT_TO_POINTER (EXTENSIONS));
   g_scanner_scope_add_symbol (scanner, LOAD_PROC,
-                              "prefix", GINT_TO_POINTER (PREFIX));
+                              "prefixes", GINT_TO_POINTER (PREFIXES));
   g_scanner_scope_add_symbol (scanner, LOAD_PROC,
-                              "magic", GINT_TO_POINTER (MAGIC));
+                              "magics", GINT_TO_POINTER (MAGICS));
   g_scanner_scope_add_symbol (scanner, LOAD_PROC,
-                              "mime-type", GINT_TO_POINTER (MIME_TYPE));
+                              "mime-types", GINT_TO_POINTER (MIME_TYPES));
+  g_scanner_scope_add_symbol (scanner, LOAD_PROC,
+                              "handles-uri", GINT_TO_POINTER (HANDLES_URI));
+  g_scanner_scope_add_symbol (scanner, LOAD_PROC,
+                              "handles-raw", GINT_TO_POINTER (HANDLES_RAW));
   g_scanner_scope_add_symbol (scanner, LOAD_PROC,
                               "thumb-loader", GINT_TO_POINTER (THUMB_LOADER));
 
   g_scanner_scope_add_symbol (scanner, SAVE_PROC,
-                              "extension", GINT_TO_POINTER (EXTENSION));
+                              "extensions", GINT_TO_POINTER (EXTENSIONS));
   g_scanner_scope_add_symbol (scanner, SAVE_PROC,
-                              "prefix", GINT_TO_POINTER (PREFIX));
+                              "prefixes", GINT_TO_POINTER (PREFIXES));
   g_scanner_scope_add_symbol (scanner, SAVE_PROC,
-                              "mime-type", GINT_TO_POINTER (MIME_TYPE));
+                              "mime-types", GINT_TO_POINTER (MIME_TYPES));
+  g_scanner_scope_add_symbol (scanner, SAVE_PROC,
+                              "handles-uri", GINT_TO_POINTER (HANDLES_URI));
 
   token = G_TOKEN_LEFT_PAREN;
 
-  while (version == GIMP_PROTOCOL_VERSION &&
+  while (protocol_version == GIMP_PROTOCOL_VERSION   &&
+         file_version     == PLUG_IN_RC_FILE_VERSION &&
          g_scanner_peek_next_token (scanner) == token)
     {
       token = g_scanner_get_next_token (scanner);
@@ -173,9 +191,16 @@ plug_in_rc_parse (Gimp         *gimp,
             {
             case PROTOCOL_VERSION:
               token = G_TOKEN_INT;
-              if (gimp_scanner_parse_int (scanner, &version))
+              if (gimp_scanner_parse_int (scanner, &protocol_version))
                 token = G_TOKEN_RIGHT_PAREN;
               break;
+
+            case FILE_VERSION:
+              token = G_TOKEN_INT;
+              if (gimp_scanner_parse_int (scanner, &file_version))
+                token = G_TOKEN_RIGHT_PAREN;
+              break;
+
             case PLUG_IN_DEF:
               g_scanner_set_scope (scanner, PLUG_IN_DEF);
               token = plug_in_def_deserialize (gimp, scanner, &plug_in_defs);
@@ -195,15 +220,23 @@ plug_in_rc_parse (Gimp         *gimp,
         }
     }
 
-  if (version != GIMP_PROTOCOL_VERSION ||
-      token   != G_TOKEN_LEFT_PAREN)
+  if (protocol_version != GIMP_PROTOCOL_VERSION   ||
+      file_version     != PLUG_IN_RC_FILE_VERSION ||
+      token            != G_TOKEN_LEFT_PAREN)
     {
-      if (version != GIMP_PROTOCOL_VERSION)
+      if (protocol_version != GIMP_PROTOCOL_VERSION)
         {
           g_set_error (error,
                        GIMP_CONFIG_ERROR, GIMP_CONFIG_ERROR_VERSION,
                        _("Skipping '%s': wrong GIMP protocol version."),
-                       gimp_filename_to_utf8 (filename));
+                       gimp_file_get_utf8_name (file));
+        }
+      else if (file_version != PLUG_IN_RC_FILE_VERSION)
+        {
+          g_set_error (error,
+                       GIMP_CONFIG_ERROR, GIMP_CONFIG_ERROR_VERSION,
+                       _("Skipping '%s': wrong pluginrc file format version."),
+                       gimp_file_get_utf8_name (file));
         }
       else
         {
@@ -230,21 +263,21 @@ plug_in_def_deserialize (Gimp      *gimp,
 {
   GimpPlugInDef       *plug_in_def;
   GimpPlugInProcedure *proc = NULL;
-  gchar               *name;
   gchar               *path;
-  gint                 mtime;
+  GFile               *file;
+  gint64               mtime;
   GTokenType           token;
 
-  if (! gimp_scanner_parse_string (scanner, &name))
+  if (! gimp_scanner_parse_string (scanner, &path))
     return G_TOKEN_STRING;
 
-  path = gimp_config_path_expand (name, TRUE, NULL);
-  g_free (name);
-
-  plug_in_def = gimp_plug_in_def_new (path);
+  file = gimp_file_new_for_config_path (path, NULL);
   g_free (path);
 
-  if (! gimp_scanner_parse_int (scanner, &mtime))
+  plug_in_def = gimp_plug_in_def_new (file);
+  g_object_unref (file);
+
+  if (! gimp_scanner_parse_int64 (scanner, &mtime))
     {
       g_object_unref (plug_in_def);
       return G_TOKEN_INT;
@@ -269,7 +302,7 @@ plug_in_def_deserialize (Gimp      *gimp,
             {
             case PROC_DEF:
               token = plug_in_procedure_deserialize (scanner, gimp,
-                                                     plug_in_def->prog,
+                                                     plug_in_def->file,
                                                      &proc);
 
               if (token == G_TOKEN_LEFT_PAREN)
@@ -324,7 +357,7 @@ plug_in_def_deserialize (Gimp      *gimp,
 static GTokenType
 plug_in_procedure_deserialize (GScanner             *scanner,
                                Gimp                 *gimp,
-                               const gchar          *prog,
+                               GFile                *file,
                                GimpPlugInProcedure **proc)
 {
   GimpProcedure   *procedure;
@@ -345,7 +378,7 @@ plug_in_procedure_deserialize (GScanner             *scanner,
       return G_TOKEN_INT;
     }
 
-  procedure = gimp_plug_in_procedure_new (proc_type, prog);
+  procedure = gimp_plug_in_procedure_new (proc_type, file);
 
   *proc = GIMP_PLUG_IN_PROCEDURE (procedure);
 
@@ -506,7 +539,7 @@ plug_in_icon_deserialize (GScanner            *scanner,
 
   switch (icon_type)
     {
-    case GIMP_ICON_TYPE_STOCK_ID:
+    case GIMP_ICON_TYPE_ICON_NAME:
     case GIMP_ICON_TYPE_IMAGE_FILE:
       icon_data_length = -1;
 
@@ -525,9 +558,8 @@ plug_in_icon_deserialize (GScanner            *scanner,
       break;
     }
 
-  proc->icon_type        = icon_type;
-  proc->icon_data_length = icon_data_length;
-  proc->icon_data        = icon_data;
+  gimp_plug_in_procedure_take_icon (proc, icon_type,
+                                    icon_data, icon_data_length);
 
   if (! gimp_scanner_parse_token (scanner, G_TOKEN_RIGHT_PAREN))
     return G_TOKEN_RIGHT_PAREN;
@@ -569,12 +601,13 @@ plug_in_file_proc_deserialize (GScanner            *scanner,
 
       symbol = GPOINTER_TO_INT (scanner->value.v_symbol);
 
-      if (symbol == MAGIC)
+      if (symbol == MAGICS)
         {
           if (! gimp_scanner_parse_string_no_validate (scanner, &value))
             return G_TOKEN_STRING;
         }
-      else
+      else if (symbol != HANDLES_URI &&
+               symbol != HANDLES_RAW)
         {
           if (! gimp_scanner_parse_string (scanner, &value))
             return G_TOKEN_STRING;
@@ -582,24 +615,32 @@ plug_in_file_proc_deserialize (GScanner            *scanner,
 
       switch (symbol)
         {
-        case EXTENSION:
+        case EXTENSIONS:
           g_free (proc->extensions);
           proc->extensions = value;
           break;
 
-        case PREFIX:
+        case PREFIXES:
           g_free (proc->prefixes);
           proc->prefixes = value;
           break;
 
-        case MAGIC:
+        case MAGICS:
           g_free (proc->magics);
           proc->magics = value;
           break;
 
-        case MIME_TYPE:
-          gimp_plug_in_procedure_set_mime_type (proc, value);
+        case MIME_TYPES:
+          gimp_plug_in_procedure_set_mime_types (proc, value);
           g_free (value);
+          break;
+
+        case HANDLES_URI:
+          gimp_plug_in_procedure_set_handles_uri (proc);
+          break;
+
+        case HANDLES_RAW:
+          gimp_plug_in_procedure_set_handles_raw (proc);
           break;
 
         case THUMB_LOADER:
@@ -750,21 +791,21 @@ plug_in_has_init_deserialize (GScanner      *scanner,
 /* serialize functions */
 
 gboolean
-plug_in_rc_write (GSList       *plug_in_defs,
-                  const gchar  *filename,
-                  GError      **error)
+plug_in_rc_write (GSList  *plug_in_defs,
+                  GFile   *file,
+                  GError **error)
 {
   GimpConfigWriter *writer;
   GEnumClass       *enum_class;
   GSList           *list;
 
-  writer = gimp_config_writer_new_file (filename,
-                                        FALSE,
-                                        "GIMP pluginrc\n\n"
-                                        "This file can safely be removed and "
-                                        "will be automatically regenerated by "
-                                        "querying the installed plugins.",
-                                        error);
+  writer = gimp_config_writer_new_gfile (file,
+                                         FALSE,
+                                         "GIMP pluginrc\n\n"
+                                         "This file can safely be removed and "
+                                         "will be automatically regenerated by "
+                                         "querying the installed plug-ins.",
+                                         error);
   if (!writer)
     return FALSE;
 
@@ -773,6 +814,11 @@ plug_in_rc_write (GSList       *plug_in_defs,
   gimp_config_writer_open (writer, "protocol-version");
   gimp_config_writer_printf (writer, "%d", GIMP_PROTOCOL_VERSION);
   gimp_config_writer_close (writer);
+
+  gimp_config_writer_open (writer, "file-version");
+  gimp_config_writer_printf (writer, "%d", PLUG_IN_RC_FILE_VERSION);
+  gimp_config_writer_close (writer);
+
   gimp_config_writer_linefeed (writer);
 
   for (list = plug_in_defs; list; list = list->next)
@@ -782,18 +828,18 @@ plug_in_rc_write (GSList       *plug_in_defs,
       if (plug_in_def->procedures)
         {
           GSList *list2;
-          gchar  *utf8;
+          gchar  *path;
 
-          utf8 = g_filename_to_utf8 (plug_in_def->prog, -1, NULL, NULL, NULL);
-
-          if (! utf8)
+          path = gimp_file_get_config_path (plug_in_def->file, NULL);
+          if (! path)
             continue;
 
           gimp_config_writer_open (writer, "plug-in-def");
-          gimp_config_writer_string (writer, utf8);
-          gimp_config_writer_printf (writer, "%ld", plug_in_def->mtime);
+          gimp_config_writer_string (writer, path);
+          gimp_config_writer_printf (writer, "%"G_GINT64_FORMAT,
+                                     plug_in_def->mtime);
 
-          g_free (utf8);
+          g_free (path);
 
           for (list2 = plug_in_def->procedures; list2; list2 = list2->next)
             {
@@ -841,7 +887,7 @@ plug_in_rc_write (GSList       *plug_in_defs,
 
               switch (proc->icon_type)
                 {
-                case GIMP_ICON_TYPE_STOCK_ID:
+                case GIMP_ICON_TYPE_ICON_NAME:
                 case GIMP_ICON_TYPE_IMAGE_FILE:
                   gimp_config_writer_string (writer, (gchar *) proc->icon_data);
                   break;
@@ -862,29 +908,41 @@ plug_in_rc_write (GSList       *plug_in_defs,
 
                   if (proc->extensions && *proc->extensions)
                     {
-                      gimp_config_writer_open (writer, "extension");
+                      gimp_config_writer_open (writer, "extensions");
                       gimp_config_writer_string (writer, proc->extensions);
                       gimp_config_writer_close (writer);
                     }
 
                   if (proc->prefixes && *proc->prefixes)
                     {
-                      gimp_config_writer_open (writer, "prefix");
+                      gimp_config_writer_open (writer, "prefixes");
                       gimp_config_writer_string (writer, proc->prefixes);
                       gimp_config_writer_close (writer);
                     }
 
                   if (proc->magics && *proc->magics)
                     {
-                      gimp_config_writer_open (writer, "magic");
+                      gimp_config_writer_open (writer, "magics");
                       gimp_config_writer_string (writer, proc->magics);
                       gimp_config_writer_close (writer);
                     }
 
-                  if (proc->mime_type)
+                  if (proc->mime_types && *proc->mime_types)
                     {
-                      gimp_config_writer_open (writer, "mime-type");
-                      gimp_config_writer_string (writer, proc->mime_type);
+                      gimp_config_writer_open (writer, "mime-types");
+                      gimp_config_writer_string (writer, proc->mime_types);
+                      gimp_config_writer_close (writer);
+                    }
+
+                  if (proc->handles_uri)
+                    {
+                      gimp_config_writer_open (writer, "handles-uri");
+                      gimp_config_writer_close (writer);
+                    }
+
+                  if (proc->handles_raw && ! proc->image_types)
+                    {
+                      gimp_config_writer_open (writer, "handles-raw");
                       gimp_config_writer_close (writer);
                     }
 

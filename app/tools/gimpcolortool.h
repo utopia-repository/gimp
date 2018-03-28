@@ -39,16 +39,15 @@ struct _GimpColorTool
   GimpDrawTool       parent_instance;
 
   gboolean           enabled;
-  gint               center_x;
-  gint               center_y;
+  GimpColorOptions  *options;
+  gboolean           saved_snap_to;
+
   GimpColorPickMode  pick_mode;
 
-  GimpColorOptions  *options;
-
+  gboolean           can_pick;
+  gint               center_x;
+  gint               center_y;
   GimpSamplePoint   *sample_point;
-  gboolean           moving_sample_point;
-  gint               sample_point_x;
-  gint               sample_point_y;
 };
 
 struct _GimpColorToolClass
@@ -56,31 +55,33 @@ struct _GimpColorToolClass
   GimpDrawToolClass  parent_class;
 
   /*  virtual functions  */
-  gboolean (* pick)   (GimpColorTool      *tool,
-                       gint                x,
-                       gint                y,
-                       GimpImageType      *sample_type,
-                       GimpRGB            *color,
-                       gint               *color_index);
+  gboolean (* can_pick) (GimpColorTool      *tool,
+                         const GimpCoords   *coords,
+                         GimpDisplay        *display);
+  gboolean (* pick)     (GimpColorTool      *tool,
+                         const GimpCoords   *coords,
+                         GimpDisplay        *display,
+                         const Babl        **sample_format,
+                         gpointer            pixel,
+                         GimpRGB            *color);
 
   /*  signals  */
-  void     (* picked) (GimpColorTool      *tool,
-                       GimpColorPickState  pick_state,
-                       GimpImageType       sample_type,
-                       const GimpRGB      *color,
-                       gint                color_index);
+  void     (* picked)   (GimpColorTool      *tool,
+                         const GimpCoords   *coords,
+                         GimpDisplay        *display,
+                         GimpColorPickState  pick_state,
+                         const Babl         *sample_format,
+                         gpointer            pixel,
+                         const GimpRGB      *color);
 };
 
 
-GType      gimp_color_tool_get_type           (void) G_GNUC_CONST;
+GType      gimp_color_tool_get_type   (void) G_GNUC_CONST;
 
-void       gimp_color_tool_enable             (GimpColorTool    *color_tool,
-                                               GimpColorOptions *options);
-void       gimp_color_tool_disable            (GimpColorTool    *color_tool);
-gboolean   gimp_color_tool_is_enabled         (GimpColorTool    *color_tool);
-
-void       gimp_color_tool_start_sample_point (GimpTool         *tool,
-                                               GimpDisplay      *display);
+void       gimp_color_tool_enable     (GimpColorTool    *color_tool,
+                                       GimpColorOptions *options);
+void       gimp_color_tool_disable    (GimpColorTool    *color_tool);
+gboolean   gimp_color_tool_is_enabled (GimpColorTool    *color_tool);
 
 
 #endif  /*  __GIMP_COLOR_TOOL_H__  */

@@ -22,6 +22,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -35,6 +36,7 @@
 #include "core/gimpcontext.h"
 
 #include "gimpcoloreditor.h"
+#include "gimpcolorhistory.h"
 #include "gimpdocked.h"
 #include "gimpfgbgeditor.h"
 #include "gimpfgbgview.h"
@@ -52,6 +54,7 @@ enum
 
 static void   gimp_color_editor_docked_iface_init (GimpDockedInterface  *iface);
 
+static void   gimp_color_editor_constructed     (GObject           *object);
 static void   gimp_color_editor_dispose         (GObject           *object);
 static void   gimp_color_editor_set_property    (GObject           *object,
                                                  guint              property_id,
@@ -89,14 +92,15 @@ static void   gimp_color_editor_tab_toggled     (GtkWidget         *widget,
 static void   gimp_color_editor_fg_bg_notify    (GtkWidget         *widget,
                                                  GParamSpec        *pspec,
                                                  GimpColorEditor   *editor);
-#ifndef GDK_WINDOWING_QUARTZ
 static void   gimp_color_editor_color_picked    (GtkWidget         *widget,
                                                  const GimpRGB     *rgb,
                                                  GimpColorEditor   *editor);
-#endif
 static void   gimp_color_editor_entry_changed   (GimpColorHexEntry *entry,
                                                  GimpColorEditor   *editor);
 
+static void  gimp_color_editor_history_selected (GimpColorHistory *history,
+                                                 const GimpRGB    *rgb,
+                                                 GimpColorEditor  *editor);
 
 G_DEFINE_TYPE_WITH_CODE (GimpColorEditor, gimp_color_editor, GIMP_TYPE_EDITOR,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_DOCKED,
@@ -113,6 +117,7 @@ gimp_color_editor_class_init (GimpColorEditorClass* klass)
   GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
+  object_class->constructed  = gimp_color_editor_constructed;
   object_class->dispose      = gimp_color_editor_dispose;
   object_class->set_property = gimp_color_editor_set_property;
   object_class->get_property = gimp_color_editor_get_property;
@@ -123,6 +128,7 @@ gimp_color_editor_class_init (GimpColorEditorClass* klass)
                                    g_param_spec_object ("context",
                                                         NULL, NULL,
                                                         GIMP_TYPE_CONTEXT,
+                                                        G_PARAM_CONSTRUCT |
                                                         GIMP_PARAM_READWRITE));
 }
 
@@ -174,7 +180,7 @@ gimp_color_editor_init (GimpColorEditor *editor)
 
   editor->notebook = gimp_color_selector_new (GIMP_TYPE_COLOR_NOTEBOOK,
                                               &rgb, &hsv,
-                                              GIMP_COLOR_SELECTOR_HUE);
+                                              GIMP_COLOR_SELECTOR_RED);
   gimp_color_selector_set_show_alpha (GIMP_COLOR_SELECTOR (editor->notebook),
                                       FALSE);
   gtk_box_pack_start (GTK_BOX (editor), editor->notebook,
@@ -213,8 +219,8 @@ gimp_color_editor_init (GimpColorEditor *editor)
       gtk_box_pack_start (GTK_BOX (editor->hbox), button, TRUE, TRUE, 0);
       gtk_widget_show (button);
 
-      image = gtk_image_new_from_stock (selector_class->stock_id,
-                                        GTK_ICON_SIZE_BUTTON);
+      image = gtk_image_new_from_icon_name (selector_class->icon_name,
+                                            GTK_ICON_SIZE_BUTTON);
       gtk_container_add (GTK_CONTAINER (button), image);
       gtk_widget_show (image);
 
@@ -247,7 +253,6 @@ gimp_color_editor_init (GimpColorEditor *editor)
   gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
-#ifndef GDK_WINDOWING_QUARTZ
   /*  The color picker  */
   button = gimp_pick_button_new ();
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
@@ -256,7 +261,6 @@ gimp_color_editor_init (GimpColorEditor *editor)
   g_signal_connect (button, "color-picked",
                     G_CALLBACK (gimp_color_editor_color_picked),
                     editor);
-#endif
 
   /*  The hex triplet entry  */
   editor->hex_entry = gimp_color_hex_entry_new ();
@@ -269,6 +273,24 @@ gimp_color_editor_init (GimpColorEditor *editor)
 
   g_signal_connect (editor->hex_entry, "color-changed",
                     G_CALLBACK (gimp_color_editor_entry_changed),
+                    editor);
+}
+
+static void
+gimp_color_editor_constructed (GObject *object)
+{
+  GimpColorEditor *editor = GIMP_COLOR_EDITOR (object);
+  GtkWidget       *history;
+
+  G_OBJECT_CLASS (parent_class)->constructed (object);
+
+  /* The color history */
+  history = gimp_color_history_new (editor->context, 12);
+  gtk_box_pack_end (GTK_BOX (editor), history, FALSE, FALSE, 0);
+  gtk_widget_show (history);
+
+  g_signal_connect (history, "color-selected",
+                    G_CALLBACK (gimp_color_editor_history_selected),
                     editor);
 }
 
@@ -636,7 +658,6 @@ gimp_color_editor_fg_bg_notify (GtkWidget       *widget,
     }
 }
 
-#ifndef GDK_WINDOWING_QUARTZ
 static void
 gimp_color_editor_color_picked (GtkWidget       *widget,
                                 const GimpRGB   *rgb,
@@ -650,7 +671,6 @@ gimp_color_editor_color_picked (GtkWidget       *widget,
         gimp_context_set_foreground (editor->context, rgb);
     }
 }
-#endif
 
 static void
 gimp_color_editor_entry_changed (GimpColorHexEntry *entry,
@@ -666,5 +686,19 @@ gimp_color_editor_entry_changed (GimpColorHexEntry *entry,
         gimp_context_set_background (editor->context, &rgb);
       else
         gimp_context_set_foreground (editor->context, &rgb);
+    }
+}
+
+static void
+gimp_color_editor_history_selected (GimpColorHistory *history,
+                                    const GimpRGB    *rgb,
+                                    GimpColorEditor  *editor)
+{
+  if (editor->context)
+    {
+      if (editor->edit_bg)
+        gimp_context_set_background (editor->context, rgb);
+      else
+        gimp_context_set_foreground (editor->context, rgb);
     }
 }

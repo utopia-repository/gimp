@@ -19,6 +19,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -281,6 +282,9 @@ dockable_show_button_bar_cmd_callback (GtkAction *action,
       gimp_docked_set_show_button_bar (docked, show);
     }
 }
+
+
+/*  private functions  */
 
 static GimpDockable *
 dockable_get_current (GimpDockbook *dockbook)

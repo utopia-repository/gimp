@@ -38,18 +38,19 @@
 #include "text/gimptextlayout.h"
 
 #include "widgets/gimpdialogfactory.h"
+#include "widgets/gimpdockcontainer.h"
 #include "widgets/gimpoverlaybox.h"
 #include "widgets/gimpoverlayframe.h"
 #include "widgets/gimptextbuffer.h"
 #include "widgets/gimptexteditor.h"
 #include "widgets/gimptextproxy.h"
 #include "widgets/gimptextstyleeditor.h"
+#include "widgets/gimpwidgets-utils.h"
 
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
 #include "display/gimpdisplayshell-transform.h"
 
-#include "gimprectangletool.h"
 #include "gimptextoptions.h"
 #include "gimptexttool.h"
 #include "gimptexttool-editor.h"
@@ -60,48 +61,62 @@
 
 /*  local function prototypes  */
 
-static void   gimp_text_tool_ensure_proxy       (GimpTextTool    *text_tool);
-static void   gimp_text_tool_move_cursor        (GimpTextTool    *text_tool,
-                                                 GtkMovementStep  step,
-                                                 gint             count,
-                                                 gboolean         extend_selection);
-static void   gimp_text_tool_insert_at_cursor   (GimpTextTool    *text_tool,
-                                                 const gchar     *str);
-static void   gimp_text_tool_delete_from_cursor (GimpTextTool    *text_tool,
-                                                 GtkDeleteType    type,
-                                                 gint             count);
-static void   gimp_text_tool_backspace          (GimpTextTool    *text_tool);
-static void   gimp_text_tool_toggle_overwrite   (GimpTextTool    *text_tool);
-static void   gimp_text_tool_select_all         (GimpTextTool    *text_tool,
-                                                 gboolean         select);
-static void   gimp_text_tool_change_size        (GimpTextTool    *text_tool,
-                                                 gdouble          amount);
-static void   gimp_text_tool_change_baseline    (GimpTextTool    *text_tool,
-                                                 gdouble          amount);
-static void   gimp_text_tool_change_kerning     (GimpTextTool    *text_tool,
-                                                 gdouble          amount);
+static void     gimp_text_tool_ensure_proxy       (GimpTextTool    *text_tool);
+static void     gimp_text_tool_move_cursor        (GimpTextTool    *text_tool,
+                                                   GtkMovementStep  step,
+                                                   gint             count,
+                                                   gboolean         extend_selection);
+static void     gimp_text_tool_insert_at_cursor   (GimpTextTool    *text_tool,
+                                                   const gchar     *str);
+static void     gimp_text_tool_delete_from_cursor (GimpTextTool    *text_tool,
+                                                   GtkDeleteType    type,
+                                                   gint             count);
+static void     gimp_text_tool_backspace          (GimpTextTool    *text_tool);
+static void     gimp_text_tool_toggle_overwrite   (GimpTextTool    *text_tool);
+static void     gimp_text_tool_select_all         (GimpTextTool    *text_tool,
+                                                   gboolean         select);
+static void     gimp_text_tool_change_size        (GimpTextTool    *text_tool,
+                                                   gdouble          amount);
+static void     gimp_text_tool_change_baseline    (GimpTextTool    *text_tool,
+                                                   gdouble          amount);
+static void     gimp_text_tool_change_kerning     (GimpTextTool    *text_tool,
+                                                   gdouble          amount);
 
-static void   gimp_text_tool_options_notify     (GimpTextOptions *options,
-                                                 GParamSpec      *pspec,
-                                                 GimpTextTool    *text_tool);
-static void   gimp_text_tool_editor_dialog      (GimpTextTool    *text_tool);
-static void   gimp_text_tool_editor_destroy     (GtkWidget       *dialog,
-                                                 GimpTextTool    *text_tool);
-static void   gimp_text_tool_enter_text         (GimpTextTool    *text_tool,
-                                                 const gchar     *str);
-static void   gimp_text_tool_xy_to_iter         (GimpTextTool    *text_tool,
-                                                 gdouble          x,
-                                                 gdouble          y,
-                                                 GtkTextIter     *iter);
-static void   gimp_text_tool_im_commit          (GtkIMContext    *context,
-                                                 const gchar     *str,
-                                                 GimpTextTool    *text_tool);
-static void   gimp_text_tool_im_preedit_start   (GtkIMContext    *context,
-                                                 GimpTextTool    *text_tool);
-static void   gimp_text_tool_im_preedit_end     (GtkIMContext    *context,
-                                                 GimpTextTool    *text_tool);
-static void   gimp_text_tool_im_preedit_changed (GtkIMContext    *context,
-                                                 GimpTextTool    *text_tool);
+static void     gimp_text_tool_options_notify     (GimpTextOptions *options,
+                                                   GParamSpec      *pspec,
+                                                   GimpTextTool    *text_tool);
+static void     gimp_text_tool_editor_dialog      (GimpTextTool    *text_tool);
+static void     gimp_text_tool_editor_destroy     (GtkWidget       *dialog,
+                                                   GimpTextTool    *text_tool);
+static void     gimp_text_tool_enter_text         (GimpTextTool    *text_tool,
+                                                   const gchar     *str);
+static void     gimp_text_tool_xy_to_iter         (GimpTextTool    *text_tool,
+                                                   gdouble          x,
+                                                   gdouble          y,
+                                                   GtkTextIter     *iter);
+
+static void     gimp_text_tool_im_preedit_start   (GtkIMContext    *context,
+                                                   GimpTextTool    *text_tool);
+static void     gimp_text_tool_im_preedit_end     (GtkIMContext    *context,
+                                                   GimpTextTool    *text_tool);
+static void     gimp_text_tool_im_preedit_changed (GtkIMContext    *context,
+                                                   GimpTextTool    *text_tool);
+static void     gimp_text_tool_im_commit          (GtkIMContext    *context,
+                                                   const gchar     *str,
+                                                   GimpTextTool    *text_tool);
+static gboolean gimp_text_tool_im_retrieve_surrounding
+                                                  (GtkIMContext    *context,
+                                                   GimpTextTool    *text_tool);
+static gboolean gimp_text_tool_im_delete_surrounding
+                                                  (GtkIMContext    *context,
+                                                   gint             offset,
+                                                   gint             n_chars,
+                                                   GimpTextTool    *text_tool);
+
+static void     gimp_text_tool_im_delete_preedit  (GimpTextTool    *text_tool);
+
+static void     gimp_text_tool_editor_copy_selection_to_clipboard
+                                                  (GimpTextTool    *text_tool);
 
 
 /*  public functions  */
@@ -117,9 +132,6 @@ gimp_text_tool_editor_init (GimpTextTool *text_tool)
   text_tool->overwrite_mode = FALSE;
   text_tool->x_pos          = -1;
 
-  g_signal_connect (text_tool->im_context, "commit",
-                    G_CALLBACK (gimp_text_tool_im_commit),
-                    text_tool);
   g_signal_connect (text_tool->im_context, "preedit-start",
                     G_CALLBACK (gimp_text_tool_im_preedit_start),
                     text_tool);
@@ -129,7 +141,15 @@ gimp_text_tool_editor_init (GimpTextTool *text_tool)
   g_signal_connect (text_tool->im_context, "preedit-changed",
                     G_CALLBACK (gimp_text_tool_im_preedit_changed),
                     text_tool);
-
+  g_signal_connect (text_tool->im_context, "commit",
+                    G_CALLBACK (gimp_text_tool_im_commit),
+                    text_tool);
+  g_signal_connect (text_tool->im_context, "retrieve-surrounding",
+                    G_CALLBACK (gimp_text_tool_im_retrieve_surrounding),
+                    text_tool);
+  g_signal_connect (text_tool->im_context, "delete-surrounding",
+                    G_CALLBACK (gimp_text_tool_im_delete_surrounding),
+                    text_tool);
 }
 
 void
@@ -205,11 +225,11 @@ gimp_text_tool_editor_position (GimpTextTool *text_tool)
       GimpTool         *tool    = GIMP_TOOL (text_tool);
       GimpDisplayShell *shell   = gimp_display_get_shell (tool->display);
       GtkRequisition    requisition;
-      gint              x, y;
+      gdouble           x, y;
 
       gtk_widget_size_request (text_tool->style_overlay, &requisition);
 
-      g_object_get (text_tool,
+      g_object_get (text_tool->widget,
                     "x1", &x,
                     "y1", &y,
                     NULL);
@@ -292,8 +312,12 @@ gimp_text_tool_editor_button_press (GimpTextTool        *text_tool,
 
   switch (press_type)
     {
+      GtkTextIter start, end;
+
     case GIMP_BUTTON_PRESS_NORMAL:
-      gtk_text_buffer_place_cursor (buffer, &cursor);
+      if (gtk_text_buffer_get_selection_bounds (buffer, &start, &end) ||
+          gtk_text_iter_compare (&start, &cursor))
+        gtk_text_buffer_place_cursor (buffer, &cursor);
       break;
 
     case GIMP_BUTTON_PRESS_DOUBLE:
@@ -323,19 +347,7 @@ gimp_text_tool_editor_button_press (GimpTextTool        *text_tool,
 void
 gimp_text_tool_editor_button_release (GimpTextTool *text_tool)
 {
-  GtkTextBuffer *buffer = GTK_TEXT_BUFFER (text_tool->buffer);
-
-  if (gtk_text_buffer_get_has_selection (buffer))
-    {
-      GimpTool         *tool  = GIMP_TOOL (text_tool);
-      GimpDisplayShell *shell = gimp_display_get_shell (tool->display);
-      GtkClipboard     *clipboard;
-
-      clipboard = gtk_widget_get_clipboard (GTK_WIDGET (shell),
-                                            GDK_SELECTION_PRIMARY);
-
-      gtk_text_buffer_copy_clipboard (buffer, clipboard);
-    }
+  gimp_text_tool_editor_copy_selection_to_clipboard (text_tool);
 }
 
 void
@@ -482,7 +494,6 @@ gimp_text_tool_editor_key_press (GimpTextTool *text_tool,
       break;
 
     case GDK_KEY_Escape:
-      gimp_rectangle_tool_cancel (GIMP_RECTANGLE_TOOL (text_tool));
       gimp_tool_control (GIMP_TOOL (text_tool), GIMP_TOOL_ACTION_HALT,
                          GIMP_TOOL (text_tool)->display);
       break;
@@ -531,6 +542,51 @@ gimp_text_tool_reset_im_context (GimpTextTool *text_tool)
 }
 
 void
+gimp_text_tool_abort_im_context (GimpTextTool *text_tool)
+{
+  GimpTool         *tool  = GIMP_TOOL (text_tool);
+  GimpDisplayShell *shell = gimp_display_get_shell (tool->display);
+
+  text_tool->needs_im_reset = TRUE;
+  gimp_text_tool_reset_im_context (text_tool);
+
+  /* Making sure preedit text is removed. */
+  gimp_text_tool_im_delete_preedit (text_tool);
+
+  /* the following lines seem to be the only way of really getting
+   * rid of any ongoing preedit state, please somebody tell me
+   * a clean way... mitch
+   */
+
+  gtk_im_context_focus_out (text_tool->im_context);
+  gtk_im_context_set_client_window (text_tool->im_context, NULL);
+
+  g_object_unref (text_tool->im_context);
+  text_tool->im_context = gtk_im_multicontext_new ();
+  gtk_im_context_set_client_window (text_tool->im_context,
+                                    gtk_widget_get_window (shell->canvas));
+  gtk_im_context_focus_in (text_tool->im_context);
+  g_signal_connect (text_tool->im_context, "preedit-start",
+                    G_CALLBACK (gimp_text_tool_im_preedit_start),
+                    text_tool);
+  g_signal_connect (text_tool->im_context, "preedit-end",
+                    G_CALLBACK (gimp_text_tool_im_preedit_end),
+                    text_tool);
+  g_signal_connect (text_tool->im_context, "preedit-changed",
+                    G_CALLBACK (gimp_text_tool_im_preedit_changed),
+                    text_tool);
+  g_signal_connect (text_tool->im_context, "commit",
+                    G_CALLBACK (gimp_text_tool_im_commit),
+                    text_tool);
+  g_signal_connect (text_tool->im_context, "retrieve-surrounding",
+                    G_CALLBACK (gimp_text_tool_im_retrieve_surrounding),
+                    text_tool);
+  g_signal_connect (text_tool->im_context, "delete-surrounding",
+                    G_CALLBACK (gimp_text_tool_im_delete_surrounding),
+                    text_tool);
+}
+
+void
 gimp_text_tool_editor_get_cursor_rect (GimpTextTool   *text_tool,
                                        gboolean        overwrite,
                                        PangoRectangle *cursor_rect)
@@ -570,11 +626,11 @@ gimp_text_tool_editor_get_cursor_rect (GimpTextTool   *text_tool,
 }
 
 void
-gimp_text_tool_editor_update_im_rect (GimpTextTool *text_tool)
+gimp_text_tool_editor_update_im_cursor (GimpTextTool *text_tool)
 {
   GimpDisplayShell *shell;
   PangoRectangle    rect = { 0, };
-  gint              off_x, off_y;
+  gdouble           off_x, off_y;
 
   g_return_if_fail (GIMP_IS_TEXT_TOOL (text_tool));
 
@@ -585,21 +641,15 @@ gimp_text_tool_editor_update_im_rect (GimpTextTool *text_tool)
                                            text_tool->overwrite_mode,
                                            &rect);
 
-  g_object_get (text_tool, "x1", &off_x, "y1", &off_y, NULL);
+  g_object_get (text_tool->widget,
+                "x1", &off_x,
+                "y1", &off_y,
+                NULL);
+
   rect.x += off_x;
   rect.y += off_y;
 
   gimp_display_shell_transform_xy (shell, rect.x, rect.y, &rect.x, &rect.y);
-
-  if (text_tool->preedit_overlay)
-    {
-      GtkRequisition requisition;
-
-      gtk_widget_size_request (text_tool->preedit_overlay, &requisition);
-
-      rect.width  = requisition.width;
-      rect.height = requisition.height;
-    }
 
   gtk_im_context_set_cursor_location (text_tool->im_context,
                                       (GdkRectangle *) &rect);
@@ -687,6 +737,15 @@ gimp_text_tool_move_cursor (GimpTextTool    *text_tool,
   gboolean       cancel_selection = FALSE;
   gint           x_pos  = -1;
 
+  if (text_tool->pending)
+    {
+      /* If there are any pending text commits, there would be
+       * inconsistencies between the text_tool->buffer and layout.
+       * This could result in crashes. See bug 751333.
+       * Therefore we apply them first.
+       */
+      gimp_text_tool_apply (text_tool, TRUE);
+    }
   GIMP_LOG (TEXT_EDITING, "%s count = %d, select = %s",
             g_enum_get_value (g_type_class_ref (GTK_TYPE_MOVEMENT_STEP),
                               step)->value_name,
@@ -802,8 +861,8 @@ gimp_text_tool_move_cursor (GimpTextTool    *text_tool,
         }
       else if (count > 0)
         {
-	  if (! gtk_text_iter_forward_visible_word_ends (&cursor, count))
-	    gtk_text_iter_forward_to_line_end (&cursor);
+          if (! gtk_text_iter_forward_visible_word_ends (&cursor, count))
+            gtk_text_iter_forward_to_line_end (&cursor);
         }
       break;
 
@@ -930,6 +989,7 @@ gimp_text_tool_move_cursor (GimpTextTool    *text_tool,
   gimp_text_tool_reset_im_context (text_tool);
 
   gtk_text_buffer_select_range (buffer, &cursor, sel_start);
+  gimp_text_tool_editor_copy_selection_to_clipboard (text_tool);
 
   gimp_draw_tool_resume (GIMP_DRAW_TOOL (text_tool));
 }
@@ -1115,7 +1175,7 @@ gimp_text_tool_select_all (GimpTextTool *text_tool,
       GtkTextIter cursor;
 
       gtk_text_buffer_get_iter_at_mark (buffer, &cursor,
-					gtk_text_buffer_get_insert (buffer));
+                                        gtk_text_buffer_get_insert (buffer));
       gtk_text_buffer_move_mark_by_name (buffer, "selection_bound", &cursor);
     }
 
@@ -1207,6 +1267,8 @@ gimp_text_tool_editor_dialog (GimpTextTool *text_tool)
 {
   GimpTool          *tool    = GIMP_TOOL (text_tool);
   GimpTextOptions   *options = GIMP_TEXT_TOOL_GET_OPTIONS (text_tool);
+  GimpDisplayShell  *shell   = gimp_display_get_shell (tool->display);
+  GimpImageWindow   *image_window;
   GimpDialogFactory *dialog_factory;
   GtkWindow         *parent  = NULL;
   gdouble            xres    = 1.0;
@@ -1218,14 +1280,8 @@ gimp_text_tool_editor_dialog (GimpTextTool *text_tool)
       return;
     }
 
-  dialog_factory = gimp_dialog_factory_get_singleton ();
-
-  if (tool->display)
-    {
-      GimpDisplayShell *shell = gimp_display_get_shell (tool->display);
-
-      parent = GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (shell)));
-    }
+  image_window   = gimp_display_shell_get_window (shell);
+  dialog_factory = gimp_dock_container_get_dialog_factory (GIMP_DOCK_CONTAINER (image_window));
 
   if (text_tool->image)
     gimp_image_get_resolution (text_tool->image, &xres, &yres);
@@ -1242,7 +1298,9 @@ gimp_text_tool_editor_dialog (GimpTextTool *text_tool)
 
   gimp_dialog_factory_add_foreign (dialog_factory,
                                    "gimp-text-tool-dialog",
-                                   text_tool->editor_dialog);
+                                   text_tool->editor_dialog,
+                                   gtk_widget_get_screen (GTK_WIDGET (image_window)),
+                                   gimp_widget_get_monitor (GTK_WIDGET (image_window)));
 
   g_signal_connect (text_tool->editor_dialog, "destroy",
                     G_CALLBACK (gimp_text_tool_editor_destroy),
@@ -1325,89 +1383,277 @@ gimp_text_tool_xy_to_iter (GimpTextTool *text_tool,
 }
 
 static void
-gimp_text_tool_im_commit (GtkIMContext *context,
-                          const gchar  *str,
-                          GimpTextTool *text_tool)
-{
-  gimp_text_tool_enter_text (text_tool, str);
-}
-
-static void
 gimp_text_tool_im_preedit_start (GtkIMContext *context,
                                  GimpTextTool *text_tool)
 {
-  GimpTool         *tool  = GIMP_TOOL (text_tool);
-  GimpDisplayShell *shell = gimp_display_get_shell (tool->display);
-  GtkStyle         *style = gtk_widget_get_style (shell->canvas);
-  GtkWidget        *frame;
-  GtkWidget        *ebox;
-  PangoRectangle    cursor_rect = { 0, };
-  gint              off_x, off_y;
+  GIMP_LOG (TEXT_EDITING, "preedit start");
 
-  if (text_tool->text)
-    gimp_text_tool_editor_get_cursor_rect (text_tool,
-                                           text_tool->overwrite_mode,
-                                           &cursor_rect);
-
-  g_object_get (text_tool, "x1", &off_x, "y1", &off_y, NULL);
-
-  text_tool->preedit_overlay = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (text_tool->preedit_overlay),
-                             GTK_SHADOW_OUT);
-  gimp_display_shell_add_overlay (shell,
-                                  text_tool->preedit_overlay,
-                                  cursor_rect.x + off_x,
-                                  cursor_rect.y + off_y,
-                                  GIMP_HANDLE_ANCHOR_NORTH_WEST, 0, 0);
-  gimp_overlay_box_set_child_opacity (GIMP_OVERLAY_BOX (shell->canvas),
-                                      text_tool->preedit_overlay, 0.7);
-  gtk_widget_show (text_tool->preedit_overlay);
-
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-  gtk_container_add (GTK_CONTAINER (text_tool->preedit_overlay), frame);
-  gtk_widget_show (frame);
-
-  ebox = gtk_event_box_new ();
-  gtk_widget_modify_bg (ebox, GTK_STATE_NORMAL,
-                        &style->base[GTK_STATE_NORMAL]);
-  gtk_container_add (GTK_CONTAINER (frame), ebox);
-  gtk_widget_show (ebox);
-
-  text_tool->preedit_label = gtk_label_new (NULL);
-  gtk_widget_modify_bg (text_tool->preedit_label, GTK_STATE_NORMAL,
-                        &style->text[GTK_STATE_NORMAL]);
-  gtk_misc_set_padding (GTK_MISC (text_tool->preedit_label), 2, 2);
-  gtk_container_add (GTK_CONTAINER (ebox), text_tool->preedit_label);
-  gtk_widget_show (text_tool->preedit_label);
-
-  gimp_text_tool_editor_update_im_rect (text_tool);
+  text_tool->preedit_active = TRUE;
 }
 
 static void
 gimp_text_tool_im_preedit_end (GtkIMContext *context,
                                GimpTextTool *text_tool)
 {
-  if (text_tool->preedit_overlay)
-    {
-      gtk_widget_destroy (text_tool->preedit_overlay);
-      text_tool->preedit_overlay = NULL;
-      text_tool->preedit_label   = NULL;
-    }
+  gimp_text_tool_delete_selection (text_tool);
+
+  text_tool->preedit_active = FALSE;
+
+  GIMP_LOG (TEXT_EDITING, "preedit end");
 }
 
 static void
 gimp_text_tool_im_preedit_changed (GtkIMContext *context,
                                    GimpTextTool *text_tool)
 {
-  if (text_tool->preedit_string)
-    g_free (text_tool->preedit_string);
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER (text_tool->buffer);
+  PangoAttrList *attrs;
+
+  GIMP_LOG (TEXT_EDITING, "preedit changed");
+
+  gtk_text_buffer_begin_user_action (buffer);
+
+  gimp_text_tool_im_delete_preedit (text_tool);
+
+  gimp_text_tool_delete_selection (text_tool);
 
   gtk_im_context_get_preedit_string (context,
-                                     &text_tool->preedit_string, NULL,
+                                     &text_tool->preedit_string, &attrs,
                                      &text_tool->preedit_cursor);
 
-  if (text_tool->preedit_label)
-    gtk_label_set_text (GTK_LABEL (text_tool->preedit_label),
-                        text_tool->preedit_string);
+  if (text_tool->preedit_string && *text_tool->preedit_string)
+    {
+      PangoAttrIterator *attr_iter;
+      GtkTextIter        iter;
+      gint               i;
+
+      /* Save the preedit start position. */
+      gtk_text_buffer_get_iter_at_mark (buffer, &iter,
+                                        gtk_text_buffer_get_insert (buffer));
+      text_tool->preedit_start = gtk_text_buffer_create_mark (buffer,
+                                                              "preedit-start",
+                                                              &iter, TRUE);
+
+      /* Loop through chunks of preedit text with different attributes. */
+      attr_iter = pango_attr_list_get_iterator (attrs);
+      do
+        {
+          gint attr_start;
+          gint attr_end;
+
+          pango_attr_iterator_range (attr_iter, &attr_start, &attr_end);
+          if (attr_start < strlen (text_tool->preedit_string))
+            {
+              GSList      *attrs_pos;
+              GtkTextMark *start_mark;
+              GtkTextIter  start;
+              GtkTextIter  end;
+
+              gtk_text_buffer_get_iter_at_mark (buffer, &start,
+                                                gtk_text_buffer_get_insert (buffer));
+              start_mark = gtk_text_buffer_create_mark (buffer,
+                                                        NULL,
+                                                        &start, TRUE);
+
+              gtk_text_buffer_begin_user_action (buffer);
+
+              /* Insert the preedit chunk at current cursor position. */
+              gtk_text_buffer_insert_at_cursor (GTK_TEXT_BUFFER (text_tool->buffer),
+                                                text_tool->preedit_string + attr_start,
+                                                attr_end - attr_start);
+              gtk_text_buffer_get_iter_at_mark (buffer, &start,
+                                                start_mark);
+              gtk_text_buffer_delete_mark (buffer, start_mark);
+              gtk_text_buffer_get_iter_at_mark (buffer, &end,
+                                                gtk_text_buffer_get_insert (buffer));
+
+              /* Apply text attributes to preedit text. */
+              attrs_pos = pango_attr_iterator_get_attrs (attr_iter);
+              while (attrs_pos)
+                {
+                  PangoAttribute *attr = attrs_pos->data;
+
+                  if (attr)
+                    {
+                      switch (attr->klass->type)
+                        {
+                        case PANGO_ATTR_UNDERLINE:
+                          gtk_text_buffer_apply_tag (buffer,
+                                                     text_tool->buffer->preedit_underline_tag,
+                                                     &start, &end);
+                          break;
+                        case PANGO_ATTR_BACKGROUND:
+                        case PANGO_ATTR_FOREGROUND:
+                            {
+                              PangoAttrColor *color_attr = (PangoAttrColor *) attr;
+                              GimpRGB         color;
+
+                              color.r = (gdouble) color_attr->color.red / 65535.0;
+                              color.g = (gdouble) color_attr->color.green / 65535.0;
+                              color.b = (gdouble) color_attr->color.blue / 65535.0;
+
+                              if (attr->klass->type == PANGO_ATTR_BACKGROUND)
+                                {
+                                  gimp_text_buffer_set_preedit_bg_color (text_tool->buffer,
+                                                                         &start, &end,
+                                                                         &color);
+                                }
+                              else
+                                {
+                                  gimp_text_buffer_set_preedit_color (text_tool->buffer,
+                                                                      &start, &end,
+                                                                      &color);
+                                }
+                            }
+                          break;
+                        default:
+                          /* Unsupported tags. */
+                          break;
+                        }
+                    }
+
+                  attrs_pos = attrs_pos->next;
+                }
+
+              gtk_text_buffer_end_user_action (buffer);
+            }
+        }
+      while (pango_attr_iterator_next (attr_iter));
+
+      /* Save the preedit end position. */
+      gtk_text_buffer_get_iter_at_mark (buffer, &iter,
+                                        gtk_text_buffer_get_insert (buffer));
+      text_tool->preedit_end = gtk_text_buffer_create_mark (buffer,
+                                                            "preedit-end",
+                                                            &iter, FALSE);
+
+      /* Move the cursor to the expected location. */
+      gtk_text_buffer_get_iter_at_mark (buffer, &iter, text_tool->preedit_start);
+      for (i = 0; i < text_tool->preedit_cursor; i++)
+        gtk_text_iter_forward_char (&iter);
+      gtk_text_buffer_place_cursor (buffer, &iter);
+
+      pango_attr_iterator_destroy (attr_iter);
+    }
+
+  pango_attr_list_unref (attrs);
+
+  gtk_text_buffer_end_user_action (buffer);
+}
+
+static void
+gimp_text_tool_im_commit (GtkIMContext *context,
+                          const gchar  *str,
+                          GimpTextTool *text_tool)
+{
+  gboolean preedit_active = text_tool->preedit_active;
+
+  gimp_text_tool_im_delete_preedit (text_tool);
+
+  /* Some IMEs would emit a preedit-commit before preedit-end.
+   * To keep undo consistency, we fake and end then immediate restart of
+   * preediting.
+   */
+  if (preedit_active)
+    gimp_text_tool_im_preedit_end (context, text_tool);
+
+  gimp_text_tool_enter_text (text_tool, str);
+
+  if (preedit_active)
+    gimp_text_tool_im_preedit_start (context, text_tool);
+}
+
+static gboolean
+gimp_text_tool_im_retrieve_surrounding (GtkIMContext *context,
+                                        GimpTextTool *text_tool)
+{
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER (text_tool->buffer);
+  GtkTextIter    start;
+  GtkTextIter    end;
+  gint           pos;
+  gchar         *text;
+
+  gtk_text_buffer_get_iter_at_mark (buffer, &start,
+                                    gtk_text_buffer_get_insert (buffer));
+  end = start;
+
+  pos = gtk_text_iter_get_line_index (&start);
+  gtk_text_iter_set_line_offset (&start, 0);
+  gtk_text_iter_forward_to_line_end (&end);
+
+  text = gtk_text_iter_get_slice (&start, &end);
+  gtk_im_context_set_surrounding (context, text, -1, pos);
+  g_free (text);
+
+  return TRUE;
+}
+
+static gboolean
+gimp_text_tool_im_delete_surrounding (GtkIMContext *context,
+                                      gint          offset,
+                                      gint          n_chars,
+                                      GimpTextTool *text_tool)
+{
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER (text_tool->buffer);
+  GtkTextIter    start;
+  GtkTextIter    end;
+
+  gtk_text_buffer_get_iter_at_mark (buffer, &start,
+                                    gtk_text_buffer_get_insert (buffer));
+  end = start;
+
+  gtk_text_iter_forward_chars (&start, offset);
+  gtk_text_iter_forward_chars (&end, offset + n_chars);
+
+  gtk_text_buffer_delete_interactive (buffer, &start, &end, TRUE);
+
+  return TRUE;
+}
+
+static void
+gimp_text_tool_im_delete_preedit (GimpTextTool *text_tool)
+{
+  if (text_tool->preedit_string)
+    {
+      if (*text_tool->preedit_string)
+        {
+          GtkTextBuffer *buffer = GTK_TEXT_BUFFER (text_tool->buffer);
+          GtkTextIter    start;
+          GtkTextIter    end;
+
+          gtk_text_buffer_get_iter_at_mark (buffer, &start,
+                                            text_tool->preedit_start);
+          gtk_text_buffer_get_iter_at_mark (buffer, &end,
+                                            text_tool->preedit_end);
+
+          gtk_text_buffer_delete_interactive (buffer, &start, &end, TRUE);
+
+          gtk_text_buffer_delete_mark (buffer, text_tool->preedit_start);
+          gtk_text_buffer_delete_mark (buffer, text_tool->preedit_end);
+          text_tool->preedit_start = NULL;
+          text_tool->preedit_end = NULL;
+        }
+
+      g_free (text_tool->preedit_string);
+      text_tool->preedit_string = NULL;
+    }
+}
+
+static void
+gimp_text_tool_editor_copy_selection_to_clipboard (GimpTextTool *text_tool)
+{
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER (text_tool->buffer);
+
+  if (! text_tool->editor_dialog &&
+      gtk_text_buffer_get_has_selection (buffer))
+    {
+      GimpTool         *tool  = GIMP_TOOL (text_tool);
+      GimpDisplayShell *shell = gimp_display_get_shell (tool->display);
+      GtkClipboard     *clipboard;
+
+      clipboard = gtk_widget_get_clipboard (GTK_WIDGET (shell),
+                                            GDK_SELECTION_PRIMARY);
+
+      gtk_text_buffer_copy_clipboard (buffer, clipboard);
+    }
 }

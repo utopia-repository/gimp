@@ -14,8 +14,7 @@ endif
 
 if HAVE_WINDRES
 include $(top_srcdir)/build/windows/gimprc-plug-ins.rule
-file_psd_load_RC = file-psd-load.rc.o
-file_psd_save_RC = file-psd-save.rc.o
+file_psd_RC = file-psd.rc.o
 endif
 
 AM_LDFLAGS = $(mwindows)
@@ -23,37 +22,37 @@ AM_LDFLAGS = $(mwindows)
 libexecdir = $(gimpplugindir)/plug-ins
 
 libexec_PROGRAMS = \
-	file-psd-load	\
-	file-psd-save
+	file-psd
 
-file_psd_load_SOURCES = \
+file_psd_SOURCES = \
 	psd.c			\
 	psd.h			\
 	psd-util.c		\
 	psd-util.h		\
 	psd-load.c		\
 	psd-load.h		\
+	psd-save.c		\
+	psd-save.h		\
 	psd-thumb-load.c	\
 	psd-thumb-load.h	\
 	psd-image-res-load.c	\
 	psd-image-res-load.h	\
 	psd-layer-res-load.c	\
-	psd-layer-res-load.h		
-
-file_psd_save_SOURCES = \
-	psd-save.c
+	psd-layer-res-load.h
 
 EXTRA_DIST = \
 	TODO.txt		\
 	new-resource-ids.txt
 
-INCLUDES = \
-	-I$(top_srcdir)		\
-	$(GTK_CFLAGS)		\
-	$(EXIF_CFLAGS)		\
+AM_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"file-psd\"	\
+	-I$(top_srcdir)			\
+	$(GTK_CFLAGS)			\
+	$(EXIF_CFLAGS)			\
+	$(GEGL_CFLAGS)			\
 	-I$(includedir)
 
-LDADD = \
+file_psd_LDADD = \
 	$(libgimpui)		\
 	$(libgimpwidgets)	\
 	$(libgimpconfig)	\
@@ -63,15 +62,10 @@ LDADD = \
 	$(libgimpbase)		\
 	$(JPEG_LIBS)		\
 	$(GTK_LIBS)		\
+	$(GEGL_LIBS)		\
 	$(EXIF_LIBS)		\
 	$(IPTCDATA_LIBS)	\
 	$(RT_LIBS)		\
-	$(INTLLIBS)
-
-file_psd_load_LDADD = \
-	$(LDADD)		\
-	$(file_psd_load_RC) 
-
-file_psd_save_LDADD = \
-	$(LDADD)		\
-	$(file_psd_save_RC) 
+	$(INTLLIBS)		\
+	$(Z_LIBS)		\
+	$(file_psd_RC)

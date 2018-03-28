@@ -19,10 +19,10 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpcolor/gimpcolor.h"
-#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
@@ -30,13 +30,16 @@
 #include "config/gimpcoreconfig.h"
 
 #include "core/gimp.h"
+#include "core/gimp-palettes.h"
 #include "core/gimpcontext.h"
 #include "core/gimpmarshal.h"
-#include "core/gimpviewable.h"
+#include "core/gimppalettemru.h"
 
 #include "gimpcolordialog.h"
+#include "gimpcolorhistory.h"
 #include "gimpdialogfactory.h"
 #include "gimphelp-ids.h"
+#include "gimpwidgets-utils.h"
 
 #include "gimp-intl.h"
 
@@ -52,31 +55,28 @@ enum
 };
 
 
-static void   gimp_color_dialog_dispose        (GObject            *object);
+static void   gimp_color_dialog_constructed      (GObject            *object);
 
-static void   gimp_color_dialog_response       (GtkDialog          *dialog,
-                                                gint                response_id);
+static void   gimp_color_dialog_response         (GtkDialog          *dialog,
+                                                  gint                response_id);
 
-static void   gimp_color_dialog_help_func      (const gchar        *help_id,
-                                                gpointer            help_data);
-static void   gimp_color_dialog_color_changed  (GimpColorSelection *selection,
-                                                GimpColorDialog    *dialog);
+static void   gimp_color_dialog_help_func        (const gchar        *help_id,
+                                                  gpointer            help_data);
+static void   gimp_color_dialog_color_changed    (GimpColorSelection *selection,
+                                                  GimpColorDialog    *dialog);
 
-static void   gimp_color_history_color_clicked (GtkWidget          *widget,
-                                                GimpColorDialog    *dialog);
-static void   gimp_color_history_color_changed (GtkWidget          *widget,
-                                                gpointer            data);
-static void   gimp_color_history_add_clicked   (GtkWidget          *widget,
-                                                GimpColorDialog    *dialog);
+static void   gimp_color_history_add_clicked     (GtkWidget          *widget,
+                                                  GimpColorDialog    *dialog);
 
+static void   gimp_color_dialog_history_selected (GimpColorHistory   *history,
+                                                  const GimpRGB      *rgb,
+                                                  GimpColorDialog    *dialog);
 
 G_DEFINE_TYPE (GimpColorDialog, gimp_color_dialog, GIMP_TYPE_VIEWABLE_DIALOG)
 
 #define parent_class gimp_color_dialog_parent_class
 
 static guint color_dialog_signals[LAST_SIGNAL] = { 0, };
-
-static GList *color_dialogs = NULL;
 
 
 static void
@@ -85,9 +85,9 @@ gimp_color_dialog_class_init (GimpColorDialogClass *klass)
   GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkDialogClass *dialog_class = GTK_DIALOG_CLASS (klass);
 
-  object_class->dispose  = gimp_color_dialog_dispose;
+  object_class->constructed = gimp_color_dialog_constructed;
 
-  dialog_class->response = gimp_color_dialog_response;
+  dialog_class->response    = gimp_color_dialog_response;
 
   color_dialog_signals[UPDATE] =
     g_signal_new ("update",
@@ -104,18 +104,14 @@ gimp_color_dialog_class_init (GimpColorDialogClass *klass)
 static void
 gimp_color_dialog_init (GimpColorDialog *dialog)
 {
-  GtkWidget *table;
-  GtkWidget *button;
-  GtkWidget *arrow;
-  gint       i;
-
-  color_dialogs = g_list_prepend (color_dialogs, dialog);
-
   gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-                          GIMP_STOCK_RESET, RESPONSE_RESET,
-                          GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                          GTK_STOCK_OK,     GTK_RESPONSE_OK,
+
+                          _("_Reset"),  RESPONSE_RESET,
+                          _("_Cancel"), GTK_RESPONSE_CANCEL,
+                          _("_OK"),     GTK_RESPONSE_OK,
+
                           NULL);
+
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
@@ -133,18 +129,29 @@ gimp_color_dialog_init (GimpColorDialog *dialog)
   g_signal_connect (dialog->selection, "color-changed",
                     G_CALLBACK (gimp_color_dialog_color_changed),
                     dialog);
+}
 
-  /* The color history */
-  table = gtk_table_new (2, 1 + COLOR_HISTORY_SIZE / 2, TRUE);
-  gtk_table_set_row_spacings (GTK_TABLE (table), 2);
-  gtk_table_set_col_spacings (GTK_TABLE (table), 2);
-  gtk_table_set_col_spacing (GTK_TABLE (table), 0, 4);
+static void
+gimp_color_dialog_constructed (GObject *object)
+{
+  GimpColorDialog    *dialog          = GIMP_COLOR_DIALOG (object);
+  GimpViewableDialog *viewable_dialog = GIMP_VIEWABLE_DIALOG (object);
+  GtkWidget          *hbox;
+  GtkWidget          *history;
+  GtkWidget          *button;
+  GtkWidget          *arrow;
+
+  G_OBJECT_CLASS (parent_class)->constructed (object);
+
+  /* Color history box. */
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
   gtk_box_pack_end (GTK_BOX (GIMP_COLOR_SELECTION (dialog->selection)->right_vbox),
-                    table, FALSE, FALSE, 0);
-  gtk_widget_show (table);
+                    hbox, FALSE, FALSE, 0);
+  gtk_widget_show (hbox);
 
+  /* Button for adding to color history. */
   button = gtk_button_new ();
-  gtk_table_attach_defaults (GTK_TABLE (table), button, 0, 1, 0, 1);
+  gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (button), FALSE, FALSE, 0);
   gimp_help_set_help_data (button,
                            _("Add the current color to the color history"),
                            NULL);
@@ -158,46 +165,14 @@ gimp_color_dialog_init (GimpColorDialog *dialog)
   gtk_container_add (GTK_CONTAINER (button), arrow);
   gtk_widget_show (arrow);
 
-  for (i = 0; i < COLOR_HISTORY_SIZE; i++)
-    {
-      GimpRGB history_color;
-      gint    row, column;
+  /* Color history table. */
+  history = gimp_color_history_new (viewable_dialog->context, 12);
+  gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (history), TRUE, TRUE, 0);
+  gtk_widget_show (GTK_WIDGET (history));
 
-      column = i % (COLOR_HISTORY_SIZE / 2);
-      row    = i / (COLOR_HISTORY_SIZE / 2);
-
-      button = gtk_button_new ();
-      gtk_widget_set_size_request (button, COLOR_AREA_SIZE, COLOR_AREA_SIZE);
-      gtk_table_attach_defaults (GTK_TABLE (table), button,
-                                 column + 1, column + 2, row, row + 1);
-      gtk_widget_show (button);
-
-      color_history_get (i, &history_color);
-
-      dialog->history[i] = gimp_color_area_new (&history_color,
-                                                GIMP_COLOR_AREA_SMALL_CHECKS,
-                                                GDK_BUTTON2_MASK);
-      gtk_container_add (GTK_CONTAINER (button), dialog->history[i]);
-      gtk_widget_show (dialog->history[i]);
-
-      g_signal_connect (button, "clicked",
-                        G_CALLBACK (gimp_color_history_color_clicked),
-                        dialog);
-
-      g_signal_connect (dialog->history[i], "color-changed",
-                        G_CALLBACK (gimp_color_history_color_changed),
-                        GINT_TO_POINTER (i));
-    }
-}
-
-static void
-gimp_color_dialog_dispose (GObject *object)
-{
-  GimpColorDialog *dialog = GIMP_COLOR_DIALOG (object);
-
-  color_dialogs = g_list_remove (color_dialogs, dialog);
-
-  G_OBJECT_CLASS (parent_class)->dispose (object);
+  g_signal_connect (history, "color-selected",
+                    G_CALLBACK (gimp_color_dialog_history_selected),
+                    dialog);
 }
 
 static void
@@ -214,8 +189,6 @@ gimp_color_dialog_response (GtkDialog *gtk_dialog,
       break;
 
     case GTK_RESPONSE_OK:
-      gimp_color_history_add_clicked (NULL, dialog);
-
       gimp_color_selection_get_color (GIMP_COLOR_SELECTION (dialog->selection),
                                       &color);
 
@@ -240,7 +213,7 @@ GtkWidget *
 gimp_color_dialog_new (GimpViewable      *viewable,
                        GimpContext       *context,
                        const gchar       *title,
-                       const gchar       *stock_id,
+                       const gchar       *icon_name,
                        const gchar       *desc,
                        GtkWidget         *parent,
                        GimpDialogFactory *dialog_factory,
@@ -253,16 +226,13 @@ gimp_color_dialog_new (GimpViewable      *viewable,
   const gchar     *role;
 
   g_return_val_if_fail (viewable == NULL || GIMP_IS_VIEWABLE (viewable), NULL);
-  g_return_val_if_fail (context == NULL || GIMP_IS_CONTEXT (context), NULL);
+  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
   g_return_val_if_fail (GTK_IS_WIDGET (parent), NULL);
   g_return_val_if_fail (dialog_factory == NULL ||
                         GIMP_IS_DIALOG_FACTORY (dialog_factory), NULL);
   g_return_val_if_fail (dialog_factory == NULL || dialog_identifier != NULL,
                         NULL);
   g_return_val_if_fail (color != NULL, NULL);
-
-  if (! context)
-    g_warning ("gimp_color_dialog_new() called with a NULL context");
 
   role = dialog_identifier ? dialog_identifier : "gimp-color-selector";
 
@@ -271,8 +241,9 @@ gimp_color_dialog_new (GimpViewable      *viewable,
                          "role",        role,
                          "help-func",   gimp_color_dialog_help_func,
                          "help-id",     GIMP_HELP_COLOR_DIALOG,
-                         "stock-id",    stock_id,
+                         "icon-name",   icon_name,
                          "description", desc,
+                         "context",     context,
                          "parent",      parent,
                          NULL);
 
@@ -294,23 +265,24 @@ gimp_color_dialog_new (GimpViewable      *viewable,
   dialog->wants_updates = wants_updates;
 
   if (dialog_factory)
-    gimp_dialog_factory_add_foreign (dialog_factory, dialog_identifier,
-                                     GTK_WIDGET (dialog));
+    {
+      gimp_dialog_factory_add_foreign (dialog_factory, dialog_identifier,
+                                       GTK_WIDGET (dialog),
+                                       gtk_widget_get_screen (parent),
+                                       gimp_widget_get_monitor (parent));
+    }
 
   gimp_color_selection_set_show_alpha (GIMP_COLOR_SELECTION (dialog->selection),
                                        show_alpha);
 
-  if (context)
-    {
-      g_object_set_data (G_OBJECT (context->gimp->config->color_management),
-                         "gimp-context", context);
+  g_object_set_data (G_OBJECT (context->gimp->config->color_management),
+                     "gimp-context", context);
 
-      gimp_color_selection_set_config (GIMP_COLOR_SELECTION (dialog->selection),
-                                       context->gimp->config->color_management);
+  gimp_color_selection_set_config (GIMP_COLOR_SELECTION (dialog->selection),
+                                   context->gimp->config->color_management);
 
-      g_object_set_data (G_OBJECT (context->gimp->config->color_management),
-                         "gimp-context", NULL);
-    }
+  g_object_set_data (G_OBJECT (context->gimp->config->color_management),
+                     "gimp-context", NULL);
 
   gimp_color_selection_set_color (GIMP_COLOR_SELECTION (dialog->selection),
                                   color);
@@ -386,73 +358,31 @@ gimp_color_dialog_color_changed (GimpColorSelection *selection,
 }
 
 
-/*  color history callbacks  */
-
-static void
-gimp_color_history_color_clicked (GtkWidget       *widget,
-                                  GimpColorDialog *dialog)
-{
-  GimpColorArea *color_area;
-  GimpRGB        color;
-
-  color_area = GIMP_COLOR_AREA (gtk_bin_get_child (GTK_BIN (widget)));
-
-  gimp_color_area_get_color (color_area, &color);
-  gimp_color_selection_set_color (GIMP_COLOR_SELECTION (dialog->selection),
-                                  &color);
-}
-
-static void
-gimp_color_history_color_changed (GtkWidget *widget,
-                                  gpointer   data)
-{
-  GimpRGB  changed_color;
-  gint     color_index;
-  GList   *list;
-
-  gimp_color_area_get_color (GIMP_COLOR_AREA (widget), &changed_color);
-
-  color_index = GPOINTER_TO_INT (data);
-
-  color_history_set (color_index, &changed_color);
-
-  for (list = color_dialogs; list; list = g_list_next (list))
-    {
-      GimpColorDialog *dialog = list->data;
-
-      if (dialog->history[color_index] != widget)
-        {
-          g_signal_handlers_block_by_func (dialog->history[color_index],
-                                           gimp_color_history_color_changed,
-                                           data);
-
-          gimp_color_area_set_color
-            (GIMP_COLOR_AREA (dialog->history[color_index]), &changed_color);
-
-          g_signal_handlers_unblock_by_func (dialog->history[color_index],
-                                             gimp_color_history_color_changed,
-                                             data);
-        }
-    }
-}
+/* History-adding button callback */
 
 static void
 gimp_color_history_add_clicked (GtkWidget       *widget,
                                 GimpColorDialog *dialog)
 {
-  GimpRGB color;
-  gint    shift_begin;
-  gint    i;
+  GimpViewableDialog *viewable_dialog = GIMP_VIEWABLE_DIALOG (dialog);
+  GimpPalette        *history;
+  GimpRGB             color;
+
+  history = gimp_palettes_get_color_history (viewable_dialog->context->gimp);
 
   gimp_color_selection_get_color (GIMP_COLOR_SELECTION (dialog->selection),
                                   &color);
 
-  shift_begin = color_history_add (&color);
+  gimp_palette_mru_add (GIMP_PALETTE_MRU (history), &color);
+}
 
-  for (i = shift_begin; i >= 0; i--)
-    {
-      color_history_get (i, &color);
+/* Color history callback  */
 
-      gimp_color_area_set_color (GIMP_COLOR_AREA (dialog->history[i]), &color);
-    }
+static void
+gimp_color_dialog_history_selected (GimpColorHistory *history,
+                                    const GimpRGB    *rgb,
+                                    GimpColorDialog  *dialog)
+{
+  gimp_color_selection_set_color (GIMP_COLOR_SELECTION (dialog->selection),
+                                  rgb);
 }

@@ -35,106 +35,17 @@ typedef enum
 } GimpBrushApplicationMode;
 
 
-#define GIMP_TYPE_BRUSH_GENERATED_SHAPE (gimp_brush_generated_shape_get_type ())
-
-GType gimp_brush_generated_shape_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_BRUSH_GENERATED_CIRCLE,
-  GIMP_BRUSH_GENERATED_SQUARE,
-  GIMP_BRUSH_GENERATED_DIAMOND
-} GimpBrushGeneratedShape;
-
-
 #define GIMP_TYPE_CONVERT_DITHER_TYPE (gimp_convert_dither_type_get_type ())
 
 GType gimp_convert_dither_type_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_NO_DITHER,
-  GIMP_FS_DITHER,
-  GIMP_FSLOWBLEED_DITHER,
-  GIMP_FIXED_DITHER
+  GIMP_CONVERT_DITHER_NONE,
+  GIMP_CONVERT_DITHER_FS,
+  GIMP_CONVERT_DITHER_FS_LOWBLEED,
+  GIMP_CONVERT_DITHER_FIXED
 } GimpConvertDitherType;
-
-
-#define GIMP_TYPE_CONVERT_PALETTE_TYPE (gimp_convert_palette_type_get_type ())
-
-GType gimp_convert_palette_type_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_MAKE_PALETTE,
-  GIMP_REUSE_PALETTE,
-  GIMP_WEB_PALETTE,
-  GIMP_MONO_PALETTE,
-  GIMP_CUSTOM_PALETTE
-} GimpConvertPaletteType;
-
-
-#define GIMP_TYPE_CONVOLUTION_TYPE (gimp_convolution_type_get_type ())
-
-GType gimp_convolution_type_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_NORMAL_CONVOL,
-  GIMP_ABSOLUTE_CONVOL,
-  GIMP_NEGATIVE_CONVOL
-} GimpConvolutionType;
-
-
-#define GIMP_TYPE_CONVOLVE_TYPE (gimp_convolve_type_get_type ())
-
-GType gimp_convolve_type_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_BLUR_CONVOLVE,
-  GIMP_SHARPEN_CONVOLVE
-} GimpConvolveType;
-
-
-#define GIMP_TYPE_FILL_TYPE (gimp_fill_type_get_type ())
-
-GType gimp_fill_type_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_FOREGROUND_FILL,
-  GIMP_BACKGROUND_FILL,
-  GIMP_WHITE_FILL,
-  GIMP_TRANSPARENT_FILL,
-  GIMP_PATTERN_FILL
-} GimpFillType;
-
-
-#define GIMP_TYPE_GRADIENT_SEGMENT_COLOR (gimp_gradient_segment_color_get_type ())
-
-GType gimp_gradient_segment_color_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_GRADIENT_SEGMENT_RGB,
-  GIMP_GRADIENT_SEGMENT_HSV_CCW,
-  GIMP_GRADIENT_SEGMENT_HSV_CW
-} GimpGradientSegmentColor;
-
-
-#define GIMP_TYPE_GRADIENT_SEGMENT_TYPE (gimp_gradient_segment_type_get_type ())
-
-GType gimp_gradient_segment_type_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_GRADIENT_SEGMENT_LINEAR,
-  GIMP_GRADIENT_SEGMENT_CURVED,
-  GIMP_GRADIENT_SEGMENT_SINE,
-  GIMP_GRADIENT_SEGMENT_SPHERE_INCREASING,
-  GIMP_GRADIENT_SEGMENT_SPHERE_DECREASING
-} GimpGradientSegmentType;
 
 
 #define GIMP_TYPE_HISTOGRAM_CHANNEL (gimp_histogram_channel_get_type ())
@@ -147,143 +58,106 @@ typedef enum
   GIMP_HISTOGRAM_RED,
   GIMP_HISTOGRAM_GREEN,
   GIMP_HISTOGRAM_BLUE,
-  GIMP_HISTOGRAM_ALPHA
+  GIMP_HISTOGRAM_ALPHA,
+  GIMP_HISTOGRAM_LUMINANCE
 } GimpHistogramChannel;
 
 
-#define GIMP_TYPE_HUE_RANGE (gimp_hue_range_get_type ())
+#define GIMP_TYPE_LAYER_COLOR_SPACE (gimp_layer_color_space_get_type ())
 
-GType gimp_hue_range_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_ALL_HUES,
-  GIMP_RED_HUES,
-  GIMP_YELLOW_HUES,
-  GIMP_GREEN_HUES,
-  GIMP_CYAN_HUES,
-  GIMP_BLUE_HUES,
-  GIMP_MAGENTA_HUES
-} GimpHueRange;
-
-
-#define GIMP_TYPE_INK_BLOB_TYPE (gimp_ink_blob_type_get_type ())
-
-GType gimp_ink_blob_type_get_type (void) G_GNUC_CONST;
+GType gimp_layer_color_space_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_INK_BLOB_TYPE_CIRCLE,
-  GIMP_INK_BLOB_TYPE_SQUARE,
-  GIMP_INK_BLOB_TYPE_DIAMOND
-} GimpInkBlobType;
+  GIMP_LAYER_COLOR_SPACE_AUTO,
+  GIMP_LAYER_COLOR_SPACE_RGB_LINEAR,
+  GIMP_LAYER_COLOR_SPACE_RGB_PERCEPTUAL
+} GimpLayerColorSpace;
 
 
-#define GIMP_TYPE_LAYER_MODE_EFFECTS (gimp_layer_mode_effects_get_type ())
+#define GIMP_TYPE_LAYER_COMPOSITE_MODE (gimp_layer_composite_mode_get_type ())
 
-GType gimp_layer_mode_effects_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_NORMAL_MODE,
-  GIMP_DISSOLVE_MODE,
-  GIMP_BEHIND_MODE,
-  GIMP_MULTIPLY_MODE,
-  GIMP_SCREEN_MODE,
-  GIMP_OVERLAY_MODE,
-  GIMP_DIFFERENCE_MODE,
-  GIMP_ADDITION_MODE,
-  GIMP_SUBTRACT_MODE,
-  GIMP_DARKEN_ONLY_MODE,
-  GIMP_LIGHTEN_ONLY_MODE,
-  GIMP_HUE_MODE,
-  GIMP_SATURATION_MODE,
-  GIMP_COLOR_MODE,
-  GIMP_VALUE_MODE,
-  GIMP_DIVIDE_MODE,
-  GIMP_DODGE_MODE,
-  GIMP_BURN_MODE,
-  GIMP_HARDLIGHT_MODE,
-  GIMP_SOFTLIGHT_MODE,
-  GIMP_GRAIN_EXTRACT_MODE,
-  GIMP_GRAIN_MERGE_MODE,
-  GIMP_COLOR_ERASE_MODE
-} GimpLayerModeEffects;
-
-
-#define GIMP_TYPE_MASK_APPLY_MODE (gimp_mask_apply_mode_get_type ())
-
-GType gimp_mask_apply_mode_get_type (void) G_GNUC_CONST;
+GType gimp_layer_composite_mode_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_MASK_APPLY,
-  GIMP_MASK_DISCARD
-} GimpMaskApplyMode;
+  GIMP_LAYER_COMPOSITE_AUTO,
+  GIMP_LAYER_COMPOSITE_UNION,
+  GIMP_LAYER_COMPOSITE_CLIP_TO_BACKDROP,
+  GIMP_LAYER_COMPOSITE_CLIP_TO_LAYER,
+  GIMP_LAYER_COMPOSITE_INTERSECTION
+} GimpLayerCompositeMode;
 
 
-#define GIMP_TYPE_MERGE_TYPE (gimp_merge_type_get_type ())
+#define GIMP_TYPE_LAYER_MODE (gimp_layer_mode_get_type ())
 
-GType gimp_merge_type_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_EXPAND_AS_NECESSARY,
-  GIMP_CLIP_TO_IMAGE,
-  GIMP_CLIP_TO_BOTTOM_LAYER,
-  GIMP_FLATTEN_IMAGE
-} GimpMergeType;
-
-
-#define GIMP_TYPE_OFFSET_TYPE (gimp_offset_type_get_type ())
-
-GType gimp_offset_type_get_type (void) G_GNUC_CONST;
+GType gimp_layer_mode_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_OFFSET_BACKGROUND,
-  GIMP_OFFSET_TRANSPARENT
-} GimpOffsetType;
-
-
-#define GIMP_TYPE_ORIENTATION_TYPE (gimp_orientation_type_get_type ())
-
-GType gimp_orientation_type_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_ORIENTATION_HORIZONTAL,
-  GIMP_ORIENTATION_VERTICAL,
-  GIMP_ORIENTATION_UNKNOWN
-} GimpOrientationType;
-
-
-#define GIMP_TYPE_ROTATION_TYPE (gimp_rotation_type_get_type ())
-
-GType gimp_rotation_type_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_ROTATE_90,
-  GIMP_ROTATE_180,
-  GIMP_ROTATE_270
-} GimpRotationType;
-
-
-#define GIMP_TYPE_SELECT_CRITERION (gimp_select_criterion_get_type ())
-
-GType gimp_select_criterion_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_SELECT_CRITERION_COMPOSITE,
-  GIMP_SELECT_CRITERION_R,
-  GIMP_SELECT_CRITERION_G,
-  GIMP_SELECT_CRITERION_B,
-  GIMP_SELECT_CRITERION_H,
-  GIMP_SELECT_CRITERION_S,
-  GIMP_SELECT_CRITERION_V
-} GimpSelectCriterion;
+  GIMP_LAYER_MODE_NORMAL_LEGACY,
+  GIMP_LAYER_MODE_DISSOLVE,
+  GIMP_LAYER_MODE_BEHIND_LEGACY,
+  GIMP_LAYER_MODE_MULTIPLY_LEGACY,
+  GIMP_LAYER_MODE_SCREEN_LEGACY,
+  GIMP_LAYER_MODE_OVERLAY_LEGACY,
+  GIMP_LAYER_MODE_DIFFERENCE_LEGACY,
+  GIMP_LAYER_MODE_ADDITION_LEGACY,
+  GIMP_LAYER_MODE_SUBTRACT_LEGACY,
+  GIMP_LAYER_MODE_DARKEN_ONLY_LEGACY,
+  GIMP_LAYER_MODE_LIGHTEN_ONLY_LEGACY,
+  GIMP_LAYER_MODE_HSV_HUE_LEGACY,
+  GIMP_LAYER_MODE_HSV_SATURATION_LEGACY,
+  GIMP_LAYER_MODE_HSL_COLOR_LEGACY,
+  GIMP_LAYER_MODE_HSV_VALUE_LEGACY,
+  GIMP_LAYER_MODE_DIVIDE_LEGACY,
+  GIMP_LAYER_MODE_DODGE_LEGACY,
+  GIMP_LAYER_MODE_BURN_LEGACY,
+  GIMP_LAYER_MODE_HARDLIGHT_LEGACY,
+  GIMP_LAYER_MODE_SOFTLIGHT_LEGACY,
+  GIMP_LAYER_MODE_GRAIN_EXTRACT_LEGACY,
+  GIMP_LAYER_MODE_GRAIN_MERGE_LEGACY,
+  GIMP_LAYER_MODE_COLOR_ERASE_LEGACY,
+  GIMP_LAYER_MODE_OVERLAY,
+  GIMP_LAYER_MODE_LCH_HUE,
+  GIMP_LAYER_MODE_LCH_CHROMA,
+  GIMP_LAYER_MODE_LCH_COLOR,
+  GIMP_LAYER_MODE_LCH_LIGHTNESS,
+  GIMP_LAYER_MODE_NORMAL,
+  GIMP_LAYER_MODE_BEHIND,
+  GIMP_LAYER_MODE_MULTIPLY,
+  GIMP_LAYER_MODE_SCREEN,
+  GIMP_LAYER_MODE_DIFFERENCE,
+  GIMP_LAYER_MODE_ADDITION,
+  GIMP_LAYER_MODE_SUBTRACT,
+  GIMP_LAYER_MODE_DARKEN_ONLY,
+  GIMP_LAYER_MODE_LIGHTEN_ONLY,
+  GIMP_LAYER_MODE_HSV_HUE,
+  GIMP_LAYER_MODE_HSV_SATURATION,
+  GIMP_LAYER_MODE_HSL_COLOR,
+  GIMP_LAYER_MODE_HSV_VALUE,
+  GIMP_LAYER_MODE_DIVIDE,
+  GIMP_LAYER_MODE_DODGE,
+  GIMP_LAYER_MODE_BURN,
+  GIMP_LAYER_MODE_HARDLIGHT,
+  GIMP_LAYER_MODE_SOFTLIGHT,
+  GIMP_LAYER_MODE_GRAIN_EXTRACT,
+  GIMP_LAYER_MODE_GRAIN_MERGE,
+  GIMP_LAYER_MODE_VIVID_LIGHT,
+  GIMP_LAYER_MODE_PIN_LIGHT,
+  GIMP_LAYER_MODE_LINEAR_LIGHT,
+  GIMP_LAYER_MODE_HARD_MIX,
+  GIMP_LAYER_MODE_EXCLUSION,
+  GIMP_LAYER_MODE_LINEAR_BURN,
+  GIMP_LAYER_MODE_LUMA_DARKEN_ONLY,
+  GIMP_LAYER_MODE_LUMA_LIGHTEN_ONLY,
+  GIMP_LAYER_MODE_LUMINANCE,
+  GIMP_LAYER_MODE_COLOR_ERASE,
+  GIMP_LAYER_MODE_ERASE,
+  GIMP_LAYER_MODE_MERGE,
+  GIMP_LAYER_MODE_SPLIT,
+  GIMP_LAYER_MODE_PASS_THROUGH
+} GimpLayerMode;
 
 
 void           gimp_enums_init           (void);

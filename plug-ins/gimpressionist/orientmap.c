@@ -524,9 +524,9 @@ create_orientmap_dialog (GtkWidget *parent)
                      gtk_widget_get_toplevel (parent), 0,
                      gimp_standard_help_func, PLUG_IN_PROC,
 
-                     GTK_STOCK_APPLY,  GTK_RESPONSE_APPLY,
-                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                     GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                     _("_Apply"),  GTK_RESPONSE_APPLY,
+                     _("_Cancel"), GTK_RESPONSE_CANCEL,
+                     _("_OK"),     GTK_RESPONSE_OK,
 
                      NULL);
 
@@ -594,7 +594,7 @@ create_orientmap_dialog (GtkWidget *parent)
   gtk_widget_show (tmpw);
 
   tmpw = orient_map_preview_prev = gimp_preview_area_new ();
-  gtk_widget_set_size_request (tmpw, OMWIDTH, OMHEIGHT);;
+  gtk_widget_set_size_request (tmpw, OMWIDTH, OMHEIGHT);
   gtk_container_add (GTK_CONTAINER (tmpw2), tmpw);
   gtk_widget_show (tmpw);
 

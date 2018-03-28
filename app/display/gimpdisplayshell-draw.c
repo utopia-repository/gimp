@@ -27,85 +27,25 @@
 
 #include "display-types.h"
 
-#include "base/tile-manager.h"
-
-#include "core/gimpdrawable.h"
-#include "core/gimpimage.h"
-#include "core/gimpprojection.h"
-
-#include "widgets/gimpcairo.h"
+#include "core/gimp-cairo.h"
+#include "core/gimp-utils.h"
 
 #include "gimpcanvas.h"
+#include "gimpcanvas-style.h"
 #include "gimpcanvaspath.h"
 #include "gimpdisplay.h"
 #include "gimpdisplayshell.h"
 #include "gimpdisplayshell-draw.h"
 #include "gimpdisplayshell-render.h"
 #include "gimpdisplayshell-scale.h"
-#include "gimpdisplayshell-scroll.h"
-#include "gimpdisplayshell-style.h"
 #include "gimpdisplayshell-transform.h"
+#include "gimpdisplayxfer.h"
+
+
+/* #define GIMP_DISPLAY_RENDER_ENABLE_SCALING 1 */
 
 
 /*  public functions  */
-
-/**
- * gimp_display_shell_get_scaled_image_size:
- * @shell:
- * @w:
- * @h:
- *
- * Gets the size of the rendered image after it has been scaled.
- *
- **/
-void
-gimp_display_shell_draw_get_scaled_image_size (GimpDisplayShell *shell,
-                                               gint             *w,
-                                               gint             *h)
-{
-  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-
-  gimp_display_shell_draw_get_scaled_image_size_for_scale (shell,
-                                                           gimp_zoom_model_get_factor (shell->zoom),
-                                                           w,
-                                                           h);
-}
-
-/**
- * gimp_display_shell_draw_get_scaled_image_size_for_scale:
- * @shell:
- * @scale:
- * @w:
- * @h:
- *
- **/
-void
-gimp_display_shell_draw_get_scaled_image_size_for_scale (GimpDisplayShell *shell,
-                                                         gdouble           scale,
-                                                         gint             *w,
-                                                         gint             *h)
-{
-  GimpImage      *image;
-  GimpProjection *proj;
-  TileManager    *tiles;
-  gdouble         scale_x;
-  gdouble         scale_y;
-
-  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-
-  image = gimp_display_get_image (shell->display);
-
-  g_return_if_fail (GIMP_IS_IMAGE (image));
-
-  proj = gimp_image_get_projection (image);
-
-  gimp_display_shell_calculate_scale_x_and_y (shell, scale, &scale_x, &scale_y);
-
-  tiles = gimp_projection_get_tiles_at_level (proj, 0, NULL);
-
-  if (w) *w = scale_x * tile_manager_width (tiles);
-  if (h) *h = scale_y * tile_manager_height (tiles);
-}
 
 void
 gimp_display_shell_draw_selection_out (GimpDisplayShell *shell,
@@ -117,9 +57,10 @@ gimp_display_shell_draw_selection_out (GimpDisplayShell *shell,
   g_return_if_fail (cr != NULL);
   g_return_if_fail (segs != NULL && n_segs > 0);
 
-  gimp_display_shell_set_selection_out_style (shell, cr);
+  gimp_canvas_set_selection_out_style (shell->canvas, cr,
+                                       shell->offset_x, shell->offset_y);
 
-  gimp_cairo_add_segments (cr, segs, n_segs);
+  gimp_cairo_segments (cr, segs, n_segs);
   cairo_stroke (cr);
 }
 
@@ -133,9 +74,62 @@ gimp_display_shell_draw_selection_in (GimpDisplayShell   *shell,
   g_return_if_fail (cr != NULL);
   g_return_if_fail (mask != NULL);
 
-  gimp_display_shell_set_selection_in_style (shell, cr, index);
+  gimp_canvas_set_selection_in_style (shell->canvas, cr, index,
+                                      shell->offset_x, shell->offset_y);
 
   cairo_mask (cr, mask);
+}
+
+void
+gimp_display_shell_draw_background (GimpDisplayShell *shell,
+                                    cairo_t          *cr)
+{
+  GdkWindow       *window;
+  cairo_pattern_t *bg_pattern;
+
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  g_return_if_fail (cr != NULL);
+
+  window     = gtk_widget_get_window (shell->canvas);
+  bg_pattern = gdk_window_get_background_pattern (window);
+
+  cairo_set_source (cr, bg_pattern);
+  cairo_paint (cr);
+}
+
+void
+gimp_display_shell_draw_checkerboard (GimpDisplayShell *shell,
+                                      cairo_t          *cr)
+{
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  g_return_if_fail (cr != NULL);
+
+  if (G_UNLIKELY (! shell->checkerboard))
+    {
+      GimpCheckSize  check_size;
+      GimpCheckType  check_type;
+      guchar         check_light;
+      guchar         check_dark;
+      GimpRGB        light;
+      GimpRGB        dark;
+
+      g_object_get (shell->display->config,
+                    "transparency-size", &check_size,
+                    "transparency-type", &check_type,
+                    NULL);
+
+      gimp_checks_get_shades (check_type, &check_light, &check_dark);
+      gimp_rgb_set_uchar (&light, check_light, check_light, check_light);
+      gimp_rgb_set_uchar (&dark,  check_dark,  check_dark,  check_dark);
+
+      shell->checkerboard =
+        gimp_cairo_checkerboard_create (cr,
+                                        1 << (check_size + 2), &light, &dark);
+    }
+
+  cairo_translate (cr, - shell->offset_x, - shell->offset_y);
+  cairo_set_source (cr, shell->checkerboard);
+  cairo_paint (cr);
 }
 
 void
@@ -146,83 +140,110 @@ gimp_display_shell_draw_image (GimpDisplayShell *shell,
                                gint              w,
                                gint              h)
 {
-  gint x2, y2;
-  gint i, j;
+  gdouble chunk_width;
+  gdouble chunk_height;
+  gdouble scale = 1.0;
+  gint    n_rows;
+  gint    n_cols;
+  gint    r, c;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
   g_return_if_fail (gimp_display_get_image (shell->display));
   g_return_if_fail (cr != NULL);
 
-  x2 = x + w;
-  y2 = y + h;
-
   /*  display the image in RENDER_BUF_WIDTH x RENDER_BUF_HEIGHT
-   *  sized chunks
+   *  maximally-sized image-space chunks.  adjust the screen-space
+   *  chunk size as necessary, to accommodate for the display
+   *  transform and window scale factor.
    */
-  for (i = y; i < y2; i += GIMP_DISPLAY_RENDER_BUF_HEIGHT)
+  chunk_width  = GIMP_DISPLAY_RENDER_BUF_WIDTH;
+  chunk_height = GIMP_DISPLAY_RENDER_BUF_HEIGHT;
+
+#ifdef GIMP_DISPLAY_RENDER_ENABLE_SCALING
+  /* if we had this future API, things would look pretty on hires (retina) */
+  scale *=
+    gdk_window_get_scale_factor (
+      gtk_widget_get_window (gtk_widget_get_toplevel (GTK_WIDGET (shell))));
+#endif
+
+  scale  = MIN (scale, GIMP_DISPLAY_RENDER_MAX_SCALE);
+  scale *= MAX (shell->scale_x, shell->scale_y);
+
+  if (scale != shell->scale_x)
+    chunk_width  = (chunk_width  - 1.0) * (shell->scale_x / scale);
+  if (scale != shell->scale_y)
+    chunk_height = (chunk_height - 1.0) * (shell->scale_y / scale);
+
+  if (shell->rotate_untransform)
     {
-      for (j = x; j < x2; j += GIMP_DISPLAY_RENDER_BUF_WIDTH)
+      gdouble a = shell->rotate_angle * G_PI / 180.0;
+
+      chunk_width = chunk_height = (MIN (chunk_width, chunk_height) - 1.0) /
+                                   (fabs (sin (a)) + fabs (cos (a)));
+    }
+
+  /* divide the painted area to evenly-sized chunks */
+  n_rows = ceil (h / floor (chunk_height));
+  n_cols = ceil (w / floor (chunk_width));
+
+  for (r = 0; r < n_rows; r++)
+    {
+      gint y1 = y + (2 *  r      * h + n_rows) / (2 * n_rows);
+      gint y2 = y + (2 * (r + 1) * h + n_rows) / (2 * n_rows);
+
+      for (c = 0; c < n_cols; c++)
         {
-          gint disp_xoffset, disp_yoffset;
-          gint dx, dy;
+          gint    x1 = x + (2 *  c      * w + n_cols) / (2 * n_cols);
+          gint    x2 = x + (2 * (c + 1) * w + n_cols) / (2 * n_cols);
+          gdouble ix1, iy1;
+          gdouble ix2, iy2;
+          gint    ix, iy;
+          gint    iw, ih;
 
-          dx = MIN (x2 - j, GIMP_DISPLAY_RENDER_BUF_WIDTH);
-          dy = MIN (y2 - i, GIMP_DISPLAY_RENDER_BUF_HEIGHT);
+          /* map chunk from screen space to scaled image space */
+          gimp_display_shell_untransform_bounds_with_scale (
+            shell, scale,
+            x1,   y1,   x2,   y2,
+            &ix1, &iy1, &ix2, &iy2);
 
-          gimp_display_shell_scroll_get_disp_offset (shell,
-                                                     &disp_xoffset,
-                                                     &disp_yoffset);
+          ix = floor (ix1);
+          iy = floor (iy1);
+          iw = ceil  (ix2) - ix;
+          ih = ceil  (iy2) - iy;
 
-          gimp_display_shell_render (shell, cr,
-                                     j - disp_xoffset,
-                                     i - disp_yoffset,
-                                     dx, dy);
+          cairo_save (cr);
+
+          /* clip to chunk bounds, in screen space */
+          cairo_rectangle (cr, x1, y1, x2 - x1, y2 - y1);
+          cairo_clip (cr);
+
+          /* transform to scaled image space, and apply uneven scaling */
+          if (shell->rotate_transform)
+            cairo_transform (cr, shell->rotate_transform);
+          cairo_translate (cr, -shell->offset_x, -shell->offset_y);
+          cairo_scale (cr, shell->scale_x / scale, shell->scale_y / scale);
+
+          /* render image */
+          gimp_display_shell_render (shell, cr, ix, iy, iw, ih, scale);
+
+          cairo_restore (cr);
+
+          /* if the GIMP_BRICK_WALL environment variable is defined,
+           * show chunk bounds
+           */
+          {
+            static gint brick_wall = -1;
+
+            if (brick_wall < 0)
+              brick_wall = (g_getenv ("GIMP_BRICK_WALL") != NULL);
+
+            if (brick_wall)
+              {
+                cairo_set_source_rgb (cr, 0.0, 0.0, 0.0);
+                cairo_rectangle (cr, x1, y1, x2 - x1, y2 - y1);
+                cairo_stroke (cr);
+              }
+          }
         }
     }
-}
-
-static cairo_pattern_t *
-gimp_display_shell_create_checkerboard (GimpDisplayShell *shell,
-                                        cairo_t          *cr)
-{
-  GimpCheckSize  check_size;
-  GimpCheckType  check_type;
-  guchar         check_light;
-  guchar         check_dark;
-  GimpRGB        light;
-  GimpRGB        dark;
-
-  g_object_get (shell->display->config,
-                "transparency-size", &check_size,
-                "transparency-type", &check_type,
-                NULL);
-
-  gimp_checks_get_shades (check_type, &check_light, &check_dark);
-  gimp_rgb_set_uchar (&light, check_light, check_light, check_light);
-  gimp_rgb_set_uchar (&dark,  check_dark,  check_dark,  check_dark);
-
-  return gimp_cairo_checkerboard_create (cr,
-                                         1 << (check_size + 2), &light, &dark);
-}
-
-void
-gimp_display_shell_draw_checkerboard (GimpDisplayShell *shell,
-                                      cairo_t          *cr,
-                                      gint              x,
-                                      gint              y,
-                                      gint              w,
-                                      gint              h)
-{
-  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-  g_return_if_fail (cr != NULL);
-
-  if (G_UNLIKELY (! shell->checkerboard))
-    shell->checkerboard = gimp_display_shell_create_checkerboard (shell, cr);
-
-  cairo_rectangle (cr, x, y, w, h);
-  cairo_clip (cr);
-
-  cairo_translate (cr, - shell->offset_x, - shell->offset_y);
-  cairo_set_source (cr, shell->checkerboard);
-  cairo_paint (cr);
 }

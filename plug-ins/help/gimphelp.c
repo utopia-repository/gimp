@@ -28,9 +28,7 @@
 
 #include <string.h>
 
-#include <glib-object.h>
-
-#include "libgimpbase/gimpbase.h"
+#include "libgimp/gimp.h"
 
 #include "gimphelp.h"
 
@@ -127,7 +125,6 @@ gimp_help_parse_locales (const gchar *help_locales)
   for (p = strchr (s, ':'); p; p = strchr (s, ':'))
     {
       gchar *new = g_strndup (s, p - s);
-
       locales = g_list_append (locales, new);
       s = p + 1;
     }

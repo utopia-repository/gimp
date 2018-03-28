@@ -40,13 +40,14 @@
  * gimp_brush_new:
  * @name: The requested name of the new brush.
  *
- * Creates a new brush
+ * Creates a new brush.
  *
- * This procedure creates a new, uninitialized brush
+ * This procedure creates a new, uninitialized brush.
  *
- * Returns: The actual new brush name.
+ * Returns: The actual new brush name. The returned value must be freed
+ * with g_free().
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gchar *
 gimp_brush_new (const gchar *name)
@@ -72,13 +73,14 @@ gimp_brush_new (const gchar *name)
  * gimp_brush_duplicate:
  * @name: The brush name.
  *
- * Duplicates a brush
+ * Duplicates a brush.
  *
- * This procedure creates an identical brush by a different name
+ * This procedure creates an identical brush by a different name.
  *
- * Returns: The name of the brush's copy.
+ * Returns: The name of the brush's copy. The returned value must be
+ * freed with g_free().
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gchar *
 gimp_brush_duplicate (const gchar *name)
@@ -104,13 +106,13 @@ gimp_brush_duplicate (const gchar *name)
  * gimp_brush_is_generated:
  * @name: The brush name.
  *
- * Tests if brush is generated
+ * Tests if brush is generated.
  *
- * Returns TRUE if this brush is parametric, FALSE for other types
+ * Returns TRUE if this brush is parametric, FALSE for other types.
  *
  * Returns: TRUE if the brush is generated.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_brush_is_generated (const gchar *name)
@@ -137,13 +139,14 @@ gimp_brush_is_generated (const gchar *name)
  * @name: The brush name.
  * @new_name: The new name of the brush.
  *
- * Rename a brush
+ * Renames a brush.
  *
- * This procedure renames a brush
+ * This procedure renames a brush.
  *
- * Returns: The actual new name of the brush.
+ * Returns: The actual new name of the brush. The returned value must
+ * be freed with g_free().
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gchar *
 gimp_brush_rename (const gchar *name,
@@ -171,13 +174,13 @@ gimp_brush_rename (const gchar *name,
  * gimp_brush_delete:
  * @name: The brush name.
  *
- * Deletes a brush
+ * Deletes a brush.
  *
- * This procedure deletes a brush
+ * This procedure deletes a brush.
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_brush_delete (const gchar *name)
@@ -202,13 +205,13 @@ gimp_brush_delete (const gchar *name)
  * gimp_brush_is_editable:
  * @name: The brush name.
  *
- * Tests if brush can be edited
+ * Tests if brush can be edited.
  *
- * Returns TRUE if you have permission to change the brush
+ * Returns TRUE if you have permission to change the brush.
  *
  * Returns: TRUE if the brush can be edited.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_brush_is_editable (const gchar *name)
@@ -238,14 +241,14 @@ gimp_brush_is_editable (const gchar *name)
  * @mask_bpp: The brush mask bpp.
  * @color_bpp: The brush color bpp.
  *
- * Retrieve information about the specified brush.
+ * Retrieves information about the specified brush.
  *
- * This procedure retrieves information about the specified brush. This
- * includes the brush name, and the brush extents (width and height).
+ * This procedure retrieves information about the specified brush:
+ * brush extents (width and height), color depth and mask depth.
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_brush_get_info (const gchar *name,
@@ -295,14 +298,14 @@ gimp_brush_get_info (const gchar *name,
  * @num_color_bytes: Length of brush color data.
  * @color_bytes: The brush color data.
  *
- * Retrieve information about the specified brush.
+ * Retrieves information about the specified brush.
  *
  * This procedure retrieves information about the specified brush. This
  * includes the brush extents (width and height) and its pixels data.
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_brush_get_pixels (const gchar  *name,
@@ -363,7 +366,7 @@ gimp_brush_get_pixels (const gchar  *name,
  * @name: The brush name.
  * @spacing: The brush spacing.
  *
- * Get the brush spacing.
+ * Gets the brush spacing.
  *
  * This procedure returns the spacing setting for the specified brush.
  * The return value is an integer between 0 and 1000 which represents
@@ -371,7 +374,7 @@ gimp_brush_get_pixels (const gchar  *name,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.2
+ * Since: 2.2
  **/
 gboolean
 gimp_brush_get_spacing (const gchar *name,
@@ -403,14 +406,14 @@ gimp_brush_get_spacing (const gchar *name,
  * @name: The brush name.
  * @spacing: The brush spacing.
  *
- * Set the brush spacing.
+ * Sets the brush spacing.
  *
  * This procedure modifies the spacing setting for the specified brush.
  * The value should be a integer between 0 and 1000.
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_brush_set_spacing (const gchar *name,
@@ -437,7 +440,7 @@ gimp_brush_set_spacing (const gchar *name,
  * gimp_brush_get_shape:
  * @name: The brush name.
  *
- * Get the shape of a generated brush.
+ * Gets the shape of a generated brush.
  *
  * This procedure gets the shape value for a generated brush. If called
  * for any other type of brush, it does not succeed. The current
@@ -448,7 +451,7 @@ gimp_brush_set_spacing (const gchar *name,
  *
  * Returns: The brush shape.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 GimpBrushGeneratedShape
 gimp_brush_get_shape (const gchar *name)
@@ -475,7 +478,7 @@ gimp_brush_get_shape (const gchar *name)
  * @name: The brush name.
  * @shape_in: The brush shape.
  *
- * Set the shape of a generated brush.
+ * Sets the shape of a generated brush.
  *
  * This procedure sets the shape value for a generated brush. If called
  * for any other type of brush, it does not succeed. The current
@@ -486,7 +489,7 @@ gimp_brush_get_shape (const gchar *name)
  *
  * Returns: The brush shape actually assigned.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 GimpBrushGeneratedShape
 gimp_brush_set_shape (const gchar             *name,
@@ -514,14 +517,14 @@ gimp_brush_set_shape (const gchar             *name,
  * gimp_brush_get_radius:
  * @name: The brush name.
  *
- * Get the radius of a generated brush.
+ * Gets the radius of a generated brush.
  *
  * This procedure gets the radius value for a generated brush. If
  * called for any other type of brush, it does not succeed.
  *
  * Returns: The radius of the brush in pixels.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gdouble
 gimp_brush_get_radius (const gchar *name)
@@ -546,16 +549,16 @@ gimp_brush_get_radius (const gchar *name)
 /**
  * gimp_brush_set_radius:
  * @name: The brush name.
- * @radius_in: The desired brush radius.
+ * @radius_in: The desired brush radius in pixel.
  *
- * Set the radius of a generated brush.
+ * Sets the radius of a generated brush.
  *
  * This procedure sets the radius for a generated brush. If called for
  * any other type of brush, it does not succeed.
  *
  * Returns: The brush radius actually assigned.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gdouble
 gimp_brush_set_radius (const gchar *name,
@@ -583,14 +586,14 @@ gimp_brush_set_radius (const gchar *name,
  * gimp_brush_get_spikes:
  * @name: The brush name.
  *
- * Get the number of spikes for a generated brush.
+ * Gets the number of spikes for a generated brush.
  *
  * This procedure gets the number of spikes for a generated brush. If
  * called for any other type of brush, it does not succeed.
  *
  * Returns: The number of spikes on the brush.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gint
 gimp_brush_get_spikes (const gchar *name)
@@ -617,14 +620,14 @@ gimp_brush_get_spikes (const gchar *name)
  * @name: The brush name.
  * @spikes_in: The desired number of spikes.
  *
- * Set the number of spikes for a generated brush.
+ * Sets the number of spikes for a generated brush.
  *
  * This procedure sets the number of spikes for a generated brush. If
  * called for any other type of brush, it does not succeed.
  *
  * Returns: The number of spikes actually assigned.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gint
 gimp_brush_set_spikes (const gchar *name,
@@ -652,15 +655,16 @@ gimp_brush_set_spikes (const gchar *name,
  * gimp_brush_get_hardness:
  * @name: The brush name.
  *
- * Get the hardness of a generated brush.
+ * Gets the hardness of a generated brush.
  *
  * This procedure gets the hardness of a generated brush. The hardness
- * of a brush is the amount its intensity fades at the outside edge. If
- * called for any other type of brush, the function does not succeed.
+ * of a brush is the amount its intensity fades at the outside edge, as
+ * a float between 0.0 and 1.0. If called for any other type of brush,
+ * the function does not succeed.
  *
  * Returns: The hardness of the brush.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gdouble
 gimp_brush_get_hardness (const gchar *name)
@@ -687,14 +691,15 @@ gimp_brush_get_hardness (const gchar *name)
  * @name: The brush name.
  * @hardness_in: The desired brush hardness.
  *
- * Set the hardness of a generated brush.
+ * Sets the hardness of a generated brush.
  *
  * This procedure sets the hardness for a generated brush. If called
- * for any other type of brush, it does not succeed.
+ * for any other type of brush, it does not succeed. The value should
+ * be a float between 0.0 and 1.0.
  *
  * Returns: The brush hardness actually assigned.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gdouble
 gimp_brush_set_hardness (const gchar *name,
@@ -722,14 +727,15 @@ gimp_brush_set_hardness (const gchar *name,
  * gimp_brush_get_aspect_ratio:
  * @name: The brush name.
  *
- * Get the aspect ratio of a generated brush.
+ * Gets the aspect ratio of a generated brush.
  *
  * This procedure gets the aspect ratio of a generated brush. If called
- * for any other type of brush, it does not succeed.
+ * for any other type of brush, it does not succeed. The return value
+ * is a float between 0.0 and 1000.0.
  *
  * Returns: The aspect ratio of the brush.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gdouble
 gimp_brush_get_aspect_ratio (const gchar *name)
@@ -756,14 +762,15 @@ gimp_brush_get_aspect_ratio (const gchar *name)
  * @name: The brush name.
  * @aspect_ratio_in: The desired brush aspect ratio.
  *
- * Set the aspect ratio of a generated brush.
+ * Sets the aspect ratio of a generated brush.
  *
  * This procedure sets the aspect ratio for a generated brush. If
- * called for any other type of brush, it does not succeed.
+ * called for any other type of brush, it does not succeed. The value
+ * should be a float between 0.0 and 1000.0.
  *
  * Returns: The brush aspect ratio actually assigned.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gdouble
 gimp_brush_set_aspect_ratio (const gchar *name,
@@ -791,14 +798,14 @@ gimp_brush_set_aspect_ratio (const gchar *name,
  * gimp_brush_get_angle:
  * @name: The brush name.
  *
- * Get the rotation angle of a generated brush.
+ * Gets the rotation angle of a generated brush.
  *
  * This procedure gets the angle of rotation for a generated brush. If
  * called for any other type of brush, it does not succeed.
  *
- * Returns: The rotation angle of the brush.
+ * Returns: The rotation angle of the brush in degree.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gdouble
 gimp_brush_get_angle (const gchar *name)
@@ -823,16 +830,16 @@ gimp_brush_get_angle (const gchar *name)
 /**
  * gimp_brush_set_angle:
  * @name: The brush name.
- * @angle_in: The desired brush rotation angle.
+ * @angle_in: The desired brush rotation angle in degree.
  *
- * Set the rotation angle of a generated brush.
+ * Sets the rotation angle of a generated brush.
  *
  * This procedure sets the rotation angle for a generated brush. If
  * called for any other type of brush, it does not succeed.
  *
  * Returns: The brush rotation angle actually assigned.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gdouble
 gimp_brush_set_angle (const gchar *name,

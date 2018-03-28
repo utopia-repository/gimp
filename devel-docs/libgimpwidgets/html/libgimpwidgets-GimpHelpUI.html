@@ -5,10 +5,10 @@
 <title>GimpHelpUI: GIMP Widgets Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
-<link rel="up" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities">
+<link rel="up" href="libgimpwidgets-utils.html" title="Part VI. GIMP Widgets Utilities">
 <link rel="prev" href="libgimpwidgets-GimpCairoUtils.html" title="GimpCairo-utils">
 <link rel="next" href="libgimpwidgets-GimpQueryBox.html" title="GimpQueryBox">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -130,8 +130,8 @@ help system.</p>
 <div class="refsect2">
 <a name="GimpHelpFunc"></a><h3>GimpHelpFunc ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-<span class="c_punctuation">(</span>*GimpHelpFunc<span class="c_punctuation">)</span> (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>,
-                 <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> help_data</code></em>);</pre>
+<span class="c_punctuation">(</span>*GimpHelpFunc<span class="c_punctuation">)</span> (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>,
+                 <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> help_data</code></em>);</pre>
 <p>This is the prototype for all functions you pass as <em class="parameter"><code>help_func</code></em>
  to
 the various GIMP dialog constructors like <a class="link" href="GimpDialog.html#gimp-dialog-new" title="gimp_dialog_new ()"><code class="function">gimp_dialog_new()</code></a>,
@@ -141,10 +141,10 @@ which page to display.</p>
 <p>All these dialog constructors functions call <a class="link" href="libgimpwidgets-GimpHelpUI.html#gimp-help-connect" title="gimp_help_connect ()"><code class="function">gimp_help_connect()</code></a>.</p>
 <p>In most cases it will be ok to use <a class="link" href="libgimpwidgets-GimpHelpUI.html#gimp-standard-help-func" title="gimp_standard_help_func ()"><code class="function">gimp_standard_help_func()</code></a> which
 does nothing but passing the <em class="parameter"><code>help_id</code></em>
- string to <code class="function">gimp_help()</code>. If
+ string to <a href="../libgimp/libgimp-gimphelp.html#gimp-help"><code class="function">gimp_help()</code></a>. If
 your plug-in needs some more sophisticated help handling you can
 provide your own <em class="parameter"><code>help_func</code></em>
- which has to call <code class="function">gimp_help()</code> to
+ which has to call <a href="../libgimp/libgimp-gimphelp.html#gimp-help"><code class="function">gimp_help()</code></a> to
 actually display the help.</p>
 <div class="refsect3">
 <a name="GimpHelpFunc.parameters"></a><h4>Parameters</h4>
@@ -176,7 +176,7 @@ actually display the help.</p>
 gimp_help_enable_tooltips (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Enable tooltips to be shown in the GIMP user interface.</p>
 <p>As a plug-in author, you don't need to care about this as this
-function is called for you from <code class="function">gimp_ui_init()</code>. This ensures that
+function is called for you from <a href="../libgimp/libgimp-gimpui.html#gimp-ui-init"><code class="function">gimp_ui_init()</code></a>. This ensures that
 the user setting from the GIMP preferences dialog is respected in
 all plug-in dialogs.</p>
 </div>
@@ -187,7 +187,7 @@ all plug-in dialogs.</p>
 gimp_help_disable_tooltips (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Disable tooltips to be shown in the GIMP user interface.</p>
 <p>As a plug-in author, you don't need to care about this as this
-function is called for you from <code class="function">gimp_ui_init()</code>. This ensures that
+function is called for you from <a href="../libgimp/libgimp-gimpui.html#gimp-ui-init"><code class="function">gimp_ui_init()</code></a>. This ensures that
 the user setting from the GIMP preferences dialog is respected in
 all plug-in dialogs.</p>
 </div>
@@ -195,10 +195,10 @@ all plug-in dialogs.</p>
 <div class="refsect2">
 <a name="gimp-standard-help-func"></a><h3>gimp_standard_help_func ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-gimp_standard_help_func (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>,
-                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> help_data</code></em>);</pre>
+gimp_standard_help_func (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>,
+                         <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> help_data</code></em>);</pre>
 <p>This is the standard GIMP help function which does nothing but calling
-<code class="function">gimp_help()</code>. It is the right function to use in almost all cases.</p>
+<a href="../libgimp/libgimp-gimphelp.html#gimp-help"><code class="function">gimp_help()</code></a>. It is the right function to use in almost all cases.</p>
 <div class="refsect3">
 <a name="gimp-standard-help-func.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -227,10 +227,10 @@ passed to <a class="link" href="libgimpwidgets-GimpHelpUI.html#gimp-help-connect
 <div class="refsect2">
 <a name="gimp-help-connect"></a><h3>gimp_help_connect ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-gimp_help_connect (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk2GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *widget</code></em>,
+gimp_help_connect (<em class="parameter"><code><a href="../gtk2/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *widget</code></em>,
                    <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()"><span class="type">GimpHelpFunc</span></a> help_func</code></em>,
-                   <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>,
-                   <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> help_data</code></em>);</pre>
+                   <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>,
+                   <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> help_data</code></em>);</pre>
 <p>Note that this function is automatically called by all libgimp dialog
 constructors. You only have to call it for windows/dialogs you created
 "manually".</p>
@@ -246,7 +246,7 @@ constructors. You only have to call it for windows/dialogs you created
 <tr>
 <td class="parameter_name"><p>widget</p></td>
 <td class="parameter_description"><p>The widget you want to connect the help accelerator for. Will
-be a <a href="/usr/share/gtk-doc/html/gtk2GtkWindow.html#GtkWindow-struct"><span class="type">GtkWindow</span></a> in most cases.</p></td>
+be a <a href="../gtk2/GtkWindow.html#GtkWindow-struct"><span class="type">GtkWindow</span></a> in most cases.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -276,14 +276,14 @@ pointer which will be passed to <em class="parameter"><code>help_func</code></em
 <div class="refsect2">
 <a name="gimp-help-set-help-data"></a><h3>gimp_help_set_help_data ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-gimp_help_set_help_data (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk2GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *widget</code></em>,
-                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *tooltip</code></em>,
-                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>);</pre>
-<p>The reason why we don't use <a href="/usr/share/gtk-doc/html/gtk2GtkWidget.html#gtk-widget-set-tooltip-text"><code class="function">gtk_widget_set_tooltip_text()</code></a> is that
+gimp_help_set_help_data (<em class="parameter"><code><a href="../gtk2/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *widget</code></em>,
+                         <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *tooltip</code></em>,
+                         <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>);</pre>
+<p>The reason why we don't use <a href="../gtk2/GtkWidget.html#gtk-widget-set-tooltip-text"><code class="function">gtk_widget_set_tooltip_text()</code></a> is that
 elements in the GIMP user interface should, if possible, also have
 a <em class="parameter"><code>help_id</code></em>
  set for context-sensitive help.</p>
-<p>This function can be called with <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> for <em class="parameter"><code>tooltip</code></em>
+<p>This function can be called with <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> for <em class="parameter"><code>tooltip</code></em>
 . Use this feature
 if you want to set a help link for a widget which shouldn't have
 a visible tooltip.</p>
@@ -298,20 +298,20 @@ a visible tooltip.</p>
 <tbody>
 <tr>
 <td class="parameter_name"><p>widget</p></td>
-<td class="parameter_description"><p>The <a href="/usr/share/gtk-doc/html/gtk2GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> you want to set a <em class="parameter"><code>tooltip</code></em>
+<td class="parameter_description"><p>The <a href="../gtk2/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> you want to set a <em class="parameter"><code>tooltip</code></em>
 and/or <em class="parameter"><code>help_id</code></em>
 for.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>tooltip</p></td>
-<td class="parameter_description"><p>The text for this widget's tooltip (or <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>).</p></td>
+<td class="parameter_description"><p>The text for this widget's tooltip (or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>).</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>help_id</p></td>
 <td class="parameter_description"><p>The <em class="parameter"><code>help_id</code></em>
-for the <a href="/usr/share/gtk-doc/html/gtk2GtkTipsQuery.html#GtkTipsQuery-struct"><span class="type">GtkTipsQuery</span></a> tooltips inspector.</p></td>
+for the <a href="../gtk2/GtkTipsQuery.html#GtkTipsQuery-struct"><span class="type">GtkTipsQuery</span></a> tooltips inspector.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -322,12 +322,12 @@ for the <a href="/usr/share/gtk-doc/html/gtk2GtkTipsQuery.html#GtkTipsQuery-stru
 <div class="refsect2">
 <a name="gimp-help-set-help-data-with-markup"></a><h3>gimp_help_set_help_data_with_markup ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-gimp_help_set_help_data_with_markup (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk2GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *widget</code></em>,
-                                     <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *tooltip</code></em>,
-                                     <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>);</pre>
-<p>Just like <a class="link" href="libgimpwidgets-GimpHelpUI.html#gimp-help-set-help-data" title="gimp_help_set_help_data ()"><code class="function">gimp_help_set_help_data()</code></a>, but it allows to pass text which
-is marked up with</p>
-Pango text markup language.
+gimp_help_set_help_data_with_markup (<em class="parameter"><code><a href="../gtk2/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *widget</code></em>,
+                                     <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *tooltip</code></em>,
+                                     <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>);</pre>
+<p>Just like <a class="link" href="libgimpwidgets-GimpHelpUI.html#gimp-help-set-help-data" title="gimp_help_set_help_data ()"><code class="function">gimp_help_set_help_data()</code></a>, but supports to pass text
+which is marked up with <GTKDOCLINK HREF="PangoMarkupFormat">Pango
+text markup language</GTKDOCLINK>.</p>
 <div class="refsect3">
 <a name="gimp-help-set-help-data-with-markup.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -339,32 +339,32 @@ Pango text markup language.
 <tbody>
 <tr>
 <td class="parameter_name"><p>widget</p></td>
-<td class="parameter_description"><p>The <a href="/usr/share/gtk-doc/html/gtk2GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> you want to set a <em class="parameter"><code>tooltip</code></em>
+<td class="parameter_description"><p>The <a href="../gtk2/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> you want to set a <em class="parameter"><code>tooltip</code></em>
 and/or <em class="parameter"><code>help_id</code></em>
 for.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>tooltip</p></td>
-<td class="parameter_description"><p>The markup for this widget's tooltip (or <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>).</p></td>
+<td class="parameter_description"><p>The markup for this widget's tooltip (or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>).</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>help_id</p></td>
 <td class="parameter_description"><p>The <em class="parameter"><code>help_id</code></em>
-for the <a href="/usr/share/gtk-doc/html/gtk2GtkTipsQuery.html#GtkTipsQuery-struct"><span class="type">GtkTipsQuery</span></a> tooltips inspector.</p></td>
+for the <a href="../gtk2/GtkTipsQuery.html#GtkTipsQuery-struct"><span class="type">GtkTipsQuery</span></a> tooltips inspector.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
-<p class="since">Since: GIMP 2.6</p>
+<p class="since">Since: <a class="link" href="api-index-2-6.html#api-index-2.6">2.6</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-context-help"></a><h3>gimp_context_help ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-gimp_context_help (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk2GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *widget</code></em>);</pre>
+gimp_context_help (<em class="parameter"><code><a href="../gtk2/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *widget</code></em>);</pre>
 <p>This function invokes the context help inspector.</p>
 <p>The mouse cursor will turn turn into a question mark and the user can
 click on any widget of the application which started the inspector.</p>
@@ -385,7 +385,7 @@ case at least for every window/dialog).</p>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>widget</p></td>
-<td class="parameter_description"><p>Any <a href="/usr/share/gtk-doc/html/gtk2GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> on the screen.</p></td>
+<td class="parameter_description"><p>Any <a href="../gtk2/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> on the screen.</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
@@ -398,12 +398,12 @@ case at least for every window/dialog).</p>
 <a name="GIMP-HELP-ID:CAPS"></a><h3>GIMP_HELP_ID</h3>
 <pre class="programlisting">#define GIMP_HELP_ID (gimp_help_id_quark ())
 </pre>
-<p>The <a href="/usr/share/gtk-doc/html/glibglib-Quarks.html#GQuark"><span class="type">GQuark</span></a> used to attach GIMP help IDs to widgets.</p>
-<p class="since">Since: GIMP 2.2</p>
+<p>The <a href="../glib/glib-Quarks.html#GQuark"><span class="type">GQuark</span></a> used to attach GIMP help IDs to widgets.</p>
+<p class="since">Since: <a class="link" href="api-index-2-2.html#api-index-2.2">2.2</a></p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.27</div>
 </body>
 </html>

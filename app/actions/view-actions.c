@@ -22,6 +22,7 @@
 
 #include "libgimpmath/gimpmath.h"
 #include "libgimpcolor/gimpcolor.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "actions-types.h"
@@ -32,7 +33,6 @@
 #include "core/gimp.h"
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
-#include "core/gimpprojection.h"
 
 #include "widgets/gimpactiongroup.h"
 #include "widgets/gimprender.h"
@@ -58,6 +58,8 @@
 
 static void   view_actions_set_zoom          (GimpActionGroup   *group,
                                               GimpDisplayShell  *shell);
+static void   view_actions_set_rotate        (GimpActionGroup   *group,
+                                              GimpDisplayShell  *shell);
 static void   view_actions_check_type_notify (GimpDisplayConfig *config,
                                               GParamSpec        *pspec,
                                               GimpActionGroup   *group);
@@ -67,34 +69,51 @@ static const GimpActionEntry view_actions[] =
 {
   { "view-menu",                NULL, NC_("view-action", "_View")          },
   { "view-zoom-menu",           NULL, NC_("view-action", "_Zoom")          },
+  { "view-rotate-menu",         NULL, NC_("view-action", "_Flip & Rotate") },
   { "view-padding-color-menu",  NULL, NC_("view-action", "_Padding Color") },
-  { "view-move-to-screen-menu", GIMP_STOCK_MOVE_TO_SCREEN,
+
+  { "view-color-management-menu", NULL,
+    NC_("view-action", "_Color Management") },
+
+  { "view-display-intent-menu", NULL,
+    NC_("view-action", "Display _Rendering Intent") },
+
+  { "view-softproof-intent-menu", NULL,
+    NC_("view-action", "Soft-Proofing Re_ndering Intent") },
+
+  { "view-move-to-screen-menu", GIMP_ICON_WINDOW_MOVE_TO_SCREEN,
     NC_("view-action", "Move to Screen"), NULL, NULL, NULL,
     GIMP_HELP_VIEW_CHANGE_SCREEN },
 
-  { "view-new", GTK_STOCK_NEW,
-    NC_("view-action", "_New View"), "",
+  { "view-new", GIMP_ICON_WINDOW_NEW,
+    NC_("view-action", "_New View"), NULL,
     NC_("view-action", "Create another view on this image"),
     G_CALLBACK (view_new_cmd_callback),
     GIMP_HELP_VIEW_NEW },
 
-  { "view-close", GTK_STOCK_CLOSE,
+  { "view-close", GIMP_ICON_WINDOW_CLOSE,
     NC_("view-action",  "_Close View"), "<primary>W",
     NC_("view-action", "Close the active image view"),
     G_CALLBACK (view_close_cmd_callback),
     GIMP_HELP_FILE_CLOSE },
 
-  { "view-zoom-fit-in", GTK_STOCK_ZOOM_FIT,
+  { "view-zoom-fit-in", GIMP_ICON_ZOOM_FIT_BEST,
     NC_("view-action", "_Fit Image in Window"), "<primary><shift>J",
     NC_("view-action", "Adjust the zoom ratio so that the image becomes fully visible"),
     G_CALLBACK (view_zoom_fit_in_cmd_callback),
     GIMP_HELP_VIEW_ZOOM_FIT_IN },
 
-  { "view-zoom-fill", GTK_STOCK_ZOOM_FIT,
+  { "view-zoom-fill", GIMP_ICON_ZOOM_FIT_BEST,
     NC_("view-action", "Fi_ll Window"), NULL,
     NC_("view-action", "Adjust the zoom ratio so that the entire window is used"),
     G_CALLBACK (view_zoom_fill_cmd_callback),
     GIMP_HELP_VIEW_ZOOM_FILL },
+
+  { "view-zoom-selection", GIMP_ICON_SELECTION,
+    NC_("view-action", "Zoom to _Selection"), NULL,
+    NC_("view-action", "Adjust the zoom ratio so that the selection fills the window"),
+    G_CALLBACK (view_zoom_selection_cmd_callback),
+    GIMP_HELP_VIEW_ZOOM_SELECTION },
 
   { "view-zoom-revert", NULL,
     NC_("view-action", "Re_vert Zoom"), "grave",
@@ -102,19 +121,38 @@ static const GimpActionEntry view_actions[] =
     G_CALLBACK (view_zoom_revert_cmd_callback),
     GIMP_HELP_VIEW_ZOOM_REVERT },
 
-  { "view-navigation-window", GIMP_STOCK_NAVIGATION,
+  { "view-rotate-other", NULL,
+    NC_("view-action", "Othe_r rotation angle..."), NULL,
+    NC_("view-action", "Set a custom rotation angle"),
+    G_CALLBACK (view_rotate_other_cmd_callback),
+    GIMP_HELP_VIEW_ROTATE_OTHER },
+
+  { "view-navigation-window", GIMP_ICON_DIALOG_NAVIGATION,
     NC_("view-action", "Na_vigation Window"), NULL,
     NC_("view-action", "Show an overview window for this image"),
     G_CALLBACK (view_navigation_window_cmd_callback),
     GIMP_HELP_NAVIGATION_DIALOG },
 
-  { "view-display-filters", GIMP_STOCK_DISPLAY_FILTER,
+  { "view-display-filters", GIMP_ICON_DISPLAY_FILTER,
     NC_("view-action", "Display _Filters..."), NULL,
     NC_("view-action", "Configure filters applied to this view"),
     G_CALLBACK (view_display_filters_cmd_callback),
     GIMP_HELP_DISPLAY_FILTER_DIALOG },
 
-  { "view-shrink-wrap", GTK_STOCK_ZOOM_FIT,
+  { "view-color-management-reset", GIMP_ICON_RESET,
+    NC_("view-action", "As in _Preferences"), NULL,
+    NC_("view-action",
+        "Reset color management to what's configured in preferences"),
+    G_CALLBACK (view_color_management_reset_cmd_callback),
+    GIMP_HELP_VIEW_COLOR_MANAGEMENT },
+
+  { "view-softproof-profile", NULL,
+    NC_("view-action", "Soft-_Proofing Profile..."), NULL,
+    NC_("view-action", "Set the soft-proofing profile"),
+    G_CALLBACK (view_softproof_profile_cmd_callback),
+    GIMP_HELP_VIEW_COLOR_MANAGEMENT },
+
+  { "view-shrink-wrap", GIMP_ICON_ZOOM_FIT_BEST,
     NC_("view-action", "Shrink _Wrap"), "<primary>J",
     NC_("view-action", "Reduce the image window to the size of the image display"),
     G_CALLBACK (view_shrink_wrap_cmd_callback),
@@ -135,6 +173,42 @@ static const GimpToggleActionEntry view_toggle_actions[] =
     G_CALLBACK (view_dot_for_dot_cmd_callback),
     TRUE,
     GIMP_HELP_VIEW_DOT_FOR_DOT },
+
+  { "view-color-management-enable", NULL,
+    NC_("view-action", "_Color-Manage this View"), NULL,
+    NC_("view-action", "Use color management for this view"),
+    G_CALLBACK (view_color_management_enable_cmd_callback),
+    TRUE,
+    GIMP_HELP_VIEW_COLOR_MANAGEMENT },
+
+  { "view-color-management-softproof", NULL,
+    NC_("view-action", "_Proof Colors"), NULL,
+    NC_("view-action", "Use this view for soft-proofing"),
+    G_CALLBACK (view_color_management_softproof_cmd_callback),
+    FALSE,
+    GIMP_HELP_VIEW_COLOR_MANAGEMENT },
+
+  { "view-display-black-point-compensation", NULL,
+    NC_("view-action", "_Black Point Compensation"), NULL,
+    NC_("view-action", "Use black point compensation for image display"),
+    G_CALLBACK (view_display_bpc_cmd_callback),
+    TRUE,
+    GIMP_HELP_VIEW_COLOR_MANAGEMENT },
+
+  { "view-softproof-black-point-compensation", NULL,
+    NC_("view-action", "_Black Point Compensation"), NULL,
+    NC_("view-action", "Use black point compensation for soft-proofing"),
+    G_CALLBACK (view_softproof_bpc_cmd_callback),
+    TRUE,
+    GIMP_HELP_VIEW_COLOR_MANAGEMENT },
+
+  { "view-softproof-gamut-check", NULL,
+    NC_("view-action", "_Mark Out Of Gamut Colors"), NULL,
+    NC_("view-action", "When soft-proofing, mark colors which cannot "
+        "be represented in the target color space"),
+    G_CALLBACK (view_softproof_gamut_check_cmd_callback),
+    FALSE,
+    GIMP_HELP_VIEW_COLOR_MANAGEMENT },
 
   { "view-show-selection", NULL,
     NC_("view-action", "Show _Selection"), "<primary>T",
@@ -227,69 +301,62 @@ static const GimpToggleActionEntry view_toggle_actions[] =
     TRUE,
     GIMP_HELP_VIEW_SHOW_STATUSBAR },
 
-  { "view-fullscreen", GTK_STOCK_FULLSCREEN,
+  { "view-fullscreen", GIMP_ICON_VIEW_FULLSCREEN,
     NC_("view-action", "Fullscr_een"), "F11",
     NC_("view-action", "Toggle fullscreen view"),
     G_CALLBACK (view_fullscreen_cmd_callback),
     FALSE,
-    GIMP_HELP_VIEW_FULLSCREEN },
-
-  { "view-use-gegl", GIMP_STOCK_GEGL,
-    NC_("view-action", "Use GEGL"), NULL,
-    NC_("view-action", "Use GEGL to create this window's projection"),
-    G_CALLBACK (view_use_gegl_cmd_callback),
-    FALSE,
-    NULL }
+    GIMP_HELP_VIEW_FULLSCREEN }
 };
 
 static const GimpEnumActionEntry view_zoom_actions[] =
 {
   { "view-zoom", NULL,
-    "Set zoom factor", NULL, NULL,
+    NC_("view-action", "Set zoom factor"), NULL, NULL,
     GIMP_ACTION_SELECT_SET, TRUE,
     NULL },
 
-  { "view-zoom-minimum", GTK_STOCK_ZOOM_OUT,
-    "Zoom out as far as possible", NULL, NULL,
+  { "view-zoom-minimum", GIMP_ICON_ZOOM_OUT,
+    NC_("view-action", "Zoom out as far as possible"), NULL, NULL,
     GIMP_ACTION_SELECT_FIRST, FALSE,
     GIMP_HELP_VIEW_ZOOM_OUT },
 
-  { "view-zoom-maximum", GTK_STOCK_ZOOM_IN,
-    "Zoom in as far as possible", NULL, NULL,
+  { "view-zoom-maximum", GIMP_ICON_ZOOM_IN,
+    NC_("view-action", "Zoom in as far as possible"), NULL, NULL,
     GIMP_ACTION_SELECT_LAST, FALSE,
     GIMP_HELP_VIEW_ZOOM_IN },
 
-  { "view-zoom-out", GTK_STOCK_ZOOM_OUT,
+  { "view-zoom-out", GIMP_ICON_ZOOM_OUT,
     NC_("view-zoom-action", "Zoom _Out"), "minus",
     NC_("view-zoom-action", "Zoom out"),
     GIMP_ACTION_SELECT_PREVIOUS, FALSE,
     GIMP_HELP_VIEW_ZOOM_OUT },
 
-  { "view-zoom-in", GTK_STOCK_ZOOM_IN,
+  { "view-zoom-in", GIMP_ICON_ZOOM_IN,
     NC_("view-zoom-action", "Zoom _In"), "plus",
     NC_("view-zoom-action", "Zoom in"),
     GIMP_ACTION_SELECT_NEXT, FALSE,
     GIMP_HELP_VIEW_ZOOM_IN },
 
-  { "view-zoom-out-accel", GIMP_STOCK_CHAR_PICKER,
+  { "view-zoom-out-accel", GIMP_ICON_CHAR_PICKER,
     NC_("view-zoom-action", "Zoom Out"), "KP_Subtract",
     NC_("view-zoom-action", "Zoom out"),
     GIMP_ACTION_SELECT_PREVIOUS, FALSE,
     GIMP_HELP_VIEW_ZOOM_OUT },
 
-  { "view-zoom-in-accel", GIMP_STOCK_CHAR_PICKER,
+  { "view-zoom-in-accel", GIMP_ICON_CHAR_PICKER,
     NC_("view-zoom-action", "Zoom In"), "KP_Add",
     NC_("view-zoom-action", "Zoom in"),
     GIMP_ACTION_SELECT_NEXT, FALSE,
     GIMP_HELP_VIEW_ZOOM_IN },
 
-  { "view-zoom-out-skip", GTK_STOCK_ZOOM_OUT,
-    "Zoom out a lot", NULL, NULL,
+  { "view-zoom-out-skip", GIMP_ICON_ZOOM_OUT,
+    NC_("view-action", "Zoom out a lot"), NULL, NULL,
     GIMP_ACTION_SELECT_SKIP_PREVIOUS, FALSE,
     GIMP_HELP_VIEW_ZOOM_OUT },
 
-  { "view-zoom-in-skip", GTK_STOCK_ZOOM_IN,
-    "Zoom in a lot", NULL, NULL,
+  { "view-zoom-in-skip", GIMP_ICON_ZOOM_IN,
+    NC_("view-action", "Zoom in a lot"), NULL, NULL,
     GIMP_ACTION_SELECT_SKIP_NEXT, FALSE,
     GIMP_HELP_VIEW_ZOOM_IN }
 };
@@ -344,13 +411,13 @@ static const GimpRadioActionEntry view_zoom_explicit_actions[] =
     20000,
     GIMP_HELP_VIEW_ZOOM_IN },
 
-  { "view-zoom-1-1", GTK_STOCK_ZOOM_100,
+  { "view-zoom-1-1", GIMP_ICON_ZOOM_ORIGINAL,
     NC_("view-zoom-action", "_1:1  (100%)"), "1",
     NC_("view-zoom-action", "Zoom 1:1"),
     10000,
     GIMP_HELP_VIEW_ZOOM_100 },
 
-  { "view-zoom-1-1-accel", GTK_STOCK_ZOOM_100,
+  { "view-zoom-1-1-accel", GIMP_ICON_ZOOM_ORIGINAL,
     NC_("view-zoom-action", "_1:1  (100%)"), "KP_1",
     NC_("view-zoom-action", "Zoom 1:1"),
     10000,
@@ -381,10 +448,129 @@ static const GimpRadioActionEntry view_zoom_explicit_actions[] =
     GIMP_HELP_VIEW_ZOOM_OUT },
 
   { "view-zoom-other", NULL,
-    NC_("view-zoom-action", "Othe_r..."), NULL,
+    NC_("view-zoom-action", "Othe_r zoom factor..."), NULL,
     NC_("view-zoom-action", "Set a custom zoom factor"),
     0,
     GIMP_HELP_VIEW_ZOOM_OTHER }
+};
+
+static const GimpToggleActionEntry view_flip_actions[] =
+{
+  { "view-flip-horizontally", GIMP_ICON_OBJECT_FLIP_HORIZONTAL,
+    NC_("view-action", "Flip Horizontally"), NULL,
+    NC_("view-action", "Flip the view horizontally"),
+    G_CALLBACK (view_flip_horizontally_cmd_callback),
+    FALSE,
+    GIMP_HELP_VIEW_FLIP },
+
+  { "view-flip-vertically", GIMP_ICON_OBJECT_FLIP_VERTICAL,
+    NC_("view-action", "Flip Vertically"), NULL,
+    NC_("view-action", "Flip the view vertically"),
+    G_CALLBACK (view_flip_vertically_cmd_callback),
+    FALSE,
+    GIMP_HELP_VIEW_FLIP }
+};
+
+static const GimpEnumActionEntry view_rotate_absolute_actions[] =
+{
+  { "view-rotate-set-absolute", NULL,
+    "Display Rotation Absolute Angle Set", NULL, NULL,
+    GIMP_ACTION_SELECT_SET, TRUE,
+    NULL },
+
+  { "view-rotate-reset", GIMP_ICON_RESET,
+    NC_("view-action", "_Reset Flip & Rotate"), "exclam",
+    NC_("view-action",
+        "Reset flipping to unflipped and the angle of rotation to 0°"),
+    GIMP_ACTION_SELECT_SET_TO_DEFAULT, FALSE,
+    GIMP_HELP_VIEW_ROTATE_RESET },
+};
+
+static const GimpEnumActionEntry view_rotate_relative_actions[] =
+{
+  { "view-rotate-15", GIMP_ICON_OBJECT_ROTATE_90,
+    NC_("view-action", "Rotate 15° _clockwise"), NULL,
+    NC_("view-action", "Rotate the view 15 degrees to the right"),
+    GIMP_ACTION_SELECT_NEXT, FALSE,
+    GIMP_HELP_VIEW_ROTATE_15 },
+
+  { "view-rotate-90", GIMP_ICON_OBJECT_ROTATE_90,
+    NC_("view-action", "Rotate 90° _clockwise"), NULL,
+    NC_("view-action", "Rotate the view 90 degrees to the right"),
+    GIMP_ACTION_SELECT_SKIP_NEXT, FALSE,
+    GIMP_HELP_VIEW_ROTATE_90 },
+
+  { "view-rotate-180", GIMP_ICON_OBJECT_ROTATE_180,
+    NC_("view-action", "Rotate _180°"), NULL,
+    NC_("view-action", "Turn the view upside-down"),
+    GIMP_ACTION_SELECT_LAST, FALSE,
+    GIMP_HELP_VIEW_ROTATE_180 },
+
+  { "view-rotate-270", GIMP_ICON_OBJECT_ROTATE_270,
+    NC_("view-action", "Rotate 90° counter-clock_wise"), NULL,
+    NC_("view-action", "Rotate the view 90 degrees to the left"),
+    GIMP_ACTION_SELECT_SKIP_PREVIOUS, FALSE,
+    GIMP_HELP_VIEW_ROTATE_270 },
+
+  { "view-rotate-345", GIMP_ICON_OBJECT_ROTATE_270,
+    NC_("view-action", "Rotate 15° counter-clock_wise"), NULL,
+    NC_("view-action", "Rotate the view 15 degrees to the left"),
+    GIMP_ACTION_SELECT_PREVIOUS, FALSE,
+    GIMP_HELP_VIEW_ROTATE_345 }
+};
+
+static const GimpRadioActionEntry view_display_intent_actions[] =
+{
+  { "view-display-intent-perceptual", NULL,
+    NC_("view-action", "_Perceptual"), NULL,
+    NC_("view-action", "Display rendering intent is perceptual"),
+    GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL,
+    GIMP_HELP_VIEW_COLOR_MANAGEMENT },
+
+  { "view-display-intent-relative-colorimetric", NULL,
+    NC_("view-action", "_Relative Colorimetric"), NULL,
+    NC_("view-action", "Display rendering intent is relative colorimetric"),
+    GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC,
+    GIMP_HELP_VIEW_COLOR_MANAGEMENT },
+
+  { "view-display-intent-saturation", NULL,
+    NC_("view-action", "_Saturation"), NULL,
+    NC_("view-action", "Display rendering intent is saturation"),
+    GIMP_COLOR_RENDERING_INTENT_SATURATION,
+    GIMP_HELP_VIEW_COLOR_MANAGEMENT },
+
+  { "view-display-intent-absolute-colorimetric", NULL,
+    NC_("view-action", "_Absolute Colorimetric"), NULL,
+    NC_("view-action", "Display rendering intent is absolute colorimetric"),
+    GIMP_COLOR_RENDERING_INTENT_ABSOLUTE_COLORIMETRIC,
+    GIMP_HELP_VIEW_COLOR_MANAGEMENT }
+};
+
+static const GimpRadioActionEntry view_softproof_intent_actions[] =
+{
+  { "view-softproof-intent-perceptual", NULL,
+    NC_("view-action", "_Perceptual"), NULL,
+    NC_("view-action", "Soft-proofing rendering intent is perceptual"),
+    GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL,
+    GIMP_HELP_VIEW_COLOR_MANAGEMENT },
+
+  { "view-softproof-intent-relative-colorimetric", NULL,
+    NC_("view-action", "_Relative Colorimetric"), NULL,
+    NC_("view-action", "Soft-proofing rendering intent is relative colorimetric"),
+    GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC,
+    GIMP_HELP_VIEW_COLOR_MANAGEMENT },
+
+  { "view-softproof-intent-saturation", NULL,
+    NC_("view-action", "_Saturation"), NULL,
+    NC_("view-action", "Soft-proofing rendering intent is saturation"),
+    GIMP_COLOR_RENDERING_INTENT_SATURATION,
+    GIMP_HELP_VIEW_COLOR_MANAGEMENT },
+
+  { "view-softproof-intent-absolute-colorimetric", NULL,
+    NC_("view-action", "_Absolute Colorimetric"), NULL,
+    NC_("view-action", "Soft-proofing rendering intent is absolute colorimetric"),
+    GIMP_COLOR_RENDERING_INTENT_ABSOLUTE_COLORIMETRIC,
+    GIMP_HELP_VIEW_COLOR_MANAGEMENT }
 };
 
 static const GimpEnumActionEntry view_padding_color_actions[] =
@@ -407,13 +593,13 @@ static const GimpEnumActionEntry view_padding_color_actions[] =
     GIMP_CANVAS_PADDING_MODE_DARK_CHECK, FALSE,
     GIMP_HELP_VIEW_PADDING_COLOR },
 
-  { "view-padding-color-custom", GTK_STOCK_SELECT_COLOR,
-    NC_("view-padding-color", "Select _Custom Color..."), NULL,
+  { "view-padding-color-custom", GIMP_ICON_PALETTE,
+    NC_("view-padding-color", "_Custom Color..."), NULL,
     NC_("view-padding-color", "Use an arbitrary color"),
     GIMP_CANVAS_PADDING_MODE_CUSTOM, FALSE,
     GIMP_HELP_VIEW_PADDING_COLOR },
 
-  { "view-padding-color-prefs", GIMP_STOCK_RESET,
+  { "view-padding-color-prefs", GIMP_ICON_RESET,
     NC_("view-padding-color", "As in _Preferences"), NULL,
     NC_("view-padding-color",
         "Reset padding color to what's configured in preferences"),
@@ -424,37 +610,37 @@ static const GimpEnumActionEntry view_padding_color_actions[] =
 static const GimpEnumActionEntry view_scroll_horizontal_actions[] =
 {
   { "view-scroll-horizontal", NULL,
-    "Set horizontal scroll offset", NULL, NULL,
+    NC_("view-action", "Set horizontal scroll offset"), NULL, NULL,
     GIMP_ACTION_SELECT_SET, TRUE,
     NULL },
 
   { "view-scroll-left-border", NULL,
-    "Scroll to left border", NULL, NULL,
+    NC_("view-action", "Scroll to left border"), NULL, NULL,
     GIMP_ACTION_SELECT_FIRST, FALSE,
     NULL },
 
   { "view-scroll-right-border", NULL,
-    "Scroll to right border", NULL, NULL,
+    NC_("view-action", "Scroll to right border"), NULL, NULL,
     GIMP_ACTION_SELECT_LAST, FALSE,
     NULL },
 
   { "view-scroll-left", NULL,
-    "Scroll left", NULL, NULL,
+    NC_("view-action", "Scroll left"), NULL, NULL,
     GIMP_ACTION_SELECT_PREVIOUS, FALSE,
     NULL },
 
   { "view-scroll-right", NULL,
-    "Scroll right", NULL, NULL,
+    NC_("view-action", "Scroll right"), NULL, NULL,
     GIMP_ACTION_SELECT_NEXT, FALSE,
     NULL },
 
   { "view-scroll-page-left", NULL,
-    "Scroll page left", NULL, NULL,
+    NC_("view-action", "Scroll page left"), NULL, NULL,
     GIMP_ACTION_SELECT_SKIP_PREVIOUS, FALSE,
     NULL },
 
   { "view-scroll-page-right", NULL,
-    "Scroll page right", NULL, NULL,
+    NC_("view-action", "Scroll page right"), NULL, NULL,
     GIMP_ACTION_SELECT_SKIP_NEXT, FALSE,
     NULL }
 };
@@ -462,37 +648,37 @@ static const GimpEnumActionEntry view_scroll_horizontal_actions[] =
 static const GimpEnumActionEntry view_scroll_vertical_actions[] =
 {
   { "view-scroll-vertical", NULL,
-    "Set vertical scroll offset", NULL, NULL,
+    NC_("view-action", "Set vertical scroll offset"), NULL, NULL,
     GIMP_ACTION_SELECT_SET, TRUE,
     NULL },
 
   { "view-scroll-top-border", NULL,
-    "Scroll to top border", NULL, NULL,
+    NC_("view-action", "Scroll to top border"), NULL, NULL,
     GIMP_ACTION_SELECT_FIRST, FALSE,
     NULL },
 
   { "view-scroll-bottom-border", NULL,
-    "Scroll to bottom border", NULL, NULL,
+    NC_("view-action", "Scroll to bottom border"), NULL, NULL,
     GIMP_ACTION_SELECT_LAST, FALSE,
     NULL },
 
   { "view-scroll-up", NULL,
-    "Scroll up", NULL, NULL,
+    NC_("view-action", "Scroll up"), NULL, NULL,
     GIMP_ACTION_SELECT_PREVIOUS, FALSE,
     NULL },
 
   { "view-scroll-down", NULL,
-    "Scroll down", NULL, NULL,
+    NC_("view-action", "Scroll down"), NULL, NULL,
     GIMP_ACTION_SELECT_NEXT, FALSE,
     NULL },
 
   { "view-scroll-page-up", NULL,
-    "Scroll page up", NULL, NULL,
+    NC_("view-action", "Scroll page up"), NULL, NULL,
     GIMP_ACTION_SELECT_SKIP_PREVIOUS, FALSE,
     NULL },
 
   { "view-scroll-page-down", NULL,
-    "Scroll page down", NULL, NULL,
+    NC_("view-action", "Scroll page down"), NULL, NULL,
     GIMP_ACTION_SELECT_SKIP_NEXT, FALSE,
     NULL }
 };
@@ -522,6 +708,34 @@ view_actions_setup (GimpActionGroup *group)
                                        NULL,
                                        10000,
                                        G_CALLBACK (view_zoom_explicit_cmd_callback));
+
+  gimp_action_group_add_toggle_actions (group, "view-action",
+                                        view_flip_actions,
+                                        G_N_ELEMENTS (view_flip_actions));
+
+  gimp_action_group_add_enum_actions (group, "view-action",
+                                      view_rotate_absolute_actions,
+                                      G_N_ELEMENTS (view_rotate_absolute_actions),
+                                      G_CALLBACK (view_rotate_absolute_cmd_callback));
+
+  gimp_action_group_add_enum_actions (group, "view-action",
+                                      view_rotate_relative_actions,
+                                      G_N_ELEMENTS (view_rotate_relative_actions),
+                                      G_CALLBACK (view_rotate_relative_cmd_callback));
+
+  gimp_action_group_add_radio_actions (group, "view-action",
+                                       view_display_intent_actions,
+                                       G_N_ELEMENTS (view_display_intent_actions),
+                                       NULL,
+                                       GIMP_COLOR_MANAGEMENT_DISPLAY,
+                                       G_CALLBACK (view_display_intent_cmd_callback));
+
+  gimp_action_group_add_radio_actions (group, "view-action",
+                                       view_softproof_intent_actions,
+                                       G_N_ELEMENTS (view_softproof_intent_actions),
+                                       NULL,
+                                       GIMP_COLOR_MANAGEMENT_DISPLAY,
+                                       G_CALLBACK (view_softproof_intent_cmd_callback));
 
   gimp_action_group_add_enum_actions (group, "view-padding-color",
                                       view_padding_color_actions,
@@ -569,18 +783,26 @@ void
 view_actions_update (GimpActionGroup *group,
                      gpointer         data)
 {
-  GimpDisplay        *display        = action_data_get_display (data);
-  GimpImage          *image          = NULL;
-  GimpDisplayShell   *shell          = NULL;
-  GimpDisplayOptions *options        = NULL;
-  gchar              *label          = NULL;
-  gboolean            fullscreen     = FALSE;
-  gboolean            revert_enabled = FALSE;   /* able to revert zoom? */
-  gboolean            use_gegl       = FALSE;
+  GimpDisplay        *display           = action_data_get_display (data);
+  GimpImage          *image             = NULL;
+  GimpDisplayShell   *shell             = NULL;
+  GimpDisplayOptions *options           = NULL;
+  GimpColorConfig    *color_config      = NULL;
+  gchar              *label             = NULL;
+  gboolean            fullscreen        = FALSE;
+  gboolean            revert_enabled    = FALSE;   /* able to revert zoom? */
+  gboolean            flip_horizontally = FALSE;
+  gboolean            flip_vertically   = FALSE;
+  gboolean            cm                = FALSE;
+  gboolean            sp                = FALSE;
+  gboolean            d_bpc             = FALSE;
+  gboolean            s_bpc             = FALSE;
+  gboolean            gammut            = FALSE;
 
   if (display)
     {
       GimpImageWindow *window;
+      const gchar     *action = NULL;
 
       image  = gimp_display_get_image (display);
       shell  = gimp_display_get_shell (display);
@@ -595,8 +817,71 @@ view_actions_update (GimpActionGroup *group,
 
       revert_enabled = gimp_display_shell_scale_can_revert (shell);
 
-      if (image)
-        use_gegl = gimp_image_get_projection (image)->use_gegl;
+      flip_horizontally = shell->flip_horizontally;
+      flip_vertically   = shell->flip_vertically;
+
+      color_config = gimp_display_shell_get_color_config (shell);
+
+      switch (gimp_color_config_get_mode (color_config))
+        {
+        case GIMP_COLOR_MANAGEMENT_OFF:
+          break;
+
+        case GIMP_COLOR_MANAGEMENT_DISPLAY:
+          cm = (image != NULL);
+          break;
+
+        case GIMP_COLOR_MANAGEMENT_SOFTPROOF:
+          cm = (image != NULL);
+          sp = (image != NULL);
+          break;
+        }
+
+      switch (gimp_color_config_get_display_intent (color_config))
+        {
+        case GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL:
+          action = "view-display-intent-perceptual";
+          break;
+
+        case GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC:
+          action = "view-display-intent-relative-colorimetric";
+          break;
+
+        case GIMP_COLOR_RENDERING_INTENT_SATURATION:
+          action = "view-display-intent-saturation";
+          break;
+
+        case GIMP_COLOR_RENDERING_INTENT_ABSOLUTE_COLORIMETRIC:
+          action = "view-display-intent-absolute-colorimetric";
+          break;
+        }
+
+      gimp_action_group_set_action_active (group, action, TRUE);
+
+      switch (gimp_color_config_get_simulation_intent (color_config))
+        {
+        case GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL:
+          action = "view-softproof-intent-perceptual";
+          break;
+
+        case GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC:
+          action = "view-softproof-intent-relative-colorimetric";
+          break;
+
+        case GIMP_COLOR_RENDERING_INTENT_SATURATION:
+          action = "view-softproof-intent-saturation";
+          break;
+
+        case GIMP_COLOR_RENDERING_INTENT_ABSOLUTE_COLORIMETRIC:
+          action = "view-softproof-intent-absolute-colorimetric";
+          break;
+        }
+
+      gimp_action_group_set_action_active (group, action, TRUE);
+
+      d_bpc  = gimp_color_config_get_display_bpc (color_config);
+      s_bpc  = gimp_color_config_get_simulation_bpc (color_config);
+      gammut = gimp_color_config_get_simulation_gamut_check (color_config);
     }
 
 #define SET_ACTIVE(action,condition) \
@@ -626,27 +911,80 @@ view_actions_update (GimpActionGroup *group,
                                           _("Re_vert Zoom"));
     }
 
-  SET_SENSITIVE ("view-zoom-out",    image);
-  SET_SENSITIVE ("view-zoom-in",     image);
-  SET_SENSITIVE ("view-zoom-fit-in", image);
-  SET_SENSITIVE ("view-zoom-fill",   image);
+  SET_SENSITIVE ("view-zoom",              image);
+  SET_SENSITIVE ("view-zoom-minimum",      image);
+  SET_SENSITIVE ("view-zoom-maximum",      image);
+  SET_SENSITIVE ("view-zoom-in",           image);
+  SET_SENSITIVE ("view-zoom-in-accel",     image);
+  SET_SENSITIVE ("view-zoom-in-skip",      image);
+  SET_SENSITIVE ("view-zoom-out",          image);
+  SET_SENSITIVE ("view-zoom-out-accel",    image);
+  SET_SENSITIVE ("view-zoom-out-skip",     image);
 
-  SET_SENSITIVE ("view-zoom-16-1",  image);
-  SET_SENSITIVE ("view-zoom-8-1",   image);
-  SET_SENSITIVE ("view-zoom-4-1",   image);
-  SET_SENSITIVE ("view-zoom-2-1",   image);
-  SET_SENSITIVE ("view-zoom-1-1",   image);
-  SET_SENSITIVE ("view-zoom-1-2",   image);
-  SET_SENSITIVE ("view-zoom-1-4",   image);
-  SET_SENSITIVE ("view-zoom-1-8",   image);
-  SET_SENSITIVE ("view-zoom-1-16",  image);
-  SET_SENSITIVE ("view-zoom-other", image);
+  SET_SENSITIVE ("view-zoom-fit-in",       image);
+  SET_SENSITIVE ("view-zoom-fill",         image);
+  SET_SENSITIVE ("view-zoom-selection",    image);
+  SET_SENSITIVE ("view-zoom-revert",       image);
+
+  SET_SENSITIVE ("view-zoom-16-1",         image);
+  SET_SENSITIVE ("view-zoom-16-1-accel",   image);
+  SET_SENSITIVE ("view-zoom-8-1",          image);
+  SET_SENSITIVE ("view-zoom-8-1-accel",    image);
+  SET_SENSITIVE ("view-zoom-4-1",          image);
+  SET_SENSITIVE ("view-zoom-4-1-accel",    image);
+  SET_SENSITIVE ("view-zoom-2-1",          image);
+  SET_SENSITIVE ("view-zoom-2-1-accel",    image);
+  SET_SENSITIVE ("view-zoom-1-1",          image);
+  SET_SENSITIVE ("view-zoom-1-1-accel",    image);
+  SET_SENSITIVE ("view-zoom-1-2",          image);
+  SET_SENSITIVE ("view-zoom-1-4",          image);
+  SET_SENSITIVE ("view-zoom-1-8",          image);
+  SET_SENSITIVE ("view-zoom-1-16",         image);
+  SET_SENSITIVE ("view-zoom-other",        image);
+
+  SET_SENSITIVE ("view-flip-horizontally", image);
+  SET_ACTIVE    ("view-flip-horizontally", flip_horizontally);
+
+  SET_SENSITIVE ("view-flip-vertically",   image);
+  SET_ACTIVE    ("view-flip-vertically",   flip_vertically);
+
+  SET_SENSITIVE ("view-rotate-reset",      image);
+  SET_SENSITIVE ("view-rotate-15",         image);
+  SET_SENSITIVE ("view-rotate-345",        image);
+  SET_SENSITIVE ("view-rotate-90",         image);
+  SET_SENSITIVE ("view-rotate-180",        image);
+  SET_SENSITIVE ("view-rotate-270",        image);
+  SET_SENSITIVE ("view-rotate-other",      image);
 
   if (image)
-    view_actions_set_zoom (group, shell);
+    {
+      view_actions_set_zoom (group, shell);
+      view_actions_set_rotate (group, shell);
+    }
 
   SET_SENSITIVE ("view-navigation-window", image);
   SET_SENSITIVE ("view-display-filters",   image);
+
+  SET_SENSITIVE ("view-color-management-enable",                image);
+  SET_ACTIVE    ("view-color-management-enable",                cm);
+  SET_SENSITIVE ("view-color-management-softproof",             image);
+  SET_ACTIVE    ("view-color-management-softproof",             sp);
+  SET_SENSITIVE ("view-display-intent-perceptual",              cm);
+  SET_SENSITIVE ("view-display-intent-relative-colorimetric",   cm);
+  SET_SENSITIVE ("view-display-intent-saturation",              cm);
+  SET_SENSITIVE ("view-display-intent-absolute-colorimetric",   cm);
+  SET_SENSITIVE ("view-display-black-point-compensation",       cm);
+  SET_ACTIVE    ("view-display-black-point-compensation",       d_bpc);
+  SET_SENSITIVE ("view-softproof-profile",                      sp);
+  SET_SENSITIVE ("view-softproof-intent-perceptual",            sp);
+  SET_SENSITIVE ("view-softproof-intent-relative-colorimetric", sp);
+  SET_SENSITIVE ("view-softproof-intent-saturation",            sp);
+  SET_SENSITIVE ("view-softproof-intent-absolute-colorimetric", sp);
+  SET_SENSITIVE ("view-softproof-black-point-compensation",     sp);
+  SET_ACTIVE    ("view-softproof-black-point-compensation",     s_bpc);
+  SET_SENSITIVE ("view-softproof-gamut-check",                  sp);
+  SET_ACTIVE    ("view-softproof-gamut-check",                  gammut);
+  SET_SENSITIVE ("view-color-management-reset",                 image);
 
   SET_SENSITIVE ("view-show-selection",      image);
   SET_ACTIVE    ("view-show-selection",      display && options->show_selection);
@@ -660,13 +998,13 @@ view_actions_update (GimpActionGroup *group,
   SET_ACTIVE    ("view-show-sample-points",  display && options->show_sample_points);
 
   SET_SENSITIVE ("view-snap-to-guides",      image);
-  SET_ACTIVE    ("view-snap-to-guides",      display && shell->snap_to_guides);
+  SET_ACTIVE    ("view-snap-to-guides",      display && options->snap_to_guides);
   SET_SENSITIVE ("view-snap-to-grid",        image);
-  SET_ACTIVE    ("view-snap-to-grid",        display && shell->snap_to_grid);
+  SET_ACTIVE    ("view-snap-to-grid",        display && options->snap_to_grid);
   SET_SENSITIVE ("view-snap-to-canvas",      image);
-  SET_ACTIVE    ("view-snap-to-canvas",      display && shell->snap_to_canvas);
+  SET_ACTIVE    ("view-snap-to-canvas",      display && options->snap_to_canvas);
   SET_SENSITIVE ("view-snap-to-vectors",     image);
-  SET_ACTIVE    ("view-snap-to-vectors",     display && shell->snap_to_vectors);
+  SET_ACTIVE    ("view-snap-to-vectors",     display && options->snap_to_path);
 
   SET_SENSITIVE ("view-padding-color-theme",       image);
   SET_SENSITIVE ("view-padding-color-light-check", image);
@@ -702,7 +1040,6 @@ view_actions_update (GimpActionGroup *group,
 
   SET_SENSITIVE ("view-shrink-wrap", image);
   SET_ACTIVE    ("view-fullscreen",  display && fullscreen);
-  SET_ACTIVE    ("view-use-gegl",    use_gegl);
 
   if (GIMP_IS_IMAGE_WINDOW (group->user_data) ||
       GIMP_IS_GIMP (group->user_data))
@@ -775,6 +1112,40 @@ view_actions_set_zoom (GimpActionGroup  *group,
   shell->other_scale = - fabs (shell->other_scale);
 
   g_free (str);
+}
+
+static void
+view_actions_set_rotate (GimpActionGroup  *group,
+                         GimpDisplayShell *shell)
+{
+  const gchar *flip;
+  gchar       *label;
+
+  if (shell->flip_horizontally &&
+      shell->flip_vertically)
+    {
+      /* please preserve the trailing space */
+      flip = _("(H+V) ");
+    }
+  else if (shell->flip_horizontally)
+    {
+      /* please preserve the trailing space */
+      flip = _("(H) ");
+    }
+  else if (shell->flip_vertically)
+    {
+      /* please preserve the trailing space */
+      flip = _("(V) ");
+    }
+  else
+    {
+      flip = "";
+    }
+
+  label = g_strdup_printf (_("_Flip %s& Rotate (%d°)"),
+                           flip, (gint) shell->rotate_angle);
+  gimp_action_group_set_action_label (group, "view-rotate-menu", label);
+  g_free (label);
 }
 
 static void

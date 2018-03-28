@@ -87,15 +87,6 @@ gimp_help_progress_cancel (GimpHelpProgress *progress)
 }
 
 
-/**
- * _gimp_help_progress_start:
- * @progress:    data model for the progress indicator
- * @cancellable: a thread-safe operation cancellation stack
- * @format:      format string for the output message
- * @...:         variable argument list
- *
- * Initialize the progress indicator.
- */
 void
 _gimp_help_progress_start (GimpHelpProgress *progress,
                            GCancellable     *cancellable,
@@ -125,13 +116,6 @@ _gimp_help_progress_start (GimpHelpProgress *progress,
   g_free (message);
 }
 
-/**
- * _gimp_help_progress_update:
- * @progress: the progress indicator
- * @percentage: the new percentage
- *
- * Update the progress indicator.
- */
 void
 _gimp_help_progress_update (GimpHelpProgress *progress,
                             gdouble           percentage)
@@ -142,12 +126,6 @@ _gimp_help_progress_update (GimpHelpProgress *progress,
     progress->vtable.set_value (percentage, progress->user_data);
 }
 
-/**
- * _gimp_help_progress_pulse:
- * @progress: the progress indicator
- *
- * Change the progress indicator's percentage back to 0.
- */
 void
 _gimp_help_progress_pulse (GimpHelpProgress *progress)
 {
@@ -156,12 +134,6 @@ _gimp_help_progress_pulse (GimpHelpProgress *progress)
   _gimp_help_progress_update (progress, -1.0);
 }
 
-/**
- * _gimp_help_progress_finish:
- * @progress: the progress indicator
- *
- * Finalize the progress indidicator.
- */
 void
 _gimp_help_progress_finish (GimpHelpProgress *progress)
 {

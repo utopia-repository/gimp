@@ -22,6 +22,8 @@
 #include <pango/pango.h>
 #include <pango/pangoft2.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <lcms2.h>
+#include <gexiv2/gexiv2.h>
 #include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -31,6 +33,7 @@
 #include "gimp-intl.h"
 
 
+/*  early-stage tests  */
 static gchar * sanity_check_gimp              (void);
 static gchar * sanity_check_glib              (void);
 static gchar * sanity_check_cairo             (void);
@@ -38,17 +41,26 @@ static gchar * sanity_check_pango             (void);
 static gchar * sanity_check_fontconfig        (void);
 static gchar * sanity_check_freetype          (void);
 static gchar * sanity_check_gdk_pixbuf        (void);
+static gchar * sanity_check_lcms              (void);
+static gchar * sanity_check_gexiv2            (void);
 static gchar * sanity_check_babl              (void);
 static gchar * sanity_check_gegl              (void);
 static gchar * sanity_check_filename_encoding (void);
 
+/*  late-stage tests  */
+static gchar * sanity_check_gegl_ops          (void);
+
 
 /*  public functions  */
 
+/* early-stage sanity check, performed before the call to app_run(). */
 const gchar *
-sanity_check (void)
+sanity_check_early (void)
 {
-  gchar *abort_message = sanity_check_gimp ();
+  gchar *abort_message = NULL;
+
+  if (! abort_message)
+    abort_message = sanity_check_gimp ();
 
   if (! abort_message)
     abort_message = sanity_check_glib ();
@@ -69,6 +81,12 @@ sanity_check (void)
     abort_message = sanity_check_gdk_pixbuf ();
 
   if (! abort_message)
+    abort_message = sanity_check_lcms ();
+
+  if (! abort_message)
+    abort_message = sanity_check_gexiv2 ();
+
+  if (! abort_message)
     abort_message = sanity_check_babl ();
 
   if (! abort_message)
@@ -80,8 +98,31 @@ sanity_check (void)
   return abort_message;
 }
 
+/* late-stage sanity check, performed during app_run(), after the user
+ * configuration has been loaded.
+ */
+const gchar *
+sanity_check_late (void)
+{
+  gchar *abort_message = NULL;
+
+  /* the gegl ops test initializes all gegl ops; in particular, it initializes
+   * all the strings used by their properties, which appear in the ui.  it
+   * must be run after we've called language_init(), potentially overriding
+   * LANGUAGE according to the user config, or else all affected strings would
+   * use the translation corresponding to the system locale, regardless.
+   */
+  if (! abort_message)
+    abort_message = sanity_check_gegl_ops ();
+
+  return abort_message;
+}
+
 
 /*  private functions  */
+
+
+/*  early-stage tests  */
 
 static gboolean
 sanity_check_version (guint major_version, guint required_major,
@@ -130,7 +171,7 @@ static gchar *
 sanity_check_glib (void)
 {
 #define GLIB_REQUIRED_MAJOR 2
-#define GLIB_REQUIRED_MINOR 30
+#define GLIB_REQUIRED_MINOR 54
 #define GLIB_REQUIRED_MICRO 2
 
   const gchar *mismatch = glib_check_version (GLIB_REQUIRED_MAJOR,
@@ -163,7 +204,7 @@ static gchar *
 sanity_check_cairo (void)
 {
 #define CAIRO_REQUIRED_MAJOR 1
-#define CAIRO_REQUIRED_MINOR 10
+#define CAIRO_REQUIRED_MINOR 12
 #define CAIRO_REQUIRED_MICRO 2
 
   if (cairo_version () < CAIRO_VERSION_ENCODE (CAIRO_REQUIRED_MAJOR,
@@ -316,8 +357,8 @@ static gchar *
 sanity_check_gdk_pixbuf (void)
 {
 #define GDK_PIXBUF_REQUIRED_MAJOR 2
-#define GDK_PIXBUF_REQUIRED_MINOR 24
-#define GDK_PIXBUF_REQUIRED_MICRO 1
+#define GDK_PIXBUF_REQUIRED_MINOR 30
+#define GDK_PIXBUF_REQUIRED_MICRO 8
 
   if (! sanity_check_version (gdk_pixbuf_major_version, GDK_PIXBUF_REQUIRED_MAJOR,
                               gdk_pixbuf_minor_version, GDK_PIXBUF_REQUIRED_MINOR,
@@ -343,6 +384,94 @@ sanity_check_gdk_pixbuf (void)
 }
 
 static gchar *
+sanity_check_lcms (void)
+{
+#define LCMS_REQUIRED_MAJOR 2
+#define LCMS_REQUIRED_MINOR 8
+
+  gint lcms_version = cmsGetEncodedCMMversion ();
+
+  if (LCMS_VERSION > lcms_version)
+    {
+      return g_strdup_printf
+        ("Liblcms2 version mismatch!\n\n"
+         "GIMP was compiled against LittleCMS version %d.%d, but the\n"
+         "LittleCMS version found at runtime is only %d.%d.\n\n"
+         "Somehow you or your software packager managed\n"
+         "to install a LittleCMS that is older than what GIMP was\n"
+         "built against.\n\n"
+         "Please make sure that the installed LittleCMS version\n"
+         "is at least %d.%d and that headers and library match.",
+         LCMS_VERSION / 1000, LCMS_VERSION % 100 / 10,
+         lcms_version / 1000, lcms_version % 100 / 10,
+         LCMS_VERSION / 1000, LCMS_VERSION % 100 / 10);
+    }
+
+  if (lcms_version < (LCMS_REQUIRED_MAJOR * 1000 +
+                      LCMS_REQUIRED_MINOR * 10))
+    {
+      const gint lcms_major_version = lcms_version / 1000;
+      const gint lcms_minor_version = lcms_version % 100 / 10;
+
+      return g_strdup_printf
+        ("Liblcms2 version too old!\n\n"
+         "GIMP requires LittleCMS version %d.%d or later.\n"
+         "Installed LittleCMS version is %d.%d.\n\n"
+         "Somehow you or your software packager managed\n"
+         "to install GIMP with an older LittleCMS version.\n\n"
+         "Please upgrade to LittleCMS version %d.%d or later.",
+         LCMS_REQUIRED_MAJOR, LCMS_REQUIRED_MINOR,
+         lcms_major_version, lcms_minor_version,
+         LCMS_REQUIRED_MAJOR, LCMS_REQUIRED_MINOR);
+    }
+
+#undef LCMS_REQUIRED_MAJOR
+#undef LCMS_REQUIRED_MINOR
+
+  return NULL;
+}
+
+static gchar *
+sanity_check_gexiv2 (void)
+{
+#ifdef GEXIV2_MAJOR_VERSION
+
+#define GEXIV2_REQUIRED_MAJOR 0
+#define GEXIV2_REQUIRED_MINOR 10
+#define GEXIV2_REQUIRED_MICRO 6
+
+  gint gexiv2_version = gexiv2_get_version ();
+
+  if (gexiv2_version < (GEXIV2_REQUIRED_MAJOR * 100 * 100 +
+                        GEXIV2_REQUIRED_MINOR * 100 +
+                        GEXIV2_REQUIRED_MICRO))
+    {
+      const gint gexiv2_major_version = gexiv2_version / 100 / 100;
+      const gint gexiv2_minor_version = gexiv2_version / 100 % 100;
+      const gint gexiv2_micro_version = gexiv2_version % 100;
+
+      return g_strdup_printf
+        ("gexiv2 version too old!\n\n"
+         "GIMP requires gexiv2 version %d.%d.%d or later.\n"
+         "Installed gexiv2 version is %d.%d.%d.\n\n"
+         "Somehow you or your software packager managed\n"
+         "to install GIMP with an older gexiv2 version.\n\n"
+         "Please upgrade to gexiv2 version %d.%d.%d or later.",
+         GEXIV2_REQUIRED_MAJOR, GEXIV2_REQUIRED_MINOR, GEXIV2_REQUIRED_MICRO,
+         gexiv2_major_version, gexiv2_minor_version, gexiv2_micro_version,
+         GEXIV2_REQUIRED_MAJOR, GEXIV2_REQUIRED_MINOR, GEXIV2_REQUIRED_MICRO);
+    }
+
+#undef GEXIV2_REQUIRED_MAJOR
+#undef GEXIV2_REQUIRED_MINOR
+#undef GEXIV2_REQUIRED_MICRO
+
+#endif
+
+  return NULL;
+}
+
+static gchar *
 sanity_check_babl (void)
 {
   gint babl_major_version;
@@ -351,7 +480,7 @@ sanity_check_babl (void)
 
 #define BABL_REQUIRED_MAJOR 0
 #define BABL_REQUIRED_MINOR 1
-#define BABL_REQUIRED_MICRO 10
+#define BABL_REQUIRED_MICRO 44
 
   babl_get_version (&babl_major_version,
                     &babl_minor_version,
@@ -388,8 +517,8 @@ sanity_check_gegl (void)
   gint gegl_micro_version;
 
 #define GEGL_REQUIRED_MAJOR 0
-#define GEGL_REQUIRED_MINOR 2
-#define GEGL_REQUIRED_MICRO 0
+#define GEGL_REQUIRED_MINOR 3
+#define GEGL_REQUIRED_MICRO 30
 
   gegl_get_version (&gegl_major_version,
                     &gegl_minor_version,
@@ -463,6 +592,151 @@ sanity_check_filename_encoding (void)
     }
 
   g_free (result);
+
+  return NULL;
+}
+
+
+/*  late-stage tests  */
+
+static gchar *
+sanity_check_gegl_ops (void)
+{
+  static const gchar *required_ops[] =
+  {
+    "gegl:alien-map",
+    "gegl:buffer-sink",
+    "gegl:buffer-source",
+    "gegl:c2g",
+    "gegl:cache",
+    "gegl:cartoon",
+    "gegl:cell-noise",
+    "gegl:checkerboard",
+    "gegl:color",
+    "gegl:color-enhance",
+    "gegl:color-exchange",
+    "gegl:color-rotate",
+    "gegl:color-temperature",
+    "gegl:color-to-alpha",
+    "gegl:component-extract",
+    "gegl:convolution-matrix",
+    "gegl:copy-buffer",
+    "gegl:crop",
+    "gegl:cubism",
+    "gegl:deinterlace",
+    "gegl:difference-of-gaussians",
+    "gegl:diffraction-patterns",
+    "gegl:displace",
+    "gegl:distance-transform",
+    "gegl:dither",
+    "gegl:dropshadow",
+    "gegl:edge",
+    "gegl:edge-laplace",
+    "gegl:edge-neon",
+    "gegl:edge-sobel",
+    "gegl:emboss",
+    "gegl:engrave",
+    "gegl:exposure",
+    "gegl:fattal02",
+    "gegl:fractal-trace",
+    "gegl:gaussian-blur",
+    "gegl:gaussian-blur-selective",
+    "gegl:gegl",
+    "gegl:grid",
+    "gegl:high-pass",
+    "gegl:hue-chroma",
+    "gegl:illusion",
+    "gegl:image-gradient",
+    "gegl:introspect",
+    "gegl:invert-gamma",
+    "gegl:invert-linear",
+    "gegl:lens-distortion",
+    "gegl:lens-flare",
+    "gegl:mantiuk06",
+    "gegl:map-absolute",
+    "gegl:map-relative",
+    "gegl:matting-global",
+/*  "gegl:matting-levin",*/ /* XXX: do we want to require this? */
+    "gegl:maze",
+    "gegl:median-blur",
+    "gegl:mirrors",
+    "gegl:mono-mixer",
+    "gegl:motion-blur-circular",
+    "gegl:motion-blur-linear",
+    "gegl:motion-blur-zoom",
+    "gegl:noise-cie-lch",
+    "gegl:noise-hsv",
+    "gegl:noise-hurl",
+    "gegl:noise-pick",
+    "gegl:noise-rgb",
+    "gegl:noise-slur",
+    "gegl:noise-solid",
+    "gegl:noise-spread",
+    "gegl:npd",
+    "gegl:oilify",
+    "gegl:opacity",
+    "gegl:over",
+    "gegl:panorama-projection",
+    "gegl:perlin-noise",
+    "gegl:photocopy",
+    "gegl:pixelize",
+    "gegl:polar-coordinates",
+    "gegl:red-eye-removal",
+    "gegl:reinhard05",
+    "gegl:rgb-clip",
+    "gegl:ripple",
+    "gegl:saturation",
+    "gegl:scale-ratio",
+    "gegl:seamless-clone",
+    "gegl:sepia",
+    "gegl:shadows-highlights",
+    "gegl:shift",
+    "gegl:simplex-noise",
+    "gegl:shift",
+    "gegl:sinus",
+    "gegl:slic",
+    "gegl:snn-mean",
+    "gegl:softglow",
+    "gegl:spiral",
+    "gegl:stretch-contrast",
+    "gegl:stretch-contrast-hsv",
+    "gegl:stress",
+    "gegl:supernova",
+    "gegl:threshold",
+    "gegl:tile",
+    "gegl:tile-paper",
+    "gegl:tile-glass",
+    "gegl:tile-seamless",
+    "gegl:transform",
+    "gegl:translate",
+    "gegl:unsharp-mask",
+    "gegl:value-invert",
+    "gegl:value-propagate",
+    "gegl:video-degradation",
+    "gegl:vignette",
+    "gegl:warp",
+    "gegl:waterpixels",
+    "gegl:wavelet-blur",
+    "gegl:waves",
+    "gegl:whirl-pinch",
+    "gegl:write-buffer"
+  };
+
+  gint i;
+
+  for (i = 0; i < G_N_ELEMENTS (required_ops); i++)
+    {
+      if (! gegl_has_operation (required_ops[i]))
+        {
+          return g_strdup_printf
+            ("GEGL operation missing!\n\n"
+             "GIMP requires the GEGL operation \"%s\".\n"
+             "This operation cannot be found. Check your\n"
+             "GEGL install and ensure it has been compiled\n"
+             "with any dependencies required for GIMP.",
+             required_ops [i]);
+        }
+    }
 
   return NULL;
 }

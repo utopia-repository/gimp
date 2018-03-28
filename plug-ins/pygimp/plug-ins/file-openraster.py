@@ -23,22 +23,22 @@ NESTED_STACK_END = object()
 
 
 layermodes_map = {
-    "svg:src-over": NORMAL_MODE,
-    "svg:multiply": MULTIPLY_MODE,
-    "svg:screen": SCREEN_MODE,
-    "svg:overlay": OVERLAY_MODE,
-    "svg:darken": DARKEN_ONLY_MODE,
-    "svg:lighten": LIGHTEN_ONLY_MODE,
-    "svg:color-dodge": DODGE_MODE,
-    "svg:color-burn": BURN_MODE,
-    "svg:hard-light": HARDLIGHT_MODE,
-    "svg:soft-light": SOFTLIGHT_MODE,
-    "svg:difference": DIFFERENCE_MODE,
-    "svg:color": COLOR_MODE,
-    "svg:luminosity": VALUE_MODE,
-    "svg:hue": HUE_MODE,
-    "svg:saturation": SATURATION_MODE,
-    "svg:plus": ADDITION_MODE,
+    "svg:src-over": LAYER_MODE_NORMAL,
+    "svg:multiply": LAYER_MODE_MULTIPLY_LEGACY,
+    "svg:screen": LAYER_MODE_SCREEN_LEGACY,
+    "svg:overlay": LAYER_MODE_OVERLAY,
+    "svg:darken": LAYER_MODE_DARKEN_ONLY_LEGACY,
+    "svg:lighten": LAYER_MODE_LIGHTEN_ONLY_LEGACY,
+    "svg:color-dodge": LAYER_MODE_DODGE_LEGACY,
+    "svg:color-burn": LAYER_MODE_BURN_LEGACY,
+    "svg:hard-light": LAYER_MODE_HARDLIGHT_LEGACY,
+    "svg:soft-light": LAYER_MODE_SOFTLIGHT_LEGACY,
+    "svg:difference": LAYER_MODE_DIFFERENCE_LEGACY,
+    "svg:color": LAYER_MODE_HSL_COLOR_LEGACY,
+    "svg:luminosity": LAYER_MODE_HSV_VALUE_LEGACY,
+    "svg:hue": LAYER_MODE_HSV_HUE_LEGACY,
+    "svg:saturation": LAYER_MODE_HSV_SATURATION_LEGACY,
+    "svg:plus": LAYER_MODE_ADDITION_LEGACY,
 }
 
 def reverse_map(mapping):
@@ -62,21 +62,19 @@ def get_layer_attributes(layer):
     opac = float(a.get('opacity', '1.0'))
     visible = a.get('visibility', 'visible') != 'hidden'
     m = a.get('composite-op', 'svg:src-over')
-    layer_mode = layermodes_map.get(m, NORMAL_MODE)
+    layer_mode = layermodes_map.get(m, LAYER_MODE_NORMAL)
 
     return path, name, x, y, opac, visible, layer_mode
 
 def get_group_layer_attributes(layer):
     a = layer.attrib
     name = a.get('name', '')
-    x = int(a.get('x', '0'))
-    y = int(a.get('y', '0'))
     opac = float(a.get('opacity', '1.0'))
     visible = a.get('visibility', 'visible') != 'hidden'
     m = a.get('composite-op', 'svg:src-over')
     layer_mode = layermodes_map.get(m, NORMAL_MODE)
 
-    return name, x, y, opac, visible, layer_mode
+    return name, 0, 0, opac, visible, layer_mode
 
 def thumbnail_ora(filename, thumb_size):
     # FIXME: Untested. Does not seem to be used at all? should be run
@@ -156,16 +154,12 @@ def save_ora(img, drawable, filename, raw_filename):
         a['composite-op'] = reverse_map(layermodes_map).get(gimp_layer.mode, 'svg:src-over')
         return layer
 
-    def add_group_layer(parent, x, y, opac, gimp_layer, visible=True):
+    def add_group_layer(parent, opac, gimp_layer, visible=True):
         # create layer attributes
         group_layer = ET.Element('stack')
         parent.append(group_layer)
         a = group_layer.attrib
         a['name'] = gimp_layer.name
-        if x:
-            a['x'] = str(x)
-        if y:
-            a['y'] = str(y)
         a['opacity'] = str(opac)
         a['visibility'] = 'visible' if visible else 'hidden'
         a['composite-op'] = reverse_map(layermodes_map).get(gimp_layer.mode, 'svg:src-over')
@@ -203,23 +197,29 @@ def save_ora(img, drawable, filename, raw_filename):
         parent = stack if not parent_groups else parent_groups[-1][0]
 
         if isinstance(lay, gimp.GroupLayer):
-            group = add_group_layer(parent, x, y, opac, lay, lay.visible)
+            group = add_group_layer(parent, opac, lay, lay.visible)
             group_path = ("{:03d}".format(i) if not parent_groups else
                 parent_groups[-1][1] + "-{:03d}".format(parent_groups[-1][2]))
             parent_groups.append([group, group_path , 0])
         else:
             add_layer(parent, x, y, opac, lay, path_name, lay.visible)
 
+    # save mergedimage
+    thumb = pdb['gimp-image-duplicate'](img)
+    thumb_layer = thumb.merge_visible_layers (CLIP_TO_IMAGE)
+    store_layer (thumb, thumb_layer, 'mergedimage.png')
+
     # save thumbnail
     w, h = img.width, img.height
-    # should be at most 256x256, without changing aspect ratio
-    if w > h:
-        w, h = 256, max(h*256/w, 1)
-    else:
-        w, h = max(w*256/h, 1), 256
-    thumb = pdb['gimp-image-duplicate'](img)
-    thumb_layer = thumb.flatten()
-    thumb_layer.scale(w, h)
+    if max (w, h) > 256:
+        # should be at most 256x256, without changing aspect ratio
+        if w > h:
+            w, h = 256, max(h*256/w, 1)
+        else:
+            w, h = max(w*256/h, 1), 256
+        thumb_layer.scale(w, h)
+    if thumb.precision != PRECISION_U8_GAMMA:
+        pdb.gimp_image_convert_precision (thumb, PRECISION_U8_GAMMA)
     store_layer(thumb, thumb_layer, 'Thumbnails/thumbnail.png')
     gimp.delete(thumb)
 

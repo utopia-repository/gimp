@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -41,11 +42,11 @@
 
 static const GimpActionEntry dock_actions[] =
 {
-  { "dock-move-to-screen-menu", GIMP_STOCK_MOVE_TO_SCREEN,
+  { "dock-move-to-screen-menu", GIMP_ICON_WINDOW_MOVE_TO_SCREEN,
     NC_("dock-action", "M_ove to Screen"), NULL, NULL, NULL,
     GIMP_HELP_DOCK_CHANGE_SCREEN },
 
-  { "dock-close", GTK_STOCK_CLOSE,
+  { "dock-close", GIMP_ICON_WINDOW_CLOSE,
     NC_("dock-action", "Close Dock"), "", NULL,
     G_CALLBACK (window_close_cmd_callback),
     GIMP_HELP_DOCK_CLOSE },
@@ -112,8 +113,10 @@ dock_actions_update (GimpActionGroup *group,
           SET_VISIBLE ("dock-show-image-menu",    TRUE);
           SET_VISIBLE ("dock-auto-follow-active", TRUE);
 
-          SET_ACTIVE ("dock-show-image-menu",    gimp_dock_window_get_show_image_menu (dock_window));
-          SET_ACTIVE ("dock-auto-follow-active", gimp_dock_window_get_auto_follow_active (dock_window));
+          SET_ACTIVE ("dock-show-image-menu",
+                      gimp_dock_window_get_show_image_menu (dock_window));
+          SET_ACTIVE ("dock-auto-follow-active",
+                      gimp_dock_window_get_auto_follow_active (dock_window));
         }
       else
         {

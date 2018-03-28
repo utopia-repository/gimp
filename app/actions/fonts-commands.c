@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "actions-types.h"
@@ -25,12 +26,8 @@
 
 #include "text/gimp-fonts.h"
 
-#include "widgets/gimpfontview.h"
-
 #include "actions.h"
 #include "fonts-commands.h"
-
-#include "gimp-intl.h"
 
 
 /*  public functionss */
@@ -42,5 +39,5 @@ fonts_refresh_cmd_callback (GtkAction *action,
   GimpContext *context = action_data_get_context (data);
 
   if (context)
-    gimp_fonts_load (context->gimp);
+    gimp_fonts_load (context->gimp, NULL);
 }

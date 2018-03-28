@@ -2,7 +2,7 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimpsettingseditor.c
- * Copyright (C) 2008-2011 Michael Natterer <mitch@gimp.org>
+ * Copyright (C) 2008-2017 Michael Natterer <mitch@gimp.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -30,8 +31,10 @@
 
 #include "widgets-types.h"
 
+#include "operations/gimp-operation-config.h"
+
 #include "core/gimp.h"
-#include "core/gimplist.h"
+#include "core/gimpcontainer.h"
 #include "core/gimpviewable.h"
 
 #include "gimpcontainertreestore.h"
@@ -49,8 +52,7 @@ enum
   PROP_0,
   PROP_GIMP,
   PROP_CONFIG,
-  PROP_CONTAINER,
-  PROP_FILENAME
+  PROP_CONTAINER
 };
 
 
@@ -160,12 +162,11 @@ gimp_settings_editor_constructed (GObject *object)
   GimpSettingsEditorPrivate *private = GET_PRIVATE (object);
   GimpContainerTreeView     *tree_view;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_GIMP (private->gimp));
-  g_assert (GIMP_IS_CONFIG (private->config));
-  g_assert (GIMP_IS_CONTAINER (private->container));
+  gimp_assert (GIMP_IS_GIMP (private->gimp));
+  gimp_assert (GIMP_IS_CONFIG (private->config));
+  gimp_assert (GIMP_IS_CONTAINER (private->container));
 
   private->view = gimp_container_tree_view_new (private->container,
                                                 gimp_get_user_context (private->gimp),
@@ -190,8 +191,8 @@ gimp_settings_editor_constructed (GObject *object)
 
   private->import_button =
     gimp_editor_add_button (GIMP_EDITOR (tree_view),
-                            GTK_STOCK_OPEN,
-                            _("Import settings from a file"),
+                            GIMP_ICON_DOCUMENT_OPEN,
+                            _("Import presets from a file"),
                             NULL,
                             G_CALLBACK (gimp_settings_editor_import_clicked),
                             NULL,
@@ -199,8 +200,8 @@ gimp_settings_editor_constructed (GObject *object)
 
   private->export_button =
     gimp_editor_add_button (GIMP_EDITOR (tree_view),
-                            GTK_STOCK_SAVE,
-                            _("Export the selected settings to a file"),
+                            GIMP_ICON_DOCUMENT_SAVE,
+                            _("Export the selected presets to a file"),
                             NULL,
                             G_CALLBACK (gimp_settings_editor_export_clicked),
                             NULL,
@@ -208,8 +209,8 @@ gimp_settings_editor_constructed (GObject *object)
 
   private->delete_button =
     gimp_editor_add_button (GIMP_EDITOR (tree_view),
-                            GTK_STOCK_DELETE,
-                            _("Delete the selected settings"),
+                            GIMP_ICON_EDIT_DELETE,
+                            _("Delete the selected preset"),
                             NULL,
                             G_CALLBACK (gimp_settings_editor_delete_clicked),
                             NULL,
@@ -223,17 +224,8 @@ gimp_settings_editor_finalize (GObject *object)
 {
   GimpSettingsEditorPrivate *private = GET_PRIVATE (object);
 
-  if (private->config)
-    {
-      g_object_unref (private->config);
-      private->config = NULL;
-    }
-
-  if (private->container)
-    {
-      g_object_unref (private->container);
-      private->container = NULL;
-    }
+  g_clear_object (&private->config);
+  g_clear_object (&private->container);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -361,6 +353,8 @@ gimp_settings_editor_delete_clicked (GtkWidget          *widget,
 
       gimp_container_view_select_item (GIMP_CONTAINER_VIEW (private->view),
                                        GIMP_VIEWABLE (new));
+
+      gimp_operation_config_serialize (private->gimp, private->container, NULL);
     }
 }
 
@@ -401,15 +395,22 @@ gimp_settings_editor_name_edited (GtkCellRendererText *cell,
 
       if (strlen (name) && strcmp (old_name, name))
         {
-          guint t;
+          gint64 t;
 
-          g_object_get (object, "time", &t, NULL);
+          g_object_get (object,
+                        "time", &t,
+                        NULL);
 
           if (t > 0)
-            g_object_set (object, "time", 0, NULL);
+            g_object_set (object,
+                          "time", (gint64) 0,
+                          NULL);
 
           /*  set name after time so the object is reordered correctly  */
           gimp_object_take_name (object, name);
+
+          gimp_operation_config_serialize (private->gimp, private->container,
+                                           NULL);
         }
       else
         {

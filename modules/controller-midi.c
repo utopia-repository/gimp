@@ -35,6 +35,7 @@
 #include <alsa/asoundlib.h>
 #endif
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpconfig/gimpconfig.h"
@@ -103,7 +104,7 @@ struct _ControllerMidiClass
 };
 
 
-GType                controller_midi_get_type (void);
+static GType         controller_midi_get_type (void);
 
 static void          midi_dispose             (GObject        *object);
 static void          midi_set_property        (GObject        *object,
@@ -224,7 +225,7 @@ controller_midi_class_init (ControllerMidiClass *klass)
 
   controller_class->name            = _("MIDI");
   controller_class->help_id         = "gimp-controller-midi";
-  controller_class->stock_id        = GIMP_STOCK_CONTROLLER_MIDI;
+  controller_class->icon_name       = GIMP_ICON_CONTROLLER_MIDI;
 
   controller_class->get_n_events    = midi_get_n_events;
   controller_class->get_event_name  = midi_get_event_name;

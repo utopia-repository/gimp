@@ -4,6 +4,10 @@ headers
 #define NO_IMPORT_PYGOBJECT
 #include <pygobject.h>
 
+#include <pycairo.h>
+extern Pycairo_CAPI_t *Pycairo_CAPI;
+
+#define GIMP_DISABLE_DEPRECATION_WARNINGS
 #include <libgimp/gimp.h>
 #undef GIMP_DISABLE_DEPRECATED
 #include <libgimp/gimpui.h>
@@ -913,14 +917,14 @@ _wrap_gimp_brush_select_button_get_brush(PyGObject *self)
     const gchar *brush_name;
     gdouble opacity;
     gint spacing;
-    GimpLayerModeEffects paint_mode;
+    GimpLayerMode paint_mode;
 
     brush_name =
         gimp_brush_select_button_get_brush(GIMP_BRUSH_SELECT_BUTTON(self->obj),
                                            &opacity, &spacing, &paint_mode);
 
     return Py_BuildValue("(sdiN)", brush_name, opacity, spacing,
-                         pyg_enum_from_gtype(GIMP_TYPE_LAYER_MODE_EFFECTS,
+                         pyg_enum_from_gtype(GIMP_TYPE_LAYER_MODE,
                                              paint_mode));
 }
 %%
@@ -1009,7 +1013,7 @@ _wrap_gimp_color_scale_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     if (pygobject_construct(self,
                             "orientation", orientation,
                             "channel",     channel,
-                            NULL));
+                            NULL))
         return -1;
 
     gtk_range_set_flippable (GTK_RANGE (self->obj),
@@ -1986,4 +1990,86 @@ _wrap_gimp_ruler_get_range(PyGObject *self)
     gimp_ruler_get_range(GIMP_RULER(self->obj), &lower, &upper, &max_size);
 
     return Py_BuildValue("(ddd)", lower, upper, max_size);
+}
+%%
+override gimp_color_display_convert_surface kwargs
+static PyObject *
+_wrap_gimp_color_display_convert_surface(PyGObject *self, PyObject *args,
+                                         PyObject *kwargs)
+{
+  PycairoSurface *pysurface;
+
+  static char *kwlist[] = { "surface", NULL };
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                   "O!:GimpColorDisplay.convert_surface",
+                                   kwlist,
+                                   &PycairoSurface_Type, &pysurface))
+    return NULL;
+
+  gimp_color_display_convert_surface(GIMP_COLOR_DISPLAY(self->obj),
+                                     pysurface->surface);
+
+  Py_INCREF(Py_None);
+  return Py_None;
+}
+%%
+override gimp_color_display_stack_convert_surface kwargs
+static PyObject *
+_wrap_gimp_color_display_stack_convert_surface(PyGObject *self, PyObject *args,
+                                               PyObject *kwargs)
+{
+  PycairoSurface *pysurface;
+
+  static char *kwlist[] = { "surface", NULL };
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                   "O!:GimpColorDisplayStack.convert_surface",
+                                   kwlist,
+                                   &PycairoSurface_Type, &pysurface))
+    return NULL;
+
+  gimp_color_display_stack_convert_surface(GIMP_COLOR_DISPLAY_STACK(self->obj),
+                                           pysurface->surface);
+
+  Py_INCREF(Py_None);
+  return Py_None;
+}
+%%
+override gimp_zoom_preview_get_source noargs
+static PyObject *
+_wrap_gimp_zoom_preview_get_source(PyGObject *self)
+{
+  gint width, height, bpp;
+  guchar *image;
+  PyObject *pyimage;
+
+  image = gimp_zoom_preview_get_source(GIMP_ZOOM_PREVIEW(self->obj),
+                                       &width, &height, &bpp);
+
+  if (image)
+    {
+      pyimage = PyByteArray_FromStringAndSize((const char *)image,
+                                              width * height * bpp);
+      g_free (image);
+    }
+  else
+    {
+      Py_INCREF(Py_None);
+      pyimage = Py_None;
+    }
+
+  return Py_BuildValue("(Niii)", pyimage, width, height, bpp);
+}
+%%
+override gimp_ui_init noargs
+static PyObject *
+_wrap_gimp_ui_init(PyObject *self)
+{
+  extern const char *prog_name;
+
+  gimp_ui_init (prog_name, FALSE);
+
+  Py_INCREF(Py_None);
+  return Py_None;
 }

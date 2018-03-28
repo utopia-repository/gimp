@@ -24,9 +24,10 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gio/gio.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpbase/gimpbase-private.h"
 #include "libgimpconfig/gimpconfig.h"
 
 #include "core-types.h"
@@ -49,10 +50,119 @@ static GTokenType gimp_unitrc_unit_info_deserialize (GScanner *scanner,
                                                      Gimp     *gimp);
 
 
+static Gimp *the_unit_gimp = NULL;
+
+
+static gint
+gimp_units_get_number_of_units (void)
+{
+  return _gimp_unit_get_number_of_units (the_unit_gimp);
+}
+
+static gint
+gimp_units_get_number_of_built_in_units (void)
+{
+  return GIMP_UNIT_END;
+}
+
+static GimpUnit
+gimp_units_unit_new (gchar   *identifier,
+                     gdouble  factor,
+                     gint     digits,
+                     gchar   *symbol,
+                     gchar   *abbreviation,
+                     gchar   *singular,
+                     gchar   *plural)
+{
+  return _gimp_unit_new (the_unit_gimp,
+                         identifier,
+                         factor,
+                         digits,
+                         symbol,
+                         abbreviation,
+                         singular,
+                         plural);
+}
+
+static gboolean
+gimp_units_unit_get_deletion_flag (GimpUnit unit)
+{
+  return _gimp_unit_get_deletion_flag (the_unit_gimp, unit);
+}
+
+static void
+gimp_units_unit_set_deletion_flag (GimpUnit unit,
+                                   gboolean deletion_flag)
+{
+  _gimp_unit_set_deletion_flag (the_unit_gimp, unit, deletion_flag);
+}
+
+static gdouble
+gimp_units_unit_get_factor (GimpUnit unit)
+{
+  return _gimp_unit_get_factor (the_unit_gimp, unit);
+}
+
+static gint
+gimp_units_unit_get_digits (GimpUnit unit)
+{
+  return _gimp_unit_get_digits (the_unit_gimp, unit);
+}
+
+static const gchar *
+gimp_units_unit_get_identifier (GimpUnit unit)
+{
+  return _gimp_unit_get_identifier (the_unit_gimp, unit);
+}
+
+static const gchar *
+gimp_units_unit_get_symbol (GimpUnit unit)
+{
+  return _gimp_unit_get_symbol (the_unit_gimp, unit);
+}
+
+static const gchar *
+gimp_units_unit_get_abbreviation (GimpUnit unit)
+{
+  return _gimp_unit_get_abbreviation (the_unit_gimp, unit);
+}
+
+static const gchar *
+gimp_units_unit_get_singular (GimpUnit unit)
+{
+  return _gimp_unit_get_singular (the_unit_gimp, unit);
+}
+
+static const gchar *
+gimp_units_unit_get_plural (GimpUnit unit)
+{
+  return _gimp_unit_get_plural (the_unit_gimp, unit);
+}
+
 void
 gimp_units_init (Gimp *gimp)
 {
+  GimpUnitVtable vtable;
+
   g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail (the_unit_gimp == NULL);
+
+  the_unit_gimp = gimp;
+
+  vtable.unit_get_number_of_units          = gimp_units_get_number_of_units;
+  vtable.unit_get_number_of_built_in_units = gimp_units_get_number_of_built_in_units;
+  vtable.unit_new               = gimp_units_unit_new;
+  vtable.unit_get_deletion_flag = gimp_units_unit_get_deletion_flag;
+  vtable.unit_set_deletion_flag = gimp_units_unit_set_deletion_flag;
+  vtable.unit_get_factor        = gimp_units_unit_get_factor;
+  vtable.unit_get_digits        = gimp_units_unit_get_digits;
+  vtable.unit_get_identifier    = gimp_units_unit_get_identifier;
+  vtable.unit_get_symbol        = gimp_units_unit_get_symbol;
+  vtable.unit_get_abbreviation  = gimp_units_unit_get_abbreviation;
+  vtable.unit_get_singular      = gimp_units_unit_get_singular;
+  vtable.unit_get_plural        = gimp_units_unit_get_plural;
+
+  gimp_base_init (&vtable);
 
   gimp->user_units   = NULL;
   gimp->n_user_units = 0;
@@ -83,33 +193,34 @@ enum
 void
 gimp_unitrc_load (Gimp *gimp)
 {
-  gchar      *filename;
+  GFile      *file;
   GScanner   *scanner;
   GTokenType  token;
   GError     *error = NULL;
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  filename = gimp_personal_rc_file ("unitrc");
+  file = gimp_directory_file ("unitrc", NULL);
 
   if (gimp->be_verbose)
-    g_print ("Parsing '%s'\n", gimp_filename_to_utf8 (filename));
+    g_print ("Parsing '%s'\n", gimp_file_get_utf8_name (file));
 
-  scanner = gimp_scanner_new_file (filename, &error);
+  scanner = gimp_scanner_new_gfile (file, &error);
 
   if (! scanner && error->code == GIMP_CONFIG_ERROR_OPEN_ENOENT)
     {
       g_clear_error (&error);
-      g_free (filename);
+      g_object_unref (file);
 
-      filename = g_build_filename (gimp_sysconf_directory (), "unitrc", NULL);
-      scanner = gimp_scanner_new_file (filename, NULL);
+      file = gimp_sysconf_directory_file ("unitrc", NULL);
+
+      scanner = gimp_scanner_new_gfile (file, NULL);
     }
 
   if (! scanner)
     {
       g_clear_error (&error);
-      g_free (filename);
+      g_object_unref (file);
       return;
     }
 
@@ -169,41 +280,41 @@ gimp_unitrc_load (Gimp *gimp)
       gimp_message_literal (gimp, NULL, GIMP_MESSAGE_ERROR, error->message);
       g_clear_error (&error);
 
-      gimp_config_file_backup_on_error (filename, "unitrc", NULL);
+      gimp_config_file_backup_on_error (file, "unitrc", NULL);
     }
 
   gimp_scanner_destroy (scanner);
-  g_free (filename);
+  g_object_unref (file);
 }
 
 void
 gimp_unitrc_save (Gimp *gimp)
 {
   GimpConfigWriter *writer;
-  gchar            *filename;
+  GFile            *file;
   gint              i;
   GError           *error = NULL;
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  filename = gimp_personal_rc_file ("unitrc");
+  file = gimp_directory_file ("unitrc", NULL);
 
   if (gimp->be_verbose)
-    g_print ("Writing '%s'\n", gimp_filename_to_utf8 (filename));
+    g_print ("Writing '%s'\n", gimp_file_get_utf8_name (file));
 
   writer =
-    gimp_config_writer_new_file (filename,
-                                 TRUE,
-                                 "GIMP units\n\n"
-                                 "This file contains the user unit database. "
-                                 "You can edit this list with the unit "
-                                 "editor. You are not supposed to edit it "
-                                 "manually, but of course you can do.\n"
-                                 "This file will be entirely rewritten each "
-                                 "time you exit.",
-                                 NULL);
+    gimp_config_writer_new_gfile (file,
+                                  TRUE,
+                                  "GIMP units\n\n"
+                                  "This file contains the user unit database. "
+                                  "You can edit this list with the unit "
+                                  "editor. You are not supposed to edit it "
+                                  "manually, but of course you can do.\n"
+                                  "This file will be entirely rewritten each "
+                                  "time you exit.",
+                                  NULL);
 
-  g_free (filename);
+  g_object_unref (file);
 
   if (!writer)
     return;

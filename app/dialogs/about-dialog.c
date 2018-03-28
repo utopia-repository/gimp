@@ -19,6 +19,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -202,19 +203,26 @@ about_dialog_unmap (GtkWidget       *widget,
 static GdkPixbuf *
 about_dialog_load_logo (void)
 {
-  GdkPixbuf *pixbuf;
-  gchar     *filename;
+  GdkPixbuf    *pixbuf = NULL;
+  GFile        *file;
+  GInputStream *input;
 
-  filename = g_build_filename (gimp_data_directory (), "images",
+  file = gimp_data_directory_file ("images",
 #ifdef GIMP_UNSTABLE
-                               "gimp-devel-logo.png",
+                                   "gimp-devel-logo.png",
 #else
-                               "gimp-logo.png",
+                                   "gimp-logo.png",
 #endif
-                               NULL);
+                                   NULL);
 
-  pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
-  g_free (filename);
+  input = G_INPUT_STREAM (g_file_read (file, NULL, NULL));
+  g_object_unref (file);
+
+  if (input)
+    {
+      pixbuf = gdk_pixbuf_new_from_stream (input, NULL, NULL);
+      g_object_unref (input);
+    }
 
   return pixbuf;
 }
@@ -341,7 +349,7 @@ insert_spacers (const gchar *string)
   return g_string_free (str, FALSE);
 }
 
-static void inline
+static inline void
 mix_colors (const GdkColor *start,
             const GdkColor *end,
             GdkColor       *target,
@@ -592,8 +600,15 @@ static void
 about_dialog_add_unstable_message (GtkWidget *vbox)
 {
   GtkWidget *label;
+  gchar     *text;
 
-  label = gtk_label_new (_("This is an unstable development release."));
+  text = g_strdup_printf (_("This is an unstable development release\n"
+                            "commit %s"), GIMP_GIT_VERSION_ABBREV);
+  label = gtk_label_new (text);
+  g_free (text);
+
+  gtk_label_set_selectable (GTK_LABEL (label), TRUE);
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
   gimp_label_set_attributes (GTK_LABEL (label),
                              PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
                              -1);

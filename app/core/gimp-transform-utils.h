@@ -19,6 +19,9 @@
 #define __GIMP_TRANSFORM_UTILS_H__
 
 
+#define GIMP_TRANSFORM_NEAR_Z 0.02
+
+
 void       gimp_transform_get_rotate_center    (gint                 x,
                                                 gint                 y,
                                                 gint                 width,
@@ -85,6 +88,9 @@ void       gimp_transform_matrix_perspective   (GimpMatrix3         *matrix,
                                                 gdouble              t_y3,
                                                 gdouble              t_x4,
                                                 gdouble              t_y4);
+gboolean   gimp_transform_matrix_generic       (GimpMatrix3         *matrix,
+                                                const GimpVector2    input_points[4],
+                                                const GimpVector2    output_points[4]);
 
 gboolean   gimp_transform_polygon_is_convex    (gdouble              x1,
                                                 gdouble              y1,
@@ -94,6 +100,26 @@ gboolean   gimp_transform_polygon_is_convex    (gdouble              x1,
                                                 gdouble              y3,
                                                 gdouble              x4,
                                                 gdouble              y4);
+
+void       gimp_transform_polygon              (const GimpMatrix3   *matrix,
+                                                const GimpVector2   *vertices,
+                                                gint                 n_vertices,
+                                                gboolean             closed,
+                                                GimpVector2         *t_vertices,
+                                                gint                *n_t_vertices);
+void       gimp_transform_polygon_coords       (const GimpMatrix3   *matrix,
+                                                const GimpCoords    *vertices,
+                                                gint                 n_vertices,
+                                                gboolean             closed,
+                                                GimpCoords          *t_vertices,
+                                                gint                *n_t_vertices);
+
+void       gimp_transform_bezier_coords        (const GimpMatrix3   *matrix,
+                                                const GimpCoords     bezier[4],
+                                                GQueue              *t_beziers[2],
+                                                gint                *n_t_beziers,
+                                                gboolean            *start_in,
+                                                gboolean            *end_in);
 
 
 #endif  /*  __GIMP_TRANSFORM_UTILS_H__  */

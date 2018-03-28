@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpconfig/gimpconfig.h"
@@ -61,15 +62,18 @@ gimp_move_options_class_init (GimpMoveOptionsClass *klass)
   object_class->set_property = gimp_move_options_set_property;
   object_class->get_property = gimp_move_options_get_property;
 
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_MOVE_TYPE,
-                                 "move-type", NULL,
-                                 GIMP_TYPE_TRANSFORM_TYPE,
-                                 GIMP_TRANSFORM_TYPE_LAYER,
-                                 GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_MOVE_CURRENT,
-                                    "move-current", NULL,
-                                    FALSE,
-                                    GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_MOVE_TYPE,
+                         "move-type",
+                         NULL, NULL,
+                         GIMP_TYPE_TRANSFORM_TYPE,
+                         GIMP_TRANSFORM_TYPE_LAYER,
+                         GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_MOVE_CURRENT,
+                            "move-current",
+                            NULL, NULL,
+                            FALSE,
+                            GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void
@@ -179,13 +183,14 @@ gimp_move_options_gui (GimpToolOptions *tool_options)
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-  box = gimp_prop_enum_stock_box_new (config, "move-type", "gimp", 0, 0);
+  box = gimp_prop_enum_icon_box_new (config, "move-type", "gimp", 0, 0);
   gtk_box_pack_start (GTK_BOX (hbox), box, FALSE, FALSE, 0);
   gtk_widget_show (box);
 
   /*  tool toggle  */
-  title = g_strdup_printf (_("Tool Toggle  (%s)"),
-                           gimp_get_mod_string (GDK_SHIFT_MASK));
+  title =
+    g_strdup_printf (_("Tool Toggle  (%s)"),
+                     gimp_get_mod_string (gimp_get_extend_selection_mask ()));
 
   frame = gimp_prop_boolean_radio_frame_new (config, "move-current",
                                              title, "true", "false");

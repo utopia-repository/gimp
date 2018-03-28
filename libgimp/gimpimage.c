@@ -21,8 +21,6 @@
 #include "config.h"
 
 #include "gimp.h"
-#undef GIMP_DISABLE_DEPRECATED
-#undef __GIMP_IMAGE_H__
 #include "gimpimage.h"
 
 /**
@@ -103,11 +101,71 @@ gimp_image_get_thumbnail_data (gint32  image_ID,
 }
 
 /**
+ * gimp_image_get_metadata:
+ * @image_ID: The image.
+ *
+ * Returns the image's metadata.
+ *
+ * Returns exif/iptc/xmp metadata from the image.
+ *
+ * Returns: The exif/ptc/xmp metadata, or %NULL if there is none.
+ *
+ * Since: 2.10
+ **/
+GimpMetadata *
+gimp_image_get_metadata (gint32 image_ID)
+{
+  GimpMetadata *metadata = NULL;
+  gchar        *metadata_string;
+
+  metadata_string = _gimp_image_get_metadata (image_ID);
+  if (metadata_string)
+    {
+      metadata = gimp_metadata_deserialize (metadata_string);
+      g_free (metadata_string);
+    }
+
+  return metadata;
+}
+
+/**
+ * gimp_image_set_metadata:
+ * @image_ID: The image.
+ * @metadata: The exif/ptc/xmp metadata.
+ *
+ * Set the image's metadata.
+ *
+ * Sets exif/iptc/xmp metadata on the image, or deletes it if
+ * @metadata is %NULL.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: 2.10
+ **/
+gboolean
+gimp_image_set_metadata (gint32        image_ID,
+                         GimpMetadata *metadata)
+{
+  gchar    *metadata_string = NULL;
+  gboolean  success;
+
+  if (metadata)
+    metadata_string = gimp_metadata_serialize (metadata);
+
+  success = _gimp_image_set_metadata (image_ID, metadata_string);
+
+  if (metadata_string)
+    g_free (metadata_string);
+
+  return success;
+}
+
+/**
  * gimp_image_get_cmap:
  * @image_ID:   The image.
  * @num_colors: Number of colors in the colormap array.
  *
- * This procedure is deprecated! Use gimp_image_get_colormap() instead.
+ * Deprecated: Use gimp_image_get_colormap() instead.
  *
  * Returns: The image's colormap.
  */
@@ -124,7 +182,7 @@ gimp_image_get_cmap (gint32  image_ID,
  * @cmap:       The new colormap values.
  * @num_colors: Number of colors in the colormap array.
  *
- * This procedure is deprecated! Use gimp_image_set_colormap() instead.
+ * Deprecated: Use gimp_image_set_colormap() instead.
  *
  * Returns: TRUE on success.
  */
@@ -145,7 +203,7 @@ gimp_image_set_cmap (gint32        image_ID,
  *
  * Returns: The position of the layer in the layer stack.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gint
 gimp_image_get_layer_position (gint32 image_ID,
@@ -227,7 +285,7 @@ gimp_image_lower_layer_to_bottom (gint32 image_ID,
  *
  * Returns: The position of the channel in the channel stack.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gint
 gimp_image_get_channel_position (gint32 image_ID,
@@ -277,7 +335,7 @@ gimp_image_lower_channel (gint32 image_ID,
  *
  * Returns: The position of the vectors object in the vectors stack.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gint
 gimp_image_get_vectors_position (gint32 image_ID,
@@ -295,7 +353,7 @@ gimp_image_get_vectors_position (gint32 image_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_image_raise_vectors (gint32 image_ID,
@@ -313,7 +371,7 @@ gimp_image_raise_vectors (gint32 image_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_image_lower_vectors (gint32 image_ID,
@@ -331,7 +389,7 @@ gimp_image_lower_vectors (gint32 image_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_image_raise_vectors_to_top (gint32 image_ID,
@@ -349,7 +407,7 @@ gimp_image_raise_vectors_to_top (gint32 image_ID,
  *
  * Returns: TRUE on success.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_image_lower_vectors_to_bottom (gint32 image_ID,

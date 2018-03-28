@@ -17,29 +17,43 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "core-types.h"
 
-#include "base/pixel-region.h"
-#include "base/tile-manager.h"
+#include "gegl/gimp-gegl-utils.h"
 
-#include "paint-funcs/paint-funcs.h"
-
+#include "gimp-memsize.h"
 #include "gimpchannel.h"
 #include "gimpmaskundo.h"
 
 
-static void     gimp_mask_undo_constructed (GObject             *object);
+enum
+{
+  PROP_0,
+  PROP_CONVERT_FORMAT
+};
 
-static gint64   gimp_mask_undo_get_memsize (GimpObject          *object,
-                                            gint64              *gui_size);
 
-static void     gimp_mask_undo_pop         (GimpUndo            *undo,
-                                            GimpUndoMode         undo_mode,
-                                            GimpUndoAccumulator *accum);
-static void     gimp_mask_undo_free        (GimpUndo            *undo,
-                                            GimpUndoMode         undo_mode);
+static void     gimp_mask_undo_constructed  (GObject             *object);
+static void     gimp_mask_undo_set_property (GObject             *object,
+                                             guint                property_id,
+                                             const GValue        *value,
+                                             GParamSpec          *pspec);
+static void     gimp_mask_undo_get_property (GObject             *object,
+                                             guint                property_id,
+                                             GValue              *value,
+                                             GParamSpec          *pspec);
+
+static gint64   gimp_mask_undo_get_memsize  (GimpObject          *object,
+                                             gint64              *gui_size);
+
+static void     gimp_mask_undo_pop          (GimpUndo            *undo,
+                                             GimpUndoMode         undo_mode,
+                                             GimpUndoAccumulator *accum);
+static void     gimp_mask_undo_free         (GimpUndo            *undo,
+                                             GimpUndoMode         undo_mode);
 
 
 G_DEFINE_TYPE (GimpMaskUndo, gimp_mask_undo, GIMP_TYPE_ITEM_UNDO)
@@ -55,11 +69,20 @@ gimp_mask_undo_class_init (GimpMaskUndoClass *klass)
   GimpUndoClass   *undo_class        = GIMP_UNDO_CLASS (klass);
 
   object_class->constructed      = gimp_mask_undo_constructed;
+  object_class->set_property     = gimp_mask_undo_set_property;
+  object_class->get_property     = gimp_mask_undo_get_property;
 
   gimp_object_class->get_memsize = gimp_mask_undo_get_memsize;
 
   undo_class->pop                = gimp_mask_undo_pop;
   undo_class->free               = gimp_mask_undo_free;
+
+  g_object_class_install_property (object_class, PROP_CONVERT_FORMAT,
+                                   g_param_spec_boolean ("convert-format",
+                                                         NULL, NULL,
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
@@ -71,32 +94,72 @@ static void
 gimp_mask_undo_constructed (GObject *object)
 {
   GimpMaskUndo *mask_undo = GIMP_MASK_UNDO (object);
-  GimpChannel  *channel;
-  gint          x1, y1, x2, y2;
+  GimpItem     *item;
+  GimpDrawable *drawable;
+  gint          x, y, w, h;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_CHANNEL (GIMP_ITEM_UNDO (object)->item));
+  gimp_assert (GIMP_IS_CHANNEL (GIMP_ITEM_UNDO (object)->item));
 
-  channel = GIMP_CHANNEL (GIMP_ITEM_UNDO (object)->item);
+  item     = GIMP_ITEM_UNDO (object)->item;
+  drawable = GIMP_DRAWABLE (item);
 
-  if (gimp_channel_bounds (channel, &x1, &y1, &x2, &y2))
+  if (gimp_item_bounds (item, &x, &y, &w, &h))
     {
-      GimpDrawable *drawable = GIMP_DRAWABLE (channel);
-      PixelRegion   srcPR, destPR;
+      mask_undo->buffer = gegl_buffer_new (GEGL_RECTANGLE (0, 0, w, h),
+                                           gimp_drawable_get_format (drawable));
 
-      mask_undo->tiles = tile_manager_new (x2 - x1, y2 - y1,
-                                           gimp_drawable_bytes (drawable));
-      mask_undo->x = x1;
-      mask_undo->y = y1;
+      gegl_buffer_copy (gimp_drawable_get_buffer (drawable),
+                        GEGL_RECTANGLE (x, y, w, h),
+                        GEGL_ABYSS_NONE,
+                        mask_undo->buffer,
+                        GEGL_RECTANGLE (0, 0, 0, 0));
 
-      pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
-                         x1, y1, x2 - x1, y2 - y1, FALSE);
-      pixel_region_init (&destPR, mask_undo->tiles,
-                         0, 0, x2 - x1, y2 - y1, TRUE);
+      mask_undo->x = x;
+      mask_undo->y = y;
+    }
 
-      copy_region (&srcPR, &destPR);
+  mask_undo->format = gimp_drawable_get_format (drawable);
+}
+
+static void
+gimp_mask_undo_set_property (GObject      *object,
+                             guint         property_id,
+                             const GValue *value,
+                             GParamSpec   *pspec)
+{
+  GimpMaskUndo *mask_undo = GIMP_MASK_UNDO (object);
+
+  switch (property_id)
+    {
+    case PROP_CONVERT_FORMAT:
+      mask_undo->convert_format = g_value_get_boolean (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
+}
+
+static void
+gimp_mask_undo_get_property (GObject    *object,
+                             guint       property_id,
+                             GValue     *value,
+                             GParamSpec *pspec)
+{
+  GimpMaskUndo *mask_undo = GIMP_MASK_UNDO (object);
+
+  switch (property_id)
+    {
+    case PROP_CONVERT_FORMAT:
+      g_value_set_boolean (value, mask_undo->convert_format);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
     }
 }
 
@@ -107,7 +170,7 @@ gimp_mask_undo_get_memsize (GimpObject *object,
   GimpMaskUndo *mask_undo = GIMP_MASK_UNDO (object);
   gint64        memsize   = 0;
 
-  memsize += tile_manager_get_memsize (mask_undo->tiles, FALSE);
+  memsize += gimp_gegl_buffer_get_memsize (mask_undo->buffer);
 
   return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
                                                                   gui_size);
@@ -119,58 +182,70 @@ gimp_mask_undo_pop (GimpUndo            *undo,
                     GimpUndoAccumulator *accum)
 {
   GimpMaskUndo *mask_undo = GIMP_MASK_UNDO (undo);
-  GimpChannel  *channel   = GIMP_CHANNEL (GIMP_ITEM_UNDO (undo)->item);
-  TileManager  *new_tiles;
-  PixelRegion   srcPR, destPR;
-  gint          x1, y1, x2, y2;
+  GimpItem     *item      = GIMP_ITEM_UNDO (undo)->item;
+  GimpDrawable *drawable  = GIMP_DRAWABLE (item);
+  GimpChannel  *channel   = GIMP_CHANNEL (item);
+  GeglBuffer   *new_buffer;
+  const Babl   *format;
+  gint          x, y, w, h;
   gint          width  = 0;
   gint          height = 0;
 
   GIMP_UNDO_CLASS (parent_class)->pop (undo, undo_mode, accum);
 
-  if (gimp_channel_bounds (channel, &x1, &y1, &x2, &y2))
+  if (gimp_item_bounds (item, &x, &y, &w, &h))
     {
-      new_tiles = tile_manager_new (x2 - x1, y2 - y1, 1);
+      new_buffer = gegl_buffer_new (GEGL_RECTANGLE (0, 0, w, h),
+                                    gimp_drawable_get_format (drawable));
 
-      pixel_region_init (&srcPR,
-                         gimp_drawable_get_tiles (GIMP_DRAWABLE (channel)),
-                         x1, y1, x2 - x1, y2 - y1, FALSE);
-      pixel_region_init (&destPR, new_tiles,
-                         0, 0, x2 - x1, y2 - y1, TRUE);
+      gegl_buffer_copy (gimp_drawable_get_buffer (drawable),
+                        GEGL_RECTANGLE (x, y, w, h),
+                        GEGL_ABYSS_NONE,
+                        new_buffer,
+                        GEGL_RECTANGLE (0, 0, 0, 0));
 
-      copy_region (&srcPR, &destPR);
-
-      pixel_region_init (&srcPR,
-                         gimp_drawable_get_tiles (GIMP_DRAWABLE (channel)),
-                         x1, y1, x2 - x1, y2 - y1, TRUE);
-
-      clear_region (&srcPR);
+      gegl_buffer_clear (gimp_drawable_get_buffer (drawable),
+                         GEGL_RECTANGLE (x, y, w, h));
     }
   else
     {
-      new_tiles = NULL;
+      new_buffer = NULL;
     }
 
-  if (mask_undo->tiles)
+  format = gimp_drawable_get_format (drawable);
+
+  if (mask_undo->convert_format)
     {
-      width  = tile_manager_width  (mask_undo->tiles);
-      height = tile_manager_height (mask_undo->tiles);
+      GeglBuffer *buffer;
+      gint        width  = gimp_item_get_width  (item);
+      gint        height = gimp_item_get_height (item);
 
-      pixel_region_init (&srcPR, mask_undo->tiles,
-                         0, 0, width, height, FALSE);
-      pixel_region_init (&destPR,
-                         gimp_drawable_get_tiles (GIMP_DRAWABLE (channel)),
-                         mask_undo->x, mask_undo->y, width, height, TRUE);
+      buffer = gegl_buffer_new (GEGL_RECTANGLE (0, 0, width, height),
+                                mask_undo->format);
+      gegl_buffer_clear (buffer, NULL);
 
-      copy_region (&srcPR, &destPR);
+      gimp_drawable_set_buffer (drawable, FALSE, NULL, buffer);
+      g_object_unref (buffer);
+    }
 
-      tile_manager_unref (mask_undo->tiles);
+  if (mask_undo->buffer)
+    {
+      width  = gegl_buffer_get_width  (mask_undo->buffer);
+      height = gegl_buffer_get_height (mask_undo->buffer);
+
+      gegl_buffer_copy (mask_undo->buffer,
+                        NULL,
+                        GEGL_ABYSS_NONE,
+                        gimp_drawable_get_buffer (drawable),
+                        GEGL_RECTANGLE (mask_undo->x, mask_undo->y, 0, 0));
+
+      g_object_unref (mask_undo->buffer);
     }
 
   /* invalidate the current bounds and boundary of the mask */
-  gimp_drawable_invalidate_boundary (GIMP_DRAWABLE (channel));
+  gimp_drawable_invalidate_boundary (drawable);
 
-  if (mask_undo->tiles)
+  if (mask_undo->buffer)
     {
       channel->empty = FALSE;
       channel->x1    = mask_undo->x;
@@ -183,22 +258,20 @@ gimp_mask_undo_pop (GimpUndo            *undo,
       channel->empty = TRUE;
       channel->x1    = 0;
       channel->y1    = 0;
-      channel->x2    = gimp_item_get_width  (GIMP_ITEM (channel));
-      channel->y2    = gimp_item_get_height (GIMP_ITEM (channel));
+      channel->x2    = gimp_item_get_width  (item);
+      channel->y2    = gimp_item_get_height (item);
     }
 
   /* we know the bounds */
   channel->bounds_known = TRUE;
 
   /*  set the new mask undo parameters  */
-  mask_undo->tiles = new_tiles;
-  mask_undo->x     = x1;
-  mask_undo->y     = y1;
+  mask_undo->buffer = new_buffer;
+  mask_undo->x      = x;
+  mask_undo->y      = y;
+  mask_undo->format = format;
 
-  gimp_drawable_update (GIMP_DRAWABLE (channel),
-                        0, 0,
-                        gimp_item_get_width  (GIMP_ITEM (channel)),
-                        gimp_item_get_height (GIMP_ITEM (channel)));
+  gimp_drawable_update (drawable, 0, 0, -1, -1);
 }
 
 static void
@@ -207,11 +280,7 @@ gimp_mask_undo_free (GimpUndo     *undo,
 {
   GimpMaskUndo *mask_undo = GIMP_MASK_UNDO (undo);
 
-  if (mask_undo->tiles)
-    {
-      tile_manager_unref (mask_undo->tiles);
-      mask_undo->tiles = NULL;
-    }
+  g_clear_object (&mask_undo->buffer);
 
   GIMP_UNDO_CLASS (parent_class)->free (undo, undo_mode);
 }

@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -40,6 +41,17 @@ enum
   RESPONSE_PREVIOUS = 1,
   RESPONSE_NEXT     = 2
 };
+
+
+/* eek, see bug 762279 */
+GtkLinkButtonUriFunc
+gtk_link_button_set_uri_hook      (GtkLinkButtonUriFunc func,
+                                   gpointer             data,
+                                   GDestroyNotify       destroy);
+static void  tips_uri_hook        (GtkLinkButton *button,
+                                   const gchar   *link_,
+                                   gpointer       user_data);
+
 
 static void  tips_dialog_set_tip  (GimpTip       *tip);
 static void  tips_dialog_response (GtkWidget     *dialog,
@@ -72,12 +84,11 @@ tips_dialog_create (Gimp *gimp)
   if (!tips)
     {
       GError *error = NULL;
-      gchar  *filename;
+      GFile  *file;
 
-      filename = g_build_filename (gimp_data_directory (), "tips",
-                                   "gimp-tips.xml", NULL);
+      file = gimp_data_directory_file ("tips", "gimp-tips.xml", NULL);
 
-      tips = gimp_tips_from_file (filename, &error);
+      tips = gimp_tips_from_file (file, &error);
 
       if (! tips)
         {
@@ -93,7 +104,7 @@ tips_dialog_create (Gimp *gimp)
                                     "missing!"),
                                   _("There should be a file called '%s'. "
                                     "Please check your installation."),
-                                  gimp_filename_to_utf8 (filename));
+                                  gimp_file_get_utf8_name (file));
             }
           else
             {
@@ -106,11 +117,11 @@ tips_dialog_create (Gimp *gimp)
       else if (error)
         {
           g_printerr ("Error while parsing '%s': %s\n",
-                      filename, error->message);
+                      gimp_file_get_utf8_name (file), error->message);
         }
 
       g_clear_error (&error);
-      g_free (filename);
+      g_object_unref (file);
     }
 
   tips_count = g_list_length (tips);
@@ -133,14 +144,14 @@ tips_dialog_create (Gimp *gimp)
   button = gtk_dialog_add_button (GTK_DIALOG (tips_dialog),
                                   _("_Previous Tip"), RESPONSE_PREVIOUS);
   gtk_button_set_image (GTK_BUTTON (button),
-                        gtk_image_new_from_stock (GTK_STOCK_GO_BACK,
-                                                  GTK_ICON_SIZE_BUTTON));
+                        gtk_image_new_from_icon_name (GIMP_ICON_GO_PREVIOUS,
+                                                      GTK_ICON_SIZE_BUTTON));
 
   button = gtk_dialog_add_button (GTK_DIALOG (tips_dialog),
                                   _("_Next Tip"), RESPONSE_NEXT);
   gtk_button_set_image (GTK_BUTTON (button),
-                        gtk_image_new_from_stock (GTK_STOCK_GO_FORWARD,
-                                                  GTK_ICON_SIZE_BUTTON));
+                        gtk_image_new_from_icon_name (GIMP_ICON_GO_NEXT,
+                                                      GTK_ICON_SIZE_BUTTON));
 
   gtk_dialog_set_response_sensitive (GTK_DIALOG (tips_dialog),
                                      RESPONSE_NEXT, tips_count > 1);
@@ -169,7 +180,8 @@ tips_dialog_create (Gimp *gimp)
   gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
-  image = gtk_image_new_from_stock (GIMP_STOCK_INFO, GTK_ICON_SIZE_DIALOG);
+  image = gtk_image_new_from_icon_name (GIMP_ICON_DIALOG_INFORMATION,
+                                        GTK_ICON_SIZE_DIALOG);
   gtk_misc_set_alignment (GTK_MISC (image), 0.5, 0.0);
   gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
   gtk_widget_show (image);
@@ -180,7 +192,7 @@ tips_dialog_create (Gimp *gimp)
   gtk_label_set_selectable (GTK_LABEL (tip_label), TRUE);
   gtk_label_set_justify (GTK_LABEL (tip_label), GTK_JUSTIFY_LEFT);
   gtk_label_set_line_wrap (GTK_LABEL (tip_label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (tip_label), 0.5, 0.0);
+  gtk_label_set_yalign (GTK_LABEL (tip_label), 0.0);
   gtk_box_pack_start (GTK_BOX (vbox), tip_label, TRUE, TRUE, 0);
   gtk_widget_show (tip_label);
 
@@ -193,6 +205,9 @@ tips_dialog_create (Gimp *gimp)
                                                 _("Learn more"));
   gtk_widget_show (more_button);
   gtk_box_pack_start (GTK_BOX (hbox), more_button, FALSE, FALSE, 0);
+
+  /* this is deprecated but better than showing two URIs, see bug #762279 */
+  gtk_link_button_set_uri_hook (tips_uri_hook, NULL, NULL);
 
   g_signal_connect (more_button, "clicked",
                     G_CALLBACK (more_button_clicked),
@@ -246,9 +261,7 @@ tips_dialog_set_tip (GimpTip *tip)
 
   gtk_label_set_markup (GTK_LABEL (tip_label), tip->text);
 
-  /*  set the URI to unset the "visited" state  */
-  gtk_link_button_set_uri (GTK_LINK_BUTTON (more_button),
-                           "http://docs.gimp.org/");
+  gtk_link_button_set_visited (GTK_LINK_BUTTON (more_button), FALSE);
 
   gtk_widget_set_sensitive (more_button, tip->help_id != NULL);
 }
@@ -259,6 +272,16 @@ more_button_clicked (GtkWidget *button,
 {
   GimpTip *tip = current_tip->data;
 
+  g_signal_stop_emission_by_name (button, "clicked");
+
   if (tip->help_id)
     gimp_help (gimp, NULL, NULL, tip->help_id);
+}
+
+static void
+tips_uri_hook (GtkLinkButton *button,
+               const gchar   *link_,
+               gpointer       user_data)
+{
+  /* do nothing */
 }

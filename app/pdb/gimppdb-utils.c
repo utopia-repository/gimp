@@ -19,6 +19,7 @@
 
 #include <string.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "pdb-types.h"
@@ -29,6 +30,8 @@
 #include "core/gimpdatafactory.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
+#include "core/gimpimage-guides.h"
+#include "core/gimpimage-sample-points.h"
 #include "core/gimpitem.h"
 
 #include "text/gimptextlayer.h"
@@ -57,10 +60,10 @@ gimp_pdb_get_data_factory_item (GimpDataFactory *data_factory,
 
 
 GimpBrush *
-gimp_pdb_get_brush (Gimp         *gimp,
-                    const gchar  *name,
-                    gboolean      writable,
-                    GError      **error)
+gimp_pdb_get_brush (Gimp               *gimp,
+                    const gchar        *name,
+                    GimpPDBDataAccess   access,
+                    GError            **error)
 {
   GimpBrush *brush;
 
@@ -70,7 +73,7 @@ gimp_pdb_get_brush (Gimp         *gimp,
   if (! name || ! strlen (name))
     {
       g_set_error_literal (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
-			   _("Invalid empty brush name"));
+                           _("Invalid empty brush name"));
       return NULL;
     }
 
@@ -81,10 +84,18 @@ gimp_pdb_get_brush (Gimp         *gimp,
       g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
                    _("Brush '%s' not found"), name);
     }
-  else if (writable && ! gimp_data_is_writable (GIMP_DATA (brush)))
+  else if ((access & GIMP_PDB_DATA_ACCESS_WRITE) &&
+           ! gimp_data_is_writable (GIMP_DATA (brush)))
     {
       g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
                    _("Brush '%s' is not editable"), name);
+      return NULL;
+    }
+  else if ((access & GIMP_PDB_DATA_ACCESS_RENAME) &&
+           ! gimp_viewable_is_name_editable (GIMP_VIEWABLE (brush)))
+    {
+      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
+                   _("Brush '%s' is not renamable"), name);
       return NULL;
     }
 
@@ -92,17 +103,17 @@ gimp_pdb_get_brush (Gimp         *gimp,
 }
 
 GimpBrush *
-gimp_pdb_get_generated_brush (Gimp         *gimp,
-                              const gchar  *name,
-                              gboolean      writable,
-                              GError      **error)
+gimp_pdb_get_generated_brush (Gimp               *gimp,
+                              const gchar        *name,
+                              GimpPDBDataAccess   access,
+                              GError            **error)
 {
   GimpBrush *brush;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  brush = gimp_pdb_get_brush (gimp, name, writable, error);
+  brush = gimp_pdb_get_brush (gimp, name, access, error);
 
   if (! brush)
     return NULL;
@@ -118,10 +129,10 @@ gimp_pdb_get_generated_brush (Gimp         *gimp,
 }
 
 GimpDynamics *
-gimp_pdb_get_dynamics (Gimp         *gimp,
-                       const gchar  *name,
-                       gboolean      writable,
-                       GError      **error)
+gimp_pdb_get_dynamics (Gimp               *gimp,
+                       const gchar        *name,
+                       GimpPDBDataAccess   access,
+                       GError            **error)
 {
   GimpDynamics *dynamics;
 
@@ -131,7 +142,7 @@ gimp_pdb_get_dynamics (Gimp         *gimp,
   if (! name || ! strlen (name))
     {
       g_set_error_literal (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
-			   _("Invalid empty paint dynamics name"));
+                           _("Invalid empty paint dynamics name"));
       return NULL;
     }
 
@@ -142,14 +153,65 @@ gimp_pdb_get_dynamics (Gimp         *gimp,
       g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
                    _("Paint dynamics '%s' not found"), name);
     }
-  else if (writable && ! gimp_data_is_writable (GIMP_DATA (dynamics)))
+  else if ((access & GIMP_PDB_DATA_ACCESS_WRITE) &&
+           ! gimp_data_is_writable (GIMP_DATA (dynamics)))
     {
       g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
                    _("Paint dynamics '%s' is not editable"), name);
       return NULL;
     }
+  else if ((access & GIMP_PDB_DATA_ACCESS_RENAME) &&
+           ! gimp_viewable_is_name_editable (GIMP_VIEWABLE (dynamics)))
+    {
+      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
+                   _("Paint dynamics '%s' is not renamable"), name);
+      return NULL;
+    }
 
   return dynamics;
+}
+
+GimpMybrush *
+gimp_pdb_get_mybrush (Gimp               *gimp,
+                      const gchar        *name,
+                      GimpPDBDataAccess   access,
+                      GError            **error)
+{
+  GimpMybrush *brush;
+
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  if (! name || ! strlen (name))
+    {
+      g_set_error_literal (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
+                           _("Invalid empty MyPaint brush name"));
+      return NULL;
+    }
+
+  brush = (GimpMybrush *) gimp_pdb_get_data_factory_item (gimp->mybrush_factory, name);
+
+  if (! brush)
+    {
+      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
+                   _("MyPaint brush '%s' not found"), name);
+    }
+  else if ((access & GIMP_PDB_DATA_ACCESS_WRITE) &&
+           ! gimp_data_is_writable (GIMP_DATA (brush)))
+    {
+      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
+                   _("MyPaint brush '%s' is not editable"), name);
+      return NULL;
+    }
+  else if ((access & GIMP_PDB_DATA_ACCESS_RENAME) &&
+           ! gimp_viewable_is_name_editable (GIMP_VIEWABLE (brush)))
+    {
+      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
+                   _("MyPaint brush '%s' is not renamable"), name);
+      return NULL;
+    }
+
+  return brush;
 }
 
 GimpPattern *
@@ -165,7 +227,7 @@ gimp_pdb_get_pattern (Gimp         *gimp,
   if (! name || ! strlen (name))
     {
       g_set_error_literal (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
-			   _("Invalid empty pattern name"));
+                           _("Invalid empty pattern name"));
       return NULL;
     }
 
@@ -181,10 +243,10 @@ gimp_pdb_get_pattern (Gimp         *gimp,
 }
 
 GimpGradient *
-gimp_pdb_get_gradient (Gimp         *gimp,
-                       const gchar  *name,
-                       gboolean      writable,
-                       GError      **error)
+gimp_pdb_get_gradient (Gimp               *gimp,
+                       const gchar        *name,
+                       GimpPDBDataAccess   access,
+                       GError            **error)
 {
   GimpGradient *gradient;
 
@@ -194,7 +256,7 @@ gimp_pdb_get_gradient (Gimp         *gimp,
   if (! name || ! strlen (name))
     {
       g_set_error_literal (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
-			   _("Invalid empty gradient name"));
+                           _("Invalid empty gradient name"));
       return NULL;
     }
 
@@ -205,10 +267,18 @@ gimp_pdb_get_gradient (Gimp         *gimp,
       g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
                    _("Gradient '%s' not found"), name);
     }
-  else if (writable && ! gimp_data_is_writable (GIMP_DATA (gradient)))
+  else if ((access & GIMP_PDB_DATA_ACCESS_WRITE) &&
+           ! gimp_data_is_writable (GIMP_DATA (gradient)))
     {
       g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
                    _("Gradient '%s' is not editable"), name);
+      return NULL;
+    }
+  else if ((access & GIMP_PDB_DATA_ACCESS_RENAME) &&
+           ! gimp_viewable_is_name_editable (GIMP_VIEWABLE (gradient)))
+    {
+      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
+                   _("Gradient '%s' is not renamable"), name);
       return NULL;
     }
 
@@ -216,10 +286,10 @@ gimp_pdb_get_gradient (Gimp         *gimp,
 }
 
 GimpPalette *
-gimp_pdb_get_palette (Gimp         *gimp,
-                      const gchar  *name,
-                      gboolean      writable,
-                      GError      **error)
+gimp_pdb_get_palette (Gimp               *gimp,
+                      const gchar        *name,
+                      GimpPDBDataAccess   access,
+                      GError            **error)
 {
   GimpPalette *palette;
 
@@ -229,7 +299,7 @@ gimp_pdb_get_palette (Gimp         *gimp,
   if (! name || ! strlen (name))
     {
       g_set_error_literal (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
-			   _("Invalid empty palette name"));
+                           _("Invalid empty palette name"));
       return NULL;
     }
 
@@ -240,10 +310,18 @@ gimp_pdb_get_palette (Gimp         *gimp,
       g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
                    _("Palette '%s' not found"), name);
     }
-  else if (writable && ! gimp_data_is_writable (GIMP_DATA (palette)))
+  else if ((access & GIMP_PDB_DATA_ACCESS_WRITE) &&
+           ! gimp_data_is_writable (GIMP_DATA (palette)))
     {
       g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
                    _("Palette '%s' is not editable"), name);
+      return NULL;
+    }
+  else if ((access & GIMP_PDB_DATA_ACCESS_RENAME) &&
+           ! gimp_viewable_is_name_editable (GIMP_VIEWABLE (palette)))
+    {
+      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
+                   _("Palette '%s' is not renamable"), name);
       return NULL;
     }
 
@@ -263,7 +341,7 @@ gimp_pdb_get_font (Gimp         *gimp,
   if (! name || ! strlen (name))
     {
       g_set_error_literal (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
-			   _("Invalid empty font name"));
+                           _("Invalid empty font name"));
       return NULL;
     }
 
@@ -292,7 +370,7 @@ gimp_pdb_get_buffer (Gimp         *gimp,
   if (! name || ! strlen (name))
     {
       g_set_error_literal (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
-			   _("Invalid empty buffer name"));
+                           _("Invalid empty buffer name"));
       return NULL;
     }
 
@@ -321,7 +399,7 @@ gimp_pdb_get_paint_info (Gimp         *gimp,
   if (! name || ! strlen (name))
     {
       g_set_error_literal (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
-			   _("Invalid empty paint method name"));
+                           _("Invalid empty paint method name"));
       return NULL;
     }
 
@@ -338,10 +416,10 @@ gimp_pdb_get_paint_info (Gimp         *gimp,
 }
 
 gboolean
-gimp_pdb_item_is_attached (GimpItem  *item,
-                           GimpImage *image,
-                           gboolean   writable,
-                           GError   **error)
+gimp_pdb_item_is_attached (GimpItem           *item,
+                           GimpImage          *image,
+                           GimpPDBItemModify   modify,
+                           GError            **error)
 {
   g_return_val_if_fail (GIMP_IS_ITEM (item), FALSE);
   g_return_val_if_fail (image == NULL || GIMP_IS_IMAGE (image), FALSE);
@@ -367,23 +445,20 @@ gimp_pdb_item_is_attached (GimpItem  *item,
       return FALSE;
     }
 
-  if (writable)
-    return gimp_pdb_item_is_writable (item, error);
-
-  return TRUE;
+  return gimp_pdb_item_is_modifyable (item, modify, error);
 }
 
 gboolean
-gimp_pdb_item_is_in_tree (GimpItem   *item,
-                          GimpImage  *image,
-                          gboolean    writable,
-                          GError    **error)
+gimp_pdb_item_is_in_tree (GimpItem           *item,
+                          GimpImage          *image,
+                          GimpPDBItemModify   modify,
+                          GError            **error)
 {
   g_return_val_if_fail (GIMP_IS_ITEM (item), FALSE);
   g_return_val_if_fail (image == NULL || GIMP_IS_IMAGE (image), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  if (! gimp_pdb_item_is_attached (item, image, writable, error))
+  if (! gimp_pdb_item_is_attached (item, image, modify, error))
     return FALSE;
 
   if (! gimp_item_get_tree (item))
@@ -484,17 +559,28 @@ gimp_pdb_item_is_floating (GimpItem  *item,
 }
 
 gboolean
-gimp_pdb_item_is_writable (GimpItem  *item,
-                           GError   **error)
+gimp_pdb_item_is_modifyable (GimpItem           *item,
+                             GimpPDBItemModify   modify,
+                             GError            **error)
 {
   g_return_val_if_fail (GIMP_IS_ITEM (item), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  if (gimp_item_is_content_locked (item))
+  if ((modify & GIMP_PDB_ITEM_CONTENT) && gimp_item_is_content_locked (item))
     {
       g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
                    _("Item '%s' (%d) cannot be modified because its "
                      "contents are locked"),
+                   gimp_object_get_name (item),
+                   gimp_item_get_ID (item));
+      return FALSE;
+    }
+
+  if ((modify & GIMP_PDB_ITEM_POSITION) && gimp_item_is_position_locked (item))
+    {
+      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
+                   _("Item '%s' (%d) cannot be modified because its "
+                     "position and size are locked"),
                    gimp_object_get_name (item),
                    gimp_item_get_ID (item));
       return FALSE;
@@ -544,9 +630,9 @@ gimp_pdb_item_is_not_group (GimpItem  *item,
 }
 
 gboolean
-gimp_pdb_layer_is_text_layer (GimpLayer  *layer,
-                              gboolean    writable,
-                              GError    **error)
+gimp_pdb_layer_is_text_layer (GimpLayer          *layer,
+                              GimpPDBItemModify   modify,
+                              GError            **error)
 {
   g_return_val_if_fail (GIMP_IS_LAYER (layer), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
@@ -562,7 +648,7 @@ gimp_pdb_layer_is_text_layer (GimpLayer  *layer,
       return FALSE;
     }
 
-  return gimp_pdb_item_is_attached (GIMP_ITEM (layer), NULL, writable, error);
+  return gimp_pdb_item_is_attached (GIMP_ITEM (layer), NULL, modify, error);
 }
 
 static const gchar *
@@ -591,7 +677,7 @@ gimp_pdb_image_is_base_type (GimpImage          *image,
   g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  if (gimp_image_base_type (image) == type)
+  if (gimp_image_get_base_type (image) == type)
     return TRUE;
 
   g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
@@ -600,7 +686,7 @@ gimp_pdb_image_is_base_type (GimpImage          *image,
                gimp_image_get_display_name (image),
                gimp_image_get_ID (image),
                gimp_pdb_enum_value_get_nick (GIMP_TYPE_IMAGE_BASE_TYPE,
-                                             gimp_image_base_type (image)),
+                                             gimp_image_get_base_type (image)),
                gimp_pdb_enum_value_get_nick (GIMP_TYPE_IMAGE_BASE_TYPE, type));
 
   return FALSE;
@@ -614,11 +700,11 @@ gimp_pdb_image_is_not_base_type (GimpImage          *image,
   g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  if (gimp_image_base_type (image) != type)
+  if (gimp_image_get_base_type (image) != type)
     return TRUE;
 
   g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
-               _("Image '%s' (%d) is already of type '%s'"),
+               _("Image '%s' (%d) must not be of type '%s'"),
                gimp_image_get_display_name (image),
                gimp_image_get_ID (image),
                gimp_pdb_enum_value_get_nick (GIMP_TYPE_IMAGE_BASE_TYPE, type));
@@ -626,11 +712,100 @@ gimp_pdb_image_is_not_base_type (GimpImage          *image,
   return FALSE;
 }
 
+gboolean
+gimp_pdb_image_is_precision (GimpImage      *image,
+                             GimpPrecision   precision,
+                             GError        **error)
+{
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  if (gimp_image_get_precision (image) == precision)
+    return TRUE;
+
+  g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
+               _("Image '%s' (%d) has precision '%s', "
+                 "but an image of precision '%s' is expected"),
+               gimp_image_get_display_name (image),
+               gimp_image_get_ID (image),
+               gimp_pdb_enum_value_get_nick (GIMP_TYPE_PRECISION,
+                                             gimp_image_get_precision (image)),
+               gimp_pdb_enum_value_get_nick (GIMP_TYPE_PRECISION, precision));
+
+  return FALSE;
+}
+
+gboolean
+gimp_pdb_image_is_not_precision (GimpImage      *image,
+                                 GimpPrecision   precision,
+                                 GError        **error)
+{
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  if (gimp_image_get_precision (image) != precision)
+    return TRUE;
+
+  g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
+               _("Image '%s' (%d) must not be of precision '%s'"),
+               gimp_image_get_display_name (image),
+               gimp_image_get_ID (image),
+               gimp_pdb_enum_value_get_nick (GIMP_TYPE_PRECISION, precision));
+
+  return FALSE;
+}
+
+GimpGuide *
+gimp_pdb_image_get_guide (GimpImage  *image,
+                          gint        guide_ID,
+                          GError    **error)
+{
+  GimpGuide *guide;
+
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  guide = gimp_image_get_guide (image, guide_ID);
+
+  if (guide)
+    return guide;
+
+  g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
+               _("Image '%s' (%d) does not contain guide with ID %d"),
+               gimp_image_get_display_name (image),
+               gimp_image_get_ID (image),
+               guide_ID);
+  return NULL;
+}
+
+GimpSamplePoint *
+gimp_pdb_image_get_sample_point (GimpImage  *image,
+                                 gint        sample_point_ID,
+                                 GError    **error)
+{
+  GimpSamplePoint *sample_point;
+
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  sample_point = gimp_image_get_sample_point (image, sample_point_ID);
+
+  if (sample_point)
+    return sample_point;
+
+  g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
+               _("Image '%s' (%d) does not contain sample point with ID %d"),
+               gimp_image_get_display_name (image),
+               gimp_image_get_ID (image),
+               sample_point_ID);
+  return NULL;
+}
+
 GimpStroke *
-gimp_pdb_get_vectors_stroke (GimpVectors  *vectors,
-                             gint          stroke_ID,
-                             gboolean      writable,
-                             GError      **error)
+gimp_pdb_get_vectors_stroke (GimpVectors        *vectors,
+                             gint                stroke_ID,
+                             GimpPDBItemModify   modify,
+                             GError            **error)
 {
   GimpStroke *stroke = NULL;
 
@@ -640,7 +815,8 @@ gimp_pdb_get_vectors_stroke (GimpVectors  *vectors,
   if (! gimp_pdb_item_is_not_group (GIMP_ITEM (vectors), error))
     return NULL;
 
-  if (! writable || gimp_pdb_item_is_writable (GIMP_ITEM (vectors), error))
+  if (! modify || gimp_pdb_item_is_modifyable (GIMP_ITEM (vectors),
+                                               modify, error))
     {
       stroke = gimp_vectors_stroke_get_by_ID (vectors, stroke_ID);
 

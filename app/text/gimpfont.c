@@ -21,9 +21,14 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include <pango/pangocairo.h>
+
+#include <hb.h>
+#include <hb-ot.h>
+#include <hb-ft.h>
 
 #define PANGO_ENABLE_ENGINE  1   /* Argh */
 #include <pango/pango-ot.h>
@@ -33,7 +38,7 @@
 
 #include "text-types.h"
 
-#include "base/temp-buf.h"
+#include "core/gimptempbuf.h"
 
 #include "gimpfont.h"
 
@@ -72,28 +77,28 @@ struct _GimpFontClass
 };
 
 
-static void      gimp_font_finalize         (GObject       *object);
-static void      gimp_font_set_property     (GObject       *object,
-                                             guint          property_id,
-                                             const GValue  *value,
-                                             GParamSpec    *pspec);
+static void          gimp_font_finalize         (GObject       *object);
+static void          gimp_font_set_property     (GObject       *object,
+                                                 guint          property_id,
+                                                 const GValue  *value,
+                                                 GParamSpec    *pspec);
 
-static void      gimp_font_get_preview_size (GimpViewable  *viewable,
-                                             gint           size,
-                                             gboolean       popup,
-                                             gboolean       dot_for_dot,
-                                             gint          *width,
-                                             gint          *height);
-static gboolean  gimp_font_get_popup_size   (GimpViewable  *viewable,
-                                             gint           width,
-                                             gint           height,
-                                             gboolean       dot_for_dot,
-                                             gint          *popup_width,
-                                             gint          *popup_height);
-static TempBuf * gimp_font_get_new_preview  (GimpViewable  *viewable,
-                                             GimpContext   *context,
-                                             gint           width,
-                                             gint           height);
+static void          gimp_font_get_preview_size (GimpViewable  *viewable,
+                                                 gint           size,
+                                                 gboolean       popup,
+                                                 gboolean       dot_for_dot,
+                                                 gint          *width,
+                                                 gint          *height);
+static gboolean      gimp_font_get_popup_size   (GimpViewable  *viewable,
+                                                 gint           width,
+                                                 gint           height,
+                                                 gboolean       dot_for_dot,
+                                                 gint          *popup_width,
+                                                 gint          *popup_height);
+static GimpTempBuf * gimp_font_get_new_preview  (GimpViewable  *viewable,
+                                                 GimpContext   *context,
+                                                 gint           width,
+                                                 gint           height);
 
 static const gchar * gimp_font_get_sample_string (PangoContext         *context,
                                                   PangoFontDescription *font_desc);
@@ -110,14 +115,14 @@ gimp_font_class_init (GimpFontClass *klass)
   GObjectClass      *object_class   = G_OBJECT_CLASS (klass);
   GimpViewableClass *viewable_class = GIMP_VIEWABLE_CLASS (klass);
 
-  object_class->finalize     = gimp_font_finalize;
-  object_class->set_property = gimp_font_set_property;
+  object_class->finalize            = gimp_font_finalize;
+  object_class->set_property        = gimp_font_set_property;
 
-  viewable_class->get_preview_size = gimp_font_get_preview_size;
-  viewable_class->get_popup_size   = gimp_font_get_popup_size;
-  viewable_class->get_new_preview  = gimp_font_get_new_preview;
+  viewable_class->get_preview_size  = gimp_font_get_preview_size;
+  viewable_class->get_popup_size    = gimp_font_get_popup_size;
+  viewable_class->get_new_preview   = gimp_font_get_new_preview;
 
-  viewable_class->default_stock_id = "gtk-select-font";
+  viewable_class->default_icon_name = "gtk-select-font";
 
   g_object_class_install_property (object_class, PROP_PANGO_CONTEXT,
                                    g_param_spec_object ("pango-context",
@@ -137,17 +142,8 @@ gimp_font_finalize (GObject *object)
 {
   GimpFont *font = GIMP_FONT (object);
 
-  if (font->pango_context)
-    {
-      g_object_unref (font->pango_context);
-      font->pango_context = NULL;
-    }
-
-  if (font->popup_layout)
-    {
-      g_object_unref (font->popup_layout);
-      font->popup_layout = NULL;
-    }
+  g_clear_object (&font->pango_context);
+  g_clear_object (&font->popup_layout);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -231,7 +227,7 @@ gimp_font_get_popup_size (GimpViewable *viewable,
   return TRUE;
 }
 
-static TempBuf *
+static GimpTempBuf *
 gimp_font_get_new_preview (GimpViewable *viewable,
                            GimpContext  *context,
                            gint          width,
@@ -245,10 +241,9 @@ gimp_font_get_new_preview (GimpViewable *viewable,
   gint             layout_height;
   gint             layout_x;
   gint             layout_y;
-  TempBuf         *temp_buf;
+  GimpTempBuf     *temp_buf;
   cairo_t         *cr;
   cairo_surface_t *surface;
-  guchar           white = 255;
 
   if (! font->pango_context)
     return NULL;
@@ -286,9 +281,10 @@ gimp_font_get_new_preview (GimpViewable *viewable,
 
   width = cairo_format_stride_for_width (CAIRO_FORMAT_A8, width);
 
-  temp_buf = temp_buf_new (width, height, 1, 0, 0, &white);
+  temp_buf = gimp_temp_buf_new (width, height, babl_format ("Y' u8"));
+  memset (gimp_temp_buf_get_data (temp_buf), 255, width * height);
 
-  surface = cairo_image_surface_create_for_data (temp_buf_get_data (temp_buf),
+  surface = cairo_image_surface_create_for_data (gimp_temp_buf_get_data (temp_buf),
                                                  CAIRO_FORMAT_A8,
                                                  width, height, width);
 
@@ -327,7 +323,7 @@ gimp_font_get_standard (void)
 
   if (! standard_font)
     standard_font = g_object_new (GIMP_TYPE_FONT,
-                                  "name", "Sans",
+                                  "name", "Sans-serif",
                                   NULL);
 
   return standard_font;
@@ -349,13 +345,30 @@ gimp_font_covers_string (PangoFcFont *font,
   return TRUE;
 }
 
+/* This function was picked up from Pango's pango-ot-info.c. Until there
+ * is a better way to get the tag, we use this.
+ */
+static hb_tag_t
+get_hb_table_type (PangoOTTableType table_type)
+{
+  switch (table_type)
+    {
+    case PANGO_OT_TABLE_GSUB:
+      return HB_OT_TAG_GSUB;
+    case PANGO_OT_TABLE_GPOS:
+      return HB_OT_TAG_GPOS;
+    default:
+      return HB_TAG_NONE;
+    }
+}
+
 /* Guess a suitable short sample string for the font. */
 static const gchar *
 gimp_font_get_sample_string (PangoContext         *context,
                              PangoFontDescription *font_desc)
 {
   PangoFont        *font;
-  PangoOTInfo      *ot_info;
+  hb_face_t        *hb_face;
   FT_Face           face;
   TT_OS2           *os2;
   PangoOTTableType  tt;
@@ -640,7 +653,8 @@ gimp_font_get_sample_string (PangoContext         *context,
   g_return_val_if_fail (PANGO_IS_FC_FONT (font), "Aa");
 
   face = pango_fc_font_lock_face (PANGO_FC_FONT (font));
-  ot_info = pango_ot_info_get (face);
+  g_return_val_if_fail (face != NULL, "Aa");
+  hb_face = hb_ft_face_create (face, NULL);
 
   /* First check what script(s), if any, the font has GSUB or GPOS
    * OpenType layout tables for.
@@ -649,41 +663,50 @@ gimp_font_get_sample_string (PangoContext         *context,
        n_ot_alts < G_N_ELEMENTS (ot_alts) && tt <= PANGO_OT_TABLE_GPOS;
        tt++)
     {
-      PangoOTTag *slist = pango_ot_info_list_scripts (ot_info, tt);
+      hb_tag_t tag;
+      unsigned int count;
+      PangoOTTag *slist;
 
-      if (slist)
+      tag = get_hb_table_type (tt);
+      count = hb_ot_layout_table_get_script_tags (hb_face, tag, 0, NULL, NULL);
+      slist = g_new (PangoOTTag, count + 1);
+      hb_ot_layout_table_get_script_tags (hb_face, tag, 0, &count, slist);
+      slist[count] = 0;
+
+      for (i = 0;
+           n_ot_alts < G_N_ELEMENTS (ot_alts) && i < G_N_ELEMENTS (scripts);
+           i++)
         {
-          for (i = 0;
-               n_ot_alts < G_N_ELEMENTS (ot_alts) && i < G_N_ELEMENTS (scripts);
-               i++)
+          gint j, k;
+
+          for (k = 0; k < n_ot_alts; k++)
+            if (ot_alts[k] == i)
+              break;
+
+          if (k == n_ot_alts)
             {
-              gint j, k;
-
-              for (k = 0; k < n_ot_alts; k++)
-                if (ot_alts[k] == i)
-                  break;
-
-              if (k == n_ot_alts)
-                for (j = 0;
-                     n_ot_alts < G_N_ELEMENTS (ot_alts) && slist[j];
-                     j++)
-                  {
+              for (j = 0;
+                   n_ot_alts < G_N_ELEMENTS (ot_alts) && slist[j];
+                   j++)
+                {
 #define TAG(s) FT_MAKE_TAG (s[0], s[1], s[2], s[3])
 
-                    if (slist[j] == TAG (scripts[i].script) &&
-                        gimp_font_covers_string (PANGO_FC_FONT (font),
-                                                 scripts[i].sample))
-                      {
-                        ot_alts[n_ot_alts++] = i;
-                        DEBUGPRINT (("%.4s ", scripts[i].script));
-                      }
+                  if (slist[j] == TAG (scripts[i].script) &&
+                      gimp_font_covers_string (PANGO_FC_FONT (font),
+                                               scripts[i].sample))
+                    {
+                      ot_alts[n_ot_alts++] = i;
+                      DEBUGPRINT (("%.4s ", scripts[i].script));
+                    }
 #undef TAG
-                  }
+                }
             }
-
-          g_free (slist);
         }
+
+      g_free (slist);
     }
+
+  hb_face_destroy (hb_face);
 
   DEBUGPRINT (("; OS/2: "));
 

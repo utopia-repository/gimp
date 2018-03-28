@@ -22,7 +22,8 @@
 #include "config.h"
 
 #include <cairo.h>
-#include <glib-object.h>
+#include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
@@ -33,6 +34,7 @@
 #include "gimpconfigwriter.h"
 #include "gimpconfig-iface.h"
 #include "gimpconfig-params.h"
+#include "gimpconfig-path.h"
 #include "gimpconfig-serialize.h"
 #include "gimpconfig-utils.h"
 
@@ -60,7 +62,7 @@ static gboolean  gimp_config_serialize_rgb (const GValue *value,
  *
  * Returns: %TRUE if serialization succeeded, %FALSE otherwise
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_config_serialize_properties (GimpConfig       *config,
@@ -106,7 +108,7 @@ gimp_config_serialize_properties (GimpConfig       *config,
  *
  * Returns: %TRUE if serialization succeeded, %FALSE otherwise
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_config_serialize_changed_properties (GimpConfig       *config,
@@ -116,7 +118,7 @@ gimp_config_serialize_changed_properties (GimpConfig       *config,
   GParamSpec   **property_specs;
   guint          n_property_specs;
   guint          i;
-  GValue         value = { 0, };
+  GValue         value = G_VALUE_INIT;
 
   g_return_val_if_fail (G_IS_OBJECT (config), FALSE);
 
@@ -161,7 +163,7 @@ gimp_config_serialize_changed_properties (GimpConfig       *config,
  *
  * Returns: %TRUE if serialization succeeded, %FALSE otherwise
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_config_serialize_property (GimpConfig       *config,
@@ -170,8 +172,8 @@ gimp_config_serialize_property (GimpConfig       *config,
 {
   GimpConfigInterface *config_iface = NULL;
   GimpConfigInterface *parent_iface = NULL;
-  GValue               value   = { 0, };
-  gboolean             success = FALSE;
+  GValue               value        = G_VALUE_INIT;
+  gboolean             success      = FALSE;
 
   if (! (param_spec->flags & GIMP_CONFIG_PARAM_SERIALIZE))
     return FALSE;
@@ -235,7 +237,8 @@ gimp_config_serialize_property (GimpConfig       *config,
 
   if (! success)
     {
-      if (G_VALUE_HOLDS_OBJECT (&value))
+      if (G_VALUE_HOLDS_OBJECT (&value) &&
+          G_VALUE_TYPE (&value) != G_TYPE_FILE)
         {
           GimpConfigInterface *config_iface = NULL;
           GimpConfig          *prop_object;
@@ -327,7 +330,7 @@ gimp_config_serialize_property (GimpConfig       *config,
  *
  * Returns: %TRUE if serialization succeeded, %FALSE otherwise
  *
- * Since: GIMP 2.6
+ * Since: 2.6
  **/
 gboolean
 gimp_config_serialize_property_by_name (GimpConfig       *config,
@@ -355,7 +358,7 @@ gimp_config_serialize_property_by_name (GimpConfig       *config,
  *
  * Return value: %TRUE if serialization succeeded, %FALSE otherwise.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gboolean
 gimp_config_serialize_value (const GValue *value,
@@ -452,26 +455,64 @@ gimp_config_serialize_value (const GValue *value,
       return TRUE;
     }
 
-  if (G_VALUE_TYPE (value) == G_TYPE_VALUE_ARRAY)
+  if (G_VALUE_TYPE (value) == GIMP_TYPE_VALUE_ARRAY)
     {
-      GValueArray *array;
+      GimpValueArray *array;
 
       array = g_value_get_boxed (value);
 
       if (array)
         {
+          gint length = gimp_value_array_length (array);
           gint i;
 
-          g_string_append_printf (str, "%d", array->n_values);
+          g_string_append_printf (str, "%d", length);
 
-          for (i = 0; i < array->n_values; i++)
+          for (i = 0; i < length; i++)
             {
               g_string_append (str, " ");
 
-              if (! gimp_config_serialize_value (g_value_array_get_nth (array,
-                                                                        i),
+              if (! gimp_config_serialize_value (gimp_value_array_index (array,
+                                                                         i),
                                                  str, TRUE))
                 return FALSE;
+            }
+        }
+      else
+        {
+          g_string_append (str, "0");
+        }
+
+      return TRUE;
+    }
+
+  if (G_VALUE_TYPE (value) == G_TYPE_FILE)
+    {
+      GFile *file = g_value_get_object (value);
+
+      if (file)
+        {
+          gchar *path     = g_file_get_path (file);
+          gchar *unexpand = NULL;
+
+          if (path)
+            {
+              unexpand = gimp_config_path_unexpand (path, TRUE, NULL);
+              g_free (path);
+            }
+
+          if (unexpand)
+            {
+              if (escaped)
+                gimp_config_string_append_escaped (str, unexpand);
+              else
+                g_string_append (str, unexpand);
+
+              g_free (unexpand);
+            }
+          else
+            {
+              g_string_append (str, "NULL");
             }
         }
       else
@@ -484,7 +525,7 @@ gimp_config_serialize_value (const GValue *value,
 
   if (g_value_type_transformable (G_VALUE_TYPE (value), G_TYPE_STRING))
     {
-      GValue  tmp_value = { 0, };
+      GValue  tmp_value = G_VALUE_INIT;
 
       g_value_init (&tmp_value, G_TYPE_STRING);
       g_value_transform (value, &tmp_value);

@@ -33,7 +33,8 @@
 #define GIMP_VIEW_RENDERER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VIEW_RENDERER, GimpViewRendererClass))
 
 
-typedef struct _GimpViewRendererClass  GimpViewRendererClass;
+typedef struct _GimpViewRendererPrivate GimpViewRendererPrivate;
+typedef struct _GimpViewRendererClass   GimpViewRendererClass;
 
 struct _GimpViewRenderer
 {
@@ -56,14 +57,10 @@ struct _GimpViewRenderer
   /*< protected >*/
   cairo_surface_t    *surface;
 
-  /*< private >*/
-  cairo_pattern_t    *pattern;
-  GdkPixbuf          *pixbuf;
-  gchar              *bg_stock_id;
-
   gint                size;
-  gboolean            needs_render;
-  guint               idle_id;
+
+  /*< private >*/
+  GimpViewRendererPrivate *priv;
 };
 
 struct _GimpViewRendererClass
@@ -125,7 +122,9 @@ void   gimp_view_renderer_set_border_type  (GimpViewRenderer   *renderer,
 void   gimp_view_renderer_set_border_color (GimpViewRenderer   *renderer,
                                             const GimpRGB      *border_color);
 void   gimp_view_renderer_set_background   (GimpViewRenderer   *renderer,
-                                            const gchar        *stock_id);
+                                            const gchar        *icon_name);
+void   gimp_view_renderer_set_color_config (GimpViewRenderer   *renderer,
+                                            GimpColorConfig    *color_config);
 
 void   gimp_view_renderer_invalidate       (GimpViewRenderer   *renderer);
 void   gimp_view_renderer_update           (GimpViewRenderer   *renderer);
@@ -141,18 +140,28 @@ void   gimp_view_renderer_draw             (GimpViewRenderer   *renderer,
 /*  protected  */
 
 void   gimp_view_renderer_render_temp_buf_simple (GimpViewRenderer *renderer,
-                                                  TempBuf          *temp_buf);
+                                                  GtkWidget        *widget,
+                                                  GimpTempBuf      *temp_buf);
 void   gimp_view_renderer_render_temp_buf        (GimpViewRenderer *renderer,
-                                                  TempBuf          *temp_buf,
+                                                  GtkWidget        *widget,
+                                                  GimpTempBuf      *temp_buf,
+                                                  gint              temp_buf_x,
+                                                  gint              temp_buf_y,
                                                   gint              channel,
                                                   GimpViewBG        inside_bg,
                                                   GimpViewBG        outside_bg);
 void   gimp_view_renderer_render_pixbuf          (GimpViewRenderer *renderer,
-                                                  GdkPixbuf        *pixbuf);
-void   gimp_view_renderer_render_stock           (GimpViewRenderer *renderer,
                                                   GtkWidget        *widget,
-                                                  const gchar      *stock_id);
-
+                                                  GdkPixbuf        *pixbuf);
+void   gimp_view_renderer_render_icon            (GimpViewRenderer *renderer,
+                                                  GtkWidget        *widget,
+                                                  const gchar      *icon_name);
+GimpColorTransform *
+       gimp_view_renderer_get_color_transform    (GimpViewRenderer *renderer,
+                                                  GtkWidget        *widget,
+                                                  const Babl       *src_format,
+                                                  const Babl       *dest_format);
+void   gimp_view_renderer_free_color_transform   (GimpViewRenderer *renderer);
 
 
 #endif /* __GIMP_VIEW_RENDERER_H__ */

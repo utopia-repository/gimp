@@ -21,7 +21,8 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpconfig/gimpconfig.h"
@@ -35,6 +36,7 @@
 #include "gimpdashpattern.h"
 #include "gimpmarshal.h"
 #include "gimppaintinfo.h"
+#include "gimpparamspecs.h"
 #include "gimpstrokeoptions.h"
 
 #include "paint/gimppaintoptions.h"
@@ -149,64 +151,80 @@ gimp_stroke_options_class_init (GimpStrokeOptionsClass *klass)
                   G_TYPE_NONE, 1,
                   GIMP_TYPE_DASH_PRESET);
 
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_METHOD,
-                                 "method", NULL,
-                                 GIMP_TYPE_STROKE_METHOD,
-                                 GIMP_STROKE_METHOD_LIBART,
-                                 GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_METHOD,
+                         "method",
+                         _("Method"),
+                         NULL,
+                         GIMP_TYPE_STROKE_METHOD,
+                         GIMP_STROKE_LINE,
+                         GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_WIDTH,
-                                   "width", NULL,
-                                   0.0, 2000.0, 6.0,
-                                   GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_WIDTH,
+                           "width",
+                           _("Line width"),
+                           NULL,
+                           0.0, 2000.0, 6.0,
+                           GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_INSTALL_PROP_UNIT (object_class, PROP_UNIT,
-                                 "unit", NULL,
-                                 TRUE, FALSE, GIMP_UNIT_PIXEL,
-                                 GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_UNIT (object_class, PROP_UNIT,
+                         "unit",
+                         _("Unit"),
+                         NULL,
+                         TRUE, FALSE, GIMP_UNIT_PIXEL,
+                         GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_CAP_STYLE,
-                                 "cap-style", NULL,
-                                 GIMP_TYPE_CAP_STYLE, GIMP_CAP_BUTT,
-                                 GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_CAP_STYLE,
+                         "cap-style",
+                         _("Cap style"),
+                         NULL,
+                         GIMP_TYPE_CAP_STYLE, GIMP_CAP_BUTT,
+                         GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_JOIN_STYLE,
-                                 "join-style", NULL,
-                                 GIMP_TYPE_JOIN_STYLE, GIMP_JOIN_MITER,
-                                 GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_ENUM (object_class, PROP_JOIN_STYLE,
+                         "join-style",
+                         _("Join style"),
+                         NULL,
+                         GIMP_TYPE_JOIN_STYLE, GIMP_JOIN_MITER,
+                         GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_MITER_LIMIT,
-                                   "miter-limit",
-                                   _("Convert a mitered join to a bevelled "
-                                     "join if the miter would extend to a "
-                                     "distance of more than miter-limit * "
-                                     "line-width from the actual join point."),
-                                   0.0, 100.0, 10.0,
-                                   GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_MITER_LIMIT,
+                           "miter-limit",
+                           _("Miter limit"),
+                           _("Convert a mitered join to a bevelled "
+                             "join if the miter would extend to a "
+                             "distance of more than miter-limit * "
+                             "line-width from the actual join point."),
+                           0.0, 100.0, 10.0,
+                           GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_DASH_OFFSET,
-                                   "dash-offset", NULL,
-                                   0.0, 2000.0, 0.0,
-                                   GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_DASH_OFFSET,
+                           "dash-offset",
+                           _("Dash offset"),
+                           NULL,
+                           0.0, 2000.0, 0.0,
+                           GIMP_PARAM_STATIC_STRINGS);
 
   array_spec = g_param_spec_double ("dash-length", NULL, NULL,
                                     0.0, 2000.0, 1.0, GIMP_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_DASH_INFO,
-                                   g_param_spec_value_array ("dash-info",
-                                                             NULL, NULL,
-                                                             array_spec,
-                                                             GIMP_PARAM_STATIC_STRINGS |
-                                                             GIMP_CONFIG_PARAM_FLAGS));
+                                   gimp_param_spec_value_array ("dash-info",
+                                                                NULL, NULL,
+                                                                array_spec,
+                                                                GIMP_PARAM_STATIC_STRINGS |
+                                                                GIMP_CONFIG_PARAM_FLAGS));
 
-  GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_PAINT_OPTIONS,
-                                   "paint-options", NULL,
-                                   GIMP_TYPE_PAINT_OPTIONS,
-                                   GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_OBJECT (object_class, PROP_PAINT_OPTIONS,
+                           "paint-options",
+                           NULL, NULL,
+                           GIMP_TYPE_PAINT_OPTIONS,
+                           GIMP_PARAM_STATIC_STRINGS);
 
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_EMULATE_DYNAMICS,
-                                    "emulate-brush-dynamics", NULL,
-                                    FALSE,
-                                    GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_EMULATE_DYNAMICS,
+                            "emulate-brush-dynamics",
+                            _("Emulate brush dynamics"),
+                            NULL,
+                            FALSE,
+                            GIMP_PARAM_STATIC_STRINGS);
 
   g_type_class_add_private (klass, sizeof (GimpStrokeOptionsPrivate));
 }
@@ -241,11 +259,7 @@ gimp_stroke_options_finalize (GObject *object)
       private->dash_info = NULL;
     }
 
-  if (private->paint_options)
-    {
-      g_object_unref (private->paint_options);
-      private->paint_options = NULL;
-    }
+  g_clear_object (&private->paint_options);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -285,8 +299,8 @@ gimp_stroke_options_set_property (GObject      *object,
       break;
     case PROP_DASH_INFO:
       {
-        GValueArray *value_array = g_value_get_boxed (value);
-        GArray      *pattern;
+        GimpValueArray *value_array = g_value_get_boxed (value);
+        GArray         *pattern;
 
         pattern = gimp_dash_pattern_from_value_array (value_array);
         gimp_stroke_options_take_dash_pattern (options, GIMP_DASH_CUSTOM,
@@ -343,7 +357,7 @@ gimp_stroke_options_get_property (GObject    *object,
       break;
     case PROP_DASH_INFO:
       {
-        GValueArray *value_array;
+        GimpValueArray *value_array;
 
         value_array = gimp_dash_pattern_to_value_array (private->dash_info);
         g_value_take_boxed (value, value_array);
@@ -413,8 +427,8 @@ gimp_stroke_options_new (Gimp        *gimp,
   if (use_context_color)
     {
       gimp_context_define_properties (GIMP_CONTEXT (options),
-                                      GIMP_CONTEXT_FOREGROUND_MASK |
-                                      GIMP_CONTEXT_PATTERN_MASK,
+                                      GIMP_CONTEXT_PROP_MASK_FOREGROUND |
+                                      GIMP_CONTEXT_PROP_MASK_PATTERN,
                                       FALSE);
 
       gimp_context_set_parent (GIMP_CONTEXT (options), context);
@@ -427,7 +441,7 @@ GimpStrokeMethod
 gimp_stroke_options_get_method (GimpStrokeOptions *options)
 {
   g_return_val_if_fail (GIMP_IS_STROKE_OPTIONS (options),
-                        GIMP_STROKE_METHOD_LIBART);
+                        GIMP_STROKE_LINE);
 
   return GET_PRIVATE (options)->method;
 }
@@ -557,10 +571,10 @@ gimp_stroke_options_prepare (GimpStrokeOptions *options,
 
   switch (private->method)
     {
-    case GIMP_STROKE_METHOD_LIBART:
+    case GIMP_STROKE_LINE:
       break;
 
-    case GIMP_STROKE_METHOD_PAINT_CORE:
+    case GIMP_STROKE_PAINT_METHOD:
       {
         GimpPaintInfo *paint_info = GIMP_CONTEXT (options)->paint_info;
 
@@ -572,9 +586,11 @@ gimp_stroke_options_prepare (GimpStrokeOptions *options,
              *  from the passed context
              */
             gimp_context_define_properties (GIMP_CONTEXT (paint_options),
-                                            GIMP_CONTEXT_PAINT_PROPS_MASK,
+                                            GIMP_CONTEXT_PROP_MASK_PAINT,
                                             FALSE);
             gimp_context_set_parent (GIMP_CONTEXT (paint_options), context);
+
+            g_object_ref (paint_options);
           }
         else
           {
@@ -585,21 +601,21 @@ gimp_stroke_options_prepare (GimpStrokeOptions *options,
               gimp_config_duplicate (GIMP_CONFIG (paint_info->paint_options));
 
             /*  FG and BG are always shared between all tools  */
-            global_props |= GIMP_CONTEXT_FOREGROUND_MASK;
-            global_props |= GIMP_CONTEXT_BACKGROUND_MASK;
+            global_props |= GIMP_CONTEXT_PROP_MASK_FOREGROUND;
+            global_props |= GIMP_CONTEXT_PROP_MASK_BACKGROUND;
 
             if (config->global_brush)
-              global_props |= GIMP_CONTEXT_BRUSH_MASK;
+              global_props |= GIMP_CONTEXT_PROP_MASK_BRUSH;
             if (config->global_dynamics)
-              global_props |= GIMP_CONTEXT_DYNAMICS_MASK;
+              global_props |= GIMP_CONTEXT_PROP_MASK_DYNAMICS;
             if (config->global_pattern)
-              global_props |= GIMP_CONTEXT_PATTERN_MASK;
+              global_props |= GIMP_CONTEXT_PROP_MASK_PATTERN;
             if (config->global_palette)
-              global_props |= GIMP_CONTEXT_PALETTE_MASK;
+              global_props |= GIMP_CONTEXT_PROP_MASK_PALETTE;
             if (config->global_gradient)
-              global_props |= GIMP_CONTEXT_GRADIENT_MASK;
+              global_props |= GIMP_CONTEXT_PROP_MASK_GRADIENT;
             if (config->global_font)
-              global_props |= GIMP_CONTEXT_FONT_MASK;
+              global_props |= GIMP_CONTEXT_PROP_MASK_FONT;
 
             gimp_context_copy_properties (context,
                                           GIMP_CONTEXT (paint_options),
@@ -607,6 +623,7 @@ gimp_stroke_options_prepare (GimpStrokeOptions *options,
           }
 
         g_object_set (options, "paint-options", paint_options, NULL);
+        g_object_unref (paint_options);
       }
       break;
 

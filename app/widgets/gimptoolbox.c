@@ -21,6 +21,7 @@
 
 #undef GSEAL_ENABLE
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -34,9 +35,8 @@
 #include "core/gimpcontext.h"
 
 #include "file/file-open.h"
-#include "file/file-utils.h"
 
-#include "gimpcairo.h"
+#include "gimpcairo-wilber.h"
 #include "gimpdevices.h"
 #include "gimpdialogfactory.h"
 #include "gimpdockwindow.h"
@@ -138,9 +138,6 @@ static GtkWidget * toolbox_create_image_area            (GimpToolbox    *toolbox
 static void        toolbox_area_notify                  (GimpGuiConfig  *config,
                                                          GParamSpec     *pspec,
                                                          GtkWidget      *area);
-static void        toolbox_wilber_notify                (GimpGuiConfig  *config,
-                                                         GParamSpec     *pspec,
-                                                         GtkWidget      *wilber);
 static void        toolbox_paste_received               (GtkClipboard   *clipboard,
                                                          const gchar    *text,
                                                          gpointer        data);
@@ -201,7 +198,7 @@ gimp_toolbox_constructed (GObject *object)
   GdkDisplay    *display;
   GList         *list;
 
-  g_assert (GIMP_IS_CONTEXT (toolbox->p->context));
+  gimp_assert (GIMP_IS_CONTEXT (toolbox->p->context));
 
   config = GIMP_GUI_CONFIG (toolbox->p->context->gimp->config);
 
@@ -239,8 +236,9 @@ gimp_toolbox_constructed (GObject *object)
   gtk_box_pack_start (GTK_BOX (toolbox->p->vbox), toolbox->p->header,
                       FALSE, FALSE, 0);
 
-  if (config->toolbox_wilber)
-    gtk_widget_show (toolbox->p->header);
+  g_object_bind_property (config,             "toolbox-wilber",
+                          toolbox->p->header, "visible",
+                          G_BINDING_SYNC_CREATE);
 
   g_signal_connect (toolbox->p->header, "size-request",
                     G_CALLBACK (gimp_toolbox_size_request_wilber),
@@ -251,10 +249,6 @@ gimp_toolbox_constructed (GObject *object)
 
   gimp_help_set_help_data (toolbox->p->header,
                            _("Drop image files here to open them"), NULL);
-
-  g_signal_connect_object (config, "notify::toolbox-wilber",
-                           G_CALLBACK (toolbox_wilber_notify),
-                           toolbox->p->header, 0);
 
   toolbox->p->tool_palette = gimp_tool_palette_new ();
   gimp_tool_palette_set_toolbox (GIMP_TOOL_PALETTE (toolbox->p->tool_palette),
@@ -335,11 +329,7 @@ gimp_toolbox_dispose (GObject *object)
 
   toolbox->p->in_destruction = TRUE;
 
-  if (toolbox->p->context)
-    {
-      g_object_unref (toolbox->p->context);
-      toolbox->p->context = NULL;
-    }
+  g_clear_object (&toolbox->p->context);
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 
@@ -450,7 +440,7 @@ gimp_toolbox_button_press_event (GtkWidget      *widget,
       clipboard = gtk_widget_get_clipboard (widget, GDK_SELECTION_PRIMARY);
       gtk_clipboard_request_text (clipboard,
                                   toolbox_paste_received,
-                                  g_object_ref (toolbox->p->context));
+                                  g_object_ref (toolbox));
 
       return TRUE;
     }
@@ -771,27 +761,18 @@ toolbox_area_notify (GimpGuiConfig *config,
 }
 
 static void
-toolbox_wilber_notify (GimpGuiConfig *config,
-                       GParamSpec    *pspec,
-                       GtkWidget     *wilber)
-{
-  gboolean   visible;
-
-  g_object_get (config, pspec->name, &visible, NULL);
-  g_object_set (wilber, "visible", visible, NULL);
-}
-
-static void
 toolbox_paste_received (GtkClipboard *clipboard,
                         const gchar  *text,
                         gpointer      data)
 {
-  GimpContext *context = GIMP_CONTEXT (data);
+  GimpToolbox *toolbox = GIMP_TOOLBOX (data);
+  GimpContext *context = toolbox->p->context;
 
   if (text)
     {
       const gchar *newline = strchr (text, '\n');
       gchar       *copy;
+      GFile       *file = NULL;
 
       if (newline)
         copy = g_strndup (text, newline - text);
@@ -801,28 +782,33 @@ toolbox_paste_received (GtkClipboard *clipboard,
       g_strstrip (copy);
 
       if (strlen (copy))
+        file = g_file_new_for_commandline_arg (copy);
+
+      g_free (copy);
+
+      if (file)
         {
+          GtkWidget         *widget = GTK_WIDGET (toolbox);
           GimpImage         *image;
           GimpPDBStatusType  status;
           GError            *error = NULL;
 
           image = file_open_with_display (context->gimp, context, NULL,
-                                          copy, FALSE, &status, &error);
+                                          file, FALSE,
+                                          G_OBJECT (gtk_widget_get_screen (widget)),
+                                          gimp_widget_get_monitor (widget),
+                                          &status, &error);
 
           if (! image && status != GIMP_PDB_CANCEL)
             {
-              gchar *filename = file_utils_uri_display_name (copy);
-
               gimp_message (context->gimp, NULL, GIMP_MESSAGE_ERROR,
                             _("Opening '%s' failed:\n\n%s"),
-                            filename, error->message);
-
+                            gimp_file_get_utf8_name (file), error->message);
               g_clear_error (&error);
-              g_free (filename);
             }
-        }
 
-      g_free (copy);
+          g_object_unref (file);
+        }
     }
 
   g_object_unref (context);

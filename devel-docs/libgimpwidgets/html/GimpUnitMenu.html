@@ -5,10 +5,10 @@
 <title>GimpUnitMenu: GIMP Widgets Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
-<link rel="up" href="libgimpwidgets-deprecated.html" title="Part VI. Deprecated API">
+<link rel="up" href="libgimpwidgets-deprecated.html" title="Part VII. Deprecated API">
 <link rel="prev" href="GimpPixmap.html" title="GimpPixmap">
-<link rel="next" href="libgimpwidgets-index.html" title="Index">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="next" href="api-index-full.html" title="Index">
+<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -23,7 +23,7 @@
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="libgimpwidgets-deprecated.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="GimpPixmap.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="libgimpwidgets-index.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="api-index-full.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="GimpUnitMenu"></a><div class="titlepage"></div>
@@ -32,7 +32,7 @@
 <h2><span class="refentrytitle"><a name="GimpUnitMenu.top_of_page"></a>GimpUnitMenu</span></h2>
 <p>GimpUnitMenu — Widget for selecting a <a href="../html/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>.</p>
 </td>
-<td class="gallery_image" valign="top" align="right"><img src="gimp-unit-menu.png"></td>
+<td class="gallery_image" valign="top" align="right"><img src="gimp-widget-unit-menu.png"></td>
 </tr></table></div>
 <div class="refsect1">
 <a name="GimpUnitMenu.functions"></a><h2>Functions</h2>
@@ -44,7 +44,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/gtk2GtkWidget.html#GtkWidget-struct"><span class="returnvalue">GtkWidget</span></a> *
+<a href="../gtk2/GtkWidget.html#GtkWidget-struct"><span class="returnvalue">GtkWidget</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="GimpUnitMenu.html#gimp-unit-menu-new" title="gimp_unit_menu_new ()">gimp_unit_menu_new</a> <span class="c_punctuation">()</span>
@@ -68,7 +68,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+<a href="../glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="GimpUnitMenu.html#gimp-unit-menu-get-pixel-digits" title="gimp_unit_menu_get_pixel_digits ()">gimp_unit_menu_get_pixel_digits</a> <span class="c_punctuation">()</span>
@@ -96,7 +96,7 @@
 <tbody><tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="GimpUnitMenu.html#GimpUnitMenu-unit-changed" title="The “unit-changed” signal">unit-changed</a></td>
-<td class="signal_flags"><a href="/usr/share/gtk-doc/html/gobjectgobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></td>
+<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></td>
 </tr></tbody>
 </table></div>
 </div>
@@ -115,14 +115,14 @@
 </div>
 <div class="refsect1">
 <a name="GimpUnitMenu.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
-    <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
-        <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gtk2GtkObject.html#GtkObject-struct">GtkObject</a>
-            <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gtk2GtkWidget.html#GtkWidget-struct">GtkWidget</a>
-                <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gtk2GtkContainer.html#GtkContainer-struct">GtkContainer</a>
-                    <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gtk2GtkBin.html#GtkBin-struct">GtkBin</a>
-                        <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gtk2GtkButton.html#GtkButton-struct">GtkButton</a>
-                            <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gtk2GtkOptionMenu.html#GtkOptionMenu-struct">GtkOptionMenu</a>
+<pre class="screen">    <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    <span class="lineart">╰──</span> <a href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+        <span class="lineart">╰──</span> <a href="../gtk2/GtkObject.html#GtkObject-struct">GtkObject</a>
+            <span class="lineart">╰──</span> <a href="../gtk2/GtkWidget.html#GtkWidget-struct">GtkWidget</a>
+                <span class="lineart">╰──</span> <a href="../gtk2/GtkContainer.html#GtkContainer-struct">GtkContainer</a>
+                    <span class="lineart">╰──</span> <a href="../gtk2/GtkBin.html#GtkBin-struct">GtkBin</a>
+                        <span class="lineart">╰──</span> <a href="../gtk2/GtkButton.html#GtkButton-struct">GtkButton</a>
+                            <span class="lineart">╰──</span> <a href="../gtk2/GtkOptionMenu.html#GtkOptionMenu-struct">GtkOptionMenu</a>
                                 <span class="lineart">╰──</span> GimpUnitMenu
 </pre>
 </div>
@@ -130,11 +130,11 @@
 <a name="GimpUnitMenu.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpUnitMenu implements
- AtkImplementorIface,  <a href="/usr/share/gtk-doc/html/gtk2GtkBuildable.html#GtkBuildable-struct">GtkBuildable</a> and  <a href="/usr/share/gtk-doc/html/gtk2GtkActivatable.html#GtkActivatable-struct">GtkActivatable</a>.</p>
+ AtkImplementorIface,  <a href="../gtk2/GtkBuildable.html#GtkBuildable-struct">GtkBuildable</a> and  <a href="../gtk2/GtkActivatable.html#GtkActivatable-struct">GtkActivatable</a>.</p>
 </div>
 <div class="refsect1">
 <a name="GimpUnitMenu.description"></a><h2>Description</h2>
-<p>This widget provides a <a href="/usr/share/gtk-doc/html/gtk2GtkOptionMenu.html#GtkOptionMenu-struct"><span class="type">GtkOptionMenu</span></a> which contains a list of
+<p>This widget provides a <a href="../gtk2/GtkOptionMenu.html#GtkOptionMenu-struct"><span class="type">GtkOptionMenu</span></a> which contains a list of
 <a href="../html/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>'s.</p>
 <p>You can specify the string that will be displayed for each unit by
 passing a printf-like <em class="parameter"><code>format</code></em>
@@ -149,12 +149,12 @@ which will pop up a dialog for selecting user-defined units.</p>
 <a name="GimpUnitMenu.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="gimp-unit-menu-new"></a><h3>gimp_unit_menu_new ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk2GtkWidget.html#GtkWidget-struct"><span class="returnvalue">GtkWidget</span></a> *
-gimp_unit_menu_new (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<pre class="programlisting"><a href="../gtk2/GtkWidget.html#GtkWidget-struct"><span class="returnvalue">GtkWidget</span></a> *
+gimp_unit_menu_new (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
                     <em class="parameter"><code><a href="../html/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> unit</code></em>,
-                    <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> show_pixels</code></em>,
-                    <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> show_percent</code></em>,
-                    <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> show_custom</code></em>);</pre>
+                    <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> show_pixels</code></em>,
+                    <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> show_percent</code></em>,
+                    <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> show_custom</code></em>);</pre>
 <div class="warning"><p><code class="literal">gimp_unit_menu_new</code> is deprecated and should not be used in newly-written code.</p></div>
 <p>Creates a new <a class="link" href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a> widget.</p>
 <p>For the <em class="parameter"><code>format</code></em>
@@ -181,19 +181,19 @@ strings.</p></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>show_pixels</p></td>
-<td class="parameter_description"><p><a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the unit menu should contain an item for
+<td class="parameter_description"><p><a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the unit menu should contain an item for
 GIMP_UNIT_PIXEL.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>show_percent</p></td>
-<td class="parameter_description"><p><a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> in the unit menu should contain an item for
+<td class="parameter_description"><p><a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> in the unit menu should contain an item for
 GIMP_UNIT_PERCENT.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>show_custom</p></td>
-<td class="parameter_description"><p><a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the unit menu should contain a "More..." item for
+<td class="parameter_description"><p><a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the unit menu should contain a "More..." item for
 opening the user-defined-unit selection dialog.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -266,7 +266,7 @@ gimp_unit_menu_get_unit (<em class="parameter"><code><a class="link" href="GimpU
 <hr>
 <div class="refsect2">
 <a name="gimp-unit-menu-get-pixel-digits"></a><h3>gimp_unit_menu_get_pixel_digits ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
 gimp_unit_menu_get_pixel_digits (<em class="parameter"><code><a class="link" href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a> *menu</code></em>);</pre>
 <div class="warning"><p><code class="literal">gimp_unit_menu_get_pixel_digits</code> is deprecated and should not be used in newly-written code.</p></div>
 <p>Retrieve the number of digits for a pixel size as set by
@@ -296,16 +296,16 @@ gimp_unit_menu_get_pixel_digits (<em class="parameter"><code><a class="link" hre
 <a name="gimp-unit-menu-set-pixel-digits"></a><h3>gimp_unit_menu_set_pixel_digits ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_unit_menu_set_pixel_digits (<em class="parameter"><code><a class="link" href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a> *menu</code></em>,
-                                 <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a> digits</code></em>);</pre>
+                                 <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> digits</code></em>);</pre>
 <div class="warning"><p><code class="literal">gimp_unit_menu_set_pixel_digits</code> is deprecated and should not be used in newly-written code.</p></div>
 <p>A GimpUnitMenu can be setup to control the number of digits shown
 by attached spinbuttons. Please refer to the documentation of
 <a class="link" href="libgimpwidgets-GimpOldWidgets.html#gimp-unit-menu-update" title="gimp_unit_menu_update ()"><code class="function">gimp_unit_menu_update()</code></a> to see how this is done.</p>
-<p>This function allows to specify the number of digits shown for a
-size in pixels. Usually this is 0 (only full pixels). If you want
-to allow the user to specify sub-pixel sizes using the attached
-spinbuttons, specify the number of digits after the decimal point
-here. You should do this after attaching your spinbuttons.</p>
+<p>This function specifies the number of digits shown for a size in
+pixels. Usually this is 0 (only full pixels). If you want to allow
+the user to specify sub-pixel sizes using the attached spinbuttons,
+specify the number of digits after the decimal point here. You
+should do this after attaching your spinbuttons.</p>
 <div class="refsect3">
 <a name="gimp-unit-menu-set-pixel-digits.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -343,8 +343,8 @@ here. You should do this after attaching your spinbuttons.</p>
 <div class="refsect2">
 <a name="GimpUnitMenu-unit-changed"></a><h3>The <code class="literal">“unit-changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-user_function (<a class="link" href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a> *arg0,
-               <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>      user_data)</pre>
+user_function (<a class="link" href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a> *gimpunitmenu,
+               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>      user_data)</pre>
 <p>This signal is emitted whenever the user selects a <a href="../html/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> from
 the <a class="link" href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a>.</p>
 <div class="refsect3">
@@ -362,7 +362,7 @@ the <a class="link" href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="t
 </tr></tbody>
 </table></div>
 </div>
-<p>Flags: <a href="/usr/share/gtk-doc/html/gobjectgobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></p>
+<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></p>
 </div>
 </div>
 <div class="refsect1">
@@ -371,6 +371,6 @@ the <a class="link" href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="t
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.27</div>
 </body>
 </html>

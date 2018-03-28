@@ -12,15 +12,11 @@ endif
 
 libdir = $(gimpplugindir)/modules
 
-INCLUDES = \
+AM_CPPFLAGS = \
         -I$(top_srcdir)	\
+	$(GEGL_CFLAGS)	\
         $(GTK_CFLAGS)	\
         -I$(includedir)
-
-if HAVE_LCMS
-display_filter_lcms_module = libdisplay-filter-lcms.la
-display_filter_proof_module = libdisplay-filter-proof.la
-endif
 
 if PLATFORM_WIN32
 else
@@ -39,11 +35,10 @@ lib_LTLIBRARIES = \
 	libcolor-selector-cmyk.la		\
 	libcolor-selector-water.la		\
 	libcolor-selector-wheel.la		\
+	libdisplay-filter-clip-warning.la	\
 	libdisplay-filter-color-blind.la	\
 	libdisplay-filter-gamma.la		\
 	libdisplay-filter-high-contrast.la	\
-	$(display_filter_lcms_module)		\
-	$(display_filter_proof_module)		\
 	$(controller_midi_module)		\
 	$(controller_linux_input_module)	\
 	$(controller_dx_dinput_module)
@@ -51,20 +46,13 @@ lib_LTLIBRARIES = \
 
 modules_libadd = $(libgimpmodule) $(libgimpwidgets) $(GTK_LIBS)
 
-color_selector_libadd = $(libgimpcolor) $(modules_libadd)
-display_filter_libadd = $(libgimpbase) $(libgimpconfig) $(libgimpcolor) $(modules_libadd)
+color_selector_libadd = $(libgimpconfig) $(libgimpcolor) $(modules_libadd) $(BABL_LIBS)
+display_filter_libadd = $(libgimpbase) $(libgimpconfig) $(libgimpcolor) $(modules_libadd) $(GEGL_LIBS)
 controller_libadd = $(modules_libadd)
 
-if HAVE_LCMS
-libcolor_selector_cmyk_la_SOURCES = color-selector-cmyk-lcms.c
-libcolor_selector_cmyk_la_CFLAGS = $(LCMS_CFLAGS)
-libcolor_selector_cmyk_la_LIBADD = $(libgimpconfig) $(color_selector_libadd) $(LCMS_LIBS)
-else
 libcolor_selector_cmyk_la_SOURCES = color-selector-cmyk.c
-libcolor_selector_cmyk_la_LIBADD = $(color_selector_libadd)
-endif
-
 libcolor_selector_cmyk_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libcolor_selector_cmyk_la_LIBADD = $(libgimpconfig) $(color_selector_libadd)
 
 libcolor_selector_water_la_SOURCES = color-selector-water.c
 libcolor_selector_water_la_LDFLAGS = -avoid-version -module $(no_undefined)
@@ -73,6 +61,10 @@ libcolor_selector_water_la_LIBADD = $(color_selector_libadd)
 libcolor_selector_wheel_la_SOURCES = color-selector-wheel.c gimpcolorwheel.c gimpcolorwheel.h
 libcolor_selector_wheel_la_LDFLAGS = -avoid-version -module $(no_undefined)
 libcolor_selector_wheel_la_LIBADD = $(color_selector_libadd)
+
+libdisplay_filter_clip_warning_la_SOURCES = display-filter-clip-warning.c
+libdisplay_filter_clip_warning_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libdisplay_filter_clip_warning_la_LIBADD = $(display_filter_libadd)
 
 libdisplay_filter_color_blind_la_SOURCES = display-filter-color-blind.c
 libdisplay_filter_color_blind_la_LDFLAGS = -avoid-version -module $(no_undefined)
@@ -85,20 +77,6 @@ libdisplay_filter_gamma_la_LIBADD = $(display_filter_libadd)
 libdisplay_filter_high_contrast_la_SOURCES = display-filter-high-contrast.c
 libdisplay_filter_high_contrast_la_LDFLAGS = -avoid-version -module $(no_undefined)
 libdisplay_filter_high_contrast_la_LIBADD = $(display_filter_libadd)
-
-libdisplay_filter_lcms_la_SOURCES = display-filter-lcms.c
-libdisplay_filter_lcms_la_CFLAGS = $(LCMS_CFLAGS)
-libdisplay_filter_lcms_la_LDFLAGS = -avoid-version -module $(no_undefined)
-libdisplay_filter_lcms_la_LIBADD = $(display_filter_libadd) $(LCMS_LIBS)
-
-if PLATFORM_WIN32
-libdisplay_filter_lcms_la_LIBADD += -lgdi32
-endif
-
-libdisplay_filter_proof_la_SOURCES = display-filter-proof.c
-libdisplay_filter_proof_la_CFLAGS = $(LCMS_CFLAGS)
-libdisplay_filter_proof_la_LDFLAGS = -avoid-version -module $(no_undefined)
-libdisplay_filter_proof_la_LIBADD = $(display_filter_libadd) $(LCMS_LIBS)
 
 libcontroller_linux_input_la_SOURCES = \
 	gimpinputdevicestore-gudev.c	\

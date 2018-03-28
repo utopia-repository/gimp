@@ -25,9 +25,6 @@
 #include <string.h>
 
 #include "gimp.h"
-#undef GIMP_DISABLE_DEPRECATED
-#undef __GIMP_PATTERNS_PDB_H__
-#include "gimppatterns_pdb.h"
 
 
 /**
@@ -78,7 +75,8 @@ gimp_patterns_refresh (void)
  * patterns. Each name returned can be used as input to the
  * gimp_context_set_pattern().
  *
- * Returns: The list of pattern names.
+ * Returns: The list of pattern names. The returned value must be freed
+ * with g_strfreev().
  **/
 gchar **
 gimp_patterns_get_list (const gchar *filter,
@@ -99,9 +97,12 @@ gimp_patterns_get_list (const gchar *filter,
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
     {
       *num_patterns = return_vals[1].data.d_int32;
-      pattern_list = g_new (gchar *, *num_patterns);
-      for (i = 0; i < *num_patterns; i++)
-        pattern_list[i] = g_strdup (return_vals[2].data.d_stringarray[i]);
+      if (*num_patterns > 0)
+        {
+          pattern_list = g_new0 (gchar *, *num_patterns + 1);
+          for (i = 0; i < *num_patterns; i++)
+            pattern_list[i] = g_strdup (return_vals[2].data.d_stringarray[i]);
+        }
     }
 
   gimp_destroy_params (return_vals, nreturn_vals);

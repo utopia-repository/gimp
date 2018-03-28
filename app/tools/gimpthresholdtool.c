@@ -25,14 +25,9 @@
 
 #include "tools-types.h"
 
-#include "base/gimphistogram.h"
-#include "base/threshold.h"
-
-#include "gegl/gimpthresholdconfig.h"
-
 #include "core/gimpdrawable.h"
 #include "core/gimpdrawable-histogram.h"
-#include "core/gimperror.h"
+#include "core/gimphistogram.h"
 #include "core/gimpimage.h"
 
 #include "widgets/gimphelp-ids.h"
@@ -43,6 +38,7 @@
 
 #include "gimphistogramoptions.h"
 #include "gimpthresholdtool.h"
+#include "gimptooloptions-gui.h"
 
 #include "gimp-intl.h"
 
@@ -55,15 +51,16 @@ static gboolean   gimp_threshold_tool_initialize      (GimpTool          *tool,
                                                        GimpDisplay       *display,
                                                        GError           **error);
 
-static GeglNode * gimp_threshold_tool_get_operation   (GimpImageMapTool  *im_tool,
-                                                       GObject          **config);
-static void       gimp_threshold_tool_map             (GimpImageMapTool  *im_tool);
-static void       gimp_threshold_tool_dialog          (GimpImageMapTool  *im_tool);
+static gchar    * gimp_threshold_tool_get_operation   (GimpFilterTool    *filter_tool,
+                                                       gchar            **description);
+static void       gimp_threshold_tool_dialog          (GimpFilterTool    *filter_tool);
+static void       gimp_threshold_tool_config_notify   (GimpFilterTool    *filter_tool,
+                                                       GimpConfig        *config,
+                                                       const GParamSpec  *pspec);
 
-static void       gimp_threshold_tool_config_notify   (GObject           *object,
-                                                       GParamSpec        *pspec,
-                                                       GimpThresholdTool *t_tool);
-
+static gboolean   gimp_threshold_tool_channel_sensitive
+                                                      (gint               value,
+                                                       gpointer           data);
 static void       gimp_threshold_tool_histogram_range (GimpHistogramView *view,
                                                        gint               start,
                                                        gint               end,
@@ -73,7 +70,7 @@ static void       gimp_threshold_tool_auto_clicked    (GtkWidget         *button
 
 
 G_DEFINE_TYPE (GimpThresholdTool, gimp_threshold_tool,
-               GIMP_TYPE_IMAGE_MAP_TOOL)
+               GIMP_TYPE_FILTER_TOOL)
 
 #define parent_class gimp_threshold_tool_parent_class
 
@@ -84,48 +81,37 @@ gimp_threshold_tool_register (GimpToolRegisterCallback  callback,
 {
   (* callback) (GIMP_TYPE_THRESHOLD_TOOL,
                 GIMP_TYPE_HISTOGRAM_OPTIONS,
-                gimp_histogram_options_gui,
+                NULL,
                 0,
                 "gimp-threshold-tool",
                 _("Threshold"),
-                _("Threshold Tool: Reduce image to two colors using a threshold"),
+                _("Reduce image to two colors using a threshold"),
                 N_("_Threshold..."), NULL,
                 NULL, GIMP_HELP_TOOL_THRESHOLD,
-                GIMP_STOCK_TOOL_THRESHOLD,
+                GIMP_ICON_TOOL_THRESHOLD,
                 data);
 }
 
 static void
 gimp_threshold_tool_class_init (GimpThresholdToolClass *klass)
 {
-  GObjectClass          *object_class  = G_OBJECT_CLASS (klass);
-  GimpToolClass         *tool_class    = GIMP_TOOL_CLASS (klass);
-  GimpImageMapToolClass *im_tool_class = GIMP_IMAGE_MAP_TOOL_CLASS (klass);
+  GObjectClass        *object_class      = G_OBJECT_CLASS (klass);
+  GimpToolClass       *tool_class        = GIMP_TOOL_CLASS (klass);
+  GimpFilterToolClass *filter_tool_class = GIMP_FILTER_TOOL_CLASS (klass);
 
-  object_class->finalize             = gimp_threshold_tool_finalize;
+  object_class->finalize           = gimp_threshold_tool_finalize;
 
-  tool_class->initialize             = gimp_threshold_tool_initialize;
+  tool_class->initialize           = gimp_threshold_tool_initialize;
 
-  im_tool_class->dialog_desc         = _("Apply Threshold");
-  im_tool_class->settings_name       = "threshold";
-  im_tool_class->import_dialog_title = _("Import Threshold Settings");
-  im_tool_class->export_dialog_title = _("Export Threshold Settings");
-
-  im_tool_class->get_operation       = gimp_threshold_tool_get_operation;
-  im_tool_class->map                 = gimp_threshold_tool_map;
-  im_tool_class->dialog              = gimp_threshold_tool_dialog;
+  filter_tool_class->get_operation = gimp_threshold_tool_get_operation;
+  filter_tool_class->dialog        = gimp_threshold_tool_dialog;
+  filter_tool_class->config_notify = gimp_threshold_tool_config_notify;
 }
 
 static void
 gimp_threshold_tool_init (GimpThresholdTool *t_tool)
 {
-  GimpImageMapTool *im_tool = GIMP_IMAGE_MAP_TOOL (t_tool);
-
-  t_tool->threshold = g_slice_new0 (Threshold);
-  t_tool->histogram = gimp_histogram_new ();
-
-  im_tool->apply_func = (GimpImageMapApplyFunc) threshold;
-  im_tool->apply_data = t_tool->threshold;
+  t_tool->histogram = gimp_histogram_new (FALSE);
 }
 
 static void
@@ -133,11 +119,9 @@ gimp_threshold_tool_finalize (GObject *object)
 {
   GimpThresholdTool *t_tool = GIMP_THRESHOLD_TOOL (object);
 
-  g_slice_free (Threshold, t_tool->threshold);
-
   if (t_tool->histogram)
     {
-      gimp_histogram_unref (t_tool->histogram);
+      g_object_unref (t_tool->histogram);
       t_tool->histogram = NULL;
     }
 
@@ -153,66 +137,25 @@ gimp_threshold_tool_initialize (GimpTool     *tool,
   GimpImage         *image    = gimp_display_get_image (display);
   GimpDrawable      *drawable = gimp_image_get_active_drawable (image);
 
-  if (! drawable)
-    return FALSE;
-
-  if (gimp_drawable_is_indexed (drawable))
-    {
-      g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
-			   _("Threshold does not operate on indexed layers."));
-      return FALSE;
-    }
-
-  gimp_config_reset (GIMP_CONFIG (t_tool->config));
-
   if (! GIMP_TOOL_CLASS (parent_class)->initialize (tool, display, error))
     {
       return FALSE;
     }
 
-  gimp_drawable_calculate_histogram (drawable, t_tool->histogram);
+  gimp_drawable_calculate_histogram (drawable, t_tool->histogram, FALSE);
   gimp_histogram_view_set_histogram (t_tool->histogram_box->view,
                                      t_tool->histogram);
-
-  gimp_image_map_tool_preview (GIMP_IMAGE_MAP_TOOL (t_tool));
 
   return TRUE;
 }
 
-static GeglNode *
-gimp_threshold_tool_get_operation (GimpImageMapTool  *image_map_tool,
-                                   GObject          **config)
+static gchar *
+gimp_threshold_tool_get_operation (GimpFilterTool  *filter_tool,
+                                   gchar          **description)
 {
-  GimpThresholdTool *t_tool = GIMP_THRESHOLD_TOOL (image_map_tool);
-  GeglNode          *node;
+  *description = g_strdup (_("Apply Threshold"));
 
-  node = g_object_new (GEGL_TYPE_NODE,
-                       "operation", "gimp:threshold",
-                       NULL);
-
-  t_tool->config = g_object_new (GIMP_TYPE_THRESHOLD_CONFIG, NULL);
-
-  *config = G_OBJECT (t_tool->config);
-
-  g_signal_connect_object (t_tool->config, "notify",
-                           G_CALLBACK (gimp_threshold_tool_config_notify),
-                           G_OBJECT (t_tool), 0);
-
-  gegl_node_set (node,
-                 "config", t_tool->config,
-                 NULL);
-
-  return node;
-}
-
-static void
-gimp_threshold_tool_map (GimpImageMapTool *image_map_tool)
-{
-  GimpThresholdTool *t_tool   = GIMP_THRESHOLD_TOOL (image_map_tool);
-  GimpDrawable      *drawable = image_map_tool->drawable;
-
-  gimp_threshold_config_to_cruft (t_tool->config, t_tool->threshold,
-                                  gimp_drawable_is_rgb (drawable));
+  return g_strdup ("gimp:threshold");
 }
 
 
@@ -221,48 +164,94 @@ gimp_threshold_tool_map (GimpImageMapTool *image_map_tool)
 /**********************/
 
 static void
-gimp_threshold_tool_dialog (GimpImageMapTool *image_map_tool)
+gimp_threshold_tool_dialog (GimpFilterTool *filter_tool)
 {
-  GimpThresholdTool   *t_tool       = GIMP_THRESHOLD_TOOL (image_map_tool);
-  GimpToolOptions     *tool_options = GIMP_TOOL_GET_OPTIONS (image_map_tool);
-  GimpThresholdConfig *config       = t_tool->config;
-  GtkWidget           *main_vbox;
-  GtkWidget           *hbox;
-  GtkWidget           *menu;
-  GtkWidget           *box;
-  GtkWidget           *button;
+  GimpThresholdTool    *t_tool       = GIMP_THRESHOLD_TOOL (filter_tool);
+  GimpToolOptions      *tool_options = GIMP_TOOL_GET_OPTIONS (filter_tool);
+  GtkWidget            *main_vbox;
+  GtkWidget            *main_frame;
+  GtkWidget            *frame_vbox;
+  GtkWidget            *hbox;
+  GtkWidget            *label;
+  GtkWidget            *hbox2;
+  GtkWidget            *box;
+  GtkWidget            *button;
+  GimpHistogramChannel  channel;
+  gdouble               low;
+  gdouble               high;
+  gint                  n_bins;
 
-  main_vbox = gimp_image_map_tool_dialog_get_vbox (image_map_tool);
+  main_vbox = gimp_filter_tool_dialog_get_vbox (filter_tool);
+
+  main_frame = gimp_frame_new (NULL);
+  gtk_box_pack_start (GTK_BOX (main_vbox), main_frame, TRUE, TRUE, 0);
+  gtk_widget_show (main_frame);
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-  gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
+  gtk_frame_set_label_widget (GTK_FRAME (main_frame), hbox);
   gtk_widget_show (hbox);
 
-  menu = gimp_prop_enum_stock_box_new (G_OBJECT (tool_options),
+  label = gtk_label_new_with_mnemonic (_("Cha_nnel:"));
+  gimp_label_set_attributes (GTK_LABEL (label),
+                             PANGO_ATTR_WEIGHT, PANGO_WEIGHT_BOLD,
+                             -1);
+  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+  gtk_widget_show (label);
+
+  t_tool->channel_menu = gimp_prop_enum_combo_box_new (filter_tool->config,
+                                                       "channel", -1, -1);
+  gimp_enum_combo_box_set_icon_prefix (GIMP_ENUM_COMBO_BOX (t_tool->channel_menu),
+                                       "gimp-channel");
+
+  gimp_int_combo_box_set_sensitivity (GIMP_INT_COMBO_BOX (t_tool->channel_menu),
+                                      gimp_threshold_tool_channel_sensitive,
+                                      filter_tool, NULL);
+
+  gtk_box_pack_start (GTK_BOX (hbox), t_tool->channel_menu, FALSE, FALSE, 0);
+  gtk_widget_show (t_tool->channel_menu);
+
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), t_tool->channel_menu);
+
+  hbox2 = gimp_prop_enum_icon_box_new (G_OBJECT (tool_options),
                                        "histogram-scale", "gimp-histogram",
                                        0, 0);
-  gtk_box_pack_end (GTK_BOX (hbox), menu, FALSE, FALSE, 0);
-  gtk_widget_show (menu);
+  gtk_box_pack_end (GTK_BOX (hbox), hbox2, FALSE, FALSE, 0);
+  gtk_widget_show (hbox2);
+
+  frame_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
+  gtk_container_add (GTK_CONTAINER (main_frame), frame_vbox);
+  gtk_widget_show (frame_vbox);
 
   box = gimp_histogram_box_new ();
-  gtk_box_pack_start (GTK_BOX (main_vbox), box, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (frame_vbox), box, TRUE, TRUE, 0);
   gtk_widget_show (box);
 
   t_tool->histogram_box = GIMP_HISTOGRAM_BOX (box);
 
+  g_object_get (filter_tool->config,
+                "channel", &channel,
+                "low",     &low,
+                "high",    &high,
+                NULL);
+
+  n_bins = gimp_histogram_n_bins (t_tool->histogram);
+
+  gimp_histogram_view_set_channel (t_tool->histogram_box->view, channel);
   gimp_histogram_view_set_range (t_tool->histogram_box->view,
-                                 config->low  * 255.999,
-                                 config->high * 255.999);
+                                 low  * (n_bins - 0.0001),
+                                 high * (n_bins - 0.0001));
 
   g_signal_connect (t_tool->histogram_box->view, "range-changed",
                     G_CALLBACK (gimp_threshold_tool_histogram_range),
                     t_tool);
 
-  gimp_histogram_options_connect_view (GIMP_HISTOGRAM_OPTIONS (tool_options),
-                                       t_tool->histogram_box->view);
+  g_object_bind_property (G_OBJECT (tool_options),                "histogram-scale",
+                          G_OBJECT (t_tool->histogram_box->view), "histogram-scale",
+                          G_BINDING_SYNC_CREATE |
+                          G_BINDING_BIDIRECTIONAL);
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-  gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (frame_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
   button = gtk_button_new_with_mnemonic (_("_Auto"));
@@ -277,20 +266,80 @@ gimp_threshold_tool_dialog (GimpImageMapTool *image_map_tool)
 }
 
 static void
-gimp_threshold_tool_config_notify (GObject           *object,
-                                   GParamSpec        *pspec,
-                                   GimpThresholdTool *t_tool)
+gimp_threshold_tool_config_notify (GimpFilterTool   *filter_tool,
+                                   GimpConfig       *config,
+                                   const GParamSpec *pspec)
 {
-  GimpThresholdConfig *config = GIMP_THRESHOLD_CONFIG (object);
+  GimpThresholdTool *t_tool = GIMP_THRESHOLD_TOOL (filter_tool);
+
+  GIMP_FILTER_TOOL_CLASS (parent_class)->config_notify (filter_tool,
+                                                        config, pspec);
 
   if (! t_tool->histogram_box)
     return;
 
-  gimp_histogram_view_set_range (t_tool->histogram_box->view,
-                                 config->low  * 255.999,
-                                 config->high * 255.999);
+  if (! strcmp (pspec->name, "channel"))
+    {
+      GimpHistogramChannel channel;
 
-  gimp_image_map_tool_preview (GIMP_IMAGE_MAP_TOOL (t_tool));
+      g_object_get (config,
+                    "channel", &channel,
+                    NULL);
+
+      gimp_histogram_view_set_channel (t_tool->histogram_box->view,
+                                       channel);
+    }
+  else if (! strcmp (pspec->name, "low") ||
+           ! strcmp (pspec->name, "high"))
+    {
+      gdouble low;
+      gdouble high;
+      gint    n_bins;
+
+      g_object_get (config,
+                    "low",  &low,
+                    "high", &high,
+                    NULL);
+
+      n_bins = gimp_histogram_n_bins (t_tool->histogram);
+
+      gimp_histogram_view_set_range (t_tool->histogram_box->view,
+                                     low  * (n_bins - 0.0001),
+                                     high * (n_bins - 0.0001));
+    }
+}
+
+static gboolean
+gimp_threshold_tool_channel_sensitive (gint     value,
+                                       gpointer data)
+{
+  GimpDrawable         *drawable = GIMP_TOOL (data)->drawable;
+  GimpHistogramChannel  channel  = value;
+
+  if (!drawable)
+    return FALSE;
+
+  switch (channel)
+    {
+    case GIMP_HISTOGRAM_VALUE:
+      return TRUE;
+
+    case GIMP_HISTOGRAM_RED:
+    case GIMP_HISTOGRAM_GREEN:
+    case GIMP_HISTOGRAM_BLUE:
+      return gimp_drawable_is_rgb (drawable);
+
+    case GIMP_HISTOGRAM_ALPHA:
+      return gimp_drawable_has_alpha (drawable);
+
+    case GIMP_HISTOGRAM_RGB:
+      return gimp_drawable_is_rgb (drawable);
+
+    case GIMP_HISTOGRAM_LUMINANCE:
+      return gimp_drawable_is_rgb (drawable);
+    }
+
+  return FALSE;
 }
 
 static void
@@ -299,13 +348,22 @@ gimp_threshold_tool_histogram_range (GimpHistogramView *widget,
                                      gint               end,
                                      GimpThresholdTool *t_tool)
 {
-  gdouble low  = start / 255.0;
-  gdouble high = end   / 255.0;
+  GimpFilterTool *filter_tool = GIMP_FILTER_TOOL (t_tool);
+  gint            n_bins      = gimp_histogram_n_bins (t_tool->histogram);
+  gdouble         low         = (gdouble) start / (n_bins - 1);
+  gdouble         high        = (gdouble) end   / (n_bins - 1);
+  gdouble         config_low;
+  gdouble         config_high;
 
-  if (low  != t_tool->config->low ||
-      high != t_tool->config->high)
+  g_object_get (filter_tool->config,
+                "low",  &config_low,
+                "high", &config_high,
+                NULL);
+
+  if (low  != config_low ||
+      high != config_high)
     {
-      g_object_set (t_tool->config,
+      g_object_set (filter_tool->config,
                     "low",  low,
                     "high", high,
                     NULL);
@@ -316,15 +374,20 @@ static void
 gimp_threshold_tool_auto_clicked (GtkWidget         *button,
                                   GimpThresholdTool *t_tool)
 {
-  GimpDrawable *drawable = GIMP_IMAGE_MAP_TOOL (t_tool)->drawable;
-  gdouble       low;
+  GimpHistogramChannel  channel;
+  gint                  n_bins;
+  gdouble               low;
+
+  g_object_get (GIMP_FILTER_TOOL (t_tool)->config,
+                "channel", &channel,
+                NULL);
+
+  n_bins = gimp_histogram_n_bins (t_tool->histogram);
 
   low = gimp_histogram_get_threshold (t_tool->histogram,
-                                      gimp_drawable_is_rgb (drawable) ?
-                                      GIMP_HISTOGRAM_RGB :
-                                      GIMP_HISTOGRAM_VALUE,
-                                      0, 255);
+                                      channel,
+                                      0, n_bins - 1);
 
   gimp_histogram_view_set_range (t_tool->histogram_box->view,
-                                 low, 255.0);
+                                 low, n_bins - 1);
 }

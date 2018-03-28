@@ -174,6 +174,7 @@ run (const gchar      *name,
   gint               height   = 0;
 
   INIT_I18N ();
+  gegl_init (NULL, NULL);
 
   run_mode = param[0].data.d_int32;
 
@@ -372,8 +373,8 @@ load_wmf_size (const gchar *filename,
 /*  User interface  */
 
 static GimpSizeEntry *size       = NULL;
-static GtkObject     *xadj       = NULL;
-static GtkObject     *yadj       = NULL;
+static GtkAdjustment *xadj       = NULL;
+static GtkAdjustment *yadj       = NULL;
 static GtkWidget     *constrain  = NULL;
 static gdouble        ratio_x    = 1.0;
 static gdouble        ratio_y    = 1.0;
@@ -408,8 +409,8 @@ static void
 load_dialog_ratio_callback (GtkAdjustment *adj,
                             gpointer       data)
 {
-  gdouble x = gtk_adjustment_get_value (GTK_ADJUSTMENT (xadj));
-  gdouble y = gtk_adjustment_get_value (GTK_ADJUSTMENT (yadj));
+  gdouble x = gtk_adjustment_get_value (xadj);
+  gdouble y = gtk_adjustment_get_value (yadj);
 
   if (gimp_chain_button_get_active (GIMP_CHAIN_BUTTON (constrain)))
     {
@@ -467,8 +468,8 @@ load_dialog_set_ratio (gdouble x,
   g_signal_handlers_block_by_func (xadj, load_dialog_ratio_callback, NULL);
   g_signal_handlers_block_by_func (yadj, load_dialog_ratio_callback, NULL);
 
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (xadj), x);
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (yadj), y);
+  gtk_adjustment_set_value (xadj, x);
+  gtk_adjustment_set_value (yadj, y);
 
   g_signal_handlers_unblock_by_func (xadj, load_dialog_ratio_callback, NULL);
   g_signal_handlers_unblock_by_func (yadj, load_dialog_ratio_callback, NULL);
@@ -477,20 +478,20 @@ load_dialog_set_ratio (gdouble x,
 static gboolean
 load_dialog (const gchar *filename)
 {
-  GtkWidget *dialog;
-  GtkWidget *frame;
-  GtkWidget *hbox;
-  GtkWidget *vbox;
-  GtkWidget *image;
-  GtkWidget *table;
-  GtkWidget *table2;
-  GtkWidget *abox;
-  GtkWidget *res;
-  GtkWidget *label;
-  GtkWidget *spinbutton;
-  GtkObject *adj;
-  guchar    *pixels;
-  gboolean   run = FALSE;
+  GtkWidget     *dialog;
+  GtkWidget     *frame;
+  GtkWidget     *hbox;
+  GtkWidget     *vbox;
+  GtkWidget     *image;
+  GtkWidget     *table;
+  GtkWidget     *table2;
+  GtkWidget     *abox;
+  GtkWidget     *res;
+  GtkWidget     *label;
+  GtkWidget     *spinbutton;
+  GtkAdjustment *adj;
+  guchar        *pixels;
+  gboolean       run = FALSE;
 
   WmfLoadVals  vals = { WMF_DEFAULT_RESOLUTION,
                         - WMF_PREVIEW_SIZE, - WMF_PREVIEW_SIZE };
@@ -501,8 +502,8 @@ load_dialog (const gchar *filename)
                             NULL, 0,
                             gimp_standard_help_func, LOAD_PROC,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -547,7 +548,6 @@ load_dialog (const gchar *filename)
 
   size_label = gtk_label_new (NULL);
   gtk_label_set_justify (GTK_LABEL (size_label), GTK_JUSTIFY_CENTER);
-  gtk_misc_set_alignment (GTK_MISC (size_label), 0.5, 0.0);
   gtk_box_pack_start (GTK_BOX (vbox), size_label, TRUE, TRUE, 4);
   gtk_widget_show (size_label);
 
@@ -569,13 +569,13 @@ load_dialog (const gchar *filename)
 
   /*  Width and Height  */
   label = gtk_label_new (_("Width:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (label);
 
   label = gtk_label_new (_("Height:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (label);
@@ -585,7 +585,9 @@ load_dialog (const gchar *filename)
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (hbox);
 
-  spinbutton = gimp_spin_button_new (&adj, 1, 1, 1, 1, 10, 0, 1, 2);
+  adj = (GtkAdjustment *) gtk_adjustment_new (1, 1, 1, 1, 10, 0);
+  spinbutton = gtk_spin_button_new (adj, 1.0, 2);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gtk_entry_set_width_chars (GTK_ENTRY (spinbutton), 10);
   gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
   gtk_widget_show (spinbutton);
@@ -633,13 +635,13 @@ load_dialog (const gchar *filename)
   gtk_table_set_row_spacing (GTK_TABLE (table2), 0, 4);
   gtk_box_pack_start (GTK_BOX (hbox), table2, FALSE, FALSE, 0);
 
-  spinbutton =
-    gimp_spin_button_new (&xadj,
-                          ratio_x,
-                          (gdouble) GIMP_MIN_IMAGE_SIZE / (gdouble) wmf_width,
-                          (gdouble) GIMP_MAX_IMAGE_SIZE / (gdouble) wmf_width,
-                          0.01, 0.1, 0,
-                          0.01, 4);
+  xadj = (GtkAdjustment *)
+    gtk_adjustment_new (ratio_x,
+                        (gdouble) GIMP_MIN_IMAGE_SIZE / (gdouble) wmf_width,
+                        (gdouble) GIMP_MAX_IMAGE_SIZE / (gdouble) wmf_width,
+                        0.01, 0.1, 0);
+  spinbutton = gtk_spin_button_new (xadj, 0.01, 4);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gtk_entry_set_width_chars (GTK_ENTRY (spinbutton), 10);
   gtk_table_attach_defaults (GTK_TABLE (table2), spinbutton, 0, 1, 0, 1);
   gtk_widget_show (spinbutton);
@@ -650,18 +652,18 @@ load_dialog (const gchar *filename)
 
   label = gtk_label_new_with_mnemonic (_("_X ratio:"));
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), spinbutton);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (label);
 
-  spinbutton =
-    gimp_spin_button_new (&yadj,
-                          ratio_y,
-                          (gdouble) GIMP_MIN_IMAGE_SIZE / (gdouble) wmf_height,
-                          (gdouble) GIMP_MAX_IMAGE_SIZE / (gdouble) wmf_height,
-                          0.01, 0.1, 0,
-                          0.01, 4);
+  yadj = (GtkAdjustment *)
+    gtk_adjustment_new (ratio_y,
+                        (gdouble) GIMP_MIN_IMAGE_SIZE / (gdouble) wmf_height,
+                        (gdouble) GIMP_MAX_IMAGE_SIZE / (gdouble) wmf_height,
+                        0.01, 0.1, 0);
+  spinbutton = gtk_spin_button_new (yadj, 0.01, 4);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gtk_entry_set_width_chars (GTK_ENTRY (spinbutton), 10);
   gtk_table_attach_defaults (GTK_TABLE (table2), spinbutton, 0, 1, 1, 2);
   gtk_widget_show (spinbutton);
@@ -672,7 +674,7 @@ load_dialog (const gchar *filename)
 
   label = gtk_label_new_with_mnemonic (_("_Y ratio:"));
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), spinbutton);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (label);
@@ -690,7 +692,7 @@ load_dialog (const gchar *filename)
 
   /*  Resolution   */
   label = gtk_label_new (_("Resolution:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 4, 5,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (label);
@@ -975,24 +977,17 @@ load_image (const gchar  *filename,
 {
   gint32        image;
   gint32        layer;
-  GimpDrawable *drawable;
+  GeglBuffer   *buffer;
   guchar       *pixels;
-  GimpPixelRgn  pixel_rgn;
   guint         width, height;
-  guint         rowstride;
-  guint         count = 0;
-  guint         done  = 0;
-  gpointer      pr;
+
+  gimp_progress_init_printf (_("Opening '%s'"),
+                             gimp_filename_to_utf8 (filename));
 
   pixels = wmf_load_file (filename, &width, &height, error);
 
   if (! pixels)
     return -1;
-
-  rowstride = width * 4;
-
-  gimp_progress_init_printf (_("Opening '%s'"),
-                             gimp_filename_to_utf8 (filename));
 
   image = gimp_image_new (width, height, GIMP_RGB);
   gimp_image_set_filename (image, filename);
@@ -1002,44 +997,23 @@ load_image (const gchar  *filename,
   layer = gimp_layer_new (image,
                           _("Rendered WMF"),
                           width, height,
-                          GIMP_RGBA_IMAGE, 100, GIMP_NORMAL_MODE);
+                          GIMP_RGBA_IMAGE,
+                          100,
+                          gimp_image_get_default_new_layer_mode (image));
 
-  drawable = gimp_drawable_get (layer);
+  buffer = gimp_drawable_get_buffer (layer);
 
-  gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, width, height, TRUE, FALSE);
+  gegl_buffer_set (buffer, GEGL_RECTANGLE (0, 0, width, height), 0,
+                   babl_format ("R'G'B'A u8"),
+                   pixels, GEGL_AUTO_ROWSTRIDE);
 
-  for (pr = gimp_pixel_rgns_register (1, &pixel_rgn);
-       pr != NULL;
-       pr = gimp_pixel_rgns_process (pr))
-    {
-      const guchar *src  = pixels + pixel_rgn.y * rowstride + pixel_rgn.x * 4;
-      guchar       *dest = pixel_rgn.data;
-      gint          y;
-
-      for (y = 0; y < pixel_rgn.h; y++)
-        {
-          memcpy (dest, src, pixel_rgn.w * pixel_rgn.bpp);
-
-          src  += rowstride;
-          dest += pixel_rgn.rowstride;
-        }
-
-      done += pixel_rgn.h * pixel_rgn.w;
-
-      if (count++ % 16 == 0)
-        gimp_progress_update ((gdouble) done / (width * height));
-    }
+  g_object_unref (buffer);
 
   g_free (pixels);
 
-  gimp_drawable_detach (drawable);
+  gimp_image_insert_layer (image, layer, -1, 0);
 
   gimp_progress_update (1.0);
-
-  /* Tell GIMP to display the image.
-   */
-  gimp_image_insert_layer (image, layer, -1, 0);
-  gimp_drawable_flush (drawable);
 
   return image;
 }

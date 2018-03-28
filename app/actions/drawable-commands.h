@@ -21,8 +21,6 @@
 
 void   drawable_equalize_cmd_callback       (GtkAction *action,
                                              gpointer   data);
-void   drawable_invert_cmd_callback         (GtkAction *action,
-                                             gpointer   data);
 void   drawable_levels_stretch_cmd_callback (GtkAction *action,
                                              gpointer   data);
 void   drawable_offset_cmd_callback         (GtkAction *action,
@@ -33,6 +31,8 @@ void   drawable_linked_cmd_callback         (GtkAction *action,
 void   drawable_visible_cmd_callback        (GtkAction *action,
                                              gpointer   data);
 void   drawable_lock_content_cmd_callback   (GtkAction *action,
+                                             gpointer   data);
+void   drawable_lock_position_cmd_callback  (GtkAction *action,
                                              gpointer   data);
 
 void   drawable_flip_cmd_callback           (GtkAction *action,

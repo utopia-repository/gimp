@@ -53,7 +53,8 @@ static void     sharpen        (GimpDrawable *drawable);
 
 static gboolean sharpen_dialog (GimpDrawable *drawable);
 
-static void     preview_update (GimpPreview  *preview);
+static void     preview_update (GimpPreview  *preview,
+                                GimpDrawable *drawable);
 
 typedef gint32 intneg;
 typedef gint32 intpos;
@@ -120,8 +121,6 @@ query (void)
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
-
-  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Enhance");
 }
 
 static void
@@ -474,8 +473,8 @@ sharpen_dialog (GimpDrawable *drawable)
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -492,13 +491,13 @@ sharpen_dialog (GimpDrawable *drawable)
                       main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_drawable_preview_new (drawable, NULL);
+  preview = gimp_drawable_preview_new_from_drawable_id (drawable->drawable_id);
   gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
 
   g_signal_connect (preview, "invalidated",
                     G_CALLBACK (preview_update),
-                    NULL);
+                    drawable);
 
   table = gtk_table_new (1, 3, FALSE);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
@@ -528,9 +527,9 @@ sharpen_dialog (GimpDrawable *drawable)
 }
 
 static void
-preview_update (GimpPreview *preview)
+preview_update (GimpPreview  *preview,
+                GimpDrawable *drawable)
 {
-  GimpDrawable *drawable;
   GimpPixelRgn  src_rgn;        /* Source image region */
   guchar       *src_ptr;        /* Current source pixel */
   guchar       *dst_ptr;        /* Current destination pixel */
@@ -552,9 +551,6 @@ preview_update (GimpPreview *preview)
 
   gimp_preview_get_position (preview, &x1, &y1);
   gimp_preview_get_size (preview, &preview_width, &preview_height);
-
-  drawable =
-    gimp_drawable_preview_get_drawable (GIMP_DRAWABLE_PREVIEW (preview));
 
   img_bpp = gimp_drawable_bpp (drawable->drawable_id);
 

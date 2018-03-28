@@ -1,6 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 
 if PLATFORM_WIN32
 no_undefined = -no-undefined
@@ -43,20 +44,19 @@ libgimpmoduleincludedir = $(includedir)/gimp-$(GIMP_API_VERSION)/libgimpmodule
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"LibGimpModule\"	\
-	-DGIMP_MODULE_COMPILATION
-
-INCLUDES = \
-	-I$(top_srcdir)			\
-	$(GLIB_CFLAGS)			\
-	$(GMODULE_NO_EXPORT_CFLAGS)	\
+	-DGIMP_MODULE_COMPILATION		\
+	-I$(top_srcdir)				\
+	$(GIO_CFLAGS)				\
+	$(GLIB_CFLAGS)				\
+	$(GMODULE_NO_EXPORT_CFLAGS)		\
 	-I$(includedir)
 
 EXTRA_DIST = \
 	gimpmodule.def
 
-lib_LTLIBRARIES = libgimpmodule-2.0.la
+lib_LTLIBRARIES = libgimpmodule-@GIMP_API_VERSION@.la
 
-libgimpmodule_2_0_la_SOURCES = \
+libgimpmodule_@GIMP_API_VERSION@_la_SOURCES = \
 	gimpmoduletypes.h	\
 	gimpmodule.c		\
 	gimpmodule.h		\
@@ -68,16 +68,18 @@ libgimpmoduleinclude_HEADERS = \
 	gimpmodule.h		\
 	gimpmoduledb.h
 
-libgimpmodule_2_0_la_LDFLAGS = \
+libgimpmodule_@GIMP_API_VERSION@_la_LDFLAGS = \
 	-version-info $(LT_VERSION_INFO)	\
 	$(no_undefined) 			\
 	$(libgimpmodule_export_symbols)
 
-libgimpmodule_2_0_la_DEPENDENCIES = $(gimpmodule_def)
+EXTRA_libgimpmodule_@GIMP_API_VERSION@_la_DEPENDENCIES = $(gimpmodule_def)
 
-libgimpmodule_2_0_la_LIBADD = \
+libgimpmodule_@GIMP_API_VERSION@_la_LIBADD = \
 	$(libgimpbase)			\
+	$(libgimpconfig)		\
 	$(GMODULE_NO_EXPORT_LIBS) 	\
+	$(GIO_LIBS)			\
 	$(GLIB_LIBS)
 
 install-data-local: install-ms-lib install-libtool-import-lib

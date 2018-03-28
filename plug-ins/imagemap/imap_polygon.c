@@ -25,9 +25,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <gtk/gtk.h>
-
-#include <libgimpwidgets/gimpwidgets.h>
+#include "libgimp/gimp.h"
+#include "libgimp/gimpui.h"
 
 #include "imap_commands.h"
 #include "imap_main.h"
@@ -72,8 +71,6 @@ static const gchar* polygon_get_stock_icon_name(void);
 static ObjectClass_t polygon_class = {
    N_("_Polygon"),
    NULL,                        /* info_dialog */
-   NULL,                        /* icon */
-   NULL,                        /* mask */
 
    polygon_is_valid,
    polygon_destruct,

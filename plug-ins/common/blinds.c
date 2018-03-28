@@ -120,8 +120,6 @@ query (void)
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
-
-  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Distorts");
 }
 
 static void
@@ -224,8 +222,8 @@ blinds_dialog (GimpDrawable *drawable)
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -242,7 +240,7 @@ blinds_dialog (GimpDrawable *drawable)
                       main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_aspect_preview_new (drawable, NULL);
+  preview = gimp_aspect_preview_new_from_drawable_id (drawable->drawable_id);
   gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
 
@@ -356,7 +354,7 @@ blindsapply (guchar *srow,
   /* The angle is the conceptual 'rotation' of each of these segments */
 
   /* Note the row is considered to be made up of a two dim array actual
-   * pixel locations and the RGB colour at these locations.
+   * pixel locations and the RGB color at these locations.
    */
 
   /* In the process copy the src row to the destination row */

@@ -36,32 +36,38 @@ struct _GimpPaintCore
 {
   GimpObject   parent_instance;
 
-  gint         ID;               /*  unique instance ID                  */
+  gint         ID;                /*  unique instance ID                  */
 
-  gchar       *undo_desc;        /*  undo description                    */
+  gchar       *undo_desc;         /*  undo description                    */
 
-  GimpCoords   start_coords;     /*  the last stroke's endpoint for undo */
+  GimpCoords   start_coords;      /*  the last stroke's endpoint for undo */
 
-  GimpCoords   cur_coords;       /*  current coords                      */
-  GimpCoords   last_coords;      /*  last coords                         */
+  GimpCoords   cur_coords;        /*  current coords                      */
+  GimpCoords   last_coords;       /*  last coords                         */
 
-  GimpVector2  last_paint;       /*  last point that was painted         */
+  GimpVector2  last_paint;        /*  last point that was painted         */
 
-  gdouble      distance;         /*  distance traveled by brush          */
-  gdouble      pixel_dist;       /*  distance in pixels                  */
+  gdouble      distance;          /*  distance traveled by brush          */
+  gdouble      pixel_dist;        /*  distance in pixels                  */
 
-  gint         x1, y1;           /*  undo extents in image coords        */
-  gint         x2, y2;           /*  undo extents in image coords        */
+  gint         x1, y1;            /*  undo extents in image coords        */
+  gint         x2, y2;            /*  undo extents in image coords        */
 
-  gboolean     use_saved_proj;   /*  keep the unmodified proj around     */
+  gboolean     use_saved_proj;    /*  keep the unmodified proj around     */
 
-  TileManager *undo_tiles;       /*  tiles which have been modified      */
-  TileManager *saved_proj_tiles; /*  proj tiles which have been modified */
-  TileManager *canvas_tiles;     /*  the buffer to paint the mask to     */
+  GeglBuffer  *undo_buffer;       /*  pixels which have been modified     */
+  GeglBuffer  *saved_proj_buffer; /*  proj tiles which have been modified */
+  GeglBuffer  *canvas_buffer;     /*  the buffer to paint the mask to     */
+  GeglBuffer  *comp_buffer;       /*  scratch buffer used when masking components */
+  GeglBuffer  *paint_buffer;      /*  the buffer to paint pixels to       */
+  gint         paint_buffer_x;
+  gint         paint_buffer_y;
 
-  TempBuf     *orig_buf;         /*  the unmodified drawable pixels      */
-  TempBuf     *orig_proj_buf;    /*  the unmodified projection pixels    */
-  TempBuf     *canvas_buf;       /*  the buffer to paint pixels to       */
+  GeglBuffer  *mask_buffer;       /*  the target drawable's mask          */
+  gint         mask_x_offset;
+  gint         mask_y_offset;
+
+  GimpApplicator *applicator;
 
   GArray      *stroke_buffer;
 };
@@ -71,42 +77,47 @@ struct _GimpPaintCoreClass
   GimpObjectClass  parent_class;
 
   /*  virtual functions  */
-  gboolean   (* start)          (GimpPaintCore    *core,
-                                 GimpDrawable     *drawable,
-                                 GimpPaintOptions *paint_options,
-                                 const GimpCoords *coords,
-                                 GError          **error);
+  gboolean     (* start)            (GimpPaintCore    *core,
+                                     GimpDrawable     *drawable,
+                                     GimpPaintOptions *paint_options,
+                                     const GimpCoords *coords,
+                                     GError          **error);
 
-  gboolean   (* pre_paint)      (GimpPaintCore    *core,
-                                 GimpDrawable     *drawable,
-                                 GimpPaintOptions *paint_options,
-                                 GimpPaintState    paint_state,
-                                 guint32           time);
-  void       (* paint)          (GimpPaintCore    *core,
-                                 GimpDrawable     *drawable,
-                                 GimpPaintOptions *paint_options,
-                                 const GimpCoords *coords,
-                                 GimpPaintState    paint_state,
-                                 guint32           time);
-  void       (* post_paint)     (GimpPaintCore    *core,
-                                 GimpDrawable     *drawable,
-                                 GimpPaintOptions *paint_options,
-                                 GimpPaintState    paint_state,
-                                 guint32           time);
+  gboolean     (* pre_paint)        (GimpPaintCore    *core,
+                                     GimpDrawable     *drawable,
+                                     GimpPaintOptions *paint_options,
+                                     GimpPaintState    paint_state,
+                                     guint32           time);
+  void         (* paint)            (GimpPaintCore    *core,
+                                     GimpDrawable     *drawable,
+                                     GimpPaintOptions *paint_options,
+                                     GimpSymmetry     *sym,
+                                     GimpPaintState    paint_state,
+                                     guint32           time);
+  void         (* post_paint)       (GimpPaintCore    *core,
+                                     GimpDrawable     *drawable,
+                                     GimpPaintOptions *paint_options,
+                                     GimpPaintState    paint_state,
+                                     guint32           time);
 
-  void       (* interpolate)    (GimpPaintCore    *core,
-                                 GimpDrawable     *drawable,
-                                 GimpPaintOptions *paint_options,
-                                 guint32           time);
+  void         (* interpolate)      (GimpPaintCore    *core,
+                                     GimpDrawable     *drawable,
+                                     GimpPaintOptions *paint_options,
+                                     guint32           time);
 
-  TempBuf  * (* get_paint_area) (GimpPaintCore    *core,
-                                 GimpDrawable     *drawable,
-                                 GimpPaintOptions *paint_options,
-                                 const GimpCoords *coords);
+  GeglBuffer * (* get_paint_buffer) (GimpPaintCore    *core,
+                                     GimpDrawable     *drawable,
+                                     GimpPaintOptions *paint_options,
+                                     GimpLayerMode     paint_mode,
+                                     const GimpCoords *coords,
+                                     gint             *paint_buffer_x,
+                                     gint             *paint_buffer_y,
+                                     gint             *paint_width,
+                                     gint             *paint_height);
 
-  GimpUndo * (* push_undo)      (GimpPaintCore    *core,
-                                 GimpImage        *image,
-                                 const gchar      *undo_desc);
+  GimpUndo   * (* push_undo)        (GimpPaintCore    *core,
+                                     GimpImage        *image,
+                                     const gchar      *undo_desc);
 };
 
 
@@ -148,59 +159,43 @@ void      gimp_paint_core_get_last_coords           (GimpPaintCore    *core,
 
 void      gimp_paint_core_round_line                (GimpPaintCore    *core,
                                                      GimpPaintOptions *options,
-                                                     gboolean          constrain_15_degrees);
+                                                     gboolean          constrain_15_degrees,
+                                                     gdouble           constrain_offset_angle);
 
 
 /*  protected functions  */
 
-TempBuf * gimp_paint_core_get_paint_area            (GimpPaintCore    *core,
+GeglBuffer * gimp_paint_core_get_paint_buffer       (GimpPaintCore    *core,
                                                      GimpDrawable     *drawable,
                                                      GimpPaintOptions *options,
-                                                     const GimpCoords *coords);
-TempBuf * gimp_paint_core_get_orig_image            (GimpPaintCore    *core,
-                                                     GimpDrawable     *drawable,
-                                                     gint              x,
-                                                     gint              y,
-                                                     gint              width,
-                                                     gint              height);
-TempBuf * gimp_paint_core_get_orig_proj             (GimpPaintCore    *core,
-                                                     GimpPickable     *pickable,
-                                                     gint              x,
-                                                     gint              y,
-                                                     gint              width,
-                                                     gint              height);
+                                                     GimpLayerMode     paint_mode,
+                                                     const GimpCoords *coords,
+                                                     gint             *paint_buffer_x,
+                                                     gint             *paint_buffer_y,
+                                                     gint             *paint_width,
+                                                     gint             *paint_height);
+
+GeglBuffer * gimp_paint_core_get_orig_image         (GimpPaintCore    *core);
+GeglBuffer * gimp_paint_core_get_orig_proj          (GimpPaintCore    *core);
 
 void      gimp_paint_core_paste             (GimpPaintCore            *core,
-                                             PixelRegion              *paint_maskPR,
+                                             const GimpTempBuf        *paint_mask,
+                                             gint                      paint_mask_offset_x,
+                                             gint                      paint_mask_offset_y,
                                              GimpDrawable             *drawable,
                                              gdouble                   paint_opacity,
                                              gdouble                   image_opacity,
-                                             GimpLayerModeEffects      paint_mode,
-                                             GimpPaintApplicationMode  mode);
-void      gimp_paint_core_replace           (GimpPaintCore            *core,
-                                             PixelRegion              *paint_maskPR,
-                                             GimpDrawable             *drawable,
-                                             gdouble                   paint_opacity,
-                                             gdouble                   image_opacity,
+                                             GimpLayerMode             paint_mode,
                                              GimpPaintApplicationMode  mode);
 
-void      gimp_paint_core_validate_undo_tiles       (GimpPaintCore    *core,
-                                                     GimpDrawable     *drawable,
-                                                     gint              x,
-                                                     gint              y,
-                                                     gint              w,
-                                                     gint              h);
-void      gimp_paint_core_validate_saved_proj_tiles (GimpPaintCore    *core,
-                                                     GimpPickable     *pickable,
-                                                     gint              x,
-                                                     gint              y,
-                                                     gint              w,
-                                                     gint              h);
-void      gimp_paint_core_validate_canvas_tiles     (GimpPaintCore    *core,
-                                                     gint              x,
-                                                     gint              y,
-                                                     gint              w,
-                                                     gint              h);
+void      gimp_paint_core_replace           (GimpPaintCore            *core,
+                                             const GimpTempBuf        *paint_mask,
+                                             gint                      paint_mask_offset_x,
+                                             gint                      paint_mask_offset_y,
+                                             GimpDrawable             *drawable,
+                                             gdouble                   paint_opacity,
+                                             gdouble                   image_opacity,
+                                             GimpPaintApplicationMode  mode);
 
 void      gimp_paint_core_smooth_coords             (GimpPaintCore    *core,
                                                      GimpPaintOptions *paint_options,

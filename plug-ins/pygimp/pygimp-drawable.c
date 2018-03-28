@@ -23,12 +23,15 @@
 #define NO_IMPORT_PYGOBJECT
 #include <pygobject.h>
 
+#define GIMP_DISABLE_DEPRECATION_WARNINGS
 #include "pygimp.h"
 
 #define NO_IMPORT_PYGIMPCOLOR
 #include "pygimpcolor-api.h"
 
 #include <glib-object.h>
+
+#include <gegl.h>
 
 static void
 ensure_drawable(PyGimpDrawable *self)
@@ -109,7 +112,7 @@ drw_free_shadow(PyGimpDrawable *self)
 static PyObject *
 drw_fill(PyGimpDrawable *self, PyObject *args, PyObject *kwargs)
 {
-    int fill = GIMP_FOREGROUND_FILL;
+    int fill = GIMP_FILL_FOREGROUND;
 
     static char *kwlist[] = { "fill", NULL };
 
@@ -314,12 +317,10 @@ drw_parasite_list(PyGimpDrawable *self)
 
     ret = PyTuple_New(num_parasites);
 
-    for (i = 0; i < num_parasites; i++) {
+    for (i = 0; i < num_parasites; i++)
         PyTuple_SetItem(ret, i, PyString_FromString(parasites[i]));
-        g_free(parasites[i]);
-    }
 
-    g_free(parasites);
+    g_strfreev(parasites);
     return ret;
 }
 
@@ -481,7 +482,6 @@ drw_transform_flip(PyGimpDrawable *self, PyObject *args, PyObject *kwargs)
     gimp_context_push ();
     gimp_context_set_transform_direction (transform_direction);
     gimp_context_set_interpolation (interpolation);
-    gimp_context_set_transform_recursion (recursion_level);
     gimp_context_set_transform_resize (clip_result);
 
     id = gimp_item_transform_flip (self->ID, x0, y0, x1, y1);
@@ -572,7 +572,6 @@ drw_transform_perspective(PyGimpDrawable *self, PyObject *args, PyObject *kwargs
     gimp_context_push ();
     gimp_context_set_transform_direction (transform_direction);
     gimp_context_set_interpolation (interpolation);
-    gimp_context_set_transform_recursion (recursion_level);
     gimp_context_set_transform_resize (clip_result);
 
     id = gimp_item_transform_perspective (self->ID,
@@ -638,7 +637,6 @@ drw_transform_rotate(PyGimpDrawable *self, PyObject *args, PyObject *kwargs)
     gimp_context_push ();
     gimp_context_set_transform_direction (transform_direction);
     gimp_context_set_interpolation (interpolation);
-    gimp_context_set_transform_recursion (recursion_level);
     gimp_context_set_transform_resize (clip_result);
 
     id = gimp_item_transform_rotate (self->ID, angle, auto_center,
@@ -732,7 +730,6 @@ drw_transform_scale(PyGimpDrawable *self, PyObject *args, PyObject *kwargs)
     gimp_context_push ();
     gimp_context_set_transform_direction (transform_direction);
     gimp_context_set_interpolation (interpolation);
-    gimp_context_set_transform_recursion (recursion_level);
     gimp_context_set_transform_resize (clip_result);
 
     id = gimp_item_transform_scale (self->ID, x0, y0, x1, y1);
@@ -794,7 +791,6 @@ drw_transform_shear(PyGimpDrawable *self, PyObject *args, PyObject *kwargs)
     gimp_context_push ();
     gimp_context_set_transform_direction (transform_direction);
     gimp_context_set_interpolation (interpolation);
-    gimp_context_set_transform_recursion (recursion_level);
     gimp_context_set_transform_resize (clip_result);
 
     id = gimp_item_transform_shear (self->ID, shear_type, magnitude);
@@ -859,7 +855,6 @@ drw_transform_2d(PyGimpDrawable *self, PyObject *args, PyObject *kwargs)
     gimp_context_push ();
     gimp_context_set_transform_direction (transform_direction);
     gimp_context_set_interpolation (interpolation);
-    gimp_context_set_transform_recursion (recursion_level);
     gimp_context_set_transform_resize (clip_result);
 
     id = gimp_item_transform_2d (self->ID, source_x, source_y,
@@ -931,7 +926,6 @@ drw_transform_matrix(PyGimpDrawable *self, PyObject *args, PyObject *kwargs)
     gimp_context_push ();
     gimp_context_set_transform_direction (transform_direction);
     gimp_context_set_interpolation (interpolation);
-    gimp_context_set_transform_recursion (recursion_level);
     gimp_context_set_transform_resize (clip_result);
 
     id = gimp_item_transform_matrix (self->ID,
@@ -982,6 +976,86 @@ drw_transform_matrix_default(PyGimpDrawable *self, PyObject *args, PyObject *kwa
     return transform_result(self, id, "apply 2d matrix transform to");
 }
 
+static PyObject *
+drw_get_data(PyGimpDrawable *self, PyObject *args, PyObject *kwargs)
+{
+    static char *kwlist[] = { "format", NULL };
+    gchar  *format = "RGBA float";
+    const Babl *bbl_format;
+    void *output_buffer;
+    GeglBuffer *buffer;
+    int bpp;
+    Py_ssize_t size;
+    PyObject *buffer_data, *ret;
+    PyObject *array_module;
+    PyObject *array_type;
+    char array_data_type;
+
+    if (!PyArg_ParseTupleAndKeywords (args, kwargs,
+                                      "|s:get_data",
+                                      kwlist, &format
+                                      ))
+        return NULL;
+
+    if (g_str_has_suffix (format, "double")) {
+        array_data_type = 'd';
+    } else if (g_str_has_suffix (format, "float")) {
+        array_data_type = 'f';
+    }
+     else if (g_str_has_suffix (format, "u16")) {
+        array_data_type = 'H';
+    } else if (g_str_has_suffix (format, "u8")) {
+        array_data_type = 'B';
+    } else {
+        PyErr_Warn (PyExc_Warning,
+            "Could not find appropriate data format - returning raw bytes");
+        array_data_type = 'B';
+    }
+
+    bbl_format = babl_format (format);
+    bpp = babl_format_get_bytes_per_pixel (bbl_format);
+    ensure_drawable(self);
+    buffer = gimp_drawable_get_buffer (self->ID);
+    size = bpp * self->drawable->width * self->drawable->height;
+    output_buffer = g_malloc ((gsize) size);
+    if (output_buffer == NULL) {
+        return PyErr_NoMemory();
+    }
+    gegl_buffer_get (buffer,
+                     GEGL_RECTANGLE (0, 0, self->drawable->width, self->drawable->height),
+                     1.0,
+                     bbl_format,
+                     output_buffer,
+                     GEGL_AUTO_ROWSTRIDE,
+                     GEGL_ABYSS_NONE);
+    buffer_data = PyString_FromStringAndSize (output_buffer, size);
+
+    array_module = PyImport_ImportModule ("array");
+    if (!array_module) {
+        PyErr_SetString (pygimp_error, "could not import array module");
+        return NULL;
+    }
+
+    array_type = PyObject_GetAttrString (array_module, "array");
+    Py_DECREF(array_module);
+    if (!array_type) {
+        PyErr_SetString (pygimp_error, "could not get array.array type");
+        return NULL;
+     }
+
+    ret = PyObject_CallFunction (array_type, "cO", array_data_type, buffer_data);
+    if (!ret) {
+        PyErr_SetString (pygimp_error, "could not create array object");
+        return NULL;
+     }
+
+    Py_DECREF (buffer_data);
+    g_free (output_buffer);
+
+    return ret;
+}
+
+
 /* for inclusion with the methods of layer and channel objects */
 static PyMethodDef drw_methods[] = {
     {"flush",	(PyCFunction)drw_flush,	METH_NOARGS},
@@ -992,6 +1066,8 @@ static PyMethodDef drw_methods[] = {
     {"get_tile",	(PyCFunction)drw_get_tile,	METH_VARARGS | METH_KEYWORDS},
     {"get_tile2",	(PyCFunction)drw_get_tile2,	METH_VARARGS | METH_KEYWORDS},
     {"get_pixel_rgn", (PyCFunction)drw_get_pixel_rgn, METH_VARARGS | METH_KEYWORDS},
+    {"get_data", (PyCFunction)drw_get_data, METH_VARARGS | METH_KEYWORDS,
+     "Takes a BABL format string, returns a Python array.array object"},
     {"offset", (PyCFunction)drw_offset, METH_VARARGS | METH_KEYWORDS},
     {"parasite_find",       (PyCFunction)drw_parasite_find, METH_VARARGS},
     {"parasite_attach",     (PyCFunction)drw_parasite_attach, METH_VARARGS},
@@ -1108,6 +1184,16 @@ drw_get_mask_bounds(PyGimpDrawable *self, void *closure)
 }
 
 static PyObject *
+drw_get_mask_intersect(PyGimpDrawable *self, void *closure)
+{
+    gint x, y, w, h;
+
+    if(!gimp_drawable_mask_intersect(self->ID, &x, &y, &w, &h))
+      return Py_BuildValue("");
+    return Py_BuildValue("(iiii)", x, y, w, h);
+}
+
+static PyObject *
 drw_get_offsets(PyGimpDrawable *self, void *closure)
 {
     gint x, y;
@@ -1220,6 +1306,7 @@ static  PyGetSetDef drw_getsets[] = {
     { "is_indexed", (getter)drw_get_is_indexed, (setter)0 },
     { "is_layer_mask", (getter)drw_get_is_layer_mask, (setter)0 },
     { "mask_bounds", (getter)drw_get_mask_bounds, (setter)0 },
+    { "mask_intersect", (getter)drw_get_mask_intersect, (setter)0 },
     { "offsets", (getter)drw_get_offsets, (setter)0 },
     { "type", (getter)drw_get_type, (setter)0 },
     { "type_with_alpha", (getter)drw_get_type_with_alpha, (setter)0 },
@@ -1826,7 +1913,7 @@ lay_init(PyGimpLayer *self, PyObject *args, PyObject *kwargs)
     unsigned int width, height;
     GimpImageType type = GIMP_RGB_IMAGE;
     double opacity = 100.0;
-    GimpLayerModeEffects mode = GIMP_NORMAL_MODE;
+    GimpLayerMode mode = GIMP_LAYER_MODE_NORMAL;
 
 
     if (!PyArg_ParseTuple(args, "O!sii|idi:gimp.Layer.__init__",
@@ -1923,14 +2010,14 @@ pygimp_layer_new(gint32 ID)
 /* End of code for Layer objects */
 /* -------------------------------------------------------- */
 
-/* Since this help will primaly be seen from within
+/* Since this help will primarily be seen from within
  * GIMP's Python console, we should make it fit in that
  * window's default size.
  */
 
 #define GROUPLAYER_DOC ""                                \
 "gimp.GroupLayer(img, name="", opacity=100.0,   "        \
-"mode=gimp.NORMAL_MODE)\n"                               \
+"mode=gimp.LAYER_MODE_NORMAL)\n"                         \
 "\n"                                                     \
 " Creates a new GroupLayer object that has to be \n"     \
 "subsequently added to an image. Use Image.add_layer \n" \
@@ -1984,7 +2071,7 @@ grouplay_init(PyGimpLayer *self, PyObject *args, PyObject *kwargs)
     char *name = "Layer Group";
     GimpImageType type = GIMP_RGB_IMAGE;
     double opacity = 100.0;
-    GimpLayerModeEffects mode = GIMP_NORMAL_MODE;
+    GimpLayerMode mode = GIMP_LAYER_MODE_NORMAL;
 
 
     if (!PyArg_ParseTuple(args, "O!|sdi:gimp.Layer.__init__",

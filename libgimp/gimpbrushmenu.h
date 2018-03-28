@@ -29,29 +29,27 @@
  *  written code.
  */
 
-#ifndef GIMP_DISABLE_DEPRECATED
-
 G_BEGIN_DECLS
 
-
+GIMP_DEPRECATED_FOR(gimp_brush_select_button_new)
 GtkWidget * gimp_brush_select_widget_new   (const gchar          *title,
                                             const gchar          *brush_name,
                                             gdouble               opacity,
                                             gint                  spacing,
-                                            GimpLayerModeEffects  paint_mode,
+                                            GimpLayerMode         paint_mode,
                                             GimpRunBrushCallback  callback,
                                             gpointer              data);
 
+GIMP_DEPRECATED_FOR(gimp_select_button_close_popup)
 void        gimp_brush_select_widget_close (GtkWidget            *widget);
+GIMP_DEPRECATED_FOR(gimp_brush_select_button_set_brush)
 void        gimp_brush_select_widget_set   (GtkWidget            *widget,
                                             const gchar          *brush_name,
                                             gdouble               opacity,
                                             gint                  spacing,
-                                            GimpLayerModeEffects  paint_mode);
+                                            GimpLayerMode         paint_mode);
 
 
 G_END_DECLS
-
-#endif /*  GIMP_DISABLE_DEPRECATED  */
 
 #endif /* __GIMP_BRUSH_MENU_H__ */

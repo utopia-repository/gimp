@@ -19,7 +19,8 @@
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include <cairo.h>
 
@@ -28,9 +29,7 @@
 
 #include "core-types.h"
 
-#include "base/pixel-region.h"
-#include "base/tile-manager.h"
-
+#include "gimpboundary.h"
 #include "gimpbezierdesc.h"
 #include "gimpscanconvert.h"
 
@@ -76,6 +75,51 @@ gimp_scan_convert_new (void)
   sc->ratio_xy = 1.0;
 
   return sc;
+}
+
+GimpScanConvert *
+gimp_scan_convert_new_from_boundary (const GimpBoundSeg *bound_segs,
+                                     gint                n_bound_segs,
+                                     gint                offset_x,
+                                     gint                offset_y)
+{
+  g_return_val_if_fail (bound_segs == NULL || n_bound_segs != 0, NULL);
+
+  if (bound_segs)
+    {
+      GimpBoundSeg *stroke_segs;
+      gint          n_stroke_segs;
+
+      stroke_segs = gimp_boundary_sort (bound_segs, n_bound_segs,
+                                        &n_stroke_segs);
+
+      if (stroke_segs)
+        {
+          GimpBezierDesc *bezier;
+
+          bezier = gimp_bezier_desc_new_from_bound_segs (stroke_segs,
+                                                         n_bound_segs,
+                                                         n_stroke_segs);
+
+          g_free (stroke_segs);
+
+          if (bezier)
+            {
+              GimpScanConvert *scan_convert;
+
+              scan_convert = gimp_scan_convert_new ();
+
+              gimp_bezier_desc_translate (bezier, offset_x, offset_y);
+              gimp_scan_convert_add_bezier (scan_convert, bezier);
+
+              gimp_bezier_desc_free (bezier);
+
+              return scan_convert;
+            }
+        }
+    }
+
+  return NULL;
 }
 
 /**
@@ -249,10 +293,11 @@ gimp_scan_convert_stroke (GimpScanConvert *sc,
                           GArray          *dash_info)
 {
   sc->do_stroke = TRUE;
-  sc->width = width;
-  sc->join  = join;
-  sc->cap   = cap;
-  sc->miter = miter;
+  sc->width     = width;
+  sc->join      = join;
+  sc->cap       = cap;
+  sc->miter     = miter;
+
   if (sc->dash_info)
     {
       g_array_free (sc->dash_info, TRUE);
@@ -329,35 +374,35 @@ gimp_scan_convert_stroke (GimpScanConvert *sc,
 
 /**
  * gimp_scan_convert_render:
- * @sc:           a #GimpScanConvert context
- * @tile_manager: the #TileManager to render to
- * @off_x:        horizontal offset into the @tile_manager
- * @off_y:        vertical offset into the @tile_manager
- * @antialias:    whether to apply antialiasiing
+ * @sc:        a #GimpScanConvert context
+ * @bufferr:   the #GeglBuffer to render to
+ * @off_x:     horizontal offset into the @buffer
+ * @off_y:     vertical offset into the @buffer
+ * @antialias: whether to apply antialiasiing
  *
  * This is a wrapper around gimp_scan_convert_render_full() that replaces the
- * content of the @tile_manager with a rendered form of the path passed in.
+ * content of the @buffer with a rendered form of the path passed in.
  *
  * You cannot add additional polygons after this command.
  */
 void
 gimp_scan_convert_render (GimpScanConvert *sc,
-                          TileManager     *tile_manager,
+                          GeglBuffer      *buffer,
                           gint             off_x,
                           gint             off_y,
                           gboolean         antialias)
 {
-  gimp_scan_convert_render_full (sc, tile_manager, off_x, off_y,
-                                 TRUE, antialias, 255);
+  gimp_scan_convert_render_full (sc, buffer, off_x, off_y,
+                                 TRUE, antialias, 1.0);
 }
 
 /**
  * gimp_scan_convert_render_value:
- * @sc:           a #GimpScanConvert context
- * @tile_manager: the #TileManager to render to
- * @off_x:        horizontal offset into the @tile_manager
- * @off_y:        vertical offset into the @tile_manager
- * @value:        value to use for covered pixels
+ * @sc:     a #GimpScanConvert context
+ * @buffer: the #GeglBuffer to render to
+ * @off_x:  horizontal offset into the @buffer
+ * @off_y:  vertical offset into the @buffer
+ * @value:  value to use for covered pixels
  *
  * This is a wrapper around gimp_scan_convert_render_full() that
  * doesn't do antialiasing but gives control over the value that
@@ -368,107 +413,106 @@ gimp_scan_convert_render (GimpScanConvert *sc,
  */
 void
 gimp_scan_convert_render_value (GimpScanConvert *sc,
-                                TileManager     *tile_manager,
+                                GeglBuffer      *buffer,
                                 gint             off_x,
                                 gint             off_y,
-                                guchar           value)
+                                gdouble          value)
 {
-  gimp_scan_convert_render_full (sc, tile_manager, off_x, off_y,
+  gimp_scan_convert_render_full (sc, buffer, off_x, off_y,
                                  TRUE, FALSE, value);
 }
 
 /**
  * gimp_scan_convert_compose:
- * @sc:           a #GimpScanConvert context
- * @tile_manager: the #TileManager to render to
- * @off_x:        horizontal offset into the @tile_manager
- * @off_y:        vertical offset into the @tile_manager
+ * @sc:     a #GimpScanConvert context
+ * @buffer: the #GeglBuffer to render to
+ * @off_x:  horizontal offset into the @buffer
+ * @off_y:  vertical offset into the @buffer
  *
  * This is a wrapper around of gimp_scan_convert_render_full() that composes
- * the (aliased) scan conversion on top of the content of the @tile_manager.
+ * the (aliased) scan conversion on top of the content of the @buffer.
  *
  * You cannot add additional polygons after this command.
  */
 void
 gimp_scan_convert_compose (GimpScanConvert *sc,
-                           TileManager     *tile_manager,
+                           GeglBuffer      *buffer,
                            gint             off_x,
                            gint             off_y)
 {
-  gimp_scan_convert_render_full (sc, tile_manager, off_x, off_y,
-                                 FALSE, FALSE, 255);
+  gimp_scan_convert_render_full (sc, buffer, off_x, off_y,
+                                 FALSE, FALSE, 1.0);
 }
 
 /**
  * gimp_scan_convert_compose_value:
- * @sc:           a #GimpScanConvert context
- * @tile_manager: the #TileManager to render to
- * @off_x:        horizontal offset into the @tile_manager
- * @off_y:        vertical offset into the @tile_manager
- * @value:        value to use for covered pixels
+ * @sc:     a #GimpScanConvert context
+ * @buffer: the #GeglBuffer to render to
+ * @off_x:  horizontal offset into the @buffer
+ * @off_y:  vertical offset into the @buffer
+ * @value:  value to use for covered pixels
  *
  * This is a wrapper around gimp_scan_convert_render_full() that
  * composes the (aliased) scan conversion with value @value on top of the
- * content of the @tile_manager.
+ * content of the @buffer.
  *
  * You cannot add additional polygons after this command.
  */
 void
 gimp_scan_convert_compose_value (GimpScanConvert *sc,
-                                 TileManager     *tile_manager,
+                                 GeglBuffer      *buffer,
                                  gint             off_x,
                                  gint             off_y,
-                                 gint             value)
+                                 gdouble          value)
 {
-  gimp_scan_convert_render_full (sc, tile_manager, off_x, off_y,
+  gimp_scan_convert_render_full (sc, buffer, off_x, off_y,
                                  FALSE, FALSE, value);
 }
 
 /**
  * gimp_scan_convert_render_full:
- * @sc:           a #GimpScanConvert context
- * @tile_manager: the #TileManager to render to
- * @off_x:        horizontal offset into the @tile_manager
- * @off_y:        vertical offset into the @tile_manager
- * @replace:      if true the original content of the @tile_manager gets
- *                destroyed
- * @antialias:    if true the rendering happens antialiased
- * @value:        value to use for covered pixels
+ * @sc:        a #GimpScanConvert context
+ * @buffer:    the #GeglBuffer to render to
+ * @off_x:     horizontal offset into the @buffer
+ * @off_y:     vertical offset into the @buffer
+ * @replace:   if true the original content of the @buffer gets estroyed
+ * @antialias: if true the rendering happens antialiased
+ * @value:     value to use for covered pixels
  *
- * This function renders the area described by the path to the @tile_manager,
- * taking the offset @off_x and @off_y in the tilemanager into account.
- * The rendering can happen antialiased and be rendered on top of existing
- * content or replacing it completely. The @value specifies the opacity value
- * to be used for the objects in the @sc.
- *
- * This function expects a tile manager of depth 1.
+ * This function renders the area described by the path to the
+ * @buffer, taking the offset @off_x and @off_y in the buffer into
+ * account.  The rendering can happen antialiased and be rendered on
+ * top of existing content or replacing it completely. The @value
+ * specifies the opacity value to be used for the objects in the @sc.
  *
  * You cannot add additional polygons after this command.
  */
 void
 gimp_scan_convert_render_full (GimpScanConvert *sc,
-                               TileManager     *tile_manager,
+                               GeglBuffer      *buffer,
                                gint             off_x,
                                gint             off_y,
                                gboolean         replace,
                                gboolean         antialias,
-                               guchar           value)
+                               gdouble          value)
 {
-  PixelRegion      maskPR;
-  gpointer         pr;
-  cairo_t         *cr;
-  cairo_surface_t *surface;
-  cairo_path_t     path;
-  gint             x, y;
-  gint             width, height;
+  const Babl         *format;
+  GeglBufferIterator *iter;
+  GeglRectangle      *roi;
+  cairo_t            *cr;
+  cairo_surface_t    *surface;
+  cairo_path_t        path;
+  gint                bpp;
+  gint                x, y;
+  gint                width, height;
 
   g_return_if_fail (sc != NULL);
-  g_return_if_fail (tile_manager != NULL);
+  g_return_if_fail (GEGL_IS_BUFFER (buffer));
 
   x      = 0;
   y      = 0;
-  width  = tile_manager_width (tile_manager);
-  height = tile_manager_height (tile_manager);
+  width  = gegl_buffer_get_width  (buffer);
+  height = gegl_buffer_get_height (buffer);
 
   if (sc->clip && ! gimp_rectangle_intersect (x, y, width, height,
                                               sc->clip_x, sc->clip_y,
@@ -476,52 +520,58 @@ gimp_scan_convert_render_full (GimpScanConvert *sc,
                                               &x, &y, &width, &height))
     return;
 
-  pixel_region_init (&maskPR, tile_manager, x, y, width, height, TRUE);
-
-  g_return_if_fail (maskPR.bytes == 1);
-
   path.status   = CAIRO_STATUS_SUCCESS;
   path.data     = (cairo_path_data_t *) sc->path_data->data;
   path.num_data = sc->path_data->len;
 
-  for (pr = pixel_regions_register (1, &maskPR);
-       pr != NULL;
-       pr = pixel_regions_process (pr))
+  format = babl_format ("Y u8");
+  bpp    = babl_format_get_bytes_per_pixel (format);
+
+  iter = gegl_buffer_iterator_new (buffer, NULL, 0, format,
+                                   GEGL_ACCESS_READWRITE, GEGL_ABYSS_NONE);
+  roi = &iter->roi[0];
+
+  while (gegl_buffer_iterator_next (iter))
     {
+      guchar     *data    = iter->data[0];
       guchar     *tmp_buf = NULL;
-      const gint stride   = cairo_format_stride_for_width (CAIRO_FORMAT_A8,
-                                                           maskPR.w);
+      const gint  stride  = cairo_format_stride_for_width (CAIRO_FORMAT_A8,
+                                                           roi->width);
 
-      if (maskPR.rowstride != stride)
+      /*  cairo rowstrides are always multiples of 4, whereas
+       *  maskPR.rowstride can be anything, so to be able to create an
+       *  image surface, we maybe have to create our own temporary
+       *  buffer
+       */
+      if (roi->width * bpp != stride)
         {
-          const guchar *src = maskPR.data;
-          guchar       *dest;
-
-          dest = tmp_buf = g_alloca (stride * maskPR.h);
+          tmp_buf = g_alloca (stride * roi->height);
 
           if (! replace)
             {
-              gint i;
+              const guchar *src  = data;
+              guchar       *dest = tmp_buf;
+              gint          i;
 
-              for (i = 0; i < maskPR.h; i++)
+              for (i = 0; i < roi->height; i++)
                 {
-                  memcpy (dest, src, maskPR.w);
+                  memcpy (dest, src, roi->width * bpp);
 
-                  src  += maskPR.rowstride;
+                  src  += roi->width * bpp;
                   dest += stride;
                 }
             }
         }
 
       surface = cairo_image_surface_create_for_data (tmp_buf ?
-                                                     tmp_buf : maskPR.data,
+                                                     tmp_buf : data,
                                                      CAIRO_FORMAT_A8,
-                                                     maskPR.w, maskPR.h,
+                                                     roi->width, roi->height,
                                                      stride);
 
       cairo_surface_set_device_offset (surface,
-                                       -off_x - maskPR.x,
-                                       -off_y - maskPR.y);
+                                       -off_x - roi->x,
+                                       -off_y - roi->y);
       cr = cairo_create (surface);
       cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
 
@@ -531,7 +581,7 @@ gimp_scan_convert_render_full (GimpScanConvert *sc,
           cairo_paint (cr);
         }
 
-      cairo_set_source_rgba (cr, 0, 0, 0, value / 255.0);
+      cairo_set_source_rgba (cr, 0, 0, 0, value);
       cairo_append_path (cr, &path);
 
       cairo_set_antialias (cr, antialias ?
@@ -571,16 +621,16 @@ gimp_scan_convert_render_full (GimpScanConvert *sc,
 
       if (tmp_buf)
         {
-          guchar       *dest = maskPR.data;
           const guchar *src  = tmp_buf;
+          guchar       *dest = data;
           gint          i;
 
-          for (i = 0; i < maskPR.h; i++)
+          for (i = 0; i < roi->height; i++)
             {
-              memcpy (dest, src, maskPR.w);
+              memcpy (dest, src, roi->width * bpp);
 
               src  += stride;
-              dest += maskPR.rowstride;
+              dest += roi->width * bpp;
             }
         }
     }

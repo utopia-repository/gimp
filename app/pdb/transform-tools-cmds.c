@@ -21,7 +21,11 @@
 
 #include <gegl.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
 #include "libgimpmath/gimpmath.h"
+
+#include "libgimpbase/gimpbase.h"
 
 #include "pdb-types.h"
 
@@ -43,27 +47,29 @@
 #include "gimp-intl.h"
 
 
-static GValueArray *
-flip_invoker (GimpProcedure      *procedure,
-              Gimp               *gimp,
-              GimpContext        *context,
-              GimpProgress       *progress,
-              const GValueArray  *args,
-              GError            **error)
+static GimpValueArray *
+flip_invoker (GimpProcedure         *procedure,
+              Gimp                  *gimp,
+              GimpContext           *context,
+              GimpProgress          *progress,
+              const GimpValueArray  *args,
+              GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gint32 flip_type;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  flip_type = g_value_get_enum (&args->values[1]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  flip_type = g_value_get_enum (gimp_value_array_index (args, 1));
 
   if (success)
     {
       gint x, y, width, height;
 
-      success = gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error);
+      success = gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                           GIMP_PDB_ITEM_CONTENT |
+                                           GIMP_PDB_ITEM_POSITION, error);
 
       if (success &&
           gimp_item_mask_intersect (GIMP_ITEM (drawable), &x, &y, &width, &height))
@@ -94,21 +100,21 @@ flip_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_drawable (&return_vals->values[1], drawable);
+    gimp_value_set_drawable (gimp_value_array_index (return_vals, 1), drawable);
 
   return return_vals;
 }
 
-static GValueArray *
-perspective_invoker (GimpProcedure      *procedure,
-                     Gimp               *gimp,
-                     GimpContext        *context,
-                     GimpProgress       *progress,
-                     const GValueArray  *args,
-                     GError            **error)
+static GimpValueArray *
+perspective_invoker (GimpProcedure         *procedure,
+                     Gimp                  *gimp,
+                     GimpContext           *context,
+                     GimpProgress          *progress,
+                     const GimpValueArray  *args,
+                     GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gboolean interpolation;
   gdouble x0;
@@ -120,22 +126,24 @@ perspective_invoker (GimpProcedure      *procedure,
   gdouble x3;
   gdouble y3;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  interpolation = g_value_get_boolean (&args->values[1]);
-  x0 = g_value_get_double (&args->values[2]);
-  y0 = g_value_get_double (&args->values[3]);
-  x1 = g_value_get_double (&args->values[4]);
-  y1 = g_value_get_double (&args->values[5]);
-  x2 = g_value_get_double (&args->values[6]);
-  y2 = g_value_get_double (&args->values[7]);
-  x3 = g_value_get_double (&args->values[8]);
-  y3 = g_value_get_double (&args->values[9]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  interpolation = g_value_get_boolean (gimp_value_array_index (args, 1));
+  x0 = g_value_get_double (gimp_value_array_index (args, 2));
+  y0 = g_value_get_double (gimp_value_array_index (args, 3));
+  x1 = g_value_get_double (gimp_value_array_index (args, 4));
+  y1 = g_value_get_double (gimp_value_array_index (args, 5));
+  x2 = g_value_get_double (gimp_value_array_index (args, 6));
+  y2 = g_value_get_double (gimp_value_array_index (args, 7));
+  x3 = g_value_get_double (gimp_value_array_index (args, 8));
+  y3 = g_value_get_double (gimp_value_array_index (args, 9));
 
   if (success)
     {
       gint x, y, width, height;
 
-      success = gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error);
+      success = gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                           GIMP_PDB_ITEM_CONTENT |
+                                           GIMP_PDB_ITEM_POSITION, error);
 
       if (success &&
           gimp_item_mask_intersect (GIMP_ITEM (drawable), &x, &y, &width, &height))
@@ -160,7 +168,7 @@ perspective_invoker (GimpProcedure      *procedure,
             interpolation_type = gimp->config->interpolation_type;
 
           if (progress)
-            gimp_progress_start (progress, _("Perspective"), FALSE);
+            gimp_progress_start (progress, FALSE, _("Perspective"));
 
           if (! gimp_viewable_get_children (GIMP_VIEWABLE (drawable)) &&
               ! gimp_channel_is_empty (gimp_image_get_mask (gimp_item_get_image (GIMP_ITEM (drawable)))))
@@ -168,7 +176,7 @@ perspective_invoker (GimpProcedure      *procedure,
               if (! gimp_drawable_transform_affine (drawable, context,
                                                     &matrix,
                                                     GIMP_TRANSFORM_FORWARD,
-                                                    interpolation_type, 3,
+                                                    interpolation_type,
                                                     FALSE, progress))
                 {
                   success = FALSE;
@@ -178,7 +186,7 @@ perspective_invoker (GimpProcedure      *procedure,
             {
               gimp_item_transform (GIMP_ITEM (drawable), context, &matrix,
                                    GIMP_TRANSFORM_FORWARD,
-                                   interpolation, 3,
+                                   interpolation,
                                    FALSE, progress);
             }
 
@@ -191,34 +199,36 @@ perspective_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_drawable (&return_vals->values[1], drawable);
+    gimp_value_set_drawable (gimp_value_array_index (return_vals, 1), drawable);
 
   return return_vals;
 }
 
-static GValueArray *
-rotate_invoker (GimpProcedure      *procedure,
-                Gimp               *gimp,
-                GimpContext        *context,
-                GimpProgress       *progress,
-                const GValueArray  *args,
-                GError            **error)
+static GimpValueArray *
+rotate_invoker (GimpProcedure         *procedure,
+                Gimp                  *gimp,
+                GimpContext           *context,
+                GimpProgress          *progress,
+                const GimpValueArray  *args,
+                GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gboolean interpolation;
   gdouble angle;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  interpolation = g_value_get_boolean (&args->values[1]);
-  angle = g_value_get_double (&args->values[2]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  interpolation = g_value_get_boolean (gimp_value_array_index (args, 1));
+  angle = g_value_get_double (gimp_value_array_index (args, 2));
 
   if (success)
     {
       gint x, y, width, height;
 
-      success = gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error);
+      success = gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                           GIMP_PDB_ITEM_CONTENT |
+                                           GIMP_PDB_ITEM_POSITION, error);
 
       if (success &&
           gimp_item_mask_intersect (GIMP_ITEM (drawable), &x, &y, &width, &height))
@@ -242,7 +252,7 @@ rotate_invoker (GimpProcedure      *procedure,
             interpolation_type = gimp->config->interpolation_type;
 
           if (progress)
-            gimp_progress_start (progress, _("Rotating"), FALSE);
+            gimp_progress_start (progress, FALSE, _("Rotating"));
 
           if (! gimp_viewable_get_children (GIMP_VIEWABLE (drawable)) &&
               ! gimp_channel_is_empty (gimp_image_get_mask (gimp_item_get_image (GIMP_ITEM (drawable)))))
@@ -250,7 +260,7 @@ rotate_invoker (GimpProcedure      *procedure,
               if (! gimp_drawable_transform_affine (drawable, context,
                                                     &matrix,
                                                     GIMP_TRANSFORM_FORWARD,
-                                                    interpolation_type, 3,
+                                                    interpolation_type,
                                                     FALSE, progress))
                 {
                   success = FALSE;
@@ -260,7 +270,7 @@ rotate_invoker (GimpProcedure      *procedure,
             {
               gimp_item_transform (GIMP_ITEM (drawable), context, &matrix,
                                    GIMP_TRANSFORM_FORWARD,
-                                   interpolation, 3,
+                                   interpolation,
                                    FALSE, progress);
             }
 
@@ -273,21 +283,21 @@ rotate_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_drawable (&return_vals->values[1], drawable);
+    gimp_value_set_drawable (gimp_value_array_index (return_vals, 1), drawable);
 
   return return_vals;
 }
 
-static GValueArray *
-scale_invoker (GimpProcedure      *procedure,
-               Gimp               *gimp,
-               GimpContext        *context,
-               GimpProgress       *progress,
-               const GValueArray  *args,
-               GError            **error)
+static GimpValueArray *
+scale_invoker (GimpProcedure         *procedure,
+               Gimp                  *gimp,
+               GimpContext           *context,
+               GimpProgress          *progress,
+               const GimpValueArray  *args,
+               GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gboolean interpolation;
   gdouble x0;
@@ -295,18 +305,20 @@ scale_invoker (GimpProcedure      *procedure,
   gdouble x1;
   gdouble y1;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  interpolation = g_value_get_boolean (&args->values[1]);
-  x0 = g_value_get_double (&args->values[2]);
-  y0 = g_value_get_double (&args->values[3]);
-  x1 = g_value_get_double (&args->values[4]);
-  y1 = g_value_get_double (&args->values[5]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  interpolation = g_value_get_boolean (gimp_value_array_index (args, 1));
+  x0 = g_value_get_double (gimp_value_array_index (args, 2));
+  y0 = g_value_get_double (gimp_value_array_index (args, 3));
+  x1 = g_value_get_double (gimp_value_array_index (args, 4));
+  y1 = g_value_get_double (gimp_value_array_index (args, 5));
 
   if (success)
     {
       gint x, y, width, height;
 
-      success = (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      success = (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                            GIMP_PDB_ITEM_CONTENT |
+                                            GIMP_PDB_ITEM_POSITION, error) &&
                  x0 < x1 && y0 < y1);
 
       if (success &&
@@ -331,7 +343,7 @@ scale_invoker (GimpProcedure      *procedure,
             interpolation_type = gimp->config->interpolation_type;
 
           if (progress)
-            gimp_progress_start (progress, _("Scaling"), FALSE);
+            gimp_progress_start (progress, FALSE, _("Scaling"));
 
           if (! gimp_viewable_get_children (GIMP_VIEWABLE (drawable)) &&
               ! gimp_channel_is_empty (gimp_image_get_mask (gimp_item_get_image (GIMP_ITEM (drawable)))))
@@ -339,7 +351,7 @@ scale_invoker (GimpProcedure      *procedure,
               if (! gimp_drawable_transform_affine (drawable, context,
                                                     &matrix,
                                                     GIMP_TRANSFORM_FORWARD,
-                                                    interpolation_type, 3,
+                                                    interpolation_type,
                                                     FALSE, progress))
                 {
                   success = FALSE;
@@ -349,7 +361,7 @@ scale_invoker (GimpProcedure      *procedure,
             {
               gimp_item_transform (GIMP_ITEM (drawable), context, &matrix,
                                    GIMP_TRANSFORM_FORWARD,
-                                   interpolation, 3,
+                                   interpolation,
                                    FALSE, progress);
             }
 
@@ -362,36 +374,38 @@ scale_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_drawable (&return_vals->values[1], drawable);
+    gimp_value_set_drawable (gimp_value_array_index (return_vals, 1), drawable);
 
   return return_vals;
 }
 
-static GValueArray *
-shear_invoker (GimpProcedure      *procedure,
-               Gimp               *gimp,
-               GimpContext        *context,
-               GimpProgress       *progress,
-               const GValueArray  *args,
-               GError            **error)
+static GimpValueArray *
+shear_invoker (GimpProcedure         *procedure,
+               Gimp                  *gimp,
+               GimpContext           *context,
+               GimpProgress          *progress,
+               const GimpValueArray  *args,
+               GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gboolean interpolation;
   gint32 shear_type;
   gdouble magnitude;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  interpolation = g_value_get_boolean (&args->values[1]);
-  shear_type = g_value_get_enum (&args->values[2]);
-  magnitude = g_value_get_double (&args->values[3]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  interpolation = g_value_get_boolean (gimp_value_array_index (args, 1));
+  shear_type = g_value_get_enum (gimp_value_array_index (args, 2));
+  magnitude = g_value_get_double (gimp_value_array_index (args, 3));
 
   if (success)
     {
       gint x, y, width, height;
 
-      success = gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error);
+      success = gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                           GIMP_PDB_ITEM_CONTENT |
+                                           GIMP_PDB_ITEM_POSITION, error);
 
       if (success &&
           gimp_item_mask_intersect (GIMP_ITEM (drawable), &x, &y, &width, &height))
@@ -415,7 +429,7 @@ shear_invoker (GimpProcedure      *procedure,
             interpolation_type = gimp->config->interpolation_type;
 
           if (progress)
-            gimp_progress_start (progress, _("Shearing"), FALSE);
+            gimp_progress_start (progress, FALSE, _("Shearing"));
 
           if (! gimp_viewable_get_children (GIMP_VIEWABLE (drawable)) &&
               ! gimp_channel_is_empty (gimp_image_get_mask (gimp_item_get_image (GIMP_ITEM (drawable)))))
@@ -423,7 +437,7 @@ shear_invoker (GimpProcedure      *procedure,
               if (! gimp_drawable_transform_affine (drawable, context,
                                                     &matrix,
                                                     GIMP_TRANSFORM_FORWARD,
-                                                    interpolation_type, 3,
+                                                    interpolation_type,
                                                     FALSE, progress))
                 {
                   success = FALSE;
@@ -433,7 +447,7 @@ shear_invoker (GimpProcedure      *procedure,
             {
               gimp_item_transform (GIMP_ITEM (drawable), context, &matrix,
                                    GIMP_TRANSFORM_FORWARD,
-                                   interpolation, 3,
+                                   interpolation,
                                    FALSE, progress);
             }
 
@@ -446,21 +460,21 @@ shear_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_drawable (&return_vals->values[1], drawable);
+    gimp_value_set_drawable (gimp_value_array_index (return_vals, 1), drawable);
 
   return return_vals;
 }
 
-static GValueArray *
-transform_2d_invoker (GimpProcedure      *procedure,
-                      Gimp               *gimp,
-                      GimpContext        *context,
-                      GimpProgress       *progress,
-                      const GValueArray  *args,
-                      GError            **error)
+static GimpValueArray *
+transform_2d_invoker (GimpProcedure         *procedure,
+                      Gimp                  *gimp,
+                      GimpContext           *context,
+                      GimpProgress          *progress,
+                      const GimpValueArray  *args,
+                      GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gboolean interpolation;
   gdouble source_x;
@@ -471,21 +485,23 @@ transform_2d_invoker (GimpProcedure      *procedure,
   gdouble dest_x;
   gdouble dest_y;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  interpolation = g_value_get_boolean (&args->values[1]);
-  source_x = g_value_get_double (&args->values[2]);
-  source_y = g_value_get_double (&args->values[3]);
-  scale_x = g_value_get_double (&args->values[4]);
-  scale_y = g_value_get_double (&args->values[5]);
-  angle = g_value_get_double (&args->values[6]);
-  dest_x = g_value_get_double (&args->values[7]);
-  dest_y = g_value_get_double (&args->values[8]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  interpolation = g_value_get_boolean (gimp_value_array_index (args, 1));
+  source_x = g_value_get_double (gimp_value_array_index (args, 2));
+  source_y = g_value_get_double (gimp_value_array_index (args, 3));
+  scale_x = g_value_get_double (gimp_value_array_index (args, 4));
+  scale_y = g_value_get_double (gimp_value_array_index (args, 5));
+  angle = g_value_get_double (gimp_value_array_index (args, 6));
+  dest_x = g_value_get_double (gimp_value_array_index (args, 7));
+  dest_y = g_value_get_double (gimp_value_array_index (args, 8));
 
   if (success)
     {
       gint x, y, width, height;
 
-      success = gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error);
+      success = gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                           GIMP_PDB_ITEM_CONTENT |
+                                           GIMP_PDB_ITEM_POSITION, error);
 
       if (success &&
           gimp_item_mask_intersect (GIMP_ITEM (drawable), &x, &y, &width, &height))
@@ -504,14 +520,14 @@ transform_2d_invoker (GimpProcedure      *procedure,
             interpolation_type = gimp->config->interpolation_type;
 
           if (progress)
-            gimp_progress_start (progress, _("2D Transform"), FALSE);
+            gimp_progress_start (progress, FALSE, _("2D Transform"));
 
           if (! gimp_viewable_get_children (GIMP_VIEWABLE (drawable)) &&
               ! gimp_channel_is_empty (gimp_image_get_mask (gimp_item_get_image (GIMP_ITEM (drawable)))))
             {
               if (! gimp_drawable_transform_affine (drawable, context,
                                                     &matrix, GIMP_TRANSFORM_FORWARD,
-                                                    interpolation_type, 3,
+                                                    interpolation_type,
                                                     FALSE, progress))
                 {
                   success = FALSE;
@@ -521,7 +537,7 @@ transform_2d_invoker (GimpProcedure      *procedure,
             {
               gimp_item_transform (GIMP_ITEM (drawable), context, &matrix,
                                    GIMP_TRANSFORM_FORWARD,
-                                   interpolation, 3,
+                                   interpolation,
                                    FALSE, progress);
             }
 
@@ -534,7 +550,7 @@ transform_2d_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_drawable (&return_vals->values[1], drawable);
+    gimp_value_set_drawable (gimp_value_array_index (return_vals, 1), drawable);
 
   return return_vals;
 }

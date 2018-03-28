@@ -15,12 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
+
 #include <string.h>
 
-#include <glib/gstdio.h>
-
 #include <gegl.h>
-
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -41,6 +40,7 @@
 #include "core/gimpimage-guides.h"
 #include "core/gimpimage-sample-points.h"
 #include "core/gimplayer.h"
+#include "core/gimplayer-new.h"
 #include "core/gimpsamplepoint.h"
 #include "core/gimpselection.h"
 
@@ -48,34 +48,39 @@
 #include "vectors/gimpbezierstroke.h"
 #include "vectors/gimpvectors.h"
 
-#include "file/file-open.h"
-#include "file/file-procedure.h"
-#include "file/file-save.h"
+#include "plug-in/gimppluginmanager-file.h"
 
-#include "plug-in/gimppluginmanager.h"
+#include "file/file-open.h"
+#include "file/file-save.h"
 
 #include "tests.h"
 
 #include "gimp-app-test-utils.h"
 
 
+/* we continue to use LEGACY layers for testing, so we can use the
+ * same test image for all tests, including loading
+ * files/gimp-2-6-file.xcf which can't have any non-LEGACY modes
+ */
+
 #define GIMP_MAINIMAGE_WIDTH            100
 #define GIMP_MAINIMAGE_HEIGHT           90
 #define GIMP_MAINIMAGE_TYPE             GIMP_RGB
+#define GIMP_MAINIMAGE_PRECISION        GIMP_PRECISION_U8_GAMMA
 
 #define GIMP_MAINIMAGE_LAYER1_NAME      "layer1"
 #define GIMP_MAINIMAGE_LAYER1_WIDTH     50
 #define GIMP_MAINIMAGE_LAYER1_HEIGHT    51
-#define GIMP_MAINIMAGE_LAYER1_TYPE      GIMP_RGBA_IMAGE
-#define GIMP_MAINIMAGE_LAYER1_OPACITY   1.0
-#define GIMP_MAINIMAGE_LAYER1_MODE      GIMP_NORMAL_MODE
+#define GIMP_MAINIMAGE_LAYER1_FORMAT    babl_format ("R'G'B'A u8")
+#define GIMP_MAINIMAGE_LAYER1_OPACITY   GIMP_OPACITY_OPAQUE
+#define GIMP_MAINIMAGE_LAYER1_MODE      GIMP_LAYER_MODE_NORMAL_LEGACY
 
 #define GIMP_MAINIMAGE_LAYER2_NAME      "layer2"
 #define GIMP_MAINIMAGE_LAYER2_WIDTH     25
 #define GIMP_MAINIMAGE_LAYER2_HEIGHT    251
-#define GIMP_MAINIMAGE_LAYER2_TYPE      GIMP_RGB_IMAGE
-#define GIMP_MAINIMAGE_LAYER2_OPACITY   0.0
-#define GIMP_MAINIMAGE_LAYER2_MODE      GIMP_MULTIPLY_MODE
+#define GIMP_MAINIMAGE_LAYER2_FORMAT    babl_format ("R'G'B' u8")
+#define GIMP_MAINIMAGE_LAYER2_OPACITY   GIMP_OPACITY_TRANSPARENT
+#define GIMP_MAINIMAGE_LAYER2_MODE      GIMP_LAYER_MODE_MULTIPLY_LEGACY
 
 #define GIMP_MAINIMAGE_GROUP1_NAME      "group1"
 
@@ -140,7 +145,7 @@
 
 
 GimpImage        * gimp_test_load_image                        (Gimp            *gimp,
-                                                                const gchar     *uri);
+                                                                GFile           *file);
 static void        gimp_write_and_read_file                    (Gimp            *gimp,
                                                                 gboolean         with_unusual_stuff,
                                                                 gboolean         compat_paths,
@@ -202,15 +207,18 @@ write_and_read_gimp_2_6_format_unusual (gconstpointer data)
 static void
 load_gimp_2_6_file (gconstpointer data)
 {
-  Gimp      *gimp  = GIMP (data);
-  GimpImage *image = NULL;
-  gchar     *uri   = NULL;
+  Gimp      *gimp = GIMP (data);
+  GimpImage *image;
+  gchar     *filename;
+  GFile     *file;
 
-  uri = g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"),
-                          "app/tests/files/gimp-2-6-file.xcf",
-                          NULL);
+  filename = g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"),
+                               "app/tests/files/gimp-2-6-file.xcf",
+                               NULL);
+  file = g_file_new_for_path (filename);
+  g_free (filename);
 
-  image = gimp_test_load_image (gimp, uri);
+  image = gimp_test_load_image (gimp, file);
 
   /* The image file was constructed by running
    * gimp_write_and_read_file (FALSE, FALSE) in GIMP 2.6 by
@@ -244,25 +252,26 @@ write_and_read_gimp_2_8_format (gconstpointer data)
 }
 
 GimpImage *
-gimp_test_load_image (Gimp        *gimp,
-                      const gchar *uri)
+gimp_test_load_image (Gimp  *gimp,
+                      GFile *file)
 {
-  GimpPlugInProcedure *proc     = NULL;
-  GimpImage           *image    = NULL;
-  GimpPDBStatusType    not_used = 0;
+  GimpPlugInProcedure *proc;
+  GimpImage           *image;
+  GimpPDBStatusType    unused;
 
-  proc = file_procedure_find (gimp->plug_in_manager->load_procs,
-                              uri,
-                              NULL /*error*/);
+  proc = gimp_plug_in_manager_file_procedure_find (gimp->plug_in_manager,
+                                                   GIMP_FILE_PROCEDURE_GROUP_OPEN,
+                                                   file,
+                                                   NULL /*error*/);
   image = file_open_image (gimp,
                            gimp_get_user_context (gimp),
                            NULL /*progress*/,
-                           uri,
-                           "irrelevant" /*entered_filename*/,
+                           file,
+                           file,
                            FALSE /*as_new*/,
                            proc,
                            GIMP_RUN_NONINTERACTIVE,
-                           &not_used /*status*/,
+                           &unused /*status*/,
                            NULL /*mime_type*/,
                            NULL /*error*/);
 
@@ -271,13 +280,6 @@ gimp_test_load_image (Gimp        *gimp,
 
 /**
  * gimp_write_and_read_file:
- * @gimp:                  #Gimp instance
- * @with_unusual_stuff:    toggles whether to create the image with unusual
- *                         stuff, currently only a floating selection
- * @compat_paths:          toggles whether to use old style paths
- *                         (before GIMP 1.3)
- * @use_gimp_2_8_features: toggles whether to use GIMP 2.8 feature,
- *                         currently layer groups
  *
  * Constructs the main test image and asserts its state, writes it to
  * a file, reads the image from the file, and asserts the state of the
@@ -290,10 +292,11 @@ gimp_write_and_read_file (Gimp     *gimp,
                           gboolean  compat_paths,
                           gboolean  use_gimp_2_8_features)
 {
-  GimpImage           *image        = NULL;
-  GimpImage           *loaded_image = NULL;
-  GimpPlugInProcedure *proc         = NULL;
-  gchar               *uri          = NULL;
+  GimpImage           *image;
+  GimpImage           *loaded_image;
+  GimpPlugInProcedure *proc;
+  gchar               *filename;
+  GFile               *file;
 
   /* Create the image */
   image = gimp_create_mainimage (gimp,
@@ -308,14 +311,18 @@ gimp_write_and_read_file (Gimp     *gimp,
                          use_gimp_2_8_features);
 
   /* Write to file */
-  uri  = g_build_filename (g_get_tmp_dir (), "gimp-test.xcf", NULL);
-  proc = file_procedure_find (image->gimp->plug_in_manager->save_procs,
-                              uri,
-                              NULL /*error*/);
+  filename = g_build_filename (g_get_tmp_dir (), "gimp-test.xcf", NULL);
+  file = g_file_new_for_path (filename);
+  g_free (filename);
+
+  proc = gimp_plug_in_manager_file_procedure_find (image->gimp->plug_in_manager,
+                                                   GIMP_FILE_PROCEDURE_GROUP_SAVE,
+                                                   file,
+                                                   NULL /*error*/);
   file_save (gimp,
              image,
              NULL /*progress*/,
-             uri,
+             file,
              proc,
              GIMP_RUN_NONINTERACTIVE,
              FALSE /*change_saved_state*/,
@@ -324,7 +331,7 @@ gimp_write_and_read_file (Gimp     *gimp,
              NULL /*error*/);
 
   /* Load from file */
-  loaded_image = gimp_test_load_image (image->gimp, uri);
+  loaded_image = gimp_test_load_image (image->gimp, file);
 
   /* Assert on the loaded file. If success, it means that there is no
    * significant information loss when we wrote the image to a file
@@ -335,20 +342,12 @@ gimp_write_and_read_file (Gimp     *gimp,
                          compat_paths,
                          use_gimp_2_8_features);
 
-  g_unlink (uri);
-  g_free (uri);
+  g_file_delete (file, NULL, NULL);
+  g_object_unref (file);
 }
 
 /**
  * gimp_create_mainimage:
- * gimp_write_and_read_file:
- * @gimp:                  #Gimp instance
- * @with_unusual_stuff:    toggles whether to create the image with unusual
- *                         stuff, currently only a floating selection
- * @compat_paths:          toggles whether to use old style paths
- *                         (before GIMP 1.3)
- * @use_gimp_2_8_features: toggles whether to use GIMP 2.8 feature,
- *                         currently layer groups
  *
  * Creates the main test image, i.e. the image that we use for most of
  * our XCF testing purposes.
@@ -378,13 +377,14 @@ gimp_create_mainimage (Gimp     *gimp,
   image = gimp_image_new (gimp,
                           GIMP_MAINIMAGE_WIDTH,
                           GIMP_MAINIMAGE_HEIGHT,
-                          GIMP_MAINIMAGE_TYPE);
+                          GIMP_MAINIMAGE_TYPE,
+                          GIMP_MAINIMAGE_PRECISION);
 
   /* Layers */
   layer = gimp_layer_new (image,
                           GIMP_MAINIMAGE_LAYER1_WIDTH,
                           GIMP_MAINIMAGE_LAYER1_HEIGHT,
-                          GIMP_MAINIMAGE_LAYER1_TYPE,
+                          GIMP_MAINIMAGE_LAYER1_FORMAT,
                           GIMP_MAINIMAGE_LAYER1_NAME,
                           GIMP_MAINIMAGE_LAYER1_OPACITY,
                           GIMP_MAINIMAGE_LAYER1_MODE);
@@ -396,7 +396,7 @@ gimp_create_mainimage (Gimp     *gimp,
   layer = gimp_layer_new (image,
                           GIMP_MAINIMAGE_LAYER2_WIDTH,
                           GIMP_MAINIMAGE_LAYER2_HEIGHT,
-                          GIMP_MAINIMAGE_LAYER2_TYPE,
+                          GIMP_MAINIMAGE_LAYER2_FORMAT,
                           GIMP_MAINIMAGE_LAYER2_NAME,
                           GIMP_MAINIMAGE_LAYER2_OPACITY,
                           GIMP_MAINIMAGE_LAYER2_MODE);
@@ -408,7 +408,7 @@ gimp_create_mainimage (Gimp     *gimp,
 
   /* Layer mask */
   layer_mask = gimp_layer_create_mask (layer,
-                                       GIMP_ADD_BLACK_MASK,
+                                       GIMP_ADD_MASK_BLACK,
                                        NULL /*channel*/);
   gimp_layer_add_mask (layer,
                        layer_mask,
@@ -446,7 +446,7 @@ gimp_create_mainimage (Gimp     *gimp,
                                       GIMP_MAINIMAGE_SAMPLEPOINT2_Y,
                                       FALSE /*push_undo*/);
 
-  /* Tattoo
+  /* Tatto
    * We don't bother testing this, not yet at least
    */
 
@@ -596,7 +596,7 @@ gimp_create_mainimage (Gimp     *gimp,
       layer = gimp_layer_new (image,
                               GIMP_MAINIMAGE_LAYER1_WIDTH,
                               GIMP_MAINIMAGE_LAYER1_HEIGHT,
-                              GIMP_MAINIMAGE_LAYER1_TYPE,
+                              GIMP_MAINIMAGE_LAYER1_FORMAT,
                               GIMP_MAINIMAGE_LAYER3_NAME,
                               GIMP_MAINIMAGE_LAYER1_OPACITY,
                               GIMP_MAINIMAGE_LAYER1_MODE);
@@ -610,7 +610,7 @@ gimp_create_mainimage (Gimp     *gimp,
       layer = gimp_layer_new (image,
                               GIMP_MAINIMAGE_LAYER1_WIDTH,
                               GIMP_MAINIMAGE_LAYER1_HEIGHT,
-                              GIMP_MAINIMAGE_LAYER1_TYPE,
+                              GIMP_MAINIMAGE_LAYER1_FORMAT,
                               GIMP_MAINIMAGE_LAYER4_NAME,
                               GIMP_MAINIMAGE_LAYER1_OPACITY,
                               GIMP_MAINIMAGE_LAYER1_MODE);
@@ -634,7 +634,7 @@ gimp_create_mainimage (Gimp     *gimp,
       layer = gimp_layer_new (image,
                               GIMP_MAINIMAGE_LAYER1_WIDTH,
                               GIMP_MAINIMAGE_LAYER1_HEIGHT,
-                              GIMP_MAINIMAGE_LAYER1_TYPE,
+                              GIMP_MAINIMAGE_LAYER1_FORMAT,
                               GIMP_MAINIMAGE_LAYER5_NAME,
                               GIMP_MAINIMAGE_LAYER1_OPACITY,
                               GIMP_MAINIMAGE_LAYER1_MODE);
@@ -716,6 +716,8 @@ gimp_assert_mainimage (GimpImage *image,
   GList              *iter                   = NULL;
   GimpGuide          *guide                  = NULL;
   GimpSamplePoint    *sample_point           = NULL;
+  gint                sample_point_x         = 0;
+  gint                sample_point_y         = 0;
   gdouble             xres                   = 0.0;
   gdouble             yres                   = 0.0;
   GimpGrid           *grid                   = NULL;
@@ -725,10 +727,8 @@ gimp_assert_mainimage (GimpImage *image,
   GimpRGB             expected_channel_color = GIMP_MAINIMAGE_CHANNEL1_COLOR;
   GimpRGB             actual_channel_color   = { 0, };
   GimpChannel        *selection              = NULL;
-  gint                x1                     = -1;
-  gint                y1                     = -1;
-  gint                x2                     = -1;
-  gint                y2                     = -1;
+  gint                x                      = -1;
+  gint                y                      = -1;
   gint                w                      = -1;
   gint                h                      = -1;
   GimpCoords          vectors1_coords[]      = GIMP_MAINIMAGE_VECTORS1_COORDS;
@@ -741,7 +741,7 @@ gimp_assert_mainimage (GimpImage *image,
   g_assert_cmpint (gimp_image_get_height (image),
                    ==,
                    GIMP_MAINIMAGE_HEIGHT);
-  g_assert_cmpint (gimp_image_base_type (image),
+  g_assert_cmpint (gimp_image_get_base_type (image),
                    ==,
                    GIMP_MAINIMAGE_TYPE);
 
@@ -754,9 +754,9 @@ gimp_assert_mainimage (GimpImage *image,
   g_assert_cmpint (gimp_item_get_height (GIMP_ITEM (layer)),
                    ==,
                    GIMP_MAINIMAGE_LAYER1_HEIGHT);
-  g_assert_cmpint (gimp_drawable_type (GIMP_DRAWABLE (layer)),
+  g_assert_cmpstr (babl_get_name (gimp_drawable_get_format (GIMP_DRAWABLE (layer))),
                    ==,
-                   GIMP_MAINIMAGE_LAYER1_TYPE);
+                   babl_get_name (GIMP_MAINIMAGE_LAYER1_FORMAT));
   g_assert_cmpstr (gimp_object_get_name (GIMP_DRAWABLE (layer)),
                    ==,
                    GIMP_MAINIMAGE_LAYER1_NAME);
@@ -774,9 +774,9 @@ gimp_assert_mainimage (GimpImage *image,
   g_assert_cmpint (gimp_item_get_height (GIMP_ITEM (layer)),
                    ==,
                    GIMP_MAINIMAGE_LAYER2_HEIGHT);
-  g_assert_cmpint (gimp_drawable_type (GIMP_DRAWABLE (layer)),
+  g_assert_cmpstr (babl_get_name (gimp_drawable_get_format (GIMP_DRAWABLE (layer))),
                    ==,
-                   GIMP_MAINIMAGE_LAYER2_TYPE);
+                   babl_get_name (GIMP_MAINIMAGE_LAYER2_FORMAT));
   g_assert_cmpstr (gimp_object_get_name (GIMP_DRAWABLE (layer)),
                    ==,
                    GIMP_MAINIMAGE_LAYER2_NAME);
@@ -790,25 +790,25 @@ gimp_assert_mainimage (GimpImage *image,
   /* Guides, note that we rely on internal ordering */
   iter = gimp_image_get_guides (image);
   g_assert (iter != NULL);
-  guide = GIMP_GUIDE (iter->data);
+  guide = iter->data;
   g_assert_cmpint (gimp_guide_get_position (guide),
                    ==,
                    GIMP_MAINIMAGE_VGUIDE1_POS);
   iter = g_list_next (iter);
   g_assert (iter != NULL);
-  guide = GIMP_GUIDE (iter->data);
+  guide = iter->data;
   g_assert_cmpint (gimp_guide_get_position (guide),
                    ==,
                    GIMP_MAINIMAGE_VGUIDE2_POS);
   iter = g_list_next (iter);
   g_assert (iter != NULL);
-  guide = GIMP_GUIDE (iter->data);
+  guide = iter->data;
   g_assert_cmpint (gimp_guide_get_position (guide),
                    ==,
                    GIMP_MAINIMAGE_HGUIDE1_POS);
   iter = g_list_next (iter);
   g_assert (iter != NULL);
-  guide = GIMP_GUIDE (iter->data);
+  guide = iter->data;
   g_assert_cmpint (gimp_guide_get_position (guide),
                    ==,
                    GIMP_MAINIMAGE_HGUIDE2_POS);
@@ -816,24 +816,28 @@ gimp_assert_mainimage (GimpImage *image,
   g_assert (iter == NULL);
 
   /* Sample points, we rely on the same ordering as when we added
-   * them, although this ordering is not a necessaity
+   * them, although this ordering is not a necessity
    */
   iter = gimp_image_get_sample_points (image);
   g_assert (iter != NULL);
-  sample_point = (GimpSamplePoint *) iter->data;
-  g_assert_cmpint (sample_point->x,
+  sample_point = iter->data;
+  gimp_sample_point_get_position (sample_point,
+                                  &sample_point_x, &sample_point_y);
+  g_assert_cmpint (sample_point_x,
                    ==,
                    GIMP_MAINIMAGE_SAMPLEPOINT1_X);
-  g_assert_cmpint (sample_point->y,
+  g_assert_cmpint (sample_point_y,
                    ==,
                    GIMP_MAINIMAGE_SAMPLEPOINT1_Y);
   iter = g_list_next (iter);
   g_assert (iter != NULL);
-  sample_point = (GimpSamplePoint *) iter->data;
-  g_assert_cmpint (sample_point->x,
+  sample_point = iter->data;
+  gimp_sample_point_get_position (sample_point,
+                                  &sample_point_x, &sample_point_y);
+  g_assert_cmpint (sample_point_x,
                    ==,
                    GIMP_MAINIMAGE_SAMPLEPOINT2_X);
-  g_assert_cmpint (sample_point->y,
+  g_assert_cmpint (sample_point_y,
                    ==,
                    GIMP_MAINIMAGE_SAMPLEPOINT2_Y);
   iter = g_list_next (iter);
@@ -907,13 +911,11 @@ gimp_assert_mainimage (GimpImage *image,
   if (! with_unusual_stuff)
     {
       selection = gimp_image_get_mask (image);
-      gimp_channel_bounds (selection, &x1, &y1, &x2, &y2);
-      w = x2 - x1;
-      h = y2 - y1;
-      g_assert_cmpint (x1,
+      gimp_item_bounds (GIMP_ITEM (selection), &x, &y, &w, &h);
+      g_assert_cmpint (x,
                        ==,
                        GIMP_MAINIMAGE_SELECTION_X);
-      g_assert_cmpint (y1,
+      g_assert_cmpint (y,
                        ==,
                        GIMP_MAINIMAGE_SELECTION_Y);
       g_assert_cmpint (w,
@@ -984,8 +986,6 @@ main (int    argc,
   Gimp *gimp;
   int   result;
 
-  g_thread_init (NULL);
-  g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
   gimp_test_utils_set_gimp2_directory ("GIMP_TESTING_ABS_TOP_SRCDIR",

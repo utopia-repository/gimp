@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -115,10 +116,9 @@ gimp_stroke_editor_constructed (GObject *object)
   GtkCellRenderer   *cell;
   gint               row = 0;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_STROKE_OPTIONS (fill_editor->options));
+  gimp_assert (GIMP_IS_STROKE_OPTIONS (fill_editor->options));
 
   options = GIMP_STROKE_OPTIONS (fill_editor->options);
 
@@ -154,14 +154,14 @@ gimp_stroke_editor_constructed (GObject *object)
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_widget_show (table);
 
-  box = gimp_prop_enum_stock_box_new (G_OBJECT (options), "cap-style",
-                                      "gimp-cap", 0, 0);
+  box = gimp_prop_enum_icon_box_new (G_OBJECT (options), "cap-style",
+                                     "gimp-cap", 0, 0);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
                              _("_Cap style:"), 0.0, 0.5,
                              box, 2, TRUE);
 
-  box = gimp_prop_enum_stock_box_new (G_OBJECT (options), "join-style",
-                                      "gimp-join", 0, 0);
+  box = gimp_prop_enum_icon_box_new (G_OBJECT (options), "join-style",
+                                     "gimp-join", 0, 0);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
                              _("_Join style:"), 0.0, 0.5,
                              box, 2, TRUE);

@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "widgets-types.h"
@@ -216,8 +217,7 @@ gimp_tag_popup_constructed (GObject *object)
   GdkRectangle         popup_rects[2]; /* variants of popup placement */
   GdkRectangle         popup_rect; /* best popup rect in screen coordinates */
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
   entry = GTK_WIDGET (popup->combo_entry);
 
@@ -368,23 +368,9 @@ gimp_tag_popup_dispose (GObject *object)
 
   gimp_tag_popup_remove_scroll_timeout (popup);
 
-  if (popup->combo_entry)
-    {
-      g_object_unref (popup->combo_entry);
-      popup->combo_entry = NULL;
-    }
-
-  if (popup->layout)
-    {
-      g_object_unref (popup->layout);
-      popup->layout = NULL;
-    }
-
-  if (popup->context)
-    {
-      g_object_unref (popup->context);
-      popup->context = NULL;
-    }
+  g_clear_object (&popup->combo_entry);
+  g_clear_object (&popup->layout);
+  g_clear_object (&popup->context);
 
   if (popup->tag_data)
     {

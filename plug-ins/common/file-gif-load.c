@@ -60,7 +60,7 @@
  *
  * - PDB stuff for comments
  *
- * - Remove unused colourmap entries for GRAYSCALE images.
+ * - Remove unused colormap entries for GRAYSCALE images.
  */
 
 #include "config.h"
@@ -188,6 +188,7 @@ run (const gchar      *name,
   gint32             image_ID;
 
   INIT_I18N ();
+  gegl_init (NULL, NULL);
 
   *nreturn_vals = 1;
   *return_vals  = values;
@@ -218,8 +219,8 @@ run (const gchar      *name,
            * So if we're not careful, repeated load/save of a transparent GIF
            *  without intermediate indexed->RGB->indexed pumps up the number of
            *  bits used, as we add an index each time for the transparent
-           *  colour.  Ouch.  We either do some heavier analysis at save-time,
-           *  or trim down the number of GIMP colours at load-time.  We do the
+           *  color.  Ouch.  We either do some heavier analysis at save-time,
+           *  or trim down the number of GIMP colors at load-time.  We do the
            *  latter for now.
            */
 #ifdef GIFDEBUG
@@ -349,6 +350,9 @@ load_image (const gchar  *filename,
   gint32    image_ID = -1;
   gboolean  status;
 
+  gimp_progress_init_printf (_("Opening '%s'"),
+                             gimp_filename_to_utf8 (filename));
+
   fd = g_fopen (filename, "rb");
 
   if (! fd)
@@ -358,9 +362,6 @@ load_image (const gchar  *filename,
                    gimp_filename_to_utf8 (filename), g_strerror (errno));
       return -1;
     }
-
-  gimp_progress_init_printf (_("Opening '%s'"),
-                             gimp_filename_to_utf8 (filename));
 
   if (! ReadOK (fd, buf, 6))
     {
@@ -843,7 +844,7 @@ LZWReadByte (FILE *fd,
             ;
 
           if (count != 0)
-            g_print ("GIF: missing EOD in data stream (common occurence)");
+            g_print ("GIF: missing EOD in data stream (common occurrence)");
 
           return -2;
         }
@@ -917,8 +918,7 @@ ReadImage (FILE        *fd,
   static gint   frame_number = 1;
 
   gint32        layer_ID;
-  GimpPixelRgn  pixel_rgn;
-  GimpDrawable *drawable;
+  GeglBuffer   *buffer;
   guchar       *dest, *temp;
   guchar        c;
   gint          xpos = 0, ypos = 0, pass = 0;
@@ -988,13 +988,17 @@ ReadImage (FILE        *fd,
         {
           layer_ID = gimp_layer_new (*image_ID, framename,
                                      len, height,
-                                     GIMP_INDEXED_IMAGE, 100, GIMP_NORMAL_MODE);
+                                     GIMP_INDEXED_IMAGE,
+                                     100,
+                                     gimp_image_get_default_new_layer_mode (*image_ID));
         }
       else
         {
           layer_ID = gimp_layer_new (*image_ID, framename,
                                      len, height,
-                                     GIMP_INDEXEDA_IMAGE, 100, GIMP_NORMAL_MODE);
+                                     GIMP_INDEXEDA_IMAGE,
+                                     100,
+                                     gimp_image_get_default_new_layer_mode (*image_ID));
           alpha_frame=TRUE;
         }
 
@@ -1007,7 +1011,7 @@ ReadImage (FILE        *fd,
                                      frame_number);
       gimp_progress_pulse ();
 
-       /* If the colourmap is now different, we have to promote to RGB! */
+       /* If the colormap is now different, we have to promote to RGB! */
       if (! promote_to_rgb)
         {
           for (i = 0; i < ncols; i++)
@@ -1079,7 +1083,8 @@ ReadImage (FILE        *fd,
                                  len, height,
                                  promote_to_rgb ?
                                  GIMP_RGBA_IMAGE : GIMP_INDEXEDA_IMAGE,
-                                 100, GIMP_NORMAL_MODE);
+                                 100,
+                                 gimp_image_get_default_new_layer_mode (*image_ID));
       alpha_frame = TRUE;
       g_free (framename);
     }
@@ -1088,8 +1093,6 @@ ReadImage (FILE        *fd,
 
   gimp_image_insert_layer (*image_ID, layer_ID, -1, 0);
   gimp_layer_translate (layer_ID, (gint) leftpos, (gint) toppos);
-
-  drawable = gimp_drawable_get (layer_ID);
 
   cur_progress = 0;
   max_progress = height;
@@ -1215,16 +1218,16 @@ ReadImage (FILE        *fd,
     }
 
  fini:
-  gimp_progress_update (1.0);
-  gimp_pixel_rgn_init (&pixel_rgn, drawable,
-                       0, 0, drawable->width, drawable->height, TRUE, FALSE);
-  gimp_pixel_rgn_set_rect (&pixel_rgn, dest,
-                           0, 0, drawable->width, drawable->height);
+  buffer = gimp_drawable_get_buffer (layer_ID);
+
+  gegl_buffer_set (buffer, GEGL_RECTANGLE (0, 0, len, height), 0,
+                   NULL, dest, GEGL_AUTO_ROWSTRIDE);
 
   g_free (dest);
 
-  gimp_drawable_flush (drawable);
-  gimp_drawable_detach (drawable);
+  g_object_unref (buffer);
+
+  gimp_progress_update (1.0);
 
   if (LZWReadByte (fd, FALSE, c) >= 0)
     {

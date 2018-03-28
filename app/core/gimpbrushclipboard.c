@@ -20,28 +20,29 @@
 
 #include "config.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "core-types.h"
 
-#include "base/temp-buf.h"
-#include "base/pixel-region.h"
-
-#include "paint-funcs/paint-funcs.h"
-
 #include "gimp.h"
 #include "gimpbuffer.h"
+#include "gimpbrush-private.h"
 #include "gimpbrushclipboard.h"
 #include "gimpimage.h"
 #include "gimppickable.h"
+#include "gimptempbuf.h"
 
 #include "gimp-intl.h"
 
 
+#define BRUSH_MAX_SIZE 1024
+
 enum
 {
   PROP_0,
-  PROP_GIMP
+  PROP_GIMP,
+  PROP_MASK_ONLY
 };
 
 
@@ -60,7 +61,7 @@ static void       gimp_brush_clipboard_get_property (GObject      *object,
 static GimpData * gimp_brush_clipboard_duplicate    (GimpData     *data);
 #endif
 
-static void     gimp_brush_clipboard_buffer_changed (Gimp         *gimp,
+static void       gimp_brush_clipboard_changed      (Gimp         *gimp,
                                                      GimpBrush    *brush);
 
 
@@ -90,12 +91,17 @@ gimp_brush_clipboard_class_init (GimpBrushClipboardClass *klass)
                                                         GIMP_TYPE_GIMP,
                                                         GIMP_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY));
+
+  g_object_class_install_property (object_class, PROP_MASK_ONLY,
+                                   g_param_spec_boolean ("mask-only", NULL, NULL,
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
 gimp_brush_clipboard_init (GimpBrushClipboard *brush)
 {
-  brush->gimp = NULL;
 }
 
 static void
@@ -103,16 +109,15 @@ gimp_brush_clipboard_constructed (GObject *object)
 {
   GimpBrushClipboard *brush = GIMP_BRUSH_CLIPBOARD (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_GIMP (brush->gimp));
+  gimp_assert (GIMP_IS_GIMP (brush->gimp));
 
-  g_signal_connect_object (brush->gimp, "buffer-changed",
-                           G_CALLBACK (gimp_brush_clipboard_buffer_changed),
+  g_signal_connect_object (brush->gimp, "clipboard-changed",
+                           G_CALLBACK (gimp_brush_clipboard_changed),
                            brush, 0);
 
-  gimp_brush_clipboard_buffer_changed (brush->gimp, GIMP_BRUSH (brush));
+  gimp_brush_clipboard_changed (brush->gimp, GIMP_BRUSH (brush));
 }
 
 static void
@@ -128,6 +133,11 @@ gimp_brush_clipboard_set_property (GObject      *object,
     case PROP_GIMP:
       brush->gimp = g_value_get_object (value);
       break;
+
+    case PROP_MASK_ONLY:
+      brush->mask_only = g_value_get_boolean (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -147,6 +157,11 @@ gimp_brush_clipboard_get_property (GObject    *object,
     case PROP_GIMP:
       g_value_set_object (value, brush->gimp);
       break;
+
+    case PROP_MASK_ONLY:
+      g_value_set_boolean (value, brush->mask_only);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -164,13 +179,22 @@ gimp_brush_clipboard_duplicate (GimpData *data)
 #endif
 
 GimpData *
-gimp_brush_clipboard_new (Gimp *gimp)
+gimp_brush_clipboard_new (Gimp     *gimp,
+                          gboolean  mask_only)
 {
+  const gchar *name;
+
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
 
+  if (mask_only)
+    name = _("Clipboard Mask");
+  else
+    name = _("Clipboard Image");
+
   return g_object_new (GIMP_TYPE_BRUSH_CLIPBOARD,
-                       "name", _("Clipboard"),
-                       "gimp", gimp,
+                       "name",      name,
+                       "gimp",      gimp,
+                       "mask-only", mask_only,
                        NULL);
 }
 
@@ -178,108 +202,102 @@ gimp_brush_clipboard_new (Gimp *gimp)
 /*  private functions  */
 
 static void
-gimp_brush_clipboard_buffer_changed (Gimp      *gimp,
-                                     GimpBrush *brush)
+gimp_brush_clipboard_changed (Gimp      *gimp,
+                              GimpBrush *brush)
 {
-  gint width;
-  gint height;
+  GimpObject *paste;
+  GeglBuffer *buffer = NULL;
+  gint        width;
+  gint        height;
 
-  if (brush->mask)
+  g_clear_pointer (&brush->priv->mask,   gimp_temp_buf_unref);
+  g_clear_pointer (&brush->priv->pixmap, gimp_temp_buf_unref);
+
+  paste = gimp_get_clipboard_object (gimp);
+
+  if (GIMP_IS_IMAGE (paste))
     {
-      temp_buf_free (brush->mask);
-      brush->mask = NULL;
+      gimp_pickable_flush (GIMP_PICKABLE (paste));
+      buffer = gimp_pickable_get_buffer (GIMP_PICKABLE (paste));
+    }
+  else if (GIMP_IS_BUFFER (paste))
+    {
+      buffer = gimp_buffer_get_buffer (GIMP_BUFFER (paste));
     }
 
-  if (brush->pixmap)
+  if (buffer)
     {
-      temp_buf_free (brush->pixmap);
-      brush->pixmap = NULL;
-    }
+      const Babl *format = gegl_buffer_get_format (buffer);
 
-  if (gimp->global_buffer)
-    {
-      TileManager   *tiles = gimp_buffer_get_tiles (gimp->global_buffer);
-      GimpImageType  type  = gimp_buffer_get_image_type (gimp->global_buffer);
+      width  = MIN (gegl_buffer_get_width  (buffer), BRUSH_MAX_SIZE);
+      height = MIN (gegl_buffer_get_height (buffer), BRUSH_MAX_SIZE);
 
-      width  = MIN (gimp_buffer_get_width  (gimp->global_buffer), 1024);
-      height = MIN (gimp_buffer_get_height (gimp->global_buffer), 1024);
+      brush->priv->mask = gimp_temp_buf_new (width, height,
+                                             babl_format ("Y u8"));
 
-      brush->mask   = temp_buf_new (width, height, 1, 0, 0, NULL);
-      brush->pixmap = temp_buf_new (width, height, 3, 0, 0, NULL);
-
-      /*  copy the alpha channel into the brush's mask  */
-      if (GIMP_IMAGE_TYPE_HAS_ALPHA (type))
+      if (GIMP_BRUSH_CLIPBOARD (brush)->mask_only)
         {
-          PixelRegion bufferPR;
-          PixelRegion maskPR;
+          guchar *p;
+          gint    i;
 
-          pixel_region_init (&bufferPR, tiles,
-                             0, 0, width, height, FALSE);
-          pixel_region_init_temp_buf (&maskPR, brush->mask,
-                                      0, 0, width, height);
+          gegl_buffer_get (buffer,
+                           GEGL_RECTANGLE (0, 0, width, height), 1.0,
+                           babl_format ("Y u8"),
+                           gimp_temp_buf_get_data (brush->priv->mask),
+                           GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
 
-          extract_alpha_region (&bufferPR, NULL, &maskPR);
+          /*  invert the mask, it's more intuitive to think
+           *  "black on white" than the other way around
+           */
+          for (i = 0, p = gimp_temp_buf_get_data (brush->priv->mask);
+               i < width * height;
+               i++, p++)
+            {
+              *p = 255 - *p;
+            }
         }
       else
         {
-          PixelRegion maskPR;
-          guchar      opaque = OPAQUE_OPACITY;
+          brush->priv->pixmap = gimp_temp_buf_new (width, height,
+                                                   babl_format ("R'G'B' u8"));
 
-          pixel_region_init_temp_buf (&maskPR, brush->mask,
-                                      0, 0, width, height);
-          color_region (&maskPR, &opaque);
-        }
-
-      /*  copy the color channels into the brush's pixmap  */
-      if (GIMP_IMAGE_TYPE_IS_RGB (type))
-        {
-          PixelRegion bufferPR;
-          PixelRegion pixmapPR;
-
-          pixel_region_init (&bufferPR, tiles,
-                             0, 0, width, height, FALSE);
-          pixel_region_init_temp_buf (&pixmapPR, brush->pixmap,
-                                      0, 0, width, height);
-
-          if (GIMP_IMAGE_TYPE_HAS_ALPHA (type))
-            copy_color (&bufferPR, &pixmapPR);
+          /*  copy the alpha channel into the brush's mask  */
+          if (babl_format_has_alpha (format))
+            {
+              gegl_buffer_get (buffer,
+                               GEGL_RECTANGLE (0, 0, width, height), 1.0,
+                               babl_format ("A u8"),
+                               gimp_temp_buf_get_data (brush->priv->mask),
+                               GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+            }
           else
-            copy_region (&bufferPR, &pixmapPR);
-        }
-      else
-        {
-          PixelRegion  bufferPR;
-          PixelRegion  tempPR;
-          TempBuf     *temp = temp_buf_new (width, height, 1, 0, 0, NULL);
+            {
+              memset (gimp_temp_buf_get_data (brush->priv->mask), 255,
+                      width * height);
+            }
 
-          pixel_region_init (&bufferPR, tiles,
-                             0, 0, width, height, FALSE);
-          pixel_region_init_temp_buf (&tempPR, temp,
-                                      0, 0, width, height);
-
-          if (GIMP_IMAGE_TYPE_HAS_ALPHA (type))
-            copy_component (&bufferPR, &tempPR, 0);
-          else
-            copy_region (&bufferPR, &tempPR);
-
-          temp_buf_copy (temp, brush->pixmap);
-          temp_buf_free (temp);
+          /*  copy the color channels into the brush's pixmap  */
+          gegl_buffer_get (buffer,
+                           GEGL_RECTANGLE (0, 0, width, height), 1.0,
+                           babl_format ("R'G'B' u8"),
+                           gimp_temp_buf_get_data (brush->priv->pixmap),
+                           GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
         }
     }
   else
     {
-      guchar color = 0;
-
       width  = 17;
       height = 17;
 
-      brush->mask = temp_buf_new (width, height, 1, 0, 0, &color);
+      brush->priv->mask = gimp_temp_buf_new (width, height,
+                                             babl_format ("Y u8"));
+      gimp_temp_buf_data_clear (brush->priv->mask);
     }
 
-  brush->x_axis.x = width / 2;
-  brush->x_axis.y = 0;
-  brush->y_axis.x = 0;
-  brush->y_axis.y = height / 2;
+  brush->priv->x_axis.x = width / 2;
+  brush->priv->x_axis.y = 0;
+  brush->priv->y_axis.x = 0;
+  brush->priv->y_axis.y = height / 2;
 
   gimp_data_dirty (GIMP_DATA (brush));
 }

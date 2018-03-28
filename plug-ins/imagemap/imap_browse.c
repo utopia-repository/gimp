@@ -20,17 +20,22 @@
  *
  */
 
-#include <gtk/gtk.h>
+#include "config.h"
 
-#include "libgimpwidgets/gimpwidgets.h"
+#include "libgimp/gimp.h"
+#include "libgimp/gimpui.h"
 
 #include "imap_browse.h"
+
+#include "libgimp/stdplugins-intl.h"
+
 
 static const GtkTargetEntry target_table[] =
 {
   {"STRING",     0, 1 },
   {"text/plain", 0, 2 }
 };
+
 
 static void
 select_cb (GtkWidget      *dialog,
@@ -63,35 +68,35 @@ static void
 browse_cb (GtkWidget      *widget,
            BrowseWidget_t *browse)
 {
-   if (!browse->file_chooser)
-     {
-       GtkWidget *dialog;
+  if (!browse->file_chooser)
+    {
+      GtkWidget *dialog;
 
-       dialog = browse->file_chooser =
-         gtk_file_chooser_dialog_new (browse->name,
-                                      GTK_WINDOW (gtk_widget_get_toplevel (widget)),
-                                      GTK_FILE_CHOOSER_ACTION_OPEN,
+      dialog = browse->file_chooser =
+        gtk_file_chooser_dialog_new (browse->name,
+                                     GTK_WINDOW (gtk_widget_get_toplevel (widget)),
+                                     GTK_FILE_CHOOSER_ACTION_OPEN,
 
-                                      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                      GTK_STOCK_OPEN,   GTK_RESPONSE_OK,
+                                     _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                     _("_Open"),   GTK_RESPONSE_OK,
 
-                                      NULL);
+                                     NULL);
 
-       gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                                GTK_RESPONSE_OK,
-                                                GTK_RESPONSE_CANCEL,
-                                                -1);
+      gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+      gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                               GTK_RESPONSE_OK,
+                                               GTK_RESPONSE_CANCEL,
+                                               -1);
 
-       gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+      g_signal_connect (dialog, "destroy",
+                        G_CALLBACK (gtk_widget_destroyed),
+                        &dialog);
+      g_signal_connect (dialog, "response",
+                        G_CALLBACK (select_cb),
+                        browse);
+    }
 
-       g_signal_connect (dialog, "destroy",
-                         G_CALLBACK (gtk_widget_destroyed),
-                         &dialog);
-       g_signal_connect (dialog, "response",
-                         G_CALLBACK (select_cb),
-                         browse);
-     }
-   gtk_window_present (GTK_WINDOW (browse->file_chooser));
+  gtk_window_present (GTK_WINDOW (browse->file_chooser));
 }
 
 static void
@@ -139,7 +144,8 @@ browse_widget_new (const gchar *name)
    gtk_widget_show (browse->file);
 
    browse->button = button = gtk_button_new ();
-   icon = gtk_image_new_from_stock (GTK_STOCK_OPEN, GTK_ICON_SIZE_BUTTON);
+   icon = gtk_image_new_from_icon_name (GIMP_ICON_DOCUMENT_OPEN,
+                                        GTK_ICON_SIZE_BUTTON);
    gtk_container_add (GTK_CONTAINER (button), icon);
    gtk_widget_show (icon);
 

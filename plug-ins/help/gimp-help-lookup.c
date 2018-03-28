@@ -23,9 +23,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib-object.h>
-
-#include "libgimpbase/gimpbase.h"
+#include "libgimp/gimp.h"
 
 #include "gimphelp.h"
 
@@ -99,8 +97,6 @@ main (gint   argc,
       g_error_free (error);
       return EXIT_FAILURE;
     }
-
-  g_type_init ();
 
   if (help_base)
     uri = g_strdup (help_base);

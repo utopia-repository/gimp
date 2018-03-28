@@ -19,6 +19,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpmath/gimpmath.h"
@@ -26,7 +27,7 @@
 
 #include "widgets-types.h"
 
-#include "base/gimphistogram.h"
+#include "core/gimphistogram.h"
 
 #include "gimpcolorbar.h"
 #include "gimphandlebar.h"
@@ -74,11 +75,11 @@ gimp_histogram_box_init (GimpHistogramBox *box)
   GtkWidget *hbox;
   GtkWidget *vbox;
   GtkWidget *vbox2;
-  GtkWidget *spinbutton;
-  GtkObject *adjustment;
   GtkWidget *frame;
   GtkWidget *view;
   GtkWidget *bar;
+
+  box->n_bins = 256;
 
   gtk_orientable_set_orientation (GTK_ORIENTABLE (box),
                                   GTK_ORIENTATION_VERTICAL);
@@ -131,17 +132,8 @@ gimp_histogram_box_init (GimpHistogramBox *box)
   gtk_box_pack_start (GTK_BOX (vbox2), bar, FALSE, FALSE, 0);
   gtk_widget_show (bar);
 
-  g_signal_connect_swapped (box->color_bar, "button-press-event",
-                            G_CALLBACK (GTK_WIDGET_GET_CLASS (box->slider_bar)->button_press_event),
-                            box->slider_bar);
-
-  g_signal_connect_swapped (box->color_bar, "button-release-event",
-                            G_CALLBACK (GTK_WIDGET_GET_CLASS (box->slider_bar)->button_release_event),
-                            box->slider_bar);
-
-  g_signal_connect_swapped (box->color_bar, "motion-notify-event",
-                            G_CALLBACK (GTK_WIDGET_GET_CLASS (box->slider_bar)->motion_notify_event),
-                            box->slider_bar);
+  gimp_handle_bar_connect_events (GIMP_HANDLE_BAR (box->slider_bar),
+                                  box->color_bar);
 
   /*  The range selection */
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
@@ -149,34 +141,34 @@ gimp_histogram_box_init (GimpHistogramBox *box)
   gtk_widget_show (hbox);
 
   /*  low spinbutton  */
-  spinbutton = gimp_spin_button_new (&adjustment,
-                                     0.0, 0.0, 255.0, 1.0, 16.0, 0.0,
-                                     1.0, 0);
-  box->low_adj = GTK_ADJUSTMENT (adjustment);
-  gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
-  gtk_widget_show (spinbutton);
+  box->low_adj = (GtkAdjustment *)
+    gtk_adjustment_new (0.0, 0.0, 255.0, 1.0, 16.0, 0.0);
+  box->low_spinbutton = gtk_spin_button_new (box->low_adj, 1.0, 0);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (box->low_spinbutton), TRUE);
+  gtk_box_pack_start (GTK_BOX (hbox), box->low_spinbutton, FALSE, FALSE, 0);
+  gtk_widget_show (box->low_spinbutton);
 
-  g_signal_connect (adjustment, "value-changed",
+  g_signal_connect (box->low_adj, "value-changed",
                     G_CALLBACK (gimp_histogram_box_low_adj_update),
                     box);
 
   gimp_handle_bar_set_adjustment (GIMP_HANDLE_BAR (bar), 0,
-                                  GTK_ADJUSTMENT (adjustment));
+                                  GTK_ADJUSTMENT (box->low_adj));
 
   /*  high spinbutton  */
-  spinbutton = gimp_spin_button_new (&adjustment,
-                                     255.0, 0.0, 255.0, 1.0, 16.0, 0.0,
-                                     1.0, 0);
-  box->high_adj = GTK_ADJUSTMENT (adjustment);
-  gtk_box_pack_end (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
-  gtk_widget_show (spinbutton);
+  box->high_adj = (GtkAdjustment *)
+    gtk_adjustment_new (255.0, 0.0, 255.0, 1.0, 16.0, 0.0);
+  box->high_spinbutton = gtk_spin_button_new (box->high_adj, 1.0, 0);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (box->high_spinbutton), TRUE);
+  gtk_box_pack_end (GTK_BOX (hbox), box->high_spinbutton, FALSE, FALSE, 0);
+  gtk_widget_show (box->high_spinbutton);
 
-  g_signal_connect (adjustment, "value-changed",
+  g_signal_connect (box->high_adj, "value-changed",
                     G_CALLBACK (gimp_histogram_box_high_adj_update),
                     box);
 
   gimp_handle_bar_set_adjustment (GIMP_HANDLE_BAR (bar), 2,
-                                  GTK_ADJUSTMENT (adjustment));
+                                  GTK_ADJUSTMENT (box->high_adj));
 
 #ifdef DEBUG_VIEW
   spinbutton = gimp_prop_spin_button_new (G_OBJECT (box->view), "border-width",
@@ -195,28 +187,34 @@ static void
 gimp_histogram_box_low_adj_update (GtkAdjustment    *adjustment,
                                    GimpHistogramBox *box)
 {
-  gint value = ROUND (gtk_adjustment_get_value (adjustment));
+  gdouble value = gtk_adjustment_get_value (adjustment);
+
+  gtk_adjustment_set_lower (box->high_adj, value);
+
+  if (box->n_bins != 256)
+    value *= box->n_bins - 1;
+
+  value = ROUND (value);
 
   if (box->view->start != value)
-    {
-      gtk_adjustment_set_lower (box->high_adj, value);
-
-      gimp_histogram_view_set_range (box->view, value, box->view->end);
-    }
+    gimp_histogram_view_set_range (box->view, value, box->view->end);
 }
 
 static void
 gimp_histogram_box_high_adj_update (GtkAdjustment    *adjustment,
                                     GimpHistogramBox *box)
 {
-  gint value = ROUND (gtk_adjustment_get_value (adjustment));
+  gdouble value = gtk_adjustment_get_value (adjustment);
+
+  gtk_adjustment_set_upper (box->low_adj, value);
+
+  if (box->n_bins != 256)
+    value *= box->n_bins - 1;
+
+  value = ROUND (value);
 
   if (box->view->end != value)
-    {
-      gtk_adjustment_set_upper (box->low_adj, value);
-
-      gimp_histogram_view_set_range (box->view, box->view->start, value);
-    }
+    gimp_histogram_view_set_range (box->view, box->view->start, value);
 }
 
 static void
@@ -225,11 +223,60 @@ gimp_histogram_box_histogram_range (GimpHistogramView *view,
                                     gint               end,
                                     GimpHistogramBox  *box)
 {
-  gtk_adjustment_set_lower (box->high_adj, start);
-  gtk_adjustment_set_upper (box->low_adj,  end);
+  gdouble s = start;
+  gdouble e = end;
 
-  gtk_adjustment_set_value (box->low_adj,  start);
-  gtk_adjustment_set_value (box->high_adj, end);
+  if (box->n_bins != view->n_bins)
+    {
+      gdouble upper;
+      gdouble page_increment;
+      gdouble step_increment;
+      guint   digits;
+
+      box->n_bins = view->n_bins;
+
+      if (box->n_bins == 256)
+        {
+          digits         = 0;
+          upper          = 255.0;
+          step_increment = 1.0;
+          page_increment = 16.0;
+        }
+      else
+        {
+          digits         = 3;
+          upper          = 1.0;
+          step_increment = 0.01;
+          page_increment = 0.1;
+        }
+
+      g_object_set (G_OBJECT (box->high_adj),
+                    "upper", upper,
+                    "step-increment", step_increment,
+                    "page-increment", page_increment,
+                    NULL);
+
+      gtk_spin_button_set_digits (GTK_SPIN_BUTTON (box->high_spinbutton), digits);
+
+      g_object_set (G_OBJECT (box->low_adj),
+                    "step-increment", step_increment,
+                    "page-increment", page_increment,
+                    NULL);
+
+      gtk_spin_button_set_digits (GTK_SPIN_BUTTON (box->low_spinbutton), digits);
+    }
+
+  if (box->n_bins != 256)
+    {
+      s /= box->n_bins - 1;
+      e /= box->n_bins - 1;
+    }
+
+  gtk_adjustment_set_lower (box->high_adj, s);
+  gtk_adjustment_set_upper (box->low_adj,  e);
+
+  gtk_adjustment_set_value (box->low_adj,  s);
+  gtk_adjustment_set_value (box->high_adj, e);
 }
 
 static void

@@ -22,6 +22,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -205,7 +206,7 @@ gimp_proc_browser_dialog_init (GimpProcBrowserDialog *dialog)
   parent = gtk_widget_get_parent (GIMP_BROWSER (dialog->browser)->right_vbox);
   parent = gtk_widget_get_parent (parent);
 
-    gtk_widget_set_size_request (parent, DBL_WIDTH - DBL_LIST_WIDTH, -1);
+  gtk_widget_set_size_request (parent, DBL_WIDTH - DBL_LIST_WIDTH, -1);
 }
 
 
@@ -223,7 +224,7 @@ gimp_proc_browser_dialog_init (GimpProcBrowserDialog *dialog)
  *
  * Return Value: a newly created #GimpProcBrowserDialog.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 GtkWidget *
 gimp_proc_browser_dialog_new (const gchar  *title,
@@ -263,7 +264,7 @@ gimp_proc_browser_dialog_new (const gchar  *title,
  * Return Value: The name of the selected procedure of %NULL if no
  *               procedure is selected.
  *
- * Since: GIMP 2.4
+ * Since: 2.4
  **/
 gchar *
 gimp_proc_browser_dialog_get_selected (GimpProcBrowserDialog *dialog)
@@ -521,11 +522,9 @@ browser_search (GimpBrowser           *browser,
           gtk_list_store_set (dialog->store, &iter,
                               COLUMN_PROC_NAME, proc_list[i],
                               -1);
-
-          g_free (proc_list[i]);
         }
 
-      g_free (proc_list);
+      g_strfreev (proc_list);
 
       gtk_tree_view_columns_autosize (GTK_TREE_VIEW (dialog->tree_view));
 

@@ -19,6 +19,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 /* FIXME: #undef GTK_DISABLE_DEPRECATED */
 #undef GTK_DISABLE_DEPRECATED
 #include <gtk/gtk.h>
@@ -102,10 +103,12 @@ static void   gimp_prop_check_button_notify   (GObject    *config,
  *
  * Creates a #GtkCheckButton that displays and sets the specified
  * boolean property.
+ * If @label is #NULL, the @property_name's nick will be used as label
+ * of the returned button.
  *
  * Return value: The newly created #GtkCheckButton widget.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_check_button_new (GObject     *config,
@@ -123,6 +126,9 @@ gimp_prop_check_button_new (GObject     *config,
                                    G_TYPE_PARAM_BOOLEAN, G_STRFUNC);
   if (! param_spec)
     return NULL;
+
+  if (! label)
+    label = g_param_spec_get_nick (param_spec);
 
   g_object_get (config,
                 property_name, &value,
@@ -149,17 +155,23 @@ gimp_prop_check_button_callback (GtkWidget *widget,
                                  GObject   *config)
 {
   GParamSpec *param_spec;
+  gboolean    value;
+  gboolean    v;
 
   param_spec = get_param_spec (G_OBJECT (widget));
   if (! param_spec)
     return;
 
-  g_object_set (config,
-                param_spec->name,
-                gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)),
-                NULL);
+  value = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
 
-  gimp_toggle_button_sensitive_update (GTK_TOGGLE_BUTTON (widget));
+  g_object_get (config, param_spec->name, &v, NULL);
+
+  if (v != value)
+    {
+      g_object_set (config, param_spec->name, value, NULL);
+
+      gimp_toggle_button_sensitive_update (GTK_TOGGLE_BUTTON (widget));
+    }
 }
 
 static void
@@ -207,10 +219,12 @@ static void   gimp_prop_enum_check_button_notify   (GObject    *config,
  * property of type Enum.  Note that this widget only allows two values
  * for the enum, one corresponding to the "checked" state and the
  * other to the "unchecked" state.
+ * If @label is #NULL, the @property_name's nick will be used as label
+ * of the returned button.
  *
  * Return value: The newly created #GtkCheckButton widget.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_enum_check_button_new (GObject     *config,
@@ -230,6 +244,9 @@ gimp_prop_enum_check_button_new (GObject     *config,
                                    G_TYPE_PARAM_ENUM, G_STRFUNC);
   if (! param_spec)
     return NULL;
+
+  if (! label)
+    label = g_param_spec_get_nick (param_spec);
 
   g_object_get (config,
                 property_name, &value,
@@ -267,6 +284,8 @@ gimp_prop_enum_check_button_callback (GtkWidget *widget,
   GParamSpec *param_spec;
   gint        false_value;
   gint        true_value;
+  gint        value;
+  gint        v;
 
   param_spec = get_param_spec (G_OBJECT (widget));
   if (! param_spec)
@@ -277,15 +296,19 @@ gimp_prop_enum_check_button_callback (GtkWidget *widget,
   true_value  = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget),
                                                     "true-value"));
 
-  g_object_set (config,
-                param_spec->name,
-                gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)) ?
-                true_value : false_value,
-                NULL);
+  value = (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)) ?
+           true_value : false_value);
 
-  gtk_toggle_button_set_inconsistent (GTK_TOGGLE_BUTTON (widget), FALSE);
+  g_object_get (config, param_spec->name, &v, NULL);
 
-  gimp_toggle_button_sensitive_update (GTK_TOGGLE_BUTTON (widget));
+  if (v != value)
+    {
+      g_object_set (config, param_spec->name, value, NULL);
+
+      gtk_toggle_button_set_inconsistent (GTK_TOGGLE_BUTTON (widget), FALSE);
+
+      gimp_toggle_button_sensitive_update (GTK_TOGGLE_BUTTON (widget));
+    }
 }
 
 static void
@@ -336,11 +359,17 @@ gimp_prop_enum_check_button_notify (GObject    *config,
 /*  int/enum combo box   */
 /*************************/
 
-static void   gimp_prop_int_combo_box_callback (GtkWidget   *widget,
-                                                GObject     *config);
-static void   gimp_prop_int_combo_box_notify   (GObject     *config,
-                                                GParamSpec  *param_spec,
-                                                GtkWidget   *widget);
+static void gimp_prop_int_combo_box_callback     (GtkWidget  *widget,
+                                                  GObject    *config);
+static void gimp_prop_int_combo_box_notify       (GObject    *config,
+                                                  GParamSpec *param_spec,
+                                                  GtkWidget  *widget);
+
+static void gimp_prop_pointer_combo_box_callback (GtkWidget  *widget,
+                                                  GObject    *config);
+static void gimp_prop_pointer_combo_box_notify   (GObject    *config,
+                                                  GParamSpec *param_spec,
+                                                  GtkWidget  *combo_box);
 
 /**
  * gimp_prop_int_combo_box_new:
@@ -354,7 +383,7 @@ static void   gimp_prop_int_combo_box_notify   (GObject     *config,
  *
  * Return value: The newly created #GimpIntComboBox widget.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_int_combo_box_new (GObject      *config,
@@ -397,6 +426,72 @@ gimp_prop_int_combo_box_new (GObject      *config,
 }
 
 /**
+ * gimp_prop_pointer_combo_box_new:
+ * @config:        Object to which property is attached.
+ * @property_name: Name of GType/gpointer property controlled by combo box.
+ * @store:         #GimpIntStore holding list of labels, values, etc.
+ *
+ * Creates a #GimpIntComboBox widget to display and set the specified
+ * property.  The contents of the widget are determined by @store,
+ * which should be created using gimp_int_store_new().
+ * Values are GType/gpointer data, and therefore must be stored in the
+ * "user-data" column, instead of the usual "value" column.
+ *
+ * Return value: The newly created #GimpIntComboBox widget.
+ *
+ * Since: 2.10
+ */
+GtkWidget *
+gimp_prop_pointer_combo_box_new (GObject      *config,
+                                 const gchar  *property_name,
+                                 GimpIntStore *store)
+{
+  GParamSpec *param_spec;
+  GtkWidget  *combo_box;
+  gpointer    property_value;
+
+  g_return_val_if_fail (G_IS_OBJECT (config), NULL);
+  g_return_val_if_fail (property_name != NULL, NULL);
+
+  param_spec = check_param_spec_w (config, property_name,
+                                   G_TYPE_PARAM_GTYPE, G_STRFUNC);
+  if (! param_spec)
+    {
+      param_spec = check_param_spec_w (config, property_name,
+                                       G_TYPE_PARAM_POINTER, G_STRFUNC);
+      if (! param_spec)
+        return NULL;
+    }
+
+  g_object_get (config,
+                property_name, &property_value,
+                NULL);
+
+  /* We use a GimpIntComboBox but we cannot store gpointer in the
+   * "value" column, because gpointer is not a subset of gint. Instead
+   * we store the value in the "user-data" column which is a gpointer.
+   */
+  combo_box = g_object_new (GIMP_TYPE_INT_COMBO_BOX,
+                            "model", store,
+                            NULL);
+
+  gimp_int_combo_box_set_active_by_user_data (GIMP_INT_COMBO_BOX (combo_box),
+                                              property_value);
+
+  g_signal_connect (combo_box, "changed",
+                    G_CALLBACK (gimp_prop_pointer_combo_box_callback),
+                    config);
+
+  set_param_spec (G_OBJECT (combo_box), combo_box, param_spec);
+
+  connect_notify (config, property_name,
+                  G_CALLBACK (gimp_prop_pointer_combo_box_notify),
+                  combo_box);
+
+  return combo_box;
+}
+
+/**
  * gimp_prop_enum_combo_box_new:
  * @config:        Object to which property is attached.
  * @property_name: Name of enum property controlled by combo box.
@@ -411,7 +506,7 @@ gimp_prop_int_combo_box_new (GObject      *config,
  *
  * Return value: The newly created #GimpEnumComboBox widget.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_enum_combo_box_new (GObject     *config,
@@ -419,9 +514,10 @@ gimp_prop_enum_combo_box_new (GObject     *config,
                               gint         minimum,
                               gint         maximum)
 {
-  GParamSpec *param_spec;
-  GtkWidget  *combo_box;
-  gint        value;
+  GParamSpec   *param_spec;
+  GtkListStore *store = NULL;
+  GtkWidget    *combo_box;
+  gint          value;
 
   g_return_val_if_fail (G_IS_OBJECT (config), NULL);
   g_return_val_if_fail (property_name != NULL, NULL);
@@ -437,15 +533,45 @@ gimp_prop_enum_combo_box_new (GObject     *config,
 
   if (minimum != maximum)
     {
-      GtkListStore *store;
-
       store = gimp_enum_store_new_with_range (param_spec->value_type,
                                               minimum, maximum);
+    }
+  else if (param_spec->value_type == GIMP_TYPE_DESATURATE_MODE)
+    {
+      /* this is a bad hack, if we get more of those, we should probably
+       * think of something less ugly
+       */
+      store = gimp_enum_store_new_with_values (param_spec->value_type,
+                                               5,
+                                               GIMP_DESATURATE_LUMINANCE,
+                                               GIMP_DESATURATE_LUMA,
+                                               GIMP_DESATURATE_LIGHTNESS,
+                                               GIMP_DESATURATE_AVERAGE,
+                                               GIMP_DESATURATE_VALUE);
+    }
+  else if (param_spec->value_type == GIMP_TYPE_SELECT_CRITERION)
+    {
+      /* ditto */
+      store = gimp_enum_store_new_with_values (param_spec->value_type,
+                                               11,
+                                               GIMP_SELECT_CRITERION_COMPOSITE,
+                                               GIMP_SELECT_CRITERION_R,
+                                               GIMP_SELECT_CRITERION_G,
+                                               GIMP_SELECT_CRITERION_B,
+                                               GIMP_SELECT_CRITERION_A,
+                                               GIMP_SELECT_CRITERION_H,
+                                               GIMP_SELECT_CRITERION_S,
+                                               GIMP_SELECT_CRITERION_V,
+                                               GIMP_SELECT_CRITERION_LCH_L,
+                                               GIMP_SELECT_CRITERION_LCH_C,
+                                               GIMP_SELECT_CRITERION_LCH_H);
+    }
 
+  if (store)
+    {
       combo_box = g_object_new (GIMP_TYPE_ENUM_COMBO_BOX,
                                 "model", store,
                                 NULL);
-
       g_object_unref (store);
     }
   else
@@ -481,9 +607,12 @@ gimp_prop_int_combo_box_callback (GtkWidget *widget,
 
   if (gimp_int_combo_box_get_active (GIMP_INT_COMBO_BOX (widget), &value))
     {
-      g_object_set (config,
-                    param_spec->name, value,
-                    NULL);
+      gint v;
+
+      g_object_get (config, param_spec->name, &v, NULL);
+
+      if (v != value)
+        g_object_set (config, param_spec->name, value, NULL);
     }
 }
 
@@ -509,16 +638,61 @@ gimp_prop_int_combo_box_notify (GObject    *config,
                                      config);
 }
 
+static void
+gimp_prop_pointer_combo_box_callback (GtkWidget *widget,
+                                      GObject   *config)
+{
+  GParamSpec *param_spec;
+  gpointer    value;
+
+  param_spec = get_param_spec (G_OBJECT (widget));
+  if (! param_spec)
+    return;
+
+  if (gimp_int_combo_box_get_active_user_data (GIMP_INT_COMBO_BOX (widget),
+                                               &value))
+    {
+      gpointer v;
+
+      g_object_get (config, param_spec->name, &v, NULL);
+
+      if (v != value)
+        g_object_set (config, param_spec->name, value, NULL);
+    }
+}
+
+static void
+gimp_prop_pointer_combo_box_notify (GObject    *config,
+                                    GParamSpec *param_spec,
+                                    GtkWidget  *combo_box)
+{
+  gpointer value;
+
+  g_object_get (config,
+                param_spec->name, &value,
+                NULL);
+
+  g_signal_handlers_block_by_func (combo_box,
+                                   gimp_prop_pointer_combo_box_callback,
+                                   config);
+
+  gimp_int_combo_box_set_active_by_user_data (GIMP_INT_COMBO_BOX (combo_box),
+                                              value);
+
+  g_signal_handlers_unblock_by_func (combo_box,
+                                     gimp_prop_pointer_combo_box_callback,
+                                     config);
+}
 
 /************************/
 /*  boolean combo box   */
 /************************/
 
-static void   gimp_prop_boolean_combo_box_callback (GtkWidget   *widget,
+static void   gimp_prop_boolean_combo_box_callback (GtkWidget   *combo,
                                                     GObject     *config);
 static void   gimp_prop_boolean_combo_box_notify   (GObject     *config,
                                                     GParamSpec  *param_spec,
-                                                    GtkWidget   *widget);
+                                                    GtkWidget   *combo);
 
 
 /**
@@ -535,7 +709,7 @@ static void   gimp_prop_boolean_combo_box_notify   (GObject     *config,
  *
  * Return value: The newly created #GtkComboBox widget.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_boolean_combo_box_new (GObject     *config,
@@ -544,7 +718,7 @@ gimp_prop_boolean_combo_box_new (GObject     *config,
                                  const gchar *false_text)
 {
   GParamSpec *param_spec;
-  GtkWidget  *combo_box;
+  GtkWidget  *combo;
   gboolean    value;
 
   g_return_val_if_fail (G_IS_OBJECT (config), NULL);
@@ -559,62 +733,65 @@ gimp_prop_boolean_combo_box_new (GObject     *config,
                 property_name, &value,
                 NULL);
 
-  combo_box = gtk_combo_box_text_new ();
+  combo = gimp_int_combo_box_new (true_text,  TRUE,
+                                  false_text, FALSE,
+                                  NULL);
 
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo_box), true_text);
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo_box), false_text);
+  gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (combo), value);
 
-  gtk_combo_box_set_active (GTK_COMBO_BOX (combo_box), value ? 0 : 1);
-
-  g_signal_connect (combo_box, "changed",
+  g_signal_connect (combo, "changed",
                     G_CALLBACK (gimp_prop_boolean_combo_box_callback),
                     config);
 
-  set_param_spec (G_OBJECT (combo_box), combo_box, param_spec);
+  set_param_spec (G_OBJECT (combo), combo, param_spec);
 
   connect_notify (config, property_name,
                   G_CALLBACK (gimp_prop_boolean_combo_box_notify),
-                  combo_box);
+                  combo);
 
-  return combo_box;
+  return combo;
 }
 
 static void
-gimp_prop_boolean_combo_box_callback (GtkWidget *widget,
+gimp_prop_boolean_combo_box_callback (GtkWidget *combo,
                                       GObject   *config)
 {
   GParamSpec  *param_spec;
   gint         value;
 
-  param_spec = get_param_spec (G_OBJECT (widget));
+  param_spec = get_param_spec (G_OBJECT (combo));
   if (! param_spec)
     return;
 
-  value = gtk_combo_box_get_active (GTK_COMBO_BOX (widget));
+  if (gimp_int_combo_box_get_active (GIMP_INT_COMBO_BOX (combo), &value))
+    {
+      gint v;
 
-  g_object_set (config,
-                param_spec->name, value ? FALSE : TRUE,
-                NULL);
+      g_object_get (config, param_spec->name, &v, NULL);
+
+      if (v != value)
+        g_object_set (config, param_spec->name, value, NULL);
+    }
 }
 
 static void
 gimp_prop_boolean_combo_box_notify (GObject    *config,
                                     GParamSpec *param_spec,
-                                    GtkWidget  *combo_box)
+                                    GtkWidget  *combo)
 {
-  gint value;
+  gboolean value;
 
   g_object_get (config,
                 param_spec->name, &value,
                 NULL);
 
-  g_signal_handlers_block_by_func (combo_box,
+  g_signal_handlers_block_by_func (combo,
                                    gimp_prop_boolean_combo_box_callback,
                                    config);
 
-  gtk_combo_box_set_active (GTK_COMBO_BOX (combo_box), value ? 0 : 1);
+  gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (combo), value);
 
-  g_signal_handlers_unblock_by_func (combo_box,
+  g_signal_handlers_unblock_by_func (combo,
                                      gimp_prop_boolean_combo_box_callback,
                                      config);
 }
@@ -643,10 +820,12 @@ static void  gimp_prop_radio_button_notify   (GObject     *config,
  * the specified enum property.  The @minimum and @maximum arguments
  * allow only a subset of the enum to be used.  If the two arguments
  * are equal (e.g., 0, 0), then the full range of the enum will be used.
+ * If @title is #NULL, the @property_name's nick will be used as label
+ * of the returned frame.
  *
  * Return value: A #GimpFrame containing the radio buttons.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_enum_radio_frame_new (GObject     *config,
@@ -667,6 +846,9 @@ gimp_prop_enum_radio_frame_new (GObject     *config,
                                    G_TYPE_PARAM_ENUM, G_STRFUNC);
   if (! param_spec)
     return NULL;
+
+  if (! title)
+    title = g_param_spec_get_nick (param_spec);
 
   g_object_get (config,
                 property_name, &value,
@@ -719,7 +901,7 @@ gimp_prop_enum_radio_frame_new (GObject     *config,
  *
  * Return value: A #GtkVBox containing the radio buttons.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_enum_radio_box_new (GObject     *config,
@@ -789,7 +971,7 @@ static void  gimp_prop_enum_label_notify (GObject    *config,
  *
  * Return value: The newly created #GimpEnumLabel widget.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_enum_label_new (GObject     *config,
@@ -847,10 +1029,12 @@ gimp_prop_enum_label_notify (GObject    *config,
  *
  * Creates a pair of radio buttons which function to set and display
  * the specified boolean property.
+ * If @title is #NULL, the @property_name's nick will be used as label
+ * of the returned frame.
  *
  * Return value: A #GimpFrame containing the radio buttons.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_boolean_radio_frame_new (GObject     *config,
@@ -871,6 +1055,9 @@ gimp_prop_boolean_radio_frame_new (GObject     *config,
                                    G_TYPE_PARAM_BOOLEAN, G_STRFUNC);
   if (! param_spec)
     return NULL;
+
+  if (! title)
+    title = g_param_spec_get_nick (param_spec);
 
   g_object_get (config,
                 property_name, &value,
@@ -913,7 +1100,9 @@ gimp_prop_boolean_radio_frame_new (GObject     *config,
  *
  * Return value: A #libgimpwidgets-gimpenumstockbox containing the radio buttons.
  *
- * Since GIMP 2.4
+ * Since: 2.4
+ *
+ * Deprecated: 2.10
  */
 GtkWidget *
 gimp_prop_enum_stock_box_new (GObject     *config,
@@ -921,6 +1110,35 @@ gimp_prop_enum_stock_box_new (GObject     *config,
                               const gchar *stock_prefix,
                               gint         minimum,
                               gint         maximum)
+{
+  return gimp_prop_enum_icon_box_new (config, property_name,
+                                      stock_prefix, minimum, maximum);
+}
+
+/**
+ * gimp_prop_enum_icon_box_new:
+ * @config:        Object to which property is attached.
+ * @property_name: Name of enum property controlled by the radio buttons.
+ * @icon_prefix:   The prefix of the group of icon names to use.
+ * @minimum:       Smallest value of enum to be included.
+ * @maximum:       Largest value of enum to be included.
+ *
+ * Creates a horizontal box of radio buttons with named icons, which
+ * function to set and display the value of the specified Enum
+ * property.  The icon name for each icon is created by appending the
+ * enum_value's nick to the given @icon_prefix.  See
+ * gimp_enum_icon_box_new() for more information.
+ *
+ * Return value: A #libgimpwidgets-gimpenumiconbox containing the radio buttons.
+ *
+ * Since: 2.10
+ */
+GtkWidget *
+gimp_prop_enum_icon_box_new (GObject     *config,
+                             const gchar *property_name,
+                             const gchar *icon_prefix,
+                             gint         minimum,
+                             gint         maximum)
 {
   GParamSpec *param_spec;
   GtkWidget  *box;
@@ -941,22 +1159,22 @@ gimp_prop_enum_stock_box_new (GObject     *config,
 
   if (minimum != maximum)
     {
-      box = gimp_enum_stock_box_new_with_range (param_spec->value_type,
-                                                minimum, maximum,
-                                                stock_prefix,
-                                                GTK_ICON_SIZE_MENU,
-                                                G_CALLBACK (gimp_prop_radio_button_callback),
-                                                config,
-                                                &button);
+      box = gimp_enum_icon_box_new_with_range (param_spec->value_type,
+                                               minimum, maximum,
+                                               icon_prefix,
+                                               GTK_ICON_SIZE_MENU,
+                                               G_CALLBACK (gimp_prop_radio_button_callback),
+                                               config,
+                                               &button);
     }
   else
     {
-      box = gimp_enum_stock_box_new (param_spec->value_type,
-                                     stock_prefix,
-                                     GTK_ICON_SIZE_MENU,
-                                     G_CALLBACK (gimp_prop_radio_button_callback),
-                                     config,
-                                     &button);
+      box = gimp_enum_icon_box_new (param_spec->value_type,
+                                    icon_prefix,
+                                    GTK_ICON_SIZE_MENU,
+                                    G_CALLBACK (gimp_prop_radio_button_callback),
+                                    config,
+                                    &button);
     }
 
   gimp_int_radio_group_set_active (GTK_RADIO_BUTTON (button), value);
@@ -978,6 +1196,7 @@ gimp_prop_radio_button_callback (GtkWidget *widget,
     {
       GParamSpec *param_spec;
       gint        value;
+      gint        v;
 
       param_spec = get_param_spec (G_OBJECT (widget));
       if (! param_spec)
@@ -986,9 +1205,10 @@ gimp_prop_radio_button_callback (GtkWidget *widget,
       value = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget),
                                                   "gimp-item-data"));
 
-      g_object_set (config,
-                    param_spec->name, value,
-                    NULL);
+      g_object_get (config, param_spec->name, &v, NULL);
+
+      if (v != value)
+        g_object_set (config, param_spec->name, value, NULL);
     }
 }
 
@@ -1030,7 +1250,7 @@ static void   gimp_prop_adjustment_notify   (GObject       *config,
  *
  * Return value: A new #libgimpwidgets-gimpspinbutton.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_spin_button_new (GObject     *config,
@@ -1039,12 +1259,12 @@ gimp_prop_spin_button_new (GObject     *config,
                            gdouble      page_increment,
                            gint         digits)
 {
-  GParamSpec *param_spec;
-  GtkWidget  *spinbutton;
-  GtkObject  *adjustment;
-  gdouble     value;
-  gdouble     lower;
-  gdouble     upper;
+  GParamSpec    *param_spec;
+  GtkWidget     *spinbutton;
+  GtkAdjustment *adjustment;
+  gdouble        value;
+  gdouble        lower;
+  gdouble        upper;
 
   param_spec = find_param_spec (config, property_name, G_STRFUNC);
   if (! param_spec)
@@ -1057,10 +1277,12 @@ gimp_prop_spin_button_new (GObject     *config,
   if (! G_IS_PARAM_SPEC_DOUBLE (param_spec))
     digits = 0;
 
-  spinbutton = gimp_spin_button_new (&adjustment,
-                                     value, lower, upper,
-                                     step_increment, page_increment,
-                                     0.0, 1.0, digits);
+  adjustment = (GtkAdjustment *)
+    gtk_adjustment_new (value, lower, upper,
+                        step_increment, page_increment, 0);
+
+  spinbutton = gtk_spin_button_new (adjustment, step_increment, digits);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
 
   set_param_spec (G_OBJECT (adjustment), spinbutton, param_spec);
 
@@ -1088,7 +1310,7 @@ gimp_prop_spin_button_new (GObject     *config,
  *
  * Return value: A new #GtkScale.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_hscale_new (GObject     *config,
@@ -1097,12 +1319,12 @@ gimp_prop_hscale_new (GObject     *config,
                       gdouble      page_increment,
                       gint         digits)
 {
-  GParamSpec *param_spec;
-  GtkWidget  *scale;
-  GtkObject  *adjustment;
-  gdouble     value;
-  gdouble     lower;
-  gdouble     upper;
+  GParamSpec    *param_spec;
+  GtkWidget     *scale;
+  GtkAdjustment *adjustment;
+  gdouble        value;
+  gdouble        lower;
+  gdouble        upper;
 
   param_spec = find_param_spec (config, property_name, G_STRFUNC);
   if (! param_spec)
@@ -1115,12 +1337,14 @@ gimp_prop_hscale_new (GObject     *config,
   if (! G_IS_PARAM_SPEC_DOUBLE (param_spec))
     digits = 0;
 
-  adjustment = gtk_adjustment_new (value, lower, upper,
-                                   step_increment, page_increment, 0.0);
+  adjustment = (GtkAdjustment *)
+    gtk_adjustment_new (value, lower, upper,
+                        step_increment, page_increment, 0.0);
 
-  scale = g_object_new (GTK_TYPE_HSCALE,
-                        "adjustment", adjustment,
-                        "digits",     digits,
+  scale = g_object_new (GTK_TYPE_SCALE,
+                        "orientation", GTK_ORIENTATION_HORIZONTAL,
+                        "adjustment",  adjustment,
+                        "digits",      digits,
                         NULL);
 
   set_param_spec (G_OBJECT (adjustment), scale, param_spec);
@@ -1148,18 +1372,23 @@ gimp_prop_hscale_new (GObject     *config,
  * @step_increment: Step size.
  * @page_increment: Page size.
  * @digits:         Number of digits after decimal point to display.
- * @limit_scale:    %TRUE if the range of possible values of the
- *                  GtkSpinButton should be the same as of the GtkHScale.
- * @lower_limit:    The spinbutton's lower boundary if @limit_scale is %FALSE.
- * @upper_limit:    The spinbutton's upper boundary if @limit_scale is %FALSE.
+ * @limit_scale:    %FALSE if the range of possible values of the
+ *                  GtkHScale should be the same as of the GtkSpinButton.
+ * @lower_limit:    The scale's lower boundary if @scale_limits is %TRUE.
+ * @upper_limit:    The scale's upper boundary if @scale_limits is %TRUE.
  *
  * Creates a #libgimpwidgets-gimpscaleentry (slider and spin button)
  * to set and display the value of the specified double property.  See
  * gimp_scale_entry_new() for more information.
+ * If @label is #NULL, the @property_name's nick will be used as label
+ * of the returned object.
+ *
+ * Note that the @scale_limits boolean is the inverse of
+ * gimp_scale_entry_new()'s "constrain" parameter.
  *
  * Return value: The #GtkSpinButton's #GtkAdjustment.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkObject *
 gimp_prop_scale_entry_new (GObject     *config,
@@ -1190,8 +1419,10 @@ gimp_prop_scale_entry_new (GObject     *config,
                             param_spec, &value, &lower, &upper, G_STRFUNC))
     return NULL;
 
-  tooltip = dgettext (gimp_type_get_translation_domain (G_OBJECT_TYPE (config)),
-                      g_param_spec_get_blurb (param_spec));
+  if (! label)
+    label = g_param_spec_get_nick (param_spec);
+
+  tooltip = g_param_spec_get_blurb (param_spec);
 
   if (! limit_scale)
     {
@@ -1229,6 +1460,63 @@ gimp_prop_scale_entry_new (GObject     *config,
   return adjustment;
 }
 
+static void
+gimp_prop_widget_set_factor (GtkWidget     *widget,
+                             GtkAdjustment *adjustment,
+                             gdouble        factor,
+                             gdouble        step_increment,
+                             gdouble        page_increment,
+                             gint           digits)
+{
+  gdouble *factor_store;
+  gdouble  old_factor = 1.0;
+  gdouble  f;
+
+  g_return_if_fail (widget == NULL || GTK_IS_SPIN_BUTTON (widget));
+  g_return_if_fail (widget != NULL || GTK_IS_ADJUSTMENT (adjustment));
+  g_return_if_fail (factor != 0.0);
+  g_return_if_fail (digits >= 0);
+
+  if (! adjustment)
+    adjustment = gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (widget));
+
+  g_return_if_fail (get_param_spec (G_OBJECT (adjustment)) != NULL);
+
+  factor_store = g_object_get_data (G_OBJECT (adjustment),
+                                    "gimp-prop-adjustment-factor");
+  if (factor_store)
+    {
+      old_factor = *factor_store;
+    }
+  else
+    {
+      factor_store = g_new (gdouble, 1);
+      g_object_set_data_full (G_OBJECT (adjustment),
+                              "gimp-prop-adjustment-factor",
+                              factor_store, (GDestroyNotify) g_free);
+    }
+
+  *factor_store = factor;
+
+  f = factor / old_factor;
+
+  if (step_increment <= 0)
+    step_increment = f * gtk_adjustment_get_step_increment (adjustment);
+
+  if (page_increment <= 0)
+    page_increment = f * gtk_adjustment_get_page_increment (adjustment);
+
+  gtk_adjustment_configure (adjustment,
+                            f * gtk_adjustment_get_value (adjustment),
+                            f * gtk_adjustment_get_lower (adjustment),
+                            f * gtk_adjustment_get_upper (adjustment),
+                            step_increment,
+                            page_increment,
+                            f * gtk_adjustment_get_page_size (adjustment));
+
+  gtk_spin_button_set_digits (GTK_SPIN_BUTTON (widget), digits);
+}
+
 /**
  * gimp_prop_opacity_entry_new:
  * @config:        Object to which property is attached.
@@ -1246,7 +1534,7 @@ gimp_prop_scale_entry_new (GObject     *config,
  *
  * Return value:  The #GtkSpinButton's #GtkAdjustment.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkObject *
 gimp_prop_opacity_entry_new (GObject     *config,
@@ -1256,49 +1544,22 @@ gimp_prop_opacity_entry_new (GObject     *config,
                              gint         row,
                              const gchar *label)
 {
-  GParamSpec  *param_spec;
-  GtkObject   *adjustment;
-  const gchar *tooltip;
-  gdouble      value;
-  gdouble      lower;
-  gdouble      upper;
+  GtkObject *adjustment;
 
   g_return_val_if_fail (G_IS_OBJECT (config), NULL);
   g_return_val_if_fail (property_name != NULL, NULL);
 
-  param_spec = check_param_spec_w (config, property_name,
-                                   G_TYPE_PARAM_DOUBLE, G_STRFUNC);
-  if (! param_spec)
-    return NULL;
+  adjustment = gimp_prop_scale_entry_new (config, property_name,
+                                          table, column, row, label,
+                                          0.01, 0.1, 1,
+                                          FALSE, 0.0, 0.0);
 
-  g_object_get (config, property_name, &value, NULL);
-
-  tooltip = dgettext (gimp_type_get_translation_domain (G_OBJECT_TYPE (config)),
-                      g_param_spec_get_blurb (param_spec));
-
-  value *= 100.0;
-  lower = G_PARAM_SPEC_DOUBLE (param_spec)->minimum * 100.0;
-  upper = G_PARAM_SPEC_DOUBLE (param_spec)->maximum * 100.0;
-
-  adjustment = gimp_scale_entry_new (table, column, row,
-                                     label, -1, -1,
-                                     value, lower, upper,
-                                     1.0, 10.0, 1,
-                                     TRUE, 0.0, 0.0,
-                                     tooltip,
-                                     NULL);
-
-  set_param_spec (G_OBJECT (adjustment), NULL,  param_spec);
-  g_object_set_data (G_OBJECT (adjustment),
-                     "opacity-scale", GINT_TO_POINTER (TRUE));
-
-  g_signal_connect (adjustment, "value-changed",
-                    G_CALLBACK (gimp_prop_adjustment_callback),
-                    config);
-
-  connect_notify (config, property_name,
-                  G_CALLBACK (gimp_prop_adjustment_notify),
-                  adjustment);
+  if (adjustment)
+    {
+      gimp_prop_widget_set_factor (GIMP_SCALE_ENTRY_SPINBUTTON (adjustment),
+                                   GTK_ADJUSTMENT (adjustment),
+                                   100.0, 0.0, 0.0, 1);
+    }
 
   return adjustment;
 }
@@ -1310,6 +1571,7 @@ gimp_prop_adjustment_callback (GtkAdjustment *adjustment,
 {
   GParamSpec *param_spec;
   gdouble     value;
+  gdouble    *factor;
 
   param_spec = get_param_spec (G_OBJECT (adjustment));
   if (! param_spec)
@@ -1317,49 +1579,73 @@ gimp_prop_adjustment_callback (GtkAdjustment *adjustment,
 
   value = gtk_adjustment_get_value (adjustment);
 
+  factor = g_object_get_data (G_OBJECT (adjustment),
+                              "gimp-prop-adjustment-factor");
+  if (factor)
+    value /= *factor;
+
   if (G_IS_PARAM_SPEC_INT (param_spec))
     {
-      g_object_set (config,
-                    param_spec->name, (gint) value,
-                    NULL);
+      gint v;
+
+      g_object_get (config, param_spec->name, &v, NULL);
+
+      if (v != (gint) value)
+        g_object_set (config, param_spec->name, (gint) value, NULL);
     }
   else if (G_IS_PARAM_SPEC_UINT (param_spec))
     {
-      g_object_set (config,
-                    param_spec->name, (guint) value,
-                    NULL);
+      guint v;
+
+      g_object_get (config, param_spec->name, &v, NULL);
+
+      if (v != (guint) value)
+        g_object_set (config, param_spec->name, (guint) value, NULL);
     }
   else if (G_IS_PARAM_SPEC_LONG (param_spec))
     {
-      g_object_set (config,
-                    param_spec->name, (glong) value,
-                    NULL);
+      glong v;
+
+      g_object_get (config, param_spec->name, &v, NULL);
+
+      if (v != (glong) value)
+        g_object_set (config, param_spec->name, (glong) value, NULL);
     }
   else if (G_IS_PARAM_SPEC_ULONG (param_spec))
     {
-      g_object_set (config,
-                    param_spec->name, (gulong) value,
-                    NULL);
+      gulong v;
+
+      g_object_get (config, param_spec->name, &v, NULL);
+
+      if (v != (gulong) value)
+        g_object_set (config, param_spec->name, (gulong) value, NULL);
     }
   else if (G_IS_PARAM_SPEC_INT64 (param_spec))
     {
-      g_object_set (config,
-                    param_spec->name, (gint64) value,
-                    NULL);
+      gint64 v;
+
+      g_object_get (config, param_spec->name, &v, NULL);
+
+      if (v != (gint64) value)
+        g_object_set (config, param_spec->name, (gint64) value, NULL);
     }
   else if (G_IS_PARAM_SPEC_UINT64 (param_spec))
     {
-      g_object_set (config,
-                    param_spec->name, (guint64) value,
-                    NULL);
+      guint64 v;
+
+      g_object_get (config, param_spec->name, &v, NULL);
+
+      if (v != (guint64) value)
+        g_object_set (config, param_spec->name, (guint64) value, NULL);
     }
   else if (G_IS_PARAM_SPEC_DOUBLE (param_spec))
     {
-      if (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (adjustment),
-                                              "opacity-scale")))
-        value /= 100.0;
+      gdouble v;
 
-      g_object_set (config, param_spec->name, value, NULL);
+      g_object_get (config, param_spec->name, &v, NULL);
+
+      if (v != value)
+        g_object_set (config, param_spec->name, value, NULL);
     }
 }
 
@@ -1368,7 +1654,8 @@ gimp_prop_adjustment_notify (GObject       *config,
                              GParamSpec    *param_spec,
                              GtkAdjustment *adjustment)
 {
-  gdouble value;
+  gdouble  value;
+  gdouble *factor;
 
   if (G_IS_PARAM_SPEC_INT (param_spec))
     {
@@ -1425,10 +1712,6 @@ gimp_prop_adjustment_notify (GObject       *config,
   else if (G_IS_PARAM_SPEC_DOUBLE (param_spec))
     {
       g_object_get (config, param_spec->name, &value, NULL);
-
-      if (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (adjustment),
-                                              "opacity-scale")))
-        value *= 100.0;
     }
   else
     {
@@ -1436,6 +1719,11 @@ gimp_prop_adjustment_notify (GObject       *config,
                  G_STRFUNC, G_PARAM_SPEC_TYPE_NAME (param_spec));
       return;
     }
+
+  factor = g_object_get_data (G_OBJECT (adjustment),
+                              "gimp-prop-adjustment-factor");
+  if (factor)
+    value *= *factor;
 
   if (gtk_adjustment_get_value (adjustment) != value)
     {
@@ -1473,7 +1761,7 @@ static void   gimp_prop_memsize_notify   (GObject          *config,
  *
  * Return value:  A new #GimpMemsizeEntry.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_memsize_entry_new (GObject     *config,
@@ -1526,6 +1814,8 @@ gimp_prop_memsize_callback (GimpMemsizeEntry *entry,
                             GObject          *config)
 {
   GParamSpec *param_spec;
+  guint64     value;
+  guint64     v;
 
   param_spec = get_param_spec (G_OBJECT (entry));
   if (! param_spec)
@@ -1533,9 +1823,12 @@ gimp_prop_memsize_callback (GimpMemsizeEntry *entry,
 
   g_return_if_fail (G_IS_PARAM_SPEC_UINT64 (param_spec));
 
-  g_object_set (config,
-                param_spec->name, gimp_memsize_entry_get_value (entry),
-                NULL);
+  value = gimp_memsize_entry_get_value (entry);
+
+  g_object_get (config, param_spec->name, &v, NULL);
+
+  if (v != value)
+    g_object_set (config, param_spec->name, value, NULL);
 }
 
 static void
@@ -1586,7 +1879,7 @@ static void   gimp_prop_label_notify (GObject    *config,
  *
  * Return value:  A new #GtkLabel widget.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_label_new (GObject     *config,
@@ -1630,7 +1923,7 @@ gimp_prop_label_notify (GObject    *config,
                         GParamSpec *param_spec,
                         GtkWidget  *label)
 {
-  GValue  value = { 0, };
+  GValue  value = G_VALUE_INIT;
 
   g_value_init (&value, param_spec->value_type);
 
@@ -1644,7 +1937,7 @@ gimp_prop_label_notify (GObject    *config,
     }
   else
     {
-      GValue       str_value = { 0, };
+      GValue       str_value = G_VALUE_INIT;
       const gchar *str;
 
       g_value_init (&str_value, G_TYPE_STRING);
@@ -1682,7 +1975,7 @@ static void   gimp_prop_entry_notify   (GObject    *config,
  *
  * Return value:  A new #GtkEntry widget.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_entry_new (GObject     *config,
@@ -1734,25 +2027,31 @@ gimp_prop_entry_callback (GtkWidget *entry,
                           GObject   *config)
 {
   GParamSpec  *param_spec;
-  const gchar *text;
+  const gchar *value;
+  gchar       *v;
 
   param_spec = get_param_spec (G_OBJECT (entry));
   if (! param_spec)
     return;
 
-  text = gtk_entry_get_text (GTK_ENTRY (entry));
+  value = gtk_entry_get_text (GTK_ENTRY (entry));
 
-  g_signal_handlers_block_by_func (config,
-                                   gimp_prop_entry_notify,
-                                   entry);
+  g_object_get (config, param_spec->name, &v, NULL);
 
-  g_object_set (config,
-                param_spec->name, text,
-                NULL);
+  if (g_strcmp0 (v, value))
+    {
+      g_signal_handlers_block_by_func (config,
+                                       gimp_prop_entry_notify,
+                                       entry);
 
-  g_signal_handlers_unblock_by_func (config,
-                                     gimp_prop_entry_notify,
-                                     entry);
+      g_object_set (config, param_spec->name, value, NULL);
+
+      g_signal_handlers_unblock_by_func (config,
+                                         gimp_prop_entry_notify,
+                                         entry);
+    }
+
+  g_free (v);
 }
 
 static void
@@ -1807,7 +2106,7 @@ static void   gimp_prop_text_buffer_notify   (GObject       *config,
  *
  * Return value:  A new #GtkTextBuffer.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkTextBuffer *
 gimp_prop_text_buffer_new (GObject     *config,
@@ -1888,17 +2187,24 @@ gimp_prop_text_buffer_callback (GtkTextBuffer *text_buffer,
     }
   else
     {
-      g_signal_handlers_block_by_func (config,
-                                       gimp_prop_text_buffer_notify,
-                                       text_buffer);
+      gchar *v;
 
-      g_object_set (config,
-                    param_spec->name, text,
-                    NULL);
+      g_object_get (config, param_spec->name, &v, NULL);
 
-      g_signal_handlers_unblock_by_func (config,
-                                         gimp_prop_text_buffer_notify,
-                                         text_buffer);
+      if (g_strcmp0 (v, text))
+        {
+          g_signal_handlers_block_by_func (config,
+                                           gimp_prop_text_buffer_notify,
+                                           text_buffer);
+
+          g_object_set (config, param_spec->name, text,  NULL);
+
+          g_signal_handlers_unblock_by_func (config,
+                                             gimp_prop_text_buffer_notify,
+                                             text_buffer);
+        }
+
+      g_free (v);
     }
 
   g_free (text);
@@ -1953,7 +2259,7 @@ static void   gimp_prop_string_combo_box_notify   (GObject     *config,
  *
  * Return value: The newly created #GimpStringComboBox widget.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_string_combo_box_new (GObject      *config,
@@ -2002,6 +2308,7 @@ gimp_prop_string_combo_box_callback (GtkWidget *widget,
 {
   GParamSpec  *param_spec;
   gchar       *value;
+  gchar       *v;
 
   param_spec = get_param_spec (G_OBJECT (widget));
   if (! param_spec)
@@ -2009,11 +2316,13 @@ gimp_prop_string_combo_box_callback (GtkWidget *widget,
 
   value = gimp_string_combo_box_get_active (GIMP_STRING_COMBO_BOX (widget));
 
-  g_object_set (config,
-                param_spec->name, value,
-                NULL);
+  g_object_get (config, param_spec->name, &v, NULL);
+
+  if (g_strcmp0 (v, value))
+    g_object_set (config, param_spec->name, value, NULL);
 
   g_free (value);
+  g_free (v);
 }
 
 static void
@@ -2070,7 +2379,7 @@ static void        gimp_prop_file_chooser_button_notify   (GObject        *confi
  *
  * Return value:  A new #GtkFileChooserButton.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_file_chooser_button_new (GObject              *config,
@@ -2111,7 +2420,7 @@ gimp_prop_file_chooser_button_new (GObject              *config,
  *
  * Return value:  A new #GtkFileChooserButton.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_file_chooser_button_new_with_dialog (GObject     *config,
@@ -2141,26 +2450,29 @@ gimp_prop_file_chooser_button_setup (GtkWidget  *button,
                                      GParamSpec *param_spec)
 {
   gchar *value;
-  gchar *filename;
+  GFile *file = NULL;
 
   g_object_get (config,
                 param_spec->name, &value,
                 NULL);
 
-  filename = value ? gimp_config_path_expand (value, TRUE, NULL) : NULL;
-  g_free (value);
-
-  if (filename)
+  if (value)
     {
-      gchar *basename = g_path_get_basename (filename);
+      file = gimp_file_new_for_config_path (value, NULL);
+      g_free (value);
+    }
+
+  if (file)
+    {
+      gchar *basename = g_file_get_basename (file);
 
       if (basename && basename[0] == '.')
         gtk_file_chooser_set_show_hidden (GTK_FILE_CHOOSER (button), TRUE);
 
       g_free (basename);
 
-      gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (button), filename);
-      g_free (filename);
+      gtk_file_chooser_set_file (GTK_FILE_CHOOSER (button), file, NULL);
+      g_object_unref (file);
     }
 
   set_param_spec (G_OBJECT (button), button, param_spec);
@@ -2181,30 +2493,31 @@ gimp_prop_file_chooser_button_callback (GtkFileChooser *button,
                                         GObject        *config)
 {
   GParamSpec *param_spec;
-  gchar      *value;
-  gchar      *utf8;
+  GFile      *file;
+  gchar      *value = NULL;
+  gchar      *v;
 
   param_spec = get_param_spec (G_OBJECT (button));
   if (! param_spec)
     return;
 
-  value = gtk_file_chooser_get_filename (button);
-  utf8 = value ? g_filename_to_utf8 (value, -1, NULL, NULL, NULL) : NULL;
-  g_free (value);
+  file = gtk_file_chooser_get_file (button);
 
-  g_object_get (config,
-                param_spec->name, &value,
-                NULL);
+  if (file)
+    {
+      value = gimp_file_get_config_path (file, NULL);
+      g_object_unref (file);
+    }
 
-  if (! (value && utf8 && strcmp (value, utf8) == 0))
+  g_object_get (config, param_spec->name, &v, NULL);
+
+  if (g_strcmp0 (v, value))
     {
       g_signal_handlers_block_by_func (config,
                                        gimp_prop_file_chooser_button_notify,
                                        button);
 
-      g_object_set (config,
-                    param_spec->name, utf8,
-                    NULL);
+      g_object_set (config, param_spec->name, value, NULL);
 
       g_signal_handlers_unblock_by_func (config,
                                          gimp_prop_file_chooser_button_notify,
@@ -2212,7 +2525,7 @@ gimp_prop_file_chooser_button_callback (GtkFileChooser *button,
     }
 
   g_free (value);
-  g_free (utf8);
+  g_free (v);
 }
 
 static void
@@ -2221,29 +2534,35 @@ gimp_prop_file_chooser_button_notify (GObject        *config,
                                       GtkFileChooser *button)
 {
   gchar *value;
-  gchar *filename;
+  GFile *file = NULL;
 
   g_object_get (config,
                 param_spec->name, &value,
                 NULL);
 
-  filename = value ? gimp_config_path_expand (value, TRUE, NULL) : NULL;
-  g_free (value);
+  if (value)
+    {
+      file = gimp_file_new_for_config_path (value, NULL);
+      g_free (value);
+    }
 
   g_signal_handlers_block_by_func (button,
                                    gimp_prop_file_chooser_button_callback,
                                    config);
 
-  if (filename)
-    gtk_file_chooser_set_filename (button, filename);
+  if (file)
+    {
+      gtk_file_chooser_set_file (button, file, NULL);
+      g_object_unref (file);
+    }
   else
-    gtk_file_chooser_unselect_all (button);
+    {
+      gtk_file_chooser_unselect_all (button);
+    }
 
   g_signal_handlers_unblock_by_func (button,
                                      gimp_prop_file_chooser_button_callback,
                                      config);
-
-  g_free (filename);
 }
 
 
@@ -2359,7 +2678,7 @@ gimp_prop_path_editor_path_callback (GimpPathEditor *editor,
     return;
 
   value = gimp_path_editor_get_path (editor);
-  utf8 = g_filename_to_utf8 (value, -1, NULL, NULL, NULL);
+  utf8 = value ? gimp_config_path_unexpand (value, TRUE, NULL) : NULL;
   g_free (value);
 
   g_signal_handlers_block_by_func (config,
@@ -2379,7 +2698,7 @@ gimp_prop_path_editor_path_callback (GimpPathEditor *editor,
   if (writable_param_spec)
     {
       value = gimp_path_editor_get_writable_path (editor);
-      utf8 = g_filename_to_utf8 (value, -1, NULL, NULL, NULL);
+      utf8 = value ? gimp_config_path_unexpand (value, TRUE, NULL) : NULL;
       g_free (value);
 
       g_signal_handlers_block_by_func (config,
@@ -2412,7 +2731,7 @@ gimp_prop_path_editor_writable_callback (GimpPathEditor *editor,
     return;
 
   value = gimp_path_editor_get_writable_path (editor);
-  utf8 = g_filename_to_utf8 (value, -1, NULL, NULL, NULL);
+  utf8 = value ? gimp_config_path_unexpand (value, TRUE, NULL) : NULL;
   g_free (value);
 
   g_signal_handlers_block_by_func (config,
@@ -2524,7 +2843,7 @@ static gint   gimp_prop_size_entry_num_chars   (gdouble        lower,
  *
  * Return value:  A new #GimpSizeEntry widget.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_size_entry_new (GObject                   *config,
@@ -2555,7 +2874,7 @@ gimp_prop_size_entry_new (GObject                   *config,
 
   if (unit_property_name)
     {
-      GValue value = { 0 };
+      GValue value = G_VALUE_INIT;
 
       unit_param_spec = check_param_spec_w (config, unit_property_name,
                                             GIMP_TYPE_PARAM_UNIT, G_STRFUNC);
@@ -2588,7 +2907,8 @@ gimp_prop_size_entry_new (GObject                   *config,
 
   entry = gimp_size_entry_new (1, unit_value, unit_format,
                                show_pixels, show_percent, FALSE,
-                               gimp_prop_size_entry_num_chars (lower, upper),
+                               gimp_prop_size_entry_num_chars (lower, upper) + 1 +
+                               gimp_unit_get_scaled_digits (unit_value, resolution),
                                update_policy);
   gtk_table_set_col_spacing (GTK_TABLE (entry), 1, 2);
 
@@ -2838,7 +3158,7 @@ static void   gimp_prop_coordinates_notify_unit (GObject       *config,
  *
  * Return value:  A new #GimpSizeEntry widget.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_coordinates_new (GObject                   *config,
@@ -3291,7 +3611,7 @@ static void   gimp_prop_color_area_notify   (GObject    *config,
  *
  * Return value:  A new #GimpColorArea widget.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_color_area_new (GObject           *config,
@@ -3403,7 +3723,7 @@ static void   gimp_prop_unit_combo_box_notify   (GObject    *config,
  *
  * Return value:  A new #GimpUnitComboBox widget.
  *
- * Since GIMP 2.8
+ * Since: 2.8
  */
 GtkWidget *
 gimp_prop_unit_combo_box_new (GObject     *config,
@@ -3413,7 +3733,7 @@ gimp_prop_unit_combo_box_new (GObject     *config,
   GtkWidget    *combo;
   GtkTreeModel *model;
   GimpUnit      unit;
-  GValue        value = { 0, };
+  GValue        value = G_VALUE_INIT;
   gboolean      show_pixels;
   gboolean      show_percent;
 
@@ -3461,27 +3781,31 @@ gimp_prop_unit_combo_box_callback (GtkWidget *combo,
                                    GObject   *config)
 {
   GParamSpec *param_spec;
-  GimpUnit    unit;
+  GimpUnit    value;
+  GimpUnit    v;
 
   param_spec = get_param_spec (G_OBJECT (combo));
   if (! param_spec)
     return;
 
-  unit = gimp_unit_combo_box_get_active (GIMP_UNIT_COMBO_BOX (combo));
+  value = gimp_unit_combo_box_get_active (GIMP_UNIT_COMBO_BOX (combo));
 
-  /* FIXME gimp_unit_menu_update (menu, &unit); */
+  g_object_get (config, param_spec->name, &v, NULL);
 
-  g_signal_handlers_block_by_func (config,
-                                   gimp_prop_unit_combo_box_notify,
-                                   combo);
+  if (v != value)
+    {
+      /* FIXME gimp_unit_menu_update (menu, &unit); */
 
-  g_object_set (config,
-                param_spec->name, unit,
-                NULL);
+      g_signal_handlers_block_by_func (config,
+                                       gimp_prop_unit_combo_box_notify,
+                                       combo);
 
-  g_signal_handlers_unblock_by_func (config,
-                                     gimp_prop_unit_combo_box_notify,
-                                     combo);
+      g_object_set (config, param_spec->name, value, NULL);
+
+      g_signal_handlers_unblock_by_func (config,
+                                         gimp_prop_unit_combo_box_notify,
+                                         combo);
+    }
 }
 
 static void
@@ -3531,7 +3855,9 @@ static void   gimp_prop_unit_menu_notify   (GObject    *config,
  *
  * Return value:  A new #GimpUnitMenu widget.
  *
- * Since GIMP 2.4
+ * Since: 2.4
+ *
+ * Deprecated: 2.10
  */
 GtkWidget *
 gimp_prop_unit_menu_new (GObject     *config,
@@ -3541,7 +3867,7 @@ gimp_prop_unit_menu_new (GObject     *config,
   GParamSpec *param_spec;
   GtkWidget  *menu;
   GimpUnit    unit;
-  GValue      value = { 0, };
+  GValue      value = G_VALUE_INIT;
   gboolean    show_pixels;
   gboolean    show_percent;
 
@@ -3630,13 +3956,13 @@ gimp_prop_unit_menu_notify (GObject    *config,
 }
 
 
-/*****************/
-/*  stock image  */
-/*****************/
+/***************/
+/*  icon name  */
+/***************/
 
-static void   gimp_prop_stock_image_notify (GObject    *config,
-                                            GParamSpec *param_spec,
-                                            GtkWidget  *image);
+static void   gimp_prop_icon_image_notify (GObject    *config,
+                                           GParamSpec *param_spec,
+                                           GtkWidget  *image);
 
 /**
  * gimp_prop_stock_image_new:
@@ -3650,16 +3976,40 @@ static void   gimp_prop_stock_image_notify (GObject    *config,
  *
  * Return value:  A new #GtkImage widget.
  *
- * Since GIMP 2.4
+ * Since: 2.4
+ *
+ * Deprecated: 2.10
  */
 GtkWidget *
 gimp_prop_stock_image_new (GObject     *config,
                            const gchar *property_name,
                            GtkIconSize  icon_size)
 {
+  return gimp_prop_icon_image_new (config, property_name, icon_size);
+}
+
+/**
+ * gimp_prop_icon_image_new:
+ * @config:        Object to which property is attached.
+ * @property_name: Name of string property.
+ * @icon_size:     Size of desired icon image.
+ *
+ * Creates a widget to display a icon image representing the value of the
+ * specified string property, which should encode an icon name.
+ * See gtk_image_new_from_icon_name() for more information.
+ *
+ * Return value:  A new #GtkImage widget.
+ *
+ * Since: 2.10
+ */
+GtkWidget *
+gimp_prop_icon_image_new (GObject     *config,
+                          const gchar *property_name,
+                          GtkIconSize  icon_size)
+{
   GParamSpec *param_spec;
   GtkWidget  *image;
-  gchar      *stock_id;
+  gchar      *icon_name;
 
   param_spec = check_param_spec (config, property_name,
                                  G_TYPE_PARAM_STRING, G_STRFUNC);
@@ -3667,40 +4017,40 @@ gimp_prop_stock_image_new (GObject     *config,
     return NULL;
 
   g_object_get (config,
-                property_name, &stock_id,
+                property_name, &icon_name,
                 NULL);
 
-  image = gtk_image_new_from_stock (stock_id, icon_size);
+  image = gtk_image_new_from_icon_name (icon_name, icon_size);
 
-  if (stock_id)
-    g_free (stock_id);
+  if (icon_name)
+    g_free (icon_name);
 
   set_param_spec (G_OBJECT (image), image, param_spec);
 
   connect_notify (config, property_name,
-                  G_CALLBACK (gimp_prop_stock_image_notify),
+                  G_CALLBACK (gimp_prop_icon_image_notify),
                   image);
 
   return image;
 }
 
 static void
-gimp_prop_stock_image_notify (GObject    *config,
-                              GParamSpec *param_spec,
-                              GtkWidget  *image)
+gimp_prop_icon_image_notify (GObject    *config,
+                             GParamSpec *param_spec,
+                             GtkWidget  *image)
 {
-  gchar       *stock_id;
+  gchar       *icon_name;
   GtkIconSize  icon_size;
 
   g_object_get (config,
-                param_spec->name, &stock_id,
+                param_spec->name, &icon_name,
                 NULL);
 
-  gtk_image_get_stock (GTK_IMAGE (image), NULL, &icon_size);
-  gtk_image_set_from_stock (GTK_IMAGE (image), stock_id, icon_size);
+  gtk_image_get_icon_name (GTK_IMAGE (image), NULL, &icon_size);
+  gtk_image_set_from_icon_name (GTK_IMAGE (image), icon_name, icon_size);
 
-  if (stock_id)
-    g_free (stock_id);
+  if (icon_name)
+    g_free (icon_name);
 }
 
 
@@ -3725,10 +4075,12 @@ static void   gimp_prop_expander_notify (GObject     *config,
  * Creates a #GtkExpander controlled by the specified boolean property.
  * A value of %TRUE for the property corresponds to the expanded state
  * for the widget.
+ * If @label is #NULL, the @property_name's nick will be used as label
+ * of the returned widget.
  *
  * Return value:  A new #GtkExpander widget.
  *
- * Since GIMP 2.4
+ * Since: 2.4
  */
 GtkWidget *
 gimp_prop_expander_new (GObject     *config,
@@ -3743,6 +4095,9 @@ gimp_prop_expander_new (GObject     *config,
                                    G_TYPE_PARAM_BOOLEAN, G_STRFUNC);
   if (! param_spec)
     return NULL;
+
+  if (! label)
+    label = g_param_spec_get_nick (param_spec);
 
   g_object_get (config,
                 property_name, &value,
@@ -3840,12 +4195,7 @@ set_param_spec (GObject     *object,
       const gchar *blurb = g_param_spec_get_blurb (param_spec);
 
       if (blurb)
-        {
-          const gchar *domain;
-
-          domain = gimp_type_get_translation_domain (param_spec->owner_type);
-          gimp_help_set_help_data (widget, dgettext (domain, blurb), NULL);
-        }
+        gimp_help_set_help_data (widget, blurb, NULL);
     }
 }
 
@@ -3924,7 +4274,7 @@ check_param_spec_w (GObject     *object,
   if (param_spec &&
       (param_spec->flags & G_PARAM_WRITABLE) == 0)
     {
-      g_warning ("%s: property '%s' of %s is writable",
+      g_warning ("%s: property '%s' of %s is not writable",
                  strloc,
                  param_spec->name,
                  g_type_name (param_spec->owner_type));

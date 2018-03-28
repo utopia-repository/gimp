@@ -18,14 +18,14 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gegl.h>
 
 #include "libgimpmath/gimpmath.h"
 
 #include "core-types.h"
 
-#include "base/temp-buf.h"
-
+#include "gimpbrush-private.h"
 #include "gimpbrushpipe.h"
 #include "gimpbrushpipe-load.h"
 
@@ -129,8 +129,8 @@ gimp_brush_pipe_finalize (GObject *object)
       pipe->index = NULL;
     }
 
-  GIMP_BRUSH (pipe)->mask   = NULL;
-  GIMP_BRUSH (pipe)->pixmap = NULL;
+  GIMP_BRUSH (pipe)->priv->mask   = NULL;
+  GIMP_BRUSH (pipe)->priv->pixmap = NULL;
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }

@@ -2,7 +2,7 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * GTM plug-in --- GIMP Table Magic
- * Allows images to be saved as HTML tables with different colored cells.
+ * Allows images to be exported as HTML tables with different colored cells.
  * It doesn't  have very much practical use other than being able to
  * easily design a table by "painting" it in GIMP, or to make small HTML
  * table images/icons.
@@ -42,17 +42,14 @@
  * It's still not very useful, but I did manage to significantly improve my
  * C programming skills in the process, so it was worth it.
  *
- * If you happen to find it usefull I would appreciate any email about it.
+ * If you happen to find it useful I would appreciate any email about it.
  *                                     - Daniel Dunbar
  *                                       ddunbar@diads.com
  */
 
 #include "config.h"
 
-#include <errno.h>
 #include <string.h>
-
-#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -63,6 +60,7 @@
 #define SAVE_PROC      "file-gtm-save"
 #define PLUG_IN_BINARY "file-html-table"
 #define PLUG_IN_ROLE   "gimp-file-html-table"
+
 
 /* Typedefs */
 
@@ -81,6 +79,31 @@ typedef struct
   gint     cellspacing;
 } GTMValues;
 
+
+/* Declare some local functions */
+
+static void     query                    (void);
+static void     run                      (const gchar      *name,
+                                          gint              nparams,
+                                          const GimpParam  *param,
+                                          gint             *nreturn_vals,
+                                          GimpParam       **return_vals);
+
+static gboolean save_image               (GFile            *file,
+                                          GeglBuffer       *buffer,
+                                          GError          **error);
+static gboolean save_dialog              (gint32            image_ID);
+
+static gboolean print                    (GOutputStream    *output,
+                                          GError          **error,
+                                          const gchar      *format,
+                                          ...) G_GNUC_PRINTF (3, 0);
+static gboolean color_comp               (guchar           *buffer,
+                                          guchar           *buf2);
+static void     entry_changed_callback   (GtkEntry         *entry,
+                                          gchar            *string);
+
+
 /* Variables */
 
 static GTMValues gtmvals =
@@ -97,32 +120,6 @@ static GTMValues gtmvals =
   4,         /* cellpadding */
   0          /* cellspacing */
 };
-
-/* Declare some local functions */
-
-static void     query                    (void);
-static void     run                      (const gchar      *name,
-                                          gint              nparams,
-                                          const GimpParam  *param,
-                                          gint             *nreturn_vals,
-                                          GimpParam       **return_vals);
-
-static gboolean save_image               (const gchar      *filename,
-                                          GimpDrawable     *drawable,
-                                          GError          **error);
-static gboolean save_dialog              (gint32            image_ID);
-
-static gboolean color_comp               (guchar           *buffer,
-                                          guchar           *buf2);
-static void     gtm_caption_callback     (GtkWidget        *widget,
-                                          gpointer          data);
-static void     gtm_cellcontent_callback (GtkWidget        *widget,
-                                          gpointer          data);
-static void     gtm_clwidth_callback     (GtkWidget        *widget,
-                                          gpointer          data);
-static void     gtm_clheight_callback    (GtkWidget        *widget,
-                                          gpointer          data);
-
 
 const GimpPlugInInfo PLUG_IN_INFO =
 {
@@ -142,9 +139,9 @@ query (void)
   {
     { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0) }" },
     { GIMP_PDB_IMAGE,    "image",        "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save" },
-    { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
-    { GIMP_PDB_STRING,   "raw-filename", "The name of the file to save the image in" }
+    { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to export" },
+    { GIMP_PDB_STRING,   "filename",     "The name of the file to export the image in" },
+    { GIMP_PDB_STRING,   "raw-filename", "The name of the file to export the image in" }
   };
 
   gimp_install_procedure (SAVE_PROC,
@@ -154,12 +151,13 @@ query (void)
                           "Daniel Dunbar",
                           "1998",
                           _("HTML table"),
-                          "RGB*, GRAY*",
+                          "RGB*, GRAY*, INDEXED*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (save_args), 0,
                           save_args, NULL);
 
   gimp_register_file_handler_mime (SAVE_PROC, "text/html");
+  gimp_register_file_handler_uri (SAVE_PROC);
   gimp_register_save_handler (SAVE_PROC, "html,htm", "");
 }
 
@@ -172,12 +170,10 @@ run (const gchar      *name,
 {
   static GimpParam   values[2];
   GimpPDBStatusType  status = GIMP_PDB_SUCCESS;
-  GimpDrawable      *drawable;
   GError            *error  = NULL;
 
   INIT_I18N ();
-
-  drawable = gimp_drawable_get (param[2].data.d_int32);
+  gegl_init (NULL, NULL);
 
   *nreturn_vals = 1;
   *return_vals  = values;
@@ -189,7 +185,10 @@ run (const gchar      *name,
 
   if (save_dialog (param[1].data.d_int32))
     {
-      if (save_image (param[3].data.d_string, drawable, &error))
+      GeglBuffer *buffer = gimp_drawable_get_buffer (param[2].data.d_int32);
+
+      if (save_image (g_file_new_for_uri (param[3].data.d_string),
+                      buffer, &error))
         {
           gimp_set_data (SAVE_PROC, &gtmvals, sizeof (GTMValues));
         }
@@ -197,6 +196,8 @@ run (const gchar      *name,
         {
           status = GIMP_PDB_EXECUTION_ERROR;
         }
+
+      g_object_unref (buffer);
     }
   else
     {
@@ -214,59 +215,72 @@ run (const gchar      *name,
 }
 
 static gboolean
-save_image (const gchar   *filename,
-            GimpDrawable  *drawable,
-            GError       **error)
+save_image (GFile       *file,
+            GeglBuffer  *buffer,
+            GError     **error)
 {
-  gint          row,col, cols, rows, x, y;
-  gint          colcount, colspan, rowspan;
-  gint         *palloc;
-  guchar       *buffer, *buf2;
-  gchar        *width, *height;
-  GimpPixelRgn  pixel_rgn;
-  FILE         *fp;
+  const Babl    *format = babl_format ("R'G'B'A u8");
+  GOutputStream *output;
+  gint           row, col;
+  gint           cols, rows;
+  gint           x, y;
+  gint           colcount, colspan, rowspan;
+  gint          *palloc;
+  guchar        *buf, *buf2;
+  gchar         *width  = NULL;
+  gchar         *height = NULL;
 
-  palloc = g_new (int, drawable->width * drawable->height);
+  cols = gegl_buffer_get_width  (buffer);
+  rows = gegl_buffer_get_height (buffer);
 
-  fp = g_fopen (filename, "w");
+  gimp_progress_init_printf (_("Exporting '%s'"),
+                             gimp_file_get_utf8_name (file));
 
-  if (! fp)
+  output = G_OUTPUT_STREAM (g_file_replace (file,
+                                            NULL, FALSE, G_FILE_CREATE_NONE,
+                                            NULL, error));
+  if (output)
     {
-      g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
-                   _("Could not open '%s' for writing: %s"),
-                   gimp_filename_to_utf8 (filename), g_strerror (errno));
-      g_free (palloc);
+      GOutputStream *buffered;
+
+      buffered = g_buffered_output_stream_new (output);
+      g_object_unref (output);
+
+      output = buffered;
+    }
+  else
+    {
       return FALSE;
     }
 
+  palloc = g_new (int, rows * cols);
+
   if (gtmvals.fulldoc)
     {
-      fprintf (fp, "<HTML>\n<HEAD><TITLE>%s</TITLE></HEAD>\n<BODY>\n",
-               filename);
-      fprintf (fp, "<H1>%s</H1>\n",
-               filename);
+      if (! print (output, error,
+                   "<HTML>\n<HEAD><TITLE>%s</TITLE></HEAD>\n<BODY>\n",
+                   gimp_file_get_utf8_name (file)) ||
+          ! print (output, error, "<H1>%s</H1>\n",
+                   gimp_file_get_utf8_name (file)))
+        {
+          goto fail;
+        }
     }
 
-  fprintf (fp, "<TABLE BORDER=%d CELLPADDING=%d CELLSPACING=%d>\n",
-           gtmvals.border, gtmvals.cellpadding, gtmvals.cellspacing);
+  if (! print (output, error,
+               "<TABLE BORDER=%d CELLPADDING=%d CELLSPACING=%d>\n",
+               gtmvals.border, gtmvals.cellpadding, gtmvals.cellspacing))
+    goto fail;
 
   if (gtmvals.caption)
-    fprintf (fp, "<CAPTION>%s</CAPTION>\n",
-             gtmvals.captiontxt);
+    {
+      if (! print (output, error, "<CAPTION>%s</CAPTION>\n",
+                   gtmvals.captiontxt))
+        goto fail;
+    }
 
-  gimp_progress_init_printf (_("Saving '%s'"),
-                             gimp_filename_to_utf8 (filename));
-
-  gimp_pixel_rgn_init (&pixel_rgn, drawable,
-                       0, 0, drawable->width, drawable->height,
-                       FALSE, FALSE);
-
-  cols   = drawable->width;
-  rows   = drawable->height;
-  buffer = g_new (guchar, drawable->bpp);
-  buf2   = g_new (guchar, drawable->bpp);
-
-  width = height = NULL;
+  buf  = g_newa (guchar, babl_format_get_bytes_per_pixel (format));
+  buf2 = g_newa (guchar, babl_format_get_bytes_per_pixel (format));
 
   if (strcmp (gtmvals.clwidth, "") != 0)
     {
@@ -288,18 +302,20 @@ save_image (const gchar   *filename,
 
   for (row = 0; row < rows; row++)
     for (col = 0; col < cols; col++)
-      palloc[drawable->width * row + col] = 1;
+      palloc[cols * row + col] = 1;
 
   colspan = 0;
   rowspan = 0;
 
   for (y = 0; y < rows; y++)
     {
-      fprintf (fp,"   <TR>\n");
+      if (! print (output, error, "   <TR>\n"))
+        goto fail;
 
       for (x = 0; x < cols; x++)
         {
-          gimp_pixel_rgn_get_pixel (&pixel_rgn, buffer, x, y);
+          gegl_buffer_sample (buffer, x, y, NULL, buf, format,
+                              GEGL_SAMPLER_NEAREST, GEGL_ABYSS_NONE);
 
           /* Determine ROWSPAN and COLSPAN */
 
@@ -311,20 +327,22 @@ save_image (const gchar   *filename,
               colspan  = 0;
               rowspan  = 0;
 
-              gimp_pixel_rgn_get_pixel (&pixel_rgn, buf2, col, row);
+              gegl_buffer_sample (buffer, col, row, NULL, buf2, format,
+                                  GEGL_SAMPLER_NEAREST, GEGL_ABYSS_NONE);
 
-              while (color_comp (buffer,buf2) &&
-                     palloc[drawable->width * row + col] == 1 &&
-                     row < drawable->height)
+              while (color_comp (buf, buf2) &&
+                     palloc[cols * row + col] == 1 &&
+                     row < rows)
                 {
-                  while (color_comp (buffer,buf2) &&
-                         palloc[drawable->width * row + col] == 1 &&
-                         col < drawable->width )
+                  while (color_comp (buf, buf2) &&
+                         palloc[cols * row + col] == 1 &&
+                         col < cols)
                     {
                       colcount++;
                       col++;
 
-                      gimp_pixel_rgn_get_pixel (&pixel_rgn, buf2, col, row);
+                      gegl_buffer_sample (buffer, col, row, NULL, buf2, format,
+                                          GEGL_SAMPLER_NEAREST, GEGL_ABYSS_NONE);
                     }
 
                   if (colcount != 0)
@@ -339,72 +357,106 @@ save_image (const gchar   *filename,
                   col = x;
                   colcount = 0;
 
-                  gimp_pixel_rgn_get_pixel (&pixel_rgn, buf2, col, row);
+                  gegl_buffer_sample (buffer, col, row, NULL, buf2, format,
+                                      GEGL_SAMPLER_NEAREST, GEGL_ABYSS_NONE);
                 }
 
               if (colspan > 1 || rowspan > 1)
                 {
                   for (row = 0; row < rowspan; row++)
                     for (col = 0; col < colspan; col++)
-                      palloc[drawable->width * (row + y) + (col + x)] = 0;
+                      palloc[cols * (row + y) + (col + x)] = 0;
 
-                  palloc[drawable->width * y + x] = 2;
+                  palloc[cols * y + x] = 2;
                 }
             }
 
-          if (palloc[drawable->width * y + x] == 1)
-            fprintf (fp, "      <TD%s%sBGCOLOR=#%02x%02x%02x>",
-                     width, height, buffer[0], buffer[1], buffer[2]);
+          if (palloc[cols * y + x] == 1)
+            {
+              if (! print (output, error,
+                           "      <TD%s%sBGCOLOR=#%02x%02x%02x>",
+                           width, height, buf[0], buf[1], buf[2]))
+                goto fail;
+            }
 
-          if (palloc[drawable->width * y + x] == 2)
-            fprintf (fp,"      <TD ROWSPAN=\"%d\" COLSPAN=\"%d\"%s%sBGCOLOR=#%02x%02x%02x>",
-                     rowspan, colspan, width, height,
-                     buffer[0], buffer[1], buffer[2]);
+          if (palloc[cols * y + x] == 2)
+            {
+              if (! print (output, error,
+                           "      <TD ROWSPAN=\"%d\" COLSPAN=\"%d\"%s%sBGCOLOR=#%02x%02x%02x>",
+                           rowspan, colspan, width, height,
+                           buf[0], buf[1], buf[2]))
+                goto fail;
+            }
 
-          if (palloc[drawable->width * y + x] != 0)
+          if (palloc[cols * y + x] != 0)
             {
               if (gtmvals.tdcomp)
-                fprintf (fp, "%s</TD>\n", gtmvals.cellcontent);
+                {
+                  if (! print (output, error,
+                               "%s</TD>\n", gtmvals.cellcontent))
+                    goto fail;
+                }
               else
-                fprintf (fp, "\n      %s\n      </TD>\n", gtmvals.cellcontent);
+                {
+                  if (! print (output, error,
+                               "\n      %s\n      </TD>\n", gtmvals.cellcontent))
+                    goto fail;
+                }
             }
         }
 
-      fprintf (fp,"   </TR>\n");
+      if (! print (output, error, "   </TR>\n"))
+        goto fail;
 
       gimp_progress_update ((double) y / (double) rows);
     }
-  gimp_progress_update (1.0);
 
   if (gtmvals.fulldoc)
-    fprintf (fp, "</TABLE></BODY></HTML>\n");
+    {
+      if (! print (output, error, "</TABLE></BODY></HTML>\n"))
+        goto fail;
+    }
   else
-    fprintf (fp, "</TABLE>\n");
+    {
+      if (! print (output, error, "</TABLE>\n"))
+        goto fail;
+    }
 
-  fclose (fp);
-  gimp_drawable_detach (drawable);
+  if (! g_output_stream_close (output, NULL, error))
+    goto fail;
 
+  g_object_unref (output);
   g_free (width);
   g_free (height);
-
   g_free (palloc);
 
+  gimp_progress_update (1.0);
+
   return TRUE;
+
+ fail:
+
+  g_object_unref (output);
+  g_free (width);
+  g_free (height);
+  g_free (palloc);
+
+  return FALSE;
 }
 
 static gint
 save_dialog (gint32 image_ID)
 {
-  GtkWidget *dialog;
-  GtkWidget *main_vbox;
-  GtkWidget *frame;
-  GtkWidget *vbox;
-  GtkWidget *table;
-  GtkWidget *spinbutton;
-  GtkObject *adj;
-  GtkWidget *entry;
-  GtkWidget *toggle;
-  gboolean   run;
+  GtkWidget     *dialog;
+  GtkWidget     *main_vbox;
+  GtkWidget     *frame;
+  GtkWidget     *vbox;
+  GtkWidget     *table;
+  GtkWidget     *spinbutton;
+  GtkAdjustment *adj;
+  GtkWidget     *entry;
+  GtkWidget     *toggle;
+  gboolean       run;
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
@@ -428,8 +480,8 @@ save_dialog (gint32 image_ID)
       hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
       gtk_container_add (GTK_CONTAINER (frame), hbox);
 
-      eek = gtk_image_new_from_stock (GIMP_STOCK_WILBER_EEK,
-                                      GTK_ICON_SIZE_DIALOG);
+      eek = gtk_image_new_from_icon_name (GIMP_ICON_WILBER_EEK,
+                                          GTK_ICON_SIZE_DIALOG);
       gtk_box_pack_start (GTK_BOX (hbox), eek, FALSE, FALSE, 0);
 
       label = gtk_label_new (_("You are about to create a huge\n"
@@ -530,8 +582,8 @@ save_dialog (gint32 image_ID)
   gimp_help_set_help_data (entry, _("The text for the table caption."), NULL);
 
   g_signal_connect (entry, "changed",
-                    G_CALLBACK (gtm_caption_callback),
-                    NULL);
+                    G_CALLBACK (entry_changed_callback),
+                    gtmvals.captiontxt);
 
   g_object_bind_property (toggle, "active",
                           entry,  "sensitive",
@@ -548,8 +600,8 @@ save_dialog (gint32 image_ID)
   gimp_help_set_help_data (entry, _("The text to go into each cell."), NULL);
 
   g_signal_connect (entry, "changed",
-                    G_CALLBACK (gtm_cellcontent_callback),
-                    NULL);
+                    G_CALLBACK (entry_changed_callback),
+                    gtmvals.cellcontent);
 
   gtk_widget_show (table);
   gtk_widget_show (frame);
@@ -563,8 +615,10 @@ save_dialog (gint32 image_ID)
   gtk_table_set_row_spacings (GTK_TABLE (table), 6);
   gtk_container_add (GTK_CONTAINER (frame), table);
 
-  spinbutton = gimp_spin_button_new (&adj, gtmvals.border,
-                                     0, 1000, 1, 10, 0, 1, 0);
+  adj = (GtkAdjustment *) gtk_adjustment_new (gtmvals.border,
+                                              0, 1000, 1, 10, 0);
+  spinbutton = gtk_spin_button_new (adj, 1.0, 0);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
                              _("_Border:"), 0.0, 0.5,
                              spinbutton, 1, TRUE);
@@ -590,8 +644,8 @@ save_dialog (gint32 image_ID)
                            NULL);
 
   g_signal_connect (entry, "changed",
-                    G_CALLBACK (gtm_clwidth_callback),
-                    NULL);
+                    G_CALLBACK (entry_changed_callback),
+                    gtmvals.clwidth);
 
   entry = gtk_entry_new ();
   gtk_widget_set_size_request (entry, 60, -1);
@@ -606,11 +660,13 @@ save_dialog (gint32 image_ID)
                            NULL);
 
   g_signal_connect (entry, "changed",
-                    G_CALLBACK (gtm_clheight_callback),
-                    NULL);
+                    G_CALLBACK (entry_changed_callback),
+                    gtmvals.clheight);
 
-  spinbutton = gimp_spin_button_new (&adj, gtmvals.cellpadding,
-                                     0, 1000, 1, 10, 0, 1, 0);
+  adj = (GtkAdjustment *) gtk_adjustment_new (gtmvals.cellpadding,
+                                              0, 1000, 1, 10, 0);
+  spinbutton = gtk_spin_button_new (adj, 1.0, 0);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 3,
                              _("Cell-_padding:"), 0.0, 0.5,
                              spinbutton, 1, TRUE);
@@ -622,8 +678,10 @@ save_dialog (gint32 image_ID)
                     G_CALLBACK (gimp_int_adjustment_update),
                     &gtmvals.cellpadding);
 
-  spinbutton = gimp_spin_button_new (&adj, gtmvals.cellspacing,
-                                     0, 1000, 1, 10, 0, 1, 0);
+  adj = (GtkAdjustment *) gtk_adjustment_new (gtmvals.cellspacing,
+                                              0, 1000, 1, 10, 0);
+  spinbutton = gtk_spin_button_new (adj, 1.0, 0);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 4,
                              _("Cell-_spacing:"), 0.0, 0.5,
                              spinbutton, 1, TRUE);
@@ -648,40 +706,36 @@ save_dialog (gint32 image_ID)
 }
 
 static gboolean
-color_comp (guchar *buffer,
+print (GOutputStream  *output,
+       GError        **error,
+       const gchar    *format,
+       ...)
+{
+  va_list  args;
+  gboolean success;
+
+  va_start (args, format);
+  success = g_output_stream_vprintf (output, NULL, NULL,
+                                     error, format, args);
+  va_end (args);
+
+  return success;
+}
+
+static gboolean
+color_comp (guchar *buf,
             guchar *buf2)
 {
-  return (buffer[0] == buf2[0] &&
-          buffer[1] == buf2[1] &&
-          buffer[2] == buf2[2]);
+  return (buf[0] == buf2[0] &&
+          buf[1] == buf2[1] &&
+          buf[2] == buf2[2]);
 }
 
-/*  Save interface functions  */
+/*  Export interface functions  */
 
 static void
-gtm_caption_callback (GtkWidget *widget,
-                      gpointer   data)
+entry_changed_callback (GtkEntry *entry,
+                        gchar    *string)
 {
-  strncpy (gtmvals.captiontxt, gtk_entry_get_text (GTK_ENTRY (widget)), 255);
-}
-
-static void
-gtm_cellcontent_callback (GtkWidget *widget,
-                          gpointer   data)
-{
-  strncpy (gtmvals.cellcontent, gtk_entry_get_text (GTK_ENTRY (widget)), 255);
-}
-
-static void
-gtm_clwidth_callback (GtkWidget *widget,
-                      gpointer   data)
-{
-  strncpy (gtmvals.clwidth, gtk_entry_get_text (GTK_ENTRY (widget)), 255);
-}
-
-static void
-gtm_clheight_callback (GtkWidget *widget,
-                       gpointer   data)
-{
-  strncpy (gtmvals.clheight, gtk_entry_get_text (GTK_ENTRY (widget)), 255);
+  strncpy (string, gtk_entry_get_text (entry), 255);
 }

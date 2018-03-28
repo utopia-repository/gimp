@@ -30,6 +30,7 @@
 
 #include "core/gimp.h"
 #include "core/gimp-contexts.h"
+#include "core/gimp-internal-data.h"
 #include "core/gimplist.h"
 #include "core/gimptoolinfo.h"
 #include "core/gimptooloptions.h"
@@ -46,13 +47,10 @@
 #include "gimpbycolorselecttool.h"
 #include "gimpcagetool.h"
 #include "gimpclonetool.h"
-#include "gimpcolorbalancetool.h"
-#include "gimpcolorizetool.h"
 #include "gimpcolorpickertool.h"
 #include "gimpconvolvetool.h"
 #include "gimpcroptool.h"
 #include "gimpcurvestool.h"
-#include "gimpdesaturatetool.h"
 #include "gimpdodgeburntool.h"
 #include "gimpellipseselecttool.h"
 #include "gimperasertool.h"
@@ -61,27 +59,32 @@
 #include "gimpforegroundselecttool.h"
 #include "gimpfuzzyselecttool.h"
 #include "gimpgegltool.h"
+#include "gimphandletransformtool.h"
 #include "gimphealtool.h"
-#include "gimphuesaturationtool.h"
 #include "gimpinktool.h"
 #include "gimpiscissorstool.h"
 #include "gimplevelstool.h"
+#include "gimpoperationtool.h"
 #include "gimpmagnifytool.h"
 #include "gimpmeasuretool.h"
 #include "gimpmovetool.h"
+#include "gimpmybrushtool.h"
+#include "gimpnpointdeformationtool.h"
 #include "gimppaintbrushtool.h"
 #include "gimppenciltool.h"
 #include "gimpperspectiveclonetool.h"
 #include "gimpperspectivetool.h"
-#include "gimpposterizetool.h"
 #include "gimpthresholdtool.h"
 #include "gimprectangleselecttool.h"
 #include "gimprotatetool.h"
+#include "gimpseamlessclonetool.h"
 #include "gimpscaletool.h"
 #include "gimpsheartool.h"
 #include "gimpsmudgetool.h"
 #include "gimptexttool.h"
+#include "gimpunifiedtransformtool.h"
 #include "gimpvectortool.h"
+#include "gimpwarptool.h"
 
 #include "gimp-intl.h"
 
@@ -93,13 +96,13 @@ static void   gimp_tools_register (GType                   tool_type,
                                    GimpToolOptionsGUIFunc  options_gui_func,
                                    GimpContextPropMask     context_props,
                                    const gchar            *identifier,
-                                   const gchar            *blurb,
-                                   const gchar            *help,
+                                   const gchar            *label,
+                                   const gchar            *tooltip,
                                    const gchar            *menu_label,
                                    const gchar            *menu_accel,
                                    const gchar            *help_domain,
                                    const gchar            *help_data,
-                                   const gchar            *stock_id,
+                                   const gchar            *icon_name,
                                    gpointer                data);
 
 
@@ -115,68 +118,69 @@ gimp_tools_init (Gimp *gimp)
 {
   GimpToolRegisterFunc register_funcs[] =
   {
-    /*  register tools in reverse order  */
+    /*  selection tools */
 
-    /*  color tools  */
-    gimp_gegl_tool_register,
-    gimp_posterize_tool_register,
-    gimp_curves_tool_register,
-    gimp_levels_tool_register,
-    gimp_threshold_tool_register,
-    gimp_brightness_contrast_tool_register,
-    gimp_colorize_tool_register,
-    gimp_hue_saturation_tool_register,
-    gimp_color_balance_tool_register,
-    gimp_desaturate_tool_register,
-
-    /*  paint tools  */
-
-    gimp_dodge_burn_tool_register,
-    gimp_smudge_tool_register,
-    gimp_convolve_tool_register,
-    gimp_perspective_clone_tool_register,
-    gimp_heal_tool_register,
-    gimp_clone_tool_register,
-    gimp_ink_tool_register,
-    gimp_airbrush_tool_register,
-    gimp_eraser_tool_register,
-    gimp_paintbrush_tool_register,
-    gimp_pencil_tool_register,
-    gimp_blend_tool_register,
-    gimp_bucket_fill_tool_register,
-    gimp_text_tool_register,
-
-    /*  transform tools  */
-
-    gimp_cage_tool_register,
-    gimp_flip_tool_register,
-    gimp_perspective_tool_register,
-    gimp_shear_tool_register,
-    gimp_scale_tool_register,
-    gimp_rotate_tool_register,
-    gimp_crop_tool_register,
-    gimp_align_tool_register,
-    gimp_move_tool_register,
-
-    /*  non-modifying tools  */
-
-    gimp_measure_tool_register,
-    gimp_magnify_tool_register,
-    gimp_color_picker_tool_register,
+    gimp_rectangle_select_tool_register,
+    gimp_ellipse_select_tool_register,
+    gimp_free_select_tool_register,
+    gimp_fuzzy_select_tool_register,
+    gimp_by_color_select_tool_register,
+    gimp_iscissors_tool_register,
+    gimp_foreground_select_tool_register,
 
     /*  path tool */
 
     gimp_vector_tool_register,
 
-    /*  selection tools */
+    /*  non-modifying tools  */
 
-    gimp_foreground_select_tool_register,
-    gimp_iscissors_tool_register,
-    gimp_by_color_select_tool_register,
-    gimp_fuzzy_select_tool_register,
-    gimp_free_select_tool_register,
-    gimp_ellipse_select_tool_register,
-    gimp_rectangle_select_tool_register
+    gimp_color_picker_tool_register,
+    gimp_magnify_tool_register,
+    gimp_measure_tool_register,
+
+    /*  transform tools  */
+
+    gimp_move_tool_register,
+    gimp_align_tool_register,
+    gimp_crop_tool_register,
+    gimp_unified_transform_tool_register,
+    gimp_rotate_tool_register,
+    gimp_scale_tool_register,
+    gimp_shear_tool_register,
+    gimp_handle_transform_tool_register,
+    gimp_perspective_tool_register,
+    gimp_flip_tool_register,
+    gimp_cage_tool_register,
+    gimp_warp_tool_register,
+    gimp_n_point_deformation_tool_register,
+
+    /*  paint tools  */
+
+    gimp_seamless_clone_tool_register,
+    gimp_text_tool_register,
+    gimp_bucket_fill_tool_register,
+    gimp_blend_tool_register,
+    gimp_pencil_tool_register,
+    gimp_paintbrush_tool_register,
+    gimp_eraser_tool_register,
+    gimp_airbrush_tool_register,
+    gimp_ink_tool_register,
+    gimp_mybrush_tool_register,
+    gimp_clone_tool_register,
+    gimp_heal_tool_register,
+    gimp_perspective_clone_tool_register,
+    gimp_convolve_tool_register,
+    gimp_smudge_tool_register,
+    gimp_dodge_burn_tool_register,
+
+    /*  color tools  */
+
+    gimp_brightness_contrast_tool_register,
+    gimp_threshold_tool_register,
+    gimp_levels_tool_register,
+    gimp_curves_tool_register,
+    gimp_gegl_tool_register,
+    gimp_operation_tool_register
   };
 
   GList *default_order = NULL;
@@ -228,6 +232,8 @@ gimp_tools_exit (Gimp *gimp)
 
   g_object_set_data (G_OBJECT (gimp), "gimp-tools-default-order", NULL);
 
+  tool_manager_exit (gimp);
+
   for (list = gimp_get_tool_info_iter (gimp);
        list;
        list = g_list_next (list))
@@ -239,43 +245,40 @@ gimp_tools_exit (Gimp *gimp)
       gtk_widget_destroy (options_gui);
       gimp_tools_set_tool_options_gui (tool_info->tool_options, NULL);
     }
-
-  tool_manager_exit (gimp);
 }
 
 void
 gimp_tools_restore (Gimp *gimp)
 {
   GimpContainer *gimp_list;
-  gchar         *filename;
+  GimpObject    *object;
+  GFile         *file;
   GList         *list;
   GError        *error = NULL;
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  gimp_list = gimp_list_new (GIMP_TYPE_TOOL_INFO, FALSE);
+  gimp_list = g_object_new (GIMP_TYPE_LIST,
+                            "children-type", GIMP_TYPE_TOOL_INFO,
+                            "append",        TRUE,
+                            NULL);
 
-  filename = gimp_personal_rc_file ("toolrc");
+  file = gimp_directory_file ("toolrc", NULL);
 
   if (gimp->be_verbose)
-    g_print ("Parsing '%s'\n", gimp_filename_to_utf8 (filename));
+    g_print ("Parsing '%s'\n", gimp_file_get_utf8_name (file));
 
-  if (gimp_config_deserialize_file (GIMP_CONFIG (gimp_list), filename,
-                                    NULL, NULL))
+  if (gimp_config_deserialize_gfile (GIMP_CONFIG (gimp_list), file,
+                                     NULL, &error))
     {
       gint n = gimp_container_get_n_children (gimp->tool_info_list);
       gint i;
 
-      gimp_list_reverse (GIMP_LIST (gimp_list));
-
-      for (list = GIMP_LIST (gimp_list)->list, i = 0;
+      for (list = GIMP_LIST (gimp_list)->queue->head, i = 0;
            list;
            list = g_list_next (list), i++)
         {
-          const gchar *name;
-          GimpObject  *object;
-
-          name = gimp_object_get_name (list->data);
+          const gchar *name = gimp_object_get_name (list->data);
 
           object = gimp_container_get_child_by_name (gimp->tool_info_list,
                                                      name);
@@ -291,9 +294,22 @@ gimp_tools_restore (Gimp *gimp)
             }
         }
     }
+  else
+    {
+      if (error->code != G_IO_ERROR_NOT_FOUND)
+        gimp_message_literal (gimp, NULL, GIMP_MESSAGE_WARNING, error->message);
 
-  g_free (filename);
+      g_clear_error (&error);
+    }
+
+  g_object_unref (file);
   g_object_unref (gimp_list);
+
+  /* make the generic operation tool invisible by default */
+  object = gimp_container_get_child_by_name (gimp->tool_info_list,
+                                             "gimp-operation-tool");
+  if (object)
+    g_object_set (object, "visible", FALSE, NULL);
 
   for (list = gimp_get_tool_info_iter (gimp);
        list;
@@ -302,13 +318,28 @@ gimp_tools_restore (Gimp *gimp)
       GimpToolInfo *tool_info = GIMP_TOOL_INFO (list->data);
 
       /*  get default values from prefs (see bug #120832)  */
-      gimp_tool_options_reset (tool_info->tool_options);
+      gimp_config_reset (GIMP_CONFIG (tool_info->tool_options));
     }
 
   if (! gimp_contexts_load (gimp, &error))
     {
       gimp_message_literal (gimp, NULL, GIMP_MESSAGE_WARNING, error->message);
       g_clear_error (&error);
+    }
+
+  if (! gimp_internal_data_load (gimp, &error))
+    {
+      gimp_message_literal (gimp, NULL, GIMP_MESSAGE_WARNING, error->message);
+      g_clear_error (&error);
+    }
+
+  /*  make sure there is always a tool active, so broken config files
+   *  can't leave us with no initial tool
+   */
+  if (! gimp_context_get_tool (gimp_get_user_context (gimp)))
+    {
+      gimp_context_set_tool (gimp_get_user_context (gimp),
+                             gimp_get_tool_info_iter (gimp)->data);
     }
 
   for (list = gimp_get_tool_info_iter (gimp);
@@ -328,10 +359,10 @@ gimp_tools_restore (Gimp *gimp)
        */
       gimp_context_copy_properties (gimp_get_user_context (gimp),
                                     GIMP_CONTEXT (tool_info->tool_options),
-                                    GIMP_CONTEXT_ALL_PROPS_MASK &~
-                                    (tool_info->context_props |
-                                     GIMP_CONTEXT_TOOL_MASK   |
-                                     GIMP_CONTEXT_PAINT_INFO_MASK));
+                                    GIMP_CONTEXT_PROP_MASK_ALL &~
+                                    (tool_info->context_props    |
+                                     GIMP_CONTEXT_PROP_MASK_TOOL |
+                                     GIMP_CONTEXT_PROP_MASK_PAINT_INFO));
 
       gimp_tool_options_deserialize (tool_info->tool_options, NULL);
 
@@ -367,7 +398,7 @@ gimp_tools_save (Gimp     *gimp,
                  gboolean  save_tool_options,
                  gboolean  always_save)
 {
-  gchar *filename;
+  GFile *file;
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
@@ -379,9 +410,16 @@ gimp_tools_save (Gimp     *gimp,
       if (! gimp_contexts_save (gimp, &error))
         {
           gimp_message_literal (gimp, NULL, GIMP_MESSAGE_WARNING,
-				error->message);
+                                error->message);
           g_clear_error (&error);
         }
+
+        if (! gimp_internal_data_save (gimp, &error))
+          {
+            gimp_message_literal (gimp, NULL, GIMP_MESSAGE_WARNING,
+                                  error->message);
+            g_clear_error (&error);
+          }
 
       gimp_tool_options_create_folder ();
 
@@ -395,17 +433,17 @@ gimp_tools_save (Gimp     *gimp,
         }
     }
 
-  filename = gimp_personal_rc_file ("toolrc");
+  file = gimp_directory_file ("toolrc", NULL);
 
   if (gimp->be_verbose)
-    g_print ("Writing '%s'\n", gimp_filename_to_utf8 (filename));
+    g_print ("Writing '%s'\n", gimp_file_get_utf8_name (file));
 
-  gimp_config_serialize_to_file (GIMP_CONFIG (gimp->tool_info_list),
-                                 filename,
-                                 "GIMP toolrc",
-                                 "end of toolrc",
-                                 NULL, NULL);
-  g_free (filename);
+  gimp_config_serialize_to_gfile (GIMP_CONFIG (gimp->tool_info_list),
+                                  file,
+                                  "GIMP toolrc",
+                                  "end of toolrc",
+                                  NULL, NULL);
+  g_object_unref (file);
 }
 
 gboolean
@@ -428,6 +466,9 @@ gimp_tools_clear (Gimp    *gimp,
 
   if (success)
     success = gimp_contexts_clear (gimp, error);
+
+  if (success)
+    success = gimp_internal_data_clear (gimp, error);
 
   if (success)
     tool_options_deleted = TRUE;
@@ -453,13 +494,13 @@ gimp_tools_register (GType                   tool_type,
                      GimpToolOptionsGUIFunc  options_gui_func,
                      GimpContextPropMask     context_props,
                      const gchar            *identifier,
-                     const gchar            *blurb,
-                     const gchar            *help,
+                     const gchar            *label,
+                     const gchar            *tooltip,
                      const gchar            *menu_label,
                      const gchar            *menu_accel,
                      const gchar            *help_domain,
                      const gchar            *help_data,
-                     const gchar            *stock_id,
+                     const gchar            *icon_name,
                      gpointer                data)
 {
   Gimp         *gimp = (Gimp *) data;
@@ -519,6 +560,10 @@ gimp_tools_register (GType                   tool_type,
     {
       paint_core_name = "gimp-ink";
     }
+  else if (tool_type == GIMP_TYPE_MYBRUSH_TOOL)
+    {
+      paint_core_name = "gimp-mybrush";
+    }
   else
     {
       paint_core_name = "gimp-paintbrush";
@@ -529,18 +574,23 @@ gimp_tools_register (GType                   tool_type,
                                   tool_options_type,
                                   context_props,
                                   identifier,
-                                  blurb,
-                                  help,
+                                  label,
+                                  tooltip,
                                   menu_label,
                                   menu_accel,
                                   help_domain,
                                   help_data,
                                   paint_core_name,
-                                  stock_id);
+                                  icon_name);
 
-  visible = (! g_type_is_a (tool_type, GIMP_TYPE_IMAGE_MAP_TOOL));
+  visible = (! g_type_is_a (tool_type, GIMP_TYPE_FILTER_TOOL));
 
   g_object_set (tool_info, "visible", visible, NULL);
+
+  /* hack to make the operation tools always invisible */
+  if (tool_type == GIMP_TYPE_OPERATION_TOOL)
+    tool_info->hidden = TRUE;
+
   g_object_set_data (G_OBJECT (tool_info), "gimp-tool-default-visible",
                      GINT_TO_POINTER (visible));
 

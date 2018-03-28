@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -104,10 +105,9 @@ gimp_fill_editor_constructed (GObject *object)
   GtkWidget      *box;
   GtkWidget      *button;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_FILL_OPTIONS (editor->options));
+  gimp_assert (GIMP_IS_FILL_OPTIONS (editor->options));
 
   box = gimp_prop_enum_radio_box_new (G_OBJECT (editor->options), "style",
                                       0, 0);
@@ -150,11 +150,7 @@ gimp_fill_editor_finalize (GObject *object)
 {
   GimpFillEditor *editor = GIMP_FILL_EDITOR (object);
 
-  if (editor->options)
-    {
-      g_object_unref (editor->options);
-      editor->options = NULL;
-    }
+  g_clear_object (&editor->options);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }

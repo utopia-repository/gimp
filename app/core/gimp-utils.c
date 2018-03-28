@@ -26,273 +26,119 @@
 #include <langinfo.h>
 #endif
 
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
 #include <glib.h>
 
 #ifdef G_OS_WIN32
+#define _WIN32_WINNT 0x0500
 #include <windows.h>
+#include <process.h>
+#endif
+
+#if defined(G_OS_UNIX) && defined(HAVE_EXECINFO_H)
+/* For get_backtrace() */
+#include <stdlib.h>
+#include <string.h>
+#include <execinfo.h>
 #endif
 
 #include <cairo.h>
-#include <glib-object.h>
+#include <gegl.h>
 #include <gobject/gvaluecollector.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
 #include "libgimpcolor/gimpcolor.h"
-#include "libgimpconfig/gimpconfig.h"
 
 #include "core-types.h"
 
-#include "base/base-utils.h"
-
-#include "config/gimpbaseconfig.h"
-
 #include "gimp.h"
 #include "gimp-utils.h"
-#include "gimpcontainer.h"
 #include "gimpcontext.h"
-#include "gimpparamspecs.h"
+#include "gimperror.h"
+
+#include "gimp-intl.h"
 
 
-gint64
-gimp_g_type_instance_get_memsize (GTypeInstance *instance)
+#define MAX_FUNC 100
+
+
+gint
+gimp_get_pid (void)
 {
-  if (instance)
-    {
-      GTypeQuery type_query;
+  return (gint) getpid ();
+}
 
-      g_type_query (G_TYPE_FROM_INSTANCE (instance), &type_query);
+guint64
+gimp_get_physical_memory_size (void)
+{
+#ifdef G_OS_UNIX
+#if defined(HAVE_UNISTD_H) && defined(_SC_PHYS_PAGES) && defined (_SC_PAGE_SIZE)
+  return (guint64) sysconf (_SC_PHYS_PAGES) * sysconf (_SC_PAGE_SIZE);
+#endif
+#endif
 
-      return type_query.instance_size;
-    }
+#ifdef G_OS_WIN32
+# if defined(_MSC_VER) && (_MSC_VER <= 1200)
+  MEMORYSTATUS memory_status;
+  memory_status.dwLength = sizeof (memory_status);
+
+  GlobalMemoryStatus (&memory_status);
+  return memory_status.dwTotalPhys;
+# else
+  /* requires w2k and newer SDK than provided with msvc6 */
+  MEMORYSTATUSEX memory_status;
+
+  memory_status.dwLength = sizeof (memory_status);
+
+  if (GlobalMemoryStatusEx (&memory_status))
+    return memory_status.ullTotalPhys;
+# endif
+#endif
 
   return 0;
 }
 
-gint64
-gimp_g_object_get_memsize (GObject *object)
+/**
+ * gimp_get_backtrace:
+ *
+ * Returns: The current stack trace. Free with g_free(). Mainly meant
+ * for debugging, for example storing the allocation stack traces for
+ * objects to hunt down leaks.
+ **/
+gchar *
+gimp_get_backtrace (void)
 {
-  if (object)
-    return gimp_g_type_instance_get_memsize ((GTypeInstance *) object);
+#if defined(G_OS_UNIX) && defined(HAVE_EXECINFO_H)
+  void     *functions[MAX_FUNC];
+  char    **function_names;
+  int       n_functions;
+  int       i;
+  GString  *result;
 
-  return 0;
+  /* Get symbols */
+  n_functions    = backtrace (functions, MAX_FUNC);
+  function_names = backtrace_symbols (functions, n_functions);
+
+  /* Construct stack trace */
+  result = g_string_new ("");
+  for (i = 0; i < n_functions; i++)
+    g_string_append_printf (result, "%s\n", function_names[i]);
+
+  /* We must not free the function names themselves, we only need to
+   * free the array that points to them
+   */
+  free (function_names);
+
+  return g_string_free (result, FALSE/*free_segment*/);
+#else
+  return g_strdup ("backtrace() only available with GNU libc\n");
+#endif
 }
-
-gint64
-gimp_g_hash_table_get_memsize (GHashTable *hash,
-                               gint64      data_size)
-{
-  if (hash)
-    return (2 * sizeof (gint) +
-            5 * sizeof (gpointer) +
-            g_hash_table_size (hash) * (3 * sizeof (gpointer) + data_size));
-
-  return 0;
-}
-
-typedef struct
-{
-  GimpMemsizeFunc func;
-  gint64          memsize;
-  gint64          gui_size;
-} HashMemsize;
-
-static void
-hash_memsize_foreach (gpointer     key,
-                      gpointer     value,
-                      HashMemsize *memsize)
-{
-  gint64 gui_size = 0;
-
-  memsize->memsize  += memsize->func (value, &gui_size);
-  memsize->gui_size += gui_size;
-}
-
-gint64
-gimp_g_hash_table_get_memsize_foreach (GHashTable      *hash,
-                                       GimpMemsizeFunc  func,
-                                       gint64          *gui_size)
-{
-  HashMemsize memsize;
-
-  g_return_val_if_fail (func != NULL, 0);
-
-  if (! hash)
-    return 0;
-
-  memsize.func     = func;
-  memsize.memsize  = 0;
-  memsize.gui_size = 0;
-
-  g_hash_table_foreach (hash, (GHFunc) hash_memsize_foreach, &memsize);
-
-  if (gui_size)
-    *gui_size = memsize.gui_size;
-
-  return memsize.memsize + gimp_g_hash_table_get_memsize (hash, 0);
-}
-
-gint64
-gimp_g_slist_get_memsize (GSList  *slist,
-                          gint64   data_size)
-{
-  return g_slist_length (slist) * (data_size + sizeof (GSList));
-}
-
-gint64
-gimp_g_slist_get_memsize_foreach (GSList          *slist,
-                                  GimpMemsizeFunc  func,
-                                  gint64          *gui_size)
-{
-  GSList *l;
-  gint64  memsize = 0;
-
-  g_return_val_if_fail (func != NULL, 0);
-
-  for (l = slist; l; l = g_slist_next (l))
-    memsize += sizeof (GSList) + func (l->data, gui_size);
-
-  return memsize;
-}
-
-gint64
-gimp_g_list_get_memsize (GList  *list,
-                         gint64  data_size)
-{
-  return g_list_length (list) * (data_size + sizeof (GList));
-}
-
-gint64
-gimp_g_list_get_memsize_foreach (GList           *list,
-                                 GimpMemsizeFunc  func,
-                                 gint64          *gui_size)
-{
-  GList  *l;
-  gint64  memsize = 0;
-
-  g_return_val_if_fail (func != NULL, 0);
-
-  for (l = list; l; l = g_list_next (l))
-    memsize += sizeof (GList) + func (l->data, gui_size);
-
-  return memsize;
-}
-
-gint64
-gimp_g_value_get_memsize (GValue *value)
-{
-  gint64 memsize = 0;
-
-  if (! value)
-    return 0;
-
-  if (G_VALUE_HOLDS_STRING (value))
-    {
-      memsize += gimp_string_get_memsize (g_value_get_string (value));
-    }
-  else if (G_VALUE_HOLDS_BOXED (value))
-    {
-      if (GIMP_VALUE_HOLDS_RGB (value))
-        {
-          memsize += sizeof (GimpRGB);
-        }
-      else if (GIMP_VALUE_HOLDS_MATRIX2 (value))
-        {
-          memsize += sizeof (GimpMatrix2);
-        }
-      else if (GIMP_VALUE_HOLDS_PARASITE (value))
-        {
-          memsize += gimp_parasite_get_memsize (g_value_get_boxed (value),
-                                                NULL);
-        }
-      else if (GIMP_VALUE_HOLDS_ARRAY (value)       ||
-               GIMP_VALUE_HOLDS_INT8_ARRAY (value)  ||
-               GIMP_VALUE_HOLDS_INT16_ARRAY (value) ||
-               GIMP_VALUE_HOLDS_INT32_ARRAY (value) ||
-               GIMP_VALUE_HOLDS_FLOAT_ARRAY (value))
-        {
-          GimpArray *array = g_value_get_boxed (value);
-
-          if (array)
-            memsize += (sizeof (GimpArray) +
-                        array->static_data ? 0 : array->length);
-        }
-      else if (GIMP_VALUE_HOLDS_STRING_ARRAY (value))
-        {
-          GimpArray *array = g_value_get_boxed (value);
-
-          if (array)
-            {
-              memsize += sizeof (GimpArray);
-
-              if (! array->static_data)
-                {
-                  gchar **tmp = (gchar **) array->data;
-                  gint    i;
-
-                  memsize += array->length * sizeof (gchar *);
-
-                  for (i = 0; i < array->length; i++)
-                    memsize += gimp_string_get_memsize (tmp[i]);
-                }
-            }
-        }
-      else
-        {
-          g_printerr ("%s: unhandled boxed value type: %s\n",
-                      G_STRFUNC, G_VALUE_TYPE_NAME (value));
-        }
-    }
-  else if (G_VALUE_HOLDS_OBJECT (value))
-    {
-      g_printerr ("%s: unhandled object value type: %s\n",
-                  G_STRFUNC, G_VALUE_TYPE_NAME (value));
-    }
-
-  return memsize + sizeof (GValue);
-}
-
-gint64
-gimp_g_param_spec_get_memsize (GParamSpec *pspec)
-{
-  gint64 memsize = 0;
-
-  if (! pspec)
-    return 0;
-
-  if (! (pspec->flags & G_PARAM_STATIC_NAME))
-    memsize += gimp_string_get_memsize (g_param_spec_get_name (pspec));
-
-  if (! (pspec->flags & G_PARAM_STATIC_NICK))
-    memsize += gimp_string_get_memsize (g_param_spec_get_nick (pspec));
-
-  if (! (pspec->flags & G_PARAM_STATIC_BLURB))
-    memsize += gimp_string_get_memsize (g_param_spec_get_blurb (pspec));
-
-  return memsize + gimp_g_type_instance_get_memsize ((GTypeInstance *) pspec);
-}
-
-gint64
-gimp_string_get_memsize (const gchar *string)
-{
-  if (string)
-    return strlen (string) + 1;
-
-  return 0;
-}
-
-gint64
-gimp_parasite_get_memsize (GimpParasite *parasite,
-                           gint64       *gui_size)
-{
-  if (parasite)
-    return (sizeof (GimpParasite) +
-            gimp_string_get_memsize (parasite->name) +
-            parasite->size);
-
-  return 0;
-}
-
 
 /*
  *  basically copied from gtk_get_default_language()
@@ -390,37 +236,42 @@ gimp_get_default_unit (void)
   return GIMP_UNIT_MM;
 }
 
-GParameter *
-gimp_parameters_append (GType       object_type,
-                        GParameter *params,
-                        gint       *n_params,
+gchar **
+gimp_properties_append (GType    object_type,
+                        gint    *n_properties,
+                        gchar  **names,
+                        GValue **values,
                         ...)
 {
   va_list args;
 
   g_return_val_if_fail (g_type_is_a (object_type, G_TYPE_OBJECT), NULL);
-  g_return_val_if_fail (n_params != NULL, NULL);
-  g_return_val_if_fail (params != NULL || *n_params == 0, NULL);
+  g_return_val_if_fail (n_properties != NULL, NULL);
+  g_return_val_if_fail (names != NULL || *n_properties == 0, NULL);
+  g_return_val_if_fail (values != NULL || *n_properties == 0, NULL);
 
-  va_start (args, n_params);
-  params = gimp_parameters_append_valist (object_type, params, n_params, args);
+  va_start (args, values);
+  names = gimp_properties_append_valist (object_type, n_properties,
+                                         names, values, args);
   va_end (args);
 
-  return params;
+  return names;
 }
 
-GParameter *
-gimp_parameters_append_valist (GType       object_type,
-                               GParameter *params,
-                               gint       *n_params,
-                               va_list     args)
+gchar **
+gimp_properties_append_valist (GType     object_type,
+                               gint      *n_properties,
+                               gchar   **names,
+                               GValue  **values,
+                               va_list   args)
 {
   GObjectClass *object_class;
   gchar        *param_name;
 
   g_return_val_if_fail (g_type_is_a (object_type, G_TYPE_OBJECT), NULL);
-  g_return_val_if_fail (n_params != NULL, NULL);
-  g_return_val_if_fail (params != NULL || *n_params == 0, NULL);
+  g_return_val_if_fail (n_properties != NULL, NULL);
+  g_return_val_if_fail (names != NULL || *n_properties == 0, NULL);
+  g_return_val_if_fail (values != NULL || *n_properties == 0, NULL);
 
   object_class = g_type_class_ref (object_type);
 
@@ -428,6 +279,7 @@ gimp_parameters_append_valist (GType       object_type,
 
   while (param_name)
     {
+      GValue     *value;
       gchar      *error = NULL;
       GParamSpec *pspec = g_object_class_find_property (object_class,
                                                         param_name);
@@ -439,92 +291,58 @@ gimp_parameters_append_valist (GType       object_type,
           break;
         }
 
-      params = g_renew (GParameter, params, *n_params + 1);
+      names   = g_renew (gchar *, names,   *n_properties + 1);
+      *values = g_renew (GValue,  *values, *n_properties + 1);
 
-      params[*n_params].name         = param_name;
-      params[*n_params].value.g_type = 0;
+      value = &((*values)[*n_properties]);
 
-      g_value_init (&params[*n_params].value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+      names[*n_properties] = g_strdup (param_name);
+      value->g_type = 0;
 
-      G_VALUE_COLLECT (&params[*n_params].value, args, 0, &error);
+      g_value_init (value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+
+      G_VALUE_COLLECT (value, args, 0, &error);
 
       if (error)
         {
           g_warning ("%s: %s", G_STRFUNC, error);
           g_free (error);
-          g_value_unset (&params[*n_params].value);
+          g_free (names[*n_properties]);
+          g_value_unset (value);
           break;
         }
 
-      *n_params = *n_params + 1;
+      *n_properties = *n_properties + 1;
 
       param_name = va_arg (args, gchar *);
     }
 
   g_type_class_unref (object_class);
 
-  return params;
+  return names;
 }
 
 void
-gimp_parameters_free (GParameter *params,
-                      gint        n_params)
+gimp_properties_free (gint     n_properties,
+                      gchar  **names,
+                      GValue  *values)
 {
-  g_return_if_fail (params != NULL || n_params == 0);
+  g_return_if_fail (names  != NULL || n_properties == 0);
+  g_return_if_fail (values != NULL || n_properties == 0);
 
-  if (params)
+  if (names && values)
     {
       gint i;
 
-      for (i = 0; i < n_params; i++)
-        g_value_unset (&params[i].value);
+      for (i = 0; i < n_properties; i++)
+        {
+          g_free (names[i]);
+          g_value_unset (&values[i]);
+        }
 
-      g_free (params);
+      g_free (names);
+      g_free (values);
     }
-}
-
-void
-gimp_value_array_truncate (GValueArray  *args,
-                           gint          n_values)
-{
-  gint i;
-
-  g_return_if_fail (args != NULL);
-  g_return_if_fail (n_values > 0 && n_values <= args->n_values);
-
-  for (i = args->n_values; i > n_values; i--)
-    g_value_array_remove (args, i - 1);
-}
-
-gchar *
-gimp_get_temp_filename (Gimp        *gimp,
-                        const gchar *extension)
-{
-  static gint  id = 0;
-  static gint  pid;
-  gchar       *filename;
-  gchar       *basename;
-  gchar       *path;
-
-  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
-
-  if (id == 0)
-    pid = get_pid ();
-
-  if (extension)
-    basename = g_strdup_printf ("gimp-temp-%d%d.%s", pid, id++, extension);
-  else
-    basename = g_strdup_printf ("gimp-temp-%d%d", pid, id++);
-
-  path = gimp_config_path_expand (GIMP_BASE_CONFIG (gimp->config)->temp_path,
-                                  TRUE, NULL);
-
-  filename = g_build_filename (path, basename, NULL);
-
-  g_free (path);
-  g_free (basename);
-
-  return filename;
 }
 
 /*  markup unescape code stolen and adapted from gmarkup.c
@@ -643,7 +461,7 @@ unescape_gstring (GString *string)
         }
     }
 
-  g_assert (to - string->str <= string->len);
+  gimp_assert (to - string->str <= string->len);
   if (to - string->str != string->len)
     g_string_truncate (string, to - string->str);
 
@@ -698,7 +516,7 @@ gimp_enum_get_value_name (GType enum_type,
                           gint  value)
 {
   const gchar *value_name = NULL;
-  
+
   gimp_enum_get_value (enum_type,
                        value,
                        &value_name,
@@ -707,6 +525,62 @@ gimp_enum_get_value_name (GType enum_type,
                        NULL /*value_help*/);
 
   return value_name;
+}
+
+gboolean
+gimp_get_fill_params (GimpContext   *context,
+                      GimpFillType   fill_type,
+                      GimpRGB       *color,
+                      GimpPattern  **pattern,
+                      GError       **error)
+
+{
+  g_return_val_if_fail (GIMP_IS_CONTEXT (context), FALSE);
+  g_return_val_if_fail (color != NULL, FALSE);
+  g_return_val_if_fail (pattern != NULL, FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  *pattern = NULL;
+
+  switch (fill_type)
+    {
+    case GIMP_FILL_FOREGROUND:
+      gimp_context_get_foreground (context, color);
+      break;
+
+    case GIMP_FILL_BACKGROUND:
+      gimp_context_get_background (context, color);
+      break;
+
+    case GIMP_FILL_WHITE:
+      gimp_rgba_set (color, 1.0, 1.0, 1.0, GIMP_OPACITY_OPAQUE);
+      break;
+
+    case GIMP_FILL_TRANSPARENT:
+      gimp_rgba_set (color, 0.0, 0.0, 0.0, GIMP_OPACITY_TRANSPARENT);
+      break;
+
+    case GIMP_FILL_PATTERN:
+      *pattern = gimp_context_get_pattern (context);
+
+      if (! *pattern)
+        {
+          g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+                               _("No patterns available for this operation."));
+
+          /*  fall back to BG fill  */
+          gimp_context_get_background (context, color);
+
+          return FALSE;
+        }
+      break;
+
+    default:
+      g_warning ("%s: invalid fill_type %d", G_STRFUNC, fill_type);
+      return FALSE;
+    }
+
+  return TRUE;
 }
 
 /**
@@ -752,6 +626,7 @@ gimp_utils_point_to_line_distance (const GimpVector2 *point,
  * @end_x:
  * @end_y:
  * @n_snap_lines: Number evenly disributed lines to snap to.
+ * @offset_angle: The angle by which to offset the lines, in degrees.
  *
  * Projects a line onto the specified subset of evenly radially
  * distributed lines. @n_lines of 2 makes the line snap horizontally
@@ -763,7 +638,8 @@ gimp_constrain_line (gdouble  start_x,
                      gdouble  start_y,
                      gdouble *end_x,
                      gdouble *end_y,
-                     gint     n_snap_lines)
+                     gint     n_snap_lines,
+                     gdouble  offset_angle)
 {
   GimpVector2 line_point          = {  start_x,  start_y };
   GimpVector2 point               = { *end_x,   *end_y   };
@@ -776,7 +652,8 @@ gimp_constrain_line (gdouble  start_x,
 
   for (i = 0; i < n_snap_lines; i++)
     {
-      angle = i * G_PI / n_snap_lines;
+      angle  = i * G_PI / n_snap_lines;
+      angle += offset_angle * G_PI / 180.0;
 
       gimp_vector2_set (&line_dir,
                         cos (angle),
@@ -794,4 +671,231 @@ gimp_constrain_line (gdouble  start_x,
           *end_y = constrained_point.y;
         }
     }
+}
+
+gint
+gimp_file_compare (GFile *file1,
+                   GFile *file2)
+{
+  if (g_file_equal (file1, file2))
+    {
+      return 0;
+    }
+  else
+    {
+      gchar *uri1   = g_file_get_uri (file1);
+      gchar *uri2   = g_file_get_uri (file2);
+      gint   result = strcmp (uri1, uri2);
+
+      g_free (uri1);
+      g_free (uri2);
+
+      return result;
+    }
+}
+
+static inline gboolean
+is_script (const gchar *filename)
+{
+#ifdef G_OS_WIN32
+  /* On Windows there is no concept like the Unix executable flag.
+   * There is a weak emulation provided by the MS C Runtime using file
+   * extensions (com, exe, cmd, bat). This needs to be extended to
+   * treat scripts (Python, Perl, ...) as executables, too. We use the
+   * PATHEXT variable, which is also used by cmd.exe.
+   */
+  static gchar **exts = NULL;
+
+  const gchar   *ext = strrchr (filename, '.');
+  gchar         *pathext;
+  gint           i;
+
+  if (exts == NULL)
+    {
+      pathext = g_getenv ("PATHEXT");
+      if (pathext != NULL)
+        {
+          exts = g_strsplit (pathext, G_SEARCHPATH_SEPARATOR_S, 100);
+        }
+      else
+        {
+          exts = g_new (gchar *, 1);
+          exts[0] = NULL;
+        }
+    }
+
+  for (i = 0; exts[i]; i++)
+    {
+      if (g_ascii_strcasecmp (ext, exts[i]) == 0)
+        return TRUE;
+    }
+#endif /* G_OS_WIN32 */
+
+  return FALSE;
+}
+
+gboolean
+gimp_file_is_executable (GFile *file)
+{
+  GFileInfo *info;
+  gboolean   executable = FALSE;
+
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+
+  info = g_file_query_info (file,
+                            G_FILE_ATTRIBUTE_STANDARD_NAME ","
+                            G_FILE_ATTRIBUTE_STANDARD_TYPE ","
+                            G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE ",",
+                            G_FILE_QUERY_INFO_NONE,
+                            NULL, NULL);
+
+  if (info)
+    {
+      GFileType    file_type = g_file_info_get_file_type (info);
+      const gchar *filename  = g_file_info_get_name (info);
+
+      if (file_type == G_FILE_TYPE_REGULAR &&
+          (g_file_info_get_attribute_boolean (info,
+                                              G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE) ||
+           is_script (filename)))
+        {
+          executable = TRUE;
+        }
+
+      g_object_unref (info);
+    }
+
+  return executable;
+}
+
+/**
+ * gimp_file_get_extension:
+ * @file: A #GFile
+ *
+ * Returns @file's extension (including the .), or NULL if there is no
+ * extension. Note that this function handles compressed files too,
+ * e.g. for "file.png.gz" it will return ".png.gz".
+ *
+ * Returns: The @file's extension. Free with g_free() when no longer needed.
+ **/
+gchar *
+gimp_file_get_extension (GFile *file)
+{
+  gchar *uri;
+  gint   uri_len;
+  gchar *ext = NULL;
+  gint   search_len;
+
+  g_return_val_if_fail (G_IS_FILE (file), NULL);
+
+  uri     = g_file_get_uri (file);
+  uri_len = strlen (uri);
+
+  if (g_str_has_suffix (uri, ".gz"))
+    search_len = uri_len - 3;
+  else if (g_str_has_suffix (uri, ".bz2"))
+    search_len = uri_len - 4;
+  else if (g_str_has_suffix (uri, ".xz"))
+    search_len = uri_len - 3;
+  else
+    search_len = uri_len;
+
+  ext = g_strrstr_len (uri, search_len, ".");
+
+  if (ext)
+    ext = g_strdup (ext);
+
+  g_free (uri);
+
+  return ext;
+}
+
+GFile *
+gimp_file_with_new_extension (GFile *file,
+                              GFile *ext_file)
+{
+  gchar *uri;
+  gchar *file_ext;
+  gint   file_ext_len = 0;
+  gchar *ext_file_ext = NULL;
+  gchar *uri_without_ext;
+  gchar *new_uri;
+  GFile *ret;
+
+  g_return_val_if_fail (G_IS_FILE (file), NULL);
+  g_return_val_if_fail (ext_file == NULL || G_IS_FILE (ext_file), NULL);
+
+  uri      = g_file_get_uri (file);
+  file_ext = gimp_file_get_extension (file);
+
+  if (file_ext)
+    {
+      file_ext_len = strlen (file_ext);
+      g_free (file_ext);
+    }
+
+  if (ext_file)
+    ext_file_ext = gimp_file_get_extension (ext_file);
+
+  uri_without_ext = g_strndup (uri, strlen (uri) - file_ext_len);
+
+  g_free (uri);
+
+  new_uri = g_strconcat (uri_without_ext, ext_file_ext, NULL);
+
+  ret = g_file_new_for_uri (new_uri);
+
+  g_free (ext_file_ext);
+  g_free (uri_without_ext);
+  g_free (new_uri);
+
+  return ret;
+}
+
+
+/*  debug stuff  */
+
+#include "gegl/gimp-babl.h"
+#include "gimpimage.h"
+#include "gimplayer.h"
+#include "gimplayer-new.h"
+
+GimpImage *
+gimp_create_image_from_buffer (Gimp        *gimp,
+                               GeglBuffer  *buffer,
+                               const gchar *image_name)
+{
+  GimpImage  *image;
+  GimpLayer  *layer;
+  const Babl *format;
+
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+  g_return_val_if_fail (GEGL_IS_BUFFER (buffer), NULL);
+
+  if (! image_name)
+    image_name = "Debug Image";
+
+  format = gegl_buffer_get_format (buffer);
+
+  image = gimp_create_image (gimp,
+                             gegl_buffer_get_width  (buffer),
+                             gegl_buffer_get_height (buffer),
+                             gimp_babl_format_get_base_type (format),
+                             gimp_babl_format_get_precision (format),
+                             FALSE);
+
+  layer = gimp_layer_new_from_gegl_buffer (buffer, image, format,
+                                           image_name,
+                                           GIMP_OPACITY_OPAQUE,
+                                           GIMP_LAYER_MODE_NORMAL,
+                                           NULL /* same image */);
+  gimp_image_add_layer (image, layer, NULL, -1, FALSE);
+
+  gimp_create_display (gimp, image, GIMP_UNIT_PIXEL, 1.0, NULL, 0);
+
+  /* unref the image unconditionally, even when no display was created */
+  g_object_add_weak_pointer (G_OBJECT (image), (gpointer) &image);
+  g_object_unref (image);
+
+  return image;
 }

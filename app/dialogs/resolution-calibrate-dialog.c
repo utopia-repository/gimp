@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpmath/gimpmath.h"
@@ -72,8 +73,8 @@ resolution_calibrate_dialog (GtkWidget *resolution_entry,
                             GTK_DIALOG_DESTROY_WITH_PARENT,
                             NULL, NULL,
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            _("_Cancel"), GTK_RESPONSE_CANCEL,
+                            _("_OK"),     GTK_RESPONSE_OK,
 
                             NULL);
 
@@ -85,7 +86,7 @@ resolution_calibrate_dialog (GtkWidget *resolution_entry,
   screen = gtk_widget_get_screen (dialog);
   monitor = gdk_screen_get_monitor_at_window (screen,
                                               gtk_widget_get_window (resolution_entry));
-  gdk_screen_get_monitor_geometry (screen, monitor, &rect);
+  gdk_screen_get_monitor_workarea (screen, monitor, &rect);
 
   ruler_width  = rect.width  - 300 - (rect.width  % 100);
   ruler_height = rect.height - 300 - (rect.height % 100);
@@ -127,7 +128,7 @@ resolution_calibrate_dialog (GtkWidget *resolution_entry,
   label =
     gtk_label_new (_("Measure the rulers and enter their lengths:"));
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gimp_label_set_attributes (GTK_LABEL (label),
                              PANGO_ATTR_SCALE,  PANGO_SCALE_LARGE,
                              PANGO_ATTR_WEIGHT, PANGO_WEIGHT_BOLD,

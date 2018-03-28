@@ -19,21 +19,24 @@
 
 #include "config.h"
 
-#include <string.h>
-
 #include <gegl.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
 #include "libgimpconfig/gimpconfig.h"
+
+#include "libgimpbase/gimpbase.h"
 
 #include "pdb-types.h"
 
 #include "core/gimp-edit.h"
+#include "core/gimp-gradients.h"
 #include "core/gimp.h"
+#include "core/gimpbuffer.h"
 #include "core/gimpchannel.h"
 #include "core/gimpdrawable-blend.h"
 #include "core/gimpdrawable-bucket-fill.h"
 #include "core/gimpdrawable.h"
-#include "core/gimpimage-new.h"
 #include "core/gimpimage.h"
 #include "core/gimplayer.h"
 #include "core/gimpparamspecs.h"
@@ -50,24 +53,25 @@
 #include "gimp-intl.h"
 
 
-static GValueArray *
-edit_cut_invoker (GimpProcedure      *procedure,
-                  Gimp               *gimp,
-                  GimpContext        *context,
-                  GimpProgress       *progress,
-                  const GValueArray  *args,
-                  GError            **error)
+static GimpValueArray *
+edit_cut_invoker (GimpProcedure         *procedure,
+                  Gimp                  *gimp,
+                  GimpContext           *context,
+                  GimpProgress          *progress,
+                  const GimpValueArray  *args,
+                  GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gboolean non_empty = FALSE;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           GimpImage *image    = gimp_item_get_image (GIMP_ITEM (drawable));
@@ -91,29 +95,29 @@ edit_cut_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], non_empty);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), non_empty);
 
   return return_vals;
 }
 
-static GValueArray *
-edit_copy_invoker (GimpProcedure      *procedure,
-                   Gimp               *gimp,
-                   GimpContext        *context,
-                   GimpProgress       *progress,
-                   const GValueArray  *args,
-                   GError            **error)
+static GimpValueArray *
+edit_copy_invoker (GimpProcedure         *procedure,
+                   Gimp                  *gimp,
+                   GimpContext           *context,
+                   GimpProgress          *progress,
+                   const GimpValueArray  *args,
+                   GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gboolean non_empty = FALSE;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, FALSE, error))
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, 0, error))
         {
           GimpImage *image    = gimp_item_get_image (GIMP_ITEM (drawable));
           GError    *my_error = NULL;
@@ -136,25 +140,25 @@ edit_copy_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], non_empty);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), non_empty);
 
   return return_vals;
 }
 
-static GValueArray *
-edit_copy_visible_invoker (GimpProcedure      *procedure,
-                           Gimp               *gimp,
-                           GimpContext        *context,
-                           GimpProgress       *progress,
-                           const GValueArray  *args,
-                           GError            **error)
+static GimpValueArray *
+edit_copy_visible_invoker (GimpProcedure         *procedure,
+                           Gimp                  *gimp,
+                           GimpContext           *context,
+                           GimpProgress          *progress,
+                           const GimpValueArray  *args,
+                           GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpImage *image;
   gboolean non_empty = FALSE;
 
-  image = gimp_value_get_image (&args->values[0], gimp);
+  image = gimp_value_get_image (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
@@ -175,37 +179,43 @@ edit_copy_visible_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_set_boolean (&return_vals->values[1], non_empty);
+    g_value_set_boolean (gimp_value_array_index (return_vals, 1), non_empty);
 
   return return_vals;
 }
 
-static GValueArray *
-edit_paste_invoker (GimpProcedure      *procedure,
-                    Gimp               *gimp,
-                    GimpContext        *context,
-                    GimpProgress       *progress,
-                    const GValueArray  *args,
-                    GError            **error)
+static GimpValueArray *
+edit_paste_invoker (GimpProcedure         *procedure,
+                    Gimp                  *gimp,
+                    GimpContext           *context,
+                    GimpProgress          *progress,
+                    const GimpValueArray  *args,
+                    GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   gboolean paste_into;
   GimpLayer *floating_sel = NULL;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  paste_into = g_value_get_boolean (&args->values[1]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  paste_into = g_value_get_boolean (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      if (gimp->global_buffer &&
-          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      GimpObject *paste = gimp_get_clipboard_object (gimp);
+
+      if (paste &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           floating_sel = gimp_edit_paste (gimp_item_get_image (GIMP_ITEM (drawable)),
-                                          drawable, gimp->global_buffer,
-                                          paste_into, -1, -1, -1, -1);
+                                          drawable, paste,
+                                          paste_into ?
+                                          GIMP_PASTE_TYPE_FLOATING_INTO :
+                                          GIMP_PASTE_TYPE_FLOATING,
+                                          -1, -1, -1, -1);
 
           if (! floating_sel)
             success = FALSE;
@@ -218,64 +228,63 @@ edit_paste_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_layer (&return_vals->values[1], floating_sel);
+    gimp_value_set_layer (gimp_value_array_index (return_vals, 1), floating_sel);
 
   return return_vals;
 }
 
-static GValueArray *
-edit_paste_as_new_invoker (GimpProcedure      *procedure,
-                           Gimp               *gimp,
-                           GimpContext        *context,
-                           GimpProgress       *progress,
-                           const GValueArray  *args,
-                           GError            **error)
+static GimpValueArray *
+edit_paste_as_new_image_invoker (GimpProcedure         *procedure,
+                                 Gimp                  *gimp,
+                                 GimpContext           *context,
+                                 GimpProgress          *progress,
+                                 const GimpValueArray  *args,
+                                 GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpImage *image = NULL;
 
-  if (gimp->global_buffer)
+  GimpObject *paste = gimp_get_clipboard_object (gimp);
+
+  if (paste)
     {
-      image = gimp_image_new_from_buffer (gimp, NULL, gimp->global_buffer);
+      image = gimp_edit_paste_as_new_image (gimp, paste);
 
       if (! image)
         success = FALSE;
-    }
-  else
-    {
-      image = NULL;
     }
 
   return_vals = gimp_procedure_get_return_values (procedure, success,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_image (&return_vals->values[1], image);
+    gimp_value_set_image (gimp_value_array_index (return_vals, 1), image);
 
   return return_vals;
 }
 
-static GValueArray *
-edit_named_cut_invoker (GimpProcedure      *procedure,
-                        Gimp               *gimp,
-                        GimpContext        *context,
-                        GimpProgress       *progress,
-                        const GValueArray  *args,
-                        GError            **error)
+static GimpValueArray *
+edit_named_cut_invoker (GimpProcedure         *procedure,
+                        Gimp                  *gimp,
+                        GimpContext           *context,
+                        GimpProgress          *progress,
+                        const GimpValueArray  *args,
+                        GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   const gchar *buffer_name;
   gchar *real_name = NULL;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  buffer_name = g_value_get_string (&args->values[1]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  buffer_name = g_value_get_string (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           GimpImage *image    = gimp_item_get_image (GIMP_ITEM (drawable));
@@ -304,31 +313,31 @@ edit_named_cut_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_take_string (&return_vals->values[1], real_name);
+    g_value_take_string (gimp_value_array_index (return_vals, 1), real_name);
 
   return return_vals;
 }
 
-static GValueArray *
-edit_named_copy_invoker (GimpProcedure      *procedure,
-                         Gimp               *gimp,
-                         GimpContext        *context,
-                         GimpProgress       *progress,
-                         const GValueArray  *args,
-                         GError            **error)
+static GimpValueArray *
+edit_named_copy_invoker (GimpProcedure         *procedure,
+                         Gimp                  *gimp,
+                         GimpContext           *context,
+                         GimpProgress          *progress,
+                         const GimpValueArray  *args,
+                         GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   const gchar *buffer_name;
   gchar *real_name = NULL;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  buffer_name = g_value_get_string (&args->values[1]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  buffer_name = g_value_get_string (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, FALSE, error))
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, 0, error))
         {
           GimpImage *image    = gimp_item_get_image (GIMP_ITEM (drawable));
           GError    *my_error = NULL;
@@ -356,27 +365,27 @@ edit_named_copy_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_take_string (&return_vals->values[1], real_name);
+    g_value_take_string (gimp_value_array_index (return_vals, 1), real_name);
 
   return return_vals;
 }
 
-static GValueArray *
-edit_named_copy_visible_invoker (GimpProcedure      *procedure,
-                                 Gimp               *gimp,
-                                 GimpContext        *context,
-                                 GimpProgress       *progress,
-                                 const GValueArray  *args,
-                                 GError            **error)
+static GimpValueArray *
+edit_named_copy_visible_invoker (GimpProcedure         *procedure,
+                                 Gimp                  *gimp,
+                                 GimpContext           *context,
+                                 GimpProgress          *progress,
+                                 const GimpValueArray  *args,
+                                 GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpImage *image;
   const gchar *buffer_name;
   gchar *real_name = NULL;
 
-  image = gimp_value_get_image (&args->values[0], gimp);
-  buffer_name = g_value_get_string (&args->values[1]);
+  image = gimp_value_get_image (gimp_value_array_index (args, 0), gimp);
+  buffer_name = g_value_get_string (gimp_value_array_index (args, 1));
 
   if (success)
     {
@@ -402,41 +411,45 @@ edit_named_copy_visible_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    g_value_take_string (&return_vals->values[1], real_name);
+    g_value_take_string (gimp_value_array_index (return_vals, 1), real_name);
 
   return return_vals;
 }
 
-static GValueArray *
-edit_named_paste_invoker (GimpProcedure      *procedure,
-                          Gimp               *gimp,
-                          GimpContext        *context,
-                          GimpProgress       *progress,
-                          const GValueArray  *args,
-                          GError            **error)
+static GimpValueArray *
+edit_named_paste_invoker (GimpProcedure         *procedure,
+                          Gimp                  *gimp,
+                          GimpContext           *context,
+                          GimpProgress          *progress,
+                          const GimpValueArray  *args,
+                          GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   GimpDrawable *drawable;
   const gchar *buffer_name;
   gboolean paste_into;
   GimpLayer *floating_sel = NULL;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  buffer_name = g_value_get_string (&args->values[1]);
-  paste_into = g_value_get_boolean (&args->values[2]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  buffer_name = g_value_get_string (gimp_value_array_index (args, 1));
+  paste_into = g_value_get_boolean (gimp_value_array_index (args, 2));
 
   if (success)
     {
       GimpBuffer *buffer = gimp_pdb_get_buffer (gimp, buffer_name, error);
 
       if (buffer &&
-          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+          gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           floating_sel = gimp_edit_paste (gimp_item_get_image (GIMP_ITEM (drawable)),
-                                          drawable, buffer,
-                                          paste_into, -1, -1, -1, -1);
+                                          drawable, GIMP_OBJECT (buffer),
+                                          paste_into ?
+                                          GIMP_PASTE_TYPE_FLOATING_INTO :
+                                          GIMP_PASTE_TYPE_FLOATING,
+                                          -1, -1, -1, -1);
           if (! floating_sel)
             success = FALSE;
         }
@@ -448,25 +461,25 @@ edit_named_paste_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_layer (&return_vals->values[1], floating_sel);
+    gimp_value_set_layer (gimp_value_array_index (return_vals, 1), floating_sel);
 
   return return_vals;
 }
 
-static GValueArray *
-edit_named_paste_as_new_invoker (GimpProcedure      *procedure,
-                                 Gimp               *gimp,
-                                 GimpContext        *context,
-                                 GimpProgress       *progress,
-                                 const GValueArray  *args,
-                                 GError            **error)
+static GimpValueArray *
+edit_named_paste_as_new_image_invoker (GimpProcedure         *procedure,
+                                       Gimp                  *gimp,
+                                       GimpContext           *context,
+                                       GimpProgress          *progress,
+                                       const GimpValueArray  *args,
+                                       GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   const gchar *buffer_name;
   GimpImage *image = NULL;
 
-  buffer_name = g_value_get_string (&args->values[0]);
+  buffer_name = g_value_get_string (gimp_value_array_index (args, 0));
 
   if (success)
     {
@@ -474,7 +487,7 @@ edit_named_paste_as_new_invoker (GimpProcedure      *procedure,
 
       if (buffer)
         {
-          image = gimp_image_new_from_buffer (gimp, NULL, buffer);
+          image = gimp_edit_paste_as_new_image (gimp, GIMP_OBJECT (buffer));
 
           if (! image)
             success = FALSE;
@@ -487,32 +500,33 @@ edit_named_paste_as_new_invoker (GimpProcedure      *procedure,
                                                   error ? *error : NULL);
 
   if (success)
-    gimp_value_set_image (&return_vals->values[1], image);
+    gimp_value_set_image (gimp_value_array_index (return_vals, 1), image);
 
   return return_vals;
 }
 
-static GValueArray *
-edit_clear_invoker (GimpProcedure      *procedure,
-                    Gimp               *gimp,
-                    GimpContext        *context,
-                    GimpProgress       *progress,
-                    const GValueArray  *args,
-                    GError            **error)
+static GimpValueArray *
+edit_clear_invoker (GimpProcedure         *procedure,
+                    Gimp                  *gimp,
+                    GimpContext           *context,
+                    GimpProgress          *progress,
+                    const GimpValueArray  *args,
+                    GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
 
-          success = gimp_edit_clear (image, drawable, context);
+          gimp_edit_clear (image, drawable, context);
         }
       else
         success = FALSE;
@@ -522,30 +536,39 @@ edit_clear_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-edit_fill_invoker (GimpProcedure      *procedure,
-                   Gimp               *gimp,
-                   GimpContext        *context,
-                   GimpProgress       *progress,
-                   const GValueArray  *args,
-                   GError            **error)
+static GimpValueArray *
+edit_fill_invoker (GimpProcedure         *procedure,
+                   Gimp                  *gimp,
+                   GimpContext           *context,
+                   GimpProgress          *progress,
+                   const GimpValueArray  *args,
+                   GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 fill_type;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  fill_type = g_value_get_enum (&args->values[1]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  fill_type = g_value_get_enum (gimp_value_array_index (args, 1));
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
-          GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
+          GimpImage       *image   = gimp_item_get_image (GIMP_ITEM (drawable));
+          GimpFillOptions *options = gimp_fill_options_new (gimp, NULL, FALSE);
 
-          success = gimp_edit_fill (image, drawable, context,
-                                    (GimpFillType) fill_type);
+          if (gimp_fill_options_set_by_fill_type (options, context,
+                                                  fill_type, error))
+            {
+              gimp_edit_fill (image, drawable, options, NULL);
+            }
+          else
+            success = FALSE;
+
+          g_object_unref (options);
         }
       else
         success = FALSE;
@@ -555,13 +578,13 @@ edit_fill_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-edit_bucket_fill_invoker (GimpProcedure      *procedure,
-                          Gimp               *gimp,
-                          GimpContext        *context,
-                          GimpProgress       *progress,
-                          const GValueArray  *args,
-                          GError            **error)
+static GimpValueArray *
+edit_bucket_fill_invoker (GimpProcedure         *procedure,
+                          Gimp                  *gimp,
+                          GimpContext           *context,
+                          GimpProgress          *progress,
+                          const GimpValueArray  *args,
+                          GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -573,32 +596,52 @@ edit_bucket_fill_invoker (GimpProcedure      *procedure,
   gdouble x;
   gdouble y;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  fill_mode = g_value_get_enum (&args->values[1]);
-  paint_mode = g_value_get_enum (&args->values[2]);
-  opacity = g_value_get_double (&args->values[3]);
-  threshold = g_value_get_double (&args->values[4]);
-  sample_merged = g_value_get_boolean (&args->values[5]);
-  x = g_value_get_double (&args->values[6]);
-  y = g_value_get_double (&args->values[7]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  fill_mode = g_value_get_enum (gimp_value_array_index (args, 1));
+  paint_mode = g_value_get_enum (gimp_value_array_index (args, 2));
+  opacity = g_value_get_double (gimp_value_array_index (args, 3));
+  threshold = g_value_get_double (gimp_value_array_index (args, 4));
+  sample_merged = g_value_get_boolean (gimp_value_array_index (args, 5));
+  x = g_value_get_double (gimp_value_array_index (args, 6));
+  y = g_value_get_double (gimp_value_array_index (args, 7));
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
-          GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
-          gboolean   do_seed_fill;
+          GimpImage       *image   = gimp_item_get_image (GIMP_ITEM (drawable));
+          GimpFillOptions *options = gimp_fill_options_new (gimp, NULL, FALSE);
 
-          do_seed_fill = gimp_channel_is_empty (gimp_image_get_mask (image));
+          if (gimp_fill_options_set_by_fill_mode (options, context,
+                                                  fill_mode, error))
+            {
+              if (paint_mode == GIMP_LAYER_MODE_OVERLAY_LEGACY)
+                paint_mode = GIMP_LAYER_MODE_SOFTLIGHT_LEGACY;
 
-          success = gimp_drawable_bucket_fill (drawable, context, fill_mode,
-                                               paint_mode, opacity / 100.0,
-                                               do_seed_fill,
-                                               FALSE /* don't fill transparent */,
-                                               GIMP_SELECT_CRITERION_COMPOSITE,
-                                               threshold, sample_merged, x, y,
-                                               error);
+              gimp_context_set_opacity (GIMP_CONTEXT (options), opacity / 100.0);
+              gimp_context_set_paint_mode (GIMP_CONTEXT (options), paint_mode);
+
+              if (! gimp_channel_is_empty (gimp_image_get_mask (image)))
+                {
+                  gimp_edit_fill (image, drawable, options, NULL);
+                }
+              else
+                {
+                  gimp_drawable_bucket_fill (drawable, options,
+                                             FALSE /* don't fill transparent */,
+                                             GIMP_SELECT_CRITERION_COMPOSITE,
+                                             threshold / 255.0,
+                                             sample_merged,
+                                             FALSE /* no diagonal neighbors */,
+                                             x, y);
+               }
+            }
+          else
+            success = FALSE;
+
+          g_object_unref (options);
         }
       else
         success = FALSE;
@@ -608,13 +651,13 @@ edit_bucket_fill_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-edit_bucket_fill_full_invoker (GimpProcedure      *procedure,
-                               Gimp               *gimp,
-                               GimpContext        *context,
-                               GimpProgress       *progress,
-                               const GValueArray  *args,
-                               GError            **error)
+static GimpValueArray *
+edit_bucket_fill_full_invoker (GimpProcedure         *procedure,
+                               Gimp                  *gimp,
+                               GimpContext           *context,
+                               GimpProgress          *progress,
+                               const GimpValueArray  *args,
+                               GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -628,34 +671,54 @@ edit_bucket_fill_full_invoker (GimpProcedure      *procedure,
   gdouble x;
   gdouble y;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  fill_mode = g_value_get_enum (&args->values[1]);
-  paint_mode = g_value_get_enum (&args->values[2]);
-  opacity = g_value_get_double (&args->values[3]);
-  threshold = g_value_get_double (&args->values[4]);
-  sample_merged = g_value_get_boolean (&args->values[5]);
-  fill_transparent = g_value_get_boolean (&args->values[6]);
-  select_criterion = g_value_get_enum (&args->values[7]);
-  x = g_value_get_double (&args->values[8]);
-  y = g_value_get_double (&args->values[9]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  fill_mode = g_value_get_enum (gimp_value_array_index (args, 1));
+  paint_mode = g_value_get_enum (gimp_value_array_index (args, 2));
+  opacity = g_value_get_double (gimp_value_array_index (args, 3));
+  threshold = g_value_get_double (gimp_value_array_index (args, 4));
+  sample_merged = g_value_get_boolean (gimp_value_array_index (args, 5));
+  fill_transparent = g_value_get_boolean (gimp_value_array_index (args, 6));
+  select_criterion = g_value_get_enum (gimp_value_array_index (args, 7));
+  x = g_value_get_double (gimp_value_array_index (args, 8));
+  y = g_value_get_double (gimp_value_array_index (args, 9));
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
-          GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
-          gboolean   do_seed_fill;
+          GimpImage       *image   = gimp_item_get_image (GIMP_ITEM (drawable));
+          GimpFillOptions *options = gimp_fill_options_new (gimp, NULL, FALSE);
 
-          do_seed_fill = gimp_channel_is_empty (gimp_image_get_mask (image));
+          if (gimp_fill_options_set_by_fill_mode (options, context,
+                                                  fill_mode, error))
+            {
+              if (paint_mode == GIMP_LAYER_MODE_OVERLAY_LEGACY)
+                paint_mode = GIMP_LAYER_MODE_SOFTLIGHT_LEGACY;
 
-          success = gimp_drawable_bucket_fill (drawable, context, fill_mode,
-                                               paint_mode, opacity / 100.0,
-                                               do_seed_fill,
-                                               fill_transparent,
-                                               select_criterion,
-                                               threshold, sample_merged, x, y,
-                                               error);
+              gimp_context_set_opacity (GIMP_CONTEXT (options), opacity / 100.0);
+              gimp_context_set_paint_mode (GIMP_CONTEXT (options), paint_mode);
+
+              if (! gimp_channel_is_empty (gimp_image_get_mask (image)))
+                {
+                  gimp_edit_fill (image, drawable, options, NULL);
+                }
+              else
+                {
+                  gimp_drawable_bucket_fill (drawable, options,
+                                             fill_transparent,
+                                             select_criterion,
+                                             threshold / 255.0,
+                                             sample_merged,
+                                             FALSE /* no diagonal neighbors */,
+                                             x, y);
+               }
+            }
+          else
+            success = FALSE;
+
+          g_object_unref (options);
         }
       else
         success = FALSE;
@@ -665,13 +728,13 @@ edit_bucket_fill_full_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-edit_blend_invoker (GimpProcedure      *procedure,
-                    Gimp               *gimp,
-                    GimpContext        *context,
-                    GimpProgress       *progress,
-                    const GValueArray  *args,
-                    GError            **error)
+static GimpValueArray *
+edit_blend_invoker (GimpProcedure         *procedure,
+                    Gimp                  *gimp,
+                    GimpContext           *context,
+                    GimpProgress          *progress,
+                    const GimpValueArray  *args,
+                    GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -691,26 +754,27 @@ edit_blend_invoker (GimpProcedure      *procedure,
   gdouble x2;
   gdouble y2;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  blend_mode = g_value_get_enum (&args->values[1]);
-  paint_mode = g_value_get_enum (&args->values[2]);
-  gradient_type = g_value_get_enum (&args->values[3]);
-  opacity = g_value_get_double (&args->values[4]);
-  offset = g_value_get_double (&args->values[5]);
-  repeat = g_value_get_enum (&args->values[6]);
-  reverse = g_value_get_boolean (&args->values[7]);
-  supersample = g_value_get_boolean (&args->values[8]);
-  max_depth = g_value_get_int (&args->values[9]);
-  threshold = g_value_get_double (&args->values[10]);
-  dither = g_value_get_boolean (&args->values[11]);
-  x1 = g_value_get_double (&args->values[12]);
-  y1 = g_value_get_double (&args->values[13]);
-  x2 = g_value_get_double (&args->values[14]);
-  y2 = g_value_get_double (&args->values[15]);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  blend_mode = g_value_get_enum (gimp_value_array_index (args, 1));
+  paint_mode = g_value_get_enum (gimp_value_array_index (args, 2));
+  gradient_type = g_value_get_enum (gimp_value_array_index (args, 3));
+  opacity = g_value_get_double (gimp_value_array_index (args, 4));
+  offset = g_value_get_double (gimp_value_array_index (args, 5));
+  repeat = g_value_get_enum (gimp_value_array_index (args, 6));
+  reverse = g_value_get_boolean (gimp_value_array_index (args, 7));
+  supersample = g_value_get_boolean (gimp_value_array_index (args, 8));
+  max_depth = g_value_get_int (gimp_value_array_index (args, 9));
+  threshold = g_value_get_double (gimp_value_array_index (args, 10));
+  dither = g_value_get_boolean (gimp_value_array_index (args, 11));
+  x1 = g_value_get_double (gimp_value_array_index (args, 12));
+  y1 = g_value_get_double (gimp_value_array_index (args, 13));
+  x2 = g_value_get_double (gimp_value_array_index (args, 14));
+  y2 = g_value_get_double (gimp_value_array_index (args, 15));
 
   if (success)
     {
-      success = (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      success = (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                            GIMP_PDB_ITEM_CONTENT, error) &&
                  gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error));
 
       if (success && supersample)
@@ -724,12 +788,38 @@ edit_blend_invoker (GimpProcedure      *procedure,
 
       if (success)
         {
+          GimpGradient *gradient;
+
+          if (paint_mode == GIMP_LAYER_MODE_OVERLAY_LEGACY)
+            paint_mode = GIMP_LAYER_MODE_SOFTLIGHT_LEGACY;
+
           if (progress)
-            gimp_progress_start (progress, _("Blending"), FALSE);
+            gimp_progress_start (progress, FALSE, _("Blending"));
+
+          switch (blend_mode)
+            {
+            case GIMP_BLEND_FG_BG_RGB:
+              gradient = gimp_gradients_get_fg_bg_rgb (context->gimp);
+              break;
+
+            case GIMP_BLEND_FG_BG_HSV:
+              gradient = gimp_gradients_get_fg_bg_hsv_cw (context->gimp);
+              break;
+
+            case GIMP_BLEND_FG_TRANSPARENT:
+              gradient = gimp_gradients_get_fg_transparent (context->gimp);
+              break;
+
+            case GIMP_BLEND_CUSTOM:
+            default:
+              gradient = gimp_context_get_gradient (context);
+              break;
+            }
 
           gimp_drawable_blend (drawable,
                                context,
-                               blend_mode,
+                               gradient,
+                               GIMP_PDB_CONTEXT (context)->distance_metric,
                                paint_mode,
                                gradient_type,
                                opacity / 100.0,
@@ -748,32 +838,30 @@ edit_blend_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-edit_stroke_invoker (GimpProcedure      *procedure,
-                     Gimp               *gimp,
-                     GimpContext        *context,
-                     GimpProgress       *progress,
-                     const GValueArray  *args,
-                     GError            **error)
+static GimpValueArray *
+edit_stroke_invoker (GimpProcedure         *procedure,
+                     Gimp                  *gimp,
+                     GimpContext           *context,
+                     GimpProgress          *progress,
+                     const GimpValueArray  *args,
+                     GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
         {
           GimpImage         *image = gimp_item_get_image (GIMP_ITEM (drawable));
-          GimpStrokeOptions *options = gimp_stroke_options_new (gimp, context, TRUE);
+          GimpStrokeOptions *options;
           GimpPaintOptions  *paint_options;
 
-          options = gimp_stroke_options_new (gimp, context, TRUE);
-          g_object_set (options,
-                        "method", GIMP_STROKE_METHOD_PAINT_CORE,
-                        NULL);
+          options = gimp_pdb_context_get_stroke_options (GIMP_PDB_CONTEXT (context));
 
           paint_options =
             gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context), NULL);
@@ -783,7 +871,6 @@ edit_stroke_invoker (GimpProcedure      *procedure,
                                       drawable, context, options, paint_options,
                                       TRUE, progress, error);
 
-          g_object_unref (options);
           g_object_unref (paint_options);
         }
       else
@@ -794,35 +881,34 @@ edit_stroke_invoker (GimpProcedure      *procedure,
                                            error ? *error : NULL);
 }
 
-static GValueArray *
-edit_stroke_vectors_invoker (GimpProcedure      *procedure,
-                             Gimp               *gimp,
-                             GimpContext        *context,
-                             GimpProgress       *progress,
-                             const GValueArray  *args,
-                             GError            **error)
+static GimpValueArray *
+edit_stroke_vectors_invoker (GimpProcedure         *procedure,
+                             Gimp                  *gimp,
+                             GimpContext           *context,
+                             GimpProgress          *progress,
+                             const GimpValueArray  *args,
+                             GError               **error)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   GimpVectors *vectors;
 
-  drawable = gimp_value_get_drawable (&args->values[0], gimp);
-  vectors = gimp_value_get_vectors (&args->values[1], gimp);
+  drawable = gimp_value_get_drawable (gimp_value_array_index (args, 0), gimp);
+  vectors = gimp_value_get_vectors (gimp_value_array_index (args, 1), gimp);
 
   if (success)
     {
-      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL,
+                                     GIMP_PDB_ITEM_CONTENT, error) &&
           gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error) &&
           gimp_pdb_item_is_attached (GIMP_ITEM (vectors),
-                                     gimp_item_get_image (GIMP_ITEM (drawable)), FALSE, error))
+                                     gimp_item_get_image (GIMP_ITEM (drawable)),
+                                     0, error))
         {
           GimpStrokeOptions *options;
           GimpPaintOptions  *paint_options;
 
-          options = gimp_stroke_options_new (gimp, context, TRUE);
-          g_object_set (options,
-                        "method", GIMP_STROKE_METHOD_PAINT_CORE,
-                        NULL);
+          options = gimp_pdb_context_get_stroke_options (GIMP_PDB_CONTEXT (context));
 
           paint_options =
             gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context), NULL);
@@ -832,7 +918,6 @@ edit_stroke_vectors_invoker (GimpProcedure      *procedure,
                                       drawable, context, options, paint_options,
                                       TRUE, progress, error);
 
-          g_object_unref (options);
           g_object_unref (paint_options);
         }
       else
@@ -944,7 +1029,7 @@ register_edit_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-edit-paste",
                                      "Paste buffer to the specified drawable.",
-                                     "This procedure pastes a copy of the internal GIMP edit buffer to the specified drawable. The GIMP edit buffer will be empty unless a call was previously made to either 'gimp-edit-cut' or 'gimp-edit-copy'. The \"paste_into\" option specifies whether to clear the current image selection, or to paste the buffer \"behind\" the selection. This allows the selection to act as a mask for the pasted buffer. Anywhere that the selection mask is non-zero, the pasted buffer will show through. The pasted buffer will be a new layer in the image which is designated as the image floating selection. If the image has a floating selection at the time of pasting, the old floating selection will be anchored to it's drawable before the new floating selection is added. This procedure returns the new floating layer. The resulting floating selection will already be attached to the specified drawable, and a subsequent call to floating_sel_attach is not needed.",
+                                     "This procedure pastes a copy of the internal GIMP edit buffer to the specified drawable. The GIMP edit buffer will be empty unless a call was previously made to either 'gimp-edit-cut' or 'gimp-edit-copy'. The \"paste_into\" option specifies whether to clear the current image selection, or to paste the buffer \"behind\" the selection. This allows the selection to act as a mask for the pasted buffer. Anywhere that the selection mask is non-zero, the pasted buffer will show through. The pasted buffer will be a new layer in the image which is designated as the image floating selection. If the image has a floating selection at the time of pasting, the old floating selection will be anchored to its drawable before the new floating selection is added. This procedure returns the new floating layer. The resulting floating selection will already be attached to the specified drawable, and a subsequent call to floating_sel_attach is not needed.",
                                      "Spencer Kimball & Peter Mattis",
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
@@ -971,13 +1056,13 @@ register_edit_procs (GimpPDB *pdb)
   g_object_unref (procedure);
 
   /*
-   * gimp-edit-paste-as-new
+   * gimp-edit-paste-as-new-image
    */
-  procedure = gimp_procedure_new (edit_paste_as_new_invoker);
+  procedure = gimp_procedure_new (edit_paste_as_new_image_invoker);
   gimp_object_set_static_name (GIMP_OBJECT (procedure),
-                               "gimp-edit-paste-as-new");
+                               "gimp-edit-paste-as-new-image");
   gimp_procedure_set_static_strings (procedure,
-                                     "gimp-edit-paste-as-new",
+                                     "gimp-edit-paste-as-new-image",
                                      "Paste buffer to a new image.",
                                      "This procedure pastes a copy of the internal GIMP edit buffer to a new image. The GIMP edit buffer will be empty unless a call was previously made to either 'gimp-edit-cut' or 'gimp-edit-copy'. This procedure returns the new image or -1 if the edit buffer was empty.",
                                      "Michael Natterer <mitch@gimp.org>",
@@ -1147,15 +1232,15 @@ register_edit_procs (GimpPDB *pdb)
   g_object_unref (procedure);
 
   /*
-   * gimp-edit-named-paste-as-new
+   * gimp-edit-named-paste-as-new-image
    */
-  procedure = gimp_procedure_new (edit_named_paste_as_new_invoker);
+  procedure = gimp_procedure_new (edit_named_paste_as_new_image_invoker);
   gimp_object_set_static_name (GIMP_OBJECT (procedure),
-                               "gimp-edit-named-paste-as-new");
+                               "gimp-edit-named-paste-as-new-image");
   gimp_procedure_set_static_strings (procedure,
-                                     "gimp-edit-named-paste-as-new",
+                                     "gimp-edit-named-paste-as-new-image",
                                      "Paste named buffer to a new image.",
-                                     "This procedure works like 'gimp-edit-paste-as-new' but pastes a named buffer instead of the global buffer.",
+                                     "This procedure works like 'gimp-edit-paste-as-new-image' but pastes a named buffer instead of the global buffer.",
                                      "Michael Natterer <mitch@gimp.org>",
                                      "Michael Natterer",
                                      "2005",
@@ -1224,7 +1309,7 @@ register_edit_procs (GimpPDB *pdb)
                                                   "fill type",
                                                   "The type of fill",
                                                   GIMP_TYPE_FILL_TYPE,
-                                                  GIMP_FOREGROUND_FILL,
+                                                  GIMP_FILL_FOREGROUND,
                                                   GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
@@ -1254,14 +1339,14 @@ register_edit_procs (GimpPDB *pdb)
                                                   "fill mode",
                                                   "The type of fill",
                                                   GIMP_TYPE_BUCKET_FILL_MODE,
-                                                  GIMP_FG_BUCKET_FILL,
+                                                  GIMP_BUCKET_FILL_FG,
                                                   GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("paint-mode",
                                                   "paint mode",
                                                   "The paint application mode",
-                                                  GIMP_TYPE_LAYER_MODE_EFFECTS,
-                                                  GIMP_NORMAL_MODE,
+                                                  GIMP_TYPE_LAYER_MODE,
+                                                  GIMP_LAYER_MODE_NORMAL,
                                                   GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_double ("opacity",
@@ -1321,14 +1406,14 @@ register_edit_procs (GimpPDB *pdb)
                                                   "fill mode",
                                                   "The type of fill",
                                                   GIMP_TYPE_BUCKET_FILL_MODE,
-                                                  GIMP_FG_BUCKET_FILL,
+                                                  GIMP_BUCKET_FILL_FG,
                                                   GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("paint-mode",
                                                   "paint mode",
                                                   "The paint application mode",
-                                                  GIMP_TYPE_LAYER_MODE_EFFECTS,
-                                                  GIMP_NORMAL_MODE,
+                                                  GIMP_TYPE_LAYER_MODE,
+                                                  GIMP_LAYER_MODE_NORMAL,
                                                   GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_double ("opacity",
@@ -1385,7 +1470,7 @@ register_edit_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-edit-blend",
                                      "Blend between the starting and ending coordinates with the specified blend mode and gradient type.",
-                                     "This tool requires information on the paint application mode, the blend mode, and the gradient type. It creates the specified variety of blend using the starting and ending coordinates as defined for each gradient type.",
+                                     "This tool requires information on the paint application mode, the blend mode, and the gradient type. It creates the specified variety of blend using the starting and ending coordinates as defined for each gradient type. For shapeburst gradient types, the context's distance metric is also relevant and can be updated with 'gimp-context-set-distance-metric'.",
                                      "Spencer Kimball & Peter Mattis",
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
@@ -1401,14 +1486,14 @@ register_edit_procs (GimpPDB *pdb)
                                                   "blend mode",
                                                   "The type of blend",
                                                   GIMP_TYPE_BLEND_MODE,
-                                                  GIMP_FG_BG_RGB_MODE,
+                                                  GIMP_BLEND_FG_BG_RGB,
                                                   GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("paint-mode",
                                                   "paint mode",
                                                   "The paint application mode",
-                                                  GIMP_TYPE_LAYER_MODE_EFFECTS,
-                                                  GIMP_NORMAL_MODE,
+                                                  GIMP_TYPE_LAYER_MODE,
+                                                  GIMP_LAYER_MODE_NORMAL,
                                                   GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("gradient-type",

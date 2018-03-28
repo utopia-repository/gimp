@@ -45,6 +45,7 @@ struct _GimpStatusbar
   guint                seq_context_id;
 
   GdkPixbuf           *icon;
+  GHashTable          *icon_hash;
 
   guint                temp_context_id;
   guint                temp_timeout_id;
@@ -57,6 +58,9 @@ struct _GimpStatusbar
   GtkWidget           *cursor_label;
   GtkWidget           *unit_combo;
   GtkWidget           *scale_combo;
+  GtkWidget           *rotate_label;
+  GtkWidget           *horizontal_flip_icon;
+  GtkWidget           *vertical_flip_icon;
   GtkWidget           *label; /* same as GtkStatusbar->label */
 
   GtkWidget           *progressbar;
@@ -89,17 +93,17 @@ void        gimp_statusbar_restore_window_title  (GimpStatusbar       *statusbar
 
 void        gimp_statusbar_push                  (GimpStatusbar       *statusbar,
                                                   const gchar         *context,
-                                                  const gchar         *stock_id,
+                                                  const gchar         *icon_name,
                                                   const gchar         *format,
-                                                  ...) G_GNUC_PRINTF(4,5);
+                                                  ...) G_GNUC_PRINTF (4, 5);
 void        gimp_statusbar_push_valist           (GimpStatusbar       *statusbar,
                                                   const gchar         *context,
-                                                  const gchar         *stock_id,
+                                                  const gchar         *icon_name,
                                                   const gchar         *format,
-                                                  va_list              args);
+                                                  va_list              args) G_GNUC_PRINTF (4, 0);
 void        gimp_statusbar_push_coords           (GimpStatusbar       *statusbar,
                                                   const gchar         *context,
-                                                  const gchar         *stock_id,
+                                                  const gchar         *icon_name,
                                                   GimpCursorPrecision  precision,
                                                   const gchar         *title,
                                                   gdouble              x,
@@ -108,21 +112,21 @@ void        gimp_statusbar_push_coords           (GimpStatusbar       *statusbar
                                                   const gchar         *help);
 void        gimp_statusbar_push_length           (GimpStatusbar       *statusbar,
                                                   const gchar         *context,
-                                                  const gchar         *stock_id,
+                                                  const gchar         *icon_name,
                                                   const gchar         *title,
                                                   GimpOrientationType  axis,
                                                   gdouble              value,
                                                   const gchar         *help);
 void        gimp_statusbar_replace               (GimpStatusbar       *statusbar,
                                                   const gchar         *context,
-                                                  const gchar         *stock_id,
+                                                  const gchar         *icon_name,
                                                   const gchar         *format,
-                                                  ...) G_GNUC_PRINTF(4,5);
+                                                  ...) G_GNUC_PRINTF (4, 5);
 void        gimp_statusbar_replace_valist        (GimpStatusbar       *statusbar,
                                                   const gchar         *context,
-                                                  const gchar         *stock_id,
+                                                  const gchar         *icon_name,
                                                   const gchar         *format,
-                                                  va_list              args);
+                                                  va_list              args) G_GNUC_PRINTF (4, 0);
 const gchar * gimp_statusbar_peek                (GimpStatusbar       *statusbar,
                                                   const gchar         *context);
 void        gimp_statusbar_pop                   (GimpStatusbar       *statusbar,
@@ -130,14 +134,14 @@ void        gimp_statusbar_pop                   (GimpStatusbar       *statusbar
 
 void        gimp_statusbar_push_temp             (GimpStatusbar       *statusbar,
                                                   GimpMessageSeverity  severity,
-                                                  const gchar         *stock_id,
+                                                  const gchar         *icon_name,
                                                   const gchar         *format,
-                                                  ...) G_GNUC_PRINTF(4,5);
+                                                  ...) G_GNUC_PRINTF (4, 5);
 void        gimp_statusbar_push_temp_valist      (GimpStatusbar       *statusbar,
                                                   GimpMessageSeverity  severity,
-                                                  const gchar         *stock_id,
+                                                  const gchar         *icon_name,
                                                   const gchar         *format,
-                                                  va_list              args);
+                                                  va_list              args) G_GNUC_PRINTF (4, 0);
 void        gimp_statusbar_pop_temp              (GimpStatusbar       *statusbar);
 
 void        gimp_statusbar_update_cursor         (GimpStatusbar       *statusbar,

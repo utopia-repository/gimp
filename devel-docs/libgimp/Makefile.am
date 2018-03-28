@@ -27,7 +27,7 @@ CFILE_GLOB = $(DOC_SOURCE_DIR)/*.c
 
 # Header files to ignore when scanning
 IGNORE_HFILES = \
-	gimpcompat.h		\
+	gimptilebackendplugin.h	\
 	gimpunit_pdb.h		\
 	gimpunitcache.h		\
 	libgimp-intl.h		\
@@ -48,6 +48,7 @@ GTKDOC_CFLAGS = \
 	@CFLAGS@		\
 	-I$(top_srcdir) 	\
 	-I$(top_builddir) 	\
+	$(GEGL_CFLAGS)		\
 	@GTK_CFLAGS@		\
 	-UGTK_DISABLE_SINGLE_INCLUDES
 

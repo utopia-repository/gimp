@@ -28,12 +28,16 @@
 
 #include "display-types.h"
 
-#include "widgets/gimpcairo.h"
+#include "core/gimp-cairo.h"
 
 #include "gimpcanvashandle.h"
 #include "gimpcanvasitem-utils.h"
 #include "gimpdisplayshell.h"
-#include "gimpdisplayshell-transform.h"
+
+
+#define N_DASHES       8
+#define DASH_ON_RATIO  0.3
+#define DASH_OFF_RATIO 0.7
 
 
 enum
@@ -61,7 +65,7 @@ struct _GimpCanvasHandlePrivate
   gint             width;
   gint             height;
   gdouble          start_angle;
-  gdouble          slice_angle;;
+  gdouble          slice_angle;
 };
 
 #define GET_PRIVATE(handle) \
@@ -72,23 +76,20 @@ struct _GimpCanvasHandlePrivate
 
 /*  local function prototypes  */
 
-static void             gimp_canvas_handle_set_property (GObject          *object,
-                                                         guint             property_id,
-                                                         const GValue     *value,
-                                                         GParamSpec       *pspec);
-static void             gimp_canvas_handle_get_property (GObject          *object,
-                                                         guint             property_id,
-                                                         GValue           *value,
-                                                         GParamSpec       *pspec);
-static void             gimp_canvas_handle_draw         (GimpCanvasItem   *item,
-                                                         GimpDisplayShell *shell,
-                                                         cairo_t          *cr);
-static cairo_region_t * gimp_canvas_handle_get_extents  (GimpCanvasItem   *item,
-                                                         GimpDisplayShell *shell);
-static gboolean         gimp_canvas_handle_hit          (GimpCanvasItem   *item,
-                                                         GimpDisplayShell *shell,
-                                                         gdouble           x,
-                                                         gdouble           y);
+static void             gimp_canvas_handle_set_property (GObject        *object,
+                                                         guint           property_id,
+                                                         const GValue   *value,
+                                                         GParamSpec     *pspec);
+static void             gimp_canvas_handle_get_property (GObject        *object,
+                                                         guint           property_id,
+                                                         GValue         *value,
+                                                         GParamSpec     *pspec);
+static void             gimp_canvas_handle_draw         (GimpCanvasItem *item,
+                                                         cairo_t        *cr);
+static cairo_region_t * gimp_canvas_handle_get_extents  (GimpCanvasItem *item);
+static gboolean         gimp_canvas_handle_hit          (GimpCanvasItem *item,
+                                                         gdouble         x,
+                                                         gdouble         y);
 
 
 G_DEFINE_TYPE (GimpCanvasHandle, gimp_canvas_handle,
@@ -252,20 +253,20 @@ gimp_canvas_handle_get_property (GObject    *object,
 }
 
 static void
-gimp_canvas_handle_transform (GimpCanvasItem   *item,
-                              GimpDisplayShell *shell,
-                              gdouble          *x,
-                              gdouble          *y)
+gimp_canvas_handle_transform (GimpCanvasItem *item,
+                              gdouble        *x,
+                              gdouble        *y)
 {
   GimpCanvasHandlePrivate *private = GET_PRIVATE (item);
 
-  gimp_display_shell_transform_xy_f (shell,
-                                     private->x, private->y,
-                                     x, y);
+  gimp_canvas_item_transform_xy_f (item,
+                                   private->x, private->y,
+                                   x, y);
 
   switch (private->type)
     {
     case GIMP_HANDLE_SQUARE:
+    case GIMP_HANDLE_DASHED_SQUARE:
     case GIMP_HANDLE_FILLED_SQUARE:
       gimp_canvas_item_shift_to_north_west (private->anchor,
                                             *x, *y,
@@ -275,8 +276,13 @@ gimp_canvas_handle_transform (GimpCanvasItem   *item,
       break;
 
     case GIMP_HANDLE_CIRCLE:
+    case GIMP_HANDLE_DASHED_CIRCLE:
     case GIMP_HANDLE_FILLED_CIRCLE:
     case GIMP_HANDLE_CROSS:
+    case GIMP_HANDLE_CROSSHAIR:
+    case GIMP_HANDLE_DIAMOND:
+    case GIMP_HANDLE_DASHED_DIAMOND:
+    case GIMP_HANDLE_FILLED_DIAMOND:
       gimp_canvas_item_shift_to_center (private->anchor,
                                         *x, *y,
                                         private->width,
@@ -293,55 +299,166 @@ gimp_canvas_handle_transform (GimpCanvasItem   *item,
 }
 
 static void
-gimp_canvas_handle_draw (GimpCanvasItem   *item,
-                         GimpDisplayShell *shell,
-                         cairo_t          *cr)
+gimp_canvas_handle_draw (GimpCanvasItem *item,
+                         cairo_t        *cr)
 {
   GimpCanvasHandlePrivate *private = GET_PRIVATE (item);
-  gdouble                  x, y;
+  gdouble                  x, y, tx, ty;
 
-  gimp_canvas_handle_transform (item, shell, &x, &y);
+  gimp_canvas_handle_transform (item, &x, &y);
+
+  gimp_canvas_item_transform_xy_f (item,
+                                   private->x, private->y,
+                                   &tx, &ty);
+
+  tx = floor (tx) + 0.5;
+  ty = floor (ty) + 0.5;
 
   switch (private->type)
     {
     case GIMP_HANDLE_SQUARE:
-      cairo_rectangle (cr, x, y, private->width - 1.0, private->height - 1.0);
-
-      _gimp_canvas_item_stroke (item, cr);
-      break;
-
+    case GIMP_HANDLE_DASHED_SQUARE:
     case GIMP_HANDLE_FILLED_SQUARE:
-      cairo_rectangle (cr, x - 0.5, y - 0.5, private->width, private->height);
+    case GIMP_HANDLE_DIAMOND:
+    case GIMP_HANDLE_DASHED_DIAMOND:
+    case GIMP_HANDLE_FILLED_DIAMOND:
+    case GIMP_HANDLE_CROSS:
+      cairo_save (cr);
+      cairo_translate (cr, tx, ty);
+      cairo_rotate (cr, private->start_angle);
+      cairo_translate (cr, -tx, -ty);
 
-      _gimp_canvas_item_fill (item, cr);
+      switch (private->type)
+        {
+        case GIMP_HANDLE_SQUARE:
+        case GIMP_HANDLE_DASHED_SQUARE:
+          if (private->type == GIMP_HANDLE_DASHED_SQUARE)
+            {
+              gdouble circ;
+              gdouble dashes[2];
+
+              cairo_save (cr);
+
+              circ = 2.0 * ((private->width - 1.0) + (private->height - 1.0));
+
+              dashes[0] = (circ / N_DASHES) * DASH_ON_RATIO;
+              dashes[1] = (circ / N_DASHES) * DASH_OFF_RATIO;
+
+              cairo_set_dash (cr, dashes, 2, dashes[0] / 2.0);
+            }
+
+          cairo_rectangle (cr, x, y, private->width - 1.0, private->height - 1.0);
+          _gimp_canvas_item_stroke (item, cr);
+
+          if (private->type == GIMP_HANDLE_DASHED_SQUARE)
+            cairo_restore (cr);
+          break;
+
+        case GIMP_HANDLE_FILLED_SQUARE:
+          cairo_rectangle (cr, x - 0.5, y - 0.5, private->width, private->height);
+          _gimp_canvas_item_fill (item, cr);
+          break;
+
+        case GIMP_HANDLE_DIAMOND:
+        case GIMP_HANDLE_DASHED_DIAMOND:
+        case GIMP_HANDLE_FILLED_DIAMOND:
+          if (private->type == GIMP_HANDLE_DASHED_DIAMOND)
+            {
+              gdouble circ;
+              gdouble dashes[2];
+
+              cairo_save (cr);
+
+              circ = 4.0 * hypot ((gdouble) private->width  / 2.0,
+                                  (gdouble) private->height / 2.0);
+
+              dashes[0] = (circ / N_DASHES) * DASH_ON_RATIO;
+              dashes[1] = (circ / N_DASHES) * DASH_OFF_RATIO;
+
+              cairo_set_dash (cr, dashes, 2, dashes[0] / 2.0);
+            }
+
+          cairo_move_to (cr, x, y - (gdouble) private->height / 2.0);
+          cairo_line_to (cr, x + (gdouble) private->width / 2.0, y);
+          cairo_line_to (cr, x, y + (gdouble) private->height / 2.0);
+          cairo_line_to (cr, x - (gdouble) private->width / 2.0, y);
+          cairo_line_to (cr, x, y - (gdouble) private->height / 2.0);
+          if (private->type == GIMP_HANDLE_DIAMOND ||
+              private->type == GIMP_HANDLE_DASHED_DIAMOND)
+            _gimp_canvas_item_stroke (item, cr);
+          else
+            _gimp_canvas_item_fill (item, cr);
+
+          if (private->type == GIMP_HANDLE_DASHED_SQUARE)
+            cairo_restore (cr);
+          break;
+
+        case GIMP_HANDLE_CROSS:
+          cairo_move_to (cr, x - private->width / 2, y);
+          cairo_line_to (cr, x + private->width / 2 - 0.5, y);
+          cairo_move_to (cr, x, y - private->height / 2);
+          cairo_line_to (cr, x, y + private->height / 2 - 0.5);
+          _gimp_canvas_item_stroke (item, cr);
+          break;
+
+        default:
+          gimp_assert_not_reached ();
+        }
+
+      cairo_restore (cr);
       break;
 
     case GIMP_HANDLE_CIRCLE:
-      gimp_cairo_add_arc (cr, x, y, private->width / 2,
-                          private->start_angle,
-                          private->slice_angle);
+    case GIMP_HANDLE_DASHED_CIRCLE:
+      if (private->type == GIMP_HANDLE_DASHED_CIRCLE)
+        {
+          gdouble circ;
+          gdouble dashes[2];
+
+          cairo_save (cr);
+
+          circ = 2.0 * G_PI * (private->width / 2);
+
+          dashes[0] = (circ / N_DASHES) * DASH_ON_RATIO;
+          dashes[1] = (circ / N_DASHES) * DASH_OFF_RATIO;
+
+          cairo_set_dash (cr, dashes, 2, dashes[0] / 2.0);
+        }
+
+      gimp_cairo_arc (cr, x, y, private->width / 2,
+                      private->start_angle,
+                      private->slice_angle);
 
       _gimp_canvas_item_stroke (item, cr);
+
+      if (private->type == GIMP_HANDLE_DASHED_CIRCLE)
+        cairo_restore (cr);
       break;
 
     case GIMP_HANDLE_FILLED_CIRCLE:
       cairo_move_to (cr, x, y);
 
-      gimp_cairo_add_arc (cr, x, y, (gdouble) private->width / 2.0,
-                          private->start_angle,
-                          private->slice_angle);
+      gimp_cairo_arc (cr, x, y, (gdouble) private->width / 2.0,
+                      private->start_angle,
+                      private->slice_angle);
 
       _gimp_canvas_item_fill (item, cr);
       break;
 
-    case GIMP_HANDLE_CROSS:
+    case GIMP_HANDLE_CROSSHAIR:
       cairo_move_to (cr, x - private->width / 2, y);
-      cairo_line_to (cr, x + private->width / 2, y);
+      cairo_line_to (cr, x - private->width * 0.4, y);
+
+      cairo_move_to (cr, x + private->width / 2 - 0.5, y);
+      cairo_line_to (cr, x + private->width * 0.4, y);
 
       cairo_move_to (cr, x, y - private->height / 2);
-      cairo_line_to (cr, x, y + private->height / 2);
+      cairo_line_to (cr, x, y - private->height * 0.4 - 0.5);
 
-      _gimp_canvas_item_stroke (item, cr);
+      cairo_move_to (cr, x, y + private->height / 2 - 0.5);
+      cairo_line_to (cr, x, y + private->height * 0.4 - 0.5);
+
+       _gimp_canvas_item_stroke (item, cr);
       break;
 
     default:
@@ -350,32 +467,40 @@ gimp_canvas_handle_draw (GimpCanvasItem   *item,
 }
 
 static cairo_region_t *
-gimp_canvas_handle_get_extents (GimpCanvasItem   *item,
-                                GimpDisplayShell *shell)
+gimp_canvas_handle_get_extents (GimpCanvasItem *item)
 {
   GimpCanvasHandlePrivate *private = GET_PRIVATE (item);
   cairo_rectangle_int_t    rectangle;
   gdouble                  x, y;
+  gdouble                  w, h;
 
-  gimp_canvas_handle_transform (item, shell, &x, &y);
+  gimp_canvas_handle_transform (item, &x, &y);
 
   switch (private->type)
     {
     case GIMP_HANDLE_SQUARE:
+    case GIMP_HANDLE_DASHED_SQUARE:
     case GIMP_HANDLE_FILLED_SQUARE:
-      rectangle.x      = x - 1.5;
-      rectangle.y      = y - 1.5;
-      rectangle.width  = private->width  + 3.0;
-      rectangle.height = private->height + 3.0;
+      w = private->width * (sqrt(2) - 1) / 2;
+      h = private->height * (sqrt(2) - 1) / 2;
+      rectangle.x      = x - 1.5 - w;
+      rectangle.y      = y - 1.5 - h;
+      rectangle.width  = private->width  + 3.0 + w * 2;
+      rectangle.height = private->height + 3.0 + h * 2;
       break;
 
     case GIMP_HANDLE_CIRCLE:
+    case GIMP_HANDLE_DASHED_CIRCLE:
     case GIMP_HANDLE_FILLED_CIRCLE:
     case GIMP_HANDLE_CROSS:
-      rectangle.x      = x - private->width  / 2 - 1.5;
-      rectangle.y      = y - private->height / 2 - 1.5;
-      rectangle.width  = private->width  + 3.0;
-      rectangle.height = private->height + 3.0;
+    case GIMP_HANDLE_CROSSHAIR:
+    case GIMP_HANDLE_DIAMOND:
+    case GIMP_HANDLE_DASHED_DIAMOND:
+    case GIMP_HANDLE_FILLED_DIAMOND:
+      rectangle.x      = x - private->width  / 2 - 2.0;
+      rectangle.y      = y - private->height / 2 - 2.0;
+      rectangle.width  = private->width  + 4.0;
+      rectangle.height = private->height + 4.0;
       break;
 
     default:
@@ -386,31 +511,48 @@ gimp_canvas_handle_get_extents (GimpCanvasItem   *item,
 }
 
 static gboolean
-gimp_canvas_handle_hit (GimpCanvasItem   *item,
-                        GimpDisplayShell *shell,
-                        gdouble           x,
-                        gdouble           y)
+gimp_canvas_handle_hit (GimpCanvasItem *item,
+                        gdouble         x,
+                        gdouble         y)
 {
   GimpCanvasHandlePrivate *private = GET_PRIVATE (item);
   gdouble                  handle_tx, handle_ty;
-  gdouble                  tx, ty;
+  gdouble                  mx, my, tx, ty, mmx, mmy;
+  gdouble                  diamond_offset_x = 0.0;
+  gdouble                  diamond_offset_y = 0.0;
+  gdouble                  angle            = -private->start_angle;
 
-  gimp_canvas_handle_transform (item, shell, &handle_tx, &handle_ty);
+  gimp_canvas_handle_transform (item, &handle_tx, &handle_ty);
 
-  gimp_display_shell_transform_xy_f (shell,
-                                     x, y,
-                                     &tx, &ty);
+  gimp_canvas_item_transform_xy_f (item,
+                                   x, y,
+                                   &mx, &my);
 
   switch (private->type)
     {
+    case GIMP_HANDLE_DIAMOND:
+    case GIMP_HANDLE_DASHED_DIAMOND:
+    case GIMP_HANDLE_FILLED_DIAMOND:
+      angle -= G_PI / 4.0;
+      diamond_offset_x = private->width / 2.0;
+      diamond_offset_y = private->height / 2.0;
     case GIMP_HANDLE_SQUARE:
+    case GIMP_HANDLE_DASHED_SQUARE:
     case GIMP_HANDLE_FILLED_SQUARE:
-     return (tx == CLAMP (tx, handle_tx, handle_tx + private->width) &&
-              ty == CLAMP (ty, handle_ty, handle_ty + private->height));
+      gimp_canvas_item_transform_xy_f (item,
+                                       private->x, private->y,
+                                       &tx, &ty);
+      mmx = mx - tx; mmy = my - ty;
+      mx = cos (angle) * mmx - sin (angle) * mmy + tx + diamond_offset_x;
+      my = sin (angle) * mmx + cos (angle) * mmy + ty + diamond_offset_y;
+      return mx > handle_tx && mx < handle_tx + private->width &&
+             my > handle_ty && my < handle_ty + private->height;
 
     case GIMP_HANDLE_CIRCLE:
+    case GIMP_HANDLE_DASHED_CIRCLE:
     case GIMP_HANDLE_FILLED_CIRCLE:
     case GIMP_HANDLE_CROSS:
+    case GIMP_HANDLE_CROSSHAIR:
       {
         gint width = private->width;
 
@@ -419,7 +561,7 @@ gimp_canvas_handle_hit (GimpCanvasItem   *item,
 
         width /= 2;
 
-        return ((SQR (handle_tx - tx) + SQR (handle_ty - ty)) < SQR (width));
+        return ((SQR (handle_tx - mx) + SQR (handle_ty - my)) < SQR (width));
       }
 
     default:
@@ -478,6 +620,70 @@ gimp_canvas_handle_set_position (GimpCanvasItem *handle,
   g_object_set (handle,
                 "x", x,
                 "y", y,
+                NULL);
+
+  gimp_canvas_item_end_change (handle);
+}
+
+gint
+gimp_canvas_handle_calc_size (GimpCanvasItem *item,
+                              gdouble         mouse_x,
+                              gdouble         mouse_y,
+                              gint            normal_size,
+                              gint            hover_size)
+{
+  gdouble x, y;
+  gdouble distance;
+  gdouble size;
+  gint    full_threshold_sq    = SQR (hover_size / 2) * 9;
+  gint    partial_threshold_sq = full_threshold_sq * 5;
+
+  g_return_val_if_fail (GIMP_IS_CANVAS_HANDLE (item), normal_size);
+
+  gimp_canvas_handle_get_position (item, &x, &y);
+  distance = gimp_canvas_item_transform_distance_square (item,
+                                                         mouse_x,
+                                                         mouse_y,
+                                                         x, y);
+
+  /*  calculate the handle size based on distance from the cursor  */
+  size = (1.0 - (distance - full_threshold_sq) /
+          (partial_threshold_sq - full_threshold_sq));
+
+  size = CLAMP (size, 0.0, 1.0);
+
+  return (gint) CLAMP ((size * hover_size),
+                       normal_size,
+                       hover_size);
+}
+
+void
+gimp_canvas_handle_get_size (GimpCanvasItem *handle,
+                             gint           *width,
+                             gint           *height)
+{
+  g_return_if_fail (GIMP_IS_CANVAS_HANDLE (handle));
+  g_return_if_fail (width != NULL);
+  g_return_if_fail (height != NULL);
+
+  g_object_get (handle,
+                "width",  width,
+                "height", height,
+                NULL);
+}
+
+void
+gimp_canvas_handle_set_size (GimpCanvasItem *handle,
+                             gint            width,
+                             gint            height)
+{
+  g_return_if_fail (GIMP_IS_CANVAS_HANDLE (handle));
+
+  gimp_canvas_item_begin_change (handle);
+
+  g_object_set (handle,
+                "width",  width,
+                "height", height,
                 NULL);
 
   gimp_canvas_item_end_change (handle);

@@ -21,6 +21,7 @@
 
 #include <cairo.h>
 #include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "libgimpcolor/gimpcolor.h"
 
@@ -71,7 +72,19 @@ gimp_image_colormap_init (GimpImage *image)
   private->colormap = g_new0 (guchar, GIMP_IMAGE_COLORMAP_SIZE);
   private->palette  = GIMP_PALETTE (gimp_palette_new (NULL, palette_name));
 
-  gimp_palette_set_columns  (private->palette, 16);
+  if (! private->babl_palette_rgb)
+    {
+      gchar *format_name = g_strdup_printf ("-gimp-indexed-format-%d",
+                                            gimp_image_get_ID (image));
+
+      babl_new_palette (format_name,
+                        &private->babl_palette_rgb,
+                        &private->babl_palette_rgba);
+
+      g_free (format_name);
+    }
+
+  gimp_palette_set_columns (private->palette, 16);
 
   gimp_data_make_internal (GIMP_DATA (private->palette), palette_id);
 
@@ -113,11 +126,29 @@ gimp_image_colormap_free (GimpImage *image)
   g_return_if_fail (private->colormap != NULL);
   g_return_if_fail (GIMP_IS_PALETTE (private->palette));
 
-  g_free (private->colormap);
-  private->colormap = NULL;
+  g_clear_pointer (&private->colormap, g_free);
+  g_clear_object (&private->palette);
 
-  g_object_unref (private->palette);
-  private->palette = NULL;
+  /* don't touch the image's babl_palettes because we might still have
+   * buffers with that palette on the undo stack, and on undoing the
+   * image back to indexed, we must have exactly these palettes around
+   */
+}
+
+const Babl *
+gimp_image_colormap_get_rgb_format (GimpImage *image)
+{
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+
+  return GIMP_IMAGE_GET_PRIVATE (image)->babl_palette_rgb;
+}
+
+const Babl *
+gimp_image_colormap_get_rgba_format (GimpImage *image)
+{
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+
+  return GIMP_IMAGE_GET_PRIVATE (image)->babl_palette_rgba;
 }
 
 GimpPalette *
@@ -129,7 +160,7 @@ gimp_image_get_colormap_palette (GimpImage *image)
 }
 
 const guchar *
-gimp_image_get_colormap (const GimpImage *image)
+gimp_image_get_colormap (GimpImage *image)
 {
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
 
@@ -137,7 +168,7 @@ gimp_image_get_colormap (const GimpImage *image)
 }
 
 gint
-gimp_image_get_colormap_size (const GimpImage *image)
+gimp_image_get_colormap_size (GimpImage *image)
 {
   g_return_val_if_fail (GIMP_IS_IMAGE (image), 0);
 
@@ -239,7 +270,7 @@ gimp_image_get_colormap_entry (GimpImage *image,
                        private->colormap[color_index * 3],
                        private->colormap[color_index * 3 + 1],
                        private->colormap[color_index * 3 + 2],
-                       OPAQUE_OPACITY);
+                       255);
 }
 
 void
@@ -295,10 +326,10 @@ gimp_image_add_colormap_entry (GimpImage     *image,
                       &private->colormap[private->n_colors * 3 + 1],
                       &private->colormap[private->n_colors * 3 + 2]);
 
+  private->n_colors++;
+
   if (private->palette)
     gimp_image_colormap_set_palette_entry (image, private->n_colors - 1);
-
-  private->n_colors++;
 
   gimp_image_colormap_changed (image, -1);
 }

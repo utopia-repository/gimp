@@ -83,53 +83,74 @@ typedef struct
   G_TYPE_INSTANCE_GET_PRIVATE (ruler, GIMP_TYPE_RULER, GimpRulerPrivate)
 
 
-static const struct
+typedef struct
 {
   const gdouble  ruler_scale[16];
   const gint     subdivide[5];
-} ruler_metric =
+} RulerMetric;
+
+static const RulerMetric ruler_metric_decimal =
 {
   { 1, 2, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000 },
   { 1, 5, 10, 50, 100 }
 };
 
+static const RulerMetric ruler_metric_inches =
+{
+  { 1, 2, 6, 12, 36, 100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000 },
+  { 1, 4, 8, 16, 12 * 16 }
+};
 
-static void          gimp_ruler_dispose              (GObject        *object);
-static void          gimp_ruler_set_property         (GObject        *object,
-                                                      guint           prop_id,
-                                                      const GValue   *value,
-                                                      GParamSpec     *pspec);
-static void          gimp_ruler_get_property         (GObject        *object,
-                                                      guint           prop_id,
-                                                      GValue         *value,
-                                                      GParamSpec     *pspec);
+static const RulerMetric ruler_metric_feet =
+{
+  { 1, 2, 6, 12, 36, 100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000 },
+  { 1, 3, 6, 12, 12 * 8 }
+};
 
-static void          gimp_ruler_realize              (GtkWidget      *widget);
-static void          gimp_ruler_unrealize            (GtkWidget      *widget);
-static void          gimp_ruler_map                  (GtkWidget      *widget);
-static void          gimp_ruler_unmap                (GtkWidget      *widget);
-static void          gimp_ruler_size_allocate        (GtkWidget      *widget,
-                                                      GtkAllocation  *allocation);
-static void          gimp_ruler_size_request         (GtkWidget      *widget,
-                                                      GtkRequisition *requisition);
-static void          gimp_ruler_style_set            (GtkWidget      *widget,
-                                                      GtkStyle       *prev_style);
-static gboolean      gimp_ruler_motion_notify        (GtkWidget      *widget,
-                                                      GdkEventMotion *event);
-static gboolean      gimp_ruler_expose               (GtkWidget      *widget,
-                                                      GdkEventExpose *event);
+static const RulerMetric ruler_metric_yards =
+{
+  { 1, 2, 6, 12, 36, 100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000 },
+  { 1, 3, 6, 12, 12 * 12 }
+};
 
-static void          gimp_ruler_draw_ticks            (GimpRuler     *ruler);
-static GdkRectangle  gimp_ruler_get_pos_rect          (GimpRuler     *ruler,
-                                                       gdouble        position);
-static gboolean      gimp_ruler_idle_queue_pos_redraw (gpointer       data);
-static void          gimp_ruler_queue_pos_redraw      (GimpRuler     *ruler);
-static void          gimp_ruler_draw_pos              (GimpRuler     *ruler,
-                                                       cairo_t       *cr);
-static void          gimp_ruler_make_pixmap           (GimpRuler     *ruler);
 
-static PangoLayout * gimp_ruler_get_layout            (GtkWidget     *widget,
-                                                       const gchar   *text);
+static void          gimp_ruler_dispose               (GObject        *object);
+static void          gimp_ruler_set_property          (GObject        *object,
+                                                       guint           prop_id,
+                                                       const GValue   *value,
+                                                       GParamSpec     *pspec);
+static void          gimp_ruler_get_property          (GObject        *object,
+                                                       guint           prop_id,
+                                                       GValue         *value,
+                                                       GParamSpec     *pspec);
+
+static void          gimp_ruler_realize               (GtkWidget      *widget);
+static void          gimp_ruler_unrealize             (GtkWidget      *widget);
+static void          gimp_ruler_map                   (GtkWidget      *widget);
+static void          gimp_ruler_unmap                 (GtkWidget      *widget);
+static void          gimp_ruler_size_allocate         (GtkWidget      *widget,
+                                                       GtkAllocation  *allocation);
+static void          gimp_ruler_size_request          (GtkWidget      *widget,
+                                                       GtkRequisition *requisition);
+static void          gimp_ruler_style_set             (GtkWidget      *widget,
+                                                       GtkStyle       *prev_style);
+static gboolean      gimp_ruler_motion_notify         (GtkWidget      *widget,
+                                                       GdkEventMotion *event);
+static gboolean      gimp_ruler_expose                (GtkWidget      *widget,
+                                                       GdkEventExpose *event);
+
+static void          gimp_ruler_draw_ticks            (GimpRuler      *ruler);
+static GdkRectangle  gimp_ruler_get_pos_rect          (GimpRuler      *ruler,
+                                                       gdouble         position);
+static gboolean      gimp_ruler_idle_queue_pos_redraw (gpointer        data);
+static void          gimp_ruler_queue_pos_redraw      (GimpRuler      *ruler);
+static void          gimp_ruler_draw_pos              (GimpRuler      *ruler,
+                                                       cairo_t        *cr);
+static void          gimp_ruler_make_pixmap           (GimpRuler      *ruler);
+static PangoLayout * gimp_ruler_get_layout            (GtkWidget      *widget,
+                                                       const gchar    *text);
+static const RulerMetric *
+                     gimp_ruler_get_metric            (GimpUnit        unit);
 
 
 G_DEFINE_TYPE (GimpRuler, gimp_ruler, GTK_TYPE_WIDGET)
@@ -219,7 +240,8 @@ gimp_ruler_class_init (GimpRulerClass *klass)
 
   gtk_widget_class_install_style_property (widget_class,
                                            g_param_spec_double ("font-scale",
-                                                                NULL, NULL,
+                                                                "Font Scale",
+                                                                "The size of the used font",
                                                                 0.0,
                                                                 G_MAXDOUBLE,
                                                                 DEFAULT_RULER_FONT_SCALE,
@@ -234,7 +256,7 @@ gimp_ruler_init (GimpRuler *ruler)
   gtk_widget_set_has_window (GTK_WIDGET (ruler), FALSE);
 
   priv->orientation         = GTK_ORIENTATION_HORIZONTAL;
-  priv->unit                = GIMP_PIXELS;
+  priv->unit                = GIMP_UNIT_PIXEL;
   priv->lower               = 0;
   priv->upper               = 0;
   priv->position            = 0;
@@ -369,7 +391,7 @@ gimp_ruler_get_property (GObject    *object,
  *
  * Return value: a new #GimpRuler widget.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 GtkWidget *
 gimp_ruler_new (GtkOrientation orientation)
@@ -511,7 +533,7 @@ gimp_ruler_track_widget_motion_notify (GtkWidget      *widget,
  * for the track widget's children, regardless of whether they are
  * ordinary children of off-screen children.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  */
 void
 gimp_ruler_add_track_widget (GimpRuler *ruler,
@@ -544,7 +566,7 @@ gimp_ruler_add_track_widget (GimpRuler *ruler,
  * Removes a previously added track widget from the ruler. See
  * gimp_ruler_add_track_widget().
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  */
 void
 gimp_ruler_remove_track_widget (GimpRuler *ruler,
@@ -576,7 +598,7 @@ gimp_ruler_remove_track_widget (GimpRuler *ruler,
  *
  * This sets the unit of the ruler.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  */
 void
 gimp_ruler_set_unit (GimpRuler *ruler,
@@ -604,7 +626,7 @@ gimp_ruler_set_unit (GimpRuler *ruler,
  *
  * Return value: the unit currently used in the @ruler widget.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 GimpUnit
 gimp_ruler_get_unit (GimpRuler *ruler)
@@ -621,7 +643,7 @@ gimp_ruler_get_unit (GimpRuler *ruler)
  *
  * This sets the position of the ruler.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  */
 void
 gimp_ruler_set_position (GimpRuler *ruler,
@@ -669,9 +691,10 @@ gimp_ruler_set_position (GimpRuler *ruler,
         }
       else if (! priv->pos_redraw_idle_id)
         {
-          priv->pos_redraw_idle_id = g_idle_add_full (G_PRIORITY_LOW,
-                                                      gimp_ruler_idle_queue_pos_redraw,
-                                                      ruler, NULL);
+          priv->pos_redraw_idle_id =
+            g_idle_add_full (G_PRIORITY_LOW,
+                             gimp_ruler_idle_queue_pos_redraw,
+                             ruler, NULL);
         }
     }
 }
@@ -682,7 +705,7 @@ gimp_ruler_set_position (GimpRuler *ruler,
  *
  * Return value: the current position of the @ruler widget.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 gdouble
 gimp_ruler_get_position (GimpRuler *ruler)
@@ -702,7 +725,7 @@ gimp_ruler_get_position (GimpRuler *ruler)
  *
  * This sets the range of the ruler.
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  */
 void
 gimp_ruler_set_range (GimpRuler *ruler,
@@ -749,7 +772,7 @@ gimp_ruler_set_range (GimpRuler *ruler,
  * Retrieves values indicating the range and current position of a #GimpRuler.
  * See gimp_ruler_set_range().
  *
- * Since: GIMP 2.8
+ * Since: 2.8
  **/
 void
 gimp_ruler_get_range (GimpRuler *ruler,
@@ -809,25 +832,12 @@ gimp_ruler_unrealize (GtkWidget *widget)
   GimpRuler        *ruler = GIMP_RULER (widget);
   GimpRulerPrivate *priv  = GIMP_RULER_GET_PRIVATE (ruler);
 
-  if (priv->backing_store)
-    {
-      cairo_surface_destroy (priv->backing_store);
-      priv->backing_store = NULL;
-    }
-
+  g_clear_pointer (&priv->backing_store, cairo_surface_destroy);
   priv->backing_store_valid = FALSE;
 
-  if (priv->layout)
-    {
-      g_object_unref (priv->layout);
-      priv->layout = NULL;
-    }
+  g_clear_object (&priv->layout);
 
-  if (priv->input_window)
-    {
-      gdk_window_destroy (priv->input_window);
-      priv->input_window = NULL;
-    }
+  g_clear_pointer (&priv->input_window, gdk_window_destroy);
 
   GTK_WIDGET_CLASS (gimp_ruler_parent_class)->unrealize (widget);
 }
@@ -860,8 +870,15 @@ gimp_ruler_size_allocate (GtkWidget     *widget,
 {
   GimpRuler        *ruler = GIMP_RULER (widget);
   GimpRulerPrivate *priv  = GIMP_RULER_GET_PRIVATE (ruler);
+  GtkAllocation     widget_allocation;
+  gboolean          resized;
 
-  gtk_widget_set_allocation (widget, allocation);
+  gtk_widget_get_allocation (widget, &widget_allocation);
+
+  resized = (widget_allocation.width  != allocation->width ||
+             widget_allocation.height != allocation->height);
+
+  GTK_WIDGET_CLASS (parent_class)->size_allocate (widget, allocation);
 
   if (gtk_widget_get_realized (widget))
     {
@@ -869,7 +886,8 @@ gimp_ruler_size_allocate (GtkWidget     *widget,
                               allocation->x, allocation->y,
                               allocation->width, allocation->height);
 
-      gimp_ruler_make_pixmap (ruler);
+      if (resized)
+        gimp_ruler_make_pixmap (ruler);
     }
 }
 
@@ -912,11 +930,9 @@ gimp_ruler_style_set (GtkWidget *widget,
                         "font-scale", &priv->font_scale,
                         NULL);
 
-  if (priv->layout)
-    {
-      g_object_unref (priv->layout);
-      priv->layout = NULL;
-    }
+  priv->backing_store_valid = FALSE;
+
+  g_clear_object (&priv->layout);
 }
 
 static gboolean
@@ -966,28 +982,29 @@ gimp_ruler_draw_ticks (GimpRuler *ruler)
 {
   GtkWidget        *widget = GTK_WIDGET (ruler);
   GtkStyle         *style  = gtk_widget_get_style (widget);
-  GimpRulerPrivate *priv   = GIMP_RULER_GET_PRIVATE (ruler);
-  GtkStateType      state  = gtk_widget_get_state (widget);
-  GtkAllocation     allocation;
-  cairo_t          *cr;
-  gint              i;
-  gint              width, height;
-  gint              xthickness;
-  gint              ythickness;
-  gint              length, ideal_length;
-  gdouble           lower, upper;  /* Upper and lower limits, in ruler units */
-  gdouble           increment;     /* Number of pixels per unit */
-  gint              scale;         /* Number of units per major unit */
-  gdouble           start, end, cur;
-  gchar             unit_str[32];
-  gint              digit_height;
-  gint              digit_offset;
-  gint              text_size;
-  gint              pos;
-  gdouble           max_size;
-  GimpUnit          unit;
-  PangoLayout      *layout;
-  PangoRectangle    logical_rect, ink_rect;
+  GimpRulerPrivate  *priv   = GIMP_RULER_GET_PRIVATE (ruler);
+  GtkStateType       state  = gtk_widget_get_state (widget);
+  GtkAllocation      allocation;
+  cairo_t           *cr;
+  gint               i;
+  gint               width, height;
+  gint               xthickness;
+  gint               ythickness;
+  gint               length, ideal_length;
+  gdouble            lower, upper;  /* Upper and lower limits, in ruler units */
+  gdouble            increment;     /* Number of pixels per unit */
+  gint               scale;         /* Number of units per major unit */
+  gdouble            start, end, cur;
+  gchar              unit_str[32];
+  gint               digit_height;
+  gint               digit_offset;
+  gint               text_size;
+  gint               pos;
+  gdouble            max_size;
+  GimpUnit           unit;
+  PangoLayout       *layout;
+  PangoRectangle     logical_rect, ink_rect;
+  const RulerMetric *ruler_metric;
 
   if (! gtk_widget_is_drawable (widget))
     return;
@@ -1069,18 +1086,20 @@ gimp_ruler_draw_ticks (GimpRuler *ruler)
   g_snprintf (unit_str, sizeof (unit_str), "%d", scale);
   text_size = strlen (unit_str) * digit_height + 1;
 
-  for (scale = 0; scale < G_N_ELEMENTS (ruler_metric.ruler_scale); scale++)
-    if (ruler_metric.ruler_scale[scale] * fabs (increment) > 2 * text_size)
+  unit = gimp_ruler_get_unit (ruler);
+
+  ruler_metric = gimp_ruler_get_metric (unit);
+
+  for (scale = 0; scale < G_N_ELEMENTS (ruler_metric->ruler_scale); scale++)
+    if (ruler_metric->ruler_scale[scale] * fabs (increment) > 2 * text_size)
       break;
 
-  if (scale == G_N_ELEMENTS (ruler_metric.ruler_scale))
-    scale = G_N_ELEMENTS (ruler_metric.ruler_scale) - 1;
-
-  unit = gimp_ruler_get_unit (ruler);
+  if (scale == G_N_ELEMENTS (ruler_metric->ruler_scale))
+    scale = G_N_ELEMENTS (ruler_metric->ruler_scale) - 1;
 
   /* drawing starts here */
   length = 0;
-  for (i = G_N_ELEMENTS (ruler_metric.subdivide) - 1; i >= 0; i--)
+  for (i = G_N_ELEMENTS (ruler_metric->subdivide) - 1; i >= 0; i--)
     {
       gdouble subd_incr;
 
@@ -1088,8 +1107,8 @@ gimp_ruler_draw_ticks (GimpRuler *ruler)
       if (unit == GIMP_UNIT_PIXEL && scale == 1 && i == 1)
         subd_incr = 1.0;
       else
-        subd_incr = ((gdouble) ruler_metric.ruler_scale[scale] /
-                     (gdouble) ruler_metric.subdivide[i]);
+        subd_incr = ((gdouble) ruler_metric->ruler_scale[scale] /
+                     (gdouble) ruler_metric->subdivide[i]);
 
       if (subd_incr * fabs (increment) <= MINIMUM_INCR)
         continue;
@@ -1203,10 +1222,9 @@ out:
 }
 
 static GdkRectangle
-gimp_ruler_get_pos_rect (GimpRuler *ruler, gdouble position)
+gimp_ruler_get_pos_rect (GimpRuler *ruler,
+                         gdouble    position)
 {
-  GdkRectangle rect = {0, };
-
   GtkWidget        *widget = GTK_WIDGET (ruler);
   GtkStyle         *style  = gtk_widget_get_style (widget);
   GimpRulerPrivate *priv   = GIMP_RULER_GET_PRIVATE (ruler);
@@ -1216,6 +1234,7 @@ gimp_ruler_get_pos_rect (GimpRuler *ruler, gdouble position)
   gint              ythickness;
   gdouble           upper, lower;
   gdouble           increment;
+  GdkRectangle      rect = { 0, };
 
   if (! gtk_widget_is_drawable (widget))
     return rect;
@@ -1276,6 +1295,7 @@ gimp_ruler_idle_queue_pos_redraw (gpointer data)
   gimp_ruler_queue_pos_redraw (ruler);
 
   priv->pos_redraw_idle_id = 0;
+
   return G_SOURCE_REMOVE;
 }
 
@@ -1308,7 +1328,8 @@ gimp_ruler_queue_pos_redraw (GimpRuler *ruler)
 }
 
 static void
-gimp_ruler_draw_pos (GimpRuler *ruler, cairo_t *cr)
+gimp_ruler_draw_pos (GimpRuler *ruler,
+                     cairo_t   *cr)
 {
   GtkWidget        *widget = GTK_WIDGET (ruler);
   GtkStyle         *style  = gtk_widget_get_style (widget);
@@ -1379,7 +1400,6 @@ gimp_ruler_make_pixmap (GimpRuler *ruler)
   priv->backing_store_valid = FALSE;
 }
 
-
 static PangoLayout *
 gimp_ruler_create_layout (GtkWidget   *widget,
                           const gchar *text)
@@ -1419,4 +1439,29 @@ gimp_ruler_get_layout (GtkWidget   *widget,
   priv->layout = gimp_ruler_create_layout (widget, text);
 
   return priv->layout;
+}
+
+#define FACTOR_EPSILON  0.0000001
+#define FACTOR_EQUAL(u, f) (ABS (f - gimp_unit_get_factor (u)) < FACTOR_EPSILON)
+
+static const RulerMetric *
+gimp_ruler_get_metric (GimpUnit unit)
+{
+  /*  not enabled until we double checked the metrics  */
+  return &ruler_metric_decimal;
+
+  if (unit == GIMP_UNIT_INCH)
+    {
+      return  &ruler_metric_inches;
+    }
+  else if (FACTOR_EQUAL (unit, 0.083333))
+    {
+      return  &ruler_metric_feet;
+    }
+  else if (FACTOR_EQUAL (unit, 0.027778))
+    {
+      return  &ruler_metric_yards;
+    }
+
+  return &ruler_metric_decimal;
 }

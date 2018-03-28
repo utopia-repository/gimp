@@ -28,11 +28,10 @@
 
 #include "widgets-types.h"
 
-#include "base/temp-buf.h"
-
 #include "core/gimpdrawable.h"
 #include "core/gimpdrawable-preview.h"
 #include "core/gimpimage.h"
+#include "core/gimptempbuf.h"
 
 #include "gimpviewrendererdrawable.h"
 
@@ -76,7 +75,7 @@ gimp_view_renderer_drawable_render (GimpViewRenderer *renderer,
   gdouble       xres       = 1.0;
   gdouble       yres       = 1.0;
   gboolean      scaling_up;
-  TempBuf      *render_buf = NULL;
+  GimpTempBuf  *render_buf = NULL;
 
   drawable = GIMP_DRAWABLE (renderer->viewable);
   item     = GIMP_ITEM (drawable);
@@ -164,15 +163,15 @@ gimp_view_renderer_drawable_render (GimpViewRenderer *renderer,
             }
           else
             {
-              gint   bytes    = gimp_drawable_preview_bytes (drawable);
-              guchar empty[4] = { 0, 0, 0, 0 };
+              const Babl *format = gimp_drawable_get_preview_format (drawable);
 
-              render_buf = temp_buf_new (1, 1, bytes, 0, 0, empty);
+              render_buf = gimp_temp_buf_new (1, 1, format);
+              gimp_temp_buf_data_clear (render_buf);
             }
         }
       else
         {
-          TempBuf *temp_buf;
+          GimpTempBuf *temp_buf;
 
           temp_buf = gimp_viewable_get_new_preview (renderer->viewable,
                                                     renderer->context,
@@ -181,9 +180,9 @@ gimp_view_renderer_drawable_render (GimpViewRenderer *renderer,
 
           if (temp_buf)
             {
-              render_buf = temp_buf_scale (temp_buf, view_width, view_height);
-
-              temp_buf_free (temp_buf);
+              render_buf = gimp_temp_buf_scale (temp_buf,
+                                                view_width, view_height);
+              gimp_temp_buf_unref (temp_buf);
             }
         }
     }
@@ -197,47 +196,51 @@ gimp_view_renderer_drawable_render (GimpViewRenderer *renderer,
 
   if (render_buf)
     {
+      gint render_buf_x = 0;
+      gint render_buf_y = 0;
+
       if (image && ! renderer->is_popup)
         {
           if (offset_x != 0)
-            render_buf->x =
+            render_buf_x =
               ROUND ((((gdouble) renderer->width /
                        (gdouble) gimp_image_get_width (image)) *
                       (gdouble) offset_x));
 
           if (offset_y != 0)
-            render_buf->y =
+            render_buf_y =
               ROUND ((((gdouble) renderer->height /
                        (gdouble) gimp_image_get_height (image)) *
                       (gdouble) offset_y));
 
           if (scaling_up)
             {
-              if (render_buf->x < 0) render_buf->x = 0;
-              if (render_buf->y < 0) render_buf->y = 0;
+              if (render_buf_x < 0) render_buf_x = 0;
+              if (render_buf_y < 0) render_buf_y = 0;
             }
         }
       else
         {
           if (view_width < width)
-            render_buf->x = (width - view_width) / 2;
+            render_buf_x = (width - view_width) / 2;
 
           if (view_height < height)
-            render_buf->y = (height - view_height) / 2;
+            render_buf_y = (height - view_height) / 2;
         }
 
-      gimp_view_renderer_render_temp_buf (renderer, render_buf, -1,
+      gimp_view_renderer_render_temp_buf (renderer, widget, render_buf,
+                                          render_buf_x, render_buf_y,
+                                          -1,
                                           GIMP_VIEW_BG_CHECKS,
                                           GIMP_VIEW_BG_CHECKS);
-
-      temp_buf_free (render_buf);
+      gimp_temp_buf_unref (render_buf);
     }
   else
     {
-      const gchar *stock_id;
+      const gchar *icon_name;
 
-      stock_id = gimp_viewable_get_stock_id (renderer->viewable);
+      icon_name = gimp_viewable_get_icon_name (renderer->viewable);
 
-      gimp_view_renderer_render_stock (renderer, widget, stock_id);
+      gimp_view_renderer_render_icon (renderer, widget, icon_name);
     }
 }

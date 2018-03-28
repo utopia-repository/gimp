@@ -37,21 +37,57 @@ typedef struct _GimpBlendToolClass GimpBlendToolClass;
 
 struct _GimpBlendTool
 {
-  GimpDrawTool    parent_instance;
+  GimpDrawTool        parent_instance;
 
-  gdouble         start_x;    /*  starting x coord  */
-  gdouble         start_y;    /*  starting y coord  */
-  gdouble         end_x;      /*  ending x coord    */
-  gdouble         end_y;      /*  ending y coord    */
+  GimpGradient       *gradient;
+  GimpGradient       *tentative_gradient;
 
-  gdouble         last_x;     /*  last x coord      */
-  gdouble         last_y;     /*  last y coord      */
-  gdouble         mouse_x;    /*  pointer x coord   */
-  gdouble         mouse_y;    /*  pointer y coord   */
+  gdouble             start_x;    /*  starting x coord  */
+  gdouble             start_y;    /*  starting y coord  */
+  gdouble             end_x;      /*  ending x coord    */
+  gdouble             end_y;      /*  ending y coord    */
 
-  GimpCanvasItem *start_handle;
-  GimpCanvasItem *line;
-  GimpCanvasItem *end_handle;
+  GimpToolWidget     *widget;
+  GimpToolWidget     *grab_widget;
+
+  GeglNode           *graph;
+  GeglNode           *render_node;
+#if 0
+  GeglNode           *subtract_node;
+  GeglNode           *divide_node;
+#endif
+  GeglNode           *dist_node;
+  GeglBuffer         *dist_buffer;
+  GimpDrawableFilter *filter;
+
+  /*  editor  */
+
+  gint                block_handlers_count;
+
+  gint                edit_count;
+  GSList             *undo_stack;
+  GSList             *redo_stack;
+
+  guint               flush_idle_id;
+
+  GimpToolGui        *gui;
+  GtkWidget          *endpoint_editor;
+  GtkWidget          *endpoint_se;
+  GtkWidget          *endpoint_color_panel;
+  GtkWidget          *endpoint_type_combo;
+  GtkWidget          *stop_editor;
+  GtkWidget          *stop_se;
+  GtkWidget          *stop_left_color_panel;
+  GtkWidget          *stop_left_type_combo;
+  GtkWidget          *stop_right_color_panel;
+  GtkWidget          *stop_right_type_combo;
+  GtkWidget          *stop_chain_button;
+  GtkWidget          *midpoint_editor;
+  GtkWidget          *midpoint_se;
+  GtkWidget          *midpoint_type_combo;
+  GtkWidget          *midpoint_color_combo;
+  GtkWidget          *midpoint_new_stop_button;
+  GtkWidget          *midpoint_center_button;
 };
 
 struct _GimpBlendToolClass
@@ -60,10 +96,16 @@ struct _GimpBlendToolClass
 };
 
 
-void    gimp_blend_tool_register (GimpToolRegisterCallback  callback,
-                                  gpointer                  data);
+void    gimp_blend_tool_register               (GimpToolRegisterCallback  callback,
+                                                gpointer                  data);
 
-GType   gimp_blend_tool_get_type (void) G_GNUC_CONST;
+GType   gimp_blend_tool_get_type               (void) G_GNUC_CONST;
+
+
+/*  protected functions  */
+
+void    gimp_blend_tool_set_tentative_gradient (GimpBlendTool            *blend_tool,
+                                                GimpGradient             *gradient);
 
 
 #endif  /*  __GIMP_BLEND_TOOL_H__  */

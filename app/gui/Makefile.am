@@ -5,26 +5,23 @@ xobjective_c = "-xobjective-c"
 endif
 
 AM_CPPFLAGS = \
-	-DG_LOG_DOMAIN=\"Gimp-GUI\"	\
-	-DGIMP_COMMAND=\"@GIMP_COMMAND@\"
-
-INCLUDES = \
-	-I$(top_builddir)		\
-	-I$(top_srcdir)			\
-	-I$(top_builddir)/app		\
-	-I$(top_srcdir)/app		\
-	$(xobjective_c)			\
-	$(GEGL_CFLAGS)			\
-	$(GTK_CFLAGS)			\
-	$(DBUS_GLIB_CFLAGS)		\
-	$(GTK_MAC_INTEGRATION_CFLAGS)	\
+	-DG_LOG_DOMAIN=\"Gimp-GUI\"		\
+	-DGIMP_COMMAND=\"@GIMP_COMMAND@\"	\
+	-I$(top_builddir)			\
+	-I$(top_srcdir)				\
+	-I$(top_builddir)/app			\
+	-I$(top_srcdir)/app			\
+	$(xobjective_c)				\
+	$(GIO_UNIX_CFLAGS)			\
+	$(GEGL_CFLAGS)				\
+	$(GTK_CFLAGS)				\
+	$(GTK_MAC_INTEGRATION_CFLAGS)		\
+	$(DBUS_GLIB_CFLAGS)			\
 	-I$(includedir)
 
 noinst_LIBRARIES = libappgui.a
 
 libappgui_a_sources = \
-	color-history.c		\
-	color-history.h		\
 	gimpdbusservice.c	\
 	gimpdbusservice.h	\
 	gimpuiconfigurer.c	\
@@ -38,6 +35,8 @@ libappgui_a_sources = \
 	gui-vtable.c		\
 	gui-vtable.h		\
 	gui-types.h		\
+	icon-themes.c		\
+	icon-themes.h		\
 	session.c		\
 	session.h		\
 	splash.c		\
@@ -45,9 +44,13 @@ libappgui_a_sources = \
 	themes.c		\
 	themes.h
 
-libappgui_a_built_sources = gimpdbusservice-glue.h 
+libappgui_a_built_sources = \
+	gimpdbusservice-generated.c	\
+	gimpdbusservice-generated.h
 
 libappgui_a_SOURCES = $(libappgui_a_built_sources) $(libappgui_a_sources)
+
+BUILT_SOURCES = $(libappgui_a_built_sources)
 
 EXTRA_DIST = \
 	dbus-service.xml
@@ -56,10 +59,13 @@ EXTRA_DIST = \
 # rules to generate built sources
 #
 # setup autogeneration dependencies
-gen_sources = gimpdbusservice-glue.h
+gen_sources = $(libappgui_a_built_sources)
 CLEANFILES = $(gen_sources)
 
-$(srcdir)/gimpdbusservice.c: gimpdbusservice-glue.h
+$(srcdir)/gimpdbusservice.c: $(libappgui_a_built_sources)
 
-gimpdbusservice-glue.h: $(srcdir)/dbus-service.xml
-	$(DBUS_BINDING_TOOL) --mode=glib-server --prefix=gimp $< > $(@F)
+$(libappgui_a_built_sources): $(srcdir)/dbus-service.xml
+	$(GDBUS_CODEGEN) --interface-prefix org.gimp.GIMP. \
+			 --generate-c-code gimpdbusservice-generated \
+			 --c-namespace GimpDBusService \
+			 $(srcdir)/dbus-service.xml

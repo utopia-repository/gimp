@@ -4,9 +4,9 @@
  * gimpoverlaychild.c
  * Copyright (C) 2009 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,12 +15,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include <libgimpmath/gimpmath.h>
@@ -31,6 +31,7 @@
 
 #include "gimpoverlaybox.h"
 #include "gimpoverlaychild.h"
+#include "gimpwidgets-utils.h"
 
 
 /*  local function prototypes  */
@@ -139,6 +140,7 @@ gimp_overlay_child_realize (GimpOverlayBox   *box,
 
   g_return_if_fail (GIMP_IS_OVERLAY_BOX (box));
   g_return_if_fail (child != NULL);
+  g_return_if_fail (child->window == NULL);
 
   widget = GTK_WIDGET (box);
 
@@ -168,7 +170,8 @@ gimp_overlay_child_realize (GimpOverlayBox   *box,
   attributes.wclass      = GDK_INPUT_OUTPUT;
   attributes.visual      = gtk_widget_get_visual (child->widget);
   attributes.colormap    = gtk_widget_get_colormap (child->widget);
-  attributes.event_mask  = GDK_EXPOSURE_MASK;
+  attributes.event_mask  = (gtk_widget_get_events (widget) |
+                            GDK_EXPOSURE_MASK);
   attributes.cursor      = gdk_cursor_new_for_display (display, GDK_LEFT_PTR);
 
   attributes_mask = (GDK_WA_X        |
@@ -204,6 +207,7 @@ gimp_overlay_child_unrealize (GimpOverlayBox   *box,
 {
   g_return_if_fail (GIMP_IS_OVERLAY_BOX (box));
   g_return_if_fail (child != NULL);
+  g_return_if_fail (child->window != NULL);
 
   gdk_window_set_user_data (child->window, NULL);
   gdk_window_destroy (child->window);
@@ -227,7 +231,6 @@ gimp_overlay_child_size_allocate (GimpOverlayBox   *box,
                                   GimpOverlayChild *child)
 {
   GtkWidget      *widget;
-  GtkAllocation   allocation;
   GtkRequisition  child_requisition;
   GtkAllocation   child_allocation;
   gint            x;
@@ -238,7 +241,7 @@ gimp_overlay_child_size_allocate (GimpOverlayBox   *box,
 
   widget = GTK_WIDGET (box);
 
-  gtk_widget_get_allocation (widget, &allocation);
+  gimp_overlay_child_invalidate (box, child);
 
   gtk_widget_get_child_requisition (child->widget, &child_requisition);
 
@@ -249,30 +252,12 @@ gimp_overlay_child_size_allocate (GimpOverlayBox   *box,
 
   gtk_widget_size_allocate (child->widget, &child_allocation);
 
-  gtk_widget_get_allocation (child->widget, &child_allocation);
-
   if (gtk_widget_get_realized (GTK_WIDGET (widget)))
-    {
-      GdkRectangle old_allocation;
-      GdkRectangle old_bounds;
-
-      gdk_window_get_position (child->window,
-                               &old_allocation.x,
-                               &old_allocation.y);
-      old_allocation.width  = gdk_window_get_width (child->window);
-      old_allocation.height = gdk_window_get_height (child->window);
-
-      gimp_overlay_child_transform_bounds (child, &old_allocation, &old_bounds);
-
-      gdk_window_invalidate_rect (gtk_widget_get_window (widget),
-                                  &old_bounds, FALSE);
-
-      gdk_window_move_resize (child->window,
-                              child_allocation.x,
-                              child_allocation.y,
-                              child_allocation.width,
-                              child_allocation.height);
-    }
+    gdk_window_move_resize (child->window,
+                            child_allocation.x,
+                            child_allocation.y,
+                            child_allocation.width,
+                            child_allocation.height);
 
   cairo_matrix_init_identity (&child->matrix);
 
@@ -286,10 +271,13 @@ gimp_overlay_child_size_allocate (GimpOverlayBox   *box,
     }
   else
     {
-      GdkRectangle bounds;
-      gint         border;
-      gint         available_width;
-      gint         available_height;
+      GtkAllocation allocation;
+      GdkRectangle  bounds;
+      gint          border;
+      gint          available_width;
+      gint          available_height;
+
+      gtk_widget_get_allocation (widget, &allocation);
 
       gimp_overlay_child_transform_bounds (child, &child_allocation, &bounds);
 
@@ -312,6 +300,44 @@ gimp_overlay_child_size_allocate (GimpOverlayBox   *box,
 
   /* local transform */
   cairo_matrix_rotate (&child->matrix, child->angle);
+
+  gimp_overlay_child_invalidate (box, child);
+}
+
+static void
+gimp_overlay_child_clip_fully_opaque (GimpOverlayChild *child,
+                                      GtkContainer     *container,
+                                      cairo_t          *cr)
+{
+  GList *children;
+  GList *list;
+
+  children = gtk_container_get_children (container);
+
+  for (list = children; list; list = g_list_next (list))
+    {
+      GtkWidget *widget = list->data;
+
+      if (gimp_widget_get_fully_opaque (widget))
+        {
+          GtkAllocation allocation;
+          gint          x, y;
+
+          gtk_widget_get_allocation (widget, &allocation);
+          gtk_widget_translate_coordinates (widget, child->widget,
+                                            0, 0, &x, &y);
+
+          cairo_rectangle (cr, x, y, allocation.width, allocation.height);
+        }
+      else if (GTK_IS_CONTAINER (widget))
+        {
+          gimp_overlay_child_clip_fully_opaque (child,
+                                                GTK_CONTAINER (widget),
+                                                cr);
+        }
+    }
+
+  g_list_free (children);
 }
 
 gboolean
@@ -339,8 +365,13 @@ gimp_overlay_child_expose (GimpOverlayBox   *box,
       if (gtk_widget_get_visible (child->widget) &&
           gdk_rectangle_intersect (&event->area, &bounds, NULL))
         {
-          GdkPixmap *pixmap = gdk_offscreen_window_get_pixmap (child->window);
-          cairo_t   *cr     = gdk_cairo_create (gtk_widget_get_window (widget));
+          GdkPixmap *pixmap;
+          cairo_t   *cr;
+
+          gdk_window_process_updates (child->window, FALSE);
+
+          pixmap = gdk_offscreen_window_get_pixmap (child->window);
+          cr     = gdk_cairo_create (gtk_widget_get_window (widget));
 
           gdk_cairo_region (cr, event->region);
           cairo_clip (cr);
@@ -348,6 +379,13 @@ gimp_overlay_child_expose (GimpOverlayBox   *box,
           cairo_transform (cr, &child->matrix);
           gdk_cairo_set_source_pixmap (cr, pixmap, 0, 0);
           cairo_paint_with_alpha (cr, child->opacity);
+
+          gimp_overlay_child_clip_fully_opaque (child,
+                                                GTK_CONTAINER (child->widget),
+                                                cr);
+          cairo_clip (cr);
+          cairo_paint (cr);
+
           cairo_destroy (cr);
         }
     }

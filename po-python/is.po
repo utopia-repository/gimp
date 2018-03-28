@@ -3,14 +3,14 @@
 # Copyright (C) 2008, 2009, 2015 Free Software Foundation, Inc.
 #
 # Anna Jonna Ármansdóttir <annajonna@gmail.com>, 2008.
-# Sveinn í Felli <sv1@fellsnet.is>, 2015.
+# Sveinn í Felli <sv1@fellsnet.is>, 2015, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: gimp-python.gimp-2-8.is\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gimp&"
-"keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-01-08 06:17+0000\n"
-"PO-Revision-Date: 2015-01-15 13:00+0000\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
+"product=gimp&keywords=I18N+L10N&component=Internationalisation\n"
+"POT-Creation-Date: 2017-08-10 07:10+0000\n"
+"PO-Revision-Date: 2017-08-23 09:00+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic <translation-team-is@lists.sourceforge.net>\n"
 "Language: is\n"
@@ -20,38 +20,37 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=1;\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: ../plug-ins/pygimp/gimpfu.py:394
+#: ../plug-ins/pygimp/gimpfu.py:395
 msgid "Missing exception information"
 msgstr "Vantar upplýsingar um frávik (exception)"
 
-#: ../plug-ins/pygimp/gimpfu.py:403
+#: ../plug-ins/pygimp/gimpfu.py:404
 #, python-format
-#| msgid "An error occured running %s"
 msgid "An error occurred running %s"
 msgstr "Villa kom upp við keyrslu %s"
 
-#: ../plug-ins/pygimp/gimpfu.py:414
+#: ../plug-ins/pygimp/gimpfu.py:415
 msgid "_More Information"
 msgstr "_Nánari upplýsingar"
 
-#: ../plug-ins/pygimp/gimpfu.py:526 ../plug-ins/pygimp/gimpfu.py:538
-#: ../plug-ins/pygimp/gimpfu.py:544
+#: ../plug-ins/pygimp/gimpfu.py:528 ../plug-ins/pygimp/gimpfu.py:540
+#: ../plug-ins/pygimp/gimpfu.py:546
 msgid "No"
 msgstr "Nei"
 
-#: ../plug-ins/pygimp/gimpfu.py:536 ../plug-ins/pygimp/gimpfu.py:544
+#: ../plug-ins/pygimp/gimpfu.py:538 ../plug-ins/pygimp/gimpfu.py:546
 msgid "Yes"
 msgstr "Já"
 
-#: ../plug-ins/pygimp/gimpfu.py:597 ../plug-ins/pygimp/gimpui.py:223
+#: ../plug-ins/pygimp/gimpfu.py:599 ../plug-ins/pygimp/gimpui.py:223
 msgid "Python-Fu File Selection"
 msgstr "Python-Fu skráaval"
 
-#: ../plug-ins/pygimp/gimpfu.py:643
+#: ../plug-ins/pygimp/gimpfu.py:648
 msgid "Python-Fu Folder Selection"
 msgstr "Python-Fu möppuval"
 
-#: ../plug-ins/pygimp/gimpfu.py:732
+#: ../plug-ins/pygimp/gimpfu.py:737
 #, python-format
 msgid "Invalid input for '%s'"
 msgstr "Ógilt inntak fyrir '%s'"
@@ -108,6 +107,50 @@ msgstr "Litstigull sem nota skal"
 msgid "File Name"
 msgstr "Skráarheiti"
 
+#: ../plug-ins/pygimp/plug-ins/histogram-export.py:88
+msgid "Exports the image histogram to a text file (CSV)"
+msgstr "Flytur litatíðnirit myndar út sem textaskrá (CSV)"
+
+#: ../plug-ins/pygimp/plug-ins/histogram-export.py:93
+msgid "_Export histogram..."
+msgstr "_Flytja út litatíðnirit..."
+
+#: ../plug-ins/pygimp/plug-ins/histogram-export.py:95
+msgid "_Image"
+msgstr "_Mynd"
+
+#: ../plug-ins/pygimp/plug-ins/histogram-export.py:96
+msgid "_Drawable"
+msgstr "_Teiknanlegt"
+
+#: ../plug-ins/pygimp/plug-ins/histogram-export.py:97
+msgid "Histogram _File"
+msgstr "Litatíðniskrá"
+
+#: ../plug-ins/pygimp/plug-ins/histogram-export.py:98
+msgid "_Bucket Size"
+msgstr "Stærð _fötu"
+
+#: ../plug-ins/pygimp/plug-ins/histogram-export.py:99
+msgid "Sample _Average"
+msgstr "Meðalt_al sýnis"
+
+#: ../plug-ins/pygimp/plug-ins/histogram-export.py:100
+msgid "Output format"
+msgstr "Úttakssnið"
+
+#: ../plug-ins/pygimp/plug-ins/histogram-export.py:101
+msgid "Pixel count"
+msgstr "Fjöldi mynddíla"
+
+#: ../plug-ins/pygimp/plug-ins/histogram-export.py:102
+msgid "Normalized"
+msgstr "Samræmt"
+
+#: ../plug-ins/pygimp/plug-ins/histogram-export.py:103
+msgid "Percent"
+msgstr "prósent"
+
 #: ../plug-ins/pygimp/plug-ins/foggify.py:56
 msgid "Add a layer of fog"
 msgstr "Bæta við lagi af þoku"
@@ -145,7 +188,7 @@ msgid "_Offset Palette..."
 msgstr "Hliðra _litaspjaldi..."
 
 #: ../plug-ins/pygimp/plug-ins/palette-offset.py:52
-#: ../plug-ins/pygimp/plug-ins/palette-sort.py:56
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:334
 #: ../plug-ins/pygimp/plug-ins/palette-to-gradient.py:59
 #: ../plug-ins/pygimp/plug-ins/palette-to-gradient.py:81
 msgid "Palette"
@@ -155,45 +198,126 @@ msgstr "Litaspjald"
 msgid "Off_set"
 msgstr "_Hliðrun"
 
-#: ../plug-ins/pygimp/plug-ins/palette-sort.py:48
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:25
+msgid "Red"
+msgstr "Rautt"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:25
+msgid "Green"
+msgstr "Grænt"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:25
+msgid "Blue"
+msgstr "Blátt"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:26
+msgid "Luma (Y)"
+msgstr "Luma (Y)"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:27
+msgid "Hue"
+msgstr "Litblær"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:27
+msgid "Saturation"
+msgstr "Litmettun"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:27
+msgid "Value"
+msgstr "Litgildi"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:28
+msgid "Saturation (HSL)"
+msgstr "Litmettun (HSL)"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:28
+msgid "Lightness (HSL)"
+msgstr "Ljósleiki (HSL)"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:29
+msgid "Index"
+msgstr "Litnúmerað"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:30
+msgid "Random"
+msgstr "Slembið"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:81
+msgid "Lightness (LAB)"
+msgstr "Ljósleiki (LAB)"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:82
+msgid "A-color"
+msgstr "A-litur"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:82
+msgid "B-color"
+msgstr "B-litur"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:83
+msgid "Chroma (LCHab)"
+msgstr "Litróf (LCHab)"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:84
+msgid "Hue (LCHab)"
+msgstr "Litblær (LCHab)"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:312
 msgid "Sort the colors in a palette"
 msgstr "Endurraða litum á litaspjaldi"
 
-#: ../plug-ins/pygimp/plug-ins/palette-sort.py:53
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:331
 msgid "_Sort Palette..."
 msgstr "_Raða á litaspjaldi..."
 
-#: ../plug-ins/pygimp/plug-ins/palette-sort.py:57
-msgid "Color _model"
-msgstr "Litas_kali"
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:335
+msgid "Se_lections"
+msgstr "Va_lið"
 
-#: ../plug-ins/pygimp/plug-ins/palette-sort.py:58
-msgid "RGB"
-msgstr "RGB"
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:336
+msgid "All"
+msgstr "Allt"
 
-#: ../plug-ins/pygimp/plug-ins/palette-sort.py:59
-msgid "HSV"
-msgstr "HSV"
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:336
+msgid "Slice / Array"
+msgstr "Sneiða / Fylki"
 
-#: ../plug-ins/pygimp/plug-ins/palette-sort.py:60
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:336
+msgid "Autoslice (fg->bg)"
+msgstr "Sjálfvirk sneiðing (fg->bg)"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:337
+msgid "Partitioned"
+msgstr "Upphlutað"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:338
+msgid "Slice _expression"
+msgstr "Segð sn_eiðingar"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:339
 msgid "Channel to _sort"
 msgstr "Litrás til að _raða"
 
-#: ../plug-ins/pygimp/plug-ins/palette-sort.py:61
-msgid "Red or Hue"
-msgstr "Rautt eða litblær"
-
-#: ../plug-ins/pygimp/plug-ins/palette-sort.py:62
-msgid "Green or Saturation"
-msgstr "Grænt eða litmettun"
-
-#: ../plug-ins/pygimp/plug-ins/palette-sort.py:63
-msgid "Blue or Value"
-msgstr "Blátt eða litgildi"
-
-#: ../plug-ins/pygimp/plug-ins/palette-sort.py:64
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:341
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:344
 msgid "_Ascending"
 msgstr "_Hækkandi"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:342
+msgid "Secondary Channel to s_ort"
+msgstr "_Aukalitrás til að raða"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:345
+msgid "_Quantization"
+msgstr "_Magn"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:346
+msgid "_Partitioning channel"
+msgstr "Rás sem á að ski_pta upp"
+
+#: ../plug-ins/pygimp/plug-ins/palette-sort.py:348
+msgid "Partition q_uantization"
+msgstr "Magn í skipting_u"
 
 #: ../plug-ins/pygimp/plug-ins/palette-to-gradient.py:52
 msgid "Create a repeating gradient using colors from the palette"
@@ -216,48 +340,48 @@ msgid "Slice"
 msgstr "Sneiða"
 
 #. table snippet means a small piece of HTML code here
-#: ../plug-ins/pygimp/plug-ins/py-slice.py:420
+#: ../plug-ins/pygimp/plug-ins/py-slice.py:421
 msgid "Cuts an image along its guides, creates images and a HTML table snippet"
 msgstr "Sníður mynd meðfram stoðlínum, býr til myndhluta og HTML töflukóða"
 
-#: ../plug-ins/pygimp/plug-ins/py-slice.py:431
+#: ../plug-ins/pygimp/plug-ins/py-slice.py:432
 msgid "_Slice..."
 msgstr "_Sneiða..."
 
-#: ../plug-ins/pygimp/plug-ins/py-slice.py:436
+#: ../plug-ins/pygimp/plug-ins/py-slice.py:437
 msgid "Path for HTML export"
 msgstr "Slóð fyrir útflutning á HTML"
 
-#: ../plug-ins/pygimp/plug-ins/py-slice.py:437
+#: ../plug-ins/pygimp/plug-ins/py-slice.py:438
 msgid "Filename for export"
 msgstr "Skráarheiti til útflutnings"
 
-#: ../plug-ins/pygimp/plug-ins/py-slice.py:438
+#: ../plug-ins/pygimp/plug-ins/py-slice.py:439
 msgid "Image name prefix"
 msgstr "Forskeyti myndskráarheitis"
 
-#: ../plug-ins/pygimp/plug-ins/py-slice.py:439
+#: ../plug-ins/pygimp/plug-ins/py-slice.py:440
 msgid "Image format"
 msgstr "Myndsnið"
 
-#: ../plug-ins/pygimp/plug-ins/py-slice.py:440
+#: ../plug-ins/pygimp/plug-ins/py-slice.py:441
 msgid "Separate image folder"
 msgstr "Sérstök myndamappa"
 
-#: ../plug-ins/pygimp/plug-ins/py-slice.py:442
+#: ../plug-ins/pygimp/plug-ins/py-slice.py:443
 msgid "Folder for image export"
 msgstr "Mappa til útflutnings mynda"
 
-#: ../plug-ins/pygimp/plug-ins/py-slice.py:443
+#: ../plug-ins/pygimp/plug-ins/py-slice.py:444
 msgid "Space between table elements"
 msgstr "Bil milli töfluhluta"
 
-#: ../plug-ins/pygimp/plug-ins/py-slice.py:445
+#: ../plug-ins/pygimp/plug-ins/py-slice.py:446
 msgid "Javascript for onmouseover and clicked"
 msgstr "Javascript við yfirsvif (onmouseover) og smell"
 
 #. table caps are table cells on the edge of the table
-#: ../plug-ins/pygimp/plug-ins/py-slice.py:448
+#: ../plug-ins/pygimp/plug-ins/py-slice.py:449
 msgid "Skip animation for table caps"
 msgstr "Sleppa hreyfingum á töflufyrirsögnum"
 
@@ -269,29 +393,29 @@ msgstr "Python stjórnskjár"
 msgid "_Browse..."
 msgstr "_Flakka..."
 
-#: ../plug-ins/pygimp/plug-ins/python-console.py:138
+#: ../plug-ins/pygimp/plug-ins/python-console.py:144
 msgid "Python Procedure Browser"
 msgstr "Python aðgerðavafri"
 
-#: ../plug-ins/pygimp/plug-ins/python-console.py:167
+#: ../plug-ins/pygimp/plug-ins/python-console.py:173
 #, python-format
 msgid "Could not open '%s' for writing: %s"
 msgstr "Gat ekki opnað '%s' fyrir ritun: %s"
 
-#: ../plug-ins/pygimp/plug-ins/python-console.py:182
+#: ../plug-ins/pygimp/plug-ins/python-console.py:188
 #, python-format
 msgid "Could not write to '%s': %s"
 msgstr "Gat ekki skrifað í '%s': %s"
 
-#: ../plug-ins/pygimp/plug-ins/python-console.py:190
+#: ../plug-ins/pygimp/plug-ins/python-console.py:196
 msgid "Save Python-Fu Console Output"
 msgstr "Vista Python-Fu úttak frá skipanalínu"
 
-#: ../plug-ins/pygimp/plug-ins/python-console.py:216
+#: ../plug-ins/pygimp/plug-ins/python-console.py:222
 msgid "Interactive GIMP Python interpreter"
 msgstr "Gagnvirkur GIMP Python túlkari"
 
-#: ../plug-ins/pygimp/plug-ins/python-console.py:221
+#: ../plug-ins/pygimp/plug-ins/python-console.py:227
 msgid "_Console"
 msgstr "Stjórns_kjár"
 
@@ -323,25 +447,33 @@ msgstr "_X hliðrun undirskugga"
 msgid "Drop shadow _Y displacement"
 msgstr "_Y hliðrun undirskugga"
 
-#: ../plug-ins/pygimp/plug-ins/text-brush.py:76
-msgid "Create a new brush with characters from a text sequence"
-msgstr "Búa til nýjan pensil með stöfum úr textastreng"
+#~ msgid "Color _model"
+#~ msgstr "Litas_kali"
 
-#: ../plug-ins/pygimp/plug-ins/text-brush.py:82
-msgid "New Brush from _Text..."
-msgstr "Nýr pensill úr _texta..."
+#~ msgid "RGB"
+#~ msgstr "RGB"
 
-#: ../plug-ins/pygimp/plug-ins/text-brush.py:85
-msgid "Font"
-msgstr "Letur"
+#~ msgid "HSV"
+#~ msgstr "HSV"
 
-#: ../plug-ins/pygimp/plug-ins/text-brush.py:86
-msgid "Pixel Size"
-msgstr "Stærð mynddíla"
+#~ msgid "Red or Hue"
+#~ msgstr "Rautt eða litblær"
 
-#: ../plug-ins/pygimp/plug-ins/text-brush.py:87
-#| msgid "Text file"
-msgid "Text"
-msgstr "Textaskrá"
+#~ msgid "Blue or Value"
+#~ msgstr "Blátt eða litgildi"
 
+#~ msgid "Create a new brush with characters from a text sequence"
+#~ msgstr "Búa til nýjan pensil með stöfum úr textastreng"
 
+#~ msgid "New Brush from _Text..."
+#~ msgstr "Nýr pensill úr _texta..."
+
+#~ msgid "Font"
+#~ msgstr "Letur"
+
+#~ msgid "Pixel Size"
+#~ msgstr "Stærð mynddíla"
+
+#~| msgid "Text file"
+#~ msgid "Text"
+#~ msgstr "Textaskrá"

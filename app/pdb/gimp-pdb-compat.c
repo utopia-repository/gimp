@@ -18,7 +18,8 @@
 #include "config.h"
 
 #include <cairo.h>
-#include <glib-object.h>
+#include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
@@ -481,8 +482,12 @@ gimp_pdb_compat_procs_register (GimpPDB           *pdb,
     { "gimp-parasite-find",                 "gimp-get-parasite"               },
     { "gimp-parasite-attach",               "gimp-attach-parasite"            },
     { "gimp-parasite-detach",               "gimp-detach-parasite"            },
-    { "gimp-parasite-list",                 "gimp-get-parasite-list"          }
-  };
+    { "gimp-parasite-list",                 "gimp-get-parasite-list"          },
+
+    /*  deprecations since 2.8  */
+    { "gimp-edit-paste-as-new",             "gimp-edit-paste-as-new-image"    },
+    { "gimp-edit-named-paste-as-new", "gimp-edit-named-paste-as-new-image"    }
+ };
 
   g_return_if_fail (GIMP_IS_PDB (pdb));
 

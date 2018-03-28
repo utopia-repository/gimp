@@ -25,20 +25,20 @@
 #include "gimpcontainertreeview.h"
 
 
-typedef GimpContainer * (* GimpGetContainerFunc) (const GimpImage *image);
-typedef GimpItem      * (* GimpGetItemFunc)      (const GimpImage *image);
-typedef void            (* GimpSetItemFunc)      (GimpImage       *image,
-                                                  GimpItem        *item);
-typedef void            (* GimpAddItemFunc)      (GimpImage       *image,
-                                                  GimpItem        *item,
-                                                  GimpItem        *parent,
-                                                  gint             index,
-                                                  gboolean         push_undo);
-typedef void            (* GimpRemoveItemFunc)   (GimpImage       *image,
-                                                  GimpItem        *item,
-                                                  gboolean         push_undo,
-                                                  GimpItem        *new_active);
-typedef GimpItem      * (* GimpNewItemFunc)      (GimpImage       *image);
+typedef GimpContainer * (* GimpGetContainerFunc) (GimpImage *image);
+typedef GimpItem      * (* GimpGetItemFunc)      (GimpImage *image);
+typedef void            (* GimpSetItemFunc)      (GimpImage *image,
+                                                  GimpItem  *item);
+typedef void            (* GimpAddItemFunc)      (GimpImage *image,
+                                                  GimpItem  *item,
+                                                  GimpItem  *parent,
+                                                  gint       index,
+                                                  gboolean   push_undo);
+typedef void            (* GimpRemoveItemFunc)   (GimpImage *image,
+                                                  GimpItem  *item,
+                                                  gboolean   push_undo,
+                                                  GimpItem  *new_active);
+typedef GimpItem      * (* GimpNewItemFunc)      (GimpImage *image);
 
 
 #define GIMP_TYPE_ITEM_TREE_VIEW            (gimp_item_tree_view_get_type ())
@@ -81,7 +81,6 @@ struct _GimpItemTreeViewClass
   /*  action names  */
   const gchar          *action_group;
   const gchar          *activate_action;
-  const gchar          *edit_action;
   const gchar          *new_action;
   const gchar          *new_default_action;
   const gchar          *raise_action;
@@ -92,38 +91,43 @@ struct _GimpItemTreeViewClass
   const gchar          *delete_action;
 
   /*  lock content button appearance  */
-  const gchar          *lock_content_stock_id;
+  const gchar          *lock_content_icon_name;
   const gchar          *lock_content_tooltip;
   const gchar          *lock_content_help_id;
+
+  /* lock position (translation and transformation) button appearance */
+  const gchar          *lock_position_icon_name;
+  const gchar          *lock_position_tooltip;
+  const gchar          *lock_position_help_id;
 };
 
 
-GType       gimp_item_tree_view_get_type        (void) G_GNUC_CONST;
+GType       gimp_item_tree_view_get_type          (void) G_GNUC_CONST;
 
-GtkWidget * gimp_item_tree_view_new             (GType             view_type,
-                                                 gint              view_size,
-                                                 gint              view_border_width,
-                                                 GimpImage        *image,
-                                                 GimpMenuFactory  *menu_facotry,
-                                                 const gchar      *menu_identifier,
-                                                 const gchar      *ui_identifier);
+GtkWidget * gimp_item_tree_view_new               (GType             view_type,
+                                                   gint              view_size,
+                                                   gint              view_border_width,
+                                                   GimpImage        *image,
+                                                   GimpMenuFactory  *menu_facotry,
+                                                   const gchar      *menu_identifier,
+                                                   const gchar      *ui_identifier);
 
-void        gimp_item_tree_view_set_image       (GimpItemTreeView *view,
-                                                 GimpImage        *image);
-GimpImage * gimp_item_tree_view_get_image       (GimpItemTreeView *view);
+void        gimp_item_tree_view_set_image         (GimpItemTreeView *view,
+                                                   GimpImage        *image);
+GimpImage * gimp_item_tree_view_get_image         (GimpItemTreeView *view);
 
-void        gimp_item_tree_view_add_options     (GimpItemTreeView *view,
-                                                 const gchar      *label,
-                                                 GtkWidget        *options);
-GtkWidget * gimp_item_tree_view_get_lock_box    (GimpItemTreeView *view);
+void        gimp_item_tree_view_add_options       (GimpItemTreeView *view,
+                                                   const gchar      *label,
+                                                   GtkWidget        *options);
+GtkWidget * gimp_item_tree_view_get_lock_box      (GimpItemTreeView *view);
 
-GtkWidget * gimp_item_tree_view_get_new_button  (GimpItemTreeView *view);
-GtkWidget * gimp_item_tree_view_get_edit_button (GimpItemTreeView *view);
+GtkWidget * gimp_item_tree_view_get_new_button    (GimpItemTreeView *view);
+GtkWidget * gimp_item_tree_view_get_delete_button (GimpItemTreeView *view);
 
-gint        gimp_item_tree_view_get_drop_index  (GimpItemTreeView *view,
-                                                 GimpViewable     *dest_viewable,
-                                                 GtkTreeViewDropPosition drop_pos,
-                                                 GimpViewable    **parent);
+gint        gimp_item_tree_view_get_drop_index    (GimpItemTreeView *view,
+                                                   GimpViewable     *dest_viewable,
+                                                   GtkTreeViewDropPosition drop_pos,
+                                                   GimpViewable    **parent);
 
 
 #endif  /*  __GIMP_ITEM_TREE_VIEW_H__  */

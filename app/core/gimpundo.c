@@ -19,13 +19,12 @@
 
 #include <time.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 
 #include "core-types.h"
-
-#include "base/temp-buf.h"
 
 #include "config/gimpcoreconfig.h"
 
@@ -34,8 +33,11 @@
 #include "gimpimage.h"
 #include "gimpimage-undo.h"
 #include "gimpmarshal.h"
+#include "gimptempbuf.h"
 #include "gimpundo.h"
 #include "gimpundostack.h"
+
+#include "gimp-priorities.h"
 
 #include "gimp-intl.h"
 
@@ -57,40 +59,40 @@ enum
 };
 
 
-static void      gimp_undo_constructed         (GObject             *object);
-static void      gimp_undo_finalize            (GObject             *object);
-static void      gimp_undo_set_property        (GObject             *object,
-                                                guint                property_id,
-                                                const GValue        *value,
-                                                GParamSpec          *pspec);
-static void      gimp_undo_get_property        (GObject             *object,
-                                                guint                property_id,
-                                                GValue              *value,
-                                                GParamSpec          *pspec);
+static void          gimp_undo_constructed         (GObject             *object);
+static void          gimp_undo_finalize            (GObject             *object);
+static void          gimp_undo_set_property        (GObject             *object,
+                                                    guint                property_id,
+                                                    const GValue        *value,
+                                                    GParamSpec          *pspec);
+static void          gimp_undo_get_property        (GObject             *object,
+                                                    guint                property_id,
+                                                    GValue              *value,
+                                                    GParamSpec          *pspec);
 
-static gint64    gimp_undo_get_memsize         (GimpObject          *object,
-                                                gint64              *gui_size);
+static gint64        gimp_undo_get_memsize         (GimpObject          *object,
+                                                    gint64              *gui_size);
 
-static gboolean  gimp_undo_get_popup_size      (GimpViewable        *viewable,
-                                                gint                 width,
-                                                gint                 height,
-                                                gboolean             dot_for_dot,
-                                                gint                *popup_width,
-                                                gint                *popup_height);
-static TempBuf * gimp_undo_get_new_preview     (GimpViewable        *viewable,
-                                                GimpContext         *context,
-                                                gint                 width,
-                                                gint                 height);
+static gboolean      gimp_undo_get_popup_size      (GimpViewable        *viewable,
+                                                    gint                 width,
+                                                    gint                 height,
+                                                    gboolean             dot_for_dot,
+                                                    gint                *popup_width,
+                                                    gint                *popup_height);
+static GimpTempBuf * gimp_undo_get_new_preview     (GimpViewable        *viewable,
+                                                    GimpContext         *context,
+                                                    gint                 width,
+                                                    gint                 height);
 
-static void      gimp_undo_real_pop            (GimpUndo            *undo,
-                                                GimpUndoMode         undo_mode,
-                                                GimpUndoAccumulator *accum);
-static void      gimp_undo_real_free           (GimpUndo            *undo,
-                                                GimpUndoMode         undo_mode);
+static void          gimp_undo_real_pop            (GimpUndo            *undo,
+                                                    GimpUndoMode         undo_mode,
+                                                    GimpUndoAccumulator *accum);
+static void          gimp_undo_real_free           (GimpUndo            *undo,
+                                                    GimpUndoMode         undo_mode);
 
-static gboolean  gimp_undo_create_preview_idle (gpointer             data);
-static void   gimp_undo_create_preview_private (GimpUndo            *undo,
-                                                GimpContext         *context);
+static gboolean      gimp_undo_create_preview_idle (gpointer             data);
+static void       gimp_undo_create_preview_private (GimpUndo            *undo,
+                                                    GimpContext         *context);
 
 
 G_DEFINE_TYPE (GimpUndo, gimp_undo, GIMP_TYPE_VIEWABLE)
@@ -128,19 +130,19 @@ gimp_undo_class_init (GimpUndoClass *klass)
                   G_TYPE_NONE, 1,
                   GIMP_TYPE_UNDO_MODE);
 
-  object_class->constructed        = gimp_undo_constructed;
-  object_class->finalize           = gimp_undo_finalize;
-  object_class->set_property       = gimp_undo_set_property;
-  object_class->get_property       = gimp_undo_get_property;
+  object_class->constructed         = gimp_undo_constructed;
+  object_class->finalize            = gimp_undo_finalize;
+  object_class->set_property        = gimp_undo_set_property;
+  object_class->get_property        = gimp_undo_get_property;
 
-  gimp_object_class->get_memsize   = gimp_undo_get_memsize;
+  gimp_object_class->get_memsize    = gimp_undo_get_memsize;
 
-  viewable_class->default_stock_id = "gtk-undo";
-  viewable_class->get_popup_size   = gimp_undo_get_popup_size;
-  viewable_class->get_new_preview  = gimp_undo_get_new_preview;
+  viewable_class->default_icon_name = "edit-undo";
+  viewable_class->get_popup_size    = gimp_undo_get_popup_size;
+  viewable_class->get_new_preview   = gimp_undo_get_new_preview;
 
-  klass->pop                       = gimp_undo_real_pop;
-  klass->free                      = gimp_undo_real_free;
+  klass->pop                        = gimp_undo_real_pop;
+  klass->free                       = gimp_undo_real_free;
 
   g_object_class_install_property (object_class, PROP_IMAGE,
                                    g_param_spec_object ("image", NULL, NULL,
@@ -180,10 +182,9 @@ gimp_undo_constructed (GObject *object)
 {
   GimpUndo *undo = GIMP_UNDO (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_IMAGE (undo->image));
+  gimp_assert (GIMP_IS_IMAGE (undo->image));
 }
 
 static void
@@ -197,11 +198,7 @@ gimp_undo_finalize (GObject *object)
       undo->preview_idle_id = 0;
     }
 
-  if (undo->preview)
-    {
-      temp_buf_free (undo->preview);
-      undo->preview = NULL;
-    }
+  g_clear_pointer (&undo->preview, gimp_temp_buf_unref);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -272,7 +269,7 @@ gimp_undo_get_memsize (GimpObject *object,
   GimpUndo *undo    = GIMP_UNDO (object);
   gint64    memsize = 0;
 
-  *gui_size += temp_buf_get_memsize (undo->preview);
+  *gui_size += gimp_temp_buf_get_memsize (undo->preview);
 
   return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
                                                                   gui_size);
@@ -289,10 +286,11 @@ gimp_undo_get_popup_size (GimpViewable *viewable,
   GimpUndo *undo = GIMP_UNDO (viewable);
 
   if (undo->preview &&
-      (undo->preview->width > width || undo->preview->height > height))
+      (gimp_temp_buf_get_width  (undo->preview) > width ||
+       gimp_temp_buf_get_height (undo->preview) > height))
     {
-      *popup_width  = undo->preview->width;
-      *popup_height = undo->preview->height;
+      *popup_width  = gimp_temp_buf_get_width  (undo->preview);
+      *popup_height = gimp_temp_buf_get_height (undo->preview);
 
       return TRUE;
     }
@@ -300,7 +298,7 @@ gimp_undo_get_popup_size (GimpViewable *viewable,
   return FALSE;
 }
 
-static TempBuf *
+static GimpTempBuf *
 gimp_undo_get_new_preview (GimpViewable *viewable,
                            GimpContext  *context,
                            gint          width,
@@ -313,8 +311,8 @@ gimp_undo_get_new_preview (GimpViewable *viewable,
       gint preview_width;
       gint preview_height;
 
-      gimp_viewable_calc_preview_size (undo->preview->width,
-                                       undo->preview->height,
+      gimp_viewable_calc_preview_size (gimp_temp_buf_get_width  (undo->preview),
+                                       gimp_temp_buf_get_height (undo->preview),
                                        width,
                                        height,
                                        TRUE, 1.0, 1.0,
@@ -322,13 +320,14 @@ gimp_undo_get_new_preview (GimpViewable *viewable,
                                        &preview_height,
                                        NULL);
 
-      if (preview_width  < undo->preview->width &&
-          preview_height < undo->preview->height)
+      if (preview_width  < gimp_temp_buf_get_width  (undo->preview) &&
+          preview_height < gimp_temp_buf_get_height (undo->preview))
         {
-          return temp_buf_scale (undo->preview, preview_width, preview_height);
+          return gimp_temp_buf_scale (undo->preview,
+                                      preview_width, preview_height);
         }
 
-      return temp_buf_copy (undo->preview, NULL);
+      return gimp_temp_buf_copy (undo->preview);
     }
 
   return NULL;
@@ -423,7 +422,7 @@ gimp_undo_create_preview (GimpUndo    *undo,
         idle->context = g_object_ref (context);
 
       undo->preview_idle_id =
-        g_idle_add_full (GIMP_VIEWABLE_PRIORITY_IDLE,
+        g_idle_add_full (GIMP_PRIORITY_VIEWABLE_IDLE,
                          gimp_undo_create_preview_idle, idle,
                          (GDestroyNotify) gimp_undo_idle_free);
     }
@@ -510,8 +509,7 @@ gimp_undo_refresh_preview (GimpUndo    *undo,
 
   if (undo->preview)
     {
-      temp_buf_free (undo->preview);
-      undo->preview = NULL;
+      g_clear_pointer (&undo->preview, gimp_temp_buf_unref);
       gimp_undo_create_preview (undo, context, FALSE);
     }
 }

@@ -22,7 +22,9 @@
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <gio/gio.h>
+
+#define GIMP_DISABLE_DEPRECATION_WARNINGS
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpbase/gimpprotocol.h"
@@ -146,7 +148,7 @@ gimp_tile_cache_size (gulong kilobytes)
  * @ntiles: number of tiles that should fit into the cache
  *
  * Sets the size of the tile cache on the plug-in side. This function
- * is similar to gimp_tile_cache_size() but allows to specify the
+ * is similar to gimp_tile_cache_size() but supports specifying the
  * number of tiles directly.
  *
  * If your plug-in access pixels tile-by-tile, it doesn't need a tile
@@ -198,6 +200,7 @@ gimp_tile_get (GimpTile *tile)
   tile_req.tile_num    = tile->tile_num;
   tile_req.shadow      = tile->shadow;
 
+  gp_lock ();
   if (! gp_tile_req_write (_writechannel, &tile_req, NULL))
     gimp_quit ();
 
@@ -228,6 +231,7 @@ gimp_tile_get (GimpTile *tile)
 
   if (! gp_tile_ack_write (_writechannel, NULL))
     gimp_quit ();
+  gp_unlock ();
 
   gimp_wire_destroy (&msg);
 }
@@ -246,6 +250,7 @@ gimp_tile_put (GimpTile *tile)
   tile_req.tile_num    = 0;
   tile_req.shadow      = 0;
 
+  gp_lock ();
   if (! gp_tile_req_write (_writechannel, &tile_req, NULL))
     gimp_quit ();
 
@@ -278,6 +283,7 @@ gimp_tile_put (GimpTile *tile)
   gimp_wire_destroy (&msg);
 
   gimp_read_expect_msg (&msg, GP_TILE_ACK);
+  gp_unlock ();
   gimp_wire_destroy (&msg);
 }
 

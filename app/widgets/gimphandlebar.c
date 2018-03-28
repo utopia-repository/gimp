@@ -165,7 +165,6 @@ gimp_handle_bar_expose (GtkWidget      *widget,
     }
 
   cr = gdk_cairo_create (gtk_widget_get_window (widget));
-
   gdk_cairo_region (cr, eevent->region);
   cairo_clip (cr);
 
@@ -178,9 +177,9 @@ gimp_handle_bar_expose (GtkWidget      *widget,
 
       if (bar->slider_adj[i])
         {
-          bar->slider_pos[i] = ROUND ((gdouble) width *
+          bar->slider_pos[i] = ROUND ((gdouble) (width - 1) *
                                       (gtk_adjustment_get_value (bar->slider_adj[i]) - bar->lower) /
-                                      (bar->upper - bar->lower + 1));
+                                      (bar->upper - bar->lower));
 
           cairo_set_source_rgb (cr, 0.5 * i, 0.5 * i, 0.5 * i);
 
@@ -250,9 +249,12 @@ gimp_handle_bar_button_press (GtkWidget      *widget,
           }
       }
 
-  value = ((gdouble) (bevent->x - border) /
-           (gdouble) width *
-           (bar->upper - bar->lower + 1));
+  if (width == 1)
+    value = 0;
+  else
+    value = ((gdouble) (bevent->x - border) /
+             (gdouble) (width - 1) *
+             (bar->upper - bar->lower));
 
   gtk_adjustment_set_value (bar->slider_adj[bar->active_slider], value);
 
@@ -284,9 +286,12 @@ gimp_handle_bar_motion_notify (GtkWidget      *widget,
   if (width < 1)
     return FALSE;
 
-  value = ((gdouble) (mevent->x - border) /
-           (gdouble) width *
-           (bar->upper - bar->lower + 1));
+  if (width == 1)
+    value = 0;
+  else
+    value = ((gdouble) (mevent->x - border) /
+             (gdouble) (width - 1) *
+             (bar->upper - bar->lower));
 
   gtk_adjustment_set_value (bar->slider_adj[bar->active_slider], value);
 
@@ -330,32 +335,49 @@ gimp_handle_bar_set_adjustment (GimpHandleBar  *bar,
       g_signal_handlers_disconnect_by_func (bar->slider_adj[handle_no],
                                             gimp_handle_bar_adjustment_changed,
                                             bar);
+
       g_object_unref (bar->slider_adj[handle_no]);
-      bar->slider_adj[handle_no] = NULL;
     }
 
-    bar->slider_adj[handle_no] = adjustment;
+  bar->slider_adj[handle_no] = adjustment;
 
-    if (bar->slider_adj[handle_no])
-      {
-        g_object_ref (bar->slider_adj[handle_no]);
+  if (bar->slider_adj[handle_no])
+    {
+      g_object_ref (bar->slider_adj[handle_no]);
 
-        g_signal_connect (bar->slider_adj[handle_no], "value-changed",
-                          G_CALLBACK (gimp_handle_bar_adjustment_changed),
-                          bar);
-      }
+      g_signal_connect (bar->slider_adj[handle_no], "value-changed",
+                        G_CALLBACK (gimp_handle_bar_adjustment_changed),
+                        bar);
+      g_signal_connect (bar->slider_adj[handle_no], "changed",
+                        G_CALLBACK (gimp_handle_bar_adjustment_changed),
+                        bar);
+    }
 
-    if (bar->slider_adj[0])
-      bar->lower = gtk_adjustment_get_lower (bar->slider_adj[0]);
-    else
-      bar->lower = gtk_adjustment_get_lower (bar->slider_adj[handle_no]);
+  gimp_handle_bar_adjustment_changed (bar->slider_adj[handle_no], bar);
+}
 
-    if (bar->slider_adj[2])
-      bar->upper = gtk_adjustment_get_upper (bar->slider_adj[2]);
-    else
-      bar->upper = gtk_adjustment_get_upper (bar->slider_adj[handle_no]);
+void
+gimp_handle_bar_connect_events (GimpHandleBar *bar,
+                                GtkWidget     *event_source)
+{
+  GtkWidgetClass *widget_class;
 
-    gimp_handle_bar_adjustment_changed (bar->slider_adj[handle_no], bar);
+  g_return_if_fail (GIMP_IS_HANDLE_BAR (bar));
+  g_return_if_fail (GTK_IS_WIDGET (event_source));
+
+  widget_class = GTK_WIDGET_GET_CLASS (bar);
+
+  g_signal_connect_object (event_source, "button-press-event",
+                           G_CALLBACK (widget_class->button_press_event),
+                           bar, G_CONNECT_SWAPPED);
+
+  g_signal_connect_object (event_source, "button-release-event",
+                           G_CALLBACK (widget_class->button_release_event),
+                           bar, G_CONNECT_SWAPPED);
+
+  g_signal_connect_object (event_source, "motion-notify-event",
+                           G_CALLBACK (widget_class->motion_notify_event),
+                           bar, G_CONNECT_SWAPPED);
 }
 
 
@@ -365,5 +387,11 @@ static void
 gimp_handle_bar_adjustment_changed (GtkAdjustment *adjustment,
                                     GimpHandleBar *bar)
 {
+  if (bar->slider_adj[0])
+    bar->lower = gtk_adjustment_get_lower (bar->slider_adj[0]);
+
+  if (bar->slider_adj[2])
+    bar->upper = gtk_adjustment_get_upper (bar->slider_adj[2]);
+
   gtk_widget_queue_draw (GTK_WIDGET (bar));
 }

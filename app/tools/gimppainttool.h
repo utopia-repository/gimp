@@ -22,6 +22,9 @@
 #include "gimpcolortool.h"
 
 
+#define GIMP_PAINT_TOOL_LINE_MASK (gimp_get_extend_selection_mask ())
+
+
 #define GIMP_TYPE_PAINT_TOOL            (gimp_paint_tool_get_type ())
 #define GIMP_PAINT_TOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PAINT_TOOL, GimpPaintTool))
 #define GIMP_PAINT_TOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PAINT_TOOL, GimpPaintToolClass))
@@ -41,6 +44,13 @@ struct _GimpPaintTool
   gboolean       pick_colors;  /*  pick color if ctrl is pressed   */
   gboolean       draw_line;
 
+  gboolean       show_cursor;
+  gboolean       draw_brush;
+  gboolean       draw_fallback;
+  gint           fallback_size;
+  gboolean       draw_circle;
+  gint           circle_size;
+
   const gchar   *status;       /* status message */
   const gchar   *status_line;  /* status message when drawing a line */
   const gchar   *status_ctrl;  /* additional message for the ctrl modifier */
@@ -51,6 +61,11 @@ struct _GimpPaintTool
 struct _GimpPaintToolClass
 {
   GimpColorToolClass  parent_class;
+
+  GimpCanvasItem * (* get_outline) (GimpPaintTool *paint_tool,
+                                    GimpDisplay   *display,
+                                    gdouble        x,
+                                    gdouble        y);
 };
 
 
@@ -59,5 +74,11 @@ GType   gimp_paint_tool_get_type            (void) G_GNUC_CONST;
 void    gimp_paint_tool_enable_color_picker (GimpPaintTool     *tool,
                                              GimpColorPickMode  mode);
 
+void    gimp_paint_tool_set_draw_fallback   (GimpPaintTool     *tool,
+                                             gboolean           draw_fallback,
+                                             gint               fallback_size);
 
+void    gimp_paint_tool_set_draw_circle     (GimpPaintTool     *tool,
+                                             gboolean           draw_circle,
+                                             gint               circle_size);
 #endif  /*  __GIMP_PAINT_TOOL_H__  */

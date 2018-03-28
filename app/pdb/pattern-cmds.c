@@ -23,13 +23,17 @@
 
 #include <gegl.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
+#include "libgimpbase/gimpbase.h"
+
 #include "pdb-types.h"
 
-#include "base/temp-buf.h"
 #include "core/gimpcontext.h"
 #include "core/gimpdatafactory.h"
 #include "core/gimpparamspecs.h"
 #include "core/gimppattern.h"
+#include "core/gimptempbuf.h"
 
 #include "gimppdb.h"
 #include "gimppdb-utils.h"
@@ -37,22 +41,22 @@
 #include "internal-procs.h"
 
 
-static GValueArray *
-pattern_get_info_invoker (GimpProcedure      *procedure,
-                          Gimp               *gimp,
-                          GimpContext        *context,
-                          GimpProgress       *progress,
-                          const GValueArray  *args,
-                          GError            **error)
+static GimpValueArray *
+pattern_get_info_invoker (GimpProcedure         *procedure,
+                          Gimp                  *gimp,
+                          GimpContext           *context,
+                          GimpProgress          *progress,
+                          const GimpValueArray  *args,
+                          GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   const gchar *name;
   gint32 width = 0;
   gint32 height = 0;
   gint32 bpp = 0;
 
-  name = g_value_get_string (&args->values[0]);
+  name = g_value_get_string (gimp_value_array_index (args, 0));
 
   if (success)
     {
@@ -60,9 +64,9 @@ pattern_get_info_invoker (GimpProcedure      *procedure,
 
       if (pattern)
         {
-          width  = pattern->mask->width;
-          height = pattern->mask->height;
-          bpp    = pattern->mask->bytes;
+          width  = gimp_temp_buf_get_width  (pattern->mask);
+          height = gimp_temp_buf_get_height (pattern->mask);
+          bpp    = babl_format_get_bytes_per_pixel (gimp_temp_buf_get_format (pattern->mask));
         }
       else
         success = FALSE;
@@ -73,24 +77,24 @@ pattern_get_info_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_int (&return_vals->values[1], width);
-      g_value_set_int (&return_vals->values[2], height);
-      g_value_set_int (&return_vals->values[3], bpp);
+      g_value_set_int (gimp_value_array_index (return_vals, 1), width);
+      g_value_set_int (gimp_value_array_index (return_vals, 2), height);
+      g_value_set_int (gimp_value_array_index (return_vals, 3), bpp);
     }
 
   return return_vals;
 }
 
-static GValueArray *
-pattern_get_pixels_invoker (GimpProcedure      *procedure,
-                            Gimp               *gimp,
-                            GimpContext        *context,
-                            GimpProgress       *progress,
-                            const GValueArray  *args,
-                            GError            **error)
+static GimpValueArray *
+pattern_get_pixels_invoker (GimpProcedure         *procedure,
+                            Gimp                  *gimp,
+                            GimpContext           *context,
+                            GimpProgress          *progress,
+                            const GimpValueArray  *args,
+                            GError               **error)
 {
   gboolean success = TRUE;
-  GValueArray *return_vals;
+  GimpValueArray *return_vals;
   const gchar *name;
   gint32 width = 0;
   gint32 height = 0;
@@ -98,7 +102,7 @@ pattern_get_pixels_invoker (GimpProcedure      *procedure,
   gint32 num_color_bytes = 0;
   guint8 *color_bytes = NULL;
 
-  name = g_value_get_string (&args->values[0]);
+  name = g_value_get_string (gimp_value_array_index (args, 0));
 
   if (success)
     {
@@ -106,12 +110,11 @@ pattern_get_pixels_invoker (GimpProcedure      *procedure,
 
       if (pattern)
         {
-          width           = pattern->mask->width;
-          height          = pattern->mask->height;
-          bpp             = pattern->mask->bytes;
-          num_color_bytes = pattern->mask->height * pattern->mask->width *
-                            pattern->mask->bytes;
-          color_bytes     = g_memdup (temp_buf_get_data (pattern->mask),
+          width           = gimp_temp_buf_get_width  (pattern->mask);
+          height          = gimp_temp_buf_get_height (pattern->mask);
+          bpp             = babl_format_get_bytes_per_pixel (gimp_temp_buf_get_format (pattern->mask));
+          num_color_bytes = gimp_temp_buf_get_data_size (pattern->mask);
+          color_bytes     = g_memdup (gimp_temp_buf_get_data (pattern->mask),
                                       num_color_bytes);
         }
       else
@@ -123,11 +126,11 @@ pattern_get_pixels_invoker (GimpProcedure      *procedure,
 
   if (success)
     {
-      g_value_set_int (&return_vals->values[1], width);
-      g_value_set_int (&return_vals->values[2], height);
-      g_value_set_int (&return_vals->values[3], bpp);
-      g_value_set_int (&return_vals->values[4], num_color_bytes);
-      gimp_value_take_int8array (&return_vals->values[5], color_bytes, num_color_bytes);
+      g_value_set_int (gimp_value_array_index (return_vals, 1), width);
+      g_value_set_int (gimp_value_array_index (return_vals, 2), height);
+      g_value_set_int (gimp_value_array_index (return_vals, 3), bpp);
+      g_value_set_int (gimp_value_array_index (return_vals, 4), num_color_bytes);
+      gimp_value_take_int8array (gimp_value_array_index (return_vals, 5), color_bytes, num_color_bytes);
     }
 
   return return_vals;

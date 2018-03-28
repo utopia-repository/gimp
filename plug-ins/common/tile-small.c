@@ -229,8 +229,6 @@ query (void)
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
-
-  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Map");
 }
 
 static void
@@ -372,8 +370,8 @@ tileit_dialog (void)
                          NULL, 0,
                          gimp_standard_help_func, PLUG_IN_PROC,
 
-                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                         GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                         _("_Cancel"), GTK_RESPONSE_CANCEL,
+                         _("_OK"),     GTK_RESPONSE_OK,
 
                          NULL);
 
@@ -451,7 +449,7 @@ tileit_dialog (void)
 
   res_call.vtoggle = toggle;
 
-  button = gtk_button_new_from_stock (GIMP_STOCK_RESET);
+  button = gtk_button_new_with_mnemonic (_("_Reset"));
   gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
   gtk_widget_show (button);
 
@@ -502,7 +500,7 @@ tileit_dialog (void)
   gtk_widget_show (toggle);
 
   label = gtk_label_new_with_mnemonic (_("Ro_w:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 1.0);
   gtk_table_attach (GTK_TABLE (table), label, 1, 2, 2, 3,
                     GTK_FILL | GTK_SHRINK , GTK_FILL, 0, 0);
   gtk_widget_show (label);
@@ -528,7 +526,7 @@ tileit_dialog (void)
                           G_BINDING_SYNC_CREATE);
 
   label = gtk_label_new_with_mnemonic (_("Col_umn:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (label), 1.0);
   gtk_widget_show (label);
   gtk_table_attach (GTK_TABLE (table), label, 1, 2, 3, 4,
                     GTK_FILL , GTK_FILL, 0, 0);
@@ -560,7 +558,7 @@ tileit_dialog (void)
                     G_CALLBACK (tileit_radio_update),
                     &exp_call.type);
 
-  button = gtk_button_new_from_stock (GTK_STOCK_APPLY);
+  button = gtk_button_new_with_mnemonic (_("_Apply"));
   gtk_table_attach (GTK_TABLE (table), button, 3, 4, 2, 4, 0, 0, 0, 0);
   gtk_widget_show (button);
 

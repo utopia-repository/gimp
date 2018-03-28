@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -161,7 +162,7 @@ gimp_device_editor_init (GimpDeviceEditor *editor)
 
   private->delete_button =
     gimp_editor_add_button (GIMP_EDITOR (private->treeview),
-                            GTK_STOCK_DELETE,
+                            "edit-delete",
                             _("Delete the selected device"),
                             NULL,
                             G_CALLBACK (gimp_device_editor_delete_clicked),
@@ -185,7 +186,7 @@ gimp_device_editor_init (GimpDeviceEditor *editor)
   gtk_widget_show (hbox);
 
   private->label = gtk_label_new (NULL);
-  gtk_misc_set_alignment (GTK_MISC (private->label), 0.0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (private->label), 0.0);
   gtk_label_set_ellipsize (GTK_LABEL (private->label), PANGO_ELLIPSIZE_END);
   gimp_label_set_attributes (GTK_LABEL (private->label),
                              PANGO_ATTR_WEIGHT, PANGO_WEIGHT_BOLD,
@@ -217,10 +218,9 @@ gimp_device_editor_constructed (GObject *object)
   GimpContainer           *devices;
   GList                   *list;
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_GIMP (private->gimp));
+  gimp_assert (GIMP_IS_GIMP (private->gimp));
 
   devices = GIMP_CONTAINER (gimp_devices_get_manager (private->gimp));
 
@@ -246,7 +246,7 @@ gimp_device_editor_constructed (GObject *object)
                                 G_CALLBACK (gimp_device_editor_device_changed),
                                 editor);
 
-  for (list = GIMP_LIST (devices)->list;
+  for (list = GIMP_LIST (devices)->queue->head;
        list;
        list = g_list_next (list))
     {
@@ -446,9 +446,9 @@ gimp_device_editor_switch_page (GtkNotebook      *notebook,
 
   gtk_label_set_text (GTK_LABEL (private->label),
                       gimp_object_get_name (info));
-  gtk_image_set_from_stock (GTK_IMAGE (private->image),
-                            gimp_viewable_get_stock_id (GIMP_VIEWABLE (info)),
-                            GTK_ICON_SIZE_BUTTON);
+  gtk_image_set_from_icon_name (GTK_IMAGE (private->image),
+                                gimp_viewable_get_icon_name (GIMP_VIEWABLE (info)),
+                                GTK_ICON_SIZE_BUTTON);
 
   if (! gimp_device_info_get_device (info, NULL))
     delete_sensitive = TRUE;
@@ -500,13 +500,13 @@ gimp_device_editor_delete_clicked (GtkWidget        *button,
     return;
 
   dialog = gimp_message_dialog_new (_("Delete Device Settings"),
-                                    GIMP_STOCK_QUESTION,
+                                    GIMP_ICON_DIALOG_QUESTION,
                                     gtk_widget_get_toplevel (GTK_WIDGET (editor)),
                                     GTK_DIALOG_DESTROY_WITH_PARENT,
                                     gimp_standard_help_func, NULL,
 
-                                    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                    GTK_STOCK_DELETE, GTK_RESPONSE_OK,
+                                    _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                    _("_Delete"), GTK_RESPONSE_OK,
 
                                     NULL);
 

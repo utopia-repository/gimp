@@ -19,13 +19,31 @@
 #define __CORE_TYPES_H__
 
 
+#include "libgimpbase/gimpbasetypes.h"
+#include "libgimpmath/gimpmathtypes.h"
+#include "libgimpcolor/gimpcolortypes.h"
 #include "libgimpmodule/gimpmoduletypes.h"
 #include "libgimpthumb/gimpthumb-types.h"
-#include "libgimpmath/gimpmathtypes.h"
 
-#include "base/base-types.h"
+#include "config/config-types.h"
 
 #include "core/core-enums.h"
+
+
+/*  former base/ defines  */
+
+#define MAX_CHANNELS  4
+
+#define RED           0
+#define GREEN         1
+#define BLUE          2
+#define ALPHA         3
+
+#define GRAY          0
+#define ALPHA_G       1
+
+#define INDEXED       0
+#define ALPHA_I       1
 
 
 /*  defines  */
@@ -46,19 +64,25 @@
 
 #define GIMP_COORDS_DEFAULT_DIRECTION 0.0
 
+#define GIMP_COORDS_DEFAULT_XSCALE    1.0
+#define GIMP_COORDS_DEFAULT_YSCALE    1.0
+
 #define GIMP_COORDS_DEFAULT_VALUES    { 0.0, 0.0, \
                                         GIMP_COORDS_DEFAULT_PRESSURE, \
                                         GIMP_COORDS_DEFAULT_TILT,     \
                                         GIMP_COORDS_DEFAULT_TILT,     \
                                         GIMP_COORDS_DEFAULT_WHEEL,    \
                                         GIMP_COORDS_DEFAULT_VELOCITY, \
-                                        GIMP_COORDS_DEFAULT_DIRECTION }
+                                        GIMP_COORDS_DEFAULT_DIRECTION,\
+                                        GIMP_COORDS_DEFAULT_XSCALE,   \
+                                        GIMP_COORDS_DEFAULT_YSCALE }
 
 
 /*  base classes  */
 
 typedef struct _GimpObject          GimpObject;
 typedef struct _GimpViewable        GimpViewable;
+typedef struct _GimpFilter          GimpFilter;
 typedef struct _GimpItem            GimpItem;
 
 typedef struct _Gimp                Gimp;
@@ -72,7 +96,9 @@ typedef struct _GimpList              GimpList;
 typedef struct _GimpDocumentList      GimpDocumentList;
 typedef struct _GimpDrawableStack     GimpDrawableStack;
 typedef struct _GimpFilteredContainer GimpFilteredContainer;
+typedef struct _GimpFilterStack       GimpFilterStack;
 typedef struct _GimpItemStack         GimpItemStack;
+typedef struct _GimpLayerStack        GimpLayerStack;
 typedef struct _GimpTaggedContainer   GimpTaggedContainer;
 
 
@@ -108,7 +134,9 @@ typedef struct _GimpCurve            GimpCurve;
 typedef struct _GimpDynamics         GimpDynamics;
 typedef struct _GimpDynamicsOutput   GimpDynamicsOutput;
 typedef struct _GimpGradient         GimpGradient;
+typedef struct _GimpMybrush          GimpMybrush;
 typedef struct _GimpPalette          GimpPalette;
+typedef struct _GimpPaletteMru       GimpPaletteMru;
 typedef struct _GimpPattern          GimpPattern;
 typedef struct _GimpPatternClipboard GimpPatternClipboard;
 typedef struct _GimpToolPreset       GimpToolPreset;
@@ -127,40 +155,34 @@ typedef struct _GimpGroupLayer      GimpGroupLayer;
 
 /*  undo objects  */
 
-typedef struct _GimpUndo              GimpUndo;
-typedef struct _GimpImageUndo         GimpImageUndo;
-typedef struct _GimpItemUndo          GimpItemUndo;
-typedef struct _GimpItemPropUndo      GimpItemPropUndo;
-typedef struct _GimpChannelUndo       GimpChannelUndo;
-typedef struct _GimpChannelPropUndo   GimpChannelPropUndo;
-typedef struct _GimpDrawableUndo      GimpDrawableUndo;
-typedef struct _GimpDrawableModUndo   GimpDrawableModUndo;
-typedef struct _GimpLayerMaskUndo     GimpLayerMaskUndo;
-typedef struct _GimpLayerMaskPropUndo GimpLayerMaskPropUndo;
-typedef struct _GimpLayerUndo         GimpLayerUndo;
-typedef struct _GimpLayerPropUndo     GimpLayerPropUndo;
-typedef struct _GimpGroupLayerUndo    GimpGroupLayerUndo;
-typedef struct _GimpMaskUndo          GimpMaskUndo;
-typedef struct _GimpGuideUndo         GimpGuideUndo;
-typedef struct _GimpSamplePointUndo   GimpSamplePointUndo;
-typedef struct _GimpFloatingSelUndo   GimpFloatingSelUndo;
-typedef struct _GimpUndoStack         GimpUndoStack;
-typedef struct _GimpUndoAccumulator   GimpUndoAccumulator;
+typedef struct _GimpUndo            GimpUndo;
+typedef struct _GimpUndoStack       GimpUndoStack;
+typedef struct _GimpUndoAccumulator GimpUndoAccumulator;
+
+
+/* Symmetry transformations */
+
+typedef struct _GimpSymmetry        GimpSymmetry;
+typedef struct _GimpMirror          GimpMirror;
+typedef struct _GimpTiling          GimpTiling;
+typedef struct _GimpMandala         GimpMandala;
 
 
 /*  misc objects  */
 
 typedef struct _GimpBuffer          GimpBuffer;
+typedef struct _GimpDrawableFilter  GimpDrawableFilter;
 typedef struct _GimpEnvironTable    GimpEnvironTable;
 typedef struct _GimpGuide           GimpGuide;
+typedef struct _GimpHistogram       GimpHistogram;
 typedef struct _GimpIdTable         GimpIdTable;
-typedef struct _GimpImageMap        GimpImageMap;
-typedef struct _GimpImageMapConfig  GimpImageMapConfig;
 typedef struct _GimpImagefile       GimpImagefile;
 typedef struct _GimpInterpreterDB   GimpInterpreterDB;
+typedef struct _GimpObjectQueue     GimpObjectQueue;
 typedef struct _GimpParasiteList    GimpParasiteList;
 typedef struct _GimpPdbProgress     GimpPdbProgress;
 typedef struct _GimpProjection      GimpProjection;
+typedef struct _GimpSettings        GimpSettings;
 typedef struct _GimpSubProgress     GimpSubProgress;
 typedef struct _GimpTag             GimpTag;
 typedef struct _GimpTreeHandler     GimpTreeHandler;
@@ -176,12 +198,13 @@ typedef struct _GimpTagged          GimpTagged;      /* dummy typedef */
 
 /*  non-object types  */
 
-typedef struct _GimpArea            GimpArea;
+typedef struct _GimpBoundSeg        GimpBoundSeg;
 typedef struct _GimpCoords          GimpCoords;
 typedef struct _GimpGradientSegment GimpGradientSegment;
 typedef struct _GimpPaletteEntry    GimpPaletteEntry;
 typedef struct _GimpSamplePoint     GimpSamplePoint;
 typedef struct _GimpScanConvert     GimpScanConvert;
+typedef struct _GimpTempBuf         GimpTempBuf;
 typedef         guint32             GimpTattoo;
 
 /* The following hack is made so that we can reuse the definition
@@ -204,33 +227,46 @@ typedef void * GimpBezierDesc;
 
 /*  functions  */
 
-typedef void     (* GimpInitStatusFunc)    (const gchar      *text1,
-                                            const gchar      *text2,
-                                            gdouble           percentage);
+typedef void     (* GimpInitStatusFunc)    (const gchar *text1,
+                                            const gchar *text2,
+                                            gdouble      percentage);
 
-typedef gboolean (* GimpObjectFilterFunc)  (const GimpObject *object,
-                                            gpointer          user_data);
+typedef gboolean (* GimpObjectFilterFunc)  (GimpObject  *object,
+                                            gpointer     user_data);
 
-typedef gint64   (* GimpMemsizeFunc)       (gpointer          instance,
-                                            gint64           *gui_size);
-
-typedef void     (* GimpImageMapApplyFunc) (gpointer          apply_data,
-                                            PixelRegion      *srcPR,
-                                            PixelRegion      *destPR);
+typedef gint64   (* GimpMemsizeFunc)       (gpointer     instance,
+                                            gint64      *gui_size);
 
 
 /*  structs  */
 
 struct _GimpCoords
 {
-  gdouble x;
-  gdouble y;
-  gdouble pressure;
-  gdouble xtilt;
-  gdouble ytilt;
-  gdouble wheel;
-  gdouble velocity;
-  gdouble direction;
+  gdouble  x;
+  gdouble  y;
+  gdouble  pressure;
+  gdouble  xtilt;
+  gdouble  ytilt;
+  gdouble  wheel;
+  gdouble  velocity;
+  gdouble  direction;
+  gdouble  xscale;  /* the view scale                */
+  gdouble  yscale;
+  gdouble  angle;   /* the view rotation angle       */
+  gboolean reflect; /* whether the view is reflected */
+  gboolean extended;
+};
+
+/*  temp hack as replacement for GdkSegment  */
+
+typedef struct _GimpSegment GimpSegment;
+
+struct _GimpSegment
+{
+  gint x1;
+  gint y1;
+  gint x2;
+  gint y2;
 };
 
 

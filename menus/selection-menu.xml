@@ -15,10 +15,13 @@
       <menuitem action="select-shrink" />
       <menuitem action="select-grow" />
       <menuitem action="select-border" />
+      <menuitem action="select-flood" />
     </placeholder>
     <separator />
     <menuitem action="select-save" />
     <menuitem action="vectors-selection-to-vectors-short" />
+    <separator />
+    <menuitem action="select-fill" />
     <menuitem action="select-stroke" />
   </popup>
 </ui>

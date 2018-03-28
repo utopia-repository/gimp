@@ -48,13 +48,37 @@ struct _GimpImagePrivate
   gdouble            yresolution;           /*  image y-res, in dpi          */
   GimpUnit           resolution_unit;       /*  resolution unit              */
   GimpImageBaseType  base_type;             /*  base gimp_image type         */
+  GimpPrecision      precision;             /*  image's precision            */
+  GimpLayerMode      new_layer_mode;        /*  default mode of new layers   */
 
   guchar            *colormap;              /*  colormap (for indexed)       */
   gint               n_colors;              /*  # of colors (for indexed)    */
   GimpPalette       *palette;               /*  palette of colormap          */
+  const Babl        *babl_palette_rgb;      /*  palette's RGB Babl format    */
+  const Babl        *babl_palette_rgba;     /*  palette's RGBA Babl format   */
+
+  gboolean           is_color_managed;      /*  is this image color managed  */
+  GimpColorProfile  *color_profile;         /*  image's color profile        */
+
+  /*  Cached color transforms: from layer to sRGB u8 and double, and back    */
+  gboolean            color_transforms_created;
+  GimpColorTransform *transform_to_srgb_u8;
+  GimpColorTransform *transform_from_srgb_u8;
+  GimpColorTransform *transform_to_srgb_double;
+  GimpColorTransform *transform_from_srgb_double;
+
+  GimpMetadata      *metadata;              /*  image's metadata             */
+
+  GFile             *file;                  /*  the image's XCF file         */
+  GFile             *imported_file;         /*  the image's source file      */
+  GFile             *exported_file;         /*  the image's export file      */
+  GFile             *save_a_copy_file;      /*  the image's save-a-copy file */
+  GFile             *untitled_file;         /*  a file saying "Untitled"     */
+
+  gboolean           xcf_compression;       /*  XCF compression enabled?     */
 
   gint               dirty;                 /*  dirty flag -- # of ops       */
-  guint              dirty_time;            /*  time when image became dirty */
+  gint64             dirty_time;            /*  time when image became dirty */
   gint               export_dirty;          /*  'dirty' but for export       */
 
   gint               undo_freeze_count;     /*  counts the _freeze's         */
@@ -66,6 +90,10 @@ struct _GimpImagePrivate
 
   GimpProjection    *projection;            /*  projection layers & channels */
   GeglNode          *graph;                 /*  GEGL projection graph        */
+  GeglNode          *visible_mask;          /*  component visibility node    */
+
+  GList             *symmetries;            /*  Painting symmetries          */
+  GimpSymmetry      *active_symmetry;       /*  Active symmetry              */
 
   GList             *guides;                /*  guides                       */
   GimpGrid          *grid;                  /*  grid                         */
@@ -99,10 +127,7 @@ struct _GimpImagePrivate
   gint               group_count;           /*  nested undo groups           */
   GimpUndoType       pushing_undo_group;    /*  undo group status flag       */
 
-  /*  Preview  */
-  TempBuf           *preview;               /*  the projection preview       */
-
-  /*  Signal emmision accumulator  */
+  /*  Signal emission accumulator  */
   GimpImageFlushAccumulator  flush_accum;
 };
 

@@ -34,11 +34,17 @@ typedef struct _GimpBufferClass GimpBufferClass;
 
 struct _GimpBuffer
 {
-  GimpViewable  parent_instance;
+  GimpViewable      parent_instance;
 
-  TileManager  *tiles;
-  gint          offset_x;
-  gint          offset_y;
+  GeglBuffer       *buffer;
+  gint              offset_x;
+  gint              offset_y;
+
+  gdouble           resolution_x;
+  gdouble           resolution_y;
+  GimpUnit          unit;
+
+  GimpColorProfile *color_profile;
 };
 
 struct _GimpBufferClass
@@ -47,24 +53,38 @@ struct _GimpBufferClass
 };
 
 
-GType           gimp_buffer_get_type        (void) G_GNUC_CONST;
+GType              gimp_buffer_get_type          (void) G_GNUC_CONST;
 
-GimpBuffer    * gimp_buffer_new             (TileManager      *tiles,
-                                             const gchar      *name,
-                                             gint              offset_x,
-                                             gint              offset_y,
-                                             gboolean          copy_pixels);
-GimpBuffer    * gimp_buffer_new_from_pixbuf (GdkPixbuf        *pixbuf,
-                                             const gchar      *name,
-                                             gint              offset_x,
-                                             gint              offset_y);
+GimpBuffer       * gimp_buffer_new               (GeglBuffer       *buffer,
+                                                  const gchar      *name,
+                                                  gint              offset_x,
+                                                  gint              offset_y,
+                                                  gboolean          copy_pixels);
+GimpBuffer       * gimp_buffer_new_from_pixbuf   (GdkPixbuf        *pixbuf,
+                                                  const gchar      *name,
+                                                  gint              offset_x,
+                                                  gint              offset_y);
 
-gint            gimp_buffer_get_width       (const GimpBuffer *buffer);
-gint            gimp_buffer_get_height      (const GimpBuffer *buffer);
+gint               gimp_buffer_get_width         (GimpBuffer       *buffer);
+gint               gimp_buffer_get_height        (GimpBuffer       *buffer);
+const Babl       * gimp_buffer_get_format        (GimpBuffer       *buffer);
 
-gint            gimp_buffer_get_bytes       (const GimpBuffer *buffer);
-GimpImageType   gimp_buffer_get_image_type  (const GimpBuffer *buffer);
-TileManager   * gimp_buffer_get_tiles       (const GimpBuffer *buffer);
+GeglBuffer       * gimp_buffer_get_buffer        (GimpBuffer       *buffer);
+
+void               gimp_buffer_set_resolution    (GimpBuffer       *buffer,
+                                                  gdouble           resolution_x,
+                                                  gdouble           resolution_y);
+gboolean           gimp_buffer_get_resolution    (GimpBuffer       *buffer,
+                                                  gdouble          *resolution_x,
+                                                  gdouble          *resolution_y);
+
+void               gimp_buffer_set_unit          (GimpBuffer       *buffer,
+                                                  GimpUnit          unit);
+GimpUnit           gimp_buffer_get_unit          (GimpBuffer       *buffer);
+
+void               gimp_buffer_set_color_profile (GimpBuffer       *buffer,
+                                                  GimpColorProfile *profile);
+GimpColorProfile * gimp_buffer_get_color_profile (GimpBuffer       *buffer);
 
 
 #endif /* __GIMP_BUFFER_H__ */

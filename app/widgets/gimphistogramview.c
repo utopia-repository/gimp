@@ -17,14 +17,16 @@
 
 #include "config.h"
 
+#include <string.h>
+
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpmath/gimpmath.h"
 
 #include "widgets-types.h"
 
-#include "base/gimphistogram.h"
-
+#include "core/gimphistogram.h"
 #include "core/gimpmarshal.h"
 
 #include "gimphistogramview.h"
@@ -49,17 +51,17 @@ enum
 };
 
 
-static void  gimp_histogram_view_finalize          (GObject        *object);
-static void  gimp_histogram_view_set_property      (GObject        *object,
+static void     gimp_histogram_view_dispose        (GObject        *object);
+static void     gimp_histogram_view_set_property   (GObject        *object,
                                                     guint           property_id,
                                                     const GValue   *value,
                                                     GParamSpec     *pspec);
-static void  gimp_histogram_view_get_property      (GObject        *object,
+static void     gimp_histogram_view_get_property   (GObject        *object,
                                                     guint           property_id,
                                                     GValue         *value,
                                                     GParamSpec     *pspec);
 
-static void  gimp_histogram_view_size_request      (GtkWidget      *widget,
+static void     gimp_histogram_view_size_request   (GtkWidget      *widget,
                                                     GtkRequisition *requisition);
 static gboolean gimp_histogram_view_expose         (GtkWidget      *widget,
                                                     GdkEventExpose *event);
@@ -70,19 +72,24 @@ static gboolean gimp_histogram_view_button_release (GtkWidget      *widget,
 static gboolean gimp_histogram_view_motion_notify  (GtkWidget      *widget,
                                                     GdkEventMotion *bevent);
 
-static void     gimp_histogram_view_draw_spike (GimpHistogramView    *view,
-                                                GimpHistogramChannel  channel,
-                                                cairo_t              *cr,
-                                                const GdkColor       *fg_color,
-                                                cairo_operator_t      fg_operator,
-                                                const GdkColor       *bg_color,
-                                                gint                  x,
-                                                gint                  i,
-                                                gint                  j,
-                                                gdouble               max,
-                                                gdouble               bg_max,
-                                                gint                  height,
-                                                gint                  border);
+static void     gimp_histogram_view_notify      (GimpHistogram        *histogram,
+                                                 const GParamSpec     *pspec,
+                                                 GimpHistogramView    *view);
+static void     gimp_histogram_view_update_bins (GimpHistogramView    *view);
+
+static void     gimp_histogram_view_draw_spike  (GimpHistogramView    *view,
+                                                 GimpHistogramChannel  channel,
+                                                 cairo_t              *cr,
+                                                 const GdkColor       *fg_color,
+                                                 cairo_operator_t      fg_operator,
+                                                 const GdkColor       *bg_color,
+                                                 gint                  x,
+                                                 gint                  i,
+                                                 gint                  j,
+                                                 gdouble               max,
+                                                 gdouble               bg_max,
+                                                 gint                  height,
+                                                 gint                  border);
 
 
 G_DEFINE_TYPE (GimpHistogramView, gimp_histogram_view,
@@ -110,7 +117,7 @@ gimp_histogram_view_class_init (GimpHistogramViewClass *klass)
                   G_TYPE_INT,
                   G_TYPE_INT);
 
-  object_class->finalize             = gimp_histogram_view_finalize;
+  object_class->dispose              = gimp_histogram_view_dispose;
   object_class->get_property         = gimp_histogram_view_get_property;
   object_class->set_property         = gimp_histogram_view_set_property;
 
@@ -157,28 +164,20 @@ gimp_histogram_view_init (GimpHistogramView *view)
 {
   view->histogram    = NULL;
   view->bg_histogram = NULL;
+  view->n_bins       = 256;
   view->start        = 0;
   view->end          = 255;
 }
 
 static void
-gimp_histogram_view_finalize (GObject *object)
+gimp_histogram_view_dispose (GObject *object)
 {
   GimpHistogramView *view = GIMP_HISTOGRAM_VIEW (object);
 
-  if (view->histogram)
-    {
-      gimp_histogram_unref (view->histogram);
-      view->histogram = NULL;
-    }
+  gimp_histogram_view_set_histogram (view, NULL);
+  gimp_histogram_view_set_background (view, NULL);
 
-  if (view->bg_histogram)
-    {
-      gimp_histogram_unref (view->bg_histogram);
-      view->bg_histogram = NULL;
-    }
-
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
@@ -328,8 +327,8 @@ gimp_histogram_view_expose (GtkWidget      *widget,
       return FALSE;
     }
 
-  x1 = CLAMP (MIN (view->start, view->end), 0, 255);
-  x2 = CLAMP (MAX (view->start, view->end), 0, 255);
+  x1 = CLAMP (MIN (view->start, view->end), 0, view->n_bins - 1);
+  x2 = CLAMP (MAX (view->start, view->end), 0, view->n_bins - 1);
 
   if (view->histogram)
     max = gimp_histogram_view_get_maximum (view, view->histogram,
@@ -360,10 +359,10 @@ gimp_histogram_view_expose (GtkWidget      *widget,
     {
       gboolean  in_selection = FALSE;
 
-      gint  i = (x * 256) / width;
-      gint  j = ((x + 1) * 256) / width;
+      gint  i = (x * view->n_bins) / width;
+      gint  j = ((x + 1) * view->n_bins) / width;
 
-      if (! (x1 == 0 && x2 == 255))
+      if (! (x1 == 0 && x2 == (view->n_bins - 1)))
         {
           gint k = i;
 
@@ -534,8 +533,8 @@ gimp_histogram_view_button_press (GtkWidget      *widget,
 
       width = allocation.width - 2 * view->border_width;
 
-      view->start = CLAMP ((((bevent->x - view->border_width) * 256) / width),
-                           0, 255);
+      view->start = CLAMP (((bevent->x - view->border_width) * view->n_bins) / width,
+                           0, view->n_bins - 1);
       view->end   = view->start;
 
       gtk_widget_queue_draw (widget);
@@ -581,13 +580,16 @@ gimp_histogram_view_motion_notify (GtkWidget      *widget,
 
   width = allocation.width - 2 * view->border_width;
 
-  view->start = CLAMP ((((mevent->x - view->border_width) * 256) / width),
-                       0, 255);
+  view->start = CLAMP (((mevent->x - view->border_width) * view->n_bins) / width,
+                       0, view->n_bins - 1);
 
   gtk_widget_queue_draw (widget);
 
   return TRUE;
 }
+
+
+/*  public funcions  */
 
 GtkWidget *
 gimp_histogram_view_new (gboolean range)
@@ -618,13 +620,25 @@ gimp_histogram_view_set_histogram (GimpHistogramView *view,
   if (view->histogram != histogram)
     {
       if (view->histogram)
-        gimp_histogram_unref (view->histogram);
+        {
+          g_signal_handlers_disconnect_by_func (view->histogram,
+                                                gimp_histogram_view_notify,
+                                                view);
+          g_object_unref (view->histogram);
+        }
 
       view->histogram = histogram;
 
       if (histogram)
         {
-          gimp_histogram_ref (histogram);
+          g_object_ref (histogram);
+
+          g_signal_connect (histogram, "notify",
+                            G_CALLBACK (gimp_histogram_view_notify),
+                            view);
+
+          if (view->n_bins != gimp_histogram_n_bins (histogram))
+            gimp_histogram_view_update_bins (view);
 
           if (view->channel >= gimp_histogram_n_channels (histogram))
             gimp_histogram_view_set_channel (view, GIMP_HISTOGRAM_VALUE);
@@ -657,13 +671,16 @@ gimp_histogram_view_set_background (GimpHistogramView *view,
   if (view->bg_histogram != histogram)
     {
       if (view->bg_histogram)
-        gimp_histogram_unref (view->bg_histogram);
+        g_object_unref (view->bg_histogram);
 
       view->bg_histogram = histogram;
 
       if (histogram)
         {
-          gimp_histogram_ref (histogram);
+          g_object_ref (histogram);
+
+          if (view->n_bins != gimp_histogram_n_bins (histogram))
+            gimp_histogram_view_update_bins (view);
 
           if (view->channel >= gimp_histogram_n_channels (histogram))
             gimp_histogram_view_set_channel (view, GIMP_HISTOGRAM_VALUE);
@@ -746,4 +763,45 @@ gimp_histogram_view_get_range (GimpHistogramView *view,
 
   if (start) *start = view->start;
   if (end)   *end   = view->end;
+}
+
+
+/*  private functions  */
+
+static void
+gimp_histogram_view_notify (GimpHistogram     *histogram,
+                            const GParamSpec  *pspec,
+                            GimpHistogramView *view)
+{
+  if (! strcmp (pspec->name, "n-bins"))
+    {
+      gimp_histogram_view_update_bins (view);
+    }
+  else
+    {
+      gtk_widget_queue_draw (GTK_WIDGET (view));
+    }
+}
+
+static void
+gimp_histogram_view_update_bins (GimpHistogramView *view)
+{
+  gint new_bins = 256;
+
+  if (view->histogram)
+    new_bins = gimp_histogram_n_bins (view->histogram);
+  else if (view->bg_histogram)
+    new_bins = gimp_histogram_n_bins (view->bg_histogram);
+
+  view->start = ROUND (((gdouble) view->start *
+                        (new_bins - 1) /
+                        (view->n_bins - 1)));
+  view->end   = ROUND (((gdouble) view->end   *
+                        (new_bins - 1) /
+                        (view->n_bins - 1)));
+
+  view->n_bins = new_bins;
+
+  g_signal_emit (view, histogram_view_signals[RANGE_CHANGED], 0,
+                 view->start, view->end);
 }

@@ -20,7 +20,8 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gio/gio.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpconfig/gimpconfig.h"
@@ -53,7 +54,7 @@ static void  gimp_plugin_config_get_property (GObject      *object,
                                               GParamSpec   *pspec);
 
 
-G_DEFINE_TYPE (GimpPluginConfig, gimp_plugin_config, GIMP_TYPE_GUI_CONFIG)
+G_DEFINE_TYPE (GimpPluginConfig, gimp_plugin_config, GIMP_TYPE_DIALOG_CONFIG)
 
 #define parent_class gimp_plugin_config_parent_class
 
@@ -69,46 +70,53 @@ gimp_plugin_config_class_init (GimpPluginConfigClass *klass)
   object_class->get_property = gimp_plugin_config_get_property;
 
   path = gimp_config_build_data_path ("fractalexplorer");
-  GIMP_CONFIG_INSTALL_PROP_PATH (object_class,
-                                 PROP_FRACTALEXPLORER_PATH,
-                                 "fractalexplorer-path",
-                                 FRACTALEXPLORER_PATH_BLURB,
-                                 GIMP_CONFIG_PATH_DIR_LIST, path,
-                                 GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_PATH (object_class,
+                         PROP_FRACTALEXPLORER_PATH,
+                         "fractalexplorer-path",
+                         "Fractal Explorer path",
+                         FRACTALEXPLORER_PATH_BLURB,
+                         GIMP_CONFIG_PATH_DIR_LIST, path,
+                         GIMP_PARAM_STATIC_STRINGS);
   g_free (path);
 
   path = gimp_config_build_data_path ("gfig");
-  GIMP_CONFIG_INSTALL_PROP_PATH (object_class,
-                                 PROP_GFIG_PATH,
-                                 "gfig-path", GFIG_PATH_BLURB,
-                                 GIMP_CONFIG_PATH_DIR_LIST, path,
-                                 GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_PATH (object_class,
+                         PROP_GFIG_PATH,
+                         "gfig-path",
+                         "GFig path",
+                         GFIG_PATH_BLURB,
+                         GIMP_CONFIG_PATH_DIR_LIST, path,
+                         GIMP_PARAM_STATIC_STRINGS);
   g_free (path);
 
   path = gimp_config_build_data_path ("gflare");
-  GIMP_CONFIG_INSTALL_PROP_PATH (object_class,
-                                 PROP_GFLARE_PATH,
-                                 "gflare-path", GFLARE_PATH_BLURB,
-                                 GIMP_CONFIG_PATH_DIR_LIST, path,
-                                 GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_PATH (object_class,
+                         PROP_GFLARE_PATH,
+                         "gflare-path",
+                         "GFlare path",
+                         GFLARE_PATH_BLURB,
+                         GIMP_CONFIG_PATH_DIR_LIST, path,
+                         GIMP_PARAM_STATIC_STRINGS);
   g_free (path);
 
   path = gimp_config_build_data_path ("gimpressionist");
-  GIMP_CONFIG_INSTALL_PROP_PATH (object_class,
-                                 PROP_GIMPRESSIONIST_PATH,
-                                 "gimpressionist-path",
-                                 GIMPRESSIONIST_PATH_BLURB,
-                                 GIMP_CONFIG_PATH_DIR_LIST, path,
-                                 GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_PATH (object_class,
+                         PROP_GIMPRESSIONIST_PATH,
+                         "gimpressionist-path",
+                         "GIMPressionist path",
+                         GIMPRESSIONIST_PATH_BLURB,
+                         GIMP_CONFIG_PATH_DIR_LIST, path,
+                         GIMP_PARAM_STATIC_STRINGS);
   g_free (path);
 
   path = gimp_config_build_data_path ("scripts");
-  GIMP_CONFIG_INSTALL_PROP_PATH (object_class,
-                                 PROP_SCRIPT_FU_PATH,
-                                 "script-fu-path",
-                                 SCRIPT_FU_PATH_BLURB,
-                                 GIMP_CONFIG_PATH_DIR_LIST, path,
-                                 GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_PROP_PATH (object_class,
+                         PROP_SCRIPT_FU_PATH,
+                         "script-fu-path",
+                         "Script-Fu path",
+                         SCRIPT_FU_PATH_BLURB,
+                         GIMP_CONFIG_PATH_DIR_LIST, path,
+                         GIMP_PARAM_STATIC_STRINGS);
   g_free (path);
 }
 

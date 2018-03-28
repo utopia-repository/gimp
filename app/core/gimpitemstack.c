@@ -22,7 +22,11 @@
 
 #include <string.h>
 
+#include <cairo.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
+
+#include "libgimpcolor/gimpcolor.h"
 
 #include "core-types.h"
 
@@ -40,7 +44,7 @@ static void   gimp_item_stack_remove      (GimpContainer *container,
                                            GimpObject    *object);
 
 
-G_DEFINE_TYPE (GimpItemStack, gimp_item_stack, GIMP_TYPE_LIST)
+G_DEFINE_TYPE (GimpItemStack, gimp_item_stack, GIMP_TYPE_FILTER_STACK)
 
 #define parent_class gimp_item_stack_parent_class
 
@@ -67,10 +71,9 @@ gimp_item_stack_constructed (GObject *object)
 {
   GimpContainer *container = GIMP_CONTAINER (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (g_type_is_a (gimp_container_get_children_type (container),
+  gimp_assert (g_type_is_a (gimp_container_get_children_type (container),
                          GIMP_TYPE_ITEM));
 }
 
@@ -115,7 +118,7 @@ gimp_item_stack_get_n_items (GimpItemStack *stack)
 
   g_return_val_if_fail (GIMP_IS_ITEM_STACK (stack), 0);
 
-  for (list = GIMP_LIST (stack)->list; list; list = g_list_next (list))
+  for (list = GIMP_LIST (stack)->queue->head; list; list = g_list_next (list))
     {
       GimpItem      *item = list->data;
       GimpContainer *children;
@@ -138,7 +141,7 @@ gimp_item_stack_is_flat (GimpItemStack *stack)
 
   g_return_val_if_fail (GIMP_IS_ITEM_STACK (stack), TRUE);
 
-  for (list = GIMP_LIST (stack)->list; list; list = g_list_next (list))
+  for (list = GIMP_LIST (stack)->queue->head; list; list = g_list_next (list))
     {
       GimpViewable *viewable = list->data;
 
@@ -154,7 +157,7 @@ gimp_item_stack_get_item_iter (GimpItemStack *stack)
 {
   g_return_val_if_fail (GIMP_IS_ITEM_STACK (stack), NULL);
 
-  return GIMP_LIST (stack)->list;
+  return GIMP_LIST (stack)->queue->head;
 }
 
 GList *
@@ -165,7 +168,7 @@ gimp_item_stack_get_item_list (GimpItemStack *stack)
 
   g_return_val_if_fail (GIMP_IS_ITEM_STACK (stack), NULL);
 
-  for (list = GIMP_LIST (stack)->list;
+  for (list = GIMP_LIST (stack)->queue->head;
        list;
        list = g_list_next (list))
     {
@@ -202,7 +205,7 @@ gimp_item_stack_get_item_by_tattoo (GimpItemStack *stack,
 
   g_return_val_if_fail (GIMP_IS_ITEM_STACK (stack), NULL);
 
-  for (list = GIMP_LIST (stack)->list; list; list = g_list_next (list))
+  for (list = GIMP_LIST (stack)->queue->head; list; list = g_list_next (list))
     {
       GimpItem      *item = list->data;
       GimpContainer *children;
@@ -302,7 +305,7 @@ gimp_item_stack_get_parent_by_path (GimpItemStack *stack,
 }
 
 static void
-gimp_item_stack_invalidate_preview (GimpViewable *viewable)
+gimp_item_stack_viewable_invalidate_previews (GimpViewable *viewable)
 {
   GimpContainer *children = gimp_viewable_get_children (viewable);
 
@@ -318,6 +321,28 @@ gimp_item_stack_invalidate_previews (GimpItemStack *stack)
   g_return_if_fail (GIMP_IS_ITEM_STACK (stack));
 
   gimp_container_foreach (GIMP_CONTAINER (stack),
-                          (GFunc) gimp_item_stack_invalidate_preview,
+                          (GFunc) gimp_item_stack_viewable_invalidate_previews,
+                          NULL);
+}
+
+static void
+gimp_item_stack_viewable_profile_changed (GimpViewable *viewable)
+{
+  GimpContainer *children = gimp_viewable_get_children (viewable);
+
+  if (children)
+    gimp_item_stack_profile_changed (GIMP_ITEM_STACK (children));
+
+  if (GIMP_IS_COLOR_MANAGED (viewable))
+    gimp_color_managed_profile_changed (GIMP_COLOR_MANAGED (viewable));
+}
+
+void
+gimp_item_stack_profile_changed (GimpItemStack *stack)
+{
+  g_return_if_fail (GIMP_IS_ITEM_STACK (stack));
+
+  gimp_container_foreach (GIMP_CONTAINER (stack),
+                          (GFunc) gimp_item_stack_viewable_profile_changed,
                           NULL);
 }

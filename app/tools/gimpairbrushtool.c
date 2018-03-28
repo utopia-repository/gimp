@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -49,13 +50,13 @@ gimp_airbrush_tool_register (GimpToolRegisterCallback  callback,
                 GIMP_TYPE_AIRBRUSH_OPTIONS,
                 gimp_airbrush_options_gui,
                 GIMP_PAINT_OPTIONS_CONTEXT_MASK |
-                GIMP_CONTEXT_GRADIENT_MASK,
+                GIMP_CONTEXT_PROP_MASK_GRADIENT,
                 "gimp-airbrush-tool",
                 _("Airbrush"),
                 _("Airbrush Tool: Paint using a brush, with variable pressure"),
                 N_("_Airbrush"), "A",
                 NULL, GIMP_HELP_TOOL_AIRBRUSH,
-                GIMP_STOCK_TOOL_AIRBRUSH,
+                GIMP_ICON_TOOL_AIRBRUSH,
                 data);
 }
 
@@ -83,18 +84,16 @@ gimp_airbrush_options_gui (GimpToolOptions *tool_options)
   GtkWidget *button;
   GtkWidget *scale;
 
-  button = gimp_prop_check_button_new (config, "motion-only", _("Motion only"));
+  button = gimp_prop_check_button_new (config, "motion-only", NULL);
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
-  scale = gimp_prop_spin_scale_new (config, "rate",
-                                    _("Rate"),
+  scale = gimp_prop_spin_scale_new (config, "rate", NULL,
                                     1.0, 10.0, 1);
   gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
   gtk_widget_show (scale);
 
-  scale = gimp_prop_spin_scale_new (config, "flow",
-                                    _("Flow"),
+  scale = gimp_prop_spin_scale_new (config, "flow", NULL,
                                     1.0, 10.0, 1);
   gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
   gtk_widget_show (scale);

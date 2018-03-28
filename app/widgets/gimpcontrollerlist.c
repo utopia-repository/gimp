@@ -22,6 +22,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -185,7 +186,7 @@ gimp_controller_list_init (GimpControllerList *list)
   cell = gtk_cell_renderer_pixbuf_new ();
   gtk_tree_view_column_pack_start (column, cell, FALSE);
   gtk_tree_view_column_set_attributes (column, cell,
-                                       "stock-id", COLUMN_ICON,
+                                       "icon-name", COLUMN_ICON,
                                        NULL);
 
   g_object_get (cell, "stock-size", &icon_size, NULL);
@@ -222,7 +223,7 @@ gimp_controller_list_init (GimpControllerList *list)
 
       gtk_list_store_append (list->src, &iter);
       gtk_list_store_set (list->src, &iter,
-                          COLUMN_ICON, controller_class->stock_id,
+                          COLUMN_ICON, controller_class->icon_name,
                           COLUMN_NAME, controller_class->name,
                           COLUMN_TYPE, controller_types[i],
                           -1);
@@ -242,7 +243,8 @@ gimp_controller_list_init (GimpControllerList *list)
   gtk_widget_set_sensitive (list->add_button, FALSE);
   gtk_widget_show (list->add_button);
 
-  image = gtk_image_new_from_stock (GTK_STOCK_GO_FORWARD, GTK_ICON_SIZE_BUTTON);
+  image = gtk_image_new_from_icon_name (GIMP_ICON_GO_NEXT,
+                                        GTK_ICON_SIZE_BUTTON);
   gtk_container_add (GTK_CONTAINER (list->add_button), image);
   gtk_widget_show (image);
 
@@ -258,7 +260,8 @@ gimp_controller_list_init (GimpControllerList *list)
   gtk_widget_set_sensitive (list->remove_button, FALSE);
   gtk_widget_show (list->remove_button);
 
-  image = gtk_image_new_from_stock (GTK_STOCK_GO_BACK, GTK_ICON_SIZE_BUTTON);
+  image = gtk_image_new_from_icon_name (GIMP_ICON_GO_PREVIOUS,
+                                        GTK_ICON_SIZE_BUTTON);
   gtk_container_add (GTK_CONTAINER (list->remove_button), image);
   gtk_widget_show (image);
 
@@ -289,7 +292,7 @@ gimp_controller_list_init (GimpControllerList *list)
 
   list->edit_button =
     gimp_editor_add_button (GIMP_EDITOR (list->dest),
-                            GTK_STOCK_PROPERTIES,
+                            GIMP_ICON_DOCUMENT_PROPERTIES,
                             _("Configure the selected controller"),
                             NULL,
                             G_CALLBACK (gimp_controller_list_edit_clicked),
@@ -297,7 +300,7 @@ gimp_controller_list_init (GimpControllerList *list)
                             list);
   list->up_button =
     gimp_editor_add_button (GIMP_EDITOR (list->dest),
-                            GTK_STOCK_GO_UP,
+                            GIMP_ICON_GO_UP,
                             _("Move the selected controller up"),
                             NULL,
                             G_CALLBACK (gimp_controller_list_up_clicked),
@@ -305,7 +308,7 @@ gimp_controller_list_init (GimpControllerList *list)
                             list);
   list->down_button =
     gimp_editor_add_button (GIMP_EDITOR (list->dest),
-                            GTK_STOCK_GO_DOWN,
+                            GIMP_ICON_GO_DOWN,
                             _("Move the selected controller down"),
                             NULL,
                             G_CALLBACK (gimp_controller_list_down_clicked),
@@ -322,10 +325,9 @@ gimp_controller_list_constructed (GObject *object)
 {
   GimpControllerList *list = GIMP_CONTROLLER_LIST (object);
 
-  if (G_OBJECT_CLASS (parent_class)->constructed)
-    G_OBJECT_CLASS (parent_class)->constructed (object);
+  G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  g_assert (GIMP_IS_GIMP (list->gimp));
+  gimp_assert (GIMP_IS_GIMP (list->gimp));
 
   gimp_container_view_set_container (GIMP_CONTAINER_VIEW (list->dest),
                                      gimp_controllers_get_list (list->gimp));
@@ -339,11 +341,7 @@ gimp_controller_list_finalize (GObject *object)
 {
   GimpControllerList *list = GIMP_CONTROLLER_LIST (object);
 
-  if (list->gimp)
-    {
-      g_object_unref (list->gimp);
-      list->gimp = NULL;
-    }
+  g_clear_object (&list->gimp);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -508,33 +506,33 @@ gimp_controller_list_add_clicked (GtkWidget          *button,
       gimp_controllers_get_keyboard (list->gimp) != NULL)
     {
       gimp_message_literal (list->gimp,
-			    G_OBJECT (button), GIMP_MESSAGE_WARNING,
-			    _("There can only be one active keyboard "
-			      "controller.\n\n"
-			      "You already have a keyboard controller in "
-			      "your list of active controllers."));
+                            G_OBJECT (button), GIMP_MESSAGE_WARNING,
+                            _("There can only be one active keyboard "
+                              "controller.\n\n"
+                              "You already have a keyboard controller in "
+                              "your list of active controllers."));
       return;
     }
   else if (list->src_gtype == GIMP_TYPE_CONTROLLER_WHEEL &&
            gimp_controllers_get_wheel (list->gimp) != NULL)
     {
       gimp_message_literal (list->gimp,
-			    G_OBJECT (button), GIMP_MESSAGE_WARNING,
-			    _("There can only be one active wheel "
-			      "controller.\n\n"
-			      "You already have a wheel controller in "
-			      "your list of active controllers."));
+                            G_OBJECT (button), GIMP_MESSAGE_WARNING,
+                            _("There can only be one active wheel "
+                              "controller.\n\n"
+                              "You already have a wheel controller in "
+                              "your list of active controllers."));
       return;
     }
   else if (list->src_gtype == GIMP_TYPE_CONTROLLER_MOUSE &&
            gimp_controllers_get_mouse (list->gimp) != NULL)
     {
       gimp_message_literal (list->gimp,
-			    G_OBJECT (button), GIMP_MESSAGE_WARNING,
-			    _("There can only be one active mouse "
-			      "controller.\n\n"
-			      "You already have a mouse controller in "
-			      "your list of active controllers."));
+                            G_OBJECT (button), GIMP_MESSAGE_WARNING,
+                            _("There can only be one active mouse "
+                              "controller.\n\n"
+                              "You already have a mouse controller in "
+                              "your list of active controllers."));
       return;
     }
 
@@ -558,13 +556,13 @@ gimp_controller_list_remove_clicked (GtkWidget          *button,
 #define RESPONSE_DISABLE 1
 
   dialog = gimp_message_dialog_new (_("Remove Controller?"),
-                                    GIMP_STOCK_WARNING,
+                                    GIMP_ICON_DIALOG_WARNING,
                                     GTK_WIDGET (list), GTK_DIALOG_MODAL,
                                     NULL, NULL,
 
-                                    _("Disable Controller"), RESPONSE_DISABLE,
-                                    GTK_STOCK_CANCEL,        GTK_RESPONSE_CANCEL,
-                                    _("Remove Controller"),  GTK_RESPONSE_OK,
+                                    _("_Disable Controller"), RESPONSE_DISABLE,
+                                    _("_Cancel"),             GTK_RESPONSE_CANCEL,
+                                    _("_Remove Controller"),  GTK_RESPONSE_OK,
 
                                     NULL);
 
@@ -579,12 +577,12 @@ gimp_controller_list_remove_clicked (GtkWidget          *button,
                                      _("Remove Controller '%s'?"), name);
 
   gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box,
-			     "%s",
+                             "%s",
                              _("Removing this controller from the list of "
-			       "active controllers will permanently delete "
-			       "all event mappings you have configured.\n\n"
-			       "Selecting \"Disable Controller\" will disable "
-			       "the controller without removing it."));
+                               "active controllers will permanently delete "
+                               "all event mappings you have configured.\n\n"
+                               "Selecting \"Disable Controller\" will disable "
+                               "the controller without removing it."));
 
   switch (gimp_dialog_run (GIMP_DIALOG (dialog)))
     {
@@ -639,13 +637,15 @@ gimp_controller_list_edit_clicked (GtkWidget          *button,
                             gimp_standard_help_func,
                             GIMP_HELP_PREFS_INPUT_CONTROLLERS,
 
-                            GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
+                            _("_Close"), GTK_RESPONSE_CLOSE,
 
                             NULL);
 
   gimp_dialog_factory_add_foreign (gimp_dialog_factory_get_singleton (),
                                    "gimp-controller-editor-dialog",
-                                   dialog);
+                                   dialog,
+                                   gtk_widget_get_screen (button),
+                                   gimp_widget_get_monitor (button));
 
   g_signal_connect (dialog, "response",
                     G_CALLBACK (gtk_widget_destroy),

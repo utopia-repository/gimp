@@ -24,9 +24,6 @@ void       tool_manager_exit                       (Gimp             *gimp);
 
 GimpTool * tool_manager_get_active                 (Gimp             *gimp);
 
-void       tool_manager_select_tool                (Gimp             *gimp,
-                                                    GimpTool         *tool);
-
 void       tool_manager_push_tool                  (Gimp             *gimp,
                                                     GimpTool         *tool);
 void       tool_manager_pop_tool                   (Gimp             *gimp);
@@ -78,6 +75,15 @@ void       tool_manager_oper_update_active         (Gimp             *gimp,
 void       tool_manager_cursor_update_active       (Gimp             *gimp,
                                                     const GimpCoords *coords,
                                                     GdkModifierType   state,
+                                                    GimpDisplay      *display);
+
+const gchar   * tool_manager_can_undo_active       (Gimp             *gimp,
+                                                    GimpDisplay      *display);
+const gchar   * tool_manager_can_redo_active       (Gimp             *gimp,
+                                                    GimpDisplay      *display);
+gboolean        tool_manager_undo_active           (Gimp             *gimp,
+                                                    GimpDisplay      *display);
+gboolean        tool_manager_redo_active           (Gimp             *gimp,
                                                     GimpDisplay      *display);
 
 GimpUIManager * tool_manager_get_popup_active      (Gimp             *gimp,

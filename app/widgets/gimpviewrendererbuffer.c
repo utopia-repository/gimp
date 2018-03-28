@@ -20,14 +20,14 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
 
-#include "base/temp-buf.h"
-
+#include "core/gimptempbuf.h"
 #include "core/gimpviewable.h"
 
 #include "gimpviewrendererbuffer.h"
@@ -60,12 +60,12 @@ static void
 gimp_view_renderer_buffer_render (GimpViewRenderer *renderer,
                                   GtkWidget        *widget)
 {
-  gint      buffer_width;
-  gint      buffer_height;
-  gint      view_width;
-  gint      view_height;
-  gboolean  scaling_up;
-  TempBuf  *render_buf = NULL;
+  gint         buffer_width;
+  gint         buffer_height;
+  gint         view_width;
+  gint         view_height;
+  gboolean     scaling_up;
+  GimpTempBuf *render_buf = NULL;
 
   gimp_viewable_get_size (renderer->viewable, &buffer_width, &buffer_height);
 
@@ -80,7 +80,7 @@ gimp_view_renderer_buffer_render (GimpViewRenderer *renderer,
 
   if (scaling_up)
     {
-      TempBuf *temp_buf;
+      GimpTempBuf *temp_buf;
 
       temp_buf = gimp_viewable_get_new_preview (renderer->viewable,
                                                 renderer->context,
@@ -88,9 +88,9 @@ gimp_view_renderer_buffer_render (GimpViewRenderer *renderer,
 
       if (temp_buf)
         {
-          render_buf = temp_buf_scale (temp_buf, view_width, view_height);
+          render_buf = gimp_temp_buf_scale (temp_buf, view_width, view_height);
 
-          temp_buf_free (temp_buf);
+          gimp_temp_buf_unref (temp_buf);
         }
     }
   else
@@ -102,16 +102,16 @@ gimp_view_renderer_buffer_render (GimpViewRenderer *renderer,
 
   if (render_buf)
     {
-      gimp_view_renderer_render_temp_buf_simple (renderer, render_buf);
+      gimp_view_renderer_render_temp_buf_simple (renderer, widget, render_buf);
 
-      temp_buf_free (render_buf);
+      gimp_temp_buf_unref (render_buf);
     }
   else /* no preview available */
     {
-      const gchar  *stock_id;
+      const gchar *icon_name;
 
-      stock_id = gimp_viewable_get_stock_id (renderer->viewable);
+      icon_name = gimp_viewable_get_icon_name (renderer->viewable);
 
-      gimp_view_renderer_render_stock (renderer, widget, stock_id);
+      gimp_view_renderer_render_icon (renderer, widget, icon_name);
     }
 }

@@ -20,6 +20,7 @@
 
 #include <config.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "widgets-types.h"
@@ -166,11 +167,7 @@ gimp_cell_renderer_viewable_finalize (GObject *object)
 {
   GimpCellRendererViewable *cell = GIMP_CELL_RENDERER_VIEWABLE (object);
 
-  if (cell->renderer)
-    {
-      g_object_unref (cell->renderer);
-      cell->renderer = NULL;
-    }
+  g_clear_object (&cell->renderer);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }

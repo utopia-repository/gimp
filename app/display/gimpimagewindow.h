@@ -47,8 +47,9 @@ GType              gimp_image_window_get_type             (void) G_GNUC_CONST;
 
 GimpImageWindow  * gimp_image_window_new                  (Gimp              *gimp,
                                                            GimpImage         *image,
-                                                           GimpMenuFactory   *menu_factory,
-                                                           GimpDialogFactory *dialog_factory);
+                                                           GimpDialogFactory *dialog_factory,
+                                                           GdkScreen         *screen,
+                                                           gint               monitor);
 void               gimp_image_window_destroy              (GimpImageWindow   *window);
 
 GimpUIManager    * gimp_image_window_get_ui_manager       (GimpImageWindow  *window);
@@ -91,6 +92,8 @@ void               gimp_image_window_shrink_wrap          (GimpImageWindow  *win
 GtkWidget        * gimp_image_window_get_default_dockbook (GimpImageWindow  *window);
 
 void               gimp_image_window_keep_canvas_pos      (GimpImageWindow  *window);
+void               gimp_image_window_suspend_keep_pos     (GimpImageWindow  *window);
+void               gimp_image_window_resume_keep_pos      (GimpImageWindow  *window);
 
 void               gimp_image_window_update_tabs          (GimpImageWindow  *window);
 

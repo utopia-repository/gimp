@@ -20,7 +20,7 @@
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gio/gio.h>
 
 #include "core-types.h"
 
@@ -112,8 +112,10 @@ static void
 gimp_tagged_container_init (GimpTaggedContainer *tagged_container)
 {
   tagged_container->tag_ref_counts =
-    g_hash_table_new ((GHashFunc) gimp_tag_get_hash,
-                      (GEqualFunc) gimp_tag_equals);
+    g_hash_table_new_full ((GHashFunc) gimp_tag_get_hash,
+                           (GEqualFunc) gimp_tag_equals,
+                           (GDestroyNotify) g_object_unref,
+                           (GDestroyNotify) NULL);
 }
 
 static void
@@ -128,11 +130,7 @@ gimp_tagged_container_dispose (GObject *object)
       tagged_container->filter = NULL;
     }
 
-  if (tagged_container->tag_ref_counts)
-    {
-      g_hash_table_unref (tagged_container->tag_ref_counts);
-      tagged_container->tag_ref_counts = NULL;
-    }
+  g_clear_pointer (&tagged_container->tag_ref_counts, g_hash_table_unref);
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
@@ -156,7 +154,7 @@ gimp_tagged_container_clear (GimpContainer *container)
   GimpTaggedContainer   *tagged_container   = GIMP_TAGGED_CONTAINER (container);
   GList                 *list;
 
-  for (list = GIMP_LIST (filtered_container->src_container)->list;
+  for (list = GIMP_LIST (filtered_container->src_container)->queue->head;
        list;
        list = g_list_next (list))
     {
@@ -242,7 +240,7 @@ gimp_tagged_container_src_thaw (GimpFilteredContainer *filtered_container)
 {
   GList *list;
 
-  for (list = GIMP_LIST (filtered_container->src_container)->list;
+  for (list = GIMP_LIST (filtered_container->src_container)->queue->head;
        list;
        list = g_list_next (list))
     {
@@ -256,7 +254,7 @@ gimp_tagged_container_src_thaw (GimpFilteredContainer *filtered_container)
  *
  * Creates a new #GimpTaggedContainer object which creates filtered
  * data view of #GimpTagged objects. It filters @src_container for
- * objects containing all of the filtering tags. Syncronization with
+ * objects containing all of the filtering tags. Synchronization with
  * @src_container data is performed automatically.
  *
  * Return value: a new #GimpTaggedContainer object.
@@ -418,7 +416,9 @@ gimp_tagged_container_ref_tag (GimpTaggedContainer *tagged_container,
                                                     tag));
   ref_count++;
   g_hash_table_insert (tagged_container->tag_ref_counts,
-                       tag, GINT_TO_POINTER (ref_count));
+                       g_object_ref (tag),
+                       GINT_TO_POINTER (ref_count));
+
   if (ref_count == 1)
     {
       tagged_container->tag_count++;
@@ -441,7 +441,8 @@ gimp_tagged_container_unref_tag (GimpTaggedContainer *tagged_container,
   if (ref_count > 0)
     {
       g_hash_table_insert (tagged_container->tag_ref_counts,
-                           tag, GINT_TO_POINTER (ref_count));
+                           g_object_ref (tag),
+                           GINT_TO_POINTER (ref_count));
     }
   else
     {

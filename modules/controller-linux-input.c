@@ -31,6 +31,7 @@
 
 #include <glib/gstdio.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpconfig/gimpconfig.h"
@@ -143,7 +144,7 @@ struct _ControllerLinuxInputClass
 };
 
 
-GType         controller_linux_input_get_type     (void);
+static GType  controller_linux_input_get_type     (void);
 
 static void   linux_input_dispose                 (GObject        *object);
 static void   linux_input_finalize                (GObject        *object);
@@ -228,7 +229,7 @@ controller_linux_input_class_init (ControllerLinuxInputClass *klass)
 
   controller_class->name            = _("Linux Input");
   controller_class->help_id         = "gimp-controller-linux-input";
-  controller_class->stock_id        = GIMP_STOCK_CONTROLLER_LINUX_INPUT;
+  controller_class->icon_name       = GIMP_ICON_CONTROLLER_LINUX_INPUT;
 
   controller_class->get_n_events    = linux_input_get_n_events;
   controller_class->get_event_name  = linux_input_get_event_name;

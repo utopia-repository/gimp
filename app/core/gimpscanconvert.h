@@ -19,7 +19,14 @@
 #define __GIMP_SCAN_CONVERT_H__
 
 
-GimpScanConvert * gimp_scan_convert_new        (void);
+GimpScanConvert *
+          gimp_scan_convert_new               (void);
+
+GimpScanConvert *
+          gimp_scan_convert_new_from_boundary (const GimpBoundSeg *bound_segs,
+                                               gint                n_bound_segs,
+                                               gint                offset_x,
+                                               gint                offset_y);
 
 void      gimp_scan_convert_free               (GimpScanConvert   *sc);
 void      gimp_scan_convert_set_pixel_ratio    (GimpScanConvert   *sc,
@@ -43,32 +50,32 @@ void      gimp_scan_convert_stroke             (GimpScanConvert   *sc,
                                                 gdouble            dash_offset,
                                                 GArray            *dash_info);
 void      gimp_scan_convert_render_full        (GimpScanConvert   *sc,
-                                                TileManager       *tile_manager,
+                                                GeglBuffer        *buffer,
                                                 gint               off_x,
                                                 gint               off_y,
                                                 gboolean           replace,
                                                 gboolean           antialias,
-                                                guchar             value);
+                                                gdouble            value);
 
 void      gimp_scan_convert_render             (GimpScanConvert   *sc,
-                                                TileManager       *tile_manager,
+                                                GeglBuffer        *buffer,
                                                 gint               off_x,
                                                 gint               off_y,
                                                 gboolean           antialias);
 void      gimp_scan_convert_render_value       (GimpScanConvert   *sc,
-                                                TileManager       *tile_manager,
+                                                GeglBuffer        *buffer,
                                                 gint               off_x,
                                                 gint               off_y,
-                                                guchar             value);
+                                                gdouble            value);
 void      gimp_scan_convert_compose            (GimpScanConvert   *sc,
-                                                TileManager       *tile_manager,
+                                                GeglBuffer        *buffer,
                                                 gint               off_x,
                                                 gint               off_y);
 void      gimp_scan_convert_compose_value      (GimpScanConvert   *sc,
-                                                TileManager       *tile_manager,
+                                                GeglBuffer        *buffer,
                                                 gint               off_x,
                                                 gint               off_y,
-                                                gint               value);
+                                                gdouble            value);
 
 
 #endif /* __GIMP_SCAN_CONVERT_H__ */

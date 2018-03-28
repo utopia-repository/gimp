@@ -17,20 +17,10 @@
 
 #include "config.h"
 
-#include <errno.h>
-
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
-
-#include <glib/gstdio.h>
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
-
-#ifdef G_OS_WIN32
-#include "libgimpbase/gimpwin32-io.h"
-#endif
 
 #include "menus-types.h"
 
@@ -93,7 +83,6 @@ menus_init (Gimp              *gimp,
 
   gimp_menu_factory_manager_register (global_menu_factory, "<Image>",
                                       "file",
-                                      "config",
                                       "context",
                                       "debug",
                                       "help",
@@ -109,6 +98,7 @@ menus_init (Gimp              *gimp,
                                       "dialogs",
                                       "windows",
                                       "plug-in",
+                                      "filters",
                                       "quick-mask",
                                       NULL,
                                       "/image-menubar",
@@ -121,7 +111,6 @@ menus_init (Gimp              *gimp,
 
   gimp_menu_factory_manager_register (global_menu_factory, "<Toolbox>",
                                       "file",
-                                      "config",
                                       "context",
                                       "help",
                                       "edit",
@@ -136,13 +125,13 @@ menus_init (Gimp              *gimp,
                                       "windows",
                                       "dialogs",
                                       "plug-in",
+                                      "filters",
                                       "quick-mask",
                                       NULL,
                                       NULL);
 
   gimp_menu_factory_manager_register (global_menu_factory, "<Dock>",
                                       "file",
-                                      "config",
                                       "context",
                                       "edit",
                                       "select",
@@ -164,6 +153,7 @@ menus_init (Gimp              *gimp,
   gimp_menu_factory_manager_register (global_menu_factory, "<Layers>",
                                       "layers",
                                       "plug-in",
+                                      "filters",
                                       NULL,
                                       "/layers-popup",
                                       "layers-menu.xml", plug_in_menus_setup,
@@ -172,6 +162,7 @@ menus_init (Gimp              *gimp,
   gimp_menu_factory_manager_register (global_menu_factory, "<Channels>",
                                       "channels",
                                       "plug-in",
+                                      "filters",
                                       NULL,
                                       "/channels-popup",
                                       "channels-menu.xml", plug_in_menus_setup,
@@ -215,6 +206,14 @@ menus_init (Gimp              *gimp,
                                       NULL,
                                       "/dynamics-popup",
                                       "dynamics-menu.xml", plug_in_menus_setup,
+                                      NULL);
+
+  gimp_menu_factory_manager_register (global_menu_factory, "<MyPaintBrushes>",
+                                      "mypaint-brushes",
+                                      "plug-in",
+                                      NULL,
+                                      "/mypaint-brushes-popup",
+                                      "mypaint-brushes-menu.xml", plug_in_menus_setup,
                                       NULL);
 
   gimp_menu_factory_manager_register (global_menu_factory, "<Patterns>",
@@ -388,6 +387,14 @@ menus_init (Gimp              *gimp,
                                       "sample-points-menu.xml",
                                       NULL,
                                       NULL);
+
+  gimp_menu_factory_manager_register (global_menu_factory, "<Dashboard>",
+                                      "dashboard",
+                                      NULL,
+                                      "/dashboard-popup",
+                                      "dashboard-menu.xml",
+                                       NULL,
+                                       NULL);
 }
 
 void
@@ -446,25 +453,28 @@ gboolean
 menus_clear (Gimp    *gimp,
              GError **error)
 {
-  gchar    *filename;
-  gchar    *source;
-  gboolean  success = TRUE;
+  GFile    *file;
+  GFile    *source;
+  gboolean  success  = TRUE;
+  GError   *my_error = NULL;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  filename = gimp_personal_rc_file ("menurc");
-  source = g_build_filename (gimp_sysconf_directory (), "menurc", NULL);
+  file   = gimp_directory_file ("menurc", NULL);
+  source = gimp_sysconf_directory_file ("menurc", NULL);
 
-  if (gimp_config_file_copy (source, filename, NULL))
+  if (g_file_copy (source, file, G_FILE_COPY_OVERWRITE,
+                   NULL, NULL, NULL, NULL))
     {
       menurc_deleted = TRUE;
     }
-  else if (g_unlink (filename) != 0 && errno != ENOENT)
+  else if (! g_file_delete (file, NULL, &my_error) &&
+           my_error->code != G_IO_ERROR_NOT_FOUND)
     {
-      g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
-		   _("Deleting \"%s\" failed: %s"),
-                   gimp_filename_to_utf8 (filename), g_strerror (errno));
+      g_set_error (error, my_error->domain, my_error->code,
+                   _("Deleting \"%s\" failed: %s"),
+                   gimp_file_get_utf8_name (file), my_error->message);
       success = FALSE;
     }
   else
@@ -472,8 +482,9 @@ menus_clear (Gimp    *gimp,
       menurc_deleted = TRUE;
     }
 
-  g_free (source);
-  g_free (filename);
+  g_clear_error (&my_error);
+  g_object_unref (source);
+  g_object_unref (file);
 
   return success;
 }

@@ -1,6 +1,10 @@
 gimp (2.10.0~RC1-1) UNRELEASED; urgency=medium
 
   * New upstream release candidate (LP: #1759625)
+  * Bump dependencies per configure.ac
+  * Add new Build-Depends: gegl, glib-networking, libgexiv2-dev,
+    libmypaint-dev, libopenjp2-7-dev (Closes: #827083), libopenexr-dev,
+    libwebp-dev, mypaint-brushes, python-cairo-dev
 
  -- Jeremy Bicha <jbicha@debian.org>  Wed, 28 Mar 2018 12:38:38 -0400
 

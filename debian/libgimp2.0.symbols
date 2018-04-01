@@ -1,5 +1,7 @@
 libgimp-2.0.so.0 libgimp2.0 #MINVER#
 * Build-Depends-Package: libgimp2.0-dev
+ _gimp_tile_backend_plugin_get_type@Base 2.10.0~RC1
+ _gimp_tile_backend_plugin_new@Base 2.10.0~RC1
  _writechannel@Base 2.4.0
  gimp_airbrush@Base 2.4.0
  gimp_airbrush_default@Base 2.4.0
@@ -9,7 +11,6 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_brush_application_mode_get_type@Base 2.4.0
  gimp_brush_delete@Base 2.4.0
  gimp_brush_duplicate@Base 2.4.0
- gimp_brush_generated_shape_get_type@Base 2.4.0
  gimp_brush_get_angle@Base 2.4.0
  gimp_brush_get_aspect_ratio@Base 2.4.0
  gimp_brush_get_hardness@Base 2.4.0
@@ -76,7 +77,12 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_context_get_brush@Base 2.4.0
  gimp_context_get_brush_angle@Base 2.8.0
  gimp_context_get_brush_aspect_ratio@Base 2.8.0
+ gimp_context_get_brush_force@Base 2.10.0~RC1
+ gimp_context_get_brush_hardness@Base 2.10.0~RC1
  gimp_context_get_brush_size@Base 2.8.0
+ gimp_context_get_brush_spacing@Base 2.10.0~RC1
+ gimp_context_get_diagonal_neighbors@Base 2.10.0~RC1
+ gimp_context_get_distance_metric@Base 2.10.0~RC1
  gimp_context_get_dynamics@Base 2.8.0
  gimp_context_get_feather@Base 2.8.0
  gimp_context_get_feather_radius@Base 2.8.0
@@ -92,6 +98,14 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_context_get_ink_speed_sensitivity@Base 2.8.0
  gimp_context_get_ink_tilt_sensitivity@Base 2.8.0
  gimp_context_get_interpolation@Base 2.8.0
+ gimp_context_get_line_cap_style@Base 2.10.0~RC1
+ gimp_context_get_line_dash_offset@Base 2.10.0~RC1
+ gimp_context_get_line_dash_pattern@Base 2.10.0~RC1
+ gimp_context_get_line_join_style@Base 2.10.0~RC1
+ gimp_context_get_line_miter_limit@Base 2.10.0~RC1
+ gimp_context_get_line_width@Base 2.10.0~RC1
+ gimp_context_get_line_width_unit@Base 2.10.0~RC1
+ gimp_context_get_mypaint_brush@Base 2.10.0~RC1
  gimp_context_get_opacity@Base 2.4.0
  gimp_context_get_paint_method@Base 2.4.0
  gimp_context_get_paint_mode@Base 2.4.0
@@ -102,6 +116,7 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_context_get_sample_threshold@Base 2.8.0
  gimp_context_get_sample_threshold_int@Base 2.8.0
  gimp_context_get_sample_transparent@Base 2.8.0
+ gimp_context_get_stroke_method@Base 2.10.0~RC1
  gimp_context_get_transform_direction@Base 2.8.0
  gimp_context_get_transform_recursion@Base 2.8.0
  gimp_context_get_transform_resize@Base 2.8.0
@@ -113,10 +128,17 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_context_set_brush@Base 2.4.0
  gimp_context_set_brush_angle@Base 2.8.0
  gimp_context_set_brush_aspect_ratio@Base 2.8.0
+ gimp_context_set_brush_default_hardness@Base 2.10.0~RC1
  gimp_context_set_brush_default_size@Base 2.8.0
+ gimp_context_set_brush_default_spacing@Base 2.10.0~RC1
+ gimp_context_set_brush_force@Base 2.10.0~RC1
+ gimp_context_set_brush_hardness@Base 2.10.0~RC1
  gimp_context_set_brush_size@Base 2.8.0
+ gimp_context_set_brush_spacing@Base 2.10.0~RC1
  gimp_context_set_default_colors@Base 2.4.0
  gimp_context_set_defaults@Base 2.8.0
+ gimp_context_set_diagonal_neighbors@Base 2.10.0~RC1
+ gimp_context_set_distance_metric@Base 2.10.0~RC1
  gimp_context_set_dynamics@Base 2.8.0
  gimp_context_set_feather@Base 2.8.0
  gimp_context_set_feather_radius@Base 2.8.0
@@ -132,6 +154,14 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_context_set_ink_speed_sensitivity@Base 2.8.0
  gimp_context_set_ink_tilt_sensitivity@Base 2.8.0
  gimp_context_set_interpolation@Base 2.8.0
+ gimp_context_set_line_cap_style@Base 2.10.0~RC1
+ gimp_context_set_line_dash_offset@Base 2.10.0~RC1
+ gimp_context_set_line_dash_pattern@Base 2.10.0~RC1
+ gimp_context_set_line_join_style@Base 2.10.0~RC1
+ gimp_context_set_line_miter_limit@Base 2.10.0~RC1
+ gimp_context_set_line_width@Base 2.10.0~RC1
+ gimp_context_set_line_width_unit@Base 2.10.0~RC1
+ gimp_context_set_mypaint_brush@Base 2.10.0~RC1
  gimp_context_set_opacity@Base 2.4.0
  gimp_context_set_paint_method@Base 2.4.0
  gimp_context_set_paint_mode@Base 2.4.0
@@ -142,18 +172,18 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_context_set_sample_threshold@Base 2.8.0
  gimp_context_set_sample_threshold_int@Base 2.8.0
  gimp_context_set_sample_transparent@Base 2.8.0
+ gimp_context_set_stroke_method@Base 2.10.0~RC1
  gimp_context_set_transform_direction@Base 2.8.0
  gimp_context_set_transform_recursion@Base 2.8.0
  gimp_context_set_transform_resize@Base 2.8.0
  gimp_context_swap_colors@Base 2.4.0
  gimp_convert_dither_type_get_type@Base 2.4.0
- gimp_convert_palette_type_get_type@Base 2.4.0
- gimp_convolution_type_get_type@Base 2.4.0
  gimp_convolve@Base 2.4.0
  gimp_convolve_default@Base 2.4.0
- gimp_convolve_type_get_type@Base 2.4.0
  gimp_curves_explicit@Base 2.4.0
  gimp_curves_spline@Base 2.4.0
+ gimp_debug_timer_end@Base 2.10.0~RC1
+ gimp_debug_timer_start@Base 2.10.0~RC1
  gimp_default_display@Base 2.4.0
  gimp_desaturate@Base 2.4.0
  gimp_desaturate_full@Base 2.4.0
@@ -171,18 +201,28 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_dodgeburn_default@Base 2.4.0
  gimp_drawable_attach_new_parasite@Base 2.4.0
  gimp_drawable_bpp@Base 2.4.0
+ gimp_drawable_brightness_contrast@Base 2.10.0~RC1
+ gimp_drawable_color_balance@Base 2.10.0~RC1
+ gimp_drawable_colorize_hsl@Base 2.10.0~RC1
+ gimp_drawable_curves_explicit@Base 2.10.0~RC1
+ gimp_drawable_curves_spline@Base 2.10.0~RC1
  gimp_drawable_delete@Base 2.4.0
+ gimp_drawable_desaturate@Base 2.10.0~RC1
  gimp_drawable_detach@Base 2.4.0
+ gimp_drawable_equalize@Base 2.10.0~RC1
  gimp_drawable_fill@Base 2.4.0
  gimp_drawable_flush@Base 2.4.0
  gimp_drawable_foreground_extract@Base 2.4.0
  gimp_drawable_free_shadow@Base 2.6.0
  gimp_drawable_get@Base 2.4.0
+ gimp_drawable_get_buffer@Base 2.10.0~RC1
  gimp_drawable_get_color_uchar@Base 2.4.0
+ gimp_drawable_get_format@Base 2.10.0~RC1
  gimp_drawable_get_image@Base 2.4.0
  gimp_drawable_get_linked@Base 2.4.0
  gimp_drawable_get_name@Base 2.4.0
  gimp_drawable_get_pixel@Base 2.4.0
+ gimp_drawable_get_shadow_buffer@Base 2.10.0~RC1
  gimp_drawable_get_sub_thumbnail@Base 2.4.0
  gimp_drawable_get_sub_thumbnail_data@Base 2.4.0
  gimp_drawable_get_tattoo@Base 2.4.0
@@ -193,6 +233,9 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_drawable_get_visible@Base 2.4.0
  gimp_drawable_has_alpha@Base 2.4.0
  gimp_drawable_height@Base 2.4.0
+ gimp_drawable_histogram@Base 2.10.0~RC1
+ gimp_drawable_hue_saturation@Base 2.10.0~RC1
+ gimp_drawable_invert@Base 2.10.0~RC1
  gimp_drawable_is_channel@Base 2.4.0
  gimp_drawable_is_gray@Base 2.4.0
  gimp_drawable_is_indexed@Base 2.4.0
@@ -201,6 +244,8 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_drawable_is_rgb@Base 2.4.0
  gimp_drawable_is_text_layer@Base 2.6.0
  gimp_drawable_is_valid@Base 2.4.0
+ gimp_drawable_levels@Base 2.10.0~RC1
+ gimp_drawable_levels_stretch@Base 2.10.0~RC1
  gimp_drawable_mask_bounds@Base 2.4.0
  gimp_drawable_mask_intersect@Base 2.4.0
  gimp_drawable_merge_shadow@Base 2.4.0
@@ -210,12 +255,14 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_drawable_parasite_detach@Base 2.4.0
  gimp_drawable_parasite_find@Base 2.4.0
  gimp_drawable_parasite_list@Base 2.4.0
+ gimp_drawable_posterize@Base 2.10.0~RC1
  gimp_drawable_set_image@Base 2.4.0
  gimp_drawable_set_linked@Base 2.4.0
  gimp_drawable_set_name@Base 2.4.0
  gimp_drawable_set_pixel@Base 2.4.0
  gimp_drawable_set_tattoo@Base 2.4.0
  gimp_drawable_set_visible@Base 2.4.0
+ gimp_drawable_threshold@Base 2.10.0~RC1
  gimp_drawable_transform_2d@Base 2.4.0
  gimp_drawable_transform_2d_default@Base 2.4.0
  gimp_drawable_transform_flip@Base 2.4.0
@@ -251,8 +298,10 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_edit_named_cut@Base 2.4.0
  gimp_edit_named_paste@Base 2.4.0
  gimp_edit_named_paste_as_new@Base 2.4.0
+ gimp_edit_named_paste_as_new_image@Base 2.10.0~RC1
  gimp_edit_paste@Base 2.4.0
  gimp_edit_paste_as_new@Base 2.4.0
+ gimp_edit_paste_as_new_image@Base 2.10.0~RC1
  gimp_edit_stroke@Base 2.4.0
  gimp_edit_stroke_vectors@Base 2.4.0
  gimp_ellipse_select@Base 2.4.0
@@ -261,6 +310,9 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_equalize@Base 2.4.0
  gimp_eraser@Base 2.4.0
  gimp_eraser_default@Base 2.4.0
+ gimp_export_exif@Base 2.10.0~RC1
+ gimp_export_iptc@Base 2.10.0~RC1
+ gimp_export_xmp@Base 2.10.0~RC1
  gimp_extension_ack@Base 2.4.0
  gimp_extension_enable@Base 2.4.0
  gimp_extension_process@Base 2.4.0
@@ -269,7 +321,6 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_file_load_layers@Base 2.4.0
  gimp_file_save@Base 2.4.0
  gimp_file_save_thumbnail@Base 2.4.0
- gimp_fill_type_get_type@Base 2.4.0
  gimp_flip@Base 2.4.0
  gimp_floating_sel_anchor@Base 2.4.0
  gimp_floating_sel_attach@Base 2.4.0
@@ -291,12 +342,14 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_get_color_configuration@Base 2.4.0
  gimp_get_default_comment@Base 2.4.0
  gimp_get_default_unit@Base 2.4.0
+ gimp_get_icon_theme_dir@Base 2.10.0~RC1
  gimp_get_module_load_inhibit@Base 2.4.0
  gimp_get_monitor_resolution@Base 2.4.0
  gimp_get_parasite@Base 2.8.0
  gimp_get_parasite_list@Base 2.8.0
  gimp_get_path_by_tattoo@Base 2.4.0
  gimp_get_pdb_error@Base 2.6.0
+ gimp_get_pdb_status@Base 2.10.0~RC1
  gimp_get_progname@Base 2.4.0
  gimp_get_theme_dir@Base 2.4.0
  gimp_getpid@Base 2.4.0
@@ -310,7 +363,6 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_gradient_is_editable@Base 2.4.0
  gimp_gradient_new@Base 2.4.0
  gimp_gradient_rename@Base 2.4.0
- gimp_gradient_segment_color_get_type@Base 2.4.0
  gimp_gradient_segment_get_blending_function@Base 2.4.0
  gimp_gradient_segment_get_coloring_type@Base 2.4.0
  gimp_gradient_segment_get_left_color@Base 2.4.0
@@ -334,7 +386,6 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_gradient_segment_set_middle_pos@Base 2.4.0
  gimp_gradient_segment_set_right_color@Base 2.4.0
  gimp_gradient_segment_set_right_pos@Base 2.4.0
- gimp_gradient_segment_type_get_type@Base 2.4.0
  gimp_gradient_select_destroy@Base 2.4.0
  gimp_gradient_select_new@Base 2.4.0
  gimp_gradients_close_popup@Base 2.4.0
@@ -352,27 +403,32 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_help@Base 2.4.0
  gimp_histogram@Base 2.4.0
  gimp_histogram_channel_get_type@Base 2.4.0
- gimp_hue_range_get_type@Base 2.4.0
  gimp_hue_saturation@Base 2.4.0
  gimp_image_add_channel@Base 2.4.0
  gimp_image_add_hguide@Base 2.4.0
  gimp_image_add_layer@Base 2.4.0
+ gimp_image_add_sample_point@Base 2.10.0~RC1
  gimp_image_add_vectors@Base 2.4.0
  gimp_image_add_vguide@Base 2.4.0
  gimp_image_attach_new_parasite@Base 2.4.0
  gimp_image_attach_parasite@Base 2.8.0
  gimp_image_base_type@Base 2.4.0
  gimp_image_clean_all@Base 2.4.0
+ gimp_image_convert_color_profile@Base 2.10.0~RC1
+ gimp_image_convert_color_profile_from_file@Base 2.10.0~RC1
  gimp_image_convert_grayscale@Base 2.4.0
  gimp_image_convert_indexed@Base 2.4.0
+ gimp_image_convert_precision@Base 2.10.0~RC1
  gimp_image_convert_rgb@Base 2.4.0
  gimp_image_convert_set_dither_matrix@Base 2.4.0
  gimp_image_crop@Base 2.4.0
  gimp_image_delete@Base 2.4.0
  gimp_image_delete_guide@Base 2.4.0
+ gimp_image_delete_sample_point@Base 2.10.0~RC1
  gimp_image_detach_parasite@Base 2.8.0
  gimp_image_duplicate@Base 2.4.0
  gimp_image_find_next_guide@Base 2.4.0
+ gimp_image_find_next_sample_point@Base 2.10.0~RC1
  gimp_image_flatten@Base 2.4.0
  gimp_image_flip@Base 2.4.0
  gimp_image_floating_sel_attached_to@Base 2.4.0
@@ -386,9 +442,12 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_image_get_channel_position@Base 2.4.0
  gimp_image_get_channels@Base 2.4.0
  gimp_image_get_cmap@Base 2.4.0
+ gimp_image_get_color_profile@Base 2.10.0~RC1
  gimp_image_get_colormap@Base 2.4.0
  gimp_image_get_component_active@Base 2.4.0
  gimp_image_get_component_visible@Base 2.4.0
+ gimp_image_get_default_new_layer_mode@Base 2.10.0~RC1
+ gimp_image_get_effective_color_profile@Base 2.10.0~RC1
  gimp_image_get_exported_uri@Base 2.8.0
  gimp_image_get_filename@Base 2.4.0
  gimp_image_get_floating_sel@Base 2.4.0
@@ -400,10 +459,13 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_image_get_layer_by_tattoo@Base 2.4.0
  gimp_image_get_layer_position@Base 2.4.0
  gimp_image_get_layers@Base 2.4.0
+ gimp_image_get_metadata@Base 2.10.0~RC1
  gimp_image_get_name@Base 2.4.0
  gimp_image_get_parasite@Base 2.8.0
  gimp_image_get_parasite_list@Base 2.8.0
+ gimp_image_get_precision@Base 2.10.0~RC1
  gimp_image_get_resolution@Base 2.4.0
+ gimp_image_get_sample_point_position@Base 2.10.0~RC1
  gimp_image_get_selection@Base 2.4.0
  gimp_image_get_tattoo_state@Base 2.4.0
  gimp_image_get_thumbnail@Base 2.4.0
@@ -442,6 +504,7 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_image_merge_down@Base 2.4.0
  gimp_image_merge_visible_layers@Base 2.4.0
  gimp_image_new@Base 2.4.0
+ gimp_image_new_with_precision@Base 2.10.0~RC1
  gimp_image_parasite_attach@Base 2.4.0
  gimp_image_parasite_detach@Base 2.4.0
  gimp_image_parasite_find@Base 2.4.0
@@ -475,10 +538,13 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_image_set_active_layer@Base 2.4.0
  gimp_image_set_active_vectors@Base 2.4.0
  gimp_image_set_cmap@Base 2.4.0
+ gimp_image_set_color_profile@Base 2.10.0~RC1
+ gimp_image_set_color_profile_from_file@Base 2.10.0~RC1
  gimp_image_set_colormap@Base 2.4.0
  gimp_image_set_component_active@Base 2.4.0
  gimp_image_set_component_visible@Base 2.4.0
  gimp_image_set_filename@Base 2.4.0
+ gimp_image_set_metadata@Base 2.10.0~RC1
  gimp_image_set_resolution@Base 2.4.0
  gimp_image_set_tattoo_state@Base 2.4.0
  gimp_image_set_unit@Base 2.4.0
@@ -491,7 +557,6 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_image_undo_thaw@Base 2.4.0
  gimp_image_unset_active_channel@Base 2.4.0
  gimp_image_width@Base 2.4.0
- gimp_ink_blob_type_get_type@Base 2.8.0
  gimp_install_cmap@Base 2.4.0
  gimp_install_procedure@Base 2.4.0
  gimp_install_temp_proc@Base 2.4.0
@@ -500,9 +565,12 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_item_delete@Base 2.8.0
  gimp_item_detach_parasite@Base 2.8.0
  gimp_item_get_children@Base 2.8.0
+ gimp_item_get_color_tag@Base 2.10.0~RC1
+ gimp_item_get_expanded@Base 2.10.0~RC1
  gimp_item_get_image@Base 2.8.0
  gimp_item_get_linked@Base 2.8.0
  gimp_item_get_lock_content@Base 2.8.0
+ gimp_item_get_lock_position@Base 2.10.0~RC1
  gimp_item_get_name@Base 2.8.0
  gimp_item_get_parasite@Base 2.8.0
  gimp_item_get_parasite_list@Base 2.8.0
@@ -518,8 +586,11 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_item_is_text_layer@Base 2.8.0
  gimp_item_is_valid@Base 2.8.0
  gimp_item_is_vectors@Base 2.8.0
+ gimp_item_set_color_tag@Base 2.10.0~RC1
+ gimp_item_set_expanded@Base 2.10.0~RC1
  gimp_item_set_linked@Base 2.8.0
  gimp_item_set_lock_content@Base 2.8.0
+ gimp_item_set_lock_position@Base 2.10.0~RC1
  gimp_item_set_name@Base 2.8.0
  gimp_item_set_tattoo@Base 2.8.0
  gimp_item_set_visible@Base 2.8.0
@@ -534,11 +605,16 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_item_transform_shear@Base 2.8.0
  gimp_layer_add_alpha@Base 2.4.0
  gimp_layer_add_mask@Base 2.4.0
+ gimp_layer_color_space_get_type@Base 2.10.0~RC1
+ gimp_layer_composite_mode_get_type@Base 2.10.0~RC1
  gimp_layer_copy@Base 2.4.0
  gimp_layer_create_mask@Base 2.4.0
  gimp_layer_flatten@Base 2.4.0
  gimp_layer_from_mask@Base 2.4.0
  gimp_layer_get_apply_mask@Base 2.4.0
+ gimp_layer_get_blend_space@Base 2.10.0~RC1
+ gimp_layer_get_composite_mode@Base 2.10.0~RC1
+ gimp_layer_get_composite_space@Base 2.10.0~RC1
  gimp_layer_get_edit_mask@Base 2.4.0
  gimp_layer_get_lock_alpha@Base 2.4.0
  gimp_layer_get_mask@Base 2.4.0
@@ -548,7 +624,7 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_layer_get_show_mask@Base 2.4.0
  gimp_layer_group_new@Base 2.8.0
  gimp_layer_is_floating_sel@Base 2.4.0
- gimp_layer_mode_effects_get_type@Base 2.4.0
+ gimp_layer_mode_get_type@Base 2.10.0~RC1
  gimp_layer_new@Base 2.4.0
  gimp_layer_new_from_drawable@Base 2.4.0
  gimp_layer_new_from_pixbuf@Base 2.4.0
@@ -560,6 +636,9 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_layer_scale@Base 2.4.0
  gimp_layer_scale_full@Base 2.6.0
  gimp_layer_set_apply_mask@Base 2.4.0
+ gimp_layer_set_blend_space@Base 2.10.0~RC1
+ gimp_layer_set_composite_mode@Base 2.10.0~RC1
+ gimp_layer_set_composite_space@Base 2.10.0~RC1
  gimp_layer_set_edit_mask@Base 2.4.0
  gimp_layer_set_lock_alpha@Base 2.4.0
  gimp_layer_set_mode@Base 2.4.0
@@ -572,15 +651,11 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_levels_auto@Base 2.4.0
  gimp_levels_stretch@Base 2.4.0
  gimp_main@Base 2.4.0
- gimp_mask_apply_mode_get_type@Base 2.4.0
- gimp_merge_type_get_type@Base 2.4.0
  gimp_message@Base 2.4.0
  gimp_message_get_handler@Base 2.4.0
  gimp_message_set_handler@Base 2.4.0
  gimp_min_colors@Base 2.4.0
  gimp_monitor_number@Base 2.4.0
- gimp_offset_type_get_type@Base 2.4.0
- gimp_orientation_type_get_type@Base 2.4.0
  gimp_paintbrush@Base 2.4.0
  gimp_paintbrush_default@Base 2.4.0
  gimp_palette_add_entry@Base 2.4.0
@@ -666,11 +741,13 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_pixel_rgns_register2@Base 2.4.0
  gimp_pixel_rgns_register@Base 2.4.0
  gimp_plugin_domain_register@Base 2.4.0
+ gimp_plugin_enable_precision@Base 2.10.0~RC1
  gimp_plugin_get_pdb_error_handler@Base 2.6.0
  gimp_plugin_help_register@Base 2.4.0
  gimp_plugin_icon_register@Base 2.4.0
  gimp_plugin_menu_branch_register@Base 2.4.0
  gimp_plugin_menu_register@Base 2.4.0
+ gimp_plugin_precision_enabled@Base 2.10.0~RC1
  gimp_plugin_set_pdb_error_handler@Base 2.6.0
  gimp_posterize@Base 2.4.0
  gimp_procedural_db_dump@Base 2.4.0
@@ -699,6 +776,8 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_read_expect_msg@Base 2.4.0
  gimp_rect_select@Base 2.4.0
  gimp_register_file_handler_mime@Base 2.4.0
+ gimp_register_file_handler_raw@Base 2.10.0~RC1
+ gimp_register_file_handler_uri@Base 2.10.0~RC1
  gimp_register_load_handler@Base 2.4.0
  gimp_register_magic_load_handler@Base 2.4.0
  gimp_register_save_handler@Base 2.4.0
@@ -711,12 +790,10 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_rgn_iterator_src@Base 2.4.0
  gimp_rgn_iterator_src_dest@Base 2.4.0
  gimp_rotate@Base 2.4.0
- gimp_rotation_type_get_type@Base 2.4.0
  gimp_round_rect_select@Base 2.4.0
  gimp_run_procedure2@Base 2.4.0
  gimp_run_procedure@Base 2.4.0
  gimp_scale@Base 2.4.0
- gimp_select_criterion_get_type@Base 2.4.0
  gimp_selection_all@Base 2.4.0
  gimp_selection_border@Base 2.4.0
  gimp_selection_bounds@Base 2.4.0
@@ -724,6 +801,7 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_selection_combine@Base 2.4.0
  gimp_selection_feather@Base 2.4.0
  gimp_selection_float@Base 2.4.0
+ gimp_selection_flood@Base 2.10.0~RC1
  gimp_selection_grow@Base 2.4.0
  gimp_selection_invert@Base 2.4.0
  gimp_selection_is_empty@Base 2.4.0
@@ -835,66 +913,127 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
 libgimpbase-2.0.so.0 libgimp2.0 #MINVER#
 * Build-Depends-Package: libgimp2.0-dev
  _gimp_unit_vtable@Base 2.4.0
+ gimp_add_mask_type_compat_get_type@Base 2.10.0~RC1
  gimp_add_mask_type_get_type@Base 2.4.0
  gimp_any_to_utf8@Base 2.4.0
+ gimp_base_compat_enums_init@Base 2.10.0~RC1
  gimp_base_init@Base 2.4.0
+ gimp_blend_mode_compat_get_type@Base 2.10.0~RC1
  gimp_blend_mode_get_type@Base 2.4.0
+ gimp_brush_generated_shape_get_type@Base 2.10.0~RC1
+ gimp_bucket_fill_mode_compat_get_type@Base 2.10.0~RC1
  gimp_bucket_fill_mode_get_type@Base 2.4.0
  gimp_canonicalize_identifier@Base 2.4.0
+ gimp_cap_style_get_type@Base 2.10.0~RC1
  gimp_channel_ops_get_type@Base 2.4.0
+ gimp_channel_type_compat_get_type@Base 2.10.0~RC1
  gimp_channel_type_get_type@Base 2.4.0
  gimp_check_size_get_type@Base 2.4.0
  gimp_check_type_get_type@Base 2.4.0
  gimp_checks_get_shades@Base 2.4.0
+ gimp_clone_type_compat_get_type@Base 2.10.0~RC1
  gimp_clone_type_get_type@Base 2.4.0
+ gimp_color_tag_get_type@Base 2.10.0~RC1
+ gimp_component_type_get_type@Base 2.10.0~RC1
+ gimp_convert_dither_type_compat_get_type@Base 2.10.0~RC1
+ gimp_convert_palette_type_compat_get_type@Base 2.10.0~RC1
+ gimp_convert_palette_type_get_type@Base 2.10.0~RC1
+ gimp_convolve_type_compat_get_type@Base 2.10.0~RC1
+ gimp_convolve_type_get_type@Base 2.10.0~RC1
  gimp_cpu_accel_get_support@Base 2.4.0
  gimp_cpu_accel_set_use@Base 2.4.0
  gimp_data_directory@Base 2.4.0
+ gimp_data_directory_file@Base 2.10.0~RC1
  gimp_datafiles_check_extension@Base 2.4.0
  gimp_datafiles_read_directories@Base 2.4.0
+ gimp_desaturate_mode_compat_get_type@Base 2.10.0~RC1
  gimp_desaturate_mode_get_type@Base 2.4.0
  gimp_directory@Base 2.4.0
+ gimp_directory_file@Base 2.10.0~RC1
+ gimp_dodge_burn_type_compat_get_type@Base 2.10.0~RC1
  gimp_dodge_burn_type_get_type@Base 2.4.0
  gimp_enum_get_desc@Base 2.4.0
  gimp_enum_get_value@Base 2.4.0
  gimp_enum_get_value_descriptions@Base 2.4.0
  gimp_enum_set_value_descriptions@Base 2.4.0
+ gimp_enum_value_get_abbrev@Base 2.10.0~RC1
  gimp_enum_value_get_desc@Base 2.4.0
  gimp_enum_value_get_help@Base 2.4.0
  gimp_env_init@Base 2.4.0
  gimp_escape_uline@Base 2.4.0
+ gimp_file_get_utf8_name@Base 2.10.0~RC1
+ gimp_file_has_extension@Base 2.10.0~RC1
+ gimp_file_show_in_file_manager@Base 2.10.0~RC1
  gimp_filename_to_utf8@Base 2.4.0
+ gimp_fill_type_compat_get_type@Base 2.10.0~RC1
+ gimp_fill_type_get_type@Base 2.10.0~RC1
  gimp_flags_get_first_desc@Base 2.4.0
  gimp_flags_get_first_value@Base 2.4.0
  gimp_flags_get_value_descriptions@Base 2.4.0
  gimp_flags_set_value_descriptions@Base 2.4.0
+ gimp_flags_value_get_abbrev@Base 2.10.0~RC1
  gimp_flags_value_get_desc@Base 2.4.0
  gimp_flags_value_get_help@Base 2.4.0
  gimp_foreground_extract_mode_get_type@Base 2.4.0
+ gimp_gradient_segment_color_get_type@Base 2.10.0~RC1
+ gimp_gradient_segment_type_get_type@Base 2.10.0~RC1
  gimp_gradient_type_get_type@Base 2.4.0
  gimp_grid_style_get_type@Base 2.4.0
  gimp_gtkrc@Base 2.4.0
+ gimp_hue_range_compat_get_type@Base 2.10.0~RC1
+ gimp_hue_range_get_type@Base 2.10.0~RC1
+ gimp_icon_type_compat_get_type@Base 2.10.0~RC1
  gimp_icon_type_get_type@Base 2.4.0
  gimp_image_base_type_get_type@Base 2.4.0
  gimp_image_type_get_type@Base 2.4.0
+ gimp_ink_blob_type_get_type@Base 2.10.0~RC1
  gimp_installation_directory@Base 2.8.2
+ gimp_interpolation_type_compat_get_type@Base 2.10.0~RC1
  gimp_interpolation_type_get_type@Base 2.4.0
+ gimp_join_style_get_type@Base 2.10.0~RC1
+ gimp_layer_mode_effects_get_type@Base 2.10.0~RC1
  gimp_locale_directory@Base 2.4.0
+ gimp_locale_directory_file@Base 2.10.0~RC1
  gimp_major_version@Base 2.4.0
+ gimp_mask_apply_mode_get_type@Base 2.10.0~RC1
  gimp_memsize_deserialize@Base 2.4.0
  gimp_memsize_get_type@Base 2.4.0
  gimp_memsize_serialize@Base 2.4.0
  gimp_memsize_to_string@Base 2.4.0
+ gimp_merge_type_get_type@Base 2.10.0~RC1
  gimp_message_handler_type_get_type@Base 2.4.0
+ gimp_metadata_add_xmp_history@Base 2.10.0~RC1
+ gimp_metadata_deserialize@Base 2.10.0~RC1
+ gimp_metadata_duplicate@Base 2.10.0~RC1
+ gimp_metadata_get_colorspace@Base 2.10.0~RC1
+ gimp_metadata_get_guid@Base 2.10.0~RC1
+ gimp_metadata_get_resolution@Base 2.10.0~RC1
+ gimp_metadata_get_type@Base 2.10.0~RC1
+ gimp_metadata_is_tag_supported@Base 2.10.0~RC1
+ gimp_metadata_load_from_file@Base 2.10.0~RC1
+ gimp_metadata_new@Base 2.10.0~RC1
+ gimp_metadata_save_to_file@Base 2.10.0~RC1
+ gimp_metadata_serialize@Base 2.10.0~RC1
+ gimp_metadata_set_bits_per_sample@Base 2.10.0~RC1
+ gimp_metadata_set_colorspace@Base 2.10.0~RC1
+ gimp_metadata_set_from_exif@Base 2.10.0~RC1
+ gimp_metadata_set_from_iptc@Base 2.10.0~RC1
+ gimp_metadata_set_from_xmp@Base 2.10.0~RC1
+ gimp_metadata_set_pixel_size@Base 2.10.0~RC1
+ gimp_metadata_set_resolution@Base 2.10.0~RC1
  gimp_micro_version@Base 2.4.0
  gimp_minor_version@Base 2.4.0
+ gimp_offset_type_get_type@Base 2.10.0~RC1
+ gimp_orientation_type_get_type@Base 2.10.0~RC1
  gimp_paint_application_mode_get_type@Base 2.4.0
  gimp_param_memsize_get_type@Base 2.4.0
  gimp_param_parasite_get_type@Base 2.4.0
  gimp_param_spec_memsize@Base 2.4.0
  gimp_param_spec_parasite@Base 2.4.0
  gimp_param_spec_unit@Base 2.4.0
+ gimp_param_spec_value_array@Base 2.10.0~RC1
  gimp_param_unit_get_type@Base 2.4.0
+ gimp_param_value_array_get_type@Base 2.10.0~RC1
  gimp_parasite_compare@Base 2.4.0
  gimp_parasite_copy@Base 2.4.0
  gimp_parasite_data@Base 2.4.0
@@ -922,19 +1061,29 @@ libgimpbase-2.0.so.0 libgimp2.0 #MINVER#
  gimp_pixpipe_params_init@Base 2.4.0
  gimp_pixpipe_params_parse@Base 2.4.0
  gimp_plug_in_directory@Base 2.4.0
+ gimp_plug_in_directory_file@Base 2.10.0~RC1
+ gimp_precision_get_type@Base 2.10.0~RC1
  gimp_progress_command_get_type@Base 2.4.0
  gimp_rectangle_intersect@Base 2.4.0
  gimp_rectangle_union@Base 2.8.0
  gimp_repeat_mode_get_type@Base 2.4.0
+ gimp_rotation_type_get_type@Base 2.10.0~RC1
  gimp_run_mode_get_type@Base 2.4.0
+ gimp_select_criterion_get_type@Base 2.10.0~RC1
  gimp_signal_private@Base 2.4.0
  gimp_size_type_get_type@Base 2.4.0
+ gimp_stack_trace_available@Base 2.10.0~RC1
  gimp_stack_trace_mode_get_type@Base 2.4.0
+ gimp_stack_trace_print@Base 2.10.0~RC1
+ gimp_stack_trace_query@Base 2.10.0~RC1
  gimp_strip_uline@Base 2.4.0
+ gimp_stroke_method_get_type@Base 2.10.0~RC1
  gimp_sysconf_directory@Base 2.4.0
+ gimp_sysconf_directory_file@Base 2.10.0~RC1
  gimp_text_direction_get_type@Base 2.6.0
  gimp_text_hint_style_get_type@Base 2.8.0
  gimp_text_justification_get_type@Base 2.6.0
+ gimp_transfer_mode_compat_get_type@Base 2.10.0~RC1
  gimp_transfer_mode_get_type@Base 2.4.0
  gimp_transform_direction_get_type@Base 2.4.0
  gimp_transform_resize_get_type@Base 2.4.0
@@ -951,9 +1100,11 @@ libgimpbase-2.0.so.0 libgimp2.0 #MINVER#
  gimp_unit_get_number_of_built_in_units@Base 2.4.0
  gimp_unit_get_number_of_units@Base 2.4.0
  gimp_unit_get_plural@Base 2.4.0
+ gimp_unit_get_scaled_digits@Base 2.10.0~RC1
  gimp_unit_get_singular@Base 2.4.0
  gimp_unit_get_symbol@Base 2.4.0
  gimp_unit_get_type@Base 2.4.0
+ gimp_unit_is_metric@Base 2.10.0~RC1
  gimp_unit_new@Base 2.4.0
  gimp_unit_set_deletion_flag@Base 2.4.0
  gimp_units_to_pixels@Base 2.8.0
@@ -961,6 +1112,17 @@ libgimpbase-2.0.so.0 libgimp2.0 #MINVER#
  gimp_user_directory@Base 2.4.0
  gimp_user_directory_get_type@Base 2.4.0
  gimp_utf8_strtrim@Base 2.4.0
+ gimp_value_array_append@Base 2.10.0~RC1
+ gimp_value_array_get_type@Base 2.10.0~RC1
+ gimp_value_array_index@Base 2.10.0~RC1
+ gimp_value_array_insert@Base 2.10.0~RC1
+ gimp_value_array_length@Base 2.10.0~RC1
+ gimp_value_array_new@Base 2.10.0~RC1
+ gimp_value_array_prepend@Base 2.10.0~RC1
+ gimp_value_array_ref@Base 2.10.0~RC1
+ gimp_value_array_remove@Base 2.10.0~RC1
+ gimp_value_array_truncate@Base 2.10.0~RC1
+ gimp_value_array_unref@Base 2.10.0~RC1
  gimp_vectors_stroke_type_get_type@Base 2.4.0
  gimp_wire_clear_error@Base 2.4.0
  gimp_wire_destroy@Base 2.4.0
@@ -978,6 +1140,7 @@ libgimpbase-2.0.so.0 libgimp2.0 #MINVER#
  gp_extension_ack_write@Base 2.4.0
  gp_has_init_write@Base 2.4.0
  gp_init@Base 2.4.0
+ gp_lock@Base 2.10.0~RC1
  gp_params_destroy@Base 2.4.0
  gp_proc_install_write@Base 2.4.0
  gp_proc_return_write@Base 2.4.0
@@ -989,6 +1152,7 @@ libgimpbase-2.0.so.0 libgimp2.0 #MINVER#
  gp_tile_ack_write@Base 2.4.0
  gp_tile_data_write@Base 2.4.0
  gp_tile_req_write@Base 2.4.0
+ gp_unlock@Base 2.10.0~RC1
 libgimpcolor-2.0.so.0 libgimp2.0 #MINVER#
 * Build-Depends-Package: libgimp2.0-dev
  gimp_adaptive_supersample_area@Base 2.4.0
@@ -1002,6 +1166,8 @@ libgimpcolor-2.0.so.0 libgimp2.0 #MINVER#
  gimp_cairo_checkerboard_create@Base 2.6.0
  gimp_cairo_set_source_rgb@Base 2.6.0
  gimp_cairo_set_source_rgba@Base 2.6.0
+ gimp_cairo_surface_create_buffer@Base 2.10.0~RC1
+ gimp_cairo_surface_get_format@Base 2.10.0~RC1
  gimp_cmyk_get_type@Base 2.4.0
  gimp_cmyk_get_uchar@Base 2.4.0
  gimp_cmyk_set@Base 2.4.0
@@ -1011,11 +1177,47 @@ libgimpcolor-2.0.so.0 libgimp2.0 #MINVER#
  gimp_cmyka_get_uchar@Base 2.4.0
  gimp_cmyka_set@Base 2.4.0
  gimp_cmyka_set_uchar@Base 2.4.0
+ gimp_color_managed_get_color_profile@Base 2.10.0~RC1
  gimp_color_managed_get_icc_profile@Base 2.4.0
  gimp_color_managed_interface_get_type@Base 2.4.0
  gimp_color_managed_profile_changed@Base 2.4.0
+ gimp_color_profile_get_copyright@Base 2.10.0~RC1
+ gimp_color_profile_get_description@Base 2.10.0~RC1
+ gimp_color_profile_get_format@Base 2.10.0~RC1
+ gimp_color_profile_get_icc_profile@Base 2.10.0~RC1
+ gimp_color_profile_get_label@Base 2.10.0~RC1
+ gimp_color_profile_get_lcms_format@Base 2.10.0~RC1
+ gimp_color_profile_get_lcms_profile@Base 2.10.0~RC1
+ gimp_color_profile_get_manufacturer@Base 2.10.0~RC1
+ gimp_color_profile_get_model@Base 2.10.0~RC1
+ gimp_color_profile_get_summary@Base 2.10.0~RC1
+ gimp_color_profile_get_type@Base 2.10.0~RC1
+ gimp_color_profile_is_cmyk@Base 2.10.0~RC1
+ gimp_color_profile_is_equal@Base 2.10.0~RC1
+ gimp_color_profile_is_gray@Base 2.10.0~RC1
+ gimp_color_profile_is_linear@Base 2.10.0~RC1
+ gimp_color_profile_is_rgb@Base 2.10.0~RC1
+ gimp_color_profile_new_d50_gray_lab_trc@Base 2.10.0~RC1
+ gimp_color_profile_new_d65_gray_linear@Base 2.10.0~RC1
+ gimp_color_profile_new_d65_gray_srgb_trc@Base 2.10.0~RC1
+ gimp_color_profile_new_from_file@Base 2.10.0~RC1
+ gimp_color_profile_new_from_icc_profile@Base 2.10.0~RC1
+ gimp_color_profile_new_from_lcms_profile@Base 2.10.0~RC1
+ gimp_color_profile_new_linear_from_color_profile@Base 2.10.0~RC1
+ gimp_color_profile_new_rgb_adobe@Base 2.10.0~RC1
+ gimp_color_profile_new_rgb_srgb@Base 2.10.0~RC1
+ gimp_color_profile_new_rgb_srgb_linear@Base 2.10.0~RC1
+ gimp_color_profile_new_srgb_trc_from_color_profile@Base 2.10.0~RC1
+ gimp_color_profile_save_to_file@Base 2.10.0~RC1
+ gimp_color_transform_can_gegl_copy@Base 2.10.0~RC1
+ gimp_color_transform_get_type@Base 2.10.0~RC1
+ gimp_color_transform_new@Base 2.10.0~RC1
+ gimp_color_transform_new_proofing@Base 2.10.0~RC1
+ gimp_color_transform_process_buffer@Base 2.10.0~RC1
+ gimp_color_transform_process_pixels@Base 2.10.0~RC1
  gimp_hsl_get_type@Base 2.4.0
  gimp_hsl_set@Base 2.8.0
+ gimp_hsl_set_alpha@Base 2.10.0~RC1
  gimp_hsl_to_rgb@Base 2.4.0
  gimp_hsl_to_rgb_int@Base 2.4.0
  gimp_hsv_clamp@Base 2.4.0
@@ -1029,11 +1231,15 @@ libgimpcolor-2.0.so.0 libgimp2.0 #MINVER#
  gimp_param_rgb_get_type@Base 2.4.0
  gimp_param_spec_rgb@Base 2.4.0
  gimp_param_spec_rgb_has_alpha@Base 2.4.0
+ gimp_pixbuf_create_buffer@Base 2.10.0~RC1
+ gimp_pixbuf_get_format@Base 2.10.0~RC1
+ gimp_pixbuf_get_icc_profile@Base 2.10.0~RC1
  gimp_rgb_add@Base 2.4.0
  gimp_rgb_clamp@Base 2.4.0
  gimp_rgb_composite@Base 2.4.0
  gimp_rgb_distance@Base 2.4.0
  gimp_rgb_gamma@Base 2.4.0
+ gimp_rgb_get_pixel@Base 2.10.0~RC1
  gimp_rgb_get_type@Base 2.4.0
  gimp_rgb_get_uchar@Base 2.4.0
  gimp_rgb_intensity@Base 2.4.0
@@ -1049,6 +1255,7 @@ libgimpcolor-2.0.so.0 libgimp2.0 #MINVER#
  gimp_rgb_parse_name@Base 2.4.0
  gimp_rgb_set@Base 2.4.0
  gimp_rgb_set_alpha@Base 2.4.0
+ gimp_rgb_set_pixel@Base 2.10.0~RC1
  gimp_rgb_set_uchar@Base 2.4.0
  gimp_rgb_subtract@Base 2.4.0
  gimp_rgb_to_cmyk@Base 2.4.0
@@ -1062,16 +1269,32 @@ libgimpcolor-2.0.so.0 libgimp2.0 #MINVER#
  gimp_rgb_to_l_int@Base 2.4.0
  gimp_rgba_add@Base 2.4.0
  gimp_rgba_distance@Base 2.4.0
+ gimp_rgba_get_pixel@Base 2.10.0~RC1
  gimp_rgba_get_uchar@Base 2.4.0
  gimp_rgba_multiply@Base 2.4.0
  gimp_rgba_parse_css@Base 2.4.0
  gimp_rgba_set@Base 2.4.0
+ gimp_rgba_set_pixel@Base 2.10.0~RC1
  gimp_rgba_set_uchar@Base 2.4.0
  gimp_rgba_subtract@Base 2.4.0
  gimp_value_get_rgb@Base 2.4.0
  gimp_value_set_rgb@Base 2.4.0
 libgimpconfig-2.0.so.0 libgimp2.0 #MINVER#
 * Build-Depends-Package: libgimp2.0-dev
+ gimp_color_config_get_cmyk_color_profile@Base 2.10.0~RC1
+ gimp_color_config_get_display_bpc@Base 2.10.0~RC1
+ gimp_color_config_get_display_color_profile@Base 2.10.0~RC1
+ gimp_color_config_get_display_intent@Base 2.10.0~RC1
+ gimp_color_config_get_display_optimize@Base 2.10.0~RC1
+ gimp_color_config_get_display_profile_from_gdk@Base 2.10.0~RC1
+ gimp_color_config_get_gray_color_profile@Base 2.10.0~RC1
+ gimp_color_config_get_mode@Base 2.10.0~RC1
+ gimp_color_config_get_rgb_color_profile@Base 2.10.0~RC1
+ gimp_color_config_get_simulation_bpc@Base 2.10.0~RC1
+ gimp_color_config_get_simulation_color_profile@Base 2.10.0~RC1
+ gimp_color_config_get_simulation_gamut_check@Base 2.10.0~RC1
+ gimp_color_config_get_simulation_intent@Base 2.10.0~RC1
+ gimp_color_config_get_simulation_optimize@Base 2.10.0~RC1
  gimp_color_config_get_type@Base 2.4.0
  gimp_color_management_mode_get_type@Base 2.4.0
  gimp_color_rendering_intent_get_type@Base 2.4.0
@@ -1081,9 +1304,11 @@ libgimpconfig-2.0.so.0 libgimp2.0 #MINVER#
  gimp_config_copy@Base 2.6.0
  gimp_config_deserialize@Base 2.8.0
  gimp_config_deserialize_file@Base 2.4.0
+ gimp_config_deserialize_gfile@Base 2.10.0~RC1
  gimp_config_deserialize_properties@Base 2.4.0
  gimp_config_deserialize_property@Base 2.4.0
  gimp_config_deserialize_return@Base 2.4.0
+ gimp_config_deserialize_stream@Base 2.10.0~RC1
  gimp_config_deserialize_string@Base 2.4.0
  gimp_config_diff@Base 2.4.0
  gimp_config_duplicate@Base 2.4.0
@@ -1091,7 +1316,9 @@ libgimpconfig-2.0.so.0 libgimp2.0 #MINVER#
  gimp_config_interface_get_type@Base 2.4.0
  gimp_config_is_equal_to@Base 2.4.0
  gimp_config_path_expand@Base 2.4.0
+ gimp_config_path_expand_to_files@Base 2.10.0~RC1
  gimp_config_path_get_type@Base 2.4.0
+ gimp_config_path_unexpand@Base 2.10.0~RC1
  gimp_config_reset@Base 2.4.0
  gimp_config_reset_properties@Base 2.4.0
  gimp_config_reset_property@Base 2.4.0
@@ -1102,6 +1329,8 @@ libgimpconfig-2.0.so.0 libgimp2.0 #MINVER#
  gimp_config_serialize_property_by_name@Base 2.6.0
  gimp_config_serialize_to_fd@Base 2.4.0
  gimp_config_serialize_to_file@Base 2.4.0
+ gimp_config_serialize_to_gfile@Base 2.10.0~RC1
+ gimp_config_serialize_to_stream@Base 2.10.0~RC1
  gimp_config_serialize_to_string@Base 2.4.0
  gimp_config_serialize_value@Base 2.4.0
  gimp_config_string_append_escaped@Base 2.4.0
@@ -1115,23 +1344,30 @@ libgimpconfig-2.0.so.0 libgimp2.0 #MINVER#
  gimp_config_writer_linefeed@Base 2.4.0
  gimp_config_writer_new_fd@Base 2.4.0
  gimp_config_writer_new_file@Base 2.4.0
+ gimp_config_writer_new_gfile@Base 2.10.0~RC1
+ gimp_config_writer_new_stream@Base 2.10.0~RC1
  gimp_config_writer_new_string@Base 2.4.0
  gimp_config_writer_open@Base 2.4.0
  gimp_config_writer_print@Base 2.4.0
  gimp_config_writer_printf@Base 2.4.0
  gimp_config_writer_revert@Base 2.4.0
  gimp_config_writer_string@Base 2.4.0
+ gimp_file_get_config_path@Base 2.10.0~RC1
+ gimp_file_new_for_config_path@Base 2.10.0~RC1
  gimp_param_config_path_get_type@Base 2.4.0
  gimp_param_spec_config_path@Base 2.4.0
  gimp_param_spec_config_path_type@Base 2.4.0
  gimp_scanner_destroy@Base 2.4.0
  gimp_scanner_new_file@Base 2.4.0
+ gimp_scanner_new_gfile@Base 2.10.0~RC1
+ gimp_scanner_new_stream@Base 2.10.0~RC1
  gimp_scanner_new_string@Base 2.4.0
  gimp_scanner_parse_boolean@Base 2.8.0
  gimp_scanner_parse_color@Base 2.4.0
  gimp_scanner_parse_data@Base 2.4.0
  gimp_scanner_parse_float@Base 2.4.0
  gimp_scanner_parse_identifier@Base 2.4.0
+ gimp_scanner_parse_int64@Base 2.10.0~RC1
  gimp_scanner_parse_int@Base 2.4.0
  gimp_scanner_parse_matrix2@Base 2.4.0
  gimp_scanner_parse_string@Base 2.4.0
@@ -1236,6 +1472,7 @@ libgimpthumb-2.0.so.0 libgimp2.0 #MINVER#
  gimp_thumb_file_test@Base 2.4.0
  gimp_thumb_file_type_get_type@Base 2.4.0
  gimp_thumb_find_thumb@Base 2.4.0
+ gimp_thumb_get_thumb_base_dir@Base 2.10.0~RC1
  gimp_thumb_get_thumb_dir@Base 2.4.0
  gimp_thumb_get_thumb_dir_local@Base 2.4.0
  gimp_thumb_init@Base 2.4.0
@@ -1268,6 +1505,7 @@ libgimpui-2.0.so.0 libgimp2.0 #MINVER#
  _gimpui_marshal_VOID__STRING_INT_POINTER_BOOLEAN@Base 2.4.0
  gimp_aspect_preview_get_type@Base 2.4.0
  gimp_aspect_preview_new@Base 2.4.0
+ gimp_aspect_preview_new_from_drawable_id@Base 2.10.0~RC1
  gimp_brush_select_button_get_brush@Base 2.4.0
  gimp_brush_select_button_get_type@Base 2.4.0
  gimp_brush_select_button_new@Base 2.4.0
@@ -1283,8 +1521,10 @@ libgimpui-2.0.so.0 libgimp2.0 #MINVER#
  gimp_drawable_menu_new@Base 2.4.0
  gimp_drawable_preview_draw_region@Base 2.4.0
  gimp_drawable_preview_get_drawable@Base 2.4.0
+ gimp_drawable_preview_get_drawable_id@Base 2.10.0~RC1
  gimp_drawable_preview_get_type@Base 2.4.0
  gimp_drawable_preview_new@Base 2.4.0
+ gimp_drawable_preview_new_from_drawable_id@Base 2.10.0~RC1
  gimp_export_dialog_get_content_area@Base 2.8.0
  gimp_export_dialog_new@Base 2.8.0
  gimp_export_image@Base 2.4.0
@@ -1305,6 +1545,11 @@ libgimpui-2.0.so.0 libgimp2.0 #MINVER#
  gimp_image_combo_box_get_type@Base 2.4.0
  gimp_image_combo_box_new@Base 2.4.0
  gimp_image_menu_new@Base 2.4.0
+ gimp_image_metadata_load_finish@Base 2.10.0~RC1
+ gimp_image_metadata_load_prepare@Base 2.10.0~RC1
+ gimp_image_metadata_load_thumbnail@Base 2.10.0~RC1
+ gimp_image_metadata_save_finish@Base 2.10.0~RC1
+ gimp_image_metadata_save_prepare@Base 2.10.0~RC1
  gimp_layer_combo_box_get_type@Base 2.4.0
  gimp_layer_combo_box_new@Base 2.4.0
  gimp_layer_menu_new@Base 2.4.0
@@ -1338,28 +1583,37 @@ libgimpui-2.0.so.0 libgimp2.0 #MINVER#
  gimp_window_set_transient@Base 2.4.0
  gimp_window_set_transient_for_display@Base 2.4.0
  gimp_zoom_preview_get_drawable@Base 2.4.0
+ gimp_zoom_preview_get_drawable_id@Base 2.10.0~RC1
  gimp_zoom_preview_get_factor@Base 2.4.0
  gimp_zoom_preview_get_model@Base 2.4.0
  gimp_zoom_preview_get_source@Base 2.4.0
  gimp_zoom_preview_get_type@Base 2.4.0
  gimp_zoom_preview_new@Base 2.4.0
+ gimp_zoom_preview_new_from_drawable_id@Base 2.10.0~RC1
  gimp_zoom_preview_new_with_model@Base 2.4.0
+ gimp_zoom_preview_new_with_model_from_drawable_id@Base 2.10.0~RC1
 libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
 * Build-Depends-Package: libgimp2.0-dev
  _gimp_ensure_modules_func@Base 2.4.0
  _gimp_get_background_func@Base 2.4.0
  _gimp_get_foreground_func@Base 2.4.0
+ _gimp_pick_button_default_pick@Base 2.10.0~RC1
+ _gimp_pick_button_kwin_available@Base 2.10.0~RC1
+ _gimp_pick_button_kwin_pick@Base 2.10.0~RC1
  _gimp_standard_help_func@Base 2.4.0
  _gimp_unit_store_sync_units@Base 2.8.14
  _gimp_widgets_marshal_BOOLEAN__POINTER@Base 2.4.0
  _gimp_widgets_marshal_VOID__DOUBLE_DOUBLE@Base 2.4.0
+ _gimp_widgets_marshal_VOID__ENUM_BOOLEAN@Base 2.10.0~RC1
  _gimp_widgets_marshal_VOID__INT_INT@Base 2.4.0
  _gimp_widgets_marshal_VOID__OBJECT_INT@Base 2.4.0
  _gimp_widgets_marshal_VOID__POINTER_POINTER@Base 2.4.0
  _gimp_widgets_marshal_VOID__STRING_FLAGS@Base 2.4.0
  _gimp_widgets_marshal_VOID__STRING_INT@Base 2.4.0
+ gdk_cairo_get_clip_rectangle@Base 2.10.0~RC1
  gdk_event_triggers_context_menu@Base 2.8.0
  gdk_keymap_get_modifier_mask@Base 2.8.0
+ gdk_screen_get_monitor_workarea@Base 2.10.0~RC1
  gimp_aspect_type_get_type@Base 2.4.0
  gimp_browser_add_search_types@Base 2.4.0
  gimp_browser_get_type@Base 2.4.0
@@ -1386,15 +1640,20 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_color_area_has_alpha@Base 2.4.0
  gimp_color_area_new@Base 2.4.0
  gimp_color_area_set_color@Base 2.4.0
+ gimp_color_area_set_color_config@Base 2.10.0~RC1
  gimp_color_area_set_draw_border@Base 2.4.0
  gimp_color_area_set_type@Base 2.4.0
  gimp_color_area_type_get_type@Base 2.4.0
  gimp_color_button_get_color@Base 2.4.0
+ gimp_color_button_get_title@Base 2.10.0~RC1
  gimp_color_button_get_type@Base 2.4.0
+ gimp_color_button_get_ui_manager@Base 2.10.0~RC1
  gimp_color_button_get_update@Base 2.4.0
  gimp_color_button_has_alpha@Base 2.4.0
  gimp_color_button_new@Base 2.4.0
  gimp_color_button_set_color@Base 2.4.0
+ gimp_color_button_set_color_config@Base 2.10.0~RC1
+ gimp_color_button_set_title@Base 2.10.0~RC1
  gimp_color_button_set_type@Base 2.4.0
  gimp_color_button_set_update@Base 2.4.0
  gimp_color_display_changed@Base 2.4.0
@@ -1402,6 +1661,7 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_color_display_configure@Base 2.4.0
  gimp_color_display_configure_reset@Base 2.4.0
  gimp_color_display_convert@Base 2.4.0
+ gimp_color_display_convert_buffer@Base 2.10.0~RC1
  gimp_color_display_convert_surface@Base 2.8.0
  gimp_color_display_get_config@Base 2.4.0
  gimp_color_display_get_enabled@Base 2.4.0
@@ -1415,6 +1675,7 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_color_display_stack_changed@Base 2.4.0
  gimp_color_display_stack_clone@Base 2.4.0
  gimp_color_display_stack_convert@Base 2.4.0
+ gimp_color_display_stack_convert_buffer@Base 2.10.0~RC1
  gimp_color_display_stack_convert_surface@Base 2.8.0
  gimp_color_display_stack_get_type@Base 2.4.0
  gimp_color_display_stack_new@Base 2.4.0
@@ -1427,21 +1688,35 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_color_hex_entry_set_color@Base 2.4.0
  gimp_color_notebook_get_type@Base 2.4.0
  gimp_color_notebook_set_has_page@Base 2.4.0
+ gimp_color_picker_cursors_get_resource@Base 2.10.0~RC1
+ gimp_color_profile_chooser_dialog_get_type@Base 2.10.0~RC1
+ gimp_color_profile_chooser_dialog_new@Base 2.10.0~RC1
  gimp_color_profile_combo_box_add@Base 2.4.0
+ gimp_color_profile_combo_box_add_file@Base 2.10.0~RC1
  gimp_color_profile_combo_box_get_active@Base 2.4.0
+ gimp_color_profile_combo_box_get_active_file@Base 2.10.0~RC1
  gimp_color_profile_combo_box_get_type@Base 2.4.0
  gimp_color_profile_combo_box_new@Base 2.4.0
  gimp_color_profile_combo_box_new_with_model@Base 2.4.0
  gimp_color_profile_combo_box_set_active@Base 2.4.0
+ gimp_color_profile_combo_box_set_active_file@Base 2.10.0~RC1
  gimp_color_profile_store_add@Base 2.4.0
+ gimp_color_profile_store_add_file@Base 2.10.0~RC1
  gimp_color_profile_store_get_type@Base 2.4.0
  gimp_color_profile_store_new@Base 2.4.0
+ gimp_color_profile_view_get_type@Base 2.10.0~RC1
+ gimp_color_profile_view_new@Base 2.10.0~RC1
+ gimp_color_profile_view_set_error@Base 2.10.0~RC1
+ gimp_color_profile_view_set_profile@Base 2.10.0~RC1
  gimp_color_scale_entry_new@Base 2.4.0
  gimp_color_scale_get_type@Base 2.4.0
  gimp_color_scale_new@Base 2.4.0
  gimp_color_scale_set_channel@Base 2.4.0
  gimp_color_scale_set_color@Base 2.4.0
+ gimp_color_scale_set_color_config@Base 2.10.0~RC1
+ gimp_color_scales_get_show_rgb_u8@Base 2.10.0~RC1
  gimp_color_scales_get_type@Base 2.4.0
+ gimp_color_scales_set_show_rgb_u8@Base 2.10.0~RC1
  gimp_color_select_get_type@Base 2.4.0
  gimp_color_selection_color_changed@Base 2.4.0
  gimp_color_selection_get_color@Base 2.4.0
@@ -1457,11 +1732,20 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_color_selector_channel_changed@Base 2.4.0
  gimp_color_selector_channel_get_type@Base 2.4.0
  gimp_color_selector_color_changed@Base 2.4.0
+ gimp_color_selector_get_channel@Base 2.10.0~RC1
+ gimp_color_selector_get_color@Base 2.10.0~RC1
+ gimp_color_selector_get_model_visible@Base 2.10.0~RC1
+ gimp_color_selector_get_show_alpha@Base 2.10.0~RC1
+ gimp_color_selector_get_toggles_sensitive@Base 2.10.0~RC1
+ gimp_color_selector_get_toggles_visible@Base 2.10.0~RC1
  gimp_color_selector_get_type@Base 2.4.0
+ gimp_color_selector_model_get_type@Base 2.10.0~RC1
+ gimp_color_selector_model_visible_changed@Base 2.10.0~RC1
  gimp_color_selector_new@Base 2.4.0
  gimp_color_selector_set_channel@Base 2.4.0
  gimp_color_selector_set_color@Base 2.4.0
  gimp_color_selector_set_config@Base 2.4.0
+ gimp_color_selector_set_model_visible@Base 2.10.0~RC1
  gimp_color_selector_set_show_alpha@Base 2.4.0
  gimp_color_selector_set_toggles_sensitive@Base 2.4.0
  gimp_color_selector_set_toggles_visible@Base 2.4.0
@@ -1486,7 +1770,11 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_enum_combo_box_get_type@Base 2.4.0
  gimp_enum_combo_box_new@Base 2.4.0
  gimp_enum_combo_box_new_with_model@Base 2.4.0
+ gimp_enum_combo_box_set_icon_prefix@Base 2.10.0~RC1
  gimp_enum_combo_box_set_stock_prefix@Base 2.4.0
+ gimp_enum_icon_box_new@Base 2.10.0~RC1
+ gimp_enum_icon_box_new_with_range@Base 2.10.0~RC1
+ gimp_enum_icon_box_set_child_padding@Base 2.10.0~RC1
  gimp_enum_label_get_type@Base 2.4.0
  gimp_enum_label_new@Base 2.4.0
  gimp_enum_label_set_value@Base 2.4.0
@@ -1502,6 +1790,7 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_enum_store_new_with_range@Base 2.4.0
  gimp_enum_store_new_with_values@Base 2.4.0
  gimp_enum_store_new_with_values_valist@Base 2.4.0
+ gimp_enum_store_set_icon_prefix@Base 2.10.0~RC1
  gimp_enum_store_set_stock_prefix@Base 2.4.0
  gimp_file_entry_get_filename@Base 2.4.0
  gimp_file_entry_get_type@Base 2.4.0
@@ -1510,6 +1799,7 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_float_adjustment_update@Base 2.4.0
  gimp_frame_get_type@Base 2.4.0
  gimp_frame_new@Base 2.4.0
+ gimp_get_monitor_at_pointer@Base 2.10.0~RC1
  gimp_help_connect@Base 2.4.0
  gimp_help_disable_tooltips@Base 2.4.0
  gimp_help_enable_tooltips@Base 2.4.0
@@ -1518,16 +1808,26 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_help_set_help_data_with_markup@Base 2.6.0
  gimp_hint_box_get_type@Base 2.4.0
  gimp_hint_box_new@Base 2.4.0
+ gimp_icon_pixbufs_get_resource@Base 2.10.0~RC1
+ gimp_icons_init@Base 2.10.0~RC1
+ gimp_icons_set_icon_theme@Base 2.10.0~RC1
  gimp_int_adjustment_update@Base 2.4.0
  gimp_int_combo_box_append@Base 2.4.0
  gimp_int_combo_box_connect@Base 2.4.0
  gimp_int_combo_box_get_active@Base 2.4.0
+ gimp_int_combo_box_get_active_user_data@Base 2.10.0~RC1
+ gimp_int_combo_box_get_label@Base 2.10.0~RC1
+ gimp_int_combo_box_get_layout@Base 2.10.0~RC1
  gimp_int_combo_box_get_type@Base 2.4.0
+ gimp_int_combo_box_layout_get_type@Base 2.10.0~RC1
  gimp_int_combo_box_new@Base 2.4.0
  gimp_int_combo_box_new_array@Base 2.4.0
  gimp_int_combo_box_new_valist@Base 2.4.0
  gimp_int_combo_box_prepend@Base 2.4.0
  gimp_int_combo_box_set_active@Base 2.4.0
+ gimp_int_combo_box_set_active_by_user_data@Base 2.10.0~RC1
+ gimp_int_combo_box_set_label@Base 2.10.0~RC1
+ gimp_int_combo_box_set_layout@Base 2.10.0~RC1
  gimp_int_combo_box_set_sensitivity@Base 2.4.0
  gimp_int_option_menu_new@Base 2.4.0
  gimp_int_option_menu_set_history@Base 2.4.0
@@ -1535,6 +1835,7 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_int_radio_group_new@Base 2.4.0
  gimp_int_radio_group_set_active@Base 2.4.0
  gimp_int_store_get_type@Base 2.4.0
+ gimp_int_store_lookup_by_user_data@Base 2.10.0~RC1
  gimp_int_store_lookup_by_value@Base 2.4.0
  gimp_int_store_new@Base 2.4.0
  gimp_label_set_attributes@Base 2.4.0
@@ -1606,6 +1907,7 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_preview_area_mask@Base 2.4.0
  gimp_preview_area_menu_popup@Base 2.4.0
  gimp_preview_area_new@Base 2.4.0
+ gimp_preview_area_set_color_config@Base 2.10.0~RC1
  gimp_preview_area_set_colormap@Base 2.4.0
  gimp_preview_area_set_max_size@Base 2.4.0
  gimp_preview_area_set_offsets@Base 2.4.0
@@ -1632,6 +1934,7 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_prop_entry_new@Base 2.4.0
  gimp_prop_enum_check_button_new@Base 2.4.0
  gimp_prop_enum_combo_box_new@Base 2.4.0
+ gimp_prop_enum_icon_box_new@Base 2.10.0~RC1
  gimp_prop_enum_label_new@Base 2.4.0
  gimp_prop_enum_radio_box_new@Base 2.4.0
  gimp_prop_enum_radio_frame_new@Base 2.4.0
@@ -1640,11 +1943,13 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_prop_file_chooser_button_new@Base 2.4.0
  gimp_prop_file_chooser_button_new_with_dialog@Base 2.4.0
  gimp_prop_hscale_new@Base 2.4.0
+ gimp_prop_icon_image_new@Base 2.10.0~RC1
  gimp_prop_int_combo_box_new@Base 2.4.0
  gimp_prop_label_new@Base 2.4.0
  gimp_prop_memsize_entry_new@Base 2.4.0
  gimp_prop_opacity_entry_new@Base 2.4.0
  gimp_prop_path_editor_new@Base 2.4.0
+ gimp_prop_pointer_combo_box_new@Base 2.10.0~RC1
  gimp_prop_scale_entry_new@Base 2.4.0
  gimp_prop_size_entry_new@Base 2.4.0
  gimp_prop_spin_button_new@Base 2.4.0
@@ -1677,6 +1982,7 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_scale_entry_new@Base 2.4.0
  gimp_scale_entry_set_logarithmic@Base 2.4.0
  gimp_scale_entry_set_sensitive@Base 2.4.0
+ gimp_screen_get_color_profile@Base 2.10.0~RC1
  gimp_scrolled_preview_freeze@Base 2.4.0
  gimp_scrolled_preview_get_type@Base 2.4.0
  gimp_scrolled_preview_set_policy@Base 2.4.0
@@ -1738,6 +2044,10 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_unit_store_set_pixel_values@Base 2.8.0
  gimp_unit_store_set_resolution@Base 2.8.0
  gimp_unit_store_set_resolutions@Base 2.8.0
+ gimp_widget_get_color_profile@Base 2.10.0~RC1
+ gimp_widget_get_color_transform@Base 2.10.0~RC1
+ gimp_widget_get_monitor@Base 2.10.0~RC1
+ gimp_widget_track_monitor@Base 2.10.0~RC1
  gimp_widgets_error_quark@Base 2.8.0
  gimp_widgets_init@Base 2.4.0
  gimp_zoom_button_new@Base 2.4.0
@@ -1751,6 +2061,10 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_zoom_type_get_type@Base 2.4.0
  gtk_box_new@Base 2.8.0
  gtk_button_box_new@Base 2.8.0
+ gtk_label_get_xalign@Base 2.10.0~RC1
+ gtk_label_get_yalign@Base 2.10.0~RC1
+ gtk_label_set_xalign@Base 2.10.0~RC1
+ gtk_label_set_yalign@Base 2.10.0~RC1
  gtk_paned_new@Base 2.8.0
  gtk_scale_new@Base 2.8.0
  gtk_scrollbar_new@Base 2.8.0

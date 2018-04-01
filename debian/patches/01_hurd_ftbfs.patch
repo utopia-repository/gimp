@@ -1,9 +1,16 @@
-Author: Svante Signell <svante.signell@telia.com>
-Description: Define PATH_MAX to fix build on the Hurd.
-Forwarded: no
+From: Svante Signell <svante.signell@telia.com>
+Date: Sun, 1 Apr 2018 17:43:04 -0400
+Subject: Define PATH_MAX to fix build on the Hurd.
 
---- gimp-2.6.11/libgimpbase/gimpreloc.c	2010-07-03 00:51:56.000000000 +0200
-+++ gimp-2.6.11.modified/libgimpbase/gimpreloc.c	2011-09-09 08:12:09.000000000 +0200
+Forwarded: no
+---
+ libgimpbase/gimpreloc.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/libgimpbase/gimpreloc.c b/libgimpbase/gimpreloc.c
+index c00d64c..bc7324a 100644
+--- a/libgimpbase/gimpreloc.c
++++ b/libgimpbase/gimpreloc.c
 @@ -27,6 +27,9 @@
  
  #include "gimpreloc.h"

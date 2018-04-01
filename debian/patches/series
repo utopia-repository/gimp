@@ -1,12 +1,1 @@
-disable-internal-help-browser.patch
 01_hurd_ftbfs.patch
-bump_Babl-GEGL_versions.patch
-fix_GEGL_FTBFS.patch
-Bug-739134-CVE-2017-17786-Out-of-bounds-read-heap-ov.patch
-plug-ins-TGA-16-bit-RGB-without-alpha-bit-is-also-va.patch
-Bug-790849-CVE-2017-17789-CVE-2017-17789-Heap-buffer.patch
-Bug-790784-CVE-2017-17784-heap-overread-in-gbr-parse.patch
-Bug-790853-CVE-2017-17787-heap-overread-in-psp-impor.patch
-Bug-739133-CVE-2017-17785-Heap-overflow-while-parsin.patch
-790783-buffer-overread-in-XCF-parser-if-version-fiel.patch
-Workaround-for-cage-transform-freeze.patch

@@ -21,7 +21,6 @@ override_dh_auto_configure:
 		PYTHON=/usr/bin/`pyversions -d` \
 		--enable-default-binary \
 		--enable-gtk-doc \
-		--with-lcms=lcms2 \
 		--without-webkit
 
 override_dh_autoreconf:

@@ -1,6 +1,8 @@
 gimp (2.10.0~RC1-1) UNRELEASED; urgency=medium
 
   * New upstream release candidate (LP: #1759625)
+    - Fixes screenshots in GNOME and KDE on Wayland (Closes: #880186)
+      (LP: #1739684)
   * Bump dependencies per configure.ac
   * Add new Build-Depends: gegl, glib-networking, libgexiv2-dev,
     libmypaint-dev, libopenjp2-7-dev (Closes: #827083), libopenexr-dev,

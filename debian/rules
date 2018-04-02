@@ -16,6 +16,7 @@ export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 override_dh_auto_configure:
 	dh_auto_configure -- \
 		--libdir=/usr/lib \
+		--libexecdir=/usr/lib/gimp \
 		--disable-static \
 		--enable-python \
 		PYTHON=/usr/bin/`pyversions -d` \
@@ -42,4 +43,4 @@ override_dh_install:
 	dh_install
 
 override_dh_missing:
-	dh_missing --fail-missing -Xgimp-debug-tool-2.0
+	dh_missing --fail-missing

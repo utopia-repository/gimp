@@ -1,4 +1,4 @@
-gimp (2.10.0~RC1-1) UNRELEASED; urgency=medium
+gimp (2.10.0~RC1-1) experimental; urgency=medium
 
   * New upstream release candidate (LP: #1759625)
     - Fixes screenshots in GNOME and KDE on Wayland (Closes: #880186)
@@ -12,7 +12,7 @@ gimp (2.10.0~RC1-1) UNRELEASED; urgency=medium
   * Drop all patches (except 01_hurd_ftbfs.patch) since they are obsolete
     with the new release
 
- -- Jeremy Bicha <jbicha@debian.org>  Wed, 28 Mar 2018 12:38:38 -0400
+ -- Jeremy Bicha <jbicha@debian.org>  Mon, 02 Apr 2018 14:28:59 -0400
 
 gimp (2.8.22-1) unstable; urgency=medium
 

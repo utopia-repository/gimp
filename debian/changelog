@@ -7,6 +7,7 @@ gimp (2.10.0~RC1-1) UNRELEASED; urgency=medium
   * Add new Build-Depends: gegl, glib-networking, libgexiv2-dev,
     libmypaint-dev, libopenjp2-7-dev (Closes: #827083), libopenexr-dev,
     libwebp-dev, mypaint-brushes, python-cairo-dev
+  * Depend on xdg-utils for email feature
   * Update debian/libgimp2.0.symbols
   * Drop all patches (except 01_hurd_ftbfs.patch) since they are obsolete
     with the new release

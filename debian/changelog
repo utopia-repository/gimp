@@ -1,6 +1,8 @@
 gimp (2.10.0~RC2-1) UNRELEASED; urgency=medium
 
   * New upstream release candidate (Closes: #887717)
+  * Add Breaks/Replaces for file that used to be in gimp-plugin-registry
+    (Closes: #895387)
 
  -- Jeremy Bicha <jbicha@debian.org>  Thu, 19 Apr 2018 11:59:19 -0400
 

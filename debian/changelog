@@ -1,4 +1,4 @@
-gimp (2.10.0~RC2-1) UNRELEASED; urgency=medium
+gimp (2.10.0~RC2-1) experimental; urgency=medium
 
   [ Jeremy Bicha ]
   * New upstream release candidate (Closes: #887717)
@@ -12,7 +12,7 @@ gimp (2.10.0~RC2-1) UNRELEASED; urgency=medium
   [ Michael Biebl ]
   * Split python extension into separate suggested gimp-python package
 
- -- Jeremy Bicha <jbicha@debian.org>  Thu, 19 Apr 2018 11:59:19 -0400
+ -- Jeremy Bicha <jbicha@debian.org>  Thu, 19 Apr 2018 15:36:56 -0400
 
 gimp (2.10.0~RC1-1) experimental; urgency=medium
 

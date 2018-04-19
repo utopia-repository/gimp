@@ -89,6 +89,9 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_context_get_font@Base 2.4.0
  gimp_context_get_foreground@Base 2.4.0
  gimp_context_get_gradient@Base 2.4.0
+ gimp_context_get_gradient_blend_color_space@Base 2.10.0~RC2
+ gimp_context_get_gradient_repeat_mode@Base 2.10.0~RC2
+ gimp_context_get_gradient_reverse@Base 2.10.0~RC2
  gimp_context_get_ink_angle@Base 2.8.0
  gimp_context_get_ink_blob_angle@Base 2.8.0
  gimp_context_get_ink_blob_aspect_ratio@Base 2.8.0
@@ -145,6 +148,13 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_context_set_font@Base 2.4.0
  gimp_context_set_foreground@Base 2.4.0
  gimp_context_set_gradient@Base 2.4.0
+ gimp_context_set_gradient_blend_color_space@Base 2.10.0~RC2
+ gimp_context_set_gradient_fg_bg_hsv_ccw@Base 2.10.0~RC2
+ gimp_context_set_gradient_fg_bg_hsv_cw@Base 2.10.0~RC2
+ gimp_context_set_gradient_fg_bg_rgb@Base 2.10.0~RC2
+ gimp_context_set_gradient_fg_transparent@Base 2.10.0~RC2
+ gimp_context_set_gradient_repeat_mode@Base 2.10.0~RC2
+ gimp_context_set_gradient_reverse@Base 2.10.0~RC2
  gimp_context_set_ink_angle@Base 2.8.0
  gimp_context_set_ink_blob_angle@Base 2.8.0
  gimp_context_set_ink_blob_aspect_ratio@Base 2.8.0
@@ -209,6 +219,12 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_drawable_delete@Base 2.4.0
  gimp_drawable_desaturate@Base 2.10.0~RC1
  gimp_drawable_detach@Base 2.4.0
+ gimp_drawable_edit_bucket_fill@Base 2.10.0~RC2
+ gimp_drawable_edit_clear@Base 2.10.0~RC2
+ gimp_drawable_edit_fill@Base 2.10.0~RC2
+ gimp_drawable_edit_gradient_fill@Base 2.10.0~RC2
+ gimp_drawable_edit_stroke_item@Base 2.10.0~RC2
+ gimp_drawable_edit_stroke_selection@Base 2.10.0~RC2
  gimp_drawable_equalize@Base 2.10.0~RC1
  gimp_drawable_fill@Base 2.4.0
  gimp_drawable_flush@Base 2.4.0
@@ -975,6 +991,7 @@ libgimpbase-2.0.so.0 libgimp2.0 #MINVER#
  gimp_flags_value_get_desc@Base 2.4.0
  gimp_flags_value_get_help@Base 2.4.0
  gimp_foreground_extract_mode_get_type@Base 2.4.0
+ gimp_gradient_blend_color_space_get_type@Base 2.10.0~RC2
  gimp_gradient_segment_color_get_type@Base 2.10.0~RC1
  gimp_gradient_segment_type_get_type@Base 2.10.0~RC1
  gimp_gradient_type_get_type@Base 2.4.0

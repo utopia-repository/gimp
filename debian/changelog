@@ -1,6 +1,7 @@
 gimp (2.10.0~RC2-1) UNRELEASED; urgency=medium
 
   * New upstream release candidate (Closes: #887717)
+  * Bump minimum babl and gegl versions
   * Add Breaks/Replaces for file that used to be in gimp-plugin-registry
     (Closes: #895387)
   * gimp.install: Update for new AppStream metadata location

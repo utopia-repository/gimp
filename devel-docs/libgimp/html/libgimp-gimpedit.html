@@ -8,7 +8,7 @@
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpdrawabletransform.html" title="gimpdrawabletransform">
 <link rel="next" href="libgimp-gimpfileops.html" title="gimpfileops">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.28 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -609,6 +609,10 @@ a named buffer instead of the global buffer.</p>
 <a name="gimp-edit-clear"></a><h3>gimp_edit_clear ()</h3>
 <pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gimp_edit_clear (<em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">gimp_edit_clear</code> is deprecated and should not be used in newly-written code.</p>
+<p>Use <a class="link" href="libgimp-gimpdrawableedit.html#gimp-drawable-edit-clear" title="gimp_drawable_edit_clear ()"><code class="function">gimp_drawable_edit_clear()</code></a> instead.</p>
+</div>
 <p>Clear selected area of drawable.</p>
 <p>This procedure clears the specified drawable. If the drawable has an
 alpha channel, the cleared pixels will become transparent. If the
@@ -641,6 +645,10 @@ a selection if there is a selection active.</p>
 <pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gimp_edit_fill (<em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
                 <em class="parameter"><code><a href="../html/libgimpbase-gimpbaseenums.html#GimpFillType"><span class="type">GimpFillType</span></a> fill_type</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">gimp_edit_fill</code> is deprecated and should not be used in newly-written code.</p>
+<p>Use <a class="link" href="libgimp-gimpdrawableedit.html#gimp-drawable-edit-fill" title="gimp_drawable_edit_fill ()"><code class="function">gimp_drawable_edit_fill()</code></a> instead.</p>
+</div>
 <p>Fill selected area of drawable.</p>
 <p>This procedure fills the specified drawable with the fill mode. If
 the fill mode is foreground, the current foreground color is used.
@@ -688,6 +696,10 @@ gimp_edit_bucket_fill (<em class="parameter"><code><a href="../glib/glib-Basic-T
                        <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> sample_merged</code></em>,
                        <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
                        <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">gimp_edit_bucket_fill</code> is deprecated and should not be used in newly-written code.</p>
+<p>Use <a class="link" href="libgimp-gimpdrawableedit.html#gimp-drawable-edit-bucket-fill" title="gimp_drawable_edit_bucket_fill ()"><code class="function">gimp_drawable_edit_bucket_fill()</code></a> instead.</p>
+</div>
 <p>Fill the area specified either by the current selection if there is
 one, or by a seed fill starting at the specified coordinates.</p>
 <p>This tool requires information on the paint application mode, and
@@ -779,6 +791,10 @@ gimp_edit_blend (<em class="parameter"><code><a href="../glib/glib-Basic-Types.h
                  <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y1</code></em>,
                  <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x2</code></em>,
                  <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y2</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">gimp_edit_blend</code> is deprecated and should not be used in newly-written code.</p>
+<p>Use <a class="link" href="libgimp-gimpdrawableedit.html#gimp-drawable-edit-gradient-fill" title="gimp_drawable_edit_gradient_fill ()"><code class="function">gimp_drawable_edit_gradient_fill()</code></a> instead.</p>
+</div>
 <p>Blend between the starting and ending coordinates with the specified
 blend mode and gradient type.</p>
 <p>This tool requires information on the paint application mode, the
@@ -786,7 +802,7 @@ blend mode, and the gradient type. It creates the specified variety
 of blend using the starting and ending coordinates as defined for
 each gradient type. For shapeburst gradient types, the context's
 distance metric is also relevant and can be updated with
-<code class="function">gimp_context_set_distance_metric()</code>.</p>
+<a class="link" href="libgimp-gimpcontext.html#gimp-context-set-distance-metric" title="gimp_context_set_distance_metric ()"><code class="function">gimp_context_set_distance_metric()</code></a>.</p>
 <div class="refsect3">
 <a name="gimp-edit-blend.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -889,6 +905,10 @@ distance metric is also relevant and can be updated with
 <a name="gimp-edit-stroke"></a><h3>gimp_edit_stroke ()</h3>
 <pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gimp_edit_stroke (<em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">gimp_edit_stroke</code> is deprecated and should not be used in newly-written code.</p>
+<p>Use <a class="link" href="libgimp-gimpdrawableedit.html#gimp-drawable-edit-stroke-selection" title="gimp_drawable_edit_stroke_selection ()"><code class="function">gimp_drawable_edit_stroke_selection()</code></a> instead.</p>
+</div>
 <p>Stroke the current selection</p>
 <p>This procedure strokes the current selection, painting along the
 selection boundary with the active brush and foreground color. The
@@ -920,6 +940,10 @@ selection.</p>
 <pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gimp_edit_stroke_vectors (<em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
                           <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> vectors_ID</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">gimp_edit_stroke_vectors</code> is deprecated and should not be used in newly-written code.</p>
+<p>Use <a class="link" href="libgimp-gimpdrawableedit.html#gimp-drawable-edit-stroke-item" title="gimp_drawable_edit_stroke_item ()"><code class="function">gimp_drawable_edit_stroke_item()</code></a> instead.</p>
+</div>
 <p>Stroke the specified vectors object</p>
 <p>This procedure strokes the specified vectors object, painting along
 the path with the active brush and foreground color.</p>
@@ -957,6 +981,6 @@ the path with the active brush and foreground color.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.28</div>
 </body>
 </html>

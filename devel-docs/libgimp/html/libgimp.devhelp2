@@ -21,6 +21,7 @@
         <sub name="gimpdisplay" link="libgimp-gimpdisplay.html"/>
         <sub name="gimpdrawable" link="libgimp-gimpdrawable.html"/>
         <sub name="gimpdrawablecolor" link="libgimp-gimpdrawablecolor.html"/>
+        <sub name="gimpdrawableedit" link="libgimp-gimpdrawableedit.html"/>
         <sub name="gimpdrawabletransform" link="libgimp-gimpdrawabletransform.html"/>
         <sub name="gimpedit" link="libgimp-gimpedit.html"/>
         <sub name="gimpfileops" link="libgimp-gimpfileops.html"/>
@@ -123,6 +124,7 @@
     <keyword type="function" name="gimp_destroy_params ()" link="libgimp-gimp.html#gimp-destroy-params"/>
     <keyword type="function" name="gimp_destroy_paramdefs ()" link="libgimp-gimp.html#gimp-destroy-paramdefs"/>
     <keyword type="function" name="gimp_get_pdb_error ()" link="libgimp-gimp.html#gimp-get-pdb-error" since="2.6"/>
+    <keyword type="function" name="gimp_get_pdb_status ()" link="libgimp-gimp.html#gimp-get-pdb-status" since="2.10"/>
     <keyword type="function" name="gimp_tile_width ()" link="libgimp-gimp.html#gimp-tile-width"/>
     <keyword type="function" name="gimp_tile_height ()" link="libgimp-gimp.html#gimp-tile-height"/>
     <keyword type="function" name="gimp_shm_ID ()" link="libgimp-gimp.html#gimp-shm-ID"/>
@@ -132,6 +134,9 @@
     <keyword type="function" name="gimp_min_colors ()" link="libgimp-gimp.html#gimp-min-colors" deprecated=""/>
     <keyword type="function" name="gimp_show_tool_tips ()" link="libgimp-gimp.html#gimp-show-tool-tips"/>
     <keyword type="function" name="gimp_show_help_button ()" link="libgimp-gimp.html#gimp-show-help-button" since="2.2"/>
+    <keyword type="function" name="gimp_export_exif ()" link="libgimp-gimp.html#gimp-export-exif" since="2.10"/>
+    <keyword type="function" name="gimp_export_iptc ()" link="libgimp-gimp.html#gimp-export-iptc" since="2.10"/>
+    <keyword type="function" name="gimp_export_xmp ()" link="libgimp-gimp.html#gimp-export-xmp" since="2.10"/>
     <keyword type="function" name="gimp_check_size ()" link="libgimp-gimp.html#gimp-check-size" since="2.2"/>
     <keyword type="function" name="gimp_check_type ()" link="libgimp-gimp.html#gimp-check-type" since="2.2"/>
     <keyword type="function" name="gimp_default_display ()" link="libgimp-gimp.html#gimp-default-display"/>
@@ -260,6 +265,16 @@
     <keyword type="function" name="gimp_context_set_pattern ()" link="libgimp-gimpcontext.html#gimp-context-set-pattern" since="2.2"/>
     <keyword type="function" name="gimp_context_get_gradient ()" link="libgimp-gimpcontext.html#gimp-context-get-gradient" since="2.2"/>
     <keyword type="function" name="gimp_context_set_gradient ()" link="libgimp-gimpcontext.html#gimp-context-set-gradient" since="2.2"/>
+    <keyword type="function" name="gimp_context_set_gradient_fg_bg_hsv_ccw ()" link="libgimp-gimpcontext.html#gimp-context-set-gradient-fg-bg-hsv-ccw" since="2.10"/>
+    <keyword type="function" name="gimp_context_set_gradient_fg_bg_hsv_cw ()" link="libgimp-gimpcontext.html#gimp-context-set-gradient-fg-bg-hsv-cw" since="2.10"/>
+    <keyword type="function" name="gimp_context_set_gradient_fg_bg_rgb ()" link="libgimp-gimpcontext.html#gimp-context-set-gradient-fg-bg-rgb" since="2.10"/>
+    <keyword type="function" name="gimp_context_set_gradient_fg_transparent ()" link="libgimp-gimpcontext.html#gimp-context-set-gradient-fg-transparent" since="2.10"/>
+    <keyword type="function" name="gimp_context_get_gradient_blend_color_space ()" link="libgimp-gimpcontext.html#gimp-context-get-gradient-blend-color-space" since="2.10"/>
+    <keyword type="function" name="gimp_context_set_gradient_blend_color_space ()" link="libgimp-gimpcontext.html#gimp-context-set-gradient-blend-color-space" since="2.10"/>
+    <keyword type="function" name="gimp_context_get_gradient_repeat_mode ()" link="libgimp-gimpcontext.html#gimp-context-get-gradient-repeat-mode" since="2.10"/>
+    <keyword type="function" name="gimp_context_set_gradient_repeat_mode ()" link="libgimp-gimpcontext.html#gimp-context-set-gradient-repeat-mode" since="2.10"/>
+    <keyword type="function" name="gimp_context_get_gradient_reverse ()" link="libgimp-gimpcontext.html#gimp-context-get-gradient-reverse" since="2.10"/>
+    <keyword type="function" name="gimp_context_set_gradient_reverse ()" link="libgimp-gimpcontext.html#gimp-context-set-gradient-reverse" since="2.10"/>
     <keyword type="function" name="gimp_context_get_palette ()" link="libgimp-gimpcontext.html#gimp-context-get-palette" since="2.2"/>
     <keyword type="function" name="gimp_context_set_palette ()" link="libgimp-gimpcontext.html#gimp-context-set-palette" since="2.2"/>
     <keyword type="function" name="gimp_context_get_font ()" link="libgimp-gimpcontext.html#gimp-context-get-font" since="2.2"/>
@@ -282,6 +297,8 @@
     <keyword type="function" name="gimp_context_set_sample_transparent ()" link="libgimp-gimpcontext.html#gimp-context-set-sample-transparent" since="2.8"/>
     <keyword type="function" name="gimp_context_get_diagonal_neighbors ()" link="libgimp-gimpcontext.html#gimp-context-get-diagonal-neighbors" since="2.10"/>
     <keyword type="function" name="gimp_context_set_diagonal_neighbors ()" link="libgimp-gimpcontext.html#gimp-context-set-diagonal-neighbors" since="2.10"/>
+    <keyword type="function" name="gimp_context_get_distance_metric ()" link="libgimp-gimpcontext.html#gimp-context-get-distance-metric" since="2.10"/>
+    <keyword type="function" name="gimp_context_set_distance_metric ()" link="libgimp-gimpcontext.html#gimp-context-set-distance-metric" since="2.10"/>
     <keyword type="function" name="gimp_context_get_interpolation ()" link="libgimp-gimpcontext.html#gimp-context-get-interpolation" since="2.8"/>
     <keyword type="function" name="gimp_context_set_interpolation ()" link="libgimp-gimpcontext.html#gimp-context-set-interpolation" since="2.8"/>
     <keyword type="function" name="gimp_context_get_transform_direction ()" link="libgimp-gimpcontext.html#gimp-context-get-transform-direction" since="2.8"/>
@@ -456,6 +473,12 @@
     <keyword type="function" name="gimp_drawable_levels_stretch ()" link="libgimp-gimpdrawablecolor.html#gimp-drawable-levels-stretch" since="2.10"/>
     <keyword type="function" name="gimp_drawable_posterize ()" link="libgimp-gimpdrawablecolor.html#gimp-drawable-posterize" since="2.10"/>
     <keyword type="function" name="gimp_drawable_threshold ()" link="libgimp-gimpdrawablecolor.html#gimp-drawable-threshold" since="2.10"/>
+    <keyword type="function" name="gimp_drawable_edit_clear ()" link="libgimp-gimpdrawableedit.html#gimp-drawable-edit-clear"/>
+    <keyword type="function" name="gimp_drawable_edit_fill ()" link="libgimp-gimpdrawableedit.html#gimp-drawable-edit-fill"/>
+    <keyword type="function" name="gimp_drawable_edit_bucket_fill ()" link="libgimp-gimpdrawableedit.html#gimp-drawable-edit-bucket-fill" since="2.10"/>
+    <keyword type="function" name="gimp_drawable_edit_gradient_fill ()" link="libgimp-gimpdrawableedit.html#gimp-drawable-edit-gradient-fill" since="2.10"/>
+    <keyword type="function" name="gimp_drawable_edit_stroke_selection ()" link="libgimp-gimpdrawableedit.html#gimp-drawable-edit-stroke-selection"/>
+    <keyword type="function" name="gimp_drawable_edit_stroke_item ()" link="libgimp-gimpdrawableedit.html#gimp-drawable-edit-stroke-item" since="2.10"/>
     <keyword type="function" name="gimp_drawable_transform_flip_simple ()" link="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-flip-simple" deprecated="Use gimp_item_transform_flip_simple() instead." since="2.2"/>
     <keyword type="function" name="gimp_drawable_transform_flip ()" link="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-flip" deprecated="Use gimp_item_transform_flip() instead." since="2.2"/>
     <keyword type="function" name="gimp_drawable_transform_flip_default ()" link="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-flip-default" deprecated="Use gimp_item_transform_flip() instead." since="2.2"/>
@@ -484,12 +507,12 @@
     <keyword type="function" name="gimp_edit_named_paste ()" link="libgimp-gimpedit.html#gimp-edit-named-paste" since="2.4"/>
     <keyword type="function" name="gimp_edit_named_paste_as_new ()" link="libgimp-gimpedit.html#gimp-edit-named-paste-as-new" deprecated="Use gimp_edit_named_paste_as_new_image() instead." since="2.4"/>
     <keyword type="function" name="gimp_edit_named_paste_as_new_image ()" link="libgimp-gimpedit.html#gimp-edit-named-paste-as-new-image" since="2.10"/>
-    <keyword type="function" name="gimp_edit_clear ()" link="libgimp-gimpedit.html#gimp-edit-clear"/>
-    <keyword type="function" name="gimp_edit_fill ()" link="libgimp-gimpedit.html#gimp-edit-fill"/>
-    <keyword type="function" name="gimp_edit_bucket_fill ()" link="libgimp-gimpedit.html#gimp-edit-bucket-fill"/>
-    <keyword type="function" name="gimp_edit_blend ()" link="libgimp-gimpedit.html#gimp-edit-blend"/>
-    <keyword type="function" name="gimp_edit_stroke ()" link="libgimp-gimpedit.html#gimp-edit-stroke"/>
-    <keyword type="function" name="gimp_edit_stroke_vectors ()" link="libgimp-gimpedit.html#gimp-edit-stroke-vectors" since="2.4"/>
+    <keyword type="function" name="gimp_edit_clear ()" link="libgimp-gimpedit.html#gimp-edit-clear" deprecated="Use gimp_drawable_edit_clear() instead."/>
+    <keyword type="function" name="gimp_edit_fill ()" link="libgimp-gimpedit.html#gimp-edit-fill" deprecated="Use gimp_drawable_edit_fill() instead."/>
+    <keyword type="function" name="gimp_edit_bucket_fill ()" link="libgimp-gimpedit.html#gimp-edit-bucket-fill" deprecated="Use gimp_drawable_edit_bucket_fill() instead."/>
+    <keyword type="function" name="gimp_edit_blend ()" link="libgimp-gimpedit.html#gimp-edit-blend" deprecated="Use gimp_drawable_edit_gradient_fill() instead."/>
+    <keyword type="function" name="gimp_edit_stroke ()" link="libgimp-gimpedit.html#gimp-edit-stroke" deprecated="Use gimp_drawable_edit_stroke_selection() instead."/>
+    <keyword type="function" name="gimp_edit_stroke_vectors ()" link="libgimp-gimpedit.html#gimp-edit-stroke-vectors" deprecated="Use gimp_drawable_edit_stroke_item() instead." since="2.4"/>
     <keyword type="function" name="gimp_temp_name ()" link="libgimp-gimpfileops.html#gimp-temp-name"/>
     <keyword type="function" name="gimp_file_load ()" link="libgimp-gimpfileops.html#gimp-file-load"/>
     <keyword type="function" name="gimp_file_load_layer ()" link="libgimp-gimpfileops.html#gimp-file-load-layer" since="2.4"/>
@@ -521,6 +544,7 @@
     <keyword type="function" name="gimp_image_is_valid ()" link="libgimp-gimpimage.html#gimp-image-is-valid" since="2.4"/>
     <keyword type="function" name="gimp_image_base_type ()" link="libgimp-gimpimage.html#gimp-image-base-type"/>
     <keyword type="function" name="gimp_image_get_precision ()" link="libgimp-gimpimage.html#gimp-image-get-precision" since="2.10"/>
+    <keyword type="function" name="gimp_image_get_default_new_layer_mode ()" link="libgimp-gimpimage.html#gimp-image-get-default-new-layer-mode" since="2.10"/>
     <keyword type="function" name="gimp_image_width ()" link="libgimp-gimpimage.html#gimp-image-width"/>
     <keyword type="function" name="gimp_image_height ()" link="libgimp-gimpimage.html#gimp-image-height"/>
     <keyword type="function" name="gimp_image_free_shadow ()" link="libgimp-gimpimage.html#gimp-image-free-shadow" deprecated="Use gimp_drawable_free_shadow() instead."/>
@@ -678,6 +702,8 @@
     <keyword type="function" name="gimp_item_is_group ()" link="libgimp-gimpitem.html#gimp-item-is-group" since="2.8"/>
     <keyword type="function" name="gimp_item_get_parent ()" link="libgimp-gimpitem.html#gimp-item-get-parent" since="2.8"/>
     <keyword type="function" name="gimp_item_get_children ()" link="libgimp-gimpitem.html#gimp-item-get-children" since="2.8"/>
+    <keyword type="function" name="gimp_item_get_expanded ()" link="libgimp-gimpitem.html#gimp-item-get-expanded" since="2.10"/>
+    <keyword type="function" name="gimp_item_set_expanded ()" link="libgimp-gimpitem.html#gimp-item-set-expanded" since="2.10"/>
     <keyword type="function" name="gimp_item_get_name ()" link="libgimp-gimpitem.html#gimp-item-get-name" since="2.8"/>
     <keyword type="function" name="gimp_item_set_name ()" link="libgimp-gimpitem.html#gimp-item-set-name" since="2.8"/>
     <keyword type="function" name="gimp_item_get_visible ()" link="libgimp-gimpitem.html#gimp-item-get-visible" since="2.8"/>
@@ -869,7 +895,7 @@
     <keyword type="function" name="gimp_convolve_default ()" link="libgimp-gimppainttools.html#gimp-convolve-default"/>
     <keyword type="function" name="gimp_dodgeburn ()" link="libgimp-gimppainttools.html#gimp-dodgeburn"/>
     <keyword type="function" name="gimp_dodgeburn_default ()" link="libgimp-gimppainttools.html#gimp-dodgeburn-default"/>
-    <keyword type="function" name="gimp_edit_bucket_fill_full ()" link="libgimp-gimppainttools.html#gimp-edit-bucket-fill-full" since="2.4"/>
+    <keyword type="function" name="gimp_edit_bucket_fill_full ()" link="libgimp-gimppainttools.html#gimp-edit-bucket-fill-full" deprecated="Use gimp_drawable_edit_bucket_fill() instead." since="2.4"/>
     <keyword type="function" name="gimp_eraser ()" link="libgimp-gimppainttools.html#gimp-eraser"/>
     <keyword type="function" name="gimp_eraser_default ()" link="libgimp-gimppainttools.html#gimp-eraser-default"/>
     <keyword type="function" name="gimp_heal ()" link="libgimp-gimppainttools.html#gimp-heal" since="2.4"/>

@@ -26,12 +26,6 @@ libapptools_a_sources = \
 	gimpalignoptions.h		\
 	gimpaligntool.c			\
 	gimpaligntool.h			\
-	gimpblendoptions.c		\
-	gimpblendoptions.h		\
-	gimpblendtool.c			\
-	gimpblendtool.h			\
-	gimpblendtool-editor.c		\
-	gimpblendtool-editor.h		\
 	gimpbrightnesscontrasttool.c	\
 	gimpbrightnesscontrasttool.h	\
 	gimpbrushtool.c			\
@@ -102,6 +96,12 @@ libapptools_a_sources = \
 	gimpgegltool.h			\
 	gimpgenerictransformtool.c	\
 	gimpgenerictransformtool.h	\
+	gimpgradientoptions.c		\
+	gimpgradientoptions.h		\
+	gimpgradienttool.c		\
+	gimpgradienttool.h		\
+	gimpgradienttool-editor.c	\
+	gimpgradienttool-editor.h	\
 	gimpguidetool.c			\
 	gimpguidetool.h			\
 	gimphandletransformoptions.c	\
@@ -150,6 +150,8 @@ libapptools_a_sources = \
 	gimppaintoptions-gui.h		\
 	gimppainttool.c			\
 	gimppainttool.h			\
+	gimppainttool-paint.c		\
+	gimppainttool-paint.h		\
 	gimppenciltool.c		\
 	gimppenciltool.h		\
 	gimpperspectiveclonetool.c	\

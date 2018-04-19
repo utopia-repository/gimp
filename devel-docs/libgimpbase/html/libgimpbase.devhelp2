@@ -47,6 +47,7 @@
     <keyword type="enum" name="enum GimpDodgeBurnType" link="libgimpbase-gimpbaseenums.html#GimpDodgeBurnType"/>
     <keyword type="enum" name="enum GimpFillType" link="libgimpbase-gimpbaseenums.html#GimpFillType"/>
     <keyword type="enum" name="enum GimpForegroundExtractMode" link="libgimpbase-gimpbaseenums.html#GimpForegroundExtractMode"/>
+    <keyword type="enum" name="enum GimpGradientBlendColorSpace" link="libgimpbase-gimpbaseenums.html#GimpGradientBlendColorSpace"/>
     <keyword type="enum" name="enum GimpGradientSegmentColor" link="libgimpbase-gimpbaseenums.html#GimpGradientSegmentColor"/>
     <keyword type="enum" name="enum GimpGradientSegmentType" link="libgimpbase-gimpbaseenums.html#GimpGradientSegmentType"/>
     <keyword type="enum" name="enum GimpGradientType" link="libgimpbase-gimpbaseenums.html#GimpGradientType"/>
@@ -160,9 +161,12 @@
     <keyword type="function" name="gimp_metadata_duplicate ()" link="libgimpbase-gimpmetadata.html#gimp-metadata-duplicate" since="2.10"/>
     <keyword type="function" name="gimp_metadata_deserialize ()" link="libgimpbase-gimpmetadata.html#gimp-metadata-deserialize" since="2.10"/>
     <keyword type="function" name="gimp_metadata_serialize ()" link="libgimpbase-gimpmetadata.html#gimp-metadata-serialize" since="2.10"/>
+    <keyword type="function" name="gimp_metadata_get_guid ()" link="libgimpbase-gimpmetadata.html#gimp-metadata-get-guid" since="2.10"/>
+    <keyword type="function" name="gimp_metadata_add_xmp_history ()" link="libgimpbase-gimpmetadata.html#gimp-metadata-add-xmp-history"/>
     <keyword type="function" name="gimp_metadata_load_from_file ()" link="libgimpbase-gimpmetadata.html#gimp-metadata-load-from-file" since="2.10"/>
     <keyword type="function" name="gimp_metadata_save_to_file ()" link="libgimpbase-gimpmetadata.html#gimp-metadata-save-to-file" since="2.10"/>
     <keyword type="function" name="gimp_metadata_set_from_exif ()" link="libgimpbase-gimpmetadata.html#gimp-metadata-set-from-exif" since="2.10"/>
+    <keyword type="function" name="gimp_metadata_set_from_iptc ()" link="libgimpbase-gimpmetadata.html#gimp-metadata-set-from-iptc" since="2.10"/>
     <keyword type="function" name="gimp_metadata_set_from_xmp ()" link="libgimpbase-gimpmetadata.html#gimp-metadata-set-from-xmp" since="2.10"/>
     <keyword type="function" name="gimp_metadata_set_pixel_size ()" link="libgimpbase-gimpmetadata.html#gimp-metadata-set-pixel-size" since="2.10"/>
     <keyword type="function" name="gimp_metadata_set_bits_per_sample ()" link="libgimpbase-gimpmetadata.html#gimp-metadata-set-bits-per-sample" since="2.10"/>
@@ -247,10 +251,15 @@
     <keyword type="function" name="gimp_enum_get_value ()" link="libgimpbase-gimputils.html#gimp-enum-get-value" since="2.2"/>
     <keyword type="function" name="gimp_enum_value_get_desc ()" link="libgimpbase-gimputils.html#gimp-enum-value-get-desc" since="2.2"/>
     <keyword type="function" name="gimp_enum_value_get_help ()" link="libgimpbase-gimputils.html#gimp-enum-value-get-help" since="2.2"/>
+    <keyword type="function" name="gimp_enum_value_get_abbrev ()" link="libgimpbase-gimputils.html#gimp-enum-value-get-abbrev" since="2.10"/>
     <keyword type="function" name="gimp_flags_get_first_desc ()" link="libgimpbase-gimputils.html#gimp-flags-get-first-desc" since="2.2"/>
     <keyword type="function" name="gimp_flags_get_first_value ()" link="libgimpbase-gimputils.html#gimp-flags-get-first-value" since="2.2"/>
     <keyword type="function" name="gimp_flags_value_get_desc ()" link="libgimpbase-gimputils.html#gimp-flags-value-get-desc" since="2.2"/>
     <keyword type="function" name="gimp_flags_value_get_help ()" link="libgimpbase-gimputils.html#gimp-flags-value-get-help" since="2.2"/>
+    <keyword type="function" name="gimp_flags_value_get_abbrev ()" link="libgimpbase-gimputils.html#gimp-flags-value-get-abbrev" since="2.10"/>
+    <keyword type="function" name="gimp_stack_trace_available ()" link="libgimpbase-gimputils.html#gimp-stack-trace-available" since="2.10"/>
+    <keyword type="function" name="gimp_stack_trace_print ()" link="libgimpbase-gimputils.html#gimp-stack-trace-print" since="2.10"/>
+    <keyword type="function" name="gimp_stack_trace_query ()" link="libgimpbase-gimputils.html#gimp-stack-trace-query" since="2.10"/>
     <keyword type="function" name="gimp_value_array_new ()" link="libgimpbase-GimpValueArray.html#gimp-value-array-new" since="2.10"/>
     <keyword type="function" name="gimp_value_array_ref ()" link="libgimpbase-GimpValueArray.html#gimp-value-array-ref" since="2.10"/>
     <keyword type="function" name="gimp_value_array_unref ()" link="libgimpbase-GimpValueArray.html#gimp-value-array-unref" since="2.10"/>
@@ -378,6 +387,9 @@
     <keyword type="constant" name="GIMP_PATTERN_FILL" link="libgimpbase-gimpbaseenums.html#GIMP-PATTERN-FILL:CAPS"/>
     <keyword type="constant" name="GIMP_FOREGROUND_EXTRACT_SIOX" link="libgimpbase-gimpbaseenums.html#GIMP-FOREGROUND-EXTRACT-SIOX:CAPS"/>
     <keyword type="constant" name="GIMP_FOREGROUND_EXTRACT_MATTING" link="libgimpbase-gimpbaseenums.html#GIMP-FOREGROUND-EXTRACT-MATTING:CAPS"/>
+    <keyword type="constant" name="GIMP_GRADIENT_BLEND_RGB_PERCEPTUAL" link="libgimpbase-gimpbaseenums.html#GIMP-GRADIENT-BLEND-RGB-PERCEPTUAL:CAPS"/>
+    <keyword type="constant" name="GIMP_GRADIENT_BLEND_RGB_LINEAR" link="libgimpbase-gimpbaseenums.html#GIMP-GRADIENT-BLEND-RGB-LINEAR:CAPS"/>
+    <keyword type="constant" name="GIMP_GRADIENT_BLEND_CIE_LAB" link="libgimpbase-gimpbaseenums.html#GIMP-GRADIENT-BLEND-CIE-LAB:CAPS"/>
     <keyword type="constant" name="GIMP_GRADIENT_SEGMENT_RGB" link="libgimpbase-gimpbaseenums.html#GIMP-GRADIENT-SEGMENT-RGB:CAPS"/>
     <keyword type="constant" name="GIMP_GRADIENT_SEGMENT_HSV_CCW" link="libgimpbase-gimpbaseenums.html#GIMP-GRADIENT-SEGMENT-HSV-CCW:CAPS"/>
     <keyword type="constant" name="GIMP_GRADIENT_SEGMENT_HSV_CW" link="libgimpbase-gimpbaseenums.html#GIMP-GRADIENT-SEGMENT-HSV-CW:CAPS"/>

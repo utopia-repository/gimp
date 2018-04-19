@@ -49,7 +49,7 @@ G_BEGIN_DECLS
  *
  * The GIMP version as a string.
  **/
-#define GIMP_VERSION                                    "2.10.0-RC1"
+#define GIMP_VERSION                                    "2.10.0-RC2"
 
 /**
  * GIMP_API_VERSION:

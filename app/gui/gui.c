@@ -237,7 +237,7 @@ gui_init (Gimp     *gimp,
     /* Normally this should have been taken care of during command line
      * parsing as a post-parse hook of gtk_get_option_group(), using the
      * system locales.
-     * But user config may have overriden the language, therefore we must
+     * But user config may have overridden the language, therefore we must
      * check the widget directions again.
      */
     gtk_widget_set_default_direction (GTK_TEXT_DIR_RTL);
@@ -974,9 +974,9 @@ gui_compare_accelerator (gpointer         data,
   if (accel->key == accel_key && accel->mods == accel_mods &&
       g_strcmp0 (accel->path, accel_path))
     {
-      g_warning ("Actions \"%s\" and \"%s\" use the same accelerator.\n"
-                 "Disable the accelerator on \"%s\".",
-                 accel->path, accel_path, accel_path);
+      g_printerr ("Actions \"%s\" and \"%s\" use the same accelerator.\n"
+                  "  Disabling the accelerator on \"%s\".\n",
+                  accel->path, accel_path, accel_path);
       gtk_accel_map_change_entry (accel_path, 0, 0, FALSE);
     }
 }

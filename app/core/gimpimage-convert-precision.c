@@ -59,6 +59,7 @@ gimp_image_convert_precision (GimpImage        *image,
   const Babl       *old_format;
   const Babl       *new_format;
   GimpObjectQueue  *queue;
+  GimpProgress     *sub_progress;
   GList            *layers;
   GimpDrawable     *drawable;
   const gchar      *undo_desc    = NULL;
@@ -112,8 +113,8 @@ gimp_image_convert_precision (GimpImage        *image,
   if (progress)
     gimp_progress_start (progress, FALSE, "%s", undo_desc);
 
-  queue    = gimp_object_queue_new (progress);
-  progress = GIMP_PROGRESS (queue);
+  queue        = gimp_object_queue_new (progress);
+  sub_progress = GIMP_PROGRESS (queue);
 
   layers = gimp_image_get_layer_list (image);
   gimp_object_queue_push_list (queue, layers);
@@ -194,6 +195,8 @@ gimp_image_convert_precision (GimpImage        *image,
 
           gimp_drawable_set_buffer (drawable, FALSE, NULL, buffer);
           g_object_unref (buffer);
+
+          gimp_progress_set_value (sub_progress, 1.0);
         }
       else
         {
@@ -211,7 +214,7 @@ gimp_image_convert_precision (GimpImage        *image,
                                       new_profile,
                                       dither_type,
                                       mask_dither_type,
-                                      TRUE, progress);
+                                      TRUE, sub_progress);
         }
     }
 
@@ -245,17 +248,17 @@ gimp_image_convert_dither_u8 (GimpImage    *image,
 
   dither = gegl_node_new_child (NULL,
                                 "operation", "gegl:noise-rgb",
-                                "red",      1.0 / 256.0,
-                                "green",    1.0 / 256.0,
-                                "blue",     1.0 / 256.0,
-                                "alpha",    1.0 / 256.0,
-                                "linear",   FALSE,
-                                "gaussian", FALSE,
+                                "red",       1.0 / 256.0,
+                                "green",     1.0 / 256.0,
+                                "blue",      1.0 / 256.0,
+                                "linear",    FALSE,
+                                "gaussian",  FALSE,
                                 NULL);
 
   if (dither)
     {
       GimpObjectQueue *queue;
+      GimpProgress    *sub_progress;
       GList           *layers;
       GList           *list;
       GimpDrawable    *drawable;
@@ -263,8 +266,8 @@ gimp_image_convert_dither_u8 (GimpImage    *image,
       if (progress)
         gimp_progress_start (progress, FALSE, "%s", _("Dithering"));
 
-      queue    = gimp_object_queue_new (progress);
-      progress = GIMP_PROGRESS (queue);
+      queue        = gimp_object_queue_new (progress);
+      sub_progress = GIMP_PROGRESS (queue);
 
       layers = gimp_image_get_layer_list (image);
 
@@ -279,17 +282,17 @@ gimp_image_convert_dither_u8 (GimpImage    *image,
 
       g_list_free (layers);
 
-      gimp_object_queue_push (queue, gimp_image_get_mask (image));
-      gimp_object_queue_push_container (queue, gimp_image_get_channels (image));
-
       while ((drawable = gimp_object_queue_pop (queue)))
         {
-          gimp_drawable_apply_operation (drawable, progress,
+          gimp_drawable_apply_operation (drawable, sub_progress,
                                          _("Dithering"),
                                          dither);
         }
 
       g_object_unref (queue);
+
+      if (progress)
+        gimp_progress_end (progress);
 
       g_object_unref (dither);
     }

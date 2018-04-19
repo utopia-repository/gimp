@@ -99,6 +99,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4macros/gtk-doc.m4 \
 	$(top_srcdir)/m4macros/lt~obsolete.m4 \
 	$(top_srcdir)/acinclude.m4 $(top_srcdir)/m4macros/alsa.m4 \
 	$(top_srcdir)/m4macros/ax_compare_version.m4 \
+	$(top_srcdir)/m4macros/ax_cxx_compile_stdcxx.m4 \
 	$(top_srcdir)/m4macros/ax_gcc_func_attribute.m4 \
 	$(top_srcdir)/m4macros/ax_prog_cc_for_build.m4 \
 	$(top_srcdir)/m4macros/ax_prog_perl_version.m4 \
@@ -127,16 +128,17 @@ am__objects_2 = gimp.$(OBJEXT) gimp-batch.$(OBJEXT) \
 	gimp-filter-history.$(OBJEXT) gimp-gradients.$(OBJEXT) \
 	gimp-gui.$(OBJEXT) gimp-internal-data.$(OBJEXT) \
 	gimp-memsize.$(OBJEXT) gimp-modules.$(OBJEXT) \
-	gimp-palettes.$(OBJEXT) gimp-parasites.$(OBJEXT) \
-	gimp-spawn.$(OBJEXT) gimp-tags.$(OBJEXT) \
-	gimp-templates.$(OBJEXT) gimp-transform-resize.$(OBJEXT) \
-	gimp-transform-utils.$(OBJEXT) gimp-units.$(OBJEXT) \
-	gimp-user-install.$(OBJEXT) gimp-utils.$(OBJEXT) \
-	gimpbezierdesc.$(OBJEXT) gimpboundary.$(OBJEXT) \
-	gimpbrush.$(OBJEXT) gimpbrush-boundary.$(OBJEXT) \
-	gimpbrush-load.$(OBJEXT) gimpbrush-transform.$(OBJEXT) \
-	gimpbrushcache.$(OBJEXT) gimpbrushclipboard.$(OBJEXT) \
-	gimpbrushgenerated.$(OBJEXT) gimpbrushgenerated-load.$(OBJEXT) \
+	gimp-palettes.$(OBJEXT) gimp-parallel.$(OBJEXT) \
+	gimp-parasites.$(OBJEXT) gimp-spawn.$(OBJEXT) \
+	gimp-tags.$(OBJEXT) gimp-templates.$(OBJEXT) \
+	gimp-transform-resize.$(OBJEXT) gimp-transform-utils.$(OBJEXT) \
+	gimp-units.$(OBJEXT) gimp-user-install.$(OBJEXT) \
+	gimp-utils.$(OBJEXT) gimpbezierdesc.$(OBJEXT) \
+	gimpboundary.$(OBJEXT) gimpbrush.$(OBJEXT) \
+	gimpbrush-boundary.$(OBJEXT) gimpbrush-load.$(OBJEXT) \
+	gimpbrush-transform.$(OBJEXT) gimpbrushcache.$(OBJEXT) \
+	gimpbrushclipboard.$(OBJEXT) gimpbrushgenerated.$(OBJEXT) \
+	gimpbrushgenerated-load.$(OBJEXT) \
 	gimpbrushgenerated-save.$(OBJEXT) gimpbrushpipe.$(OBJEXT) \
 	gimpbrushpipe-load.$(OBJEXT) gimpbuffer.$(OBJEXT) \
 	gimpchannel.$(OBJEXT) gimpchannel-combine.$(OBJEXT) \
@@ -148,12 +150,12 @@ am__objects_2 = gimp.$(OBJEXT) gimp-batch.$(OBJEXT) \
 	gimpcurve-map.$(OBJEXT) gimpcurve-save.$(OBJEXT) \
 	gimpdashpattern.$(OBJEXT) gimpdata.$(OBJEXT) \
 	gimpdatafactory.$(OBJEXT) gimpdocumentlist.$(OBJEXT) \
-	gimpdrawable.$(OBJEXT) gimpdrawable-blend.$(OBJEXT) \
-	gimpdrawable-bucket-fill.$(OBJEXT) \
+	gimpdrawable.$(OBJEXT) gimpdrawable-bucket-fill.$(OBJEXT) \
 	gimpdrawable-combine.$(OBJEXT) gimpdrawable-equalize.$(OBJEXT) \
 	gimpdrawable-fill.$(OBJEXT) gimpdrawable-filters.$(OBJEXT) \
 	gimpdrawable-floating-selection.$(OBJEXT) \
 	gimpdrawable-foreground-extract.$(OBJEXT) \
+	gimpdrawable-gradient.$(OBJEXT) \
 	gimpdrawable-histogram.$(OBJEXT) gimpdrawable-levels.$(OBJEXT) \
 	gimpdrawable-offset.$(OBJEXT) gimpdrawable-operation.$(OBJEXT) \
 	gimpdrawable-preview.$(OBJEXT) gimpdrawable-shadow.$(OBJEXT) \
@@ -262,6 +264,24 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
+CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+LTCXXCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CXXFLAGS) $(CXXFLAGS)
+AM_V_CXX = $(am__v_CXX_@AM_V@)
+am__v_CXX_ = $(am__v_CXX_@AM_DEFAULT_V@)
+am__v_CXX_0 = @echo "  CXX     " $@;
+am__v_CXX_1 = 
+CXXLD = $(CXX)
+CXXLINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
+am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
+am__v_CXXLD_0 = @echo "  CXXLD   " $@;
+am__v_CXXLD_1 = 
 SOURCES = $(libappcore_a_SOURCES)
 DIST_SOURCES = $(libappcore_a_SOURCES)
 am__can_run_installinfo = \
@@ -370,7 +390,7 @@ FONTCONFIG_CFLAGS = @FONTCONFIG_CFLAGS@
 FONTCONFIG_LIBS = @FONTCONFIG_LIBS@
 FONTCONFIG_REQUIRED_VERSION = @FONTCONFIG_REQUIRED_VERSION@
 FREETYPE2_REQUIRED_VERSION = @FREETYPE2_REQUIRED_VERSION@
-FREETYPE_CONFIG = @FREETYPE_CONFIG@
+FREETYPE_CFLAGS = @FREETYPE_CFLAGS@
 FREETYPE_LIBS = @FREETYPE_LIBS@
 GDBUS_CODEGEN = @GDBUS_CODEGEN@
 GDK_PIXBUF_CFLAGS = @GDK_PIXBUF_CFLAGS@
@@ -443,6 +463,7 @@ GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
 HARFBUZZ_LIBS = @HARFBUZZ_LIBS@
 HARFBUZZ_REQUIRED_VERSION = @HARFBUZZ_REQUIRED_VERSION@
+HAVE_CXX11 = @HAVE_CXX11@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_VFORK = @HAVE_VFORK@
@@ -671,6 +692,7 @@ mandir = @mandir@
 manpage_gimpdir = @manpage_gimpdir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
+mypaint_brushes_dir = @mypaint_brushes_dir@
 oldincludedir = @oldincludedir@
 pdfdir = @pdfdir@
 pkgpyexecdir = @pkgpyexecdir@
@@ -690,6 +712,8 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 @PLATFORM_OSX_TRUE@xobjective_c = "-xobjective-c"
+@PLATFORM_OSX_TRUE@xobjective_cxx = "-xobjective-c++"
+@PLATFORM_OSX_TRUE@xnone = "-xnone"
 AM_CPPFLAGS = \
 	-DGIMPDIR=\""$(gimpdir)"\"			\
 	-DGIMP_APP_VERSION=\"$(GIMP_APP_VERSION)\"	\
@@ -704,8 +728,16 @@ AM_CPPFLAGS = \
 	$(GDK_PIXBUF_CFLAGS)				\
 	$(LIBMYPAINT_CFLAGS)				\
 	$(GEXIV2_CFLAGS)				\
-	-I$(includedir)					\
+	-I$(includedir)
+
+AM_CFLAGS = \
 	$(xobjective_c)
+
+AM_CXXFLAGS = \
+	$(xobjective_cxx)
+
+AM_LDFLAGS = \
+	$(xnone)
 
 noinst_LIBRARIES = libappcore.a
 libappcore_a_sources = \
@@ -737,6 +769,8 @@ libappcore_a_sources = \
 	gimp-modules.h				\
 	gimp-palettes.c				\
 	gimp-palettes.h				\
+	gimp-parallel.cc			\
+	gimp-parallel.h				\
 	gimp-parasites.c			\
 	gimp-parasites.h			\
 	gimp-spawn.c				\
@@ -767,7 +801,7 @@ libappcore_a_sources = \
 	gimpbrush-load.c			\
 	gimpbrush-load.h			\
 	gimpbrush-private.h			\
-	gimpbrush-transform.c			\
+	gimpbrush-transform.cc			\
 	gimpbrush-transform.h			\
 	gimpbrushcache.c			\
 	gimpbrushcache.h			\
@@ -823,8 +857,6 @@ libappcore_a_sources = \
 	gimpdocumentlist.h			\
 	gimpdrawable.c				\
 	gimpdrawable.h				\
-	gimpdrawable-blend.c			\
-	gimpdrawable-blend.h			\
 	gimpdrawable-bucket-fill.c		\
 	gimpdrawable-bucket-fill.h		\
 	gimpdrawable-combine.c			\
@@ -839,6 +871,8 @@ libappcore_a_sources = \
 	gimpdrawable-floating-selection.h	\
 	gimpdrawable-foreground-extract.c	\
 	gimpdrawable-foreground-extract.h	\
+	gimpdrawable-gradient.c			\
+	gimpdrawable-gradient.h			\
 	gimpdrawable-histogram.c		\
 	gimpdrawable-histogram.h		\
 	gimpdrawable-levels.c			\
@@ -1134,7 +1168,7 @@ CLEANFILES = $(gen_sources)
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .lo .o .obj
+.SUFFIXES: .c .cc .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -1192,6 +1226,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-memsize.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-modules.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-palettes.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-parallel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-parasites.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-spawn.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-tags.Po@am__quote@
@@ -1234,7 +1269,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdata.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdatafactory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdocumentlist.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-blend.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-bucket-fill.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-combine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-equalize.Po@am__quote@
@@ -1242,6 +1276,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-filters.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-floating-selection.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-foreground-extract.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-gradient.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-histogram.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-levels.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-offset.Po@am__quote@
@@ -1398,6 +1433,27 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
+
+.cc.o:
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ $<
+
+.cc.obj:
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+.cc.lo:
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
 
 mostlyclean-libtool:
 	-rm -f *.lo

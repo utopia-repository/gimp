@@ -8,7 +8,7 @@
 <link rel="up" href="pt01.html" title="Part I. GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimpunit.html" title="gimpunit">
 <link rel="next" href="libgimpbase-GimpValueArray.html" title="GimpValueArray">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.28 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -140,6 +140,13 @@
 </td>
 </tr>
 <tr>
+<td class="function_type">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="libgimpbase-gimputils.html#gimp-enum-value-get-abbrev" title="gimp_enum_value_get_abbrev ()">gimp_enum_value_get_abbrev</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
 <td class="function_type">
 <a class="link" href="libgimpbase-gimpbasetypes.html#GimpFlagsDesc" title="struct GimpFlagsDesc"><span class="returnvalue">GimpFlagsDesc</span></a> *
 </td>
@@ -167,6 +174,37 @@
 </td>
 <td class="function_name">
 <a class="link" href="libgimpbase-gimputils.html#gimp-flags-value-get-help" title="gimp_flags_value_get_help ()">gimp_flags_value_get_help</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="libgimpbase-gimputils.html#gimp-flags-value-get-abbrev" title="gimp_flags_value_get_abbrev ()">gimp_flags_value_get_abbrev</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="libgimpbase-gimputils.html#gimp-stack-trace-available" title="gimp_stack_trace_available ()">gimp_stack_trace_available</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="libgimpbase-gimputils.html#gimp-stack-trace-print" title="gimp_stack_trace_print ()">gimp_stack_trace_print</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="libgimpbase-gimputils.html#gimp-stack-trace-query" title="gimp_stack_trace_query ()">gimp_stack_trace_query</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -710,6 +748,43 @@ gimp_enum_value_get_help (<em class="parameter"><code><a href="../gobject/gobjec
 </div>
 <hr>
 <div class="refsect2">
+<a name="gimp-enum-value-get-abbrev"></a><h3>gimp_enum_value_get_abbrev ()</h3>
+<pre class="programlisting">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+gimp_enum_value_get_abbrev (<em class="parameter"><code><a href="../gobject/gobject-Enumeration-and-Flag-Types.html#GEnumClass"><span class="type">GEnumClass</span></a> *enum_class</code></em>,
+                            <em class="parameter"><code><a href="../gobject/gobject-Enumeration-and-Flag-Types.html#GEnumValue"><span class="type">GEnumValue</span></a> *enum_value</code></em>);</pre>
+<p>Retrieves the translated abbreviation for a given <em class="parameter"><code>enum_value</code></em>
+.</p>
+<div class="refsect3">
+<a name="gimp-enum-value-get-abbrev.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>enum_class</p></td>
+<td class="parameter_description"><p>a <a href="../gobject/gobject-Enumeration-and-Flag-Types.html#GEnumClass"><span class="type">GEnumClass</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>enum_value</p></td>
+<td class="parameter_description"><p>a <a href="../gobject/gobject-Enumeration-and-Flag-Types.html#GEnumValue"><span class="type">GEnumValue</span></a> from <em class="parameter"><code>enum_class</code></em>
+</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gimp-enum-value-get-abbrev.returns"></a><h4>Returns</h4>
+<p> the translated abbreviation of the enum value</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="gimp-flags-get-first-desc"></a><h3>gimp_flags_get_first_desc ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpbase-gimpbasetypes.html#GimpFlagsDesc" title="struct GimpFlagsDesc"><span class="returnvalue">GimpFlagsDesc</span></a> *
 gimp_flags_get_first_desc (<em class="parameter"><code><a href="../gobject/gobject-Enumeration-and-Flag-Types.html#GFlagsClass"><span class="type">GFlagsClass</span></a> *flags_class</code></em>,
@@ -889,12 +964,163 @@ gimp_flags_value_get_help (<em class="parameter"><code><a href="../gobject/gobje
 </div>
 <p class="since">Since: <a class="link" href="api-index-2-2.html#api-index-2.2">2.2</a></p>
 </div>
+<hr>
+<div class="refsect2">
+<a name="gimp-flags-value-get-abbrev"></a><h3>gimp_flags_value_get_abbrev ()</h3>
+<pre class="programlisting">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+gimp_flags_value_get_abbrev (<em class="parameter"><code><a href="../gobject/gobject-Enumeration-and-Flag-Types.html#GFlagsClass"><span class="type">GFlagsClass</span></a> *flags_class</code></em>,
+                             <em class="parameter"><code><a href="../gobject/gobject-Enumeration-and-Flag-Types.html#GFlagsValue"><span class="type">GFlagsValue</span></a> *flags_value</code></em>);</pre>
+<p>Retrieves the translated abbreviation for a given <em class="parameter"><code>flags_value</code></em>
+.</p>
+<div class="refsect3">
+<a name="gimp-flags-value-get-abbrev.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>flags_class</p></td>
+<td class="parameter_description"><p>a <a href="../gobject/gobject-Enumeration-and-Flag-Types.html#GFlagsClass"><span class="type">GFlagsClass</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>flags_value</p></td>
+<td class="parameter_description"><p>a <a href="../gobject/gobject-Enumeration-and-Flag-Types.html#GFlagsValue"><span class="type">GFlagsValue</span></a> from <em class="parameter"><code>flags_class</code></em>
+</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gimp-flags-value-get-abbrev.returns"></a><h4>Returns</h4>
+<p> the translated abbreviation of the flags value</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-stack-trace-available"></a><h3>gimp_stack_trace_available ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_stack_trace_available (<em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> optimal</code></em>);</pre>
+<p>Returns <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if we have dependencies to generate backtraces. If
+<em class="parameter"><code>optimal</code></em>
+ is <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a>, the function will return <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> only when we
+are able to generate optimal traces (i.e. with GDB or LLDB);
+otherwise we return <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> even if only <code class="function">backtrace()</code> API is available.</p>
+<p>On Win32, we return TRUE if Dr. Mingw is built-in, FALSE otherwise.</p>
+<div class="refsect3">
+<a name="gimp-stack-trace-available.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>optimal</p></td>
+<td class="parameter_description"><p>whether we get optimal traces.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-stack-trace-print"></a><h3>gimp_stack_trace_print ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_stack_trace_print (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *prog_name</code></em>,
+                        <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> stream</code></em>,
+                        <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **trace</code></em>);</pre>
+<p>Attempts to generate a stack trace at current code position in
+<em class="parameter"><code>prog_name</code></em>
+. <em class="parameter"><code>prog_name</code></em>
+ is mostly a helper and can be set to NULL.
+Nevertheless if set, it has to be the current program name (argv[0]).
+This function is not meant to generate stack trace for third-party
+programs, and will attach the current process id only.
+Internally, this function uses <code class="literal">gdb</code> or <code class="literal">lldb</code> if they are available,
+or the <code class="function">stacktrace()</code> API on platforms where it is available. It always
+fails on Win32.</p>
+<p>The stack trace, once generated, will either be printed to <em class="parameter"><code>stream</code></em>
+ or
+returned as a newly allocated string in <em class="parameter"><code>trace</code></em>
+, if not <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a>.</p>
+<p>In some error cases (e.g. segmentation fault), trying to allocate
+more memory will trigger more segmentation faults and therefore loop
+our error handling (which is just wrong). Therefore printing to a
+file description is an implementation without any memory allocation.</p>
+<div class="refsect3">
+<a name="gimp-stack-trace-print.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>prog_name</p></td>
+<td class="parameter_description"><p>the program to attach to.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>stream</p></td>
+<td class="parameter_description"><p>a <span class="type">FILE</span> * stream.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>trace</p></td>
+<td class="parameter_description"><p>location to store a newly allocated string of the trace.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gimp-stack-trace-print.returns"></a><h4>Returns</h4>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if a stack trace could be generated, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><span class="type">FALSE</span></a>
+otherwise.</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-stack-trace-query"></a><h3>gimp_stack_trace_query ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gimp_stack_trace_query (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *prog_name</code></em>);</pre>
+<p>This is mostly the same as <a href="../glib/glib-Warnings-and-Assertions.html#g-on-error-query"><code class="function">g_on_error_query()</code></a> except that we use our
+own backtrace function, much more complete.
+<em class="parameter"><code>prog_name</code></em>
+ must be the current program name (argv[0]).
+It does nothing on Win32.</p>
+<div class="refsect3">
+<a name="gimp-stack-trace-query.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>prog_name</p></td>
+<td class="parameter_description"><p>the program to attach to.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
+</div>
 </div>
 <div class="refsect1">
 <a name="libgimpbase-gimputils.other_details"></a><h2>Types and Values</h2>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.28</div>
 </body>
 </html>

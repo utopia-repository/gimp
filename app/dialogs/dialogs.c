@@ -223,7 +223,6 @@ static GtkWidget * dialogs_restore_window (GimpDialogFactory *factory,
 static const GimpDialogFactoryEntry entries[] =
 {
   /*  foreign toplevels without constructor  */
-  FOREIGN ("gimp-blend-tool-dialog",               TRUE,  FALSE),
   FOREIGN ("gimp-brightness-contrast-tool-dialog", TRUE,  FALSE),
   FOREIGN ("gimp-color-balance-tool-dialog",       TRUE,  FALSE),
   FOREIGN ("gimp-color-picker-tool-dialog",        TRUE,  TRUE),
@@ -233,6 +232,7 @@ static const GimpDialogFactoryEntry entries[] =
   FOREIGN ("gimp-desaturate-tool-dialog",          TRUE,  FALSE),
   FOREIGN ("gimp-foreground-select-tool-dialog",   TRUE,  FALSE),
   FOREIGN ("gimp-gegl-tool-dialog",                TRUE,  FALSE),
+  FOREIGN ("gimp-gradient-tool-dialog",            TRUE,  FALSE),
   FOREIGN ("gimp-hue-saturation-tool-dialog",      TRUE,  FALSE),
   FOREIGN ("gimp-levels-tool-dialog",              TRUE,  TRUE),
   FOREIGN ("gimp-measure-tool-dialog",             TRUE,  FALSE),
@@ -324,7 +324,7 @@ static const GimpDialogFactoryEntry entries[] =
             dialogs_cursor_view_new, 0, TRUE),
   DOCKABLE ("gimp-dashboard",
             N_("Dashboard"), N_("Dashboard"), GIMP_ICON_DIALOG_DASHBOARD,
-            GIMP_HELP_ERRORS_DIALOG,
+            GIMP_HELP_DASHBOARD_DIALOG,
             dialogs_dashboard_new, 0, TRUE),
 
   /*  list & grid views  */

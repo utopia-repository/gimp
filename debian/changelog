@@ -4,6 +4,7 @@ gimp (2.10.0~RC2-1) UNRELEASED; urgency=medium
   * Add Breaks/Replaces for file that used to be in gimp-plugin-registry
     (Closes: #895387)
   * gimp.install: Update for new AppStream metadata location
+  * Bump Standards-Version to 4.1.4
 
  -- Jeremy Bicha <jbicha@debian.org>  Thu, 19 Apr 2018 11:59:19 -0400
 

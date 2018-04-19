@@ -99,6 +99,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4macros/gtk-doc.m4 \
 	$(top_srcdir)/m4macros/lt~obsolete.m4 \
 	$(top_srcdir)/acinclude.m4 $(top_srcdir)/m4macros/alsa.m4 \
 	$(top_srcdir)/m4macros/ax_compare_version.m4 \
+	$(top_srcdir)/m4macros/ax_cxx_compile_stdcxx.m4 \
 	$(top_srcdir)/m4macros/ax_gcc_func_attribute.m4 \
 	$(top_srcdir)/m4macros/ax_prog_cc_for_build.m4 \
 	$(top_srcdir)/m4macros/ax_prog_perl_version.m4 \
@@ -176,6 +177,24 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
+CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+LTCXXCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CXXFLAGS) $(CXXFLAGS)
+AM_V_CXX = $(am__v_CXX_@AM_V@)
+am__v_CXX_ = $(am__v_CXX_@AM_DEFAULT_V@)
+am__v_CXX_0 = @echo "  CXX     " $@;
+am__v_CXX_1 = 
+CXXLD = $(CXX)
+CXXLINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
+am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
+am__v_CXXLD_0 = @echo "  CXXLD   " $@;
+am__v_CXXLD_1 = 
 SOURCES = $(libappgegl_generic_a_SOURCES) $(libappgegl_sse2_a_SOURCES) \
 	$(libappgegl_a_SOURCES)
 DIST_SOURCES = $(libappgegl_generic_a_SOURCES) \
@@ -286,7 +305,7 @@ FONTCONFIG_CFLAGS = @FONTCONFIG_CFLAGS@
 FONTCONFIG_LIBS = @FONTCONFIG_LIBS@
 FONTCONFIG_REQUIRED_VERSION = @FONTCONFIG_REQUIRED_VERSION@
 FREETYPE2_REQUIRED_VERSION = @FREETYPE2_REQUIRED_VERSION@
-FREETYPE_CONFIG = @FREETYPE_CONFIG@
+FREETYPE_CFLAGS = @FREETYPE_CFLAGS@
 FREETYPE_LIBS = @FREETYPE_LIBS@
 GDBUS_CODEGEN = @GDBUS_CODEGEN@
 GDK_PIXBUF_CFLAGS = @GDK_PIXBUF_CFLAGS@
@@ -359,6 +378,7 @@ GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
 HARFBUZZ_LIBS = @HARFBUZZ_LIBS@
 HARFBUZZ_REQUIRED_VERSION = @HARFBUZZ_REQUIRED_VERSION@
+HAVE_CXX11 = @HAVE_CXX11@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_VFORK = @HAVE_VFORK@
@@ -587,6 +607,7 @@ mandir = @mandir@
 manpage_gimpdir = @manpage_gimpdir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
+mypaint_brushes_dir = @mypaint_brushes_dir@
 oldincludedir = @oldincludedir@
 pdfdir = @pdfdir@
 pkgpyexecdir = @pkgpyexecdir@
@@ -632,7 +653,7 @@ libappgegl_generic_a_sources = \
 	gimp-gegl.h			\
 	gimp-gegl-apply-operation.c	\
 	gimp-gegl-apply-operation.h	\
-	gimp-gegl-loops.c		\
+	gimp-gegl-loops.cc		\
 	gimp-gegl-loops.h		\
 	gimp-gegl-mask.c		\
 	gimp-gegl-mask.h		\
@@ -668,7 +689,7 @@ CLEANFILES = $(gen_sources)
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .lo .o .obj
+.SUFFIXES: .c .cc .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -767,6 +788,27 @@ libappgegl_sse2_a-gimp-gegl-loops-sse2.obj: gimp-gegl-loops-sse2.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gimp-gegl-loops-sse2.c' object='libappgegl_sse2_a-gimp-gegl-loops-sse2.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libappgegl_sse2_a_CFLAGS) $(CFLAGS) -c -o libappgegl_sse2_a-gimp-gegl-loops-sse2.obj `if test -f 'gimp-gegl-loops-sse2.c'; then $(CYGPATH_W) 'gimp-gegl-loops-sse2.c'; else $(CYGPATH_W) '$(srcdir)/gimp-gegl-loops-sse2.c'; fi`
+
+.cc.o:
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ $<
+
+.cc.obj:
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+.cc.lo:
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
 
 mostlyclean-libtool:
 	-rm -f *.lo

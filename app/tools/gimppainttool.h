@@ -56,11 +56,18 @@ struct _GimpPaintTool
   const gchar   *status_ctrl;  /* additional message for the ctrl modifier */
 
   GimpPaintCore *core;
+
+  GimpDisplay   *display;
+  GimpDrawable  *drawable;
 };
 
 struct _GimpPaintToolClass
 {
   GimpColorToolClass  parent_class;
+
+  void             (* paint_start) (GimpPaintTool *paint_tool);
+  void             (* paint_end)   (GimpPaintTool *paint_tool);
+  void             (* paint_flush) (GimpPaintTool *paint_tool);
 
   GimpCanvasItem * (* get_outline) (GimpPaintTool *paint_tool,
                                     GimpDisplay   *display,
@@ -69,16 +76,18 @@ struct _GimpPaintToolClass
 };
 
 
-GType   gimp_paint_tool_get_type            (void) G_GNUC_CONST;
+GType      gimp_paint_tool_get_type            (void) G_GNUC_CONST;
 
-void    gimp_paint_tool_enable_color_picker (GimpPaintTool     *tool,
-                                             GimpColorPickMode  mode);
+void       gimp_paint_tool_enable_color_picker (GimpPaintTool     *tool,
+                                                GimpColorPickMode  mode);
 
-void    gimp_paint_tool_set_draw_fallback   (GimpPaintTool     *tool,
-                                             gboolean           draw_fallback,
-                                             gint               fallback_size);
+void       gimp_paint_tool_set_draw_fallback   (GimpPaintTool     *tool,
+                                                gboolean           draw_fallback,
+                                                gint               fallback_size);
 
-void    gimp_paint_tool_set_draw_circle     (GimpPaintTool     *tool,
-                                             gboolean           draw_circle,
-                                             gint               circle_size);
+void       gimp_paint_tool_set_draw_circle     (GimpPaintTool     *tool,
+                                                gboolean           draw_circle,
+                                                gint               circle_size);
+
+
 #endif  /*  __GIMP_PAINT_TOOL_H__  */

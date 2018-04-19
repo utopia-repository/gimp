@@ -99,6 +99,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4macros/gtk-doc.m4 \
 	$(top_srcdir)/m4macros/lt~obsolete.m4 \
 	$(top_srcdir)/acinclude.m4 $(top_srcdir)/m4macros/alsa.m4 \
 	$(top_srcdir)/m4macros/ax_compare_version.m4 \
+	$(top_srcdir)/m4macros/ax_cxx_compile_stdcxx.m4 \
 	$(top_srcdir)/m4macros/ax_gcc_func_attribute.m4 \
 	$(top_srcdir)/m4macros/ax_prog_cc_for_build.m4 \
 	$(top_srcdir)/m4macros/ax_prog_perl_version.m4 \
@@ -273,7 +274,7 @@ FONTCONFIG_CFLAGS = @FONTCONFIG_CFLAGS@
 FONTCONFIG_LIBS = @FONTCONFIG_LIBS@
 FONTCONFIG_REQUIRED_VERSION = @FONTCONFIG_REQUIRED_VERSION@
 FREETYPE2_REQUIRED_VERSION = @FREETYPE2_REQUIRED_VERSION@
-FREETYPE_CONFIG = @FREETYPE_CONFIG@
+FREETYPE_CFLAGS = @FREETYPE_CFLAGS@
 FREETYPE_LIBS = @FREETYPE_LIBS@
 GDBUS_CODEGEN = @GDBUS_CODEGEN@
 GDK_PIXBUF_CFLAGS = @GDK_PIXBUF_CFLAGS@
@@ -346,6 +347,7 @@ GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
 HARFBUZZ_LIBS = @HARFBUZZ_LIBS@
 HARFBUZZ_REQUIRED_VERSION = @HARFBUZZ_REQUIRED_VERSION@
+HAVE_CXX11 = @HAVE_CXX11@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_VFORK = @HAVE_VFORK@
@@ -574,6 +576,7 @@ mandir = @mandir@
 manpage_gimpdir = @manpage_gimpdir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
+mypaint_brushes_dir = @mypaint_brushes_dir@
 oldincludedir = @oldincludedir@
 pdfdir = @pdfdir@
 pkgpyexecdir = @pkgpyexecdir@
@@ -593,6 +596,8 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 @PLATFORM_OSX_TRUE@xobjective_c = "-xobjective-c"
+@PLATFORM_OSX_TRUE@xobjective_cxx = "-xobjective-c++"
+@PLATFORM_OSX_TRUE@xnone = "-xnone"
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Gimp-GUI\"		\
 	-DGIMP_COMMAND=\"@GIMP_COMMAND@\"	\
@@ -600,13 +605,21 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)				\
 	-I$(top_builddir)/app			\
 	-I$(top_srcdir)/app			\
-	$(xobjective_c)				\
 	$(GIO_UNIX_CFLAGS)			\
 	$(GEGL_CFLAGS)				\
 	$(GTK_CFLAGS)				\
 	$(GTK_MAC_INTEGRATION_CFLAGS)		\
 	$(DBUS_GLIB_CFLAGS)			\
 	-I$(includedir)
+
+AM_CFLAGS = \
+	$(xobjective_c)
+
+AM_CXXFLAGS = \
+	$(xobjective_cxx)
+
+AM_LDFLAGS = \
+	$(xnone)
 
 noinst_LIBRARIES = libappgui.a
 libappgui_a_sources = \

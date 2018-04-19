@@ -778,7 +778,6 @@
     <keyword type="macro" name="GIMP_ICON_SYSTEM_RUN" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-SYSTEM-RUN:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_TOOL_AIRBRUSH" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-AIRBRUSH:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_TOOL_ALIGN" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-ALIGN:CAPS"/>
-    <keyword type="macro" name="GIMP_ICON_TOOL_BLEND" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-BLEND:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_TOOL_BLUR" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-BLUR:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_TOOL_BRIGHTNESS_CONTRAST" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-BRIGHTNESS-CONTRAST:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_TOOL_BUCKET_FILL" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-BUCKET-FILL:CAPS"/>
@@ -800,6 +799,7 @@
     <keyword type="macro" name="GIMP_ICON_TOOL_FOREGROUND_SELECT" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-FOREGROUND-SELECT:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_TOOL_FREE_SELECT" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-FREE-SELECT:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_TOOL_FUZZY_SELECT" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-FUZZY-SELECT:CAPS"/>
+    <keyword type="macro" name="GIMP_ICON_TOOL_GRADIENT" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-GRADIENT:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_TOOL_HANDLE_TRANSFORM" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-HANDLE-TRANSFORM:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_TOOL_HEAL" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-HEAL:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_TOOL_HUE_SATURATION" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-HUE-SATURATION:CAPS"/>

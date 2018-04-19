@@ -99,6 +99,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4macros/gtk-doc.m4 \
 	$(top_srcdir)/m4macros/lt~obsolete.m4 \
 	$(top_srcdir)/acinclude.m4 $(top_srcdir)/m4macros/alsa.m4 \
 	$(top_srcdir)/m4macros/ax_compare_version.m4 \
+	$(top_srcdir)/m4macros/ax_cxx_compile_stdcxx.m4 \
 	$(top_srcdir)/m4macros/ax_gcc_func_attribute.m4 \
 	$(top_srcdir)/m4macros/ax_prog_cc_for_build.m4 \
 	$(top_srcdir)/m4macros/ax_prog_perl_version.m4 \
@@ -129,6 +130,7 @@ am_libapppropgui_a_OBJECTS = gimppropgui.$(OBJEXT) \
 	gimppropgui-diffraction-patterns.$(OBJEXT) \
 	gimppropgui-eval.$(OBJEXT) gimppropgui-generic.$(OBJEXT) \
 	gimppropgui-hue-saturation.$(OBJEXT) \
+	gimppropgui-panorama-projection.$(OBJEXT) \
 	gimppropgui-recursive-transform.$(OBJEXT) \
 	gimppropgui-shadows-highlights.$(OBJEXT) \
 	gimppropgui-spiral.$(OBJEXT) gimppropgui-supernova.$(OBJEXT) \
@@ -280,7 +282,7 @@ FONTCONFIG_CFLAGS = @FONTCONFIG_CFLAGS@
 FONTCONFIG_LIBS = @FONTCONFIG_LIBS@
 FONTCONFIG_REQUIRED_VERSION = @FONTCONFIG_REQUIRED_VERSION@
 FREETYPE2_REQUIRED_VERSION = @FREETYPE2_REQUIRED_VERSION@
-FREETYPE_CONFIG = @FREETYPE_CONFIG@
+FREETYPE_CFLAGS = @FREETYPE_CFLAGS@
 FREETYPE_LIBS = @FREETYPE_LIBS@
 GDBUS_CODEGEN = @GDBUS_CODEGEN@
 GDK_PIXBUF_CFLAGS = @GDK_PIXBUF_CFLAGS@
@@ -353,6 +355,7 @@ GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
 HARFBUZZ_LIBS = @HARFBUZZ_LIBS@
 HARFBUZZ_REQUIRED_VERSION = @HARFBUZZ_REQUIRED_VERSION@
+HAVE_CXX11 = @HAVE_CXX11@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_VFORK = @HAVE_VFORK@
@@ -581,6 +584,7 @@ mandir = @mandir@
 manpage_gimpdir = @manpage_gimpdir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
+mypaint_brushes_dir = @mypaint_brushes_dir@
 oldincludedir = @oldincludedir@
 pdfdir = @pdfdir@
 pkgpyexecdir = @pkgpyexecdir@
@@ -635,6 +639,8 @@ libapppropgui_a_SOURCES = \
 	gimppropgui-generic.h			\
 	gimppropgui-hue-saturation.c		\
 	gimppropgui-hue-saturation.h		\
+	gimppropgui-panorama-projection.c	\
+	gimppropgui-panorama-projection.h	\
 	gimppropgui-recursive-transform.c	\
 	gimppropgui-recursive-transform.h	\
 	gimppropgui-shadows-highlights.c	\
@@ -703,6 +709,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropgui-eval.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropgui-generic.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropgui-hue-saturation.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropgui-panorama-projection.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropgui-recursive-transform.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropgui-shadows-highlights.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropgui-spiral.Po@am__quote@

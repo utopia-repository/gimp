@@ -8,7 +8,7 @@
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="next" href="libgimp-gimpenums.html" title="gimpenums">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.28 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -172,6 +172,14 @@
 </tr>
 <tr>
 <td class="function_type">
+<a href="../html/libgimpbase-gimpbaseenums.html#GimpPDBStatusType"><span class="returnvalue">GimpPDBStatusType</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="libgimp-gimp.html#gimp-get-pdb-status" title="gimp_get_pdb_status ()">gimp_get_pdb_status</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <a href="../glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
 </td>
 <td class="function_name">
@@ -240,6 +248,30 @@
 </td>
 <td class="function_name">
 <a class="link" href="libgimp-gimp.html#gimp-show-help-button" title="gimp_show_help_button ()">gimp_show_help_button</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="libgimp-gimp.html#gimp-export-exif" title="gimp_export_exif ()">gimp_export_exif</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="libgimp-gimp.html#gimp-export-iptc" title="gimp_export_iptc ()">gimp_export_iptc</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="libgimp-gimp.html#gimp-export-xmp" title="gimp_export_xmp ()">gimp_export_xmp</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -1042,6 +1074,18 @@ modified.</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="gimp-get-pdb-status"></a><h3>gimp_get_pdb_status ()</h3>
+<pre class="programlisting"><a href="../html/libgimpbase-gimpbaseenums.html#GimpPDBStatusType"><span class="returnvalue">GimpPDBStatusType</span></a>
+gimp_get_pdb_status (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Retrieves the status from the last procedure call.</p>
+<div class="refsect3">
+<a name="gimp-get-pdb-status.returns"></a><h4>Returns</h4>
+<p> the <a href="../html/libgimpbase-gimpbaseenums.html#GimpPDBStatusType"><span class="type">GimpPDBStatusType</span></a>.</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="gimp-tile-width"></a><h3>gimp_tile_width ()</h3>
 <pre class="programlisting"><a href="../glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
 gimp_tile_width (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -1164,6 +1208,48 @@ button if help_func and help_id are given.</p>
 <p> the show_help_button boolean</p>
 </div>
 <p class="since">Since: <a class="link" href="api-index-2-2.html#api-index-2.2">2.2</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-export-exif"></a><h3>gimp_export_exif ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_export_exif (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Returns whether file plug-ins should default to exporting Exif
+metadata, according preferences (original settings is <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><span class="type">FALSE</span></a> since
+metadata can contain sensitive information).</p>
+<div class="refsect3">
+<a name="gimp-export-exif.returns"></a><h4>Returns</h4>
+<p> TRUE if preferences are set to export Exif.</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-export-iptc"></a><h3>gimp_export_iptc ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_export_iptc (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Returns whether file plug-ins should default to exporting IPTC
+metadata, according preferences (original settings is <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><span class="type">FALSE</span></a> since
+metadata can contain sensitive information).</p>
+<div class="refsect3">
+<a name="gimp-export-iptc.returns"></a><h4>Returns</h4>
+<p> TRUE if preferences are set to export IPTC.</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-export-xmp"></a><h3>gimp_export_xmp ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_export_xmp (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Returns whether file plug-ins should default to exporting XMP
+metadata, according preferences (original settings is <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><span class="type">FALSE</span></a> since
+metadata can contain sensitive information).</p>
+<div class="refsect3">
+<a name="gimp-export-xmp.returns"></a><h4>Returns</h4>
+<p> TRUE if preferences are set to export XMP.</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1726,6 +1812,6 @@ procedure database.</p></td>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.28</div>
 </body>
 </html>

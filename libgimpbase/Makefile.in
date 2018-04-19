@@ -103,6 +103,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4macros/gtk-doc.m4 \
 	$(top_srcdir)/m4macros/lt~obsolete.m4 \
 	$(top_srcdir)/acinclude.m4 $(top_srcdir)/m4macros/alsa.m4 \
 	$(top_srcdir)/m4macros/ax_compare_version.m4 \
+	$(top_srcdir)/m4macros/ax_cxx_compile_stdcxx.m4 \
 	$(top_srcdir)/m4macros/ax_gcc_func_attribute.m4 \
 	$(top_srcdir)/m4macros/ax_prog_cc_for_build.m4 \
 	$(top_srcdir)/m4macros/ax_prog_perl_version.m4 \
@@ -495,7 +496,7 @@ FONTCONFIG_CFLAGS = @FONTCONFIG_CFLAGS@
 FONTCONFIG_LIBS = @FONTCONFIG_LIBS@
 FONTCONFIG_REQUIRED_VERSION = @FONTCONFIG_REQUIRED_VERSION@
 FREETYPE2_REQUIRED_VERSION = @FREETYPE2_REQUIRED_VERSION@
-FREETYPE_CONFIG = @FREETYPE_CONFIG@
+FREETYPE_CFLAGS = @FREETYPE_CFLAGS@
 FREETYPE_LIBS = @FREETYPE_LIBS@
 GDBUS_CODEGEN = @GDBUS_CODEGEN@
 GDK_PIXBUF_CFLAGS = @GDK_PIXBUF_CFLAGS@
@@ -568,6 +569,7 @@ GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
 HARFBUZZ_LIBS = @HARFBUZZ_LIBS@
 HARFBUZZ_REQUIRED_VERSION = @HARFBUZZ_REQUIRED_VERSION@
+HAVE_CXX11 = @HAVE_CXX11@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_VFORK = @HAVE_VFORK@
@@ -796,6 +798,7 @@ mandir = @mandir@
 manpage_gimpdir = @manpage_gimpdir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
+mypaint_brushes_dir = @mypaint_brushes_dir@
 oldincludedir = @oldincludedir@
 pdfdir = @pdfdir@
 pkgpyexecdir = @pkgpyexecdir@
@@ -816,6 +819,8 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 @PLATFORM_WIN32_TRUE@no_undefined = -no-undefined
 @PLATFORM_OSX_TRUE@xobjective_c = "-xobjective-c"
+@PLATFORM_OSX_TRUE@xobjective_cxx = "-xobjective-c++"
+@PLATFORM_OSX_TRUE@xnone = "-xnone"
 @PLATFORM_OSX_TRUE@framework_cocoa = -framework Cocoa
 @OS_WIN32_TRUE@ole32_lib = -lole32
 @OS_WIN32_TRUE@gimpbase_def = gimpbase.def
@@ -841,12 +846,20 @@ AM_CPPFLAGS = \
 	$(GIO_CFLAGS)						\
 	$(GEXIV2_CFLAGS)					\
 	$(BINRELOC_CFLAGS)					\
-	-I$(includedir)						\
+	-I$(includedir)
+
+AM_CFLAGS = \
 	$(xobjective_c)
+
+AM_CXXFLAGS = \
+	$(xobjective_cxx)
 
 AM_CCASFLAGS = \
 	-I$(top_builddir)	\
 	-I$(top_srcdir)
+
+AM_LDFLAGS = \
+	$(xnone)
 
 EXTRA_DIST = \
 	gimpbase.def
@@ -932,7 +945,8 @@ libgimpbase_@GIMP_API_VERSION@_la_LDFLAGS = \
 	-version-info $(LT_VERSION_INFO)	\
 	$(no_undefined) 			\
 	$(libgimpbase_export_symbols)		\
-	$(framework_cocoa)
+	$(framework_cocoa)			\
+	$(xnone)
 
 EXTRA_libgimpbase_@GIMP_API_VERSION@_la_DEPENDENCIES = $(gimpbase_def)
 libgimpbase_@GIMP_API_VERSION@_la_LIBADD = \

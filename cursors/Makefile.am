@@ -38,10 +38,11 @@ CURSOR_IMAGES = \
 	modifier-pattern.png			\
 	modifier-plus.png			\
 	modifier-resize.png			\
+	modifier-rotate.png			\
 	modifier-select.png			\
+	modifier-zoom.png			\
 	\
 	tool-airbrush.png			\
-	tool-blend.png				\
 	tool-blur.png				\
 	tool-bucket-fill.png			\
 	tool-burn.png				\
@@ -55,6 +56,7 @@ CURSOR_IMAGES = \
 	tool-flip-vertical.png			\
 	tool-free-select.png			\
 	tool-fuzzy-select.png			\
+	tool-gradient.png			\
 	tool-hand.png				\
 	tool-heal.png				\
 	tool-ink.png				\

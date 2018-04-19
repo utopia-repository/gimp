@@ -101,6 +101,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4macros/gtk-doc.m4 \
 	$(top_srcdir)/m4macros/lt~obsolete.m4 \
 	$(top_srcdir)/acinclude.m4 $(top_srcdir)/m4macros/alsa.m4 \
 	$(top_srcdir)/m4macros/ax_compare_version.m4 \
+	$(top_srcdir)/m4macros/ax_cxx_compile_stdcxx.m4 \
 	$(top_srcdir)/m4macros/ax_gcc_func_attribute.m4 \
 	$(top_srcdir)/m4macros/ax_prog_cc_for_build.m4 \
 	$(top_srcdir)/m4macros/ax_prog_perl_version.m4 \
@@ -154,10 +155,11 @@ am__objects_2 = gimp_pdb.lo gimpbrush_pdb.lo gimpbrushes_pdb.lo \
 	gimpbrushselect_pdb.lo gimpbuffer_pdb.lo gimpchannel_pdb.lo \
 	gimpcolor_pdb.lo gimpcontext_pdb.lo gimpdebug_pdb.lo \
 	gimpdisplay_pdb.lo gimpdrawable_pdb.lo \
-	gimpdrawablecolor_pdb.lo gimpdrawabletransform_pdb.lo \
-	gimpdynamics_pdb.lo gimpedit_pdb.lo gimpfileops_pdb.lo \
-	gimpfloatingsel_pdb.lo gimpfonts_pdb.lo gimpfontselect_pdb.lo \
-	gimpgimprc_pdb.lo gimpgradient_pdb.lo gimpgradients_pdb.lo \
+	gimpdrawablecolor_pdb.lo gimpdrawableedit_pdb.lo \
+	gimpdrawabletransform_pdb.lo gimpdynamics_pdb.lo \
+	gimpedit_pdb.lo gimpfileops_pdb.lo gimpfloatingsel_pdb.lo \
+	gimpfonts_pdb.lo gimpfontselect_pdb.lo gimpgimprc_pdb.lo \
+	gimpgradient_pdb.lo gimpgradients_pdb.lo \
 	gimpgradientselect_pdb.lo gimphelp_pdb.lo gimpimage_pdb.lo \
 	gimpimagecolorprofile_pdb.lo gimpimageconvert_pdb.lo \
 	gimpimagegrid_pdb.lo gimpimageguides_pdb.lo \
@@ -363,7 +365,7 @@ FONTCONFIG_CFLAGS = @FONTCONFIG_CFLAGS@
 FONTCONFIG_LIBS = @FONTCONFIG_LIBS@
 FONTCONFIG_REQUIRED_VERSION = @FONTCONFIG_REQUIRED_VERSION@
 FREETYPE2_REQUIRED_VERSION = @FREETYPE2_REQUIRED_VERSION@
-FREETYPE_CONFIG = @FREETYPE_CONFIG@
+FREETYPE_CFLAGS = @FREETYPE_CFLAGS@
 FREETYPE_LIBS = @FREETYPE_LIBS@
 GDBUS_CODEGEN = @GDBUS_CODEGEN@
 GDK_PIXBUF_CFLAGS = @GDK_PIXBUF_CFLAGS@
@@ -436,6 +438,7 @@ GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
 HARFBUZZ_LIBS = @HARFBUZZ_LIBS@
 HARFBUZZ_REQUIRED_VERSION = @HARFBUZZ_REQUIRED_VERSION@
+HAVE_CXX11 = @HAVE_CXX11@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_VFORK = @HAVE_VFORK@
@@ -664,6 +667,7 @@ mandir = @mandir@
 manpage_gimpdir = @manpage_gimpdir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
+mypaint_brushes_dir = @mypaint_brushes_dir@
 oldincludedir = @oldincludedir@
 pdfdir = @pdfdir@
 pkgpyexecdir = @pkgpyexecdir@
@@ -690,6 +694,8 @@ libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSIO
 libgimp = ./libgimp-$(GIMP_API_VERSION).la
 @PLATFORM_WIN32_TRUE@no_undefined = -no-undefined
 @PLATFORM_OSX_TRUE@xobjective_c = "-xobjective-c"
+@PLATFORM_OSX_TRUE@xobjective_cxx = "-xobjective-c++"
+@PLATFORM_OSX_TRUE@xnone = "-xnone"
 @PLATFORM_OSX_TRUE@framework_cocoa = -framework Cocoa
 @HAVE_EXCHNDL_TRUE@@OS_WIN32_TRUE@exchndl = -lexchndl
 @OS_WIN32_TRUE@gimp_def = gimp.def
@@ -707,8 +713,16 @@ AM_CPPFLAGS = \
 	$(GTK_CFLAGS)			\
 	$(GEGL_CFLAGS)			\
 	$(GEXIV2_CFLAGS)		\
-	-I$(includedir)			\
+	-I$(includedir)
+
+AM_CFLAGS = \
 	$(xobjective_c)
+
+AM_CXXFLAGS = \
+	$(xobjective_cxx)
+
+AM_LDFLAGS = \
+	$(xnone)
 
 lib_LTLIBRARIES = libgimp-@GIMP_API_VERSION@.la libgimpui-@GIMP_API_VERSION@.la
 PDB_WRAPPERS_C = \
@@ -724,6 +738,7 @@ PDB_WRAPPERS_C = \
 	gimpdisplay_pdb.c		\
 	gimpdrawable_pdb.c		\
 	gimpdrawablecolor_pdb.c		\
+	gimpdrawableedit_pdb.c		\
 	gimpdrawabletransform_pdb.c	\
 	gimpdynamics_pdb.c		\
 	gimpedit_pdb.c			\
@@ -782,6 +797,7 @@ PDB_WRAPPERS_H = \
 	gimpdisplay_pdb.h		\
 	gimpdrawable_pdb.h		\
 	gimpdrawablecolor_pdb.h		\
+	gimpdrawableedit_pdb.h		\
 	gimpdrawabletransform_pdb.h	\
 	gimpdynamics_pdb.h		\
 	gimpedit_pdb.h			\
@@ -1022,7 +1038,8 @@ libgimp_@GIMP_API_VERSION@_la_LDFLAGS = \
 	-version-info $(LT_VERSION_INFO)	\
 	$(no_undefined)				\
 	$(libgimp_export_symbols)		\
-	$(framework_cocoa)
+	$(framework_cocoa)			\
+	$(xnone)
 
 EXTRA_libgimp_@GIMP_API_VERSION@_la_DEPENDENCIES = $(gimp_def)
 libgimp_@GIMP_API_VERSION@_la_LIBADD = \
@@ -1039,7 +1056,8 @@ libgimpui_@GIMP_API_VERSION@_la_LDFLAGS = \
 	-version-info $(LT_VERSION_INFO)	\
 	$(no_undefined)				\
 	$(libgimpui_export_symbols)		\
-	$(framework_cocoa)
+	$(framework_cocoa)			\
+	$(xnone)
 
 EXTRA_libgimpui_@GIMP_API_VERSION@_la_DEPENDENCIES = $(gimpui_def)
 libgimpui_@GIMP_API_VERSION@_la_LIBADD = \
@@ -1167,6 +1185,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawablecolor_pdb.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawableedit_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawablepreview.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawabletransform_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdynamics_pdb.Plo@am__quote@

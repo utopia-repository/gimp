@@ -36,7 +36,7 @@
 
 
 /*  The defaults are "everything except color", which is problematic
- *  with gradients, which is why we special case the blend tool in
+ *  with gradients, which is why we special case the gradient tool in
  *  gimp_tool_preset_set_options().
  */
 #define DEFAULT_USE_FG_BG    FALSE
@@ -397,7 +397,7 @@ gimp_tool_preset_deserialize_property (GimpConfig *config,
             g_scanner_error (scanner,
                              "unable to determine type of '%s'",
                              type_name);
-            *expected = G_TOKEN_STRING;
+            *expected = G_TOKEN_NONE;
             g_free (type_name);
             break;
           }
@@ -407,7 +407,7 @@ gimp_tool_preset_deserialize_property (GimpConfig *config,
             g_scanner_error (scanner,
                              "'%s' is not a subclass of GimpToolOptions",
                              type_name);
-            *expected = G_TOKEN_STRING;
+            *expected = G_TOKEN_NONE;
             g_free (type_name);
             break;
           }
@@ -541,7 +541,7 @@ gimp_tool_preset_set_options (GimpToolPreset  *preset,
         g_object_set (preset, "use-font", FALSE, NULL);
 
       /*  see comment above the DEFAULT defines at the top of the file  */
-      if (! g_strcmp0 ("gimp-blend-tool",
+      if (! g_strcmp0 ("gimp-gradient-tool",
                        gimp_object_get_name (preset->tool_options->tool_info)))
         g_object_set (preset, "use-gradient", TRUE, NULL);
 

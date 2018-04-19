@@ -11,8 +11,87 @@ branch are also applied here, but they are usually not mentioned
 in NEWS.
 
 
-Overview of Changes from GIMP 2.9.8 to GIMP 2.10 RC1
-====================================================
+Overview of Changes from GIMP 2.10.0 RC1 to GIMP 2.10.0 RC2
+===========================================================
+
+Core:
+
+  - Symmetries are now preserved in XCF files (saved as image parasites).
+  - New runtime option --show-debug-menu in order to make the File >
+    Debug menu visible.
+  - Do not show invisible actions in search dialog.
+  - Do not dither image mask and channels for imported images.
+  - Various optimizations for painting and display (WIP), including
+    parallelized painting code.
+  - New "Misc" group to the Dashboard dock, with currently only a
+    "Mipmapped" field showing the total size of processed mipmapped
+    data.
+  - Plug-ins debugging on crashes through --stack-trace-mode CLI option
+    improved to handle more case.
+  - Fix selection -> channel -> selection roundtrips by never doing
+    any gamma conversion when converting between an image's selection,
+    channels, masks. Also, make all channels linear in all images with
+    >8bit.
+
+Libgimp:
+
+  - New group "drawable_edit" which contains all functions from "edit"
+    that are not cut/copy/paste. The new functions have much less
+    arguments and take them from the context instead. The respective
+    functions in "edit" have been deprecated.
+  - New functions in "context" to configure aspects of gradient
+    drawing, and to set the built-in gradients (the new gradient
+    function in "drawable_edit" doesn't have a parameter for the
+    gradient type any longer).
+
+User interface:
+
+  - Lighter and Darker themes removed for now, Light and Dark themes
+    rewritten from scratch to get rid of various usability issues and
+    glitches. Only Gray theme from previous set kept as-is.
+  - New GimpToolGyroscope on-canvas control, currently used for
+    the Panorama Projection filter. The widget provides on-canvas
+    interaction for 3D rotation (yaw, pitch, roll).
+
+Configurability:
+
+  - In Preferences > Dialog Defaults, new section "Filter Dialogs"
+    created to customize various common features of filters, such as
+    recent settings and advanced color options.
+  - Do not default to last used filter settings, but allow this behavior
+    in Preferences > Dialog Defaults, with checkbox "Default to the last
+    used settings".
+
+Tools:
+
+  - Color used in the Smudge tool is now added to the color history.
+  - "Blend" tool renamed to much more consistent "Gradient" tool.
+    Also it can now work in linear RGB matching capabilities CSS/SVG
+    specification without gamma-errors in color blending and CIE Lab
+    which in addition keeps a perceptual graylevel.
+
+Assets / Resources:
+
+  - Adding 4K UHD in document templates (and fixing 4K DCI).
+
+Building:
+
+  - New --enable-bundled-mypaint-brushes option in configure to decide
+    whether to use the configure-time installation path of MyPaint
+    brushes, or use a path relative to GIMP installation prefix
+    (typically for bundled binaries, such as on Windows or macOS).
+  - Detect freetype2 using pkg-config (`freetype-config` is on its way
+    out in various distributions apparently).
+  - Appdata now installed to $PREFIX/share/metainfo/
+
+Translations:
+
+  - 8 translations were updated: Arabic, Catalan, Chinese, French, Italian,
+    Polish, Russian, Swedish.
+
+
+Overview of Changes from GIMP 2.9.8 to GIMP 2.10.0 RC1
+======================================================
 
 Core:
 

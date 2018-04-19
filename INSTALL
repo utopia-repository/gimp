@@ -38,8 +38,8 @@ header files installed.
      You are recommended to install gettext version 0.19 or over. Earlier gettext had
      issues with script-fu localization, ending up in incomplete GIMP localization.
 
-  3. You need to have GEGL version 0.3.30 or newer and babl version
-     0.1.44 or newer. You can get them from http://gegl.org/ or clone
+  3. You need to have GEGL version 0.3.34 or newer and babl version
+     0.1.46 or newer. You can get them from http://gegl.org/ or clone
      them from the GNOME git repository:
 
        git://git.gnome.org/babl
@@ -84,7 +84,11 @@ header files installed.
 
         https://github.com/mypaint/libmypaint
 
-     We also need the mypaint-brushes data package with is currently
+     If installing from repository, do not install the master branch!
+     Checkout the tag "v1.3.0" instead, or simply install from a tarball
+     or from your favorite package manager.
+
+ 11. We also need the mypaint-brushes data package with is currently
      hosted by Jehan, until the MyPaint project takes care of it:
 
         https://github.com/Jehan/mypaint-brushes
@@ -99,44 +103,44 @@ header files installed.
      have to make sure your $PKG_CONFIG_PATH environment variable also
      lists `$PREFIX/share/pkgconfig/`.
 
- 11. You may want to install other third party libraries or programs
+ 12. You may want to install other third party libraries or programs
      that are needed for some of the available plug-ins. We recommend
      to check that the following libraries are installed: libjasper,
      webkit, libmng, librsvg, libwmf, libaa and libgs (Ghostscript).
 
- 12. The Python extension requires Python 2 development headers (2.5.0
+ 13. The Python extension requires Python 2 development headers (2.5.0
      or newer) to be present. You will also need PyGTK and the
      respective development headers.
 
- 13. Windows builds can now generate backtrace logs upon a crash.
+ 14. Windows builds can now generate backtrace logs upon a crash.
      The logs will be available in: %APPDATA%\GIMP\2.10\CrashLog\
      The feature depends on Dr.MinGW's ExcHndl library:
 
         https://github.com/jrfonseca/drmingw
 
- 14. Configure GIMP by running the `configure' script. You may want
+ 15. Configure GIMP by running the `configure' script. You may want
      to pass some options to it, see below.
 
- 15. Build GIMP by running `make'. The use of GNU make is recommended.
+ 16. Build GIMP by running `make'. The use of GNU make is recommended.
      If you need to tweak the build to make it work with other flavours
      of make, we'd appreciate if you'd send us a patch with the changes.
 
- 16. Install GIMP by running `make install'. In order to avoid clashes
+ 17. Install GIMP by running `make install'. In order to avoid clashes
      with other versions of GIMP, we install a binary called gimp-2.10.
      By default there's also a link created so that you can type 'gimp'
      to start gimp-2.10.
 
- 17. Summary of required packages and what version you need:
+ 18. Summary of required packages and what version you need:
 
      Package Name         Version
 
      ATK                  2.2.0
-     babl                 0.1.44
+     babl                 0.1.46
      cairo                1.12.2
      Fontconfig           2.12.4
      freetype2            2.1.7
      GDK-PixBuf           2.30.8
-     GEGL                 0.3.30
+     GEGL                 0.3.34
      GIO
      GLib                 2.54.2
      glib-networking
@@ -156,7 +160,7 @@ header files installed.
      poppler-data         0.4.7
      zlib
 
- 18. Summary of optional packages:
+ 19. Summary of optional packages:
 
      Package Name        Version        Feature
 
@@ -174,7 +178,7 @@ header files installed.
      python 2            2.5.0          Python plug-ins
      webkit              1.6.1          Help browser & webpage
 
- 19. Summary of optional runtime dependencies:
+ 20. Summary of optional runtime dependencies:
 
      darktable >= 1.7, with lua support enabled for raw loading
      RawTherapee >= 5.2 for raw loading
@@ -192,8 +196,8 @@ packages are included below. Here is an illustration of commands that
 might be used to build and install GIMP. The actual configuration,
 compilation and installation output is not shown.
 
-  % tar xvfz gimp-2.10.0-RC1.tar.gz   # unpack the sources
-  % cd gimp-2.10.0-RC1                # change to the toplevel directory
+  % tar xvfz gimp-2.10.0-RC2.tar.gz   # unpack the sources
+  % cd gimp-2.10.0-RC2                # change to the toplevel directory
   % ./configure                           # run the `configure' script
   % make                                  # build GIMP
   % make install                          # install GIMP

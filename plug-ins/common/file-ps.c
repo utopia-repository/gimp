@@ -48,7 +48,7 @@
  *                          Add "RunLength" compression
  *                          Fix problem with "Level 2" toggle
  * V 1.10, PK, 15-Mar-2000: For load EPSF, allow negative Bounding Box Values
- *                          Save PS: dont start lines of image data with %%
+ *                          Save PS: don't start lines of image data with %%
  *                          to prevent problems with stupid PostScript
  *                          analyzer programs (Stanislav Brabec)
  *                          Add BeginData/EndData comments
@@ -127,8 +127,8 @@ static PSLoadVals plvals =
   TRUE,        /* try to use BoundingBox         */
   "1",         /* pages to load                  */
   6,           /* use ppm (color)               */
-  1,           /* dont use text antialiasing     */
-  1            /* dont use graphics antialiasing */
+  1,           /* don't use text antialiasing     */
+  1            /* don't use graphics antialiasing */
 };
 
 /* Widgets for width and height of PostScript image to
@@ -604,7 +604,7 @@ query (void)
 
   static const GimpParamDef set_load_args[] =
   {
-    { GIMP_PDB_INT32,  "resolution", "Resolution to interprete image (dpi)"    },
+    { GIMP_PDB_INT32,  "resolution", "Resolution to interpret image (dpi)"     },
     { GIMP_PDB_INT32,  "width",      "Desired width"                           },
     { GIMP_PDB_INT32,  "height",     "Desired height"                          },
     { GIMP_PDB_INT32,  "check-bbox", "0: Use width/height, 1: Use BoundingBox" },
@@ -1815,7 +1815,7 @@ read_pnmraw_type (FILE *ifp,
       thrd = getc (ifp);
     }
   pnmtype = scnd - '0';
-  /* We dont use the ASCII-versions */
+  /* We don't use the ASCII-versions */
   if ((pnmtype >= 1) && (pnmtype <= 3))
     return -1;
 

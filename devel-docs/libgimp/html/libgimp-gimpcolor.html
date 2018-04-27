@@ -621,6 +621,10 @@ gimp_color_balance (<em class="parameter"><code><a href="../glib/glib-Basic-Type
                     <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> cyan_red</code></em>,
                     <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> magenta_green</code></em>,
                     <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> yellow_blue</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">gimp_color_balance</code> is deprecated and should not be used in newly-written code.</p>
+<p>Use <code class="function">gimp_drawable_color_color_balance()</code> instead.</p>
+</div>
 <p>Modify the color balance of the specified drawable.</p>
 <p>Modify the color balance of the specified drawable. There are three
 axis which can be modified: cyan-red, magenta-green, and

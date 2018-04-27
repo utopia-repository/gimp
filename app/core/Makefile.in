@@ -151,8 +151,9 @@ am__objects_2 = gimp.$(OBJEXT) gimp-batch.$(OBJEXT) \
 	gimpdashpattern.$(OBJEXT) gimpdata.$(OBJEXT) \
 	gimpdatafactory.$(OBJEXT) gimpdocumentlist.$(OBJEXT) \
 	gimpdrawable.$(OBJEXT) gimpdrawable-bucket-fill.$(OBJEXT) \
-	gimpdrawable-combine.$(OBJEXT) gimpdrawable-equalize.$(OBJEXT) \
-	gimpdrawable-fill.$(OBJEXT) gimpdrawable-filters.$(OBJEXT) \
+	gimpdrawable-combine.$(OBJEXT) gimpdrawable-edit.$(OBJEXT) \
+	gimpdrawable-equalize.$(OBJEXT) gimpdrawable-fill.$(OBJEXT) \
+	gimpdrawable-filters.$(OBJEXT) \
 	gimpdrawable-floating-selection.$(OBJEXT) \
 	gimpdrawable-foreground-extract.$(OBJEXT) \
 	gimpdrawable-gradient.$(OBJEXT) \
@@ -177,34 +178,35 @@ am__objects_2 = gimp.$(OBJEXT) gimp-batch.$(OBJEXT) \
 	gimpimage-convert-indexed.$(OBJEXT) \
 	gimpimage-convert-precision.$(OBJEXT) \
 	gimpimage-convert-type.$(OBJEXT) gimpimage-crop.$(OBJEXT) \
-	gimpimage-duplicate.$(OBJEXT) gimpimage-flip.$(OBJEXT) \
-	gimpimage-grid.$(OBJEXT) gimpimage-guides.$(OBJEXT) \
-	gimpimage-item-list.$(OBJEXT) gimpimage-merge.$(OBJEXT) \
-	gimpimage-metadata.$(OBJEXT) gimpimage-new.$(OBJEXT) \
-	gimpimage-pick-color.$(OBJEXT) gimpimage-pick-item.$(OBJEXT) \
-	gimpimage-preview.$(OBJEXT) gimpimage-quick-mask.$(OBJEXT) \
-	gimpimage-resize.$(OBJEXT) gimpimage-rotate.$(OBJEXT) \
-	gimpimage-sample-points.$(OBJEXT) gimpimage-scale.$(OBJEXT) \
-	gimpimage-snap.$(OBJEXT) gimpimage-symmetry.$(OBJEXT) \
-	gimpimage-undo.$(OBJEXT) gimpimage-undo-push.$(OBJEXT) \
-	gimpimageundo.$(OBJEXT) gimpimagefile.$(OBJEXT) \
-	gimpitem.$(OBJEXT) gimpitem-exclusive.$(OBJEXT) \
-	gimpitem-linked.$(OBJEXT) gimpitem-preview.$(OBJEXT) \
-	gimpitempropundo.$(OBJEXT) gimpitemstack.$(OBJEXT) \
-	gimpitemtree.$(OBJEXT) gimpitemundo.$(OBJEXT) \
-	gimplayer.$(OBJEXT) gimplayer-floating-selection.$(OBJEXT) \
-	gimplayer-new.$(OBJEXT) gimplayermask.$(OBJEXT) \
-	gimplayermaskpropundo.$(OBJEXT) gimplayermaskundo.$(OBJEXT) \
-	gimplayerpropundo.$(OBJEXT) gimplayerstack.$(OBJEXT) \
-	gimplayerundo.$(OBJEXT) gimplist.$(OBJEXT) \
-	gimpmaskundo.$(OBJEXT) gimpmybrush.$(OBJEXT) \
-	gimpmybrush-load.$(OBJEXT) gimpobject.$(OBJEXT) \
-	gimpobjectqueue.$(OBJEXT) gimppaintinfo.$(OBJEXT) \
-	gimppattern.$(OBJEXT) gimppattern-load.$(OBJEXT) \
-	gimppatternclipboard.$(OBJEXT) gimppalette.$(OBJEXT) \
-	gimppalette-import.$(OBJEXT) gimppalette-load.$(OBJEXT) \
-	gimppalette-save.$(OBJEXT) gimppalettemru.$(OBJEXT) \
-	gimpparamspecs.$(OBJEXT) gimpparamspecs-desc.$(OBJEXT) \
+	gimpimage-duplicate.$(OBJEXT) gimpimage-fade.$(OBJEXT) \
+	gimpimage-flip.$(OBJEXT) gimpimage-grid.$(OBJEXT) \
+	gimpimage-guides.$(OBJEXT) gimpimage-item-list.$(OBJEXT) \
+	gimpimage-merge.$(OBJEXT) gimpimage-metadata.$(OBJEXT) \
+	gimpimage-new.$(OBJEXT) gimpimage-pick-color.$(OBJEXT) \
+	gimpimage-pick-item.$(OBJEXT) gimpimage-preview.$(OBJEXT) \
+	gimpimage-quick-mask.$(OBJEXT) gimpimage-resize.$(OBJEXT) \
+	gimpimage-rotate.$(OBJEXT) gimpimage-sample-points.$(OBJEXT) \
+	gimpimage-scale.$(OBJEXT) gimpimage-snap.$(OBJEXT) \
+	gimpimage-symmetry.$(OBJEXT) gimpimage-undo.$(OBJEXT) \
+	gimpimage-undo-push.$(OBJEXT) gimpimageundo.$(OBJEXT) \
+	gimpimagefile.$(OBJEXT) gimpitem.$(OBJEXT) \
+	gimpitem-exclusive.$(OBJEXT) gimpitem-linked.$(OBJEXT) \
+	gimpitem-preview.$(OBJEXT) gimpitempropundo.$(OBJEXT) \
+	gimpitemstack.$(OBJEXT) gimpitemtree.$(OBJEXT) \
+	gimpitemundo.$(OBJEXT) gimplayer.$(OBJEXT) \
+	gimplayer-floating-selection.$(OBJEXT) gimplayer-new.$(OBJEXT) \
+	gimplayermask.$(OBJEXT) gimplayermaskpropundo.$(OBJEXT) \
+	gimplayermaskundo.$(OBJEXT) gimplayerpropundo.$(OBJEXT) \
+	gimplayerstack.$(OBJEXT) gimplayerundo.$(OBJEXT) \
+	gimplist.$(OBJEXT) gimpmaskundo.$(OBJEXT) \
+	gimpmybrush.$(OBJEXT) gimpmybrush-load.$(OBJEXT) \
+	gimpobject.$(OBJEXT) gimpobjectqueue.$(OBJEXT) \
+	gimppaintinfo.$(OBJEXT) gimppattern.$(OBJEXT) \
+	gimppattern-load.$(OBJEXT) gimppatternclipboard.$(OBJEXT) \
+	gimppalette.$(OBJEXT) gimppalette-import.$(OBJEXT) \
+	gimppalette-load.$(OBJEXT) gimppalette-save.$(OBJEXT) \
+	gimppalettemru.$(OBJEXT) gimpparamspecs.$(OBJEXT) \
+	gimpparamspecs-desc.$(OBJEXT) \
 	gimpparamspecs-duplicate.$(OBJEXT) gimpparasitelist.$(OBJEXT) \
 	gimppdbprogress.$(OBJEXT) gimppickable.$(OBJEXT) \
 	gimppickable-auto-shrink.$(OBJEXT) \
@@ -463,7 +465,7 @@ GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
 HARFBUZZ_LIBS = @HARFBUZZ_LIBS@
 HARFBUZZ_REQUIRED_VERSION = @HARFBUZZ_REQUIRED_VERSION@
-HAVE_CXX11 = @HAVE_CXX11@
+HAVE_CXX14 = @HAVE_CXX14@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_VFORK = @HAVE_VFORK@
@@ -861,6 +863,8 @@ libappcore_a_sources = \
 	gimpdrawable-bucket-fill.h		\
 	gimpdrawable-combine.c			\
 	gimpdrawable-combine.h			\
+	gimpdrawable-edit.c			\
+	gimpdrawable-edit.h			\
 	gimpdrawable-equalize.c			\
 	gimpdrawable-equalize.h			\
 	gimpdrawable-fill.c			\
@@ -958,6 +962,8 @@ libappcore_a_sources = \
 	gimpimage-crop.h			\
 	gimpimage-duplicate.c			\
 	gimpimage-duplicate.h			\
+	gimpimage-fade.c			\
+	gimpimage-fade.h			\
 	gimpimage-flip.c			\
 	gimpimage-flip.h			\
 	gimpimage-grid.h                	\
@@ -1271,6 +1277,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdocumentlist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-bucket-fill.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-combine.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-edit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-equalize.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-fill.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-filters.Po@am__quote@
@@ -1318,6 +1325,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-convert-type.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-crop.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-duplicate.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-fade.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-flip.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-grid.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-guides.Po@am__quote@

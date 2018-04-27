@@ -655,7 +655,7 @@ GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
 HARFBUZZ_LIBS = @HARFBUZZ_LIBS@
 HARFBUZZ_REQUIRED_VERSION = @HARFBUZZ_REQUIRED_VERSION@
-HAVE_CXX11 = @HAVE_CXX11@
+HAVE_CXX14 = @HAVE_CXX14@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_VFORK = @HAVE_VFORK@
@@ -1072,7 +1072,7 @@ EXTRA_DIST = \
 #
 # rules to generate built sources
 #
-# setup autogeneration dependancies
+# setup autogeneration dependencies
 gen_sources = xgen-wec xgen-wmh xgen-wmc
 CLEANFILES = $(gen_sources) $(EXTRA_PROGRAMS)
 test_preview_area_SOURCES = test-preview-area.c

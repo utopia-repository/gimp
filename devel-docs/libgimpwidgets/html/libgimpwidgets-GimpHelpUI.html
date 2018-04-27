@@ -141,10 +141,10 @@ which page to display.</p>
 <p>All these dialog constructors functions call <a class="link" href="libgimpwidgets-GimpHelpUI.html#gimp-help-connect" title="gimp_help_connect ()"><code class="function">gimp_help_connect()</code></a>.</p>
 <p>In most cases it will be ok to use <a class="link" href="libgimpwidgets-GimpHelpUI.html#gimp-standard-help-func" title="gimp_standard_help_func ()"><code class="function">gimp_standard_help_func()</code></a> which
 does nothing but passing the <em class="parameter"><code>help_id</code></em>
- string to <a href="../libgimp/libgimp-gimphelp.html#gimp-help"><code class="function">gimp_help()</code></a>. If
+ string to <a href="../html/libgimp-gimphelp.html#gimp-help"><code class="function">gimp_help()</code></a>. If
 your plug-in needs some more sophisticated help handling you can
 provide your own <em class="parameter"><code>help_func</code></em>
- which has to call <a href="../libgimp/libgimp-gimphelp.html#gimp-help"><code class="function">gimp_help()</code></a> to
+ which has to call <a href="../html/libgimp-gimphelp.html#gimp-help"><code class="function">gimp_help()</code></a> to
 actually display the help.</p>
 <div class="refsect3">
 <a name="GimpHelpFunc.parameters"></a><h4>Parameters</h4>
@@ -176,7 +176,7 @@ actually display the help.</p>
 gimp_help_enable_tooltips (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Enable tooltips to be shown in the GIMP user interface.</p>
 <p>As a plug-in author, you don't need to care about this as this
-function is called for you from <a href="../libgimp/libgimp-gimpui.html#gimp-ui-init"><code class="function">gimp_ui_init()</code></a>. This ensures that
+function is called for you from <a href="../html/libgimp-gimpui.html#gimp-ui-init"><code class="function">gimp_ui_init()</code></a>. This ensures that
 the user setting from the GIMP preferences dialog is respected in
 all plug-in dialogs.</p>
 </div>
@@ -187,7 +187,7 @@ all plug-in dialogs.</p>
 gimp_help_disable_tooltips (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Disable tooltips to be shown in the GIMP user interface.</p>
 <p>As a plug-in author, you don't need to care about this as this
-function is called for you from <a href="../libgimp/libgimp-gimpui.html#gimp-ui-init"><code class="function">gimp_ui_init()</code></a>. This ensures that
+function is called for you from <a href="../html/libgimp-gimpui.html#gimp-ui-init"><code class="function">gimp_ui_init()</code></a>. This ensures that
 the user setting from the GIMP preferences dialog is respected in
 all plug-in dialogs.</p>
 </div>
@@ -198,7 +198,7 @@ all plug-in dialogs.</p>
 gimp_standard_help_func (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>,
                          <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> help_data</code></em>);</pre>
 <p>This is the standard GIMP help function which does nothing but calling
-<a href="../libgimp/libgimp-gimphelp.html#gimp-help"><code class="function">gimp_help()</code></a>. It is the right function to use in almost all cases.</p>
+<a href="../html/libgimp-gimphelp.html#gimp-help"><code class="function">gimp_help()</code></a>. It is the right function to use in almost all cases.</p>
 <div class="refsect3">
 <a name="gimp-standard-help-func.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">

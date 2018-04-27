@@ -132,6 +132,7 @@ app/core/gimpdata.c
 app/core/gimpdatafactory.c
 app/core/gimpdrawable.c
 app/core/gimpdrawable-bucket-fill.c
+app/core/gimpdrawable-edit.c
 app/core/gimpdrawable-equalize.c
 app/core/gimpdrawable-floating-selection.c
 app/core/gimpdrawable-foreground-extract.c
@@ -574,6 +575,7 @@ app/widgets/gimppickablepopup.c
 app/widgets/gimppluginview.c
 app/widgets/gimpprogressdialog.c
 app/widgets/gimppropwidgets.c
+app/widgets/gimpsamplepointeditor.c
 app/widgets/gimpsavedialog.c
 app/widgets/gimpsearchpopup.c
 app/widgets/gimpselectiondata.c

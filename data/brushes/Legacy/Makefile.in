@@ -317,7 +317,7 @@ GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
 HARFBUZZ_LIBS = @HARFBUZZ_LIBS@
 HARFBUZZ_REQUIRED_VERSION = @HARFBUZZ_REQUIRED_VERSION@
-HAVE_CXX11 = @HAVE_CXX11@
+HAVE_CXX14 = @HAVE_CXX14@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_VFORK = @HAVE_VFORK@
@@ -569,7 +569,6 @@ brushlegacydatadir = $(gimpdatadir)/brushes/Legacy
 brushlegacydata_DATA = \
 	confetti.gbr	\
 	confetti.gih	\
-	pepper.gbr	\
 	vine.gih
 
 EXTRA_DIST = $(brushlegacydata_DATA)

@@ -152,6 +152,7 @@ static const gchar * const authors[] =
 static const gchar * const artists[] =
 {
   "Alexia Death",
+  "Philipp Haegi",
   "Aryeom Han",
   "Ville Pätsi",
   "Klaus Staedtler",

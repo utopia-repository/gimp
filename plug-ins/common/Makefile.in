@@ -117,7 +117,7 @@ libexec_PROGRAMS = align-layers$(EXEEXT) animation-optimize$(EXEEXT) \
 	guillotine$(EXEEXT) hot$(EXEEXT) jigsaw$(EXEEXT) $(MAIL) \
 	max-rgb$(EXEEXT) newsprint$(EXEEXT) nl-filter$(EXEEXT) \
 	oilify$(EXEEXT) photocopy$(EXEEXT) plugin-browser$(EXEEXT) \
-	procedure-browser$(EXEEXT) qbist$(EXEEXT) ripple$(EXEEXT) \
+	procedure-browser$(EXEEXT) qbist$(EXEEXT) \
 	sample-colorize$(EXEEXT) sharpen$(EXEEXT) \
 	smooth-palette$(EXEEXT) softglow$(EXEEXT) sparkle$(EXEEXT) \
 	sphere-designer$(EXEEXT) tile$(EXEEXT) tile-small$(EXEEXT) \
@@ -734,12 +734,6 @@ qbist_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
 	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(qbist_RC)
-am_ripple_OBJECTS = ripple.$(OBJEXT)
-ripple_OBJECTS = $(am_ripple_OBJECTS)
-ripple_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) $(ripple_RC)
 am_sample_colorize_OBJECTS = sample-colorize.$(OBJEXT)
 sample_colorize_OBJECTS = $(am_sample_colorize_OBJECTS)
 sample_colorize_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
@@ -917,10 +911,9 @@ SOURCES = $(align_layers_SOURCES) $(animation_optimize_SOURCES) \
 	$(max_rgb_SOURCES) $(newsprint_SOURCES) $(nl_filter_SOURCES) \
 	$(oilify_SOURCES) $(photocopy_SOURCES) \
 	$(plugin_browser_SOURCES) $(procedure_browser_SOURCES) \
-	$(qbist_SOURCES) $(ripple_SOURCES) $(sample_colorize_SOURCES) \
-	$(sharpen_SOURCES) $(smooth_palette_SOURCES) \
-	$(softglow_SOURCES) $(sparkle_SOURCES) \
-	$(sphere_designer_SOURCES) $(tile_SOURCES) \
+	$(qbist_SOURCES) $(sample_colorize_SOURCES) $(sharpen_SOURCES) \
+	$(smooth_palette_SOURCES) $(softglow_SOURCES) \
+	$(sparkle_SOURCES) $(sphere_designer_SOURCES) $(tile_SOURCES) \
 	$(tile_small_SOURCES) $(unit_editor_SOURCES) \
 	$(unsharp_mask_SOURCES) $(van_gogh_lic_SOURCES) \
 	$(warp_SOURCES) $(wavelet_decompose_SOURCES) \
@@ -958,10 +951,9 @@ DIST_SOURCES = $(align_layers_SOURCES) $(animation_optimize_SOURCES) \
 	$(max_rgb_SOURCES) $(newsprint_SOURCES) $(nl_filter_SOURCES) \
 	$(oilify_SOURCES) $(photocopy_SOURCES) \
 	$(plugin_browser_SOURCES) $(procedure_browser_SOURCES) \
-	$(qbist_SOURCES) $(ripple_SOURCES) $(sample_colorize_SOURCES) \
-	$(sharpen_SOURCES) $(smooth_palette_SOURCES) \
-	$(softglow_SOURCES) $(sparkle_SOURCES) \
-	$(sphere_designer_SOURCES) $(tile_SOURCES) \
+	$(qbist_SOURCES) $(sample_colorize_SOURCES) $(sharpen_SOURCES) \
+	$(smooth_palette_SOURCES) $(softglow_SOURCES) \
+	$(sparkle_SOURCES) $(sphere_designer_SOURCES) $(tile_SOURCES) \
 	$(tile_small_SOURCES) $(unit_editor_SOURCES) \
 	$(unsharp_mask_SOURCES) $(van_gogh_lic_SOURCES) \
 	$(warp_SOURCES) $(wavelet_decompose_SOURCES) \
@@ -1147,7 +1139,7 @@ GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
 HARFBUZZ_LIBS = @HARFBUZZ_LIBS@
 HARFBUZZ_REQUIRED_VERSION = @HARFBUZZ_REQUIRED_VERSION@
-HAVE_CXX11 = @HAVE_CXX11@
+HAVE_CXX14 = @HAVE_CXX14@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_VFORK = @HAVE_VFORK@
@@ -1477,7 +1469,6 @@ top_srcdir = @top_srcdir@
 @HAVE_WINDRES_TRUE@plugin_browser_RC = plugin-browser.rc.o
 @HAVE_WINDRES_TRUE@procedure_browser_RC = procedure-browser.rc.o
 @HAVE_WINDRES_TRUE@qbist_RC = qbist.rc.o
-@HAVE_WINDRES_TRUE@ripple_RC = ripple.rc.o
 @HAVE_WINDRES_TRUE@sample_colorize_RC = sample-colorize.rc.o
 @HAVE_WINDRES_TRUE@sharpen_RC = sharpen.rc.o
 @HAVE_WINDRES_TRUE@smooth_palette_RC = smooth-palette.rc.o
@@ -2863,23 +2854,6 @@ qbist_LDADD = \
 	$(INTLLIBS)		\
 	$(qbist_RC)
 
-ripple_SOURCES = \
-	ripple.c
-
-ripple_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpmodule)	\
-	$(libgimp)		\
-	$(libgimpmath)		\
-	$(libgimpconfig)	\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)		\
-	$(ripple_RC)
-
 sample_colorize_SOURCES = \
 	sample-colorize.c
 
@@ -3534,10 +3508,6 @@ qbist$(EXEEXT): $(qbist_OBJECTS) $(qbist_DEPENDENCIES) $(EXTRA_qbist_DEPENDENCIE
 	@rm -f qbist$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(qbist_OBJECTS) $(qbist_LDADD) $(LIBS)
 
-ripple$(EXEEXT): $(ripple_OBJECTS) $(ripple_DEPENDENCIES) $(EXTRA_ripple_DEPENDENCIES) 
-	@rm -f ripple$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(ripple_OBJECTS) $(ripple_LDADD) $(LIBS)
-
 sample-colorize$(EXEEXT): $(sample_colorize_OBJECTS) $(sample_colorize_DEPENDENCIES) $(EXTRA_sample_colorize_DEPENDENCIES) 
 	@rm -f sample-colorize$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(sample_colorize_OBJECTS) $(sample_colorize_LDADD) $(LIBS)
@@ -3681,7 +3651,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugin-browser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/procedure-browser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/qbist.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ripple.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sample-colorize.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sharpen.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/smooth-palette.Po@am__quote@

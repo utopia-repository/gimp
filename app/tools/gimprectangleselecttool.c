@@ -465,10 +465,10 @@ gimp_rectangle_select_tool_cursor_update (GimpTool         *tool,
     {
       gimp_tool_widget_get_cursor (private->widget, coords, state,
                                    &cursor, NULL, &modifier);
-
-      gimp_tool_control_set_cursor          (tool->control, cursor);
-      gimp_tool_control_set_cursor_modifier (tool->control, modifier);
     }
+
+  gimp_tool_control_set_cursor          (tool->control, cursor);
+  gimp_tool_control_set_cursor_modifier (tool->control, modifier);
 
   /* override the previous if shift or ctrl are down */
   if (state & (gimp_get_extend_selection_mask () |
@@ -746,8 +746,6 @@ gimp_rectangle_select_tool_start (GimpRectangleSelectTool *rect_tool,
                                   G_CALLBACK (gimp_rectangle_select_tool_auto_shrink),
                                   rect_tool);
 
-  gimp_rectangle_select_tool_update_option_defaults (rect_tool, TRUE);
-
   g_signal_connect (widget, "response",
                     G_CALLBACK (gimp_rectangle_select_tool_rectangle_response),
                     rect_tool);
@@ -834,7 +832,7 @@ gimp_rectangle_select_tool_commit (GimpRectangleSelectTool *rect_tool)
               gimp_tool_control_push_preserve (tool->control, TRUE);
 
               /* We can conceptually think of a click outside of the
-               * selection as adding a 0px selection. Behave intuitivly
+               * selection as adding a 0px selection. Behave intuitively
                * for the current selection mode
                */
               operation = gimp_rectangle_select_tool_get_operation (rect_tool);

@@ -29,8 +29,8 @@
 #include "gegl/gimp-gegl-apply-operation.h"
 
 #include "gimp.h"
-#include "gimp-edit.h"
 #include "gimpcontext.h"
+#include "gimpdrawable-edit.h"
 #include "gimpdrawable-private.h"
 #include "gimperror.h"
 #include "gimpimage.h"
@@ -49,8 +49,8 @@
 static gboolean   gimp_selection_is_attached   (GimpItem            *item);
 static GimpItemTree * gimp_selection_get_tree  (GimpItem            *item);
 static void       gimp_selection_translate     (GimpItem            *item,
-                                                gint                 offset_x,
-                                                gint                 offset_y,
+                                                gdouble              offset_x,
+                                                gdouble              offset_y,
                                                 gboolean             push_undo);
 static void       gimp_selection_scale         (GimpItem            *item,
                                                 gint                 new_width,
@@ -217,8 +217,8 @@ gimp_selection_get_tree (GimpItem *item)
 
 static void
 gimp_selection_translate (GimpItem *item,
-                          gint      offset_x,
-                          gint      offset_y,
+                          gdouble   offset_x,
+                          gdouble   offset_y,
                           gboolean  push_undo)
 {
   GIMP_ITEM_CLASS (parent_class)->translate (item, offset_x, offset_y,
@@ -751,7 +751,7 @@ gimp_selection_extract (GimpSelection *selection,
 
       if (cut_image)
         {
-          gimp_edit_clear (image, GIMP_DRAWABLE (pickable), context);
+          gimp_drawable_edit_clear (GIMP_DRAWABLE (pickable), context);
         }
     }
   else if (cut_image)

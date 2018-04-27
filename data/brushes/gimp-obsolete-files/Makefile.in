@@ -317,7 +317,7 @@ GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
 HARFBUZZ_LIBS = @HARFBUZZ_LIBS@
 HARFBUZZ_REQUIRED_VERSION = @HARFBUZZ_REQUIRED_VERSION@
-HAVE_CXX11 = @HAVE_CXX11@
+HAVE_CXX14 = @HAVE_CXX14@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_VFORK = @HAVE_VFORK@
@@ -606,6 +606,7 @@ obsoletebrushdata_DATA = \
 	SketchBrush-16.gih		\
 	SketchBrush-32.gih		\
 	SketchBrush-64.gih		\
+	Structure.gbr			\
 	feltpen.gih			\
 	galaxy_small.gbr		\
 	pepper.gbr			\

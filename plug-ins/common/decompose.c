@@ -41,7 +41,7 @@
 #define PLUG_IN_ROLE      "gimp-decompose"
 
 
-/* Descrition of a component */
+/* Description of a component */
 typedef struct
 {
   const gchar    *babl_name;           /* channel's  babl_component name    */
@@ -451,7 +451,7 @@ decompose (gint32       image_ID,
   GeglBuffer    *src_buffer;
   GeglBuffer    *dst_buffer[MAX_EXTRACT_IMAGES];
   GimpPrecision  precision;
-  gboolean       requirments      = FALSE;
+  gboolean       requirements      = FALSE;
   gboolean       decomp_has_alpha = FALSE;
 
   extract_idx = -1;   /* Search extract type */
@@ -479,15 +479,15 @@ decompose (gint32       image_ID,
       decomp_has_alpha |= ! g_strcmp0 ("A",     extract[extract_idx].component[j].babl_name);
     }
 
-  requirments |= (gimp_drawable_is_rgb (drawable_ID));
-  requirments |= (gimp_drawable_is_indexed (drawable_ID));
-  requirments |= (gimp_drawable_is_gray (drawable_ID)
+  requirements |= (gimp_drawable_is_rgb (drawable_ID));
+  requirements |= (gimp_drawable_is_indexed (drawable_ID));
+  requirements |= (gimp_drawable_is_gray (drawable_ID)
                   && gimp_drawable_has_alpha (drawable_ID)
                   && (num_layers <= 2)
                   && decomp_has_alpha);
-  requirments &= (!decomp_has_alpha || gimp_drawable_has_alpha (drawable_ID));
+  requirements &= (!decomp_has_alpha || gimp_drawable_has_alpha (drawable_ID));
 
-  if (!requirments)
+  if (!requirements)
     {
       g_message (_("Image not suitable for this decomposition"));
       return -1;
@@ -746,14 +746,14 @@ copy_one_component (GeglBuffer      *src,
   GeglBuffer          *temp;
   const GeglRectangle *extent;
 
-  /* We are working in linear double precison*/
+  /* We are working in linear double precision */
   component_format = babl_format_new (babl_model (model),
                                       babl_type ("double"),
                                       babl_component (component.babl_name),
                                       NULL);
 
   /* We need to enforce linearity here
-   * If the output is "Y'", the ouput of temp is already ok
+   * If the output is "Y'", the output of temp is already ok
    * If the output is "Y" , it will enforce gamma-decoding.
    * A bit tricky and suboptimal...
    */

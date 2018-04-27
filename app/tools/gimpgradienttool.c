@@ -30,6 +30,8 @@
 
 #include "operations/gimp-operation-config.h"
 
+#include "operations/layer-modes/gimp-layer-modes.h"
+
 #include "core/gimpdrawable.h"
 #include "core/gimpdrawable-gradient.h"
 #include "core/gimpdrawablefilter.h"
@@ -575,7 +577,8 @@ gimp_gradient_tool_options_notify (GimpTool         *tool,
                                      gimp_context_get_paint_mode (context),
                                      GIMP_LAYER_COLOR_SPACE_AUTO,
                                      GIMP_LAYER_COLOR_SPACE_AUTO,
-                                     GIMP_LAYER_COMPOSITE_AUTO);
+                                     gimp_layer_mode_get_paint_composite_mode (
+                                       gimp_context_get_paint_mode (context)));
     }
 
   gimp_gradient_tool_editor_options_notify (gradient_tool, options, pspec);
@@ -872,8 +875,9 @@ gimp_gradient_tool_create_graph (GimpGradientTool *gradient_tool)
 static void
 gimp_gradient_tool_update_graph (GimpGradientTool *gradient_tool)
 {
-  GimpTool *tool = GIMP_TOOL (gradient_tool);
-  gint      off_x, off_y;
+  GimpTool            *tool    = GIMP_TOOL (gradient_tool);
+  GimpGradientOptions *options = GIMP_GRADIENT_TOOL_GET_OPTIONS (gradient_tool);
+  gint                 off_x, off_y;
 
   gimp_item_get_offset (GIMP_ITEM (tool->drawable), &off_x, &off_y);
 
@@ -909,11 +913,28 @@ gimp_gradient_tool_update_graph (GimpGradientTool *gradient_tool)
   else
 #endif
     {
+      GeglRectangle roi;
+      gdouble       start_x, start_y;
+      gdouble       end_x,   end_y;
+
+      gimp_item_mask_intersect (GIMP_ITEM (tool->drawable),
+                                &roi.x, &roi.y, &roi.width, &roi.height);
+
+      start_x = gradient_tool->start_x - off_x;
+      start_y = gradient_tool->start_y - off_y;
+      end_x   = gradient_tool->end_x   - off_x;
+      end_y   = gradient_tool->end_y   - off_y;
+
+      gimp_drawable_gradient_adjust_coords (tool->drawable,
+                                            options->gradient_type,
+                                            &roi,
+                                            &start_x, &start_y, &end_x, &end_y);
+
       gegl_node_set (gradient_tool->render_node,
-                     "start_x", gradient_tool->start_x - off_x,
-                     "start_y", gradient_tool->start_y - off_y,
-                     "end_x",   gradient_tool->end_x - off_x,
-                     "end_y",   gradient_tool->end_y - off_y,
+                     "start-x", start_x,
+                     "start-y", start_y,
+                     "end-x",   end_x,
+                     "end-y",   end_y,
                      NULL);
     }
 }
@@ -1025,7 +1046,8 @@ gimp_gradient_tool_create_filter (GimpGradientTool *gradient_tool,
                                  gimp_context_get_paint_mode (context),
                                  GIMP_LAYER_COLOR_SPACE_AUTO,
                                  GIMP_LAYER_COLOR_SPACE_AUTO,
-                                 GIMP_LAYER_COMPOSITE_AUTO);
+                                 gimp_layer_mode_get_paint_composite_mode (
+                                   gimp_context_get_paint_mode (context)));
 
   g_signal_connect (gradient_tool->filter, "flush",
                     G_CALLBACK (gimp_gradient_tool_filter_flush),

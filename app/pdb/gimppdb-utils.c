@@ -26,6 +26,7 @@
 
 #include "core/gimp.h"
 #include "core/gimpbrushgenerated.h"
+#include "core/gimpchannel.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpdatafactory.h"
 #include "core/gimpdrawable.h"
@@ -445,7 +446,7 @@ gimp_pdb_item_is_attached (GimpItem           *item,
       return FALSE;
     }
 
-  return gimp_pdb_item_is_modifyable (item, modify, error);
+  return gimp_pdb_item_is_modifiable (item, modify, error);
 }
 
 gboolean
@@ -559,12 +560,19 @@ gimp_pdb_item_is_floating (GimpItem  *item,
 }
 
 gboolean
-gimp_pdb_item_is_modifyable (GimpItem           *item,
+gimp_pdb_item_is_modifiable (GimpItem           *item,
                              GimpPDBItemModify   modify,
                              GError            **error)
 {
   g_return_val_if_fail (GIMP_IS_ITEM (item), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  /*  When a channel is position-locked, it is also implicitly
+   *  content-locked because we translate channels by modifying their
+   *  pixels.
+   */
+  if ((modify & GIMP_PDB_ITEM_POSITION) && GIMP_IS_CHANNEL (item))
+    modify |= GIMP_PDB_ITEM_CONTENT;
 
   if ((modify & GIMP_PDB_ITEM_CONTENT) && gimp_item_is_content_locked (item))
     {
@@ -815,7 +823,7 @@ gimp_pdb_get_vectors_stroke (GimpVectors        *vectors,
   if (! gimp_pdb_item_is_not_group (GIMP_ITEM (vectors), error))
     return NULL;
 
-  if (! modify || gimp_pdb_item_is_modifyable (GIMP_ITEM (vectors),
+  if (! modify || gimp_pdb_item_is_modifiable (GIMP_ITEM (vectors),
                                                modify, error))
     {
       stroke = gimp_vectors_stroke_get_by_ID (vectors, stroke_ID);

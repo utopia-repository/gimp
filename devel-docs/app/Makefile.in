@@ -312,7 +312,7 @@ GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
 HARFBUZZ_LIBS = @HARFBUZZ_LIBS@
 HARFBUZZ_REQUIRED_VERSION = @HARFBUZZ_REQUIRED_VERSION@
-HAVE_CXX11 = @HAVE_CXX11@
+HAVE_CXX14 = @HAVE_CXX14@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_VFORK = @HAVE_VFORK@
@@ -868,11 +868,11 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+@ENABLE_GTK_DOC_APP_FALSE@uninstall-local:
 @ENABLE_GTK_DOC_APP_FALSE@distclean-local:
 @ENABLE_GTK_DOC_APP_FALSE@maintainer-clean-local:
-@ENABLE_GTK_DOC_APP_FALSE@clean-local:
 @ENABLE_GTK_DOC_APP_FALSE@install-data-local:
-@ENABLE_GTK_DOC_APP_FALSE@uninstall-local:
+@ENABLE_GTK_DOC_APP_FALSE@clean-local:
 clean: clean-am
 
 clean-am: clean-generic clean-libtool clean-local mostlyclean-am

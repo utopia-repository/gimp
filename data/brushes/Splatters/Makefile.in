@@ -317,7 +317,7 @@ GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
 HARFBUZZ_LIBS = @HARFBUZZ_LIBS@
 HARFBUZZ_REQUIRED_VERSION = @HARFBUZZ_REQUIRED_VERSION@
-HAVE_CXX11 = @HAVE_CXX11@
+HAVE_CXX14 = @HAVE_CXX14@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_VFORK = @HAVE_VFORK@
@@ -567,6 +567,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 brushsplattersdatadir = $(gimpdatadir)/brushes/Splatters
 brushsplattersdata_DATA = \
+	Grunge-01.gih	\
 	Sparks-Hose.gih	\
 	Splats-01.gih	\
 	Splats-02.gih	\

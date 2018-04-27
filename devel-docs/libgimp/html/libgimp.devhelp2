@@ -395,7 +395,7 @@
     <keyword type="function" name="gimp_invert ()" link="libgimp-gimpcolor.html#gimp-invert" deprecated="Use gimp_drawable_invert() instead."/>
     <keyword type="function" name="gimp_curves_spline ()" link="libgimp-gimpcolor.html#gimp-curves-spline" deprecated="Use gimp_drawable_curves_spline() instead."/>
     <keyword type="function" name="gimp_curves_explicit ()" link="libgimp-gimpcolor.html#gimp-curves-explicit" deprecated="Use gimp_drawable_curves_explicit() instead."/>
-    <keyword type="function" name="gimp_color_balance ()" link="libgimp-gimpcolor.html#gimp-color-balance"/>
+    <keyword type="function" name="gimp_color_balance ()" link="libgimp-gimpcolor.html#gimp-color-balance" deprecated="Use gimp_drawable_color_color_balance() instead."/>
     <keyword type="function" name="gimp_colorize ()" link="libgimp-gimpcolor.html#gimp-colorize" deprecated="Use gimp_drawable_colorize_hsl() instead."/>
     <keyword type="function" name="gimp_histogram ()" link="libgimp-gimpcolor.html#gimp-histogram" deprecated="Use gimp_drawable_histogram() instead."/>
     <keyword type="function" name="gimp_hue_saturation ()" link="libgimp-gimpcolor.html#gimp-hue-saturation" deprecated="Use gimp_drawable_hue_saturation() instead."/>
@@ -742,7 +742,7 @@
     <keyword type="function" name="gimp_layer_scale_full ()" link="libgimp-gimplayer.html#gimp-layer-scale-full" deprecated="Use gimp_layer_scale() instead." since="2.6"/>
     <keyword type="function" name="gimp_layer_resize ()" link="libgimp-gimplayer.html#gimp-layer-resize"/>
     <keyword type="function" name="gimp_layer_resize_to_image_size ()" link="libgimp-gimplayer.html#gimp-layer-resize-to-image-size"/>
-    <keyword type="function" name="gimp_layer_translate ()" link="libgimp-gimplayer.html#gimp-layer-translate"/>
+    <keyword type="function" name="gimp_layer_translate ()" link="libgimp-gimplayer.html#gimp-layer-translate" deprecated="Use gimp_item_transform_translate() instead."/>
     <keyword type="function" name="gimp_layer_add_alpha ()" link="libgimp-gimplayer.html#gimp-layer-add-alpha"/>
     <keyword type="function" name="gimp_layer_flatten ()" link="libgimp-gimplayer.html#gimp-layer-flatten" since="2.4"/>
     <keyword type="function" name="gimp_layer_set_offsets ()" link="libgimp-gimplayer.html#gimp-layer-set-offsets"/>

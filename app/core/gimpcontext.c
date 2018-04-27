@@ -696,7 +696,7 @@ gimp_context_class_init (GimpContextClass *klass)
                          _("Paint Mode"),
                          _("Paint Mode"),
                          GIMP_TYPE_LAYER_MODE,
-                         GIMP_LAYER_MODE_NORMAL_LEGACY,
+                         GIMP_LAYER_MODE_NORMAL,
                          GIMP_PARAM_STATIC_STRINGS);
 
   GIMP_CONFIG_PROP_OBJECT (object_class, GIMP_CONTEXT_PROP_BRUSH,
@@ -963,6 +963,8 @@ static void
 gimp_context_dispose (GObject *object)
 {
   GimpContext *context = GIMP_CONTEXT (object);
+
+  gimp_context_set_parent (context, NULL);
 
   if (context->gimp)
     {
@@ -1479,12 +1481,18 @@ gimp_context_set_parent (GimpContext *context,
       g_signal_handlers_disconnect_by_func (context->parent,
                                             gimp_context_parent_notify,
                                             context);
+
+      g_object_remove_weak_pointer (G_OBJECT (context->parent),
+                                    (gpointer) &context->parent);
     }
 
   context->parent = parent;
 
   if (parent)
     {
+      g_object_add_weak_pointer (G_OBJECT (context->parent),
+                                 (gpointer) &context->parent);
+
       /*  copy all undefined properties from the new parent  */
       gimp_context_copy_properties (parent, context,
                                     ~context->defined_props &
@@ -2464,7 +2472,7 @@ gimp_context_real_set_opacity (GimpContext *context,
 GimpLayerMode
 gimp_context_get_paint_mode (GimpContext *context)
 {
-  g_return_val_if_fail (GIMP_IS_CONTEXT (context), GIMP_LAYER_MODE_NORMAL_LEGACY);
+  g_return_val_if_fail (GIMP_IS_CONTEXT (context), GIMP_LAYER_MODE_NORMAL);
 
   return context->paint_mode;
 }

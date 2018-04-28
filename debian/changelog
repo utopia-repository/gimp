@@ -1,8 +1,8 @@
-gimp (2.10.0-2) UNRELEASED; urgency=medium
+gimp (2.10.0-2) unstable; urgency=medium
 
   * Fix arch:all build after gimp-python split
 
- -- Jeremy Bicha <jbicha@debian.org>  Sat, 28 Apr 2018 10:07:43 -0400
+ -- Jeremy Bicha <jbicha@debian.org>  Sat, 28 Apr 2018 10:42:04 -0400
 
 gimp (2.10.0-1) unstable; urgency=medium
 

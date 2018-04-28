@@ -37,11 +37,14 @@ override_dh_makeshlibs:
 override_dh_python2:
 	dh_python2 -pgimp-python /usr/lib/gimp/2.0/python
 
+override_dh_install-arch:
+	dh_install -a
+	find debian/gimp -name '*.py' -print -delete
+	find debian/gimp -name 'pygimp.*' -print -delete
+
 override_dh_install:
 	find debian/tmp -name '*.la' -print -delete
 	dh_install
-	find debian/gimp -name '*.py' -print -delete
-	find debian/gimp -name 'pygimp.*' -print -delete
 
 override_dh_missing:
 	dh_missing --fail-missing

@@ -1,4 +1,4 @@
-gimp (2.10.0-1) UNRELEASED; urgency=medium
+gimp (2.10.0-1) unstable; urgency=medium
 
   * New upstream release
     - Fixes Open Location (Closes: #896812)
@@ -6,8 +6,9 @@ gimp (2.10.0-1) UNRELEASED; urgency=medium
       https://www.gimp.org/release-notes/gimp-2.10.html
   * Bump minimum gegl version to 0.4.0
   * debian/libgimp2.0.symbols: Add new symbol
+  * Release to unstable
 
- -- Jeremy Bicha <jbicha@debian.org>  Tue, 24 Apr 2018 10:33:13 -0400
+ -- Jeremy Bicha <jbicha@debian.org>  Sat, 28 Apr 2018 08:44:18 -0400
 
 gimp (2.10.0~RC2-1) experimental; urgency=medium
 

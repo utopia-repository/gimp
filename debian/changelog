@@ -1,3 +1,9 @@
+gimp (2.10.0-3) UNRELEASED; urgency=medium
+
+  * Fix dh_python2 override
+
+ -- Jeremy Bicha <jbicha@debian.org>  Sun, 29 Apr 2018 06:28:34 -0400
+
 gimp (2.10.0-2) unstable; urgency=medium
 
   * Fix arch:all build after gimp-python split

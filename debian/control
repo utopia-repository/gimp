@@ -120,8 +120,8 @@ Depends: ${misc:Depends},
          ${shlibs:Depends},
          ${python:Depends},
          python-gtk2 (>= 2.8.0),
-Breaks: gimp (<< 2.8.22-2~)
-Replaces: gimp (<< 2.8.22-2~)
+Breaks: gimp (<< 2.10.0-3~)
+Replaces: gimp (<< 2.10.0-3~)
 Description: Python scripting support for GIMP
  This package contains the python scripting extension for GIMP and the plugins
  making use of that extension.

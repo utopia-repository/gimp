@@ -1,4 +1,4 @@
-gimp (2.10.0-3) UNRELEASED; urgency=medium
+gimp (2.10.0-3) unstable; urgency=medium
 
   * Fix dh_python2 override
   * Bump gimp-python's Breaks/Replaces: gimp because of mistake in 2.10.0-2
@@ -6,7 +6,7 @@ gimp (2.10.0-3) UNRELEASED; urgency=medium
   * Cherry-pick 0002-gimp.pc-Fix-reference-to-gegl-0.3.patch:
     - Update gimp.pc for gegl soname bump
 
- -- Jeremy Bicha <jbicha@debian.org>  Sun, 29 Apr 2018 06:28:34 -0400
+ -- Jeremy Bicha <jbicha@debian.org>  Sun, 29 Apr 2018 08:04:43 -0400
 
 gimp (2.10.0-2) unstable; urgency=medium
 

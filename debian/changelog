@@ -2,6 +2,7 @@ gimp (2.10.0-3) UNRELEASED; urgency=medium
 
   * Fix dh_python2 override
   * Bump gimp-python's Breaks/Replaces: gimp because of mistake in 2.10.0-2
+  * Have libgimp-dev depend on libgegl-dev (Closes: #897160)
   * Cherry-pick 0002-gimp.pc-Fix-reference-to-gegl-0.3.patch:
     - Update gimp.pc for gegl soname bump
 

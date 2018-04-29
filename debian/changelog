@@ -1,3 +1,11 @@
+gimp (2.10.0-4) UNRELEASED; urgency=medium
+
+  * Use --without-appdata-test to ensure consistent results even if
+    appstream-util is installed. The test is disabled because it requires
+    network access. (Closes: #897179)
+
+ -- Jeremy Bicha <jbicha@debian.org>  Sun, 29 Apr 2018 10:16:52 -0400
+
 gimp (2.10.0-3) unstable; urgency=medium
 
   * Fix dh_python2 override

@@ -4,6 +4,7 @@ Section: graphics
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
 Uploaders: @GNOME_TEAM@, Ari Pollak <ari@debian.org>
 Build-Depends: debhelper (>= 11),
+               desktop-file-utils <!nocheck>,
                dh-python,
                gegl (>= 0.4.2),
                gettext,
@@ -33,6 +34,7 @@ Build-Depends: debhelper (>= 11),
                libgdk-pixbuf2.0-doc,
                libgs-dev,
                libgudev-1.0-dev (>= 167) [linux-any],
+               libheif-dev (>= 1.1.0),
                libice-dev,
                libjpeg-dev,
                liblcms2-dev (>= 2.8),

@@ -11,16 +11,16 @@ AC_PREREQ(2.54)
 
 m4_define([gimp_major_version], [2])
 m4_define([gimp_minor_version], [10])
-m4_define([gimp_micro_version], [0])
+m4_define([gimp_micro_version], [2])
 m4_define([gimp_real_version],
           [gimp_major_version.gimp_minor_version.gimp_micro_version])
 m4_define([gimp_version], [gimp_real_version])
-m4_define([gimp_interface_age], [0])
+m4_define([gimp_interface_age], [2])
 m4_define([gimp_binary_age],
           [m4_eval(100 * gimp_minor_version + gimp_micro_version)])
 
 # For overriding the version string. Comment out if not needed.
-m4_define([gimp_version], [2.10.0])
+# m4_define([gimp_version], [2.10.0])
 
 # This is the X.Y used in -lgimp-X.Y
 m4_define([gimp_api_version], [2.0])
@@ -43,8 +43,11 @@ m4_define([gimp_stable],
 m4_define([gimp_full_name], [GNU Image Manipulation Program])
 
 # required versions of other packages
-m4_define([babl_required_version], [0.1.46])
-m4_define([gegl_required_version], [0.4.0])
+m4_define([babl_required_version], [0.1.50])
+m4_define([gegl_major_minor_version], [0.4])
+m4_define([gegl_micro_version], [2])
+m4_define([gegl_required_version],
+          [gegl_major_minor_version.gegl_micro_version])
 m4_define([glib_required_version], [2.54.2])
 m4_define([atk_required_version], [2.2.0])
 m4_define([gtk_required_version], [2.24.10])
@@ -78,6 +81,7 @@ m4_define([intltool_required_version], [0.40.1])
 m4_define([perl_required_version], [5.10.0])
 m4_define([python2_required_version], [2.5.0])
 m4_define([webp_required_version], [0.6.0])
+m4_define([libheif_required_version], [1.1.0])
 
 # Current test considers only 2 version numbers. If we update the recommended
 # version of gettext with more version numbers, please update the tests.
@@ -141,6 +145,7 @@ GTK_REQUIRED_VERSION=gtk_required_version
 GTK_WIN32_RECOMMENDED_VERSION=gtk_win32_recommended_version
 CAIRO_REQUIRED_VERSION=cairo_required_version
 CAIRO_PDF_REQUIRED_VERSION=cairo_pdf_required_version
+GEGL_MAJOR_MINOR_VERSION=gegl_major_minor_version
 GEGL_REQUIRED_VERSION=gegl_required_version
 GEXIV2_REQUIRED_VERSION=gexiv2_required_version
 LCMS_REQUIRED_VERSION=lcms_required_version
@@ -163,6 +168,7 @@ INTLTOOL_REQUIRED_VERSION=intltool_required_version
 PERL_REQUIRED_VERSION=perl_required_version
 PYTHON2_REQUIRED_VERSION=python2_required_version
 WEBP_REQUIRED_VERSION=webp_required_version
+LIBHEIF_REQUIRED_VERSION=libheif_required_version
 XGETTEXT_RECOMMENDED_VERSION=xgettext_recommended_version
 AC_SUBST(GLIB_REQUIRED_VERSION)
 AC_SUBST(GDK_PIXBUF_REQUIRED_VERSION)
@@ -170,6 +176,7 @@ AC_SUBST(GTK_REQUIRED_VERSION)
 AC_SUBST(GTK_WIN32_RECOMMENDED_VERSION)
 AC_SUBST(CAIRO_REQUIRED_VERSION)
 AC_SUBST(CAIRO_PDF_REQUIRED_VERSION)
+AC_SUBST(GEGL_MAJOR_MINOR_VERSION)
 AC_SUBST(GEGL_REQUIRED_VERSION)
 AC_SUBST(GEXIV2_REQUIRED_VERSION)
 AC_SUBST(LCMS_REQUIRED_VERSION)
@@ -192,6 +199,7 @@ AC_SUBST(INTLTOOL_REQUIRED_VERSION)
 AC_SUBST(PERL_REQUIRED_VERSION)
 AC_SUBST(PYTHON2_REQUIRED_VERSION)
 AC_SUBST(WEBP_REQUIRED_VERSION)
+AC_SUBST(LIBHEIF_REQUIRED_VERSION)
 AC_SUBST(XGETTEXT_RECOMMENDED_VERSION)
 
 # The symbol GIMP_UNSTABLE is defined above for substitution in
@@ -563,7 +571,7 @@ AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
 AC_HEADER_TIME
 
-AC_CHECK_HEADERS(execinfo.h fcntl.h sys/param.h sys/prctl.h sys/time.h sys/times.h sys/wait.h unistd.h)
+AC_CHECK_HEADERS(execinfo.h fcntl.h sys/param.h sys/prctl.h sys/thr.h sys/time.h sys/times.h sys/wait.h unistd.h)
 AC_CHECK_FUNCS(backtrace, , AC_CHECK_LIB(execinfo, backtrace))
 
 AC_TYPE_PID_T
@@ -574,6 +582,7 @@ AC_FUNC_ALLOCA
 # check some more funcs
 AC_CHECK_FUNCS(fsync)
 AC_CHECK_FUNCS(difftime mmap)
+AC_CHECK_FUNCS(thr_self)
 
 
 AM_BINRELOC
@@ -671,12 +680,20 @@ m4_define([add_deps_error], [
 
 PKG_CHECK_MODULES(BABL, [babl >= babl_required_version],,
                   [add_deps_error([babl >= babl_required_version])])
-PKG_CHECK_MODULES(GEGL, gegl-0.4 >= gegl_required_version,,
-                  [add_deps_error([gegl-0.4 >= gegl_required_version])])
+PKG_CHECK_MODULES(GEGL, gegl-gegl_major_minor_version >= gegl_required_version,,
+                  [add_deps_error([gegl-gegl_major_minor_version >= gegl_required_version])])
 PKG_CHECK_MODULES(ATK, atk >= atk_required_version,,
                   [add_deps_error([atk >= atk_required_version])])
 
-AM_PATH_GLIB_2_0(glib_required_version, :,
+# glib 2.56.0 and 2.56.1 have a bad bug on Win32, breaking the file
+# chooser dialogs. This has been fixed, but no release made yet. When
+# 2.56.2 is released, the additional test for these broken versions can
+# be removed and we can bump the requirement to glib 2.56.2.
+AM_PATH_GLIB_2_0(glib_required_version,
+                 [if test "x$platform_win32" = "xyes"; then
+                   PKG_CHECK_MODULES(GLIB_WIN_BUG, glib-2.0 >= 2.56.0 glib-2.0 < 2.56.2,
+                                     [add_deps_error([glib >= glib_required_version except glib 2.56.0 and 2.56.1 (broken on Win32 - bug 795855)])],:)
+                 fi],
                  [add_deps_error([glib >= glib_required_version],
                                  [Test for GLIB failed])],
                  gobject)
@@ -1658,6 +1675,28 @@ fi
 AM_CONDITIONAL(HAVE_WEBP, test "x$have_webp" = xyes)
 
 
+###################
+# Check for libheif
+###################
+
+AC_ARG_WITH(libheif, [  --without-libheif       build without libheif support])
+
+have_libheif=no
+if test "x$with_libheif" != xno; then
+  have_libheif=yes
+  PKG_CHECK_MODULES(LIBHEIF, libheif >= libheif_required_version,
+    FILE_HEIF='file-heif$(EXEEXT)',
+    [have_libheif="no (libheif not found)"])
+fi
+
+if test "x$have_libheif" = xyes; then
+  MIME_TYPES="$MIME_TYPES;image/heif;image/heic"
+fi
+
+AC_SUBST(FILE_HEIF)
+AM_CONDITIONAL(HAVE_LIBHEIF, test "x$have_libheif" = xyes)
+
+
 ######################
 # Check for libmypaint
 ######################
@@ -2076,21 +2115,6 @@ fi
 AM_CONDITIONAL(BUILD_PYTHON, test "x$enable_python" != xno)
 
 
-#########################################
-# Check whether Script-Fu should be built
-#########################################
-
-have_script_fu=yes
-AC_ARG_WITH(script-fu,
-  AS_HELP_STRING([--without-script-fu],
-                 [do not build the script-fu extension]))
-
-if test "x$with_script_fu" = "xno"; then
-  have_script_fu="no (script-fu extension disabled)"
-fi
-AM_CONDITIONAL(BUILD_SCRIPT_FU, test "x$with_script_fu" != "xno")
-
-
 ###########################################################
 # Some plug-ins don't build on Win32, others are Win32-only
 ###########################################################
@@ -2260,6 +2284,71 @@ if test "x$have_appstream_util" = "xyes"; then
   have_appstream_util="yes (this test requires network access; --without-appdata-test to disable)"
 fi
 
+
+#################################
+# Check for desktop-file-validate
+#################################
+
+AC_PATH_PROG(DESKTOP_FILE_VALIDATE, desktop-file-validate, no)
+if test "x$DESKTOP_FILE_VALIDATE" != "xno"; then
+  have_desktop_file_validate="yes"
+else
+  have_desktop_file_validate="no (desktop-file-validate not found)"
+fi
+AM_CONDITIONAL(HAVE_DESKTOP_FILE_VALIDATE, test "x$DESKTOP_FILE_VALIDATE" != "xno")
+
+####################
+# Set bug report URL
+####################
+
+# Allowing third-party packagers to set their own bugtracker URL, in
+# order to filter first packaging bugs from core bugs.
+
+AC_ARG_WITH(bug-report-url,
+            [  --with-bug-report-url   URL used by the debug dialog to report bugs],,
+            [with_bug_report_url="$PACKAGE_BUGREPORT"])
+
+if test "x$with_bug_report_url" = "x"; then
+  with_bug_report_url="$PACKAGE_BUGREPORT"
+fi
+
+AC_DEFINE_UNQUOTED(BUG_REPORT_URL, "$with_bug_report_url",
+                   [The URL to open in order to report bugs])
+
+override_bug_report_url=
+if test "x$with_bug_report_url" = "x$PACKAGE_BUGREPORT"; then
+override_bug_report_url="
+NOTE: if you plan on packaging GIMP for distribution, it is recommended
+      to override the bug report URL with option:
+        --with-bug-report-url=https://example.com/
+      so that you can filter packaging bugs from core bugs before
+      reporting upstream.
+"
+fi
+
+#########################
+# Default ICC directory #
+#########################
+
+# This is necessary because some Unix systems may have a different
+# standard path for color profiles. And in particular, sandbox builds
+# might mount the host system at a different root. This is for
+# instance the case of flatpak which mount the host root at /run/host/.
+if test "x$platform_osx" = "xno" &&
+   test "x$platform_win32" = "xno"; then
+  AC_MSG_CHECKING([default directory for color profiles])
+  AC_ARG_WITH(icc-directory,
+              [  --with-icc-directory    Path to default color profiles for this system],,
+              [with_icc_directory="/usr/share/color/icc"])
+
+  if test "x$with_icc_directory" = "x"; then
+    with_icc_directory="/usr/share/color/icc"
+  fi
+
+  AC_DEFINE_UNQUOTED(COLOR_PROFILE_DIRECTORY,
+                     "$with_icc_directory",
+                     [The path to default color profiles for this system])
+fi
 
 ######################################
 # Checks for gtk-doc and docbook-tools
@@ -2747,6 +2836,7 @@ Optional Features:
   Vector icons:            $enable_vector_icons
   Dr. Mingw (Win32):       $enable_drmingw
   Bundled MyPaint Brushes: $enable_bundled_mypaint_brushes (at $mypaint_brushes_dir)
+  Default ICC directory:   $with_icc_directory
 
 Optional Plug-Ins:
   Ascii Art:               $have_libaa
@@ -2756,10 +2846,10 @@ Optional Plug-Ins:
   MNG:                     $have_libmng
   OpenEXR:                 $have_openexr
   WebP:                    $have_webp
+  Heif:                    $have_libheif
   PDF (export):            $have_cairo_pdf
   Print:                   $enable_print
   Python 2:                $enable_python
-  Script-Fu:               $have_script_fu
   TWAIN (Win32):           $os_win32
   Webpage:                 $have_webkit
   WMF:                     $have_libwmf
@@ -2775,7 +2865,10 @@ Optional Modules:
 Tests:
   Use xvfb-run             $have_xvfb_run
   Test appdata             $have_appstream_util
-$have_recommended_xgettext$have_recommended_gtk$warning_vector_icons_windows$warning_glib_networking$warning_gcc"
+  Test desktop file        $have_desktop_file_validate
+
+Bug report URL: $with_bug_report_url
+$override_bug_report_url$have_recommended_xgettext$have_recommended_gtk$warning_vector_icons_windows$warning_glib_networking$warning_gcc"
 
 if test "x$required_deps" = "x"; then
   AC_OUTPUT

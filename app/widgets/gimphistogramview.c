@@ -451,26 +451,32 @@ gimp_histogram_view_draw_spike (GimpHistogramView    *view,
 
   if (view->histogram)
     {
+      gint ii = i;
+
       do
         {
-          gdouble v = gimp_histogram_get_value (view->histogram, channel, i++);
+          gdouble v = gimp_histogram_get_value (view->histogram,
+                                                channel, ii++);
 
           if (v > value)
             value = v;
         }
-      while (i < j);
+      while (ii < j);
     }
 
   if (bg_color && view->bg_histogram)
     {
+      gint ii = i;
+
       do
         {
-          gdouble v = gimp_histogram_get_value (view->bg_histogram, channel, i++);
+          gdouble v = gimp_histogram_get_value (view->bg_histogram,
+                                                channel, ii++);
 
           if (v > bg_value)
             bg_value = v;
         }
-      while (i < j);
+      while (ii < j);
     }
 
   if (value <= 0.0 && bg_value <= 0.0)
@@ -637,12 +643,11 @@ gimp_histogram_view_set_histogram (GimpHistogramView *view,
                             G_CALLBACK (gimp_histogram_view_notify),
                             view);
 
-          if (view->n_bins != gimp_histogram_n_bins (histogram))
-            gimp_histogram_view_update_bins (view);
-
           if (view->channel >= gimp_histogram_n_channels (histogram))
             gimp_histogram_view_set_channel (view, GIMP_HISTOGRAM_VALUE);
         }
+
+      gimp_histogram_view_update_bins (view);
     }
 
   gtk_widget_queue_draw (GTK_WIDGET (view));
@@ -671,7 +676,12 @@ gimp_histogram_view_set_background (GimpHistogramView *view,
   if (view->bg_histogram != histogram)
     {
       if (view->bg_histogram)
-        g_object_unref (view->bg_histogram);
+        {
+          g_signal_handlers_disconnect_by_func (view->bg_histogram,
+                                                gimp_histogram_view_notify,
+                                                view);
+          g_object_unref (view->bg_histogram);
+        }
 
       view->bg_histogram = histogram;
 
@@ -679,12 +689,15 @@ gimp_histogram_view_set_background (GimpHistogramView *view,
         {
           g_object_ref (histogram);
 
-          if (view->n_bins != gimp_histogram_n_bins (histogram))
-            gimp_histogram_view_update_bins (view);
+          g_signal_connect (histogram, "notify",
+                            G_CALLBACK (gimp_histogram_view_notify),
+                            view);
 
           if (view->channel >= gimp_histogram_n_channels (histogram))
             gimp_histogram_view_set_channel (view, GIMP_HISTOGRAM_VALUE);
         }
+
+      gimp_histogram_view_update_bins (view);
     }
 
   gtk_widget_queue_draw (GTK_WIDGET (view));
@@ -793,15 +806,18 @@ gimp_histogram_view_update_bins (GimpHistogramView *view)
   else if (view->bg_histogram)
     new_bins = gimp_histogram_n_bins (view->bg_histogram);
 
-  view->start = ROUND (((gdouble) view->start *
-                        (new_bins - 1) /
-                        (view->n_bins - 1)));
-  view->end   = ROUND (((gdouble) view->end   *
-                        (new_bins - 1) /
-                        (view->n_bins - 1)));
+  if (new_bins != view->n_bins)
+    {
+      view->start = ROUND (((gdouble) view->start *
+                            (new_bins - 1) /
+                            (view->n_bins - 1)));
+      view->end   = ROUND (((gdouble) view->end   *
+                            (new_bins - 1) /
+                            (view->n_bins - 1)));
 
-  view->n_bins = new_bins;
+      view->n_bins = new_bins;
 
-  g_signal_emit (view, histogram_view_signals[RANGE_CHANGED], 0,
-                 view->start, view->end);
+      g_signal_emit (view, histogram_view_signals[RANGE_CHANGED], 0,
+                     view->start, view->end);
+    }
 }

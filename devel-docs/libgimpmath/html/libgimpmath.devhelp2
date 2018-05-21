@@ -20,6 +20,7 @@
     <keyword type="macro" name="SQR()" link="libgimpmath-GimpMath.html#SQR:CAPS"/>
     <keyword type="macro" name="MAX255()" link="libgimpmath-GimpMath.html#MAX255:CAPS"/>
     <keyword type="macro" name="CLAMP0255()" link="libgimpmath-GimpMath.html#CLAMP0255:CAPS"/>
+    <keyword type="macro" name="SAFE_CLAMP()" link="libgimpmath-GimpMath.html#SAFE-CLAMP:CAPS" since="2.10"/>
     <keyword type="macro" name="gimp_deg_to_rad()" link="libgimpmath-GimpMath.html#gimp-deg-to-rad"/>
     <keyword type="macro" name="gimp_rad_to_deg()" link="libgimpmath-GimpMath.html#gimp-rad-to-deg"/>
     <keyword type="function" name="gimp_matrix2_identity ()" link="libgimpmath-GimpMatrix.html#gimp-matrix2-identity"/>

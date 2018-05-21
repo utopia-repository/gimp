@@ -480,7 +480,7 @@ sanity_check_babl (void)
 
 #define BABL_REQUIRED_MAJOR 0
 #define BABL_REQUIRED_MINOR 1
-#define BABL_REQUIRED_MICRO 46
+#define BABL_REQUIRED_MICRO 50
 
   babl_get_version (&babl_major_version,
                     &babl_minor_version,
@@ -518,7 +518,7 @@ sanity_check_gegl (void)
 
 #define GEGL_REQUIRED_MAJOR 0
 #define GEGL_REQUIRED_MINOR 4
-#define GEGL_REQUIRED_MICRO 0
+#define GEGL_REQUIRED_MICRO 2
 
   gegl_get_version (&gegl_major_version,
                     &gegl_minor_version,
@@ -681,6 +681,7 @@ sanity_check_gegl_ops (void)
     "gegl:photocopy",
     "gegl:pixelize",
     "gegl:polar-coordinates",
+    "gegl:recursive-transform",
     "gegl:red-eye-removal",
     "gegl:reinhard05",
     "gegl:rgb-clip",
@@ -697,6 +698,7 @@ sanity_check_gegl_ops (void)
     "gegl:slic",
     "gegl:snn-mean",
     "gegl:softglow",
+    "gegl:spherize",
     "gegl:spiral",
     "gegl:stretch-contrast",
     "gegl:stretch-contrast-hsv",

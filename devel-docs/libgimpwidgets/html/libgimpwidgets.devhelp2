@@ -500,13 +500,17 @@
     <keyword type="function" name="gimp_color_selector_get_color ()" link="GimpColorSelector.html#gimp-color-selector-get-color" since="2.10"/>
     <keyword type="function" name="gimp_color_selector_set_channel ()" link="GimpColorSelector.html#gimp-color-selector-set-channel"/>
     <keyword type="function" name="gimp_color_selector_get_channel ()" link="GimpColorSelector.html#gimp-color-selector-get-channel" since="2.10"/>
+    <keyword type="function" name="gimp_color_selector_set_model_visible ()" link="GimpColorSelector.html#gimp-color-selector-set-model-visible" since="2.10"/>
+    <keyword type="function" name="gimp_color_selector_get_model_visible ()" link="GimpColorSelector.html#gimp-color-selector-get-model-visible" since="2.10"/>
     <keyword type="function" name="gimp_color_selector_color_changed ()" link="GimpColorSelector.html#gimp-color-selector-color-changed"/>
     <keyword type="function" name="gimp_color_selector_channel_changed ()" link="GimpColorSelector.html#gimp-color-selector-channel-changed"/>
+    <keyword type="function" name="gimp_color_selector_model_visible_changed ()" link="GimpColorSelector.html#gimp-color-selector-model-visible-changed" since="2.10"/>
     <keyword type="function" name="gimp_color_selector_set_config ()" link="GimpColorSelector.html#gimp-color-selector-set-config" since="2.4"/>
     <keyword type="struct" name="GimpColorSelector" link="GimpColorSelector.html#GimpColorSelector-struct"/>
     <keyword type="macro" name="GIMP_COLOR_SELECTOR_SIZE" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-SIZE:CAPS"/>
     <keyword type="macro" name="GIMP_COLOR_SELECTOR_BAR_SIZE" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-BAR-SIZE:CAPS"/>
     <keyword type="enum" name="enum GimpColorSelectorChannel" link="GimpColorSelector.html#GimpColorSelectorChannel"/>
+    <keyword type="enum" name="enum GimpColorSelectorModel" link="GimpColorSelector.html#GimpColorSelectorModel" since="2.10"/>
     <keyword type="signal" name="The “channel-changed” signal" link="GimpColorSelector.html#GimpColorSelector-channel-changed"/>
     <keyword type="signal" name="The “color-changed” signal" link="GimpColorSelector.html#GimpColorSelector-color-changed"/>
     <keyword type="signal" name="The “model-visible-changed” signal" link="GimpColorSelector.html#GimpColorSelector-model-visible-changed"/>
@@ -514,6 +518,8 @@
     <keyword type="struct" name="GimpColorNotebook" link="GimpColorNotebook.html#GimpColorNotebook-struct"/>
     <keyword type="property" name="The “tab-border” style property" link="GimpColorNotebook.html#GimpColorNotebook--s-tab-border"/>
     <keyword type="property" name="The “tab-icon-size” style property" link="GimpColorNotebook.html#GimpColorNotebook--s-tab-icon-size"/>
+    <keyword type="function" name="gimp_color_scales_set_show_rgb_u8 ()" link="GimpColorScales.html#gimp-color-scales-set-show-rgb-u8"/>
+    <keyword type="function" name="gimp_color_scales_get_show_rgb_u8 ()" link="GimpColorScales.html#gimp-color-scales-get-show-rgb-u8"/>
     <keyword type="struct" name="GimpColorScales" link="GimpColorScales.html#GimpColorScales-struct"/>
     <keyword type="property" name="The “show-rgb-u8” property" link="GimpColorScales.html#GimpColorScales--show-rgb-u8"/>
     <keyword type="struct" name="GimpColorSelect" link="GimpColorSelect.html#GimpColorSelect-struct"/>
@@ -556,6 +562,7 @@
     <keyword type="function" name="gimp_stock_init ()" link="libgimpwidgets-GimpIcons.html#gimp-stock-init" deprecated="2.10: Use gimp_icons_init() instead."/>
     <keyword type="function" name="gimp_icons_init ()" link="libgimpwidgets-GimpIcons.html#gimp-icons-init"/>
     <keyword type="function" name="gimp_icons_set_icon_theme ()" link="libgimpwidgets-GimpIcons.html#gimp-icons-set-icon-theme"/>
+    <keyword type="macro" name="GIMP_ICON_ATTACH" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-ATTACH:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_DETACH" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-DETACH:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_INVERT" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-INVERT:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_RESET" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-RESET:CAPS"/>
@@ -619,6 +626,8 @@
     <keyword type="macro" name="GIMP_ICON_COLOR_SELECTOR_CMYK" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-COLOR-SELECTOR-CMYK:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_COLOR_SELECTOR_TRIANGLE" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-COLOR-SELECTOR-TRIANGLE:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_COLOR_SELECTOR_WATER" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-COLOR-SELECTOR-WATER:CAPS"/>
+    <keyword type="macro" name="GIMP_ICON_COLOR_SPACE_LINEAR" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-COLOR-SPACE-LINEAR:CAPS"/>
+    <keyword type="macro" name="GIMP_ICON_COLOR_SPACE_PERCEPTUAL" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-COLOR-SPACE-PERCEPTUAL:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_COLORS_DEFAULT" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-COLORS-DEFAULT:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_COLORS_SWAP" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-COLORS-SWAP:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_CONTROLLER" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-CONTROLLER:CAPS"/>
@@ -820,6 +829,7 @@
     <keyword type="macro" name="GIMP_ICON_TOOL_ROTATE" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-ROTATE:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_TOOL_SCALE" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-SCALE:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_TOOL_SEAMLESS_CLONE" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-SEAMLESS-CLONE:CAPS"/>
+    <keyword type="macro" name="GIMP_ICON_TOOL_SHADOWS_HIGHLIGHTS" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-SHADOWS-HIGHLIGHTS:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_TOOL_SHEAR" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-SHEAR:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_TOOL_SMUDGE" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-SMUDGE:CAPS"/>
     <keyword type="macro" name="GIMP_ICON_TOOL_TEXT" link="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-TEXT:CAPS"/>
@@ -1195,6 +1205,9 @@
     <keyword type="constant" name="GIMP_COLOR_SELECTOR_LCH_LIGHTNESS" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-LCH-LIGHTNESS:CAPS"/>
     <keyword type="constant" name="GIMP_COLOR_SELECTOR_LCH_CHROMA" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-LCH-CHROMA:CAPS"/>
     <keyword type="constant" name="GIMP_COLOR_SELECTOR_LCH_HUE" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-LCH-HUE:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_SELECTOR_MODEL_RGB" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-MODEL-RGB:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_SELECTOR_MODEL_LCH" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-MODEL-LCH:CAPS"/>
+    <keyword type="constant" name="GIMP_COLOR_SELECTOR_MODEL_HSV" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-MODEL-HSV:CAPS"/>
     <keyword type="constant" name="GIMP_CONTROLLER_EVENT_TRIGGER" link="GimpController.html#GIMP-CONTROLLER-EVENT-TRIGGER:CAPS"/>
     <keyword type="constant" name="GIMP_CONTROLLER_EVENT_VALUE" link="GimpController.html#GIMP-CONTROLLER-EVENT-VALUE:CAPS"/>
     <keyword type="constant" name="GIMP_WIDGETS_PARSE_ERROR" link="libgimpwidgets-GimpWidgets.html#GIMP-WIDGETS-PARSE-ERROR:CAPS"/>

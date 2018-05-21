@@ -837,6 +837,7 @@ supported with <em class="parameter"><code>mime_type</code></em>
 <hr>
 <div class="refsect2">
 <a name="GimpMetadataLoadFlags"></a><h3>enum GimpMetadataLoadFlags</h3>
+<p>What metadata to load when importing images.</p>
 <div class="refsect3">
 <a name="GimpMetadataLoadFlags.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -848,28 +849,38 @@ supported with <em class="parameter"><code>mime_type</code></em>
 <tbody>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-METADATA-LOAD-COMMENT:CAPS"></a>GIMP_METADATA_LOAD_COMMENT</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>Load the comment</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-METADATA-LOAD-RESOLUTION:CAPS"></a>GIMP_METADATA_LOAD_RESOLUTION</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>Load the resolution</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-METADATA-LOAD-ORIENTATION:CAPS"></a>GIMP_METADATA_LOAD_ORIENTATION</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>Load the orientation (rotation)</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-METADATA-LOAD-COLORSPACE:CAPS"></a>GIMP_METADATA_LOAD_COLORSPACE</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>Load the colorspace</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-METADATA-LOAD-ALL:CAPS"></a>GIMP_METADATA_LOAD_ALL</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>Load all of the above</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -878,6 +889,7 @@ supported with <em class="parameter"><code>mime_type</code></em>
 <hr>
 <div class="refsect2">
 <a name="GimpMetadataSaveFlags"></a><h3>enum GimpMetadataSaveFlags</h3>
+<p>What kinds of metadata to save when exporting images.</p>
 <div class="refsect3">
 <a name="GimpMetadataSaveFlags.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -889,28 +901,38 @@ supported with <em class="parameter"><code>mime_type</code></em>
 <tbody>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-METADATA-SAVE-EXIF:CAPS"></a>GIMP_METADATA_SAVE_EXIF</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>Save EXIF</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-METADATA-SAVE-XMP:CAPS"></a>GIMP_METADATA_SAVE_XMP</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>Save XMP</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-METADATA-SAVE-IPTC:CAPS"></a>GIMP_METADATA_SAVE_IPTC</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>Save IPTC</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-METADATA-SAVE-THUMBNAIL:CAPS"></a>GIMP_METADATA_SAVE_THUMBNAIL</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>Save a thumbnail of the image</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-METADATA-SAVE-ALL:CAPS"></a>GIMP_METADATA_SAVE_ALL</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>Save all of the above</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -919,6 +941,7 @@ supported with <em class="parameter"><code>mime_type</code></em>
 <hr>
 <div class="refsect2">
 <a name="GimpMetadataColorspace"></a><h3>enum GimpMetadataColorspace</h3>
+<p>Well-defined colorspace information available from metadata</p>
 <div class="refsect3">
 <a name="GimpMetadataColorspace.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -930,23 +953,31 @@ supported with <em class="parameter"><code>mime_type</code></em>
 <tbody>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-METADATA-COLORSPACE-UNSPECIFIED:CAPS"></a>GIMP_METADATA_COLORSPACE_UNSPECIFIED</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>Unspecified</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-METADATA-COLORSPACE-UNCALIBRATED:CAPS"></a>GIMP_METADATA_COLORSPACE_UNCALIBRATED</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>Uncalibrated</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-METADATA-COLORSPACE-SRGB:CAPS"></a>GIMP_METADATA_COLORSPACE_SRGB</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>sRGB</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GIMP-METADATA-COLORSPACE-ADOBERGB:CAPS"></a>GIMP_METADATA_COLORSPACE_ADOBERGB</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_description">
+<p>Adobe RGB</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>

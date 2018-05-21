@@ -12,6 +12,12 @@
 /* Define to 1 if you are compiling for amd64. */
 #undef ARCH_X86_64
 
+/* The URL to open in order to report bugs */
+#undef BUG_REPORT_URL
+
+/* The path to default color profiles for this system */
+#undef COLOR_PROFILE_DIRECTORY
+
 /* Define to 1 if SSE2 intrinsics are available. */
 #undef COMPILE_SSE2_INTRINISICS
 
@@ -200,6 +206,9 @@
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #undef HAVE_SYS_STAT_H
 
+/* Define to 1 if you have the <sys/thr.h> header file. */
+#undef HAVE_SYS_THR_H
+
 /* Define to 1 if you have the <sys/times.h> header file. */
 #undef HAVE_SYS_TIMES_H
 
@@ -211,6 +220,9 @@
 
 /* Define to 1 if you have the <sys/wait.h> header file. */
 #undef HAVE_SYS_WAIT_H
+
+/* Define to 1 if you have the `thr_self' function. */
+#undef HAVE_THR_SELF
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H

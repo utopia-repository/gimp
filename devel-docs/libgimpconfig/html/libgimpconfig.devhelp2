@@ -55,6 +55,7 @@
     <keyword type="macro" name="GIMP_CONFIG_PROP_DOUBLE()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PROP-DOUBLE:CAPS"/>
     <keyword type="macro" name="GIMP_CONFIG_PROP_ENUM()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PROP-ENUM:CAPS"/>
     <keyword type="macro" name="GIMP_CONFIG_PROP_INT()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PROP-INT:CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_PROP_INT64()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PROP-INT64:CAPS"/>
     <keyword type="macro" name="GIMP_CONFIG_PROP_MATRIX2()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PROP-MATRIX2:CAPS"/>
     <keyword type="macro" name="GIMP_CONFIG_PROP_MEMSIZE()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PROP-MEMSIZE:CAPS"/>
     <keyword type="macro" name="GIMP_CONFIG_PROP_OBJECT()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PROP-OBJECT:CAPS"/>
@@ -63,6 +64,7 @@
     <keyword type="macro" name="GIMP_CONFIG_PROP_RESOLUTION()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PROP-RESOLUTION:CAPS"/>
     <keyword type="macro" name="GIMP_CONFIG_PROP_RGB()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PROP-RGB:CAPS"/>
     <keyword type="macro" name="GIMP_CONFIG_PROP_STRING()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PROP-STRING:CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_PROP_UINT64()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PROP-UINT64:CAPS"/>
     <keyword type="macro" name="GIMP_CONFIG_PROP_UINT()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PROP-UINT:CAPS"/>
     <keyword type="macro" name="GIMP_CONFIG_PROP_UNIT()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-PROP-UNIT:CAPS"/>
     <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_BOOLEAN()" link="libgimpconfig-GimpConfig-params.html#GIMP-CONFIG-INSTALL-PROP-BOOLEAN:CAPS" deprecated=""/>

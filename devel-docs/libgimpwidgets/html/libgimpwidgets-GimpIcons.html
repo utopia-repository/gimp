@@ -77,6 +77,10 @@
 <tbody>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="libgimpwidgets-GimpIcons.html#GIMP-ICON-ATTACH:CAPS" title="GIMP_ICON_ATTACH">GIMP_ICON_ATTACH</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="libgimpwidgets-GimpIcons.html#GIMP-ICON-DETACH:CAPS" title="GIMP_ICON_DETACH">GIMP_ICON_DETACH</a></td>
 </tr>
 <tr>
@@ -326,6 +330,14 @@
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="libgimpwidgets-GimpIcons.html#GIMP-ICON-COLOR-SELECTOR-WATER:CAPS" title="GIMP_ICON_COLOR_SELECTOR_WATER">GIMP_ICON_COLOR_SELECTOR_WATER</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="libgimpwidgets-GimpIcons.html#GIMP-ICON-COLOR-SPACE-LINEAR:CAPS" title="GIMP_ICON_COLOR_SPACE_LINEAR">GIMP_ICON_COLOR_SPACE_LINEAR</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="libgimpwidgets-GimpIcons.html#GIMP-ICON-COLOR-SPACE-PERCEPTUAL:CAPS" title="GIMP_ICON_COLOR_SPACE_PERCEPTUAL">GIMP_ICON_COLOR_SPACE_PERCEPTUAL</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -1130,6 +1142,10 @@
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-SEAMLESS-CLONE:CAPS" title="GIMP_ICON_TOOL_SEAMLESS_CLONE">GIMP_ICON_TOOL_SEAMLESS_CLONE</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="libgimpwidgets-GimpIcons.html#GIMP-ICON-TOOL-SHADOWS-HIGHLIGHTS:CAPS" title="GIMP_ICON_TOOL_SHADOWS_HIGHLIGHTS">GIMP_ICON_TOOL_SHADOWS_HIGHLIGHTS</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -2062,7 +2078,7 @@ gimp_stock_init (<em class="parameter"><code><span class="type">void</span></cod
 <p>Use <a class="link" href="libgimpwidgets-GimpIcons.html#gimp-icons-init" title="gimp_icons_init ()"><code class="function">gimp_icons_init()</code></a> instead.</p>
 </div>
 <p>Initializes the GIMP stock icon factory.</p>
-<p>You don't need to call this function as <a href="../html/libgimp-gimpui.html#gimp-ui-init"><code class="function">gimp_ui_init()</code></a> already does
+<p>You don't need to call this function as <a href="../libgimp/libgimp-gimpui.html#gimp-ui-init"><code class="function">gimp_ui_init()</code></a> already does
 this for you.</p>
 </div>
 <hr>
@@ -2071,7 +2087,7 @@ this for you.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gimp_icons_init (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Initializes the GIMP stock icon factory.</p>
-<p>You don't need to call this function as <a href="../html/libgimp-gimpui.html#gimp-ui-init"><code class="function">gimp_ui_init()</code></a> already does
+<p>You don't need to call this function as <a href="../libgimp/libgimp-gimpui.html#gimp-ui-init"><code class="function">gimp_ui_init()</code></a> already does
 this for you.</p>
 </div>
 <hr>
@@ -2083,6 +2099,12 @@ gimp_icons_set_icon_theme (<em class="parameter"><code><a href="../gio/GFile.htm
 </div>
 <div class="refsect1">
 <a name="libgimpwidgets-GimpIcons.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="GIMP-ICON-ATTACH:CAPS"></a><h3>GIMP_ICON_ATTACH</h3>
+<pre class="programlisting">#define GIMP_ICON_ATTACH                    "gimp-attach"
+</pre>
+</div>
+<hr>
 <div class="refsect2">
 <a name="GIMP-ICON-DETACH:CAPS"></a><h3>GIMP_ICON_DETACH</h3>
 <pre class="programlisting">#define GIMP_ICON_DETACH                    "gimp-detach"
@@ -2458,6 +2480,18 @@ gimp_icons_set_icon_theme (<em class="parameter"><code><a href="../gio/GFile.htm
 <div class="refsect2">
 <a name="GIMP-ICON-COLOR-SELECTOR-WATER:CAPS"></a><h3>GIMP_ICON_COLOR_SELECTOR_WATER</h3>
 <pre class="programlisting">#define GIMP_ICON_COLOR_SELECTOR_WATER      "gimp-color-water"
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GIMP-ICON-COLOR-SPACE-LINEAR:CAPS"></a><h3>GIMP_ICON_COLOR_SPACE_LINEAR</h3>
+<pre class="programlisting">#define GIMP_ICON_COLOR_SPACE_LINEAR        "gimp-color-space-linear"
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GIMP-ICON-COLOR-SPACE-PERCEPTUAL:CAPS"></a><h3>GIMP_ICON_COLOR_SPACE_PERCEPTUAL</h3>
+<pre class="programlisting">#define GIMP_ICON_COLOR_SPACE_PERCEPTUAL    "gimp-color-space-perceptual"
 </pre>
 </div>
 <hr>
@@ -3664,6 +3698,12 @@ gimp_icons_set_icon_theme (<em class="parameter"><code><a href="../gio/GFile.htm
 <div class="refsect2">
 <a name="GIMP-ICON-TOOL-SEAMLESS-CLONE:CAPS"></a><h3>GIMP_ICON_TOOL_SEAMLESS_CLONE</h3>
 <pre class="programlisting">#define GIMP_ICON_TOOL_SEAMLESS_CLONE       "gimp-tool-seamless-clone"
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GIMP-ICON-TOOL-SHADOWS-HIGHLIGHTS:CAPS"></a><h3>GIMP_ICON_TOOL_SHADOWS_HIGHLIGHTS</h3>
+<pre class="programlisting">#define GIMP_ICON_TOOL_SHADOWS_HIGHLIGHTS   "gimp-tool-shadows-highlights"
 </pre>
 </div>
 <hr>

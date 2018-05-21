@@ -39,15 +39,15 @@
     <keyword type="enum" name="enum GimpCheckSize" link="libgimpbase-gimpbaseenums.html#GimpCheckSize"/>
     <keyword type="enum" name="enum GimpCheckType" link="libgimpbase-gimpbaseenums.html#GimpCheckType"/>
     <keyword type="enum" name="enum GimpCloneType" link="libgimpbase-gimpbaseenums.html#GimpCloneType"/>
-    <keyword type="enum" name="enum GimpColorTag" link="libgimpbase-gimpbaseenums.html#GimpColorTag"/>
-    <keyword type="enum" name="enum GimpComponentType" link="libgimpbase-gimpbaseenums.html#GimpComponentType"/>
+    <keyword type="enum" name="enum GimpColorTag" link="libgimpbase-gimpbaseenums.html#GimpColorTag" since="2.10"/>
+    <keyword type="enum" name="enum GimpComponentType" link="libgimpbase-gimpbaseenums.html#GimpComponentType" since="2.10"/>
     <keyword type="enum" name="enum GimpConvertPaletteType" link="libgimpbase-gimpbaseenums.html#GimpConvertPaletteType"/>
     <keyword type="enum" name="enum GimpConvolveType" link="libgimpbase-gimpbaseenums.html#GimpConvolveType"/>
     <keyword type="enum" name="enum GimpDesaturateMode" link="libgimpbase-gimpbaseenums.html#GimpDesaturateMode"/>
     <keyword type="enum" name="enum GimpDodgeBurnType" link="libgimpbase-gimpbaseenums.html#GimpDodgeBurnType"/>
     <keyword type="enum" name="enum GimpFillType" link="libgimpbase-gimpbaseenums.html#GimpFillType"/>
     <keyword type="enum" name="enum GimpForegroundExtractMode" link="libgimpbase-gimpbaseenums.html#GimpForegroundExtractMode"/>
-    <keyword type="enum" name="enum GimpGradientBlendColorSpace" link="libgimpbase-gimpbaseenums.html#GimpGradientBlendColorSpace"/>
+    <keyword type="enum" name="enum GimpGradientBlendColorSpace" link="libgimpbase-gimpbaseenums.html#GimpGradientBlendColorSpace" since="2.10"/>
     <keyword type="enum" name="enum GimpGradientSegmentColor" link="libgimpbase-gimpbaseenums.html#GimpGradientSegmentColor"/>
     <keyword type="enum" name="enum GimpGradientSegmentType" link="libgimpbase-gimpbaseenums.html#GimpGradientSegmentType"/>
     <keyword type="enum" name="enum GimpGradientType" link="libgimpbase-gimpbaseenums.html#GimpGradientType"/>
@@ -69,7 +69,7 @@
     <keyword type="enum" name="enum GimpPDBProcType" link="libgimpbase-gimpbaseenums.html#GimpPDBProcType"/>
     <keyword type="enum" name="enum GimpPDBStatusType" link="libgimpbase-gimpbaseenums.html#GimpPDBStatusType"/>
     <keyword type="enum" name="enum GimpPaintApplicationMode" link="libgimpbase-gimpbaseenums.html#GimpPaintApplicationMode"/>
-    <keyword type="enum" name="enum GimpPrecision" link="libgimpbase-gimpbaseenums.html#GimpPrecision"/>
+    <keyword type="enum" name="enum GimpPrecision" link="libgimpbase-gimpbaseenums.html#GimpPrecision" since="2.10"/>
     <keyword type="enum" name="enum GimpProgressCommand" link="libgimpbase-gimpbaseenums.html#GimpProgressCommand"/>
     <keyword type="enum" name="enum GimpRepeatMode" link="libgimpbase-gimpbaseenums.html#GimpRepeatMode"/>
     <keyword type="enum" name="enum GimpRotationType" link="libgimpbase-gimpbaseenums.html#GimpRotationType"/>

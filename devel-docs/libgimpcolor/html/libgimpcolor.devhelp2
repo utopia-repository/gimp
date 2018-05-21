@@ -137,6 +137,7 @@
     <keyword type="function" name="gimp_color_profile_is_gray ()" link="libgimpcolor-GimpColorProfile.html#gimp-color-profile-is-gray" since="2.10"/>
     <keyword type="function" name="gimp_color_profile_is_cmyk ()" link="libgimpcolor-GimpColorProfile.html#gimp-color-profile-is-cmyk" since="2.10"/>
     <keyword type="function" name="gimp_color_profile_is_linear ()" link="libgimpcolor-GimpColorProfile.html#gimp-color-profile-is-linear" since="2.10"/>
+    <keyword type="function" name="gimp_color_profile_get_format ()" link="libgimpcolor-GimpColorProfile.html#gimp-color-profile-get-format" since="2.10"/>
     <keyword type="function" name="gimp_color_profile_get_lcms_format ()" link="libgimpcolor-GimpColorProfile.html#gimp-color-profile-get-lcms-format" since="2.10"/>
     <keyword type="function" name="gimp_color_transform_new ()" link="libgimpcolor-GimpColorTransform.html#gimp-color-transform-new" since="2.10"/>
     <keyword type="function" name="gimp_color_transform_new_proofing ()" link="libgimpcolor-GimpColorTransform.html#gimp-color-transform-new-proofing" since="2.10"/>

@@ -78,6 +78,12 @@
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name">
+<a class="link" href="libgimpmath-GimpMath.html#SAFE-CLAMP:CAPS" title="SAFE_CLAMP()">SAFE_CLAMP</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
 <a class="link" href="libgimpmath-GimpMath.html#gimp-deg-to-rad" title="gimp_deg_to_rad()">gimp_deg_to_rad</a><span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -236,6 +242,49 @@ and 255 inclusive.</p>
 </tr></tbody>
 </table></div>
 </div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="SAFE-CLAMP:CAPS"></a><h3>SAFE_CLAMP()</h3>
+<pre class="programlisting">#define SAFE_CLAMP(x, low, high)  ((x) &gt; (low) ? (x) &lt; (high) ? (x) : (high) : (low))
+</pre>
+<p>Ensures that <em class="parameter"><code>x</code></em>
+ is between the limits set by <em class="parameter"><code>low</code></em>
+ and <em class="parameter"><code>high</code></em>
+,
+even if <em class="parameter"><code>x</code></em>
+ is NaN. If <em class="parameter"><code>low</code></em>
+ is greater than <em class="parameter"><code>high</code></em>
+, or if either
+of them is NaN, the result is undefined.</p>
+<div class="refsect3">
+<a name="SAFE-CLAMP.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>the value to be limited.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>low</p></td>
+<td class="parameter_description"><p>the lower limit.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>high</p></td>
+<td class="parameter_description"><p>the upper limit.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
 </div>
 <hr>
 <div class="refsect2">

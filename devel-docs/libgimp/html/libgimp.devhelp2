@@ -564,6 +564,8 @@
     <keyword type="function" name="gimp_image_add_layer ()" link="libgimp-gimpimage.html#gimp-image-add-layer" deprecated="Use gimp_image_insert_layer() instead."/>
     <keyword type="function" name="gimp_image_insert_layer ()" link="libgimp-gimpimage.html#gimp-image-insert-layer"/>
     <keyword type="function" name="gimp_image_remove_layer ()" link="libgimp-gimpimage.html#gimp-image-remove-layer"/>
+    <keyword type="function" name="gimp_image_freeze_layers ()" link="libgimp-gimpimage.html#gimp-image-freeze-layers" since="2.10"/>
+    <keyword type="function" name="gimp_image_thaw_layers ()" link="libgimp-gimpimage.html#gimp-image-thaw-layers" since="2.10"/>
     <keyword type="function" name="gimp_image_raise_layer ()" link="libgimp-gimpimage.html#gimp-image-raise-layer" deprecated="Use gimp_image_raise_item() instead."/>
     <keyword type="function" name="gimp_image_lower_layer ()" link="libgimp-gimpimage.html#gimp-image-lower-layer" deprecated="Use gimp_image_lower_item() instead."/>
     <keyword type="function" name="gimp_image_raise_layer_to_top ()" link="libgimp-gimpimage.html#gimp-image-raise-layer-to-top" deprecated="Use gimp_image_raise_item_to_top() instead."/>
@@ -572,6 +574,8 @@
     <keyword type="function" name="gimp_image_add_channel ()" link="libgimp-gimpimage.html#gimp-image-add-channel" deprecated="Use gimp_image_insert_channel() instead."/>
     <keyword type="function" name="gimp_image_insert_channel ()" link="libgimp-gimpimage.html#gimp-image-insert-channel"/>
     <keyword type="function" name="gimp_image_remove_channel ()" link="libgimp-gimpimage.html#gimp-image-remove-channel"/>
+    <keyword type="function" name="gimp_image_freeze_channels ()" link="libgimp-gimpimage.html#gimp-image-freeze-channels" since="2.10"/>
+    <keyword type="function" name="gimp_image_thaw_channels ()" link="libgimp-gimpimage.html#gimp-image-thaw-channels" since="2.10"/>
     <keyword type="function" name="gimp_image_raise_channel ()" link="libgimp-gimpimage.html#gimp-image-raise-channel" deprecated="Use gimp_image_raise_item() instead."/>
     <keyword type="function" name="gimp_image_lower_channel ()" link="libgimp-gimpimage.html#gimp-image-lower-channel" deprecated="Use gimp_image_lower_item() instead."/>
     <keyword type="function" name="gimp_image_get_channel_position ()" link="libgimp-gimpimage.html#gimp-image-get-channel-position" deprecated="Use gimp_image_get_item_position() instead." since="2.4"/>
@@ -625,6 +629,8 @@
     <keyword type="function" name="gimp_image_add_vectors ()" link="libgimp-gimpimage.html#gimp-image-add-vectors" deprecated="Use gimp_image_insert_vectors() instead."/>
     <keyword type="function" name="gimp_image_insert_vectors ()" link="libgimp-gimpimage.html#gimp-image-insert-vectors"/>
     <keyword type="function" name="gimp_image_remove_vectors ()" link="libgimp-gimpimage.html#gimp-image-remove-vectors" since="2.4"/>
+    <keyword type="function" name="gimp_image_freeze_vectors ()" link="libgimp-gimpimage.html#gimp-image-freeze-vectors" since="2.10"/>
+    <keyword type="function" name="gimp_image_thaw_vectors ()" link="libgimp-gimpimage.html#gimp-image-thaw-vectors" since="2.10"/>
     <keyword type="function" name="gimp_image_get_active_vectors ()" link="libgimp-gimpimage.html#gimp-image-get-active-vectors"/>
     <keyword type="function" name="gimp_image_set_active_vectors ()" link="libgimp-gimpimage.html#gimp-image-set-active-vectors"/>
     <keyword type="function" name="gimp_image_lower_vectors ()" link="libgimp-gimpimage.html#gimp-image-lower-vectors" deprecated="Use gimp_image_lower_item() instead." since="2.4"/>
@@ -722,6 +728,7 @@
     <keyword type="function" name="gimp_item_detach_parasite ()" link="libgimp-gimpitem.html#gimp-item-detach-parasite" since="2.8"/>
     <keyword type="function" name="gimp_item_get_parasite ()" link="libgimp-gimpitem.html#gimp-item-get-parasite" since="2.8"/>
     <keyword type="function" name="gimp_item_get_parasite_list ()" link="libgimp-gimpitem.html#gimp-item-get-parasite-list" since="2.8"/>
+    <keyword type="function" name="gimp_item_transform_translate ()" link="libgimp-gimpitemtransform.html#gimp-item-transform-translate" since="2.10"/>
     <keyword type="function" name="gimp_item_transform_flip_simple ()" link="libgimp-gimpitemtransform.html#gimp-item-transform-flip-simple" since="2.2"/>
     <keyword type="function" name="gimp_item_transform_flip ()" link="libgimp-gimpitemtransform.html#gimp-item-transform-flip" since="2.8"/>
     <keyword type="function" name="gimp_item_transform_perspective ()" link="libgimp-gimpitemtransform.html#gimp-item-transform-perspective" since="2.8"/>

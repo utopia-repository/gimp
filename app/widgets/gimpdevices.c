@@ -29,6 +29,7 @@
 #include "config/gimpguiconfig.h"
 
 #include "core/gimp.h"
+#include "core/gimpcontext.h"
 #include "core/gimpdatafactory.h"
 #include "core/gimperror.h"
 #include "core/gimpgradient.h"
@@ -87,7 +88,6 @@ void
 gimp_devices_restore (Gimp *gimp)
 {
   GimpDeviceManager *manager;
-  GimpContext       *user_context;
   GList             *list;
   GFile             *file;
   GError            *error = NULL;
@@ -98,17 +98,13 @@ gimp_devices_restore (Gimp *gimp)
 
   g_return_if_fail (GIMP_IS_DEVICE_MANAGER (manager));
 
-  user_context = gimp_get_user_context (gimp);
-
   for (list = GIMP_LIST (manager)->queue->head;
        list;
        list = g_list_next (list))
     {
       GimpDeviceInfo *device_info = list->data;
 
-      gimp_context_copy_properties (user_context, GIMP_CONTEXT (device_info),
-                                    GIMP_DEVICE_INFO_CONTEXT_MASK);
-
+      gimp_device_info_save_tool (device_info);
       gimp_device_info_set_default_tool (device_info);
     }
 
@@ -131,15 +127,28 @@ gimp_devices_restore (Gimp *gimp)
 
   g_object_unref (file);
 
+  for (list = GIMP_LIST (manager)->queue->head;
+       list;
+       list = g_list_next (list))
+    {
+      GimpDeviceInfo *device_info = list->data;
+
+      if (! GIMP_TOOL_PRESET (device_info)->tool_options)
+        {
+          gimp_device_info_save_tool (device_info);
+
+          g_printerr ("%s: set default tool on loaded GimpDeviceInfo without tool options: %s\n",
+                      G_STRFUNC, gimp_object_get_name (device_info));
+        }
+    }
+
   if (! GIMP_GUI_CONFIG (gimp->config)->devices_share_tool)
     {
       GimpDeviceInfo *current_device;
 
       current_device = gimp_device_manager_get_current_device (manager);
 
-      gimp_context_copy_properties (GIMP_CONTEXT (current_device), user_context,
-                                    GIMP_DEVICE_INFO_CONTEXT_MASK);
-      gimp_context_set_parent (GIMP_CONTEXT (current_device), user_context);
+      gimp_device_info_restore_tool (current_device);
     }
 }
 

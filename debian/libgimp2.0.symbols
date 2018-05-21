@@ -449,6 +449,9 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_image_flip@Base 2.4.0
  gimp_image_floating_sel_attached_to@Base 2.4.0
  gimp_image_free_shadow@Base 2.4.0
+ gimp_image_freeze_channels@Base 2.10.2
+ gimp_image_freeze_layers@Base 2.10.2
+ gimp_image_freeze_vectors@Base 2.10.2
  gimp_image_get_active_channel@Base 2.4.0
  gimp_image_get_active_drawable@Base 2.4.0
  gimp_image_get_active_layer@Base 2.4.0
@@ -564,6 +567,9 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_image_set_resolution@Base 2.4.0
  gimp_image_set_tattoo_state@Base 2.4.0
  gimp_image_set_unit@Base 2.4.0
+ gimp_image_thaw_channels@Base 2.10.2
+ gimp_image_thaw_layers@Base 2.10.2
+ gimp_image_thaw_vectors@Base 2.10.2
  gimp_image_undo_disable@Base 2.4.0
  gimp_image_undo_enable@Base 2.4.0
  gimp_image_undo_freeze@Base 2.4.0

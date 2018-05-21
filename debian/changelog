@@ -1,12 +1,17 @@
-gimp (2.10.2-1) UNRELEASED; urgency=medium
+gimp (2.10.2-1) unstable; urgency=medium
 
+  * New upstream release
+  * debian/libgimp2.0.symbols: Add new symbols
+  * Bump minimum babl to 0.1.50 and gegl to 0.4.2
+  * Add new Build-Depends: libheif-dev and desktop-file-utils
+  * debian/gimp.docs: Install NEWS.pre-2-10
+  * debian/rules: set bug tracker URL
   * Use --without-appdata-test to ensure consistent results even if
     appstream-util is installed. The test is disabled because it requires
     network access. (Closes: #897179)
-  * Update debian/gbp.conf
-  * New upstream release
+  * Drop 0002-gimp.pc-Fix-reference-to-gegl-0.3.patch: Applied in new release
 
- -- Jeremy Bicha <jbicha@debian.org>  Sun, 20 May 2018 22:49:21 -0400
+ -- Jeremy Bicha <jbicha@debian.org>  Mon, 21 May 2018 14:49:32 -0400
 
 gimp (2.10.0-3) unstable; urgency=medium
 

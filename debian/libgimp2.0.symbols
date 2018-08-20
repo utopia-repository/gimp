@@ -326,6 +326,7 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_equalize@Base 2.4.0
  gimp_eraser@Base 2.4.0
  gimp_eraser_default@Base 2.4.0
+ gimp_export_color_profile@Base 2.10.6
  gimp_export_exif@Base 2.10.0
  gimp_export_iptc@Base 2.10.0
  gimp_export_xmp@Base 2.10.0
@@ -420,6 +421,7 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_histogram@Base 2.4.0
  gimp_histogram_channel_get_type@Base 2.4.0
  gimp_hue_saturation@Base 2.4.0
+ gimp_icon_theme_dir@Base 2.10.6
  gimp_image_add_channel@Base 2.4.0
  gimp_image_add_hguide@Base 2.4.0
  gimp_image_add_layer@Base 2.4.0
@@ -799,6 +801,7 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_read_expect_msg@Base 2.4.0
  gimp_rect_select@Base 2.4.0
  gimp_register_file_handler_mime@Base 2.4.0
+ gimp_register_file_handler_priority@Base 2.10.6
  gimp_register_file_handler_raw@Base 2.10.0
  gimp_register_file_handler_uri@Base 2.10.0
  gimp_register_load_handler@Base 2.4.0
@@ -1082,6 +1085,7 @@ libgimpbase-2.0.so.0 libgimp2.0 #MINVER#
  gimp_personal_rc_file@Base 2.4.0
  gimp_pixels_to_units@Base 2.8.0
  gimp_pixpipe_params_build@Base 2.4.0
+ gimp_pixpipe_params_free@Base 2.10.6
  gimp_pixpipe_params_init@Base 2.4.0
  gimp_pixpipe_params_parse@Base 2.4.0
  gimp_plug_in_directory@Base 2.4.0
@@ -1203,6 +1207,7 @@ libgimpcolor-2.0.so.0 libgimp2.0 #MINVER#
  gimp_cmyka_set_uchar@Base 2.4.0
  gimp_color_managed_get_color_profile@Base 2.10.0
  gimp_color_managed_get_icc_profile@Base 2.4.0
+ gimp_color_managed_get_type@Base 2.10.6
  gimp_color_managed_interface_get_type@Base 2.4.0
  gimp_color_managed_profile_changed@Base 2.4.0
  gimp_color_profile_get_copyright@Base 2.10.0
@@ -1214,6 +1219,7 @@ libgimpcolor-2.0.so.0 libgimp2.0 #MINVER#
  gimp_color_profile_get_lcms_profile@Base 2.10.0
  gimp_color_profile_get_manufacturer@Base 2.10.0
  gimp_color_profile_get_model@Base 2.10.0
+ gimp_color_profile_get_space@Base 2.10.6
  gimp_color_profile_get_summary@Base 2.10.0
  gimp_color_profile_get_type@Base 2.10.0
  gimp_color_profile_is_cmyk@Base 2.10.0
@@ -1337,6 +1343,7 @@ libgimpconfig-2.0.so.0 libgimp2.0 #MINVER#
  gimp_config_diff@Base 2.4.0
  gimp_config_duplicate@Base 2.4.0
  gimp_config_error_quark@Base 2.4.0
+ gimp_config_get_type@Base 2.10.6
  gimp_config_interface_get_type@Base 2.4.0
  gimp_config_is_equal_to@Base 2.4.0
  gimp_config_path_expand@Base 2.4.0
@@ -1644,6 +1651,10 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_browser_new@Base 2.4.0
  gimp_browser_set_widget@Base 2.4.0
  gimp_browser_show_message@Base 2.4.0
+ gimp_busy_box_get_message@Base 2.10.6
+ gimp_busy_box_get_type@Base 2.10.6
+ gimp_busy_box_new@Base 2.10.6
+ gimp_busy_box_set_message@Base 2.10.6
  gimp_button_extended_clicked@Base 2.4.0
  gimp_button_get_type@Base 2.4.0
  gimp_button_new@Base 2.4.0

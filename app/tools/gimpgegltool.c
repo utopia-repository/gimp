@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -191,6 +191,7 @@ gimp_gegl_tool_operation_blacklisted (const gchar *name,
     "gegl:invert-gamma",
     "gegl:lens-distortion",
     "gegl:lens-flare",
+    "gegl:long-shadow",
     "gegl:mantiuk06",
     "gegl:maze",
     "gegl:median-blur",
@@ -232,6 +233,7 @@ gimp_gegl_tool_operation_blacklisted (const gchar *name,
     "gegl:softglow",
     "gegl:spherize",
     "gegl:spiral",
+    "gegl:stereographic-projection",
     "gegl:stretch-contrast",
     "gegl:stretch-contrast-hsv",
     "gegl:stress",

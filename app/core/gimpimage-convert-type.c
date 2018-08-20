@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -58,6 +58,9 @@ gimp_image_convert_type (GimpImage          *image,
   g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
   g_return_val_if_fail (new_type != gimp_image_get_base_type (image), FALSE);
   g_return_val_if_fail (new_type != GIMP_INDEXED, FALSE);
+  g_return_val_if_fail (gimp_babl_is_valid (new_type,
+                                            gimp_image_get_precision (image)),
+                        FALSE);
   g_return_val_if_fail (dest_profile == NULL || GIMP_IS_COLOR_PROFILE (dest_profile),
                         FALSE);
   g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), FALSE);

@@ -12,19 +12,23 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef  __GIMP_APP_TEST_UTILS_H__
 #define  __GIMP_APP_TEST_UTILS_H__
 
 
-void            gimp_test_utils_set_env_to_subpath   (const gchar *root_env_var,
+void            gimp_test_utils_set_env_to_subdir    (const gchar *root_env_var,
+                                                      const gchar *subdir,
+                                                      const gchar *target_env_var);
+void            gimp_test_utils_set_env_to_subpath   (const gchar *root_env_var1,
+                                                      const gchar *root_env_var2,
                                                       const gchar *subdir,
                                                       const gchar *target_env_var);
 void            gimp_test_utils_set_gimp2_directory  (const gchar *root_env_var,
                                                       const gchar *subdir);
-void            gimp_test_utils_setup_menus_dir      (void);
+void            gimp_test_utils_setup_menus_path     (void);
 void            gimp_test_utils_create_image         (Gimp        *gimp,
                                                       gint         width,
                                                       gint         height);

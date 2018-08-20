@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -233,7 +233,7 @@ gimp_free_select_tool_start (GimpFreeSelectTool *fst,
   gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), display);
 }
 
-static void
+void
 gimp_free_select_tool_halt (GimpFreeSelectTool *fst)
 {
   GimpFreeSelectToolPrivate *private = fst->private;

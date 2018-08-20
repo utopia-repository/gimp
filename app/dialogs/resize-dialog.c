@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -295,7 +295,7 @@ resize_dialog_new (GimpViewable       *viewable,
   gtk_container_add (GTK_CONTAINER (frame), private->area);
   gtk_widget_show (private->area);
 
-  gimp_viewable_get_preview_size (viewable, 200, FALSE, TRUE, &width, &height);
+  gimp_viewable_get_preview_size (viewable, 200, TRUE, TRUE, &width, &height);
   pixbuf = gimp_viewable_get_pixbuf (viewable, context,
                                      width, height);
 

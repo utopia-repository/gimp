@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -2054,11 +2054,7 @@ gimp_item_set_parasites (GimpItem         *item,
 
   private = GET_PRIVATE (item);
 
-  if (parasites != private->parasites)
-    {
-      g_object_unref (private->parasites);
-      private->parasites = g_object_ref (parasites);
-    }
+  g_set_object (&private->parasites, parasites);
 }
 
 /**

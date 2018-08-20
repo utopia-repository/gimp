@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_PAINT_CORE_LOOPS_H__
@@ -95,7 +95,7 @@ void do_layer_blend                     (GeglBuffer                     *src_buf
 void mask_components_onto               (GeglBuffer                     *src_buffer,
                                          GeglBuffer                     *aux_buffer,
                                          GeglBuffer                     *dst_buffer,
-                                         GeglRectangle                  *roi,
+                                         const GeglRectangle            *roi,
                                          GimpComponentMask               mask,
                                          gboolean                        linear_mode);
 

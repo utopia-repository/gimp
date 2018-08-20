@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_DEVICE_INFO_H__
@@ -69,7 +69,7 @@ GimpDeviceInfo * gimp_device_info_new               (Gimp            *gimp,
 
 GdkDevice      * gimp_device_info_get_device        (GimpDeviceInfo  *info,
                                                      GdkDisplay     **display);
-void             gimp_device_info_set_device        (GimpDeviceInfo  *info,
+gboolean         gimp_device_info_set_device        (GimpDeviceInfo  *info,
                                                      GdkDevice       *device,
                                                      GdkDisplay      *display);
 

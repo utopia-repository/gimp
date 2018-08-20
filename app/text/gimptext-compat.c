@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -31,6 +31,7 @@
 #include "core/gimp.h"
 #include "core/gimpchannel.h"
 #include "core/gimpcontext.h"
+#include "core/gimpdatafactory.h"
 #include "core/gimpimage.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
@@ -69,6 +70,9 @@ text_render (GimpImage    *image,
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
   g_return_val_if_fail (fontname != NULL, NULL);
   g_return_val_if_fail (text != NULL, NULL);
+
+  if (! gimp_data_factory_data_wait (image->gimp->font_factory))
+    return NULL;
 
   if (border < 0)
     border = 0;
@@ -133,7 +137,8 @@ text_render (GimpImage    *image,
 }
 
 gboolean
-text_get_extents (const gchar *fontname,
+text_get_extents (Gimp        *gimp,
+                  const gchar *fontname,
                   const gchar *text,
                   gint        *width,
                   gint        *height,
@@ -146,8 +151,12 @@ text_get_extents (const gchar *fontname,
   PangoFontMap         *fontmap;
   PangoRectangle        rect;
 
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
   g_return_val_if_fail (fontname != NULL, FALSE);
   g_return_val_if_fail (text != NULL, FALSE);
+
+  if (! gimp_data_factory_data_wait (gimp->font_factory))
+    return FALSE;
 
   fontmap = pango_cairo_font_map_new_for_font_type (CAIRO_FONT_TYPE_FT);
   if (! fontmap)

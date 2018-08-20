@@ -12,7 +12,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # "Perlized" from C source by Manish Singh <yosh@gimp.org>
 
@@ -161,7 +161,7 @@ HELP
   if (gimp->plug_in_manager->current_plug_in)
     gimp_plug_in_enable_precision (gimp->plug_in_manager->current_plug_in);
 
-  if (type != GIMP_INDEXED || precision == GIMP_PRECISION_U8_GAMMA)
+  if (gimp_babl_is_valid (type, precision))
     {
       image = gimp_create_image (gimp, width, height, type,
                                  precision, FALSE);
@@ -1034,7 +1034,7 @@ corresponding call to gimp_image_thaw_layers(), undoing its
 effects.
 HELP
 
-    &ell_pdb_misc('2018', '2.10');
+    &ell_pdb_misc('2018', '2.10.2');
 
     @inargs = (
     { name => 'image', type => 'image',
@@ -1069,7 +1069,7 @@ This procedure should match a corresponding call to
 gimp_image_freeze_layers().
 HELP
 
-    &ell_pdb_misc('2018', '2.10');
+    &ell_pdb_misc('2018', '2.10.2');
 
     @inargs = (
     { name => 'image', type => 'image',
@@ -1202,7 +1202,7 @@ CODE
 sub image_freeze_channels {
     $blurb = "Freeze the image's channel list.";
 
-    &ell_pdb_misc('2018', '2.10');
+    &ell_pdb_misc('2018', '2.10.2');
 
     $help = <<'HELP';
 This procedure freezes the channel list of the image, suppressing any
@@ -1240,7 +1240,7 @@ CODE
 sub image_thaw_channels {
     $blurb = "Thaw the image's channel list.";
 
-    &ell_pdb_misc('2018', '2.10');
+    &ell_pdb_misc('2018', '2.10.2');
 
     $help = <<'HELP';
 This procedure thaws the channel list of the image, re-enabling
@@ -1380,7 +1380,7 @@ CODE
 sub image_freeze_vectors {
     $blurb = "Freeze the image's vectors list.";
 
-    &ell_pdb_misc('2018', '2.10');
+    &ell_pdb_misc('2018', '2.10.2');
 
     $help = <<'HELP';
 This procedure freezes the vectors list of the image, suppressing any
@@ -1418,7 +1418,7 @@ CODE
 sub image_thaw_vectors {
     $blurb = "Thaw the image's vectors list.";
 
-    &ell_pdb_misc('2018', '2.10');
+    &ell_pdb_misc('2018', '2.10.2');
 
     $help = <<'HELP';
 This procedure thaws the vectors list of the image, re-enabling
@@ -3074,6 +3074,7 @@ CODE
 
 @headers = qw("libgimpmath/gimpmath.h"
               "libgimpbase/gimpbase.h"
+              "gegl/gimp-babl.h"
               "core/gimp.h"
               "core/gimpcontainer.h"
               "core/gimpimage-metadata.h"

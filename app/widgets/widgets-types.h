@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __WIDGETS_TYPES_H__
@@ -118,6 +118,7 @@ typedef struct _GimpToolEditor               GimpToolEditor;
 typedef struct _GimpBrushFactoryView         GimpBrushFactoryView;
 typedef struct _GimpDataFactoryView          GimpDataFactoryView;
 typedef struct _GimpDynamicsFactoryView      GimpDynamicsFactoryView;
+typedef struct _GimpFontFactoryView          GimpFontFactoryView;
 typedef struct _GimpPatternFactoryView       GimpPatternFactoryView;
 typedef struct _GimpToolPresetFactoryView    GimpToolPresetFactoryView;
 

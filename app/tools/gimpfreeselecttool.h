@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_FREE_SELECT_TOOL_H__
@@ -60,6 +60,10 @@ void    gimp_free_select_tool_register     (GimpToolRegisterCallback  callback,
 GType   gimp_free_select_tool_get_type     (void) G_GNUC_CONST;
 
 gint    gimp_free_select_tool_get_n_points (GimpFreeSelectTool *tool);
+
+/*  protected functions */
+
+void    gimp_free_select_tool_halt         (GimpFreeSelectTool *tool);
 
 
 #endif  /*  __GIMP_FREE_SELECT_TOOL_H__  */

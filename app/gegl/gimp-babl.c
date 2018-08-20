@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -290,7 +290,8 @@ gimp_babl_init_fishes (GimpInitStatusFunc status_callback)
     { "RaGaBaA float",  "R'G'B'A float" },
     { "RaGaBaA float",  "RGBA float"    },
     { "RGBA float",     "RaGaBaA float" },
-    { "R'G'B' u8",      "RaGaBaA float" }
+    { "R'G'B' u8",      "RaGaBaA float" },
+    { "cairo-ARGB32",   "R'G'B'A u8"    }
   };
 
   gint i;
@@ -753,6 +754,30 @@ gimp_babl_precision (GimpComponentType component,
     }
 
   g_return_val_if_reached (-1);
+}
+
+gboolean
+gimp_babl_is_valid (GimpImageBaseType base_type,
+                    GimpPrecision     precision)
+{
+  switch (base_type)
+    {
+    case GIMP_RGB:
+    case GIMP_GRAY:
+      return TRUE;
+
+    case GIMP_INDEXED:
+      switch (precision)
+        {
+        case GIMP_PRECISION_U8_GAMMA:
+          return TRUE;
+
+        default:
+          return FALSE;
+        }
+    }
+
+  g_return_val_if_reached (FALSE);
 }
 
 const Babl *

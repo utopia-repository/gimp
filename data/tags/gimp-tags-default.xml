@@ -10,7 +10,7 @@
       <thetag xml:lang="bs">oblo</thetag>
       <thetag xml:lang="ca">rodó</thetag>
       <thetag xml:lang="ca@valencia">rodó</thetag>
-      <thetag xml:lang="cs">rozpitý</thetag>
+      <thetag xml:lang="cs">kulatý</thetag>
       <thetag xml:lang="da">rund</thetag>
       <thetag xml:lang="de">rund</thetag>
       <thetag xml:lang="el">στρογγυλή</thetag>
@@ -29,6 +29,7 @@
       <thetag xml:lang="km">មូល</thetag>
       <thetag xml:lang="lt">apvalus</thetag>
       <thetag xml:lang="lv">apaļš</thetag>
+      <thetag xml:lang="mr">गोल</thetag>
       <thetag xml:lang="nb">rund</thetag>
       <thetag xml:lang="nl">rond</thetag>
       <thetag xml:lang="nn">rund</thetag>
@@ -59,7 +60,7 @@
       <thetag xml:lang="bs">nejasno</thetag>
       <thetag xml:lang="ca">esfumat</thetag>
       <thetag xml:lang="ca@valencia">esfumat</thetag>
-      <thetag xml:lang="cs">kulatý</thetag>
+      <thetag xml:lang="cs">rozpitý</thetag>
       <thetag xml:lang="da">sløret</thetag>
       <thetag xml:lang="de">unscharf</thetag>
       <thetag xml:lang="el">θολή</thetag>
@@ -78,6 +79,7 @@
       <thetag xml:lang="km">ស្រពិចស្រពិល</thetag>
       <thetag xml:lang="lt">neaiškus</thetag>
       <thetag xml:lang="lv">aptuvens</thetag>
+      <thetag xml:lang="mr">अविशद निवड</thetag>
       <thetag xml:lang="nb">uklar</thetag>
       <thetag xml:lang="nl">wazig</thetag>
       <thetag xml:lang="nn">mjuk</thetag>
@@ -105,7 +107,7 @@
       <thetag xml:lang="bs">oblo</thetag>
       <thetag xml:lang="ca">rodó</thetag>
       <thetag xml:lang="ca@valencia">rodó</thetag>
-      <thetag xml:lang="cs">rozpitý</thetag>
+      <thetag xml:lang="cs">kulatý</thetag>
       <thetag xml:lang="da">rund</thetag>
       <thetag xml:lang="de">rund</thetag>
       <thetag xml:lang="el">στρογγυλή</thetag>
@@ -124,6 +126,7 @@
       <thetag xml:lang="km">មូល</thetag>
       <thetag xml:lang="lt">apvalus</thetag>
       <thetag xml:lang="lv">apaļš</thetag>
+      <thetag xml:lang="mr">गोल</thetag>
       <thetag xml:lang="nb">rund</thetag>
       <thetag xml:lang="nl">rond</thetag>
       <thetag xml:lang="nn">rund</thetag>

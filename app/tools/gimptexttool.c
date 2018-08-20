@@ -17,7 +17,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -32,7 +32,10 @@
 #include "tools-types.h"
 
 #include "core/gimp.h"
+#include "core/gimpasyncset.h"
 #include "core/gimpcontext.h"
+#include "core/gimpdatafactory.h"
+#include "core/gimperror.h"
 #include "core/gimpimage.h"
 #include "core/gimp-palettes.h"
 #include "core/gimpimage-pick-item.h"
@@ -124,9 +127,10 @@ static GimpUIManager * gimp_text_tool_get_popup (GimpTool          *tool,
 static void      gimp_text_tool_draw            (GimpDrawTool      *draw_tool);
 static void      gimp_text_tool_draw_selection  (GimpDrawTool      *draw_tool);
 
-static void      gimp_text_tool_start           (GimpTextTool      *text_tool,
+static gboolean  gimp_text_tool_start           (GimpTextTool      *text_tool,
                                                  GimpDisplay       *display,
-                                                 GimpLayer         *layer);
+                                                 GimpLayer         *layer,
+                                                 GError           **error);
 static void      gimp_text_tool_halt            (GimpTextTool      *text_tool);
 
 static void      gimp_text_tool_frame_item      (GimpTextTool      *text_tool);
@@ -154,6 +158,11 @@ static void      gimp_text_tool_text_notify     (GimpText          *text,
                                                  const GParamSpec  *pspec,
                                                  GimpTextTool      *text_tool);
 static void      gimp_text_tool_text_changed    (GimpText          *text,
+                                                 GimpTextTool      *text_tool);
+
+static void
+    gimp_text_tool_fonts_async_set_empty_notify (GimpAsyncSet      *async_set,
+                                                 GParamSpec        *pspec,
                                                  GimpTextTool      *text_tool);
 
 static void      gimp_text_tool_apply_list      (GimpTextTool      *text_tool,
@@ -273,6 +282,8 @@ gimp_text_tool_constructed (GObject *object)
 {
   GimpTextTool    *text_tool = GIMP_TEXT_TOOL (object);
   GimpTextOptions *options   = GIMP_TEXT_TOOL_GET_OPTIONS (text_tool);
+  GimpTool        *tool      = GIMP_TOOL (text_tool);
+  GimpAsyncSet    *async_set;
 
   G_OBJECT_CLASS (parent_class)->constructed (object);
 
@@ -282,6 +293,14 @@ gimp_text_tool_constructed (GObject *object)
 
   g_signal_connect_object (text_tool->proxy, "notify",
                            G_CALLBACK (gimp_text_tool_proxy_notify),
+                           text_tool, 0);
+
+  async_set =
+    gimp_data_factory_get_async_set (tool->tool_info->gimp->font_factory);
+
+  g_signal_connect_object (async_set,
+                           "notify::empty",
+                           G_CALLBACK (gimp_text_tool_fonts_async_set_empty_notify),
                            text_tool, 0);
 }
 
@@ -373,7 +392,18 @@ gimp_text_tool_button_press (GimpTool            *tool,
 
   if (! text_tool->widget)
     {
-      gimp_text_tool_start (text_tool, display, NULL);
+      GError *error = NULL;
+
+      if (! gimp_text_tool_start (text_tool, display, NULL, &error))
+        {
+          gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
+
+          gimp_tool_message_literal (tool, display, error->message);
+
+          g_clear_error (&error);
+
+          return;
+        }
 
       gimp_tool_widget_hover (text_tool->widget, coords, state, TRUE);
 
@@ -754,8 +784,23 @@ gimp_text_tool_cursor_update (GimpTool         *tool,
     }
   else
     {
-      GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords, state,
-                                                     display);
+      GimpAsyncSet *async_set;
+
+      async_set =
+        gimp_data_factory_get_async_set (tool->tool_info->gimp->font_factory);
+
+      if (gimp_async_set_is_empty (async_set))
+        {
+          GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords, state,
+                                                         display);
+        }
+      else
+        {
+          gimp_tool_set_cursor (tool, display,
+                                gimp_tool_control_get_cursor (tool->control),
+                                gimp_tool_control_get_tool_cursor (tool->control),
+                                GIMP_CURSOR_MODIFIER_BAD);
+        }
     }
 }
 
@@ -846,10 +891,11 @@ gimp_text_tool_draw (GimpDrawTool *draw_tool)
     {
       /* If the text buffer has no selection, draw the text cursor */
 
-      GimpCanvasItem *item;
-      PangoRectangle  cursor_rect;
-      gint            off_x, off_y;
-      gboolean        overwrite;
+      GimpCanvasItem   *item;
+      PangoRectangle    cursor_rect;
+      gint              off_x, off_y;
+      gboolean          overwrite;
+      GimpTextDirection direction;
 
       gimp_text_tool_editor_get_cursor_rect (text_tool,
                                              text_tool->overwrite_mode,
@@ -861,8 +907,10 @@ gimp_text_tool_draw (GimpDrawTool *draw_tool)
 
       overwrite = text_tool->overwrite_mode && cursor_rect.width != 0;
 
+      direction = gimp_text_tool_get_direction (text_tool);
+
       item = gimp_draw_tool_add_text_cursor (draw_tool, &cursor_rect,
-                                             overwrite);
+                                             overwrite, direction);
       gimp_canvas_item_set_highlight (item, TRUE);
     }
 
@@ -872,17 +920,20 @@ gimp_text_tool_draw (GimpDrawTool *draw_tool)
 static void
 gimp_text_tool_draw_selection (GimpDrawTool *draw_tool)
 {
-  GimpTextTool    *text_tool = GIMP_TEXT_TOOL (draw_tool);
-  GtkTextBuffer   *buffer    = GTK_TEXT_BUFFER (text_tool->buffer);
-  GimpCanvasGroup *group;
-  PangoLayout     *layout;
-  gint             offset_x;
-  gint             offset_y;
-  gint             off_x, off_y;
-  PangoLayoutIter *iter;
-  GtkTextIter      sel_start, sel_end;
-  gint             min, max;
-  gint             i;
+  GimpTextTool     *text_tool = GIMP_TEXT_TOOL (draw_tool);
+  GtkTextBuffer    *buffer    = GTK_TEXT_BUFFER (text_tool->buffer);
+  GimpCanvasGroup  *group;
+  PangoLayout      *layout;
+  gint              offset_x;
+  gint              offset_y;
+  gint              width;
+  gint              height;
+  gint              off_x, off_y;
+  PangoLayoutIter  *iter;
+  GtkTextIter       sel_start, sel_end;
+  gint              min, max;
+  gint              i;
+  GimpTextDirection direction;
 
   group = gimp_draw_tool_add_stroke_group (draw_tool);
   gimp_canvas_item_set_highlight (GIMP_CANVAS_ITEM (group), TRUE);
@@ -896,9 +947,13 @@ gimp_text_tool_draw_selection (GimpDrawTool *draw_tool)
 
   gimp_text_layout_get_offsets (text_tool->layout, &offset_x, &offset_y);
 
+  gimp_text_layout_get_size (text_tool->layout, &width, &height);
+
   gimp_item_get_offset (GIMP_ITEM (text_tool->layer), &off_x, &off_y);
   offset_x += off_x;
   offset_y += off_y;
+
+  direction = gimp_text_tool_get_direction (text_tool);
 
   iter = pango_layout_get_iter (layout);
 
@@ -926,12 +981,33 @@ gimp_text_tool_draw_selection (GimpDrawTool *draw_tool)
 
           gimp_text_layout_transform_rect (text_tool->layout, &rect);
 
-          rect.x += offset_x;
-          rect.y += offset_y;
-
-          gimp_draw_tool_add_rectangle (draw_tool, FALSE,
-                                        rect.x, rect.y,
-                                        rect.width, rect.height);
+          switch (direction)
+            {
+            case GIMP_TEXT_DIRECTION_LTR:
+            case GIMP_TEXT_DIRECTION_RTL:
+              rect.x += offset_x;
+              rect.y += offset_y;
+              gimp_draw_tool_add_rectangle (draw_tool, FALSE,
+                                            rect.x, rect.y,
+                                            rect.width, rect.height);
+              break;
+            case GIMP_TEXT_DIRECTION_TTB_RTL:
+            case GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT:
+              rect.y = offset_x - rect.y + width;
+              rect.x = offset_y + rect.x;
+              gimp_draw_tool_add_rectangle (draw_tool, FALSE,
+                                            rect.y, rect.x,
+                                            -rect.height, rect.width);
+              break;
+            case GIMP_TEXT_DIRECTION_TTB_LTR:
+            case GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT:
+              rect.y = offset_x + rect.y;
+              rect.x = offset_y - rect.x + height;
+              gimp_draw_tool_add_rectangle (draw_tool, FALSE,
+                                            rect.y, rect.x,
+                                            rect.height, -rect.width);
+              break;
+            }
         }
     }
   while (pango_layout_iter_next_char (iter));
@@ -941,14 +1017,27 @@ gimp_text_tool_draw_selection (GimpDrawTool *draw_tool)
   pango_layout_iter_free (iter);
 }
 
-static void
-gimp_text_tool_start (GimpTextTool *text_tool,
-                      GimpDisplay  *display,
-                      GimpLayer    *layer)
+static gboolean
+gimp_text_tool_start (GimpTextTool  *text_tool,
+                      GimpDisplay   *display,
+                      GimpLayer     *layer,
+                      GError       **error)
 {
   GimpTool         *tool  = GIMP_TOOL (text_tool);
   GimpDisplayShell *shell = gimp_display_get_shell (display);
   GimpToolWidget   *widget;
+  GimpAsyncSet     *async_set;
+
+  async_set =
+    gimp_data_factory_get_async_set (tool->tool_info->gimp->font_factory);
+
+  if (! gimp_async_set_is_empty (async_set))
+    {
+      g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+                           _("Fonts are still loading"));
+
+      return FALSE;
+    }
 
   tool->display = display;
 
@@ -976,6 +1065,8 @@ gimp_text_tool_start (GimpTextTool *text_tool,
       gimp_text_tool_editor_start (text_tool);
       gimp_text_tool_editor_position (text_tool);
     }
+
+  return TRUE;
 }
 
 static void
@@ -1383,6 +1474,17 @@ gimp_text_tool_text_changed (GimpText     *text,
 }
 
 static void
+gimp_text_tool_fonts_async_set_empty_notify (GimpAsyncSet *async_set,
+                                             GParamSpec   *pspec,
+                                             GimpTextTool *text_tool)
+{
+  GimpTool *tool = GIMP_TOOL (text_tool);
+
+  if (! gimp_async_set_is_empty (async_set) && tool->display)
+    gimp_tool_control (tool, GIMP_TOOL_ACTION_HALT, tool->display);
+}
+
+static void
 gimp_text_tool_apply_list (GimpTextTool *text_tool,
                            GList        *pspecs)
 {
@@ -1507,6 +1609,15 @@ gimp_text_tool_create_layer (GimpTextTool *text_tool,
                 "y2", &y2,
                 NULL);
 
+  if (text_tool->text_box_fixed == FALSE)
+    {
+      if (text_tool->text &&
+          (text_tool->text->base_dir == GIMP_TEXT_DIRECTION_TTB_RTL ||
+           text_tool->text->base_dir == GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT))
+        {
+          x1 -= gimp_item_get_width (GIMP_ITEM (layer));
+        }
+    }
   gimp_item_set_offset (GIMP_ITEM (layer), x1, y1);
 
   gimp_image_add_layer (image, layer,
@@ -1666,7 +1777,18 @@ gimp_text_tool_layer_changed (GimpImage    *image,
                                            FALSE) &&
               GIMP_LAYER (text_tool->layer) == layer)
             {
-              gimp_text_tool_start (text_tool, display, layer);
+              GError *error = NULL;
+
+              if (! gimp_text_tool_start (text_tool, display, layer, &error))
+                {
+                  gimp_text_tool_set_drawable (text_tool, NULL, FALSE);
+
+                  gimp_tool_message_literal (tool, display, error->message);
+
+                  g_clear_error (&error);
+
+                  return;
+                }
             }
         }
     }
@@ -1965,12 +2087,15 @@ gimp_text_tool_apply (GimpTextTool *text_tool,
   return FALSE;
 }
 
-void
+gboolean
 gimp_text_tool_set_layer (GimpTextTool *text_tool,
                           GimpLayer    *layer)
 {
-  g_return_if_fail (GIMP_IS_TEXT_TOOL (text_tool));
-  g_return_if_fail (layer == NULL || GIMP_IS_LAYER (layer));
+  g_return_val_if_fail (GIMP_IS_TEXT_TOOL (text_tool), FALSE);
+  g_return_val_if_fail (layer == NULL || GIMP_IS_LAYER (layer), FALSE);
+
+  if (layer == GIMP_LAYER (text_tool->layer))
+    return TRUE;
 
   /*  FIXME this function works, and I have no clue why: first we set
    *  the drawable, then we HALT the tool and start() it without
@@ -2015,11 +2140,24 @@ gimp_text_tool_set_layer (GimpTextTool *text_tool,
 
       if (display)
         {
-          gimp_text_tool_start (text_tool, display, layer);
+          GError *error = NULL;
+
+          if (! gimp_text_tool_start (text_tool, display, layer, &error))
+            {
+              gimp_text_tool_set_drawable (text_tool, NULL, FALSE);
+
+              gimp_tool_message_literal (tool, display, error->message);
+
+              g_clear_error (&error);
+
+              return FALSE;
+            }
 
           tool->drawable = GIMP_DRAWABLE (layer);
         }
     }
+
+  return TRUE;
 }
 
 gboolean
@@ -2165,4 +2303,11 @@ gimp_text_tool_create_vectors_warped (GimpTextTool *text_tool)
                           GIMP_IMAGE_ACTIVE_PARENT, -1, TRUE);
 
   gimp_image_flush (text_tool->image);
+}
+
+GimpTextDirection
+gimp_text_tool_get_direction  (GimpTextTool *text_tool)
+{
+  GimpTextOptions *options = GIMP_TEXT_TOOL_GET_OPTIONS (text_tool);
+  return options->base_dir;
 }

@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_H__
@@ -94,14 +94,13 @@ struct _Gimp
   GimpBuffer             *clipboard_buffer;
   GimpContainer          *named_buffers;
 
-  GimpContainer          *fonts;
-
   GimpDataFactory        *brush_factory;
   GimpDataFactory        *dynamics_factory;
   GimpDataFactory        *mybrush_factory;
   GimpDataFactory        *pattern_factory;
   GimpDataFactory        *gradient_factory;
   GimpDataFactory        *palette_factory;
+  GimpDataFactory        *font_factory;
   GimpDataFactory        *tool_preset_factory;
 
   GimpTagCache           *tag_cache;

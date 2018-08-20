@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -31,12 +31,11 @@
 
 #include "operations-types.h"
 
+#include "core/gimp-utils.h"
 #include "core/gimpcurve.h"
 #include "core/gimphistogram.h"
 
 #include "gimpcurvesconfig.h"
-
-#include "gimp-intl.h"
 
 #include "gimp-intl.h"
 
@@ -537,8 +536,8 @@ gimp_curves_config_load_cruft (GimpCurvesConfig  *config,
   data_input = g_data_input_stream_new (input);
 
   line_len = 64;
-  line = g_data_input_stream_read_line (data_input, &line_len,
-                                        NULL, error);
+  line = gimp_data_input_stream_read_line_always (data_input, &line_len,
+                                                  NULL, error);
   if (! line)
     return FALSE;
 

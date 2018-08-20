@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_VIEW_RENDERER_DRAWABLE_H__
@@ -31,11 +31,14 @@
 #define GIMP_VIEW_RENDERER_DRAWABLE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_VIEW_RENDERER_DRAWABLE, GimpViewRendererDrawableClass))
 
 
-typedef struct _GimpViewRendererDrawableClass  GimpViewRendererDrawableClass;
+typedef struct _GimpViewRendererDrawablePrivate GimpViewRendererDrawablePrivate;
+typedef struct _GimpViewRendererDrawableClass   GimpViewRendererDrawableClass;
 
 struct _GimpViewRendererDrawable
 {
-  GimpViewRenderer  parent_instance;
+  GimpViewRenderer                 parent_instance;
+
+  GimpViewRendererDrawablePrivate *priv;
 };
 
 struct _GimpViewRendererDrawableClass

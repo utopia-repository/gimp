@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_BRUSH_H__
@@ -21,7 +21,6 @@
 
 #include "gimpdata.h"
 
-#define GIMP_BRUSH_MAX_SIZE 10000.0 /*Max size in either dimension in px*/
 
 #define GIMP_TYPE_BRUSH            (gimp_brush_get_type ())
 #define GIMP_BRUSH(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_BRUSH, GimpBrush))

@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -30,11 +30,13 @@
 #include "core-types.h"
 
 #include "gegl/gimp-babl.h"
+#include "gegl/gimp-gegl-loops.h"
 
 #include "gimp-atomic.h"
 #include "gimp-parallel.h"
 #include "gimpasync.h"
 #include "gimphistogram.h"
+#include "gimpwaitable.h"
 
 
 #define MIN_PARALLEL_SUB_SIZE 64
@@ -254,7 +256,7 @@ gimp_histogram_duplicate (GimpHistogram *histogram)
   g_return_val_if_fail (GIMP_IS_HISTOGRAM (histogram), NULL);
 
   if (histogram->priv->calculate_async)
-    gimp_async_wait (histogram->priv->calculate_async);
+    gimp_waitable_wait (GIMP_WAITABLE (histogram->priv->calculate_async));
 
   dup = gimp_histogram_new (histogram->priv->linear);
 
@@ -282,10 +284,7 @@ gimp_histogram_calculate (GimpHistogram       *histogram,
   g_return_if_fail (buffer_rect != NULL);
 
   if (histogram->priv->calculate_async)
-    {
-      gimp_async_cancel (histogram->priv->calculate_async);
-      gimp_async_wait (histogram->priv->calculate_async);
-    }
+    gimp_async_cancel_and_wait (histogram->priv->calculate_async);
 
   context.histogram   = histogram;
   context.buffer      = buffer;
@@ -322,10 +321,7 @@ gimp_histogram_calculate_async (GimpHistogram       *histogram,
   g_return_val_if_fail (buffer_rect != NULL, NULL);
 
   if (histogram->priv->calculate_async)
-    {
-      gimp_async_cancel (histogram->priv->calculate_async);
-      gimp_async_wait (histogram->priv->calculate_async);
-    }
+    gimp_async_cancel_and_wait (histogram->priv->calculate_async);
 
   context = g_slice_new0 (CalculateContext);
 
@@ -334,8 +330,8 @@ gimp_histogram_calculate_async (GimpHistogram       *histogram,
                                           gegl_buffer_get_format (buffer));
   context->buffer_rect = *buffer_rect;
 
-  gegl_buffer_copy (buffer, buffer_rect, GEGL_ABYSS_NONE,
-                    context->buffer, NULL);
+  gimp_gegl_buffer_copy (buffer, buffer_rect, GEGL_ABYSS_NONE,
+                         context->buffer, NULL);
 
   if (mask)
     {
@@ -347,8 +343,8 @@ gimp_histogram_calculate_async (GimpHistogram       *histogram,
       context->mask = gegl_buffer_new (&context->mask_rect,
                                        gegl_buffer_get_format (mask));
 
-      gegl_buffer_copy (mask, &context->mask_rect, GEGL_ABYSS_NONE,
-                        context->mask, NULL);
+      gimp_gegl_buffer_copy (mask, &context->mask_rect, GEGL_ABYSS_NONE,
+                             context->mask, NULL);
     }
 
   histogram->priv->calculate_async = gimp_parallel_run_async (
@@ -369,10 +365,7 @@ gimp_histogram_clear_values (GimpHistogram *histogram)
   g_return_if_fail (GIMP_IS_HISTOGRAM (histogram));
 
   if (histogram->priv->calculate_async)
-    {
-      gimp_async_cancel (histogram->priv->calculate_async);
-      gimp_async_wait (histogram->priv->calculate_async);
-    }
+    gimp_async_cancel_and_wait (histogram->priv->calculate_async);
 
   if (histogram->priv->values)
     {

@@ -32,17 +32,26 @@
 /* Define to 1 if using `alloca.c'. */
 #undef C_ALLOCA
 
-/* Define to 1 to if MyPaint brushes are bundled with GIMP */
-#undef ENABLE_BUNDLED_MYPAINT_BRUSHES
-
 /* Define to 1 to enable support for multiple processors. */
 #undef ENABLE_MP
 
 /* always defined to indicate that i18n is enabled */
 #undef ENABLE_NLS
 
+/* Define to 1 if resources are considered bundled under the same prefix */
+#undef ENABLE_RELOCATABLE_RESOURCES
+
+/* Define to 1 if GIMP should open a debug console at start */
+#undef ENABLE_WIN32_DEBUG_CONSOLE
+
 /* The prefix for our gettext translation domains. */
 #undef GETTEXT_PACKAGE
+
+/* libgimp pkg-config version */
+#undef GIMP_PKGCONFIG_VERSION
+
+/* GIMP tools version */
+#undef GIMP_TOOL_VERSION
 
 /* Define to 1 if this is an unstable version of GIMP */
 #undef GIMP_UNSTABLE
@@ -312,6 +321,10 @@
 
 /* Define to 1 to use SYSV shared memory */
 #undef USE_SYSV_SHM
+
+/* Define if 32-bit versions of libraries are packaged in an alternative
+   folder */
+#undef WIN32_32BIT_DLL_FOLDER
 
 /* Define to 1 if the X Window System is missing or not being used. */
 #undef X_DISPLAY_MISSING

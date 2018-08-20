@@ -11,11 +11,11 @@ AC_PREREQ(2.54)
 
 m4_define([gimp_major_version], [2])
 m4_define([gimp_minor_version], [10])
-m4_define([gimp_micro_version], [2])
+m4_define([gimp_micro_version], [6])
 m4_define([gimp_real_version],
           [gimp_major_version.gimp_minor_version.gimp_micro_version])
 m4_define([gimp_version], [gimp_real_version])
-m4_define([gimp_interface_age], [2])
+m4_define([gimp_interface_age], [6])
 m4_define([gimp_binary_age],
           [m4_eval(100 * gimp_minor_version + gimp_micro_version)])
 
@@ -43,9 +43,9 @@ m4_define([gimp_stable],
 m4_define([gimp_full_name], [GNU Image Manipulation Program])
 
 # required versions of other packages
-m4_define([babl_required_version], [0.1.50])
+m4_define([babl_required_version], [0.1.56])
 m4_define([gegl_major_minor_version], [0.4])
-m4_define([gegl_micro_version], [2])
+m4_define([gegl_micro_version], [8])
 m4_define([gegl_required_version],
           [gegl_major_minor_version.gegl_micro_version])
 m4_define([glib_required_version], [2.54.2])
@@ -85,10 +85,10 @@ m4_define([libheif_required_version], [1.1.0])
 
 # Current test considers only 2 version numbers. If we update the recommended
 # version of gettext with more version numbers, please update the tests.
-m4_define([xgettext_recommended_version], [0.19])
+m4_define([xgettext_required_version], [0.19])
 
 AC_INIT([GIMP], [gimp_version],
-        [http://bugzilla.gnome.org/enter_bug.cgi?product=GIMP],
+        [https://gitlab.gnome.org/GNOME/gimp/issues/new],
         [gimp])
 
 AC_CONFIG_HEADERS([config.h])
@@ -137,6 +137,12 @@ AC_SUBST(GIMP_USER_VERSION)
 AC_SUBST(GIMP_UNSTABLE)
 AC_SUBST(GIMP_FULL_NAME)
 
+# Version strings used in some source, though it seems unnecessary to
+# declare them in the public API (libgimpbase/gimpversion.h).
+AC_DEFINE(GIMP_PKGCONFIG_VERSION, "gimp_pkgconfig_version",
+          [libgimp pkg-config version])
+AC_DEFINE(GIMP_TOOL_VERSION, "gimp_tool_version",
+          [GIMP tools version])
 
 # These are used in the .pc files
 GLIB_REQUIRED_VERSION=glib_required_version
@@ -164,12 +170,13 @@ WMF_REQUIRED_VERSION=wmf_required_version
 POPPLER_REQUIRED_VERSION=poppler_required_version
 POPPLER_DATA_REQUIRED_VERSION=poppler_data_required_version
 OPENEXR_REQUIRED_VERSION=openexr_required_version
+OPENJPEG_REQUIRED_VERSION=openjpeg_required_version
 INTLTOOL_REQUIRED_VERSION=intltool_required_version
 PERL_REQUIRED_VERSION=perl_required_version
 PYTHON2_REQUIRED_VERSION=python2_required_version
 WEBP_REQUIRED_VERSION=webp_required_version
 LIBHEIF_REQUIRED_VERSION=libheif_required_version
-XGETTEXT_RECOMMENDED_VERSION=xgettext_recommended_version
+XGETTEXT_REQUIRED_VERSION=xgettext_required_version
 AC_SUBST(GLIB_REQUIRED_VERSION)
 AC_SUBST(GDK_PIXBUF_REQUIRED_VERSION)
 AC_SUBST(GTK_REQUIRED_VERSION)
@@ -195,12 +202,13 @@ AC_SUBST(WMF_REQUIRED_VERSION)
 AC_SUBST(POPPLER_REQUIRED_VERSION)
 AC_SUBST(POPPLER_DATA_REQUIRED_VERSION)
 AC_SUBST(OPENEXR_REQUIRED_VERSION)
+AC_SUBST(OPENJPEG_REQUIRED_VERSION)
 AC_SUBST(INTLTOOL_REQUIRED_VERSION)
 AC_SUBST(PERL_REQUIRED_VERSION)
 AC_SUBST(PYTHON2_REQUIRED_VERSION)
 AC_SUBST(WEBP_REQUIRED_VERSION)
 AC_SUBST(LIBHEIF_REQUIRED_VERSION)
-AC_SUBST(XGETTEXT_RECOMMENDED_VERSION)
+AC_SUBST(XGETTEXT_REQUIRED_VERSION)
 
 # The symbol GIMP_UNSTABLE is defined above for substitution in
 # Makefiles and conditionally defined here as a preprocessor symbol
@@ -602,6 +610,20 @@ if test "$nl_ok" = "yes"; then
 	    [Define to 1 if _NL_MEASUREMENT_MEASUREMENT is available])
 fi
 
+# Macro to keep track of failed dependencies.
+
+required_deps=''
+
+# To add a required dependency error, call: add_deps_error([dependency]).
+# If details about the dependency are needed:
+# add_deps_error([dependency], [first line, second line])
+m4_define([add_deps_error], [
+  AC_MSG_NOTICE([Eeeeeeeeeeeeeeeeeeeeek! Missing dep: $1])
+  required_deps="$required_deps
+  - Error: missing dependency $1"
+  m4_foreach([more], [$2], [
+  required_deps="$required_deps
+      *** more"])])
 
 ######################
 # Internationalisation
@@ -611,35 +633,30 @@ IT_PROG_INTLTOOL(intltool_required_version)
 AM_GLIB_GNU_GETTEXT
 
 # Testing xgettext version since we had some problem with localizing script-fu. See bug 720052.
-AC_MSG_CHECKING([for recommended xgettext version (>= xgettext_recommended_version)])
-XGETTEXT_RECOMMENDED_VERSION_MAJOR=`echo $XGETTEXT_RECOMMENDED_VERSION | awk -F. '{ print $ 1; }'`
-XGETTEXT_RECOMMENDED_VERSION_MINOR_1=`echo $XGETTEXT_RECOMMENDED_VERSION | awk -F. '{ print $ 2; }'`
+AC_MSG_CHECKING([for xgettext version (>= xgettext_required_version)])
+XGETTEXT_REQUIRED_VERSION_MAJOR=`echo $XGETTEXT_REQUIRED_VERSION | awk -F. '{ print $ 1; }'`
+XGETTEXT_REQUIRED_VERSION_MINOR_1=`echo $XGETTEXT_REQUIRED_VERSION | awk -F. '{ print $ 2; }'`
 
 XGETTEXT_APPLIED_VERSION=`$XGETTEXT --version | head -1 | cut -d" " -f4`
 XGETTEXT_APPLIED_VERSION_MAJOR=`echo $XGETTEXT_APPLIED_VERSION | awk -F. '{ print $ 1; }'`
 XGETTEXT_APPLIED_VERSION_MINOR_1=`echo $XGETTEXT_APPLIED_VERSION | awk -F. '{ print $ 2; }'`
 
-have_recommended_xgettext="no"
+have_required_xgettext="no"
 if test -n "$XGETTEXT_APPLIED_VERSION_MAJOR"; then
-    if test "$XGETTEXT_RECOMMENDED_VERSION_MAJOR" -lt "$XGETTEXT_APPLIED_VERSION_MAJOR"; then
-        have_recommended_xgettext="yes"
-    elif test "$XGETTEXT_RECOMMENDED_VERSION_MAJOR" -eq "$XGETTEXT_APPLIED_VERSION_MAJOR"; then
+    if test "$XGETTEXT_REQUIRED_VERSION_MAJOR" -lt "$XGETTEXT_APPLIED_VERSION_MAJOR"; then
+        have_required_xgettext="yes"
+    elif test "$XGETTEXT_REQUIRED_VERSION_MAJOR" -eq "$XGETTEXT_APPLIED_VERSION_MAJOR"; then
         if test -n "$XGETTEXT_APPLIED_VERSION_MINOR_1"; then
-            if test "$XGETTEXT_RECOMMENDED_VERSION_MINOR_1" -le "$XGETTEXT_APPLIED_VERSION_MINOR_1"; then
-                have_recommended_xgettext="yes"
+            if test "$XGETTEXT_REQUIRED_VERSION_MINOR_1" -le "$XGETTEXT_APPLIED_VERSION_MINOR_1"; then
+                have_required_xgettext="yes"
             fi
         fi
     fi
 fi
-AC_MSG_RESULT($have_recommended_xgettext)
+AC_MSG_RESULT($have_required_xgettext)
 
-if test "x$have_recommended_xgettext" = "xno"; then
-    have_recommended_xgettext="
-WARNING: Your gettext version is $XGETTEXT_APPLIED_VERSION.
-         The recommended gettext version is $XGETTEXT_RECOMMENDED_VERSION or over.
-         If you continue without updating gettext, your build will have partially broken localization."
-else
-    have_recommended_xgettext=""
+if test "x$have_required_xgettext" = "xno"; then
+    add_deps_error([xgettext], [xgettext >= xgettext_required_version])
 fi
 
 ###########
@@ -664,19 +681,6 @@ AC_SUBST(ISO_CODES_LOCALEDIR)
 ###############################
 # Checks for required libraries
 ###############################
-
-required_deps=''
-
-# To add a required dependency error, call: add_deps_error([dependency]).
-# If details about the dependency are needed:
-# add_deps_error([dependency], [first line, second line])
-m4_define([add_deps_error], [
-  AC_MSG_NOTICE([Eeeeeeeeeeeeeeeeeeeeek! Missing dep: $1])
-  required_deps="$required_deps
-  - Error: missing dependency $1"
-  m4_foreach([more], [$2], [
-  required_deps="$required_deps
-      *** more"])])
 
 PKG_CHECK_MODULES(BABL, [babl >= babl_required_version],,
                   [add_deps_error([babl >= babl_required_version])])
@@ -739,11 +743,27 @@ WARNING: Test for glib-networking cannot be performed while cross-compiling.
          optional anymore."
 fi
 
-AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources, no)
-if test "x$GLIB_COMPILE_RESOURCES" = xno; then
-  add_deps_error([glib-compile-resources],
-                 [Could not find glib-compile-resources in your PATH.])
+# AM_PATH_GLIB_2_0 already fills in the variable GLIB_COMPILE_RESOURCES.
+# Unfortunately it looks it up using $PKG_CONFIG, which search in
+# target-installed libraries, hence it would return a tool for the
+# target architecture in case of cross-compilation (which can't be run
+# during build, unless there is some compatibility layer in the OS).
+# Therefore we make our own check.
+AC_MSG_CHECKING([for native glib-compile-resources])
+if test -z "$HOST_GLIB_COMPILE_RESOURCES"; then
+  # Do not use $PKG_CONFIG as it will search target files.
+  HOST_GLIB_COMPILE_RESOURCES=`pkg-config --variable=glib_compile_resources gio-2.0`
+  if test -z "$HOST_GLIB_COMPILE_RESOURCES"; then
+    # As fallback, search in path.
+    AC_PATH_PROG(HOST_GLIB_COMPILE_RESOURCES, glib-compile-resources, no)
+    if test "x$HOST_GLIB_COMPILE_RESOURCES" = xno; then
+      add_deps_error([glib-compile-resources],
+                     [Could not find glib-compile-resources in your PATH.])
+    fi
+  fi
 fi
+AC_MSG_RESULT($HOST_GLIB_COMPILE_RESOURCES)
+AC_SUBST(HOST_GLIB_COMPILE_RESOURCES)
 
 AC_PATH_PROG(GDBUS_CODEGEN, gdbus-codegen, no)
 if test "x$GDBUS_CODEGEN" = xno; then
@@ -889,6 +909,59 @@ PKG_CHECK_MODULES(HARFBUZZ, harfbuzz >= harfbuzz_required_version,,
 
 PKG_CHECK_MODULES(GEXIV2, gexiv2 >= gexiv2_required_version,,
                  [add_deps_error([gexiv2 >= gexiv2_required_version])])
+
+#################################
+# Check for debug console (Win32)
+#################################
+
+AC_ARG_ENABLE(win32-debug-console,
+              [  --enable-win32-debug-console
+                          open a console when starting the program
+                          (default=auto)],,
+              enable_win32_debug_console=auto)
+
+AC_MSG_CHECKING([if GIMP should open a debug console at start])
+if test "x$platform_win32" != "xyes"; then
+   enable_win32_debug_console=no
+elif test "x$enable_win32_debug_console" != xno &&
+     test "x$enable_win32_debug_console" != xyes; then
+  # By default, we enable the debug console only for unstable builds.
+   enable_win32_debug_console=gimp_unstable
+fi
+
+if test "x$enable_win32_debug_console" = "xyes"; then
+  AC_DEFINE(ENABLE_WIN32_DEBUG_CONSOLE, 1,
+            [Define to 1 if GIMP should open a debug console at start])
+fi
+AC_MSG_RESULT([$enable_win32_debug_console])
+
+######################################
+# Check for 32-bit DLLs (Win32 64-bit)
+######################################
+
+AC_ARG_WITH(win32-32bit-dll-folder,
+            [  --with-win32-32bit-dll-folder[=DIR]
+                          alternative folder with 32-bit versions of DLL libraries on Windows (default: 32/bin/)],,
+            with_win32_32bit_dll_folder="32/bin")
+
+AC_MSG_CHECKING([the alternative folder containing 32-bit DLLs on Windows])
+if test "x$platform_win32" = "xyes"; then
+  case "$host_cpu" in
+    x86_64)
+    ;;
+    *)
+    with_win32_32bit_dll_folder="no"
+    ;;
+  esac
+else
+    with_win32_32bit_dll_folder="no"
+fi
+
+if test "x$with_win32_32bit_dll_folder" != "xno"; then
+  AC_DEFINE_UNQUOTED(WIN32_32BIT_DLL_FOLDER, "$with_win32_32bit_dll_folder",
+                     [Define if 32-bit versions of libraries are packaged in an alternative folder])
+fi
+AC_MSG_RESULT([$with_win32_32bit_dll_folder])
 
 #####################
 # Check for Dr. Mingw
@@ -1390,6 +1463,35 @@ AC_SUBST(GIMP_COMMAND)
 # unconditionally:
 MIME_TYPES="image/bmp;image/g3fax;image/gif;image/x-fits;image/x-pcx;image/x-portable-anymap;image/x-portable-bitmap;image/x-portable-graymap;image/x-portable-pixmap;image/x-psd;image/x-sgi;image/x-tga;image/x-xbitmap;image/x-xwindowdump;image/x-xcf;image/x-compressed-xcf;image/x-gimp-gbr;image/x-gimp-pat;image/x-gimp-gih"
 
+#################
+# Bundle packages
+#################
+
+AC_MSG_CHECKING([whether we build a relocatable package])
+AC_ARG_ENABLE(relocatable-bundle,
+              [  --enable-relocatable-bundle
+                          build with resources considered bundled under the same prefix
+                          (default=auto)],,
+              enable_relocatable_bundle=auto)
+
+if test "x$enable_relocatable_bundle" != xno &&
+   test "x$enable_relocatable_bundle" != xyes; then
+  # By default, assume building for Windows or macOS everything to be on
+  # the same prefix and can be relocated.
+  # On other platforms, build-time paths are meaningful.
+  if test "x$platform_osx" = "xyes" ||
+     test "x$platform_win32" = "xyes"; then
+     enable_relocatable_bundle=yes
+  else
+     enable_relocatable_bundle=no
+  fi
+fi
+if test "x$enable_relocatable_bundle" = xyes; then
+  AC_DEFINE(ENABLE_RELOCATABLE_RESOURCES, 1,
+            [Define to 1 if resources are considered bundled under the same prefix])
+fi
+
+AC_MSG_RESULT([$enable_relocatable_bundle])
 
 ###################
 # Check for libtiff
@@ -1707,22 +1809,11 @@ PKG_CHECK_MODULES(LIBMYPAINT, libmypaint >= libmypaint_required_version,,
 PKG_CHECK_MODULES(MYPAINT_BRUSHES, mypaint-brushes-1.0,,
                   [add_deps_error([mypaint-brushes-1.0])])
 
-AC_MSG_CHECKING([whether to treat MyPaint brushes as bundled])
-AC_ARG_ENABLE(bundled-mypaint-brushes,
-              [  --enable-bundled-mypaint-brushes
-                          treat MyPaint brushes as bundled in the install prefix
-                          (default=no)],,
-              enable_bundled_mypaint_brushes=no)
-
-if test "x$enable_bundled_mypaint_brushes" != xno; then
-  AC_DEFINE(ENABLE_BUNDLED_MYPAINT_BRUSHES, 1,
-            [Define to 1 to if MyPaint brushes are bundled with GIMP])
+if test "x$enable_relocatable_bundle" != xno; then
   mypaint_brushes_dir='${gimp_installation_dir}/share/mypaint-data/1.0/brushes'
 else
   mypaint_brushes_dir=`$PKG_CONFIG --variable=brushesdir mypaint-brushes-1.0`
 fi
-
-AC_MSG_RESULT([$enable_bundled_mypaint_brushes])
 AC_SUBST(mypaint_brushes_dir)
 
 
@@ -2312,8 +2403,10 @@ if test "x$with_bug_report_url" = "x"; then
   with_bug_report_url="$PACKAGE_BUGREPORT"
 fi
 
+BUG_REPORT_URL="$with_bug_report_url"
 AC_DEFINE_UNQUOTED(BUG_REPORT_URL, "$with_bug_report_url",
                    [The URL to open in order to report bugs])
+AC_SUBST(BUG_REPORT_URL)
 
 override_bug_report_url=
 if test "x$with_bug_report_url" = "x$PACKAGE_BUGREPORT"; then
@@ -2769,6 +2862,7 @@ data/tool-presets/Paint/Makefile
 data/tool-presets/Selection/Makefile
 data/tool-presets/Sketch/Makefile
 desktop/Makefile
+desktop/gimp-data-extras.metainfo.xml.in
 desktop/gimp.desktop.in
 desktop/org.gimp.GIMP.appdata.xml.in
 etc/Makefile
@@ -2829,46 +2923,48 @@ generate_po_makefile([po-windows-installer])
 # Print a summary of features enabled/disabled:
 optional_deps="
 Extra Binaries:
-  gimp-console:            $enable_gimp_console
+  gimp-console:              $enable_gimp_console
 
 Optional Features:
-  Language selection:      $have_iso_codes
-  Vector icons:            $enable_vector_icons
-  Dr. Mingw (Win32):       $enable_drmingw
-  Bundled MyPaint Brushes: $enable_bundled_mypaint_brushes (at $mypaint_brushes_dir)
-  Default ICC directory:   $with_icc_directory
+  Language selection:        $have_iso_codes
+  Vector icons:              $enable_vector_icons
+  Dr. Mingw (Win32):         $enable_drmingw
+  Relocatable bundle:        $enable_relocatable_bundle
+  Default ICC directory:     $with_icc_directory
+  Debug console (Win32):     $enable_win32_debug_console
+  32-bit DLL folder (Win32): $with_win32_32bit_dll_folder
 
 Optional Plug-Ins:
-  Ascii Art:               $have_libaa
-  Ghostscript:             $have_gs
-  Help Browser:            $have_webkit
-  JPEG 2000:               $have_openjpeg
-  MNG:                     $have_libmng
-  OpenEXR:                 $have_openexr
-  WebP:                    $have_webp
-  Heif:                    $have_libheif
-  PDF (export):            $have_cairo_pdf
-  Print:                   $enable_print
-  Python 2:                $enable_python
-  TWAIN (Win32):           $os_win32
-  Webpage:                 $have_webkit
-  WMF:                     $have_libwmf
-  X11 Mouse Cursor:        $have_xmc
-  XPM:                     $have_libxpm
-  Email:                   $have_email
+  Ascii Art:                 $have_libaa
+  Ghostscript:               $have_gs
+  Help Browser:              $have_webkit
+  JPEG 2000:                 $have_openjpeg
+  MNG:                       $have_libmng
+  OpenEXR:                   $have_openexr
+  WebP:                      $have_webp
+  Heif:                      $have_libheif
+  PDF (export):              $have_cairo_pdf
+  Print:                     $enable_print
+  Python 2:                  $enable_python
+  TWAIN (Win32):             $os_win32
+  Webpage:                   $have_webkit
+  WMF:                       $have_libwmf
+  X11 Mouse Cursor:          $have_xmc
+  XPM:                       $have_libxpm
+  Email:                     $have_email
 
 Optional Modules:
-  ALSA (MIDI Input):       $have_alsa
-  Linux Input:             $have_linux_input (GUdev support: $have_libgudev)
-  DirectInput (Win32):     $have_dx_dinput
+  ALSA (MIDI Input):         $have_alsa
+  Linux Input:               $have_linux_input (GUdev support: $have_libgudev)
+  DirectInput (Win32):       $have_dx_dinput
 
 Tests:
-  Use xvfb-run             $have_xvfb_run
-  Test appdata             $have_appstream_util
-  Test desktop file        $have_desktop_file_validate
+  Use xvfb-run               $have_xvfb_run
+  Test appdata               $have_appstream_util
+  Test desktop file          $have_desktop_file_validate
 
 Bug report URL: $with_bug_report_url
-$override_bug_report_url$have_recommended_xgettext$have_recommended_gtk$warning_vector_icons_windows$warning_glib_networking$warning_gcc"
+$override_bug_report_url$have_recommended_gtk$warning_vector_icons_windows$warning_glib_networking$warning_gcc"
 
 if test "x$required_deps" = "x"; then
   AC_OUTPUT

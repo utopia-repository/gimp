@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see
- * <http://www.gnu.org/licenses/>.
+ * <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -86,8 +86,6 @@ static gboolean gimp_utils_generic_available (const gchar *program,
                                               gint         major,
                                               gint         minor);
 static gboolean gimp_utils_gdb_available     (gint         major,
-                                              gint         minor);
-static gboolean gimp_utils_lldb_available    (gint         major,
                                               gint         minor);
 
 /**
@@ -1114,14 +1112,37 @@ gimp_flags_value_get_abbrev (GFlagsClass *flags_class,
  *
  * On Win32, we return TRUE if Dr. Mingw is built-in, FALSE otherwise.
  *
+ * Note: this function is not crash-safe, i.e. you should not try to use
+ * it in a callback when the program is already crashing. In such a
+ * case, call gimp_stack_trace_print() or gimp_stack_trace_query()
+ * directly.
+ *
  * Since: 2.10
  **/
 gboolean
 gimp_stack_trace_available (gboolean optimal)
 {
 #ifndef G_OS_WIN32
-  if (gimp_utils_gdb_available (7, 0) ||
-      gimp_utils_lldb_available (0, 0))
+  gchar    *lld_path = NULL;
+  gboolean  has_lldb = FALSE;
+
+  /* Similarly to gdb, we could check for lldb by calling:
+   * gimp_utils_generic_available ("lldb", major, minor).
+   * We don't do so on purpose because on macOS, when lldb is absent, it
+   * triggers a popup asking to install Xcode. So instead, we just
+   * search for the executable in path.
+   * This is the reason why this function is not crash-safe, since
+   * g_find_program_in_path() allocates memory.
+   * See issue #1999.
+   */
+  lld_path = g_find_program_in_path ("lldb");
+  if (lld_path)
+    {
+      has_lldb = TRUE;
+      g_free (lld_path);
+    }
+
+  if (gimp_utils_gdb_available (7, 0) || has_lldb)
     return TRUE;
 #ifdef HAVE_EXECINFO_H
   if (! optimal)
@@ -1180,8 +1201,15 @@ gimp_stack_trace_print (const gchar   *prog_name,
   int      out_fd[2];
   pid_t    fork_pid;
   pid_t    pid = getpid();
+  gint     eintr_count = 0;
 #if defined(G_OS_WIN32)
   DWORD    tid = GetCurrentThreadId ();
+#elif defined(PLATFORM_OSX)
+  uint64   tid64;
+  long     tid;
+
+  pthread_threadid_np (NULL, &tid64);
+  tid = (long) tid64;
 #elif defined(SYS_gettid)
   long     tid = syscall (SYS_gettid);
 #elif defined(HAVE_THR_SELF)
@@ -1275,8 +1303,25 @@ gimp_stack_trace_print (const gchar   *prog_name,
        */
       close (out_fd[1]);
 
-      while ((read_n = read (out_fd[0], buffer, 256)) > 0)
+      while ((read_n = read (out_fd[0], buffer, 256)) != 0)
         {
+          if (read_n < 0)
+            {
+              /* LLDB on macOS seems to trigger a few EINTR error (see
+               * !13), though read() finally ends up working later. So
+               * let's not make this error fatal, and instead try again.
+               * Yet to avoid infinite loop (in case the error really
+               * happens at every call), we abandon after a few
+               * consecutive errors.
+               */
+              if (errno == EINTR && eintr_count <= 5)
+                {
+                  eintr_count++;
+                  continue;
+                }
+              break;
+            }
+          eintr_count = 0;
           if (! stack_printed)
             {
 #if defined(G_OS_WIN32) || defined(SYS_gettid) || defined(HAVE_THR_SELF)
@@ -1552,11 +1597,4 @@ gimp_utils_gdb_available (gint major,
                           gint minor)
 {
   return gimp_utils_generic_available ("gdb", major, minor);
-}
-
-static gboolean
-gimp_utils_lldb_available (gint major,
-                           gint minor)
-{
-  return gimp_utils_generic_available ("lldb", major, minor);
 }

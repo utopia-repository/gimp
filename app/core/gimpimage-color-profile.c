@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -177,8 +177,7 @@ gimp_image_validate_icc_profile (GimpImage     *image,
   GimpColorProfile *profile;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
-  g_return_val_if_fail (data != NULL, FALSE);
-  g_return_val_if_fail (length != 0, FALSE);
+  g_return_val_if_fail (data != NULL || length == 0, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   profile = gimp_color_profile_new_from_icc_profile (data, length, error);
@@ -604,9 +603,6 @@ gimp_image_color_profile_srgb_to_pixel (GimpImage     *image,
 
   if (transform)
     {
-      /* for the alpha channel */
-      gimp_rgba_get_pixel (color, pixel_format, pixel);
-
       gimp_color_transform_process_pixels (transform,
                                            babl_format ("R'G'B'A double"),
                                            color,

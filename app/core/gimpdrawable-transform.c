@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -1080,7 +1080,8 @@ gimp_drawable_transform_paste (GimpDrawable     *drawable,
     {
       gimp_drawable_set_buffer_full (drawable, TRUE, NULL,
                                      buffer,
-                                     offset_x, offset_y);
+                                     offset_x, offset_y,
+                                     TRUE);
     }
 
   gimp_image_undo_group_end (image);

@@ -12,7 +12,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # "Perlized" from C source by Manish Singh <yosh@gimp.org>
 
@@ -36,7 +36,9 @@ sub fonts_popup {
 {
   if (gimp->no_interface ||
       ! gimp_pdb_lookup_procedure (gimp->pdb, font_callback) ||
-      ! gimp_pdb_dialog_new (gimp, context, progress, gimp->fonts,
+      ! gimp_data_factory_data_wait (gimp->font_factory)     ||
+      ! gimp_pdb_dialog_new (gimp, context, progress,
+                             gimp_data_factory_get_container (gimp->font_factory),
                              popup_title, font_callback, initial_font,
                              NULL))
     success = FALSE;
@@ -61,7 +63,9 @@ sub fonts_close_popup {
 {
   if (gimp->no_interface ||
       ! gimp_pdb_lookup_procedure (gimp->pdb, font_callback) ||
-      ! gimp_pdb_dialog_close (gimp, gimp->fonts, font_callback))
+      ! gimp_pdb_dialog_close (gimp,
+                               gimp_data_factory_get_container (gimp->font_factory),
+			       font_callback))
     success = FALSE;
 }
 CODE
@@ -86,7 +90,10 @@ sub fonts_set_popup {
 {
   if (gimp->no_interface ||
       ! gimp_pdb_lookup_procedure (gimp->pdb, font_callback) ||
-      ! gimp_pdb_dialog_set (gimp, gimp->fonts, font_callback, font_name,
+      ! gimp_data_factory_data_wait (gimp->font_factory)     ||
+      ! gimp_pdb_dialog_set (gimp,
+                             gimp_data_factory_get_container (gimp->font_factory),
+			     font_callback, font_name,
                              NULL))
     success = FALSE;
 }
@@ -95,7 +102,8 @@ CODE
 }
 
 
-@headers = qw("core/gimp.h");
+@headers = qw("core/gimp.h"
+              "core/gimpdatafactory.h");
 
 @procs = qw(fonts_popup
             fonts_close_popup

@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -271,22 +271,16 @@ colorsel_cmyk_set_config (GimpColorSelector *selector,
   if (config != module->config)
     {
       if (module->config)
-        {
-          g_signal_handlers_disconnect_by_func (module->config,
-                                                colorsel_cmyk_config_changed,
-                                                module);
-          g_object_unref (module->config);
-        }
+        g_signal_handlers_disconnect_by_func (module->config,
+                                              colorsel_cmyk_config_changed,
+                                              module);
 
-      module->config = config;
+      g_set_object (&module->config, config);
 
       if (module->config)
-        {
-          g_object_ref (module->config);
-          g_signal_connect_swapped (module->config, "notify",
-                                    G_CALLBACK (colorsel_cmyk_config_changed),
-                                    module);
-        }
+        g_signal_connect_swapped (module->config, "notify",
+                                  G_CALLBACK (colorsel_cmyk_config_changed),
+                                  module);
 
       colorsel_cmyk_config_changed (module);
     }

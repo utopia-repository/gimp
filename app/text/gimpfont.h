@@ -16,14 +16,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_FONT_H__
 #define __GIMP_FONT_H__
 
 
-#include "core/gimpviewable.h"
+#include "core/gimpdata.h"
 
 
 #define GIMP_TYPE_FONT            (gimp_font_get_type ())
@@ -39,7 +39,7 @@ typedef struct _GimpFontClass GimpFontClass;
 
 GType      gimp_font_get_type     (void) G_GNUC_CONST;
 
-GimpFont * gimp_font_get_standard (void);
+GimpData * gimp_font_get_standard (void);
 
 
 #endif /* __GIMP_FONT_H__ */

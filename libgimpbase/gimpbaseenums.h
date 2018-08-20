@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see
- * <http://www.gnu.org/licenses/>.
+ * <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_BASE_ENUMS_H__
@@ -951,7 +951,7 @@ typedef enum
  * @GIMP_ORIENTATION_VERTICAL:   Vertical
  * @GIMP_ORIENTATION_UNKNOWN:    Unknown
  *
- * Orientations for verious purposes.
+ * Orientations for various purposes.
  **/
 #define GIMP_TYPE_ORIENTATION_TYPE (gimp_orientation_type_get_type ())
 
@@ -1250,13 +1250,13 @@ typedef enum
  * @GIMP_SELECT_CRITERION_R:         Red
  * @GIMP_SELECT_CRITERION_G:         Green
  * @GIMP_SELECT_CRITERION_B:         Blue
- * @GIMP_SELECT_CRITERION_H:         Hue (HSV)
- * @GIMP_SELECT_CRITERION_S:         Saturation (HSV)
- * @GIMP_SELECT_CRITERION_V:         Value (HSV)
+ * @GIMP_SELECT_CRITERION_H:         HSV Hue
+ * @GIMP_SELECT_CRITERION_S:         HSV Saturation
+ * @GIMP_SELECT_CRITERION_V:         HSV Value
  * @GIMP_SELECT_CRITERION_A:         Alpha
- * @GIMP_SELECT_CRITERION_LCH_L:     Lightness (LCH)
- * @GIMP_SELECT_CRITERION_LCH_C:     Chroma (LCH)
- * @GIMP_SELECT_CRITERION_LCH_H:     Hue (LCH)
+ * @GIMP_SELECT_CRITERION_LCH_L:     LCh Lightness
+ * @GIMP_SELECT_CRITERION_LCH_C:     LCh Chroma
+ * @GIMP_SELECT_CRITERION_LCH_H:     LCh Hue)
  *
  * Criterions for color similarity.
  **/
@@ -1266,17 +1266,17 @@ GType gimp_select_criterion_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_SELECT_CRITERION_COMPOSITE,  /*< desc="Composite"        >*/
-  GIMP_SELECT_CRITERION_R,          /*< desc="Red"              >*/
-  GIMP_SELECT_CRITERION_G,          /*< desc="Green"            >*/
-  GIMP_SELECT_CRITERION_B,          /*< desc="Blue"             >*/
-  GIMP_SELECT_CRITERION_H,          /*< desc="Hue (HSV)"        >*/
-  GIMP_SELECT_CRITERION_S,          /*< desc="Saturation (HSV)" >*/
-  GIMP_SELECT_CRITERION_V,          /*< desc="Value (HSV)"      >*/
-  GIMP_SELECT_CRITERION_A,          /*< desc="Alpha"            >*/
-  GIMP_SELECT_CRITERION_LCH_L,      /*< desc="Lightness (LCH)"  >*/
-  GIMP_SELECT_CRITERION_LCH_C,      /*< desc="Chroma (LCH)"     >*/
-  GIMP_SELECT_CRITERION_LCH_H,      /*< desc="Hue (LCH)"        >*/
+  GIMP_SELECT_CRITERION_COMPOSITE,  /*< desc="Composite"      >*/
+  GIMP_SELECT_CRITERION_R,          /*< desc="Red"            >*/
+  GIMP_SELECT_CRITERION_G,          /*< desc="Green"          >*/
+  GIMP_SELECT_CRITERION_B,          /*< desc="Blue"           >*/
+  GIMP_SELECT_CRITERION_H,          /*< desc="HSV Hue"        >*/
+  GIMP_SELECT_CRITERION_S,          /*< desc="HSV Saturation" >*/
+  GIMP_SELECT_CRITERION_V,          /*< desc="HSV Value"      >*/
+  GIMP_SELECT_CRITERION_A,          /*< desc="Alpha"          >*/
+  GIMP_SELECT_CRITERION_LCH_L,      /*< desc="LCh Lightness"  >*/
+  GIMP_SELECT_CRITERION_LCH_C,      /*< desc="LCh Chroma"     >*/
+  GIMP_SELECT_CRITERION_LCH_H,      /*< desc="LCh Hue"        >*/
 } GimpSelectCriterion;
 
 
@@ -1340,6 +1340,10 @@ typedef enum
  * GimpTextDirection:
  * @GIMP_TEXT_DIRECTION_LTR: From left to right
  * @GIMP_TEXT_DIRECTION_RTL: From right to left
+ * @GIMP_TEXT_DIRECTION_TTB_RTL: Characters are from top to bottom, Lines are from right to left
+ * @GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT: Upright characters are from top to bottom, Lines are from right to left
+ * @GIMP_TEXT_DIRECTION_TTB_LTR: Characters are from top to bottom, Lines are from left to right
+ * @GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT: Upright characters are from top to bottom, Lines are from left to right
  *
  * Text directions.
  **/
@@ -1349,8 +1353,12 @@ GType gimp_text_direction_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_TEXT_DIRECTION_LTR,   /*< desc="From left to right" >*/
-  GIMP_TEXT_DIRECTION_RTL    /*< desc="From right to left" >*/
+  GIMP_TEXT_DIRECTION_LTR,              /*< desc="From left to right"                                     >*/
+  GIMP_TEXT_DIRECTION_RTL,              /*< desc="From right to left"                                     >*/
+  GIMP_TEXT_DIRECTION_TTB_RTL,          /*< desc="Vertical, right to left (mixed orientation)"  >*/
+  GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT,  /*< desc="Vertical, right to left (upright orientation)" >*/
+  GIMP_TEXT_DIRECTION_TTB_LTR,          /*< desc="Vertical, left to right (mixed orientation)"  >*/
+  GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT   /*< desc="Vertical, left to right (upright orientation)" >*/
 } GimpTextDirection;
 
 

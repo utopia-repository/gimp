@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -677,7 +677,7 @@ image_resize_to_layers_cmd_callback (GtkAction *action,
 
   gimp_image_resize_to_layers (image,
                                action_data_get_context (data),
-                               progress);
+                               NULL, NULL, NULL, NULL, progress);
 
   if (progress)
     gimp_progress_end (progress);

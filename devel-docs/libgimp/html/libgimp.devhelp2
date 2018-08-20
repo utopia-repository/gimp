@@ -104,6 +104,9 @@
     <sub name="Index of new symbols in GIMP 2.6" link="api-index-2-6.html"/>
     <sub name="Index of new symbols in GIMP 2.8" link="api-index-2-8.html"/>
     <sub name="Index of new symbols in GIMP 2.10" link="api-index-2-10.html"/>
+    <sub name="Index of new symbols in GIMP 2.10.2" link="api-index-2-10-2.html"/>
+    <sub name="Index of new symbols in GIMP 2.10.4" link="api-index-2-10-4.html"/>
+    <sub name="Index of new symbols in GIMP 2.10.6" link="api-index-2-10-6.html"/>
     <sub name="Index of deprecated symbols" link="api-index-deprecated.html"/>
   </chapters>
   <functions>
@@ -129,7 +132,7 @@
     <keyword type="function" name="gimp_tile_height ()" link="libgimp-gimp.html#gimp-tile-height"/>
     <keyword type="function" name="gimp_shm_ID ()" link="libgimp-gimp.html#gimp-shm-ID"/>
     <keyword type="function" name="gimp_shm_addr ()" link="libgimp-gimp.html#gimp-shm-addr"/>
-    <keyword type="function" name="gimp_gamma ()" link="libgimp-gimp.html#gimp-gamma"/>
+    <keyword type="function" name="gimp_gamma ()" link="libgimp-gimp.html#gimp-gamma" deprecated=""/>
     <keyword type="function" name="gimp_install_cmap ()" link="libgimp-gimp.html#gimp-install-cmap" deprecated=""/>
     <keyword type="function" name="gimp_min_colors ()" link="libgimp-gimp.html#gimp-min-colors" deprecated=""/>
     <keyword type="function" name="gimp_show_tool_tips ()" link="libgimp-gimp.html#gimp-show-tool-tips"/>
@@ -144,6 +147,7 @@
     <keyword type="function" name="gimp_display_name ()" link="libgimp-gimp.html#gimp-display-name"/>
     <keyword type="function" name="gimp_monitor_number ()" link="libgimp-gimp.html#gimp-monitor-number"/>
     <keyword type="function" name="gimp_user_time ()" link="libgimp-gimp.html#gimp-user-time" since="2.6"/>
+    <keyword type="function" name="gimp_icon_theme_dir ()" link="libgimp-gimp.html#gimp-icon-theme-dir"/>
     <keyword type="function" name="gimp_get_progname ()" link="libgimp-gimp.html#gimp-get-progname"/>
     <keyword type="function" name="gimp_extension_enable ()" link="libgimp-gimp.html#gimp-extension-enable"/>
     <keyword type="function" name="gimp_extension_ack ()" link="libgimp-gimp.html#gimp-extension-ack"/>
@@ -522,6 +526,7 @@
     <keyword type="function" name="gimp_register_magic_load_handler ()" link="libgimp-gimpfileops.html#gimp-register-magic-load-handler"/>
     <keyword type="function" name="gimp_register_load_handler ()" link="libgimp-gimpfileops.html#gimp-register-load-handler"/>
     <keyword type="function" name="gimp_register_save_handler ()" link="libgimp-gimpfileops.html#gimp-register-save-handler"/>
+    <keyword type="function" name="gimp_register_file_handler_priority ()" link="libgimp-gimpfileops.html#gimp-register-file-handler-priority" since="2.10.6"/>
     <keyword type="function" name="gimp_register_file_handler_mime ()" link="libgimp-gimpfileops.html#gimp-register-file-handler-mime" since="2.2"/>
     <keyword type="function" name="gimp_register_file_handler_uri ()" link="libgimp-gimpfileops.html#gimp-register-file-handler-uri" since="2.10"/>
     <keyword type="function" name="gimp_register_file_handler_raw ()" link="libgimp-gimpfileops.html#gimp-register-file-handler-raw" since="2.10"/>
@@ -564,8 +569,8 @@
     <keyword type="function" name="gimp_image_add_layer ()" link="libgimp-gimpimage.html#gimp-image-add-layer" deprecated="Use gimp_image_insert_layer() instead."/>
     <keyword type="function" name="gimp_image_insert_layer ()" link="libgimp-gimpimage.html#gimp-image-insert-layer"/>
     <keyword type="function" name="gimp_image_remove_layer ()" link="libgimp-gimpimage.html#gimp-image-remove-layer"/>
-    <keyword type="function" name="gimp_image_freeze_layers ()" link="libgimp-gimpimage.html#gimp-image-freeze-layers" since="2.10"/>
-    <keyword type="function" name="gimp_image_thaw_layers ()" link="libgimp-gimpimage.html#gimp-image-thaw-layers" since="2.10"/>
+    <keyword type="function" name="gimp_image_freeze_layers ()" link="libgimp-gimpimage.html#gimp-image-freeze-layers" since="2.10.2"/>
+    <keyword type="function" name="gimp_image_thaw_layers ()" link="libgimp-gimpimage.html#gimp-image-thaw-layers" since="2.10.2"/>
     <keyword type="function" name="gimp_image_raise_layer ()" link="libgimp-gimpimage.html#gimp-image-raise-layer" deprecated="Use gimp_image_raise_item() instead."/>
     <keyword type="function" name="gimp_image_lower_layer ()" link="libgimp-gimpimage.html#gimp-image-lower-layer" deprecated="Use gimp_image_lower_item() instead."/>
     <keyword type="function" name="gimp_image_raise_layer_to_top ()" link="libgimp-gimpimage.html#gimp-image-raise-layer-to-top" deprecated="Use gimp_image_raise_item_to_top() instead."/>
@@ -574,8 +579,8 @@
     <keyword type="function" name="gimp_image_add_channel ()" link="libgimp-gimpimage.html#gimp-image-add-channel" deprecated="Use gimp_image_insert_channel() instead."/>
     <keyword type="function" name="gimp_image_insert_channel ()" link="libgimp-gimpimage.html#gimp-image-insert-channel"/>
     <keyword type="function" name="gimp_image_remove_channel ()" link="libgimp-gimpimage.html#gimp-image-remove-channel"/>
-    <keyword type="function" name="gimp_image_freeze_channels ()" link="libgimp-gimpimage.html#gimp-image-freeze-channels" since="2.10"/>
-    <keyword type="function" name="gimp_image_thaw_channels ()" link="libgimp-gimpimage.html#gimp-image-thaw-channels" since="2.10"/>
+    <keyword type="function" name="gimp_image_freeze_channels ()" link="libgimp-gimpimage.html#gimp-image-freeze-channels" since="2.10.2"/>
+    <keyword type="function" name="gimp_image_thaw_channels ()" link="libgimp-gimpimage.html#gimp-image-thaw-channels" since="2.10.2"/>
     <keyword type="function" name="gimp_image_raise_channel ()" link="libgimp-gimpimage.html#gimp-image-raise-channel" deprecated="Use gimp_image_raise_item() instead."/>
     <keyword type="function" name="gimp_image_lower_channel ()" link="libgimp-gimpimage.html#gimp-image-lower-channel" deprecated="Use gimp_image_lower_item() instead."/>
     <keyword type="function" name="gimp_image_get_channel_position ()" link="libgimp-gimpimage.html#gimp-image-get-channel-position" deprecated="Use gimp_image_get_item_position() instead." since="2.4"/>
@@ -629,8 +634,8 @@
     <keyword type="function" name="gimp_image_add_vectors ()" link="libgimp-gimpimage.html#gimp-image-add-vectors" deprecated="Use gimp_image_insert_vectors() instead."/>
     <keyword type="function" name="gimp_image_insert_vectors ()" link="libgimp-gimpimage.html#gimp-image-insert-vectors"/>
     <keyword type="function" name="gimp_image_remove_vectors ()" link="libgimp-gimpimage.html#gimp-image-remove-vectors" since="2.4"/>
-    <keyword type="function" name="gimp_image_freeze_vectors ()" link="libgimp-gimpimage.html#gimp-image-freeze-vectors" since="2.10"/>
-    <keyword type="function" name="gimp_image_thaw_vectors ()" link="libgimp-gimpimage.html#gimp-image-thaw-vectors" since="2.10"/>
+    <keyword type="function" name="gimp_image_freeze_vectors ()" link="libgimp-gimpimage.html#gimp-image-freeze-vectors" since="2.10.2"/>
+    <keyword type="function" name="gimp_image_thaw_vectors ()" link="libgimp-gimpimage.html#gimp-image-thaw-vectors" since="2.10.2"/>
     <keyword type="function" name="gimp_image_get_active_vectors ()" link="libgimp-gimpimage.html#gimp-image-get-active-vectors"/>
     <keyword type="function" name="gimp_image_set_active_vectors ()" link="libgimp-gimpimage.html#gimp-image-set-active-vectors"/>
     <keyword type="function" name="gimp_image_lower_vectors ()" link="libgimp-gimpimage.html#gimp-image-lower-vectors" deprecated="Use gimp_image_lower_item() instead." since="2.4"/>

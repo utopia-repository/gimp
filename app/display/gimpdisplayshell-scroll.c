@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -387,60 +387,6 @@ gimp_display_shell_scroll_center_image (GimpDisplayShell *shell,
     offset_y = center_y - shell->disp_height / 2 - shell->offset_y;
 
   gimp_display_shell_scroll (shell, offset_x, offset_y);
-}
-
-typedef struct
-{
-  GimpDisplayShell *shell;
-  gboolean          vertically;
-  gboolean          horizontally;
-} CenterImageData;
-
-static void
-gimp_display_shell_scroll_center_image_callback (GtkWidget       *canvas,
-                                                 GtkAllocation   *allocation,
-                                                 CenterImageData *data)
-{
-  g_signal_handlers_disconnect_by_func (canvas,
-                                        gimp_display_shell_scroll_center_image_callback,
-                                        data);
-
-  gimp_display_shell_scroll_center_image (data->shell,
-                                          data->horizontally,
-                                          data->vertically);
-
-  g_slice_free (CenterImageData, data);
-}
-
-/**
- * gimp_display_shell_scroll_center_image_on_size_allocate:
- * @shell:
- *
- * Centers the image in the display as soon as the canvas has got its
- * new size.
- *
- * Only call this if you are sure the canvas size will change.
- * (Otherwise the signal connection and centering will lurk until the
- * canvas size is changed e.g. by toggling the rulers.)
- **/
-void
-gimp_display_shell_scroll_center_image_on_size_allocate (GimpDisplayShell *shell,
-                                                         gboolean          horizontally,
-                                                         gboolean          vertically)
-{
-  CenterImageData *data;
-
-  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-
-  data = g_slice_new (CenterImageData);
-
-  data->shell        = shell;
-  data->horizontally = horizontally;
-  data->vertically   = vertically;
-
-  g_signal_connect (shell->canvas, "size-allocate",
-                    G_CALLBACK (gimp_display_shell_scroll_center_image_callback),
-                    data);
 }
 
 /**

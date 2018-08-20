@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_DISPLAY_SHELL_SCROLL_H__
@@ -38,10 +38,6 @@ void   gimp_display_shell_scroll_center_image_xy     (GimpDisplayShell *shell,
                                                       gdouble           image_x,
                                                       gdouble           image_y);
 void   gimp_display_shell_scroll_center_image        (GimpDisplayShell *shell,
-                                                      gboolean          horizontally,
-                                                      gboolean          vertically);
-void   gimp_display_shell_scroll_center_image_on_size_allocate
-                                                     (GimpDisplayShell *shell,
                                                       gboolean          horizontally,
                                                       gboolean          vertically);
 

@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -417,15 +417,15 @@ gimp_paint_tool_modifier_key (GimpTool        *tool,
                   gimp_color_tool_enable (GIMP_COLOR_TOOL (tool),
                                           GIMP_COLOR_OPTIONS (info->tool_options));
 
-                  switch (GIMP_COLOR_TOOL (tool)->pick_mode)
+                  switch (GIMP_COLOR_TOOL (tool)->pick_target)
                     {
-                    case GIMP_COLOR_PICK_MODE_FOREGROUND:
+                    case GIMP_COLOR_PICK_TARGET_FOREGROUND:
                       gimp_tool_push_status (tool, display,
                                              _("Click in any image to pick the "
                                                "foreground color"));
                       break;
 
-                    case GIMP_COLOR_PICK_MODE_BACKGROUND:
+                    case GIMP_COLOR_PICK_TARGET_BACKGROUND:
                       gimp_tool_push_status (tool, display,
                                              _("Click in any image to pick the "
                                                "background color"));
@@ -570,11 +570,16 @@ gimp_paint_tool_oper_update (GimpTool         *tool,
            *  draw a line.
            */
           gchar   *status_help;
+          gdouble  offset_angle;
+          gdouble  xres, yres;
 
-          gimp_paint_core_round_line (
-            core, paint_options,
-            (state & constrain_mask) != 0,
-            gimp_display_shell_get_constrained_line_offset_angle (shell));
+          gimp_display_shell_get_constrained_line_params (shell,
+                                                          &offset_angle,
+                                                          &xres, &yres);
+
+          gimp_paint_core_round_line (core, paint_options,
+                                      (state & constrain_mask) != 0,
+                                      offset_angle, xres, yres);
 
           status_help = gimp_suggest_modifiers (paint_tool->status_line,
                                                 constrain_mask & ~state,
@@ -643,46 +648,55 @@ gimp_paint_tool_draw (GimpDrawTool *draw_tool)
       GimpDrawable   *drawable   = gimp_image_get_active_drawable (image);
       GimpCanvasItem *outline    = NULL;
       gboolean        line_drawn = FALSE;
-      gdouble         last_x, last_y;
       gdouble         cur_x, cur_y;
       gint            off_x, off_y;
 
       gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
 
-      last_x = core->last_coords.x + off_x;
-      last_y = core->last_coords.y + off_y;
-      cur_x  = core->cur_coords.x + off_x;
-      cur_y  = core->cur_coords.y + off_y;
-
-      if (paint_tool->draw_line &&
-          ! gimp_tool_control_is_active (GIMP_TOOL (draw_tool)->control))
+      if (gimp_paint_tool_paint_is_active (paint_tool))
         {
-          GimpCanvasGroup *group;
+          cur_x = paint_tool->paint_x + off_x;
+          cur_y = paint_tool->paint_y + off_y;
+        }
+      else
+        {
+          cur_x = core->cur_coords.x + off_x;
+          cur_y = core->cur_coords.y + off_y;
 
-          group = gimp_draw_tool_add_stroke_group (draw_tool);
-          gimp_draw_tool_push_group (draw_tool, group);
+          if (paint_tool->draw_line &&
+              ! gimp_tool_control_is_active (GIMP_TOOL (draw_tool)->control))
+            {
+              GimpCanvasGroup *group;
+              gdouble          last_x, last_y;
 
-          gimp_draw_tool_add_handle (draw_tool,
-                                     GIMP_HANDLE_CIRCLE,
-                                     last_x, last_y,
-                                     GIMP_TOOL_HANDLE_SIZE_CIRCLE,
-                                     GIMP_TOOL_HANDLE_SIZE_CIRCLE,
-                                     GIMP_HANDLE_ANCHOR_CENTER);
+              last_x = core->last_coords.x + off_x;
+              last_y = core->last_coords.y + off_y;
 
-          gimp_draw_tool_add_line (draw_tool,
-                                   last_x, last_y,
-                                   cur_x, cur_y);
+              group = gimp_draw_tool_add_stroke_group (draw_tool);
+              gimp_draw_tool_push_group (draw_tool, group);
 
-          gimp_draw_tool_add_handle (draw_tool,
-                                     GIMP_HANDLE_CIRCLE,
-                                     cur_x, cur_y,
-                                     GIMP_TOOL_HANDLE_SIZE_CIRCLE,
-                                     GIMP_TOOL_HANDLE_SIZE_CIRCLE,
-                                     GIMP_HANDLE_ANCHOR_CENTER);
+              gimp_draw_tool_add_handle (draw_tool,
+                                         GIMP_HANDLE_CIRCLE,
+                                         last_x, last_y,
+                                         GIMP_TOOL_HANDLE_SIZE_CIRCLE,
+                                         GIMP_TOOL_HANDLE_SIZE_CIRCLE,
+                                         GIMP_HANDLE_ANCHOR_CENTER);
 
-          gimp_draw_tool_pop_group (draw_tool);
+              gimp_draw_tool_add_line (draw_tool,
+                                       last_x, last_y,
+                                       cur_x, cur_y);
 
-          line_drawn = TRUE;
+              gimp_draw_tool_add_handle (draw_tool,
+                                         GIMP_HANDLE_CIRCLE,
+                                         cur_x, cur_y,
+                                         GIMP_TOOL_HANDLE_SIZE_CIRCLE,
+                                         GIMP_TOOL_HANDLE_SIZE_CIRCLE,
+                                         GIMP_HANDLE_ANCHOR_CENTER);
+
+              gimp_draw_tool_pop_group (draw_tool);
+
+              line_drawn = TRUE;
+            }
         }
 
       gimp_paint_tool_set_draw_fallback (paint_tool, FALSE, 0.0);
@@ -848,8 +862,8 @@ gimp_paint_tool_cursor_notify (GimpDisplayConfig *config,
 
 /**
  * gimp_paint_tool_enable_color_picker:
- * @tool: a #GimpPaintTool
- * @mode: the #GimpColorPickMode to set
+ * @tool:   a #GimpPaintTool
+ * @target: the #GimpColorPickTarget to set
  *
  * This is a convenience function used from the init method of paint
  * tools that want the color picking functionality. The @mode that is
@@ -857,14 +871,14 @@ gimp_paint_tool_cursor_notify (GimpDisplayConfig *config,
  * picked color goes to the foreground or background color.
  **/
 void
-gimp_paint_tool_enable_color_picker (GimpPaintTool     *tool,
-                                     GimpColorPickMode  mode)
+gimp_paint_tool_enable_color_picker (GimpPaintTool       *tool,
+                                     GimpColorPickTarget  target)
 {
   g_return_if_fail (GIMP_IS_PAINT_TOOL (tool));
 
   tool->pick_colors = TRUE;
 
-  GIMP_COLOR_TOOL (tool)->pick_mode = mode;
+  GIMP_COLOR_TOOL (tool)->pick_target = target;
 }
 
 void

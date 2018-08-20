@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -480,7 +480,7 @@ sanity_check_babl (void)
 
 #define BABL_REQUIRED_MAJOR 0
 #define BABL_REQUIRED_MINOR 1
-#define BABL_REQUIRED_MICRO 50
+#define BABL_REQUIRED_MICRO 56
 
   babl_get_version (&babl_major_version,
                     &babl_minor_version,
@@ -518,7 +518,7 @@ sanity_check_gegl (void)
 
 #define GEGL_REQUIRED_MAJOR 0
 #define GEGL_REQUIRED_MINOR 4
-#define GEGL_REQUIRED_MICRO 2
+#define GEGL_REQUIRED_MICRO 8
 
   gegl_get_version (&gegl_major_version,
                     &gegl_minor_version,
@@ -652,6 +652,7 @@ sanity_check_gegl_ops (void)
     "gegl:invert-linear",
     "gegl:lens-distortion",
     "gegl:lens-flare",
+    "gegl:long-shadow",
     "gegl:mantiuk06",
     "gegl:map-absolute",
     "gegl:map-relative",
@@ -700,6 +701,7 @@ sanity_check_gegl_ops (void)
     "gegl:softglow",
     "gegl:spherize",
     "gegl:spiral",
+    "gegl:stereographic-projection",
     "gegl:stretch-contrast",
     "gegl:stretch-contrast-hsv",
     "gegl:stress",

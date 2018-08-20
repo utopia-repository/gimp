@@ -12,14 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_HANDLE_TRANSFORM_OPTIONS_H__
 #define __GIMP_HANDLE_TRANSFORM_OPTIONS_H__
 
 
-#include "gimptransformoptions.h"
+#include "gimptransformgridoptions.h"
 
 
 #define GIMP_TYPE_HANDLE_TRANSFORM_OPTIONS            (gimp_handle_transform_options_get_type ())
@@ -35,14 +35,14 @@ typedef struct _GimpHandleTransformOptionsClass GimpHandleTransformOptionsClass;
 
 struct _GimpHandleTransformOptions
 {
-  GimpTransformOptions      parent_instance;
+  GimpTransformGridOptions  parent_instance;
 
   GimpTransformHandleMode   handle_mode;
 };
 
 struct _GimpHandleTransformOptionsClass
 {
-  GimpTransformOptionsClass  parent_class;
+  GimpTransformGridOptionsClass  parent_class;
 };
 
 

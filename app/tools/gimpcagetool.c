@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -1266,6 +1266,7 @@ gimp_cage_tool_create_filter (GimpCageTool *ct)
                                          _("Cage transform"),
                                          ct->render_node,
                                          GIMP_ICON_TOOL_CAGE);
+  gimp_drawable_filter_set_region (ct->filter, GIMP_FILTER_REGION_DRAWABLE);
 
   g_signal_connect (ct->filter, "flush",
                     G_CALLBACK (gimp_cage_tool_filter_flush),

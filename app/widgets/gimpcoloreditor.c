@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -264,10 +264,6 @@ gimp_color_editor_init (GimpColorEditor *editor)
 
   /*  The hex triplet entry  */
   editor->hex_entry = gimp_color_hex_entry_new ();
-  gimp_help_set_help_data (editor->hex_entry,
-                           _("Hexadecimal color notation as used in HTML and "
-                             "CSS.  This entry also accepts CSS color names."),
-                           NULL);
   gtk_box_pack_end (GTK_BOX (vbox), editor->hex_entry, FALSE, FALSE, 0);
   gtk_widget_show (editor->hex_entry);
 

@@ -116,6 +116,14 @@
 <a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
+<a class="link" href="libgimp-gimpfileops.html#gimp-register-file-handler-priority" title="gimp_register_file_handler_priority ()">gimp_register_file_handler_priority</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
 <a class="link" href="libgimp-gimpfileops.html#gimp-register-file-handler-mime" title="gimp_register_file_handler_mime ()">gimp_register_file_handler_mime</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -192,8 +200,8 @@ possible, and falling back on the file's extension and/or prefix if
 not. The name of the file to load is typically a full pathname, and
 the name entered is what the user actually typed before prepending a
 directory path. The reason for this is that if the user types
-http://www.xcf/~gimp/ he wants to fetch a URL, and the full pathname
-will not look like a URL.</p>
+https://www.gimp.org/foo.png he wants to fetch a URL, and the full
+pathname will not look like a URL.</p>
 <div class="refsect3">
 <a name="gimp-file-load.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -336,8 +344,9 @@ gimp_file_save (<em class="parameter"><code><a href="../html/libgimpbase-gimpbas
 the file's extension and/or prefix. The name of the file to save is
 typically a full pathname, and the name entered is what the user
 actually typed before prepending a directory path. The reason for
-this is that if the user types http://www.xcf/~gimp/ she wants to
-fetch a URL, and the full pathname will not look like a URL.</p>
+this is that if the user types https://www.gimp.org/foo.png she
+wants to fetch a URL, and the full pathname will not look like a
+URL.</p>
 <div class="refsect3">
 <a name="gimp-file-save.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -551,6 +560,46 @@ in a particular file format.</p>
 <a name="gimp-register-save-handler.returns"></a><h4>Returns</h4>
 <p> TRUE on success.</p>
 </div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-register-file-handler-priority"></a><h3>gimp_register_file_handler_priority ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gimp_register_file_handler_priority (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *procedure_name</code></em>,
+                                     <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> priority</code></em>);</pre>
+<p>Sets the priority of a file handler procedure.</p>
+<p>Sets the priority of a file handler procedure. When more than one
+procedure matches a given file, the procedure with the lowest
+priority is used; if more than one procedure has the lowest
+priority, it is unspecified which one of them is used. The default
+priority for file handler procedures is 0.</p>
+<div class="refsect3">
+<a name="gimp-register-file-handler-priority.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>procedure_name</p></td>
+<td class="parameter_description"><p>The name of the procedure to set the priority of.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>priority</p></td>
+<td class="parameter_description"><p>The procedure priority.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gimp-register-file-handler-priority.returns"></a><h4>Returns</h4>
+<p> TRUE on success.</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-10-6.html#api-index-2.10.6">2.10.6</a></p>
 </div>
 <hr>
 <div class="refsect2">

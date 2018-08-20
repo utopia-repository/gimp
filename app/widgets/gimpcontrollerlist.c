@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -543,7 +543,7 @@ gimp_controller_list_add_clicked (GtkWidget          *button,
 
   gimp_container_view_select_item (GIMP_CONTAINER_VIEW (list->dest),
                                    GIMP_VIEWABLE (info));
-  gimp_controller_list_edit_clicked (NULL, list);
+  gimp_controller_list_edit_clicked (list->edit_button, list);
 }
 
 static void

@@ -17,12 +17,10 @@ noinst_LIBRARIES = libapptext.a
 libapptext_a_sources = \
 	text-types.h			\
 	text-enums.h			\
-	gimp-fonts.c			\
-	gimp-fonts.h			\
 	gimpfont.c			\
 	gimpfont.h			\
-	gimpfontlist.c			\
-	gimpfontlist.h			\
+	gimpfontfactory.c		\
+	gimpfontfactory.h		\
 	gimptext.c			\
 	gimptext.h			\
 	gimptext-compat.c		\

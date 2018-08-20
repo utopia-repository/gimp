@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_DISPLAY_SHELL_H__
@@ -179,6 +179,7 @@ struct _GimpDisplayShell
   gboolean           zoom_on_resize;
 
   gboolean           size_allocate_from_configure_event;
+  gboolean           size_allocate_center_image;
 
   /*  the state of gimp_display_shell_tool_events()  */
   gboolean           pointer_grabbed;
@@ -199,6 +200,8 @@ struct _GimpDisplayShell
   const gchar       *space_shaded_tool;
 
   gboolean           scrolling;
+  gint               scroll_start_x;
+  gint               scroll_start_y;
   gint               scroll_last_x;
   gint               scroll_last_y;
   gboolean           rotating;

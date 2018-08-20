@@ -1,6 +1,6 @@
---------------------------------------
+---------------------------------------
 Installation instructions for GIMP 2.10
---------------------------------------
+---------------------------------------
 
 There are some basic steps to building and installing GIMP.
 
@@ -30,20 +30,24 @@ header files installed.
 
 
   1. You need to have installed a recent version of pkg-config (>= 2.0) available
-     from http://www.freedesktop.org/software/pkgconfig/.
+     from https://www.freedesktop.org/software/pkgconfig/.
 
   2. You need intltool (at least 0.40.1, but preferably a newer version).
      Intltool can be downloaded from
-     http://ftp.gnome.org/pub/gnome/sources/intltool/
-     You are recommended to install gettext version 0.19 or over. Earlier gettext had
+     https://ftp.gnome.org/pub/gnome/sources/intltool/
+     You also need gettext version 0.19 or over. Earlier gettext had
      issues with script-fu localization, ending up in incomplete GIMP localization.
 
-  3. You need to have GEGL version 0.4.2 or newer and babl version
-     0.1.50 or newer. You can get them from http://gegl.org/ or clone
+  3. You need to have GEGL version 0.4.8 or newer and babl version
+     0.1.56 or newer. You can get them from https://gegl.org/ or clone
      them from the GNOME git repository:
 
-       git://git.gnome.org/babl
-       git://git.gnome.org/gegl
+       https://gitlab.gnome.org/GNOME/babl.git
+       https://gitlab.gnome.org/GNOME/gegl.git
+
+     Note: install GEGL with libumfpack (SuiteSparse) for alternative Matting
+     engine "gegl:matting-levin" and OpenEXR library for OpenEXR format
+     support.
 
   4. You need to have installed GTK+ version 2.24.10 or newer.
      GIMP also needs a recent version of GLib (>= 2.54.2), GDK-Pixbuf
@@ -51,7 +55,7 @@ header files installed.
      from ftp://ftp.gtk.org/.
 
   5. We use cairo >= 1.12.2, which is hosted at
-     http://www.cairographics.org/.
+     https://www.cairographics.org/.
 
   6. We require PangoCairo, a Pango backend using Cairo. Make sure you
      have Cairo, FreeType2 and fontconfig installed before you compile
@@ -99,7 +103,7 @@ header files installed.
 
  12. You may want to install other third party libraries or programs
      that are needed for some of the available plug-ins. We recommend
-     to check that the following libraries are installed: libjasper,
+     to check that the following libraries are installed: openjpeg,
      webkit, libmng, librsvg, libwmf, libaa and libgs (Ghostscript).
 
  13. HEIF support depends on the libheif library. If you don't have
@@ -107,8 +111,9 @@ header files installed.
 
         https://github.com/strukturag/libheif
 
-     Make sure you build libheif with libde265 support, otherwise the
-     plug-in is mostly useless.
+     Make sure you build libheif with libde265 and libx265 support (for
+     respectively decoding and encoding), otherwise the plug-in is
+     mostly useless.
 
  14. The Python extension requires Python 2 development headers (2.5.0
      or newer) to be present. You will also need PyGTK and the
@@ -137,12 +142,12 @@ header files installed.
      Package Name         Version
 
      ATK                  2.2.0
-     babl                 0.1.50
+     babl                 0.1.56
      cairo                1.12.2
      Fontconfig           2.12.4
      freetype2            2.1.7
      GDK-PixBuf           2.30.8
-     GEGL                 0.4.2
+     GEGL                 0.4.8
      GIO
      GLib                 2.54.2
      glib-networking
@@ -171,13 +176,13 @@ header files installed.
      gs                  -              ghostscript
      libaa               -              ASCII art
      libheif             1.1.0          HEIF
-     libjasper           -              JPEG 2000
      libmng              -              MNG
      libwebp             0.6.0          WebP (built with --enable-libwebpmux and --enable-libwebpdemux)
      libwmf              0.2.8          WMF
      libXcursor          -              X11 Mouse Cursor
      libxpm              -              XPM
      openexr             1.6.1          OpenEXR
+     OpenJPEG            2.1.0          JPEG 2000
      python 2            2.5.0          Python plug-ins
      webkit              1.6.1          Help browser & webpage
 
@@ -199,11 +204,11 @@ packages are included below. Here is an illustration of commands that
 might be used to build and install GIMP. The actual configuration,
 compilation and installation output is not shown.
 
-  % tar xvfz gimp-2.10.2.tar.gz   # unpack the sources
-  % cd gimp-2.10.2                # change to the toplevel directory
-  % ./configure                           # run the `configure' script
-  % make                                  # build GIMP
-  % make install                          # install GIMP
+  % tar xvfz gimp-2.10.6.tar.gz   # unpack the sources
+  % cd gimp-2.10.6                # change to the toplevel directory
+  % ./configure                   # run the `configure' script
+  % make                          # build GIMP
+  % make install                  # install GIMP
 
 
 The `configure' script examines your system, and adapts GIMP to run on
@@ -215,6 +220,10 @@ These are:
 
   --disable-vector-icons.  This option installs raster icons instead of
      vector icons.
+
+  --enable-relocatable-bundle.  This option forces GIMP to search some
+     resources (e.g. MyPaint brushes or libwmf fonts) relatively to the
+     running prefix, rather than using build-time paths.
 
   --enable-shared and --disable-shared.  This option affects whether
      shared libraries will be built or not. Shared libraries provide
@@ -365,7 +374,7 @@ When ./configure fails
 
 'configure' uses pkg-config, a tool that replaces the old foo-config
 scripts. The most recent version is available from
-	http://www.freedesktop.org/software/pkgconfig/
+	https://www.freedesktop.org/software/pkgconfig/
 
 'configure' tries to compile and run a short GTK+ program. There are
 several reasons why this might fail:

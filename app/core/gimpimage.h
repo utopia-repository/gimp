@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_IMAGE_H__
@@ -174,7 +174,8 @@ void            gimp_image_exported              (GimpImage          *image,
 gint            gimp_image_get_xcf_version       (GimpImage          *image,
                                                   gboolean            zlib_compression,
                                                   gint               *gimp_version,
-                                                  const gchar       **version_string);
+                                                  const gchar       **version_string,
+                                                  gchar             **version_reason);
 
 void            gimp_image_set_xcf_compression   (GimpImage          *image,
                                                   gboolean            compression);

@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 /* Webpage plug-in.
@@ -122,7 +122,7 @@ run (const gchar      *name,
   GimpPDBStatusType  status   = GIMP_PDB_EXECUTION_ERROR;
   gint32             image_id = -1;
   static GimpParam   values[2];
-  WebpageSaveVals    save = {"http://www.gimp.org/", 1024, 12};
+  WebpageSaveVals    save = {"https://www.gimp.org/", 1024, 12};
 
   INIT_I18N ();
 

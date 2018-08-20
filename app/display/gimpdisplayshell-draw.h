@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_DISPLAY_SHELL_DRAW_H__
@@ -28,8 +28,6 @@ void   gimp_display_shell_draw_selection_in  (GimpDisplayShell   *shell,
                                               cairo_pattern_t    *mask,
                                               gint                index);
 
-void   gimp_display_shell_draw_background    (GimpDisplayShell   *shell,
-                                              cairo_t            *cr);
 void   gimp_display_shell_draw_checkerboard  (GimpDisplayShell   *shell,
                                               cairo_t            *cr);
 void   gimp_display_shell_draw_image         (GimpDisplayShell   *shell,

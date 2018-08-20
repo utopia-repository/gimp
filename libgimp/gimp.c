@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see
- * <http://www.gnu.org/licenses/>.
+ * <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -213,10 +213,9 @@ static gint           _tile_width        = -1;
 static gint           _tile_height       = -1;
 static gint           _shm_ID            = -1;
 static guchar        *_shm_addr          = NULL;
-static const gdouble  _gamma_val         = 2.2;
-static gboolean       _install_cmap      = FALSE;
 static gboolean       _show_tool_tips    = TRUE;
 static gboolean       _show_help_button  = TRUE;
+static gboolean       _export_profile    = FALSE;
 static gboolean       _export_exif       = FALSE;
 static gboolean       _export_xmp        = FALSE;
 static gboolean       _export_iptc       = FALSE;
@@ -228,6 +227,7 @@ static gchar         *_wm_class          = NULL;
 static gchar         *_display_name      = NULL;
 static gint           _monitor_number    = 0;
 static guint32        _timestamp         = 0;
+static gchar         *_icon_theme_dir    = NULL;
 static const gchar   *progname           = NULL;
 
 static gchar          write_buffer[WRITE_BUFFER_SIZE];
@@ -1363,18 +1363,22 @@ gimp_shm_addr (void)
  * Returns the global gamma value GIMP and all its plug-ins should
  * use.
  *
- * This is a constant value given at plug-in configuration time.
+ * This is a constant value.
  *
  * NOTE: This function will always return 2.2, the gamma value for
- * sRGB. There's currently no way to change this and all operations
- * should assume that pixel data is in the sRGB colorspace.
+ * sRGB. If you need the actual gamma value of a drawable, look at its
+ * format.
+ *
+ * See also: gimp_drawable_get_format().
+ *
+ * @Deprecated: 2.8.4
  *
  * Return value: the gamma value
  **/
 gdouble
 gimp_gamma (void)
 {
-  return _gamma_val;
+  return 2.2;
 }
 
 /**
@@ -1392,7 +1396,7 @@ gimp_gamma (void)
 gboolean
 gimp_install_cmap (void)
 {
-  return _install_cmap;
+  return FALSE;
 }
 
 /**
@@ -1446,6 +1450,22 @@ gboolean
 gimp_show_help_button (void)
 {
   return _show_help_button;
+}
+
+/**
+ * gimp_export_color_profile:
+ *
+ * Returns whether file plug-ins should default to exporting the
+ * image's color profile.
+ *
+ * Return value: TRUE if preferences are set to export the color profile.
+ *
+ * Since: 2.10.4
+ **/
+gboolean
+gimp_export_color_profile (void)
+{
+  return _export_profile;
 }
 
 /**
@@ -1613,6 +1633,23 @@ guint32
 gimp_user_time (void)
 {
   return _timestamp;
+}
+
+/**
+ * gimp_get_icon_theme_dir:
+ *
+ * Returns the directory of the current icon theme.
+ *
+ * This is a constant value given at plug-in configuration time.
+ *
+ * Return value: the icon theme directory
+ *
+ * Since: 2.10.4
+ **/
+const gchar *
+gimp_icon_theme_dir (void)
+{
+  return _icon_theme_dir;
 }
 
 /**
@@ -2281,9 +2318,9 @@ gimp_config (GPConfig *config)
   _shm_ID           = config->shm_ID;
   _check_size       = config->check_size;
   _check_type       = config->check_type;
-  _install_cmap     = config->install_cmap     ? TRUE : FALSE;
   _show_tool_tips   = config->show_tooltips    ? TRUE : FALSE;
   _show_help_button = config->show_help_button ? TRUE : FALSE;
+  _export_profile   = config->export_profile   ? TRUE : FALSE;
   _export_exif      = config->export_exif      ? TRUE : FALSE;
   _export_xmp       = config->export_xmp       ? TRUE : FALSE;
   _export_iptc      = config->export_iptc      ? TRUE : FALSE;
@@ -2293,6 +2330,7 @@ gimp_config (GPConfig *config)
   _display_name     = g_strdup (config->display_name);
   _monitor_number   = config->monitor_number;
   _timestamp        = config->timestamp;
+  _icon_theme_dir   = g_strdup (config->icon_theme_dir);
 
   if (config->app_name)
     g_set_application_name (config->app_name);

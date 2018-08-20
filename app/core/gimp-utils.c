@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -547,42 +547,6 @@ gimp_get_fill_params (GimpContext   *context,
 }
 
 /**
- * gimp_utils_point_to_line_distance:
- * @point:              The point to calculate the distance for.
- * @point_on_line:      A point on the line.
- * @line_direction:     Normalized line direction vector.
- * @closest_line_point: Gets set to the point on the line that is
- *                      closest to @point.
- *
- * Returns: The shortest distance from @point to the line defined by
- *          @point_on_line and @normalized_line_direction.
- **/
-static gdouble
-gimp_utils_point_to_line_distance (const GimpVector2 *point,
-                                   const GimpVector2 *point_on_line,
-                                   const GimpVector2 *line_direction,
-                                   GimpVector2       *closest_line_point)
-{
-  GimpVector2 distance_vector;
-  GimpVector2 tmp_a;
-  GimpVector2 tmp_b;
-  gdouble     d;
-
-  gimp_vector2_sub (&tmp_a, point, point_on_line);
-
-  d = gimp_vector2_inner_product (&tmp_a, line_direction);
-
-  tmp_b = gimp_vector2_mul_val (*line_direction, d);
-
-  *closest_line_point = gimp_vector2_add_val (*point_on_line,
-                                              tmp_b);
-
-  gimp_vector2_sub (&distance_vector, closest_line_point, point);
-
-  return gimp_vector2_length (&distance_vector);
-}
-
-/**
  * gimp_constrain_line:
  * @start_x:
  * @start_y:
@@ -590,6 +554,8 @@ gimp_utils_point_to_line_distance (const GimpVector2 *point,
  * @end_y:
  * @n_snap_lines: Number evenly disributed lines to snap to.
  * @offset_angle: The angle by which to offset the lines, in degrees.
+ * @xres:         The horizontal resolution.
+ * @yres:         The vertical resolution.
  *
  * Projects a line onto the specified subset of evenly radially
  * distributed lines. @n_lines of 2 makes the line snap horizontally
@@ -602,38 +568,29 @@ gimp_constrain_line (gdouble  start_x,
                      gdouble *end_x,
                      gdouble *end_y,
                      gint     n_snap_lines,
-                     gdouble  offset_angle)
+                     gdouble  offset_angle,
+                     gdouble  xres,
+                     gdouble  yres)
 {
-  GimpVector2 line_point          = {  start_x,  start_y };
-  GimpVector2 point               = { *end_x,   *end_y   };
-  GimpVector2 constrained_point;
-  GimpVector2 line_dir;
-  gdouble     shortest_dist_moved = G_MAXDOUBLE;
-  gdouble     dist_moved;
+  GimpVector2 diff;
+  GimpVector2 dir;
   gdouble     angle;
-  gint        i;
 
-  for (i = 0; i < n_snap_lines; i++)
-    {
-      angle  = i * G_PI / n_snap_lines;
-      angle += offset_angle * G_PI / 180.0;
+  offset_angle *= G_PI / 180.0;
 
-      gimp_vector2_set (&line_dir,
-                        cos (angle),
-                        sin (angle));
+  diff.x = (*end_x - start_x) / xres;
+  diff.y = (*end_y - start_y) / yres;
 
-      dist_moved = gimp_utils_point_to_line_distance (&point,
-                                                      &line_point,
-                                                      &line_dir,
-                                                      &constrained_point);
-      if (dist_moved < shortest_dist_moved)
-        {
-          shortest_dist_moved = dist_moved;
+  angle = (atan2 (diff.y, diff.x) - offset_angle) * n_snap_lines / G_PI;
+  angle = RINT (angle) * G_PI / n_snap_lines + offset_angle;
 
-          *end_x = constrained_point.x;
-          *end_y = constrained_point.y;
-        }
-    }
+  dir.x = cos (angle);
+  dir.y = sin (angle);
+
+  gimp_vector2_mul (&dir, gimp_vector2_inner_product (&dir, &diff));
+
+  *end_x = start_x + dir.x * xres;
+  *end_y = start_y + dir.y * yres;
 }
 
 gint
@@ -813,6 +770,92 @@ gimp_file_with_new_extension (GFile *file,
   g_free (new_uri);
 
   return ret;
+}
+
+gchar *
+gimp_data_input_stream_read_line_always (GDataInputStream  *stream,
+                                         gsize             *length,
+                                         GCancellable      *cancellable,
+                                         GError           **error)
+{
+  GError *temp_error = NULL;
+  gchar  *result;
+
+  g_return_val_if_fail (G_IS_DATA_INPUT_STREAM (stream), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  if (! error)
+    error = &temp_error;
+
+  result = g_data_input_stream_read_line (stream, length, cancellable, error);
+
+  if (! result && ! *error)
+    {
+      result = g_strdup ("");
+
+      if (length) *length = 0;
+    }
+
+  g_clear_error (&temp_error);
+
+  return result;
+}
+
+gboolean
+gimp_ascii_strtoi (const gchar  *nptr,
+                   gchar       **endptr,
+                   gint          base,
+                   gint         *result)
+{
+  gchar  *temp_endptr;
+  gint64  temp_result;
+
+  g_return_val_if_fail (nptr != NULL, FALSE);
+  g_return_val_if_fail (base == 0 || (base >= 2 && base <= 36), FALSE);
+
+  if (! endptr)
+    endptr = &temp_endptr;
+
+  temp_result = g_ascii_strtoll (nptr, endptr, base);
+
+  if (*endptr == nptr || errno == ERANGE ||
+      temp_result < G_MININT || temp_result > G_MAXINT)
+    {
+      errno = 0;
+
+      return FALSE;
+    }
+
+  if (result) *result = temp_result;
+
+  return TRUE;
+}
+
+gboolean
+gimp_ascii_strtod (const gchar  *nptr,
+                   gchar       **endptr,
+                   gdouble      *result)
+{
+  gchar   *temp_endptr;
+  gdouble  temp_result;
+
+  g_return_val_if_fail (nptr != NULL, FALSE);
+
+  if (! endptr)
+    endptr = &temp_endptr;
+
+  temp_result = g_ascii_strtod (nptr, endptr);
+
+  if (*endptr == nptr || errno == ERANGE)
+    {
+      errno = 0;
+
+      return FALSE;
+    }
+
+  if (result) *result = temp_result;
+
+  return TRUE;
 }
 
 

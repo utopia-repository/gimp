@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -31,6 +31,7 @@
 
 #include "config/gimpcoreconfig.h"
 
+#include "gegl/gimp-babl.h"
 #include "gegl/gimp-gegl-tile-compat.h"
 
 #include "core/gimp.h"
@@ -220,6 +221,14 @@ xcf_load_image (Gimp     *gimp,
   GIMP_LOG (XCF, "version=%d, width=%d, height=%d, image_type=%d, precision=%d",
             info->file_version, width, height, image_type, precision);
 
+  if (! gimp_babl_is_valid (image_type, precision))
+    {
+      gimp_message_literal (gimp, G_OBJECT (info->progress),
+                            GIMP_MESSAGE_ERROR,
+                            _("Invalid image mode and precision combination."));
+      goto hard_error;
+    }
+
   image = gimp_create_image (gimp, width, height, image_type, precision,
                              FALSE);
 
@@ -257,12 +266,14 @@ xcf_load_image (Gimp     *gimp,
                                        "gimp-image-metadata");
   if (parasite)
     {
-      GimpImagePrivate *private = GIMP_IMAGE_GET_PRIVATE (image);
-      GimpMetadata     *metadata;
+      GimpImagePrivate *private  = GIMP_IMAGE_GET_PRIVATE (image);
+      GimpMetadata     *metadata = NULL;
       const gchar      *meta_string;
 
       meta_string = (gchar *) gimp_parasite_data (parasite);
-      metadata = gimp_metadata_deserialize (meta_string);
+
+      if (meta_string)
+        metadata = gimp_metadata_deserialize (meta_string);
 
       if (metadata)
         {
@@ -791,8 +802,47 @@ xcf_load_image_props (XcfInfo   *info,
 
         case PROP_SAMPLE_POINTS:
           {
+            gint n_sample_points, i;
+
+            n_sample_points = prop_size / (5 * 4);
+            for (i = 0; i < n_sample_points; i++)
+              {
+                GimpSamplePoint   *sample_point;
+                gint32             x, y;
+                GimpColorPickMode  pick_mode;
+                guint32            padding[2] = { 0, };
+
+                xcf_read_int32 (info, (guint32 *) &x,         1);
+                xcf_read_int32 (info, (guint32 *) &y,         1);
+                xcf_read_int32 (info, (guint32 *) &pick_mode, 1);
+                xcf_read_int32 (info, (guint32 *) padding,    2);
+
+                GIMP_LOG (XCF, "prop sample point x=%d y=%d mode=%d",
+                          x, y, pick_mode);
+
+                sample_point = gimp_image_add_sample_point_at_pos (image,
+                                                                   x, y, FALSE);
+                gimp_image_set_sample_point_pick_mode (image, sample_point,
+                                                       pick_mode, FALSE);
+              }
+          }
+          break;
+
+        case PROP_OLD_SAMPLE_POINTS:
+          {
             gint32 x, y;
             gint   i, n_sample_points;
+
+            /* if there are already sample points, we loaded the new
+             * prop before
+             */
+            if (gimp_image_get_sample_points (image))
+              {
+                if (! xcf_skip_unknown_prop (info, prop_size))
+                  return FALSE;
+
+                break;
+              }
 
             n_sample_points = prop_size / (4 + 4);
             for (i = 0; i < n_sample_points; i++)
@@ -800,7 +850,7 @@ xcf_load_image_props (XcfInfo   *info,
                 xcf_read_int32 (info, (guint32 *) &x, 1);
                 xcf_read_int32 (info, (guint32 *) &y, 1);
 
-                GIMP_LOG (XCF, "prop sample point x=%d y=%d", x, y);
+                GIMP_LOG (XCF, "prop old sample point x=%d y=%d", x, y);
 
                 gimp_image_add_sample_point_at_pos (image, x, y, FALSE);
               }
@@ -1662,7 +1712,8 @@ xcf_load_layer (XcfInfo    *info,
 
   /* create a new layer */
   layer = gimp_layer_new (image, width, height,
-                          format, name, 255, GIMP_LAYER_MODE_NORMAL);
+                          format, name,
+                          GIMP_OPACITY_OPAQUE, GIMP_LAYER_MODE_NORMAL);
   g_free (name);
   if (! layer)
     return NULL;

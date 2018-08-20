@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -56,6 +56,7 @@ enum
   SNAP_OFFSETS,
   STATUS,
   STATUS_COORDS,
+  FOCUS_CHANGED,
   LAST_SIGNAL
 };
 
@@ -69,6 +70,8 @@ struct _GimpToolWidgetPrivate
   gint              snap_offset_y;
   gint              snap_width;
   gint              snap_height;
+
+  gboolean          focus;
 };
 
 
@@ -88,6 +91,7 @@ static void     gimp_tool_widget_properties_changed (GObject         *object,
                                                      guint            n_pspecs,
                                                      GParamSpec     **pspecs);
 
+static void     gimp_tool_widget_real_leave_notify  (GimpToolWidget  *widget);
 static gboolean gimp_tool_widget_real_key_press     (GimpToolWidget  *widget,
                                                      GdkEventKey     *kevent);
 
@@ -110,6 +114,7 @@ gimp_tool_widget_class_init (GimpToolWidgetClass *klass)
   object_class->get_property                = gimp_tool_widget_get_property;
   object_class->dispatch_properties_changed = gimp_tool_widget_properties_changed;
 
+  klass->leave_notify                       = gimp_tool_widget_real_leave_notify;
   klass->key_press                          = gimp_tool_widget_real_key_press;
 
   widget_signals[CHANGED] =
@@ -167,6 +172,15 @@ gimp_tool_widget_class_init (GimpToolWidgetClass *klass)
                   G_TYPE_STRING,
                   G_TYPE_DOUBLE,
                   G_TYPE_STRING);
+
+  widget_signals[FOCUS_CHANGED] =
+    g_signal_new ("focus-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpToolWidgetClass, focus_changed),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 
   g_object_class_install_property (object_class, PROP_SHELL,
                                    g_param_spec_object ("shell",
@@ -267,11 +281,19 @@ gimp_tool_widget_properties_changed (GObject     *object,
                                      guint        n_pspecs,
                                      GParamSpec **pspecs)
 {
+  GimpToolWidget *widget = GIMP_TOOL_WIDGET (object);
+
   G_OBJECT_CLASS (parent_class)->dispatch_properties_changed (object,
                                                               n_pspecs,
                                                               pspecs);
 
-  g_signal_emit (object, widget_signals[CHANGED], 0);
+  gimp_tool_widget_changed (widget);
+}
+
+static void
+gimp_tool_widget_real_leave_notify (GimpToolWidget *widget)
+{
+  gimp_tool_widget_set_status (widget, NULL);
 }
 
 static gboolean
@@ -318,6 +340,36 @@ gimp_tool_widget_get_item (GimpToolWidget *widget)
   g_return_val_if_fail (GIMP_IS_TOOL_WIDGET (widget), NULL);
 
   return widget->private->item;
+}
+
+void
+gimp_tool_widget_set_focus (GimpToolWidget *widget,
+                            gboolean        focus)
+{
+  g_return_if_fail (GIMP_IS_TOOL_WIDGET (widget));
+
+  if (focus != widget->private->focus)
+    {
+      widget->private->focus = focus;
+
+      g_signal_emit (widget, widget_signals[FOCUS_CHANGED], 0);
+    }
+}
+
+gboolean
+gimp_tool_widget_get_focus (GimpToolWidget *widget)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_WIDGET (widget), FALSE);
+
+  return widget->private->focus;
+}
+
+void
+gimp_tool_widget_changed (GimpToolWidget *widget)
+{
+  g_return_if_fail (GIMP_IS_TOOL_WIDGET (widget));
+
+  g_signal_emit (widget, widget_signals[CHANGED], 0);
 }
 
 void
@@ -762,6 +814,22 @@ gimp_tool_widget_motion (GimpToolWidget   *widget,
                                                  coords, time, state);
 }
 
+GimpHit
+gimp_tool_widget_hit (GimpToolWidget   *widget,
+                      const GimpCoords *coords,
+                      GdkModifierType   state,
+                      gboolean          proximity)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_WIDGET (widget), GIMP_HIT_NONE);
+  g_return_val_if_fail (coords != NULL, GIMP_HIT_NONE);
+
+  if (GIMP_TOOL_WIDGET_GET_CLASS (widget)->hit)
+    return GIMP_TOOL_WIDGET_GET_CLASS (widget)->hit (widget,
+                                                     coords, state, proximity);
+
+  return GIMP_HIT_NONE;
+}
+
 void
 gimp_tool_widget_hover (GimpToolWidget   *widget,
                         const GimpCoords *coords,
@@ -774,6 +842,15 @@ gimp_tool_widget_hover (GimpToolWidget   *widget,
   if (GIMP_TOOL_WIDGET_GET_CLASS (widget)->hover)
     GIMP_TOOL_WIDGET_GET_CLASS (widget)->hover (widget,
                                                 coords, state, proximity);
+}
+
+void
+gimp_tool_widget_leave_notify (GimpToolWidget *widget)
+{
+  g_return_if_fail (GIMP_IS_TOOL_WIDGET (widget));
+
+  if (GIMP_TOOL_WIDGET_GET_CLASS (widget)->leave_notify)
+    GIMP_TOOL_WIDGET_GET_CLASS (widget)->leave_notify (widget);
 }
 
 gboolean

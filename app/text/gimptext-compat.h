@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_TEXT_COMPAT_H__
@@ -33,7 +33,8 @@ GimpLayer * text_render      (GimpImage    *image,
                               const gchar  *text,
                               gint          border,
                               gboolean      antialias);
-gboolean    text_get_extents (const gchar  *fontname,
+gboolean    text_get_extents (Gimp         *gimp,
+                              const gchar  *fontname,
                               const gchar  *text,
                               gint         *width,
                               gint         *height,

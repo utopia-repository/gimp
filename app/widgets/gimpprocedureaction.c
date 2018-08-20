@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -159,6 +159,8 @@ static void
 gimp_procedure_action_activate (GtkAction *action)
 {
   GimpProcedureAction *procedure_action = GIMP_PROCEDURE_ACTION (action);
+
+  GTK_ACTION_CLASS (parent_class)->activate (action);
 
   /* Not all actions have procedures associated with them, for example
    * unused "filters-recent-[N]" actions, so check for NULL before we

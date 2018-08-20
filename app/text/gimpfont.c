@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -62,7 +62,7 @@ enum
 
 struct _GimpFont
 {
-  GimpViewable  parent_instance;
+  GimpData      parent_instance;
 
   PangoContext *pango_context;
 
@@ -73,10 +73,11 @@ struct _GimpFont
 
 struct _GimpFontClass
 {
-  GimpViewableClass   parent_class;
+  GimpDataClass   parent_class;
 };
 
 
+static void          gimp_font_constructed      (GObject       *object);
 static void          gimp_font_finalize         (GObject       *object);
 static void          gimp_font_set_property     (GObject       *object,
                                                  guint          property_id,
@@ -104,7 +105,7 @@ static const gchar * gimp_font_get_sample_string (PangoContext         *context,
                                                   PangoFontDescription *font_desc);
 
 
-G_DEFINE_TYPE (GimpFont, gimp_font, GIMP_TYPE_VIEWABLE)
+G_DEFINE_TYPE (GimpFont, gimp_font, GIMP_TYPE_DATA)
 
 #define parent_class gimp_font_parent_class
 
@@ -115,6 +116,7 @@ gimp_font_class_init (GimpFontClass *klass)
   GObjectClass      *object_class   = G_OBJECT_CLASS (klass);
   GimpViewableClass *viewable_class = GIMP_VIEWABLE_CLASS (klass);
 
+  object_class->constructed         = gimp_font_constructed;
   object_class->finalize            = gimp_font_finalize;
   object_class->set_property        = gimp_font_set_property;
 
@@ -134,7 +136,15 @@ gimp_font_class_init (GimpFontClass *klass)
 static void
 gimp_font_init (GimpFont *font)
 {
-  font->pango_context = NULL;
+}
+
+static void
+gimp_font_constructed (GObject *object)
+{
+  G_OBJECT_CLASS (parent_class)->constructed (object);
+
+  gimp_data_make_internal (GIMP_DATA (object),
+                           gimp_object_get_name (object));
 }
 
 static void
@@ -316,15 +326,23 @@ gimp_font_get_new_preview (GimpViewable *viewable,
   return temp_buf;
 }
 
-GimpFont *
+GimpData *
 gimp_font_get_standard (void)
 {
-  static GimpFont *standard_font = NULL;
+  static GimpData *standard_font = NULL;
 
   if (! standard_font)
-    standard_font = g_object_new (GIMP_TYPE_FONT,
-                                  "name", "Sans-serif",
-                                  NULL);
+    {
+      standard_font = g_object_new (GIMP_TYPE_FONT,
+                                    "name", "Standard",
+                                    NULL);
+
+      gimp_data_clean (standard_font);
+      gimp_data_make_internal (standard_font, "gimp-font-standard");
+
+      g_object_add_weak_pointer (G_OBJECT (standard_font),
+                                 (gpointer *) &standard_font);
+    }
 
   return standard_font;
 }
@@ -377,10 +395,10 @@ gimp_font_get_sample_string (PangoContext         *context,
   /* This is a table of scripts and corresponding short sample strings
    * to be used instead of the Latin sample string Aa. The script
    * codes are as in ISO15924 (see
-   * http://www.unicode.org/iso15924/iso15924-codes.html), but in
+   * https://www.unicode.org/iso15924/iso15924-codes.html), but in
    * lower case. The Unicode subrange bit numbers, as used in TrueType
    * so-called OS/2 tables, are from
-   * http://www.microsoft.com/typography/otspec/os2.htm#ur .
+   * https://www.microsoft.com/typography/otspec/os2.htm#ur .
    *
    * The table is mostly ordered by Unicode order. But as there are
    * fonts that support several of these scripts, the ordering is
@@ -396,7 +414,7 @@ gimp_font_get_sample_string (PangoContext         *context,
    * This table is used to determine the primary script a font has
    * been designed for.
    *
-   * Very useful link: http://www.travelphrases.info/fonts.html
+   * Very useful link: https://www.wazu.jp/index.html
    */
   static const struct
   {

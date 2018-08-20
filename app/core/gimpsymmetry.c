@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -471,7 +471,13 @@ gimp_symmetry_from_parasite (const GimpParasite *parasite,
                         NULL);
 
   str = gimp_parasite_data (parasite);
-  g_return_val_if_fail (str != NULL, NULL);
+
+  if (! str)
+    {
+      g_warning ("Empty symmetry parasite \"%s\"", parasite_name);
+
+      return NULL;
+    }
 
   symmetry = gimp_image_symmetry_new (image, type);
 

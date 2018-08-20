@@ -19,7 +19,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -853,7 +853,7 @@ static void
 website_callback (GtkAction *action,
                   gpointer   data)
 {
-  browser_dialog_load ("http://docs.gimp.org/");
+  browser_dialog_load ("https://docs.gimp.org/");
 }
 
 static void

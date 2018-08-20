@@ -554,6 +554,10 @@
     <keyword type="constant" name="GIMP_STROKE_PAINT_METHOD" link="libgimpbase-gimpbaseenums.html#GIMP-STROKE-PAINT-METHOD:CAPS"/>
     <keyword type="constant" name="GIMP_TEXT_DIRECTION_LTR" link="libgimpbase-gimpbaseenums.html#GIMP-TEXT-DIRECTION-LTR:CAPS"/>
     <keyword type="constant" name="GIMP_TEXT_DIRECTION_RTL" link="libgimpbase-gimpbaseenums.html#GIMP-TEXT-DIRECTION-RTL:CAPS"/>
+    <keyword type="constant" name="GIMP_TEXT_DIRECTION_TTB_RTL" link="libgimpbase-gimpbaseenums.html#GIMP-TEXT-DIRECTION-TTB-RTL:CAPS"/>
+    <keyword type="constant" name="GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT" link="libgimpbase-gimpbaseenums.html#GIMP-TEXT-DIRECTION-TTB-RTL-UPRIGHT:CAPS"/>
+    <keyword type="constant" name="GIMP_TEXT_DIRECTION_TTB_LTR" link="libgimpbase-gimpbaseenums.html#GIMP-TEXT-DIRECTION-TTB-LTR:CAPS"/>
+    <keyword type="constant" name="GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT" link="libgimpbase-gimpbaseenums.html#GIMP-TEXT-DIRECTION-TTB-LTR-UPRIGHT:CAPS"/>
     <keyword type="constant" name="GIMP_TEXT_HINT_STYLE_NONE" link="libgimpbase-gimpbaseenums.html#GIMP-TEXT-HINT-STYLE-NONE:CAPS"/>
     <keyword type="constant" name="GIMP_TEXT_HINT_STYLE_SLIGHT" link="libgimpbase-gimpbaseenums.html#GIMP-TEXT-HINT-STYLE-SLIGHT:CAPS"/>
     <keyword type="constant" name="GIMP_TEXT_HINT_STYLE_MEDIUM" link="libgimpbase-gimpbaseenums.html#GIMP-TEXT-HINT-STYLE-MEDIUM:CAPS"/>

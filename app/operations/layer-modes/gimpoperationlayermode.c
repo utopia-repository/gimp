@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -37,7 +37,7 @@
 /* the maximum number of samples to process in one go.  used to limit
  * the size of the buffers we allocate on the stack.
  */
-#define GIMP_COMPOSITE_BLEND_MAX_SAMPLES ((1 << 19) /* 0.5 MiB */  /      \
+#define GIMP_COMPOSITE_BLEND_MAX_SAMPLES ((1 << 18) /* 256 KiB */  /      \
                                           16 /* bytes per pixel */ /      \
                                           2  /* max number of buffers */)
 

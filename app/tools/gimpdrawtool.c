@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -666,6 +666,8 @@ gimp_draw_tool_set_widget (GimpDrawTool   *draw_tool,
 
   if (draw_tool->widget)
     {
+      gimp_tool_widget_set_focus (draw_tool->widget, FALSE);
+
       g_signal_handlers_disconnect_by_func (draw_tool->widget,
                                             gimp_draw_tool_widget_status,
                                             draw_tool);
@@ -708,6 +710,8 @@ gimp_draw_tool_set_widget (GimpDrawTool   *draw_tool,
       g_signal_connect (draw_tool->widget, "snap-offsets",
                         G_CALLBACK (gimp_draw_tool_widget_snap_offsets),
                         draw_tool);
+
+      gimp_tool_widget_set_focus (draw_tool->widget, TRUE);
     }
 }
 
@@ -1143,16 +1147,17 @@ gimp_draw_tool_add_boundary (GimpDrawTool       *draw_tool,
 }
 
 GimpCanvasItem *
-gimp_draw_tool_add_text_cursor (GimpDrawTool   *draw_tool,
-                                PangoRectangle *cursor,
-                                gboolean        overwrite)
+gimp_draw_tool_add_text_cursor (GimpDrawTool     *draw_tool,
+                                PangoRectangle   *cursor,
+                                gboolean          overwrite,
+                                GimpTextDirection direction)
 {
   GimpCanvasItem *item;
 
   g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), NULL);
 
   item = gimp_canvas_text_cursor_new (gimp_display_get_shell (draw_tool->display),
-                                      cursor, overwrite);
+                                      cursor, overwrite, direction);
 
   gimp_draw_tool_add_item (draw_tool, item);
   g_object_unref (item);

@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -58,6 +58,41 @@ extern "C"
 
 
 void
+gimp_gegl_buffer_copy (GeglBuffer          *src_buffer,
+                       const GeglRectangle *src_rect,
+                       GeglAbyssPolicy      abyss_policy,
+                       GeglBuffer          *dest_buffer,
+                       const GeglRectangle *dest_rect)
+{
+  g_return_if_fail (GEGL_IS_BUFFER (src_buffer));
+  g_return_if_fail (GEGL_IS_BUFFER (dest_buffer));
+
+  if (gegl_buffer_get_format (src_buffer) ==
+      gegl_buffer_get_format (dest_buffer))
+    {
+      gegl_buffer_copy (src_buffer, src_rect, abyss_policy,
+                        dest_buffer, dest_rect);
+    }
+  else
+    {
+      if (! src_rect)
+        src_rect = gegl_buffer_get_extent (src_buffer);
+
+      if (! dest_rect)
+        dest_rect = src_rect;
+
+      gimp_parallel_distribute_area (src_rect, MIN_PARALLEL_SUB_AREA,
+                                     [=] (const GeglRectangle *src_area)
+        {
+          SHIFTED_AREA (dest, src);
+
+          gegl_buffer_copy (src_buffer, src_area, abyss_policy,
+                            dest_buffer, dest_area);
+        });
+    }
+}
+
+void
 gimp_gegl_convolve (GeglBuffer          *src_buffer,
                     const GeglRectangle *src_rect,
                     GeglBuffer          *dest_buffer,
@@ -76,6 +111,12 @@ gimp_gegl_convolve (GeglBuffer          *src_buffer,
   gint        src_components;
   gint        dest_components;
   gfloat      offset;
+
+  if (! src_rect)
+    src_rect = gegl_buffer_get_extent (src_buffer);
+
+  if (! dest_rect)
+    dest_rect = gegl_buffer_get_extent (dest_buffer);
 
   src_format = gegl_buffer_get_format (src_buffer);
 
@@ -264,6 +305,12 @@ gimp_gegl_dodgeburn (GeglBuffer          *src_buffer,
 {
   if (type == GIMP_DODGE_BURN_TYPE_BURN)
     exposure = -exposure;
+
+  if (! src_rect)
+    src_rect = gegl_buffer_get_extent (src_buffer);
+
+  if (! dest_rect)
+    dest_rect = gegl_buffer_get_extent (dest_buffer);
 
   gimp_parallel_distribute_area (src_rect, MIN_PARALLEL_SUB_AREA,
                                  [=] (const GeglRectangle *src_area)
@@ -482,6 +529,12 @@ gimp_gegl_smudge_with_paint (GeglBuffer          *accum_buffer,
   gboolean       sse2 = (gimp_cpu_accel_get_support () &
                          GIMP_CPU_ACCEL_X86_SSE2);
 
+  if (! accum_rect)
+    accum_rect = gegl_buffer_get_extent (accum_buffer);
+
+  if (! canvas_rect)
+    canvas_rect = gegl_buffer_get_extent (canvas_buffer);
+
   /* convert brush color from double to float */
   if (brush_color)
     {
@@ -556,6 +609,12 @@ gimp_gegl_apply_mask (GeglBuffer          *mask_buffer,
                       const GeglRectangle *dest_rect,
                       gdouble              opacity)
 {
+  if (! mask_rect)
+    mask_rect = gegl_buffer_get_extent (mask_buffer);
+
+  if (! dest_rect)
+    dest_rect = gegl_buffer_get_extent (dest_buffer);
+
   gimp_parallel_distribute_area (mask_rect, MIN_PARALLEL_SUB_AREA,
                                  [=] (const GeglRectangle *mask_area)
     {
@@ -595,6 +654,12 @@ gimp_gegl_combine_mask (GeglBuffer          *mask_buffer,
                         const GeglRectangle *dest_rect,
                         gdouble              opacity)
 {
+  if (! mask_rect)
+    mask_rect = gegl_buffer_get_extent (mask_buffer);
+
+  if (! dest_rect)
+    dest_rect = gegl_buffer_get_extent (dest_buffer);
+
   gimp_parallel_distribute_area (mask_rect, MIN_PARALLEL_SUB_AREA,
                                  [=] (const GeglRectangle *mask_area)
     {
@@ -635,6 +700,12 @@ gimp_gegl_combine_mask_weird (GeglBuffer          *mask_buffer,
                               gdouble              opacity,
                               gboolean             stipple)
 {
+  if (! mask_rect)
+    mask_rect = gegl_buffer_get_extent (mask_buffer);
+
+  if (! dest_rect)
+    dest_rect = gegl_buffer_get_extent (dest_buffer);
+
   gimp_parallel_distribute_area (mask_rect, MIN_PARALLEL_SUB_AREA,
                                  [=] (const GeglRectangle *mask_area)
     {
@@ -693,6 +764,18 @@ gimp_gegl_replace (GeglBuffer          *top_buffer,
                    gdouble              opacity,
                    const gboolean      *affect)
 {
+  if (! top_rect)
+    top_rect = gegl_buffer_get_extent (top_buffer);
+
+  if (! bottom_rect)
+    bottom_rect = gegl_buffer_get_extent (bottom_buffer);
+
+  if (! mask_rect)
+    mask_rect = gegl_buffer_get_extent (mask_buffer);
+
+  if (! dest_rect)
+    dest_rect = gegl_buffer_get_extent (dest_buffer);
+
   gimp_parallel_distribute_area (top_rect, MIN_PARALLEL_SUB_AREA,
                                  [=] (const GeglRectangle *top_area)
     {
@@ -803,6 +886,12 @@ gimp_gegl_index_to_mask (GeglBuffer          *indexed_buffer,
                          const GeglRectangle *mask_rect,
                          gint                 index)
 {
+  if (! indexed_rect)
+    indexed_rect = gegl_buffer_get_extent (indexed_buffer);
+
+  if (! mask_rect)
+    mask_rect = gegl_buffer_get_extent (mask_buffer);
+
   gimp_parallel_distribute_area (indexed_rect, MIN_PARALLEL_SUB_AREA,
                                  [=] (const GeglRectangle *indexed_area)
     {
@@ -909,8 +998,8 @@ gimp_gegl_convert_color_profile (GeglBuffer               *src_buffer,
     }
   else
     {
-      gegl_buffer_copy (src_buffer,  src_rect, GEGL_ABYSS_NONE,
-                        dest_buffer, dest_rect);
+      gimp_gegl_buffer_copy (src_buffer,  src_rect, GEGL_ABYSS_NONE,
+                             dest_buffer, dest_rect);
 
       if (progress)
         gimp_progress_set_value (progress, 1.0);

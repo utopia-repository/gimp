@@ -12,14 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_SCALE_TOOL_H__
 #define __GIMP_SCALE_TOOL_H__
 
 
-#include "gimptransformtool.h"
+#include "gimptransformgridtool.h"
 
 
 #define GIMP_TYPE_SCALE_TOOL            (gimp_scale_tool_get_type ())
@@ -34,14 +34,14 @@ typedef struct _GimpScaleToolClass GimpScaleToolClass;
 
 struct _GimpScaleTool
 {
-  GimpTransformTool  parent_instance;
+  GimpTransformGridTool  parent_instance;
 
-  GtkWidget         *box;
+  GtkWidget             *box;
 };
 
 struct _GimpScaleToolClass
 {
-  GimpTransformToolClass parent_class;
+  GimpTransformGridToolClass parent_class;
 };
 
 

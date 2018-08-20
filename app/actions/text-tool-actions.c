@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -110,6 +110,26 @@ static const GimpRadioActionEntry text_tool_direction_actions[] =
   { "text-tool-direction-rtl", GIMP_ICON_FORMAT_TEXT_DIRECTION_RTL,
     NC_("text-tool-action", "From right to left"), NULL, NULL,
     GIMP_TEXT_DIRECTION_RTL,
+    NULL },
+
+  { "text-tool-direction-ttb-rtl", GIMP_ICON_FORMAT_TEXT_DIRECTION_TTB_RTL,
+    NC_("text-tool-action", "Vertical, right to left (mixed orientation)"), NULL, NULL,
+    GIMP_TEXT_DIRECTION_TTB_RTL,
+    NULL },
+
+  { "text-tool-direction-ttb-rtl-upright", GIMP_ICON_FORMAT_TEXT_DIRECTION_TTB_RTL_UPRIGHT,
+    NC_("text-tool-action", "Vertical, right to left (upright orientation)"), NULL, NULL,
+    GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT,
+    NULL },
+
+  { "text-tool-direction-ttb-ltr", GIMP_ICON_FORMAT_TEXT_DIRECTION_TTB_LTR,
+    NC_("text-tool-action", "Vertical, left to right (mixed orientation)"), NULL, NULL,
+    GIMP_TEXT_DIRECTION_TTB_LTR,
+    NULL },
+
+  { "text-tool-direction-ttb-ltr-upright", GIMP_ICON_FORMAT_TEXT_DIRECTION_TTB_LTR_UPRIGHT,
+    NC_("text-tool-action", "Vertical, left to right (upright orientation)"), NULL, NULL,
+    GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT,
     NULL }
 };
 
@@ -156,6 +176,8 @@ text_tool_actions_update (GimpActionGroup *group,
   gboolean          clip       = FALSE;   /* clipboard has text available */
   gboolean          input_method_menu;
   gboolean          unicode_menu;
+  GimpTextDirection direction;
+  gint              i;
 
   layer = gimp_image_get_active_layer (image);
 
@@ -192,6 +214,16 @@ text_tool_actions_update (GimpActionGroup *group,
   SET_SENSITIVE ("text-tool-load",            image);
   SET_SENSITIVE ("text-tool-text-to-path",    text_layer);
   SET_SENSITIVE ("text-tool-text-along-path", text_layer && vectors);
+
+  direction = gimp_text_tool_get_direction (text_tool);
+  for (i = 0; i < G_N_ELEMENTS (text_tool_direction_actions); i++)
+    {
+      if (direction == text_tool_direction_actions[i].value)
+        {
+          SET_ACTIVE (text_tool_direction_actions[i].name, TRUE);
+          break;
+        }
+    }
 
   SET_VISIBLE ("text-tool-input-methods-menu", input_method_menu);
 }

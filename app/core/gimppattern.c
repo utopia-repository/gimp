@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -25,6 +25,8 @@
 #include "libgimpbase/gimpbase.h"
 
 #include "core-types.h"
+
+#include "gegl/gimp-gegl-loops.h"
 
 #include "gimppattern.h"
 #include "gimppattern-load.h"
@@ -155,9 +157,10 @@ gimp_pattern_get_new_preview (GimpViewable *viewable,
   src_buffer  = gimp_temp_buf_create_buffer (pattern->mask);
   dest_buffer = gimp_temp_buf_create_buffer (temp_buf);
 
-  gegl_buffer_copy (src_buffer,  GEGL_RECTANGLE (0, 0, copy_width, copy_height),
-                    GEGL_ABYSS_NONE,
-                    dest_buffer, GEGL_RECTANGLE (0, 0, 0, 0));
+  gimp_gegl_buffer_copy (src_buffer,
+                         GEGL_RECTANGLE (0, 0, copy_width, copy_height),
+                         GEGL_ABYSS_NONE,
+                         dest_buffer, GEGL_RECTANGLE (0, 0, 0, 0));
 
   g_object_unref (src_buffer);
   g_object_unref (dest_buffer);

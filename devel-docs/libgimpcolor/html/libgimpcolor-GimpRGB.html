@@ -635,7 +635,7 @@ gimp_rgb_get_uchar (<em class="parameter"><code>const <a class="link" href="libg
 gimp_rgb_parse_name (<em class="parameter"><code><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="struct GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>,
                      <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>,
                      <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> len</code></em>);</pre>
-<p>Attempts to parse a color name. This function accepts <a class="ulink" href="http://www.w3.org/TR/SVG/types.html#ColorKeywords" target="_top">SVG 1.0
+<p>Attempts to parse a color name. This function accepts <a class="ulink" href="https://www.w3.org/TR/SVG/types.html#ColorKeywords" target="_top">SVG 1.0
 color keywords</a>.</p>
 <p>This function does not touch the alpha component of <em class="parameter"><code>rgb</code></em>
 .</p>
@@ -785,7 +785,7 @@ set, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal
 <pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
 gimp_rgb_list_names (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> ***names</code></em>,
                      <em class="parameter"><code><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="struct GimpRGB"><span class="type">GimpRGB</span></a> **colors</code></em>);</pre>
-<p>Returns the list of <a class="ulink" href="http://www.w3.org/TR/SVG/types.html" target="_top">SVG 1.0 color
+<p>Returns the list of <a class="ulink" href="https://www.w3.org/TR/SVG/types.html" target="_top">SVG 1.0 color
 keywords</a> that is used by <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-parse-name" title="gimp_rgb_parse_name ()"><code class="function">gimp_rgb_parse_name()</code></a>.</p>
 <p>The returned strings are const and must not be freed. Only the two
 arrays are allocated dynamically. You must call <a href="../glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> on the

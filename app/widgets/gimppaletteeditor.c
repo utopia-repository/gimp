@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -35,8 +35,10 @@
 #include "core/gimpdatafactory.h"
 #include "core/gimppalette.h"
 
+#include "gimpcolordialog.h"
 #include "gimpdnd.h"
 #include "gimpdocked.h"
+#include "gimpdialogfactory.h"
 #include "gimphelp-ids.h"
 #include "gimppaletteeditor.h"
 #include "gimppaletteview.h"
@@ -121,6 +123,10 @@ static void   palette_editor_resize                (GimpPaletteEditor *editor,
                                                     gint               width,
                                                     gdouble            zoom_factor);
 static void   palette_editor_scroll_top_left       (GimpPaletteEditor *editor);
+static void   palette_editor_edit_color_update     (GimpColorDialog   *dialog,
+                                                    const GimpRGB     *color,
+                                                    GimpColorDialogState state,
+                                                    GimpPaletteEditor *editor);
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpPaletteEditor, gimp_palette_editor,
@@ -168,7 +174,7 @@ gimp_palette_editor_init (GimpPaletteEditor *editor)
   GimpDataEditor *data_editor = GIMP_DATA_EDITOR (editor);
   GtkWidget      *viewport;
   GtkWidget      *hbox;
-  GtkWidget      *label;
+  GtkWidget      *icon;
   GtkWidget      *spinbutton;
 
   editor->zoom_factor = 1.0;
@@ -240,6 +246,7 @@ gimp_palette_editor_init (GimpPaletteEditor *editor)
   /*  The color name entry  */
   editor->color_name = gtk_entry_new ();
   gtk_box_pack_start (GTK_BOX (hbox), editor->color_name, TRUE, TRUE, 0);
+  gtk_entry_set_width_chars (GTK_ENTRY (editor->color_name), 1);
   gtk_entry_set_text (GTK_ENTRY (editor->color_name), _("Undefined"));
   gtk_editable_set_editable (GTK_EDITABLE (editor->color_name), FALSE);
   gtk_widget_show (editor->color_name);
@@ -248,9 +255,9 @@ gimp_palette_editor_init (GimpPaletteEditor *editor)
                     G_CALLBACK (palette_editor_color_name_changed),
                     editor);
 
-  label = gtk_label_new (_("Columns:"));
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-  gtk_widget_show (label);
+  icon = gtk_image_new_from_icon_name (GIMP_ICON_GRID, GTK_ICON_SIZE_MENU);
+  gtk_box_pack_start (GTK_BOX (hbox), icon, FALSE, FALSE, 0);
+  gtk_widget_show (icon);
 
   editor->columns_adj = (GtkAdjustment *)
     gtk_adjustment_new (0, 0, 64, 1, 4, 0);
@@ -258,6 +265,8 @@ gimp_palette_editor_init (GimpPaletteEditor *editor)
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
   gtk_widget_show (spinbutton);
+
+  gimp_help_set_help_data (spinbutton, _("Set the number of columns"), NULL);
 
   g_signal_connect (editor->columns_adj, "value-changed",
                     G_CALLBACK (palette_editor_columns_changed),
@@ -298,11 +307,7 @@ gimp_palette_editor_dispose (GObject *object)
 {
   GimpPaletteEditor *editor = GIMP_PALETTE_EDITOR (object);
 
-  if (editor->color_dialog)
-    {
-      gtk_widget_destroy (editor->color_dialog);
-      editor->color_dialog = NULL;
-    }
+  g_clear_pointer (&editor->color_dialog, gtk_widget_destroy);
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
@@ -447,6 +452,55 @@ gimp_palette_editor_new (GimpContext     *context,
                        "context",         context,
                        "data",            gimp_context_get_palette (context),
                        NULL);
+}
+
+void
+gimp_palette_editor_edit_color (GimpPaletteEditor *editor)
+{
+  GimpDataEditor *data_editor;
+  GimpPalette    *palette;
+
+  g_return_if_fail (GIMP_IS_PALETTE_EDITOR (editor));
+
+  data_editor = GIMP_DATA_EDITOR (editor);
+
+  if (! (data_editor->data_editable && editor->color))
+    return;
+
+  palette = GIMP_PALETTE (gimp_data_editor_get_data (data_editor));
+
+  if (! editor->color_dialog)
+    {
+      editor->color_dialog =
+        gimp_color_dialog_new (GIMP_VIEWABLE (palette),
+                               data_editor->context,
+                               _("Edit Palette Color"),
+                               GIMP_ICON_PALETTE,
+                               _("Edit Color Palette Entry"),
+                               GTK_WIDGET (editor),
+                               gimp_dialog_factory_get_singleton (),
+                               "gimp-palette-editor-color-dialog",
+                               &editor->color->color,
+                               FALSE, FALSE);
+
+      g_signal_connect (editor->color_dialog, "destroy",
+                        G_CALLBACK (gtk_widget_destroyed),
+                        &editor->color_dialog);
+
+      g_signal_connect (editor->color_dialog, "update",
+                        G_CALLBACK (palette_editor_edit_color_update),
+                        editor);
+    }
+  else
+    {
+      gimp_viewable_dialog_set_viewable (GIMP_VIEWABLE_DIALOG (editor->color_dialog),
+                                         GIMP_VIEWABLE (palette),
+                                         data_editor->context);
+      gimp_color_dialog_set_color (GIMP_COLOR_DIALOG (editor->color_dialog),
+                                   &editor->color->color);
+    }
+
+  gtk_window_present (GTK_WINDOW (editor->color_dialog));
 }
 
 void
@@ -860,4 +914,31 @@ palette_editor_scroll_top_left (GimpPaletteEditor *palette_editor)
     gtk_adjustment_set_value (hadj, 0.0);
   if (vadj)
     gtk_adjustment_set_value (vadj, 0.0);
+}
+
+static void
+palette_editor_edit_color_update (GimpColorDialog      *dialog,
+                                  const GimpRGB        *color,
+                                  GimpColorDialogState  state,
+                                  GimpPaletteEditor    *editor)
+{
+  GimpPalette *palette = GIMP_PALETTE (GIMP_DATA_EDITOR (editor)->data);
+
+  switch (state)
+    {
+    case GIMP_COLOR_DIALOG_UPDATE:
+      break;
+
+    case GIMP_COLOR_DIALOG_OK:
+      if (editor->color)
+        {
+          editor->color->color = *color;
+          gimp_data_dirty (GIMP_DATA (palette));
+        }
+      /* Fallthrough */
+
+    case GIMP_COLOR_DIALOG_CANCEL:
+      gtk_widget_hide (editor->color_dialog);
+      break;
+    }
 }

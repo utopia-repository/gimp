@@ -14,7 +14,7 @@
  * for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  * Contents:
  *
@@ -260,7 +260,7 @@ sgiOpen(const char *filename,	/* I - File to open */
   if (mode == SGI_READ)
     file = g_fopen(filename, "rb");
   else
-    file = g_fopen(filename, "wb+");
+    file = g_fopen(filename, "w+b");
 
   if (file == NULL)
     return (NULL);

@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -388,6 +388,22 @@ gimp_tool_preset_deserialize_property (GimpConfig *config,
           {
             *expected = G_TOKEN_STRING;
             break;
+          }
+
+        if (! (type_name && *type_name))
+          {
+            g_scanner_error (scanner, "GimpToolOptions type name is empty");
+            *expected = G_TOKEN_NONE;
+            g_free (type_name);
+            break;
+          }
+
+        if (! strcmp (type_name, "GimpTransformOptions"))
+          {
+            g_printerr ("Correcting tool options type GimpTransformOptions "
+                        "to GimpTransformGridOptions\n");
+            g_free (type_name);
+            type_name = g_strdup ("GimpTransformGridOptions");
           }
 
         type = g_type_from_name (type_name);

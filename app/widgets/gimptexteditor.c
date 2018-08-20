@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -28,6 +28,7 @@
 #include "widgets-types.h"
 
 #include "core/gimp.h"
+#include "core/gimpdatafactory.h"
 #include "core/gimpmarshal.h"
 
 #include "text/gimptext.h"
@@ -185,7 +186,7 @@ gimp_text_editor_new (const gchar     *title,
     }
 
   style_editor = gimp_text_style_editor_new (gimp, text, text_buffer,
-                                             gimp->fonts,
+                                             gimp_data_factory_get_container (gimp->font_factory),
                                              xres, yres);
   gtk_box_pack_start (GTK_BOX (content_area), style_editor, FALSE, FALSE, 0);
   gtk_widget_show (style_editor);
@@ -207,6 +208,10 @@ gimp_text_editor_new (const gchar     *title,
   switch (editor->base_dir)
     {
     case GIMP_TEXT_DIRECTION_LTR:
+    case GIMP_TEXT_DIRECTION_TTB_RTL:
+    case GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT:
+    case GIMP_TEXT_DIRECTION_TTB_LTR:
+    case GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT:
       gtk_widget_set_direction (editor->view, GTK_TEXT_DIR_LTR);
       break;
     case GIMP_TEXT_DIRECTION_RTL:
@@ -279,6 +284,10 @@ gimp_text_editor_set_direction (GimpTextEditor    *editor,
       switch (editor->base_dir)
         {
         case GIMP_TEXT_DIRECTION_LTR:
+        case GIMP_TEXT_DIRECTION_TTB_RTL:
+        case GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT:
+        case GIMP_TEXT_DIRECTION_TTB_LTR:
+        case GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT:
           gtk_widget_set_direction (editor->view, GTK_TEXT_DIR_LTR);
           break;
         case GIMP_TEXT_DIRECTION_RTL:

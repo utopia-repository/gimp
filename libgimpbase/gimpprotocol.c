@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see
- * <http://www.gnu.org/licenses/>.
+ * <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -516,7 +516,8 @@ _gp_config_read (GIOChannel      *channel,
                               user_data))
     goto cleanup;
   if (! _gimp_wire_read_int8 (channel,
-                              (guint8 *) &config->install_cmap, 1, user_data))
+                              (guint8 *) &config->export_profile, 1,
+                              user_data))
     goto cleanup;
   if (! _gimp_wire_read_int8 (channel,
                               (guint8 *) &config->show_tooltips, 1, user_data))
@@ -545,6 +546,14 @@ _gp_config_read (GIOChannel      *channel,
                                &config->timestamp, 1, user_data))
     goto cleanup;
 
+  if (config->version < 0x0017)
+    goto end;
+
+  if (! _gimp_wire_read_string (channel,
+                                &config->icon_theme_dir, 1, user_data))
+    goto cleanup;
+
+ end:
   msg->data = config;
   return;
 
@@ -552,6 +561,7 @@ _gp_config_read (GIOChannel      *channel,
   g_free (config->app_name);
   g_free (config->wm_class);
   g_free (config->display_name);
+  g_free (config->icon_theme_dir);
   g_slice_free (GPConfig, config);
 }
 
@@ -608,7 +618,7 @@ _gp_config_write (GIOChannel      *channel,
                                user_data))
     return;
   if (! _gimp_wire_write_int8 (channel,
-                               (const guint8 *) &config->install_cmap, 1,
+                               (const guint8 *) &config->export_profile, 1,
                                user_data))
     return;
   if (! _gimp_wire_write_int8 (channel,
@@ -639,6 +649,13 @@ _gp_config_write (GIOChannel      *channel,
   if (! _gimp_wire_write_int32 (channel,
                                 (const guint32 *) &config->timestamp, 1,
                                 user_data))
+    return;
+
+  if (config->version < 0x0017)
+    return;
+
+  if (! _gimp_wire_write_string (channel,
+                                 &config->icon_theme_dir, 1, user_data))
     return;
 }
 

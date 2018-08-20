@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  * Contact info: nigel@cs.nwu.edu
  *
@@ -599,7 +599,7 @@ draw_jigsaw (guchar   *buffer,
     }
   else
     {
-      printf("draw_jigsaw: bad style\n");
+      g_printf ("draw_jigsaw: bad style\n");
       gimp_quit ();
     }
   gimp_progress_update (1.0);

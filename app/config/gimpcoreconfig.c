@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -100,6 +100,7 @@ enum
   PROP_FILTER_HISTORY_SIZE,
   PROP_PLUGINRC_PATH,
   PROP_LAYER_PREVIEWS,
+  PROP_GROUP_LAYER_PREVIEWS,
   PROP_LAYER_PREVIEW_SIZE,
   PROP_THUMBNAIL_SIZE,
   PROP_THUMBNAIL_FILESIZE_LIMIT,
@@ -110,6 +111,7 @@ enum
   PROP_IMPORT_PROMOTE_DITHER,
   PROP_IMPORT_ADD_ALPHA,
   PROP_IMPORT_RAW_PLUG_IN,
+  PROP_EXPORT_COLOR_PROFILE,
   PROP_EXPORT_METADATA_EXIF,
   PROP_EXPORT_METADATA_XMP,
   PROP_EXPORT_METADATA_IPTC,
@@ -229,7 +231,7 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                          BRUSH_PATH_BLURB,
                          GIMP_CONFIG_PATH_DIR_LIST, path,
                          GIMP_PARAM_STATIC_STRINGS |
-                         GIMP_CONFIG_PARAM_RESTART);
+                         GIMP_CONFIG_PARAM_CONFIRM);
   g_free (path);
 
   path = gimp_config_build_writable_path ("brushes");
@@ -239,7 +241,7 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                          BRUSH_PATH_WRITABLE_BLURB,
                          GIMP_CONFIG_PATH_DIR_LIST, path,
                          GIMP_PARAM_STATIC_STRINGS |
-                         GIMP_CONFIG_PARAM_RESTART);
+                         GIMP_CONFIG_PARAM_CONFIRM);
   g_free (path);
 
   path = gimp_config_build_data_path ("dynamics");
@@ -249,7 +251,7 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                          DYNAMICS_PATH_BLURB,
                          GIMP_CONFIG_PATH_DIR_LIST, path,
                          GIMP_PARAM_STATIC_STRINGS |
-                         GIMP_CONFIG_PARAM_RESTART);
+                         GIMP_CONFIG_PARAM_CONFIRM);
   g_free (path);
 
   path = gimp_config_build_writable_path ("dynamics");
@@ -259,10 +261,10 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                          DYNAMICS_PATH_WRITABLE_BLURB,
                          GIMP_CONFIG_PATH_DIR_LIST, path,
                          GIMP_PARAM_STATIC_STRINGS |
-                         GIMP_CONFIG_PARAM_RESTART);
+                         GIMP_CONFIG_PARAM_CONFIRM);
   g_free (path);
 
-#ifdef ENABLE_BUNDLED_MYPAINT_BRUSHES
+#ifdef ENABLE_RELOCATABLE_RESOURCES
   mypaint_brushes = g_build_filename ("${gimp_installation_dir}",
                                       "share", "mypaint-data",
                                       "1.0", "brushes", NULL);
@@ -282,7 +284,7 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                          MYPAINT_BRUSH_PATH_BLURB,
                          GIMP_CONFIG_PATH_DIR_LIST, path,
                          GIMP_PARAM_STATIC_STRINGS |
-                         GIMP_CONFIG_PARAM_RESTART);
+                         GIMP_CONFIG_PARAM_CONFIRM);
   g_free (path);
 
   path = g_build_path (G_SEARCHPATH_SEPARATOR_S,
@@ -294,7 +296,7 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                          MYPAINT_BRUSH_PATH_WRITABLE_BLURB,
                          GIMP_CONFIG_PATH_DIR_LIST, path,
                          GIMP_PARAM_STATIC_STRINGS |
-                         GIMP_CONFIG_PARAM_RESTART);
+                         GIMP_CONFIG_PARAM_CONFIRM);
   g_free (path);
 
   path = gimp_config_build_data_path ("patterns");
@@ -304,7 +306,7 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                          PATTERN_PATH_BLURB,
                          GIMP_CONFIG_PATH_DIR_LIST, path,
                          GIMP_PARAM_STATIC_STRINGS |
-                         GIMP_CONFIG_PARAM_RESTART);
+                         GIMP_CONFIG_PARAM_CONFIRM);
   g_free (path);
 
   path = gimp_config_build_writable_path ("patterns");
@@ -314,7 +316,7 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                          PATTERN_PATH_WRITABLE_BLURB,
                          GIMP_CONFIG_PATH_DIR_LIST, path,
                          GIMP_PARAM_STATIC_STRINGS |
-                         GIMP_CONFIG_PARAM_RESTART);
+                         GIMP_CONFIG_PARAM_CONFIRM);
   g_free (path);
 
   path = gimp_config_build_data_path ("palettes");
@@ -324,7 +326,7 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                          PALETTE_PATH_BLURB,
                          GIMP_CONFIG_PATH_DIR_LIST, path,
                          GIMP_PARAM_STATIC_STRINGS |
-                         GIMP_CONFIG_PARAM_RESTART);
+                         GIMP_CONFIG_PARAM_CONFIRM);
   g_free (path);
 
   path = gimp_config_build_writable_path ("palettes");
@@ -334,7 +336,7 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                          PALETTE_PATH_WRITABLE_BLURB,
                          GIMP_CONFIG_PATH_DIR_LIST, path,
                          GIMP_PARAM_STATIC_STRINGS |
-                         GIMP_CONFIG_PARAM_RESTART);
+                         GIMP_CONFIG_PARAM_CONFIRM);
   g_free (path);
 
   path = gimp_config_build_data_path ("gradients");
@@ -344,7 +346,7 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                          GRADIENT_PATH_BLURB,
                          GIMP_CONFIG_PATH_DIR_LIST, path,
                          GIMP_PARAM_STATIC_STRINGS |
-                         GIMP_CONFIG_PARAM_RESTART);
+                         GIMP_CONFIG_PARAM_CONFIRM);
   g_free (path);
 
   path = gimp_config_build_writable_path ("gradients");
@@ -354,7 +356,7 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                          GRADIENT_PATH_WRITABLE_BLURB,
                          GIMP_CONFIG_PATH_DIR_LIST, path,
                          GIMP_PARAM_STATIC_STRINGS |
-                         GIMP_CONFIG_PARAM_RESTART);
+                         GIMP_CONFIG_PARAM_CONFIRM);
   g_free (path);
 
   path = gimp_config_build_data_path ("tool-presets");
@@ -364,7 +366,7 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                          TOOL_PRESET_PATH_BLURB,
                          GIMP_CONFIG_PATH_DIR_LIST, path,
                          GIMP_PARAM_STATIC_STRINGS |
-                         GIMP_CONFIG_PARAM_RESTART);
+                         GIMP_CONFIG_PARAM_CONFIRM);
   g_free (path);
 
   path = gimp_config_build_writable_path ("tool-presets");
@@ -374,7 +376,7 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                          TOOL_PRESET_PATH_WRITABLE_BLURB,
                          GIMP_CONFIG_PATH_DIR_LIST, path,
                          GIMP_PARAM_STATIC_STRINGS |
-                         GIMP_CONFIG_PARAM_RESTART);
+                         GIMP_CONFIG_PARAM_CONFIRM);
   g_free (path);
 
   path = gimp_config_build_data_path ("fonts");
@@ -566,6 +568,13 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                             TRUE,
                             GIMP_PARAM_STATIC_STRINGS);
 
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_GROUP_LAYER_PREVIEWS,
+                            "group-layer-previews",
+                            "Layer group previews",
+                            GROUP_LAYER_PREVIEWS_BLURB,
+                            TRUE,
+                            GIMP_PARAM_STATIC_STRINGS);
+
   GIMP_CONFIG_PROP_ENUM (object_class, PROP_LAYER_PREVIEW_SIZE,
                          "layer-preview-size",
                          "Layer preview size",
@@ -640,6 +649,13 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                          "",
                          GIMP_PARAM_STATIC_STRINGS |
                          GIMP_CONFIG_PARAM_RESTART);
+
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_EXPORT_COLOR_PROFILE,
+                            "export-color-profile",
+                            "Export Color Profile",
+                            EXPORT_COLOR_PROFILE_BLURB,
+                            TRUE,
+                            GIMP_PARAM_STATIC_STRINGS);
 
   GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_EXPORT_METADATA_EXIF,
                             "export-metadata-exif",
@@ -934,6 +950,9 @@ gimp_core_config_set_property (GObject      *object,
     case PROP_LAYER_PREVIEWS:
       core_config->layer_previews = g_value_get_boolean (value);
       break;
+    case PROP_GROUP_LAYER_PREVIEWS:
+      core_config->group_layer_previews = g_value_get_boolean (value);
+      break;
     case PROP_LAYER_PREVIEW_SIZE:
       core_config->layer_preview_size = g_value_get_enum (value);
       break;
@@ -966,6 +985,9 @@ gimp_core_config_set_property (GObject      *object,
     case PROP_IMPORT_RAW_PLUG_IN:
       g_free (core_config->import_raw_plug_in);
       core_config->import_raw_plug_in = g_value_dup_string (value);
+      break;
+    case PROP_EXPORT_COLOR_PROFILE:
+      core_config->export_color_profile = g_value_get_boolean (value);
       break;
     case PROP_EXPORT_METADATA_EXIF:
       core_config->export_metadata_exif = g_value_get_boolean (value);
@@ -1136,6 +1158,9 @@ gimp_core_config_get_property (GObject    *object,
     case PROP_LAYER_PREVIEWS:
       g_value_set_boolean (value, core_config->layer_previews);
       break;
+    case PROP_GROUP_LAYER_PREVIEWS:
+      g_value_set_boolean (value, core_config->group_layer_previews);
+      break;
     case PROP_LAYER_PREVIEW_SIZE:
       g_value_set_enum (value, core_config->layer_preview_size);
       break;
@@ -1165,6 +1190,9 @@ gimp_core_config_get_property (GObject    *object,
       break;
     case PROP_IMPORT_RAW_PLUG_IN:
       g_value_set_string (value, core_config->import_raw_plug_in);
+      break;
+    case PROP_EXPORT_COLOR_PROFILE:
+      g_value_set_boolean (value, core_config->export_color_profile);
       break;
     case PROP_EXPORT_METADATA_EXIF:
       g_value_set_boolean (value, core_config->export_metadata_exif);

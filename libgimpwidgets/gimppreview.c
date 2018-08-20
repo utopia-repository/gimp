@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see
- * <http://www.gnu.org/licenses/>.
+ * <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -827,13 +827,7 @@ gimp_preview_set_default_cursor (GimpPreview *preview,
 {
   g_return_if_fail (GIMP_IS_PREVIEW (preview));
 
-  if (preview->default_cursor)
-    gdk_cursor_unref (preview->default_cursor);
-
-  if (cursor)
-    gdk_cursor_ref (cursor);
-
-  preview->default_cursor = cursor;
+  g_set_object (&preview->default_cursor, cursor);
 }
 
 /**

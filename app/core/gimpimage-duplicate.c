@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -20,9 +20,13 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
+#include "libgimpbase/gimpbase.h"
+
 #include "core-types.h"
 
-#include "libgimpbase/gimpbase.h"
+#include "gegl/gimp-gegl-loops.h"
+
+#include "vectors/gimpvectors.h"
 
 #include "gimp.h"
 #include "gimpchannel.h"
@@ -43,8 +47,6 @@
 #include "gimplayer-floating-selection.h"
 #include "gimpparasitelist.h"
 #include "gimpsamplepoint.h"
-
-#include "vectors/gimpvectors.h"
 
 
 static void          gimp_image_duplicate_resolution       (GimpImage *image,
@@ -399,8 +401,8 @@ gimp_image_duplicate_mask (GimpImage *image,
   mask     = GIMP_DRAWABLE (gimp_image_get_mask (image));
   new_mask = GIMP_DRAWABLE (gimp_image_get_mask (new_image));
 
-  gegl_buffer_copy (gimp_drawable_get_buffer (mask), NULL, GEGL_ABYSS_NONE,
-                    gimp_drawable_get_buffer (new_mask), NULL);
+  gimp_gegl_buffer_copy (gimp_drawable_get_buffer (mask), NULL, GEGL_ABYSS_NONE,
+                         gimp_drawable_get_buffer (new_mask), NULL);
 
   GIMP_CHANNEL (new_mask)->bounds_known   = FALSE;
   GIMP_CHANNEL (new_mask)->boundary_known = FALSE;
@@ -522,7 +524,9 @@ static void
 gimp_image_duplicate_color_profile (GimpImage *image,
                                     GimpImage *new_image)
 {
-  GimpColorProfile *profile = gimp_image_get_color_profile (image);
+  GimpColorProfile *profile          = gimp_image_get_color_profile (image);
+  gboolean          is_color_managed = gimp_image_get_is_color_managed (image);
 
-  gimp_image_set_color_profile (new_image, profile, NULL);
+  gimp_image_set_color_profile    (new_image, profile, NULL);
+  gimp_image_set_is_color_managed (new_image, is_color_managed, FALSE);
 }

@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -31,6 +31,8 @@
 #include "libgimpmath/gimpmath.h"
 
 #include "paint-types.h"
+
+#include "gegl/gimp-gegl-loops.h"
 
 #include "core/gimpbrush.h"
 #include "core/gimpdrawable.h"
@@ -558,22 +560,22 @@ gimp_heal_motion (GimpSourceCore   *source_core,
                                               src_rect->height),
                               babl_format ("R'G'B'A float"));
 
-  gegl_buffer_copy (src_buffer, src_rect, GEGL_ABYSS_NONE,
-                    src_copy,
-                    GEGL_RECTANGLE (0, 0,
-                                    src_rect->width,
-                                    src_rect->height));
+  gimp_gegl_buffer_copy (src_buffer, src_rect, GEGL_ABYSS_NONE,
+                         src_copy,
+                         GEGL_RECTANGLE (0, 0,
+                                         src_rect->width,
+                                         src_rect->height));
 
-  gegl_buffer_copy (gimp_drawable_get_buffer (drawable),
-                    GEGL_RECTANGLE (paint_buffer_x, paint_buffer_y,
-                                    gegl_buffer_get_width  (paint_buffer),
-                                    gegl_buffer_get_height (paint_buffer)),
-                    GEGL_ABYSS_NONE,
-                    paint_buffer,
-                    GEGL_RECTANGLE (paint_area_offset_x,
-                                    paint_area_offset_y,
-                                    paint_area_width,
-                                    paint_area_height));
+  gimp_gegl_buffer_copy (gimp_drawable_get_buffer (drawable),
+                         GEGL_RECTANGLE (paint_buffer_x, paint_buffer_y,
+                                         gegl_buffer_get_width  (paint_buffer),
+                                         gegl_buffer_get_height (paint_buffer)),
+                         GEGL_ABYSS_NONE,
+                         paint_buffer,
+                         GEGL_RECTANGLE (paint_area_offset_x,
+                                         paint_area_offset_y,
+                                         paint_area_width,
+                                         paint_area_height));
 
   mask_buffer = gimp_temp_buf_create_buffer ((GimpTempBuf *) mask_buf);
 

@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -239,17 +239,14 @@ colorsel_water_set_config (GimpColorSelector *selector,
           g_signal_handlers_disconnect_by_func (water->config,
                                                 colorsel_water_destroy_transform,
                                                 water);
-          g_object_unref (water->config);
 
           colorsel_water_destroy_transform (water);
         }
 
-      water->config = config;
+      g_set_object (&water->config, config);
 
       if (water->config)
         {
-          g_object_ref (water->config);
-
           g_signal_connect_swapped (water->config, "notify",
                                     G_CALLBACK (colorsel_water_destroy_transform),
                                     water);
@@ -511,7 +508,7 @@ motion_notify_event (GtkWidget      *widget,
                           y / allocation.height, pressure);
             }
 
-          g_free (coords);
+          gdk_device_free_history (coords, nevents);
         }
       else
         {

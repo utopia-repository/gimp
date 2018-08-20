@@ -15,14 +15,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_PROJECTABLE_H__
 #define __GIMP_PROJECTABLE_H__
 
 
-#define GIMP_TYPE_PROJECTABLE               (gimp_projectable_interface_get_type ())
+#define GIMP_TYPE_PROJECTABLE               (gimp_projectable_get_type ())
 #define GIMP_IS_PROJECTABLE(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PROJECTABLE))
 #define GIMP_PROJECTABLE(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PROJECTABLE, GimpProjectable))
 #define GIMP_PROJECTABLE_GET_INTERFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), GIMP_TYPE_PROJECTABLE, GimpProjectableInterface))
@@ -43,6 +43,11 @@ struct _GimpProjectableInterface
   void         (* flush)              (GimpProjectable *projectable,
                                        gboolean         invalidate_preview);
   void         (* structure_changed)  (GimpProjectable *projectable);
+  void         (* bounds_changed)     (GimpProjectable *projectable,
+                                       gint             old_x,
+                                       gint             old_y,
+                                       gint             old_width,
+                                       gint             old_height);
 
   /*  virtual functions  */
   GimpImage  * (* get_image)          (GimpProjectable *projectable);
@@ -60,7 +65,7 @@ struct _GimpProjectableInterface
 };
 
 
-GType        gimp_projectable_interface_get_type (void) G_GNUC_CONST;
+GType        gimp_projectable_get_type           (void) G_GNUC_CONST;
 
 void         gimp_projectable_invalidate         (GimpProjectable *projectable,
                                                   gint             x,
@@ -70,6 +75,11 @@ void         gimp_projectable_invalidate         (GimpProjectable *projectable,
 void         gimp_projectable_flush              (GimpProjectable *projectable,
                                                   gboolean         preview_invalidated);
 void         gimp_projectable_structure_changed  (GimpProjectable *projectable);
+void         gimp_projectable_bounds_changed     (GimpProjectable *projectable,
+                                                  gint             old_x,
+                                                  gint             old_y,
+                                                  gint             old_width,
+                                                  gint             old_height);
 
 GimpImage  * gimp_projectable_get_image          (GimpProjectable *projectable);
 const Babl * gimp_projectable_get_format         (GimpProjectable *projectable);

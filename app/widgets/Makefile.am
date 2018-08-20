@@ -211,10 +211,10 @@ libappwidgets_a_sources = \
 	gimpfileprocview.h		\
 	gimpfilleditor.c		\
 	gimpfilleditor.h		\
+	gimpfontfactoryview.c		\
+	gimpfontfactoryview.h		\
 	gimpfontselect.c		\
 	gimpfontselect.h		\
-	gimpfontview.c			\
-	gimpfontview.h			\
 	gimpgradienteditor.c		\
 	gimpgradienteditor.h		\
 	gimpgradientselect.c		\

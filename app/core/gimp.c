@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -39,8 +39,6 @@
 #include "plug-in/gimppluginmanager-restore.h"
 
 #include "paint/gimp-paint.h"
-
-#include "text/gimp-fonts.h"
 
 #include "xcf/xcf.h"
 
@@ -254,8 +252,6 @@ gimp_init (Gimp *gimp)
   gimp_object_set_static_name (GIMP_OBJECT (gimp->named_buffers),
                                "named buffers");
 
-  gimp_fonts_init (gimp);
-
   gimp_data_factories_init (gimp);
 
   gimp->tool_info_list = g_object_new (GIMP_TYPE_LIST,
@@ -393,8 +389,6 @@ gimp_finalize (GObject *object)
 
   gimp_data_factories_exit (gimp);
 
-  gimp_fonts_exit (gimp);
-
   g_clear_object (&gimp->named_buffers);
   g_clear_object (&gimp->clipboard_buffer);
   g_clear_object (&gimp->clipboard_image);
@@ -507,8 +501,6 @@ gimp_real_initialize (Gimp               *gimp,
 
   status_callback (_("Initialization"), NULL, 0.0);
 
-  gimp_fonts_set_config (gimp);
-
   /*  set the last values used to default values  */
   gimp->image_new_last_template =
     gimp_config_duplicate (GIMP_CONFIG (gimp->config->default_image));
@@ -554,8 +546,6 @@ gimp_real_exit (Gimp     *gimp,
   gimp_modules_unload (gimp);
 
   gimp_data_factories_save (gimp);
-
-  gimp_fonts_reset (gimp);
 
   gimp_templates_save (gimp);
   gimp_parasiterc_save (gimp);
@@ -796,13 +786,6 @@ gimp_restore (Gimp                *gimp,
   /*  initialize the lists of gimp brushes, dynamics, patterns etc.  */
   gimp_data_factories_load (gimp, status_callback);
 
-  /*  initialize the list of fonts  */
-  if (! gimp->no_fonts)
-    {
-      status_callback (NULL, _("Fonts (this may take a while)"), 0.7);
-      gimp_fonts_load (gimp, status_callback, error);
-    }
-
   /*  initialize the template list  */
   status_callback (NULL, _("Templates"), 0.8);
   gimp_templates_load (gimp);
@@ -932,17 +915,10 @@ gimp_set_clipboard_image (Gimp      *gimp,
   g_return_if_fail (GIMP_IS_GIMP (gimp));
   g_return_if_fail (image == NULL || GIMP_IS_IMAGE (image));
 
-  /* ref first, it could be the same as gimp->clipboard_image, but
-   * don't bail if equal because always we want the signal emission
-   */
-  if (image)
-    g_object_ref (image);
-
   g_clear_object (&gimp->clipboard_buffer);
-  g_clear_object (&gimp->clipboard_image);
+  g_set_object (&gimp->clipboard_image, image);
 
-  gimp->clipboard_image = image;
-
+  /* we want the signal emission */
   g_signal_emit (gimp, gimp_signals[CLIPBOARD_CHANGED], 0);
 }
 
@@ -961,15 +937,10 @@ gimp_set_clipboard_buffer (Gimp       *gimp,
   g_return_if_fail (GIMP_IS_GIMP (gimp));
   g_return_if_fail (buffer == NULL || GIMP_IS_BUFFER (buffer));
 
-  /* see above */
-  if (buffer)
-    g_object_ref (buffer);
-
   g_clear_object (&gimp->clipboard_image);
-  g_clear_object (&gimp->clipboard_buffer);
+  g_set_object (&gimp->clipboard_buffer, buffer);
 
-  gimp->clipboard_buffer = buffer;
-
+  /* we want the signal emission */
   g_signal_emit (gimp, gimp_signals[CLIPBOARD_CHANGED], 0);
 }
 
@@ -1022,16 +993,7 @@ gimp_set_default_context (Gimp        *gimp,
   g_return_if_fail (GIMP_IS_GIMP (gimp));
   g_return_if_fail (context == NULL || GIMP_IS_CONTEXT (context));
 
-  if (context != gimp->default_context)
-    {
-      if (gimp->default_context)
-        g_object_unref (gimp->default_context);
-
-      gimp->default_context = context;
-
-      if (gimp->default_context)
-        g_object_ref (gimp->default_context);
-    }
+  g_set_object (&gimp->default_context, context);
 }
 
 GimpContext *
@@ -1049,16 +1011,7 @@ gimp_set_user_context (Gimp        *gimp,
   g_return_if_fail (GIMP_IS_GIMP (gimp));
   g_return_if_fail (context == NULL || GIMP_IS_CONTEXT (context));
 
-  if (context != gimp->user_context)
-    {
-      if (gimp->user_context)
-        g_object_unref (gimp->user_context);
-
-      gimp->user_context = context;
-
-      if (gimp->user_context)
-        g_object_ref (gimp->user_context);
-    }
+  g_set_object (&gimp->user_context, context);
 }
 
 GimpContext *

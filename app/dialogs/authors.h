@@ -91,6 +91,7 @@ static const gchar * const authors[] =
   "Jörn Meier",
   "Mike Melancon",
   "Christopher Montgomery",
+  "Simon Müller",
   "Tobias Mueller",
   "Michael Muré",
   "Lionel N.",

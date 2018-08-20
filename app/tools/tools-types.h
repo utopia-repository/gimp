@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __TOOLS_TYPES_H__
@@ -36,6 +36,7 @@ typedef struct _GimpDrawTool                 GimpDrawTool;
 typedef struct _GimpFilterTool               GimpFilterTool;
 typedef struct _GimpGenericTransformTool     GimpGenericTransformTool;
 typedef struct _GimpPaintTool                GimpPaintTool;
+typedef struct _GimpTransformGridTool        GimpTransformGridTool;
 typedef struct _GimpTransformTool            GimpTransformTool;
 
 typedef struct _GimpColorOptions             GimpColorOptions;

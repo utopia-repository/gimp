@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __APP_GIMP_UTILS_H__
@@ -74,7 +74,9 @@ void         gimp_constrain_line                   (gdouble          start_x,
                                                     gdouble         *end_x,
                                                     gdouble         *end_y,
                                                     gint             n_snap_lines,
-                                                    gdouble          offset_angle);
+                                                    gdouble          offset_angle,
+                                                    gdouble          xres,
+                                                    gdouble          yres);
 
 gint         gimp_file_compare                     (GFile           *file1,
                                                     GFile           *file2);
@@ -82,6 +84,19 @@ gboolean     gimp_file_is_executable               (GFile           *file);
 gchar      * gimp_file_get_extension               (GFile           *file);
 GFile      * gimp_file_with_new_extension          (GFile           *file,
                                                     GFile           *ext_file);
+
+gchar      * gimp_data_input_stream_read_line_always (GDataInputStream  *stream,
+                                                      gsize             *length,
+                                                      GCancellable      *cancellable,
+                                                      GError           **error);
+
+gboolean     gimp_ascii_strtoi                     (const gchar     *nptr,
+                                                    gchar          **endptr,
+                                                    gint             base,
+                                                    gint            *result);
+gboolean     gimp_ascii_strtod                     (const gchar     *nptr,
+                                                    gchar          **endptr,
+                                                    gdouble         *result);
 
 GimpImage  * gimp_create_image_from_buffer         (Gimp            *gimp,
                                                     GeglBuffer      *buffer,

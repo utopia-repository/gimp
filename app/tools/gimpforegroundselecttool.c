@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -33,6 +33,7 @@
 
 #include "tools-types.h"
 
+#include "gegl/gimp-gegl-loops.h"
 #include "gegl/gimp-gegl-mask.h"
 
 #include "core/gimp.h"
@@ -1024,6 +1025,8 @@ gimp_foreground_select_tool_set_trimap (GimpForegroundSelectTool *fg_select)
 
   options = GIMP_FOREGROUND_SELECT_TOOL_GET_OPTIONS (tool);
 
+  gimp_free_select_tool_halt (GIMP_FREE_SELECT_TOOL (fg_select));
+
   gimp_foreground_select_options_get_mask_color (options, &color);
   gimp_display_shell_set_mask (gimp_display_get_shell (tool->display),
                                fg_select->trimap, 0, 0, &color, TRUE);
@@ -1285,9 +1288,10 @@ gimp_foreground_select_undo_new (GeglBuffer          *trimap,
   undo->saved_trimap = gegl_buffer_new (GEGL_RECTANGLE (0, 0, width, height),
                                         gegl_buffer_get_format (trimap));
 
-  gegl_buffer_copy (trimap,             GEGL_RECTANGLE (x1, y1, width, height),
-                    GEGL_ABYSS_NONE,
-                    undo->saved_trimap, GEGL_RECTANGLE (0, 0, width, height));
+  gimp_gegl_buffer_copy (
+    trimap,             GEGL_RECTANGLE (x1, y1, width, height),
+    GEGL_ABYSS_NONE,
+    undo->saved_trimap, GEGL_RECTANGLE (0, 0, width, height));
 
   undo->trimap_x = x1;
   undo->trimap_y = y1;
@@ -1310,19 +1314,19 @@ gimp_foreground_select_undo_pop (StrokeUndo *undo,
   width  = gegl_buffer_get_width  (buffer);
   height = gegl_buffer_get_height (buffer);
 
-  gegl_buffer_copy (trimap,
-                    GEGL_RECTANGLE (undo->trimap_x, undo->trimap_y,
-                                    width, height),
-                    GEGL_ABYSS_NONE,
-                    undo->saved_trimap,
-                    GEGL_RECTANGLE (0, 0, width, height));
+  gimp_gegl_buffer_copy (trimap,
+                         GEGL_RECTANGLE (undo->trimap_x, undo->trimap_y,
+                                         width, height),
+                         GEGL_ABYSS_NONE,
+                         undo->saved_trimap,
+                         GEGL_RECTANGLE (0, 0, width, height));
 
-  gegl_buffer_copy (buffer,
-                    GEGL_RECTANGLE (0, 0, width, height),
-                    GEGL_ABYSS_NONE,
-                    trimap,
-                    GEGL_RECTANGLE (undo->trimap_x, undo->trimap_y,
-                                    width, height));
+  gimp_gegl_buffer_copy (buffer,
+                         GEGL_RECTANGLE (0, 0, width, height),
+                         GEGL_ABYSS_NONE,
+                         trimap,
+                         GEGL_RECTANGLE (undo->trimap_x, undo->trimap_y,
+                                         width, height));
 
   g_object_unref (buffer);
 }

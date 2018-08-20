@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 #   Gimp-Python - allows the writing of Gimp plugins in Python.
 #   Copyright (C) 2006  Manish Singh <yosh@gimp.org>
@@ -14,7 +14,7 @@
 #   GNU General Public License for more details.
 #
 #   You should have received a copy of the GNU General Public License
-#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from gimpfu import *
 

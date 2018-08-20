@@ -23,20 +23,21 @@ open RC, "> $outrc";
 
 require './plugin-defs.pl';
 
-$bins = ""; $opts = "";
+$bins = ""; $opts = ""; $dirs = "";
 
 foreach (sort keys %plugins) {
-    $bins .= "\t";
+    my $makename = $_;
+    $makename =~ s/-/_/g;
+
     if (exists $plugins{$_}->{optional}) {
-        my $makename = $_;
-        $makename =~ s/-/_/g;
-	$bins .= "\$(\U$makename\E)";
+	$bins .= "${makename}_libexec_PROGRAMS = \$(\U$makename\E)\n";
 	$opts .= "\t$_ \\\n";
     }
     else {
-	$bins .= $_;
+	$bins .= "${makename}_libexec_PROGRAMS = $_\n";
     }
-    $bins .= " \\\n";
+
+    $dirs .= "${makename}_libexecdir = \$(gimpplugindir)/plug-ins/$_\n";
 }
 
 $extra = "";
@@ -86,8 +87,6 @@ libgimpwidgets = \$(top_builddir)/libgimpwidgets/libgimpwidgets-\$(GIMP_API_VERS
 
 AM_LDFLAGS = \$(mwindows)
 
-libexecdir = \$(gimpplugindir)/plug-ins
-
 EXTRA_DIST = \\
 	mkgen.pl	\\
 	plugin-defs.pl$extra	\\
@@ -99,7 +98,8 @@ AM_CPPFLAGS = \\
 	\$(GEGL_CFLAGS)	\\
 	-I\$(includedir)
 
-libexec_PROGRAMS = \\
+$dirs
+
 $bins
 
 EXTRA_PROGRAMS = \\
@@ -107,14 +107,14 @@ $opts
 
 install-\%: \%
 	\@\$(NORMAL_INSTALL)
-	\$(mkinstalldirs) \$(DESTDIR)\$(libexecdir)
+	\$(mkinstalldirs) \$(DESTDIR)\$(gimpplugindir)/plug-ins/\$<
 	\@p=\$<; p1=`echo \$\$p|sed 's/\$(EXEEXT)\$\$//'`; \\
 	if test -f \$\$p \\
 	   || test -f \$\$p1 \\
 	; then \\
 	  f=`echo "\$\$p1" | sed 's,^.*/,,;\$(transform);s/\$\$/\$(EXEEXT)/'`; \\
-	  echo " \$(INSTALL_PROGRAM_ENV) \$(LIBTOOL) --mode=install \$(INSTALL_PROGRAM) \$\$p \$(DESTDIR)\$(libexecdir)/\$\$f"; \\
-	  \$(INSTALL_PROGRAM_ENV) \$(LIBTOOL) --mode=install \$(INSTALL_PROGRAM) \$\$p \$(DESTDIR)\$(libexecdir)/\$\$f || exit 1; \\
+	  echo " \$(INSTALL_PROGRAM_ENV) \$(LIBTOOL) --mode=install \$(INSTALL_PROGRAM) \$\$p \$(DESTDIR)\$(gimpplugindir)/plug-ins/\$\$p/\$\$f"; \\
+	  \$(INSTALL_PROGRAM_ENV) \$(LIBTOOL) --mode=install \$(INSTALL_PROGRAM) \$\$p \$(DESTDIR)\$(gimpplugindir)/plug-ins/\$\$p/\$\$f || exit 1; \\
 	else :; fi
 EOT
 

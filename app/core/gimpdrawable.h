@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_DRAWABLE_H__
@@ -187,7 +187,8 @@ void            gimp_drawable_set_buffer_full    (GimpDrawable       *drawable,
                                                   const gchar        *undo_desc,
                                                   GeglBuffer         *buffer,
                                                   gint                offset_x,
-                                                  gint                offset_y);
+                                                  gint                offset_y,
+                                                  gboolean            update);
 
 void            gimp_drawable_steal_buffer       (GimpDrawable       *drawable,
                                                   GimpDrawable       *src_drawable);

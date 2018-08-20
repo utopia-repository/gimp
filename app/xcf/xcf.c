@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -374,7 +374,7 @@ xcf_save_stream (Gimp           *gimp,
   info.file_version = gimp_image_get_xcf_version (image,
                                                   info.compression ==
                                                   COMPRESS_ZLIB,
-                                                  NULL, NULL);
+                                                  NULL, NULL, NULL);
 
   if (info.file_version >= 11)
     info.bytes_per_offset = 8;

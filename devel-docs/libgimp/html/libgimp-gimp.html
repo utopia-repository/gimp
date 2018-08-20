@@ -332,6 +332,13 @@
 <td class="function_type">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 </td>
 <td class="function_name">
+<a class="link" href="libgimp-gimp.html#gimp-icon-theme-dir" title="gimp_icon_theme_dir ()">gimp_icon_theme_dir</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
 <a class="link" href="libgimp-gimp.html#gimp-get-progname" title="gimp_get_progname ()">gimp_get_progname</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -1139,12 +1146,16 @@ tile data between the GIMP core and the plug-in.</p>
 <a name="gimp-gamma"></a><h3>gimp_gamma ()</h3>
 <pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>
 gimp_gamma (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<div class="warning"><p><code class="literal">gimp_gamma</code> is deprecated and should not be used in newly-written code.</p></div>
 <p>Returns the global gamma value GIMP and all its plug-ins should
 use.</p>
-<p>This is a constant value given at plug-in configuration time.</p>
+<p>This is a constant value.</p>
 <p>NOTE: This function will always return 2.2, the gamma value for
-sRGB. There's currently no way to change this and all operations
-should assume that pixel data is in the sRGB colorspace.</p>
+sRGB. If you need the actual gamma value of a drawable, look at its
+format.</p>
+<p>See also: <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-get-format" title="gimp_drawable_get_format ()"><code class="function">gimp_drawable_get_format()</code></a>.</p>
+<p><em class="parameter"><code>Deprecated</code></em>
+: 2.8.4</p>
 <div class="refsect3">
 <a name="gimp-gamma.returns"></a><h4>Returns</h4>
 <p> the gamma value</p>
@@ -1342,6 +1353,12 @@ do not have to care about it.</p>
 <p> timestamp for plug-in window</p>
 </div>
 <p class="since">Since: <a class="link" href="api-index-2-6.html#api-index-2.6">2.6</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-icon-theme-dir"></a><h3>gimp_icon_theme_dir ()</h3>
+<pre class="programlisting">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+gimp_icon_theme_dir (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">

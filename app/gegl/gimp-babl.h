@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_BABL_H__
@@ -37,6 +37,9 @@ GimpComponentType   gimp_babl_component_type   (GimpPrecision      precision);
 gboolean            gimp_babl_linear           (GimpPrecision      precision);
 GimpPrecision       gimp_babl_precision        (GimpComponentType  component,
                                                 gboolean           linear);
+
+gboolean            gimp_babl_is_valid         (GimpImageBaseType  base_type,
+                                                GimpPrecision      precision);
 
 const Babl        * gimp_babl_format           (GimpImageBaseType  base_type,
                                                 GimpPrecision      precision,

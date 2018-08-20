@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -70,11 +70,7 @@ gimp_applicator_finalize (GObject *object)
 {
   GimpApplicator *applicator = GIMP_APPLICATOR (object);
 
-  if (applicator->node)
-    {
-      g_object_unref (applicator->node);
-      applicator->node = NULL;
-    }
+  g_clear_object (&applicator->node);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }

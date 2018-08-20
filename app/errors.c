@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -454,6 +454,12 @@ gimp_eek (const gchar *reason,
    */
   if (backup_path)
     {
+      /* increase the busy counter, so XCF saving calling
+       * gimp_set_busy() and gimp_unset_busy() won't call the GUI
+       * layer and do whatever windowing system calls to set cursors.
+       */
+      the_errors_gimp->busy++;
+
       /* The index of 'XXX' in backup_path string. */
       num_idx = strlen (backup_path) - 7;
 

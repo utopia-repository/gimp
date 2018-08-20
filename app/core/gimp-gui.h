@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_GUI_H__
@@ -40,6 +40,10 @@ struct _GimpGui
                                              GimpProgress        *progress,
                                              const gchar         *help_domain,
                                              const gchar         *help_id);
+
+  gboolean       (* wait)                   (Gimp                *gimp,
+                                             GimpWaitable        *waitable,
+                                             const gchar         *message);
 
   const gchar  * (* get_program_class)      (Gimp                *gimp);
   gchar        * (* get_display_name)       (Gimp                *gimp,
@@ -149,6 +153,11 @@ void           gimp_help                   (Gimp                *gimp,
                                             GimpProgress        *progress,
                                             const gchar         *help_domain,
                                             const gchar         *help_id);
+
+void           gimp_wait                   (Gimp                *gimp,
+                                            GimpWaitable        *waitable,
+                                            const gchar         *format,
+                                            ...) G_GNUC_PRINTF (3, 4);
 
 GimpProgress * gimp_new_progress           (Gimp                *gimp,
                                             GimpObject          *display);

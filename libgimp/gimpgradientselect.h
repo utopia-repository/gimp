@@ -15,14 +15,14 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see
- * <http://www.gnu.org/licenses/>.
+ * <https://www.gnu.org/licenses/>.
  */
 
 #if !defined (__GIMP_H_INSIDE__) && !defined (GIMP_COMPILATION)
 #error "Only <libgimp/gimp.h> can be included directly."
 #endif
 
-#ifndef __GIMP_GRAIDENT_SELECT_H__
+#ifndef __GIMP_GRADIENT_SELECT_H__
 #define __GIMP_GRADIENT_SELECT_H__
 
 G_BEGIN_DECLS

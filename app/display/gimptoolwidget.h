@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_TOOL_WIDGET_H__
@@ -69,6 +69,7 @@ struct _GimpToolWidgetClass
                                 const gchar           *separator,
                                 gdouble                y,
                                 const gchar           *help);
+  void     (* focus_changed)   (GimpToolWidget        *widget);
 
   /*  virtual functions  */
   gint     (* button_press)    (GimpToolWidget        *widget,
@@ -86,10 +87,15 @@ struct _GimpToolWidgetClass
                                 guint32                time,
                                 GdkModifierType        state);
 
+  GimpHit  (* hit)             (GimpToolWidget        *widget,
+                                const GimpCoords      *coords,
+                                GdkModifierType        state,
+                                gboolean               proximity);
   void     (* hover)           (GimpToolWidget        *widget,
                                 const GimpCoords      *coords,
                                 GdkModifierType        state,
                                 gboolean               proximity);
+  void     (* leave_notify)    (GimpToolWidget        *widget);
 
   gboolean (* key_press)       (GimpToolWidget        *widget,
                                 GdkEventKey           *kevent);
@@ -119,8 +125,14 @@ GType              gimp_tool_widget_get_type          (void) G_GNUC_CONST;
 GimpDisplayShell * gimp_tool_widget_get_shell         (GimpToolWidget  *widget);
 GimpCanvasItem   * gimp_tool_widget_get_item          (GimpToolWidget  *widget);
 
+void               gimp_tool_widget_set_focus         (GimpToolWidget  *widget,
+                                                       gboolean         focus);
+gboolean           gimp_tool_widget_get_focus         (GimpToolWidget  *widget);
+
 /*  for subclasses, to notify the handling tool
  */
+void               gimp_tool_widget_changed           (GimpToolWidget  *widget);
+
 void               gimp_tool_widget_response          (GimpToolWidget  *widget,
                                                        gint             response_id);
 
@@ -246,10 +258,15 @@ void       gimp_tool_widget_motion          (GimpToolWidget        *widget,
                                              guint32                time,
                                              GdkModifierType        state);
 
+GimpHit    gimp_tool_widget_hit             (GimpToolWidget        *widget,
+                                             const GimpCoords      *coords,
+                                             GdkModifierType        state,
+                                             gboolean               proximity);
 void       gimp_tool_widget_hover           (GimpToolWidget        *widget,
                                              const GimpCoords      *coords,
                                              GdkModifierType        state,
                                              gboolean               proximity);
+void       gimp_tool_widget_leave_notify    (GimpToolWidget        *widget);
 
 gboolean   gimp_tool_widget_key_press       (GimpToolWidget        *widget,
                                              GdkEventKey           *kevent);

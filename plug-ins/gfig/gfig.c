@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -787,7 +787,7 @@ gfig_save_callbk (void)
 
   savename = gfig_context->current_obj->filename;
 
-  fp = g_fopen (savename, "wb+");
+  fp = g_fopen (savename, "w+b");
 
   if (!fp)
     {

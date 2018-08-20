@@ -12,14 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_ROTATE_TOOL_H__
 #define __GIMP_ROTATE_TOOL_H__
 
 
-#include "gimptransformtool.h"
+#include "gimptransformgridtool.h"
 
 
 #define GIMP_TYPE_ROTATE_TOOL            (gimp_rotate_tool_get_type ())
@@ -35,16 +35,16 @@ typedef struct _GimpRotateToolClass GimpRotateToolClass;
 
 struct _GimpRotateTool
 {
-  GimpTransformTool  parent_instance;
+  GimpTransformGridTool  parent_instance;
 
-  GtkAdjustment     *angle_adj;
-  GtkWidget         *angle_spin_button;
-  GtkWidget         *sizeentry;
+  GtkAdjustment         *angle_adj;
+  GtkWidget             *angle_spin_button;
+  GtkWidget             *sizeentry;
 };
 
 struct _GimpRotateToolClass
 {
-  GimpTransformToolClass  parent_class;
+  GimpTransformGridToolClass  parent_class;
 };
 
 

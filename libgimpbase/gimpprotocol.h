@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see
- * <http://www.gnu.org/licenses/>.
+ * <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_PROTOCOL_H__
@@ -26,7 +26,7 @@ G_BEGIN_DECLS
 
 /* Increment every time the protocol changes
  */
-#define GIMP_PROTOCOL_VERSION  0x0016
+#define GIMP_PROTOCOL_VERSION  0x0018
 
 
 enum
@@ -73,7 +73,7 @@ struct _GPConfig
   gint8    export_exif;
   gint8    export_xmp;
   gint8    export_iptc;
-  gint8    install_cmap;
+  gint8    export_profile;
   gint8    show_tooltips;
   gint32   min_colors;
   gint32   gdisp_ID;
@@ -82,6 +82,9 @@ struct _GPConfig
   gchar   *display_name;
   gint32   monitor_number;
   guint32  timestamp;
+
+  /* since protocol version 0x0017: */
+  gchar   *icon_theme_dir;
 };
 
 struct _GPTileReq

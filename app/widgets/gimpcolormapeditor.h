@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_COLORMAP_EDITOR_H__
@@ -54,17 +54,19 @@ struct _GimpColormapEditorClass
 };
 
 
-GType       gimp_colormap_editor_get_type  (void) G_GNUC_CONST;
+GType       gimp_colormap_editor_get_type   (void) G_GNUC_CONST;
 
-GtkWidget * gimp_colormap_editor_new       (GimpMenuFactory    *menu_factory);
+GtkWidget * gimp_colormap_editor_new        (GimpMenuFactory    *menu_factory);
 
-gint        gimp_colormap_editor_get_index (GimpColormapEditor *editor,
-                                            const GimpRGB      *search);
-gboolean    gimp_colormap_editor_set_index (GimpColormapEditor *editor,
-                                            gint                index,
-                                            GimpRGB            *color);
+void        gimp_colormap_editor_edit_color (GimpColormapEditor *editor);
 
-gint        gimp_colormap_editor_max_index (GimpColormapEditor *editor);
+gint        gimp_colormap_editor_get_index  (GimpColormapEditor *editor,
+                                             const GimpRGB      *search);
+gboolean    gimp_colormap_editor_set_index  (GimpColormapEditor *editor,
+                                             gint                index,
+                                             GimpRGB            *color);
+
+gint        gimp_colormap_editor_max_index  (GimpColormapEditor *editor);
 
 
 #endif /* __GIMP_COLORMAP_EDITOR_H__ */

@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __TEXT_TYPES_H__
@@ -26,12 +26,13 @@
 #include "text/text-enums.h"
 
 
-typedef struct _GimpFont       GimpFont;
-typedef struct _GimpFontList   GimpFontList;
-typedef struct _GimpText       GimpText;
-typedef struct _GimpTextLayer  GimpTextLayer;
-typedef struct _GimpTextLayout GimpTextLayout;
-typedef struct _GimpTextUndo   GimpTextUndo;
+typedef struct _GimpFont        GimpFont;
+typedef struct _GimpFontFactory GimpFontFactory;
+typedef struct _GimpFontList    GimpFontList;
+typedef struct _GimpText        GimpText;
+typedef struct _GimpTextLayer   GimpTextLayer;
+typedef struct _GimpTextLayout  GimpTextLayout;
+typedef struct _GimpTextUndo    GimpTextUndo;
 
 
 #endif /* __TEXT_TYPES_H__ */

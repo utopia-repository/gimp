@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -78,23 +78,6 @@ gimp_display_shell_draw_selection_in (GimpDisplayShell   *shell,
                                       shell->offset_x, shell->offset_y);
 
   cairo_mask (cr, mask);
-}
-
-void
-gimp_display_shell_draw_background (GimpDisplayShell *shell,
-                                    cairo_t          *cr)
-{
-  GdkWindow       *window;
-  cairo_pattern_t *bg_pattern;
-
-  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-  g_return_if_fail (cr != NULL);
-
-  window     = gtk_widget_get_window (shell->canvas);
-  bg_pattern = gdk_window_get_background_pattern (window);
-
-  cairo_set_source (cr, bg_pattern);
-  cairo_paint (cr);
 }
 
 void

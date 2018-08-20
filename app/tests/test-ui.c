@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include <stdlib.h>
@@ -933,7 +933,7 @@ int main(int argc, char **argv)
 
   gimp_test_utils_set_gimp2_directory ("GIMP_TESTING_ABS_TOP_SRCDIR",
                                        "app/tests/gimpdir");
-  gimp_test_utils_setup_menus_dir ();
+  gimp_test_utils_setup_menus_path ();
 
   /* Start up GIMP */
   gimp = gimp_init_for_gui_testing (TRUE /*show_gui*/);

@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -813,10 +813,8 @@ gimp_data_set_file (GimpData *data,
   if (private->internal)
     return;
 
-  if (private->file)
-    g_object_unref (private->file);
+  g_set_object (&private->file, file);
 
-  private->file      = g_object_ref (file);
   private->writable  = FALSE;
   private->deletable = FALSE;
 
@@ -1219,10 +1217,12 @@ gimp_data_make_internal (GimpData    *data,
 
   g_clear_object (&private->file);
 
+  g_free (private->identifier);
   private->identifier = g_strdup (identifier);
-  private->writable   = FALSE;
-  private->deletable  = FALSE;
-  private->internal   = TRUE;
+
+  private->writable  = FALSE;
+  private->deletable = FALSE;
+  private->internal  = TRUE;
 }
 
 gboolean

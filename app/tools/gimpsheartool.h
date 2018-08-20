@@ -12,14 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_SHEAR_TOOL_H__
 #define __GIMP_SHEAR_TOOL_H__
 
 
-#include "gimptransformtool.h"
+#include "gimptransformgridtool.h"
 
 
 #define GIMP_TYPE_SHEAR_TOOL            (gimp_shear_tool_get_type ())
@@ -35,15 +35,15 @@ typedef struct _GimpShearToolClass GimpShearToolClass;
 
 struct _GimpShearTool
 {
-  GimpTransformTool  parent_instance;
+  GimpTransformGridTool  parent_instance;
 
-  GtkAdjustment     *x_adj;
-  GtkAdjustment     *y_adj;
+  GtkAdjustment         *x_adj;
+  GtkAdjustment         *y_adj;
 };
 
 struct _GimpShearToolClass
 {
-  GimpTransformToolClass  parent_class;
+  GimpTransformGridToolClass  parent_class;
 };
 
 

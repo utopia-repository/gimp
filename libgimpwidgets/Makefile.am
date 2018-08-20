@@ -76,6 +76,8 @@ lib_LTLIBRARIES = libgimpwidgets-@GIMP_API_VERSION@.la
 libgimpwidgets_sources = \
 	gimpbrowser.c			\
 	gimpbrowser.h			\
+	gimpbusybox.c			\
+	gimpbusybox.h			\
 	gimpbutton.c			\
 	gimpbutton.h			\
 	gimpcairo-utils.c		\
@@ -213,6 +215,7 @@ libgimpwidgets_@GIMP_API_VERSION@_la_SOURCES = \
 
 libgimpwidgetsinclude_HEADERS = \
 	gimpbrowser.h			\
+	gimpbusybox.h			\
 	gimpbutton.h			\
 	gimpcairo-utils.h		\
 	gimpcellrenderercolor.h		\
@@ -293,6 +296,8 @@ libgimpwidgets_@GIMP_API_VERSION@_la_LIBADD = \
 	$(libm)			\
 	$(libgdi32)
 
+BUILT_SOURCES = \
+	$(libgimpwidgets_built_sources)
 
 EXTRA_DIST = \
 	gimpwidgets.def			\

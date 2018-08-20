@@ -306,7 +306,7 @@ gimp_scanner_parse_token (<em class="parameter"><code><a href="../glib/glib-Lexi
 </tr>
 <tr>
 <td class="parameter_name"><p>token</p></td>
-<td class="parameter_description"><p>Return location for the parsed token</p></td>
+<td class="parameter_description"><p>the <a href="../glib/glib-Lexical-Scanner.html#GTokenType"><span class="type">GTokenType</span></a> expected as next token.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -314,7 +314,8 @@ gimp_scanner_parse_token (<em class="parameter"><code><a href="../glib/glib-Lexi
 </div>
 <div class="refsect3">
 <a name="gimp-scanner-parse-token.returns"></a><h4>Returns</h4>
-<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the next token is <em class="parameter"><code>token</code></em>
+, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
 </div>
 <p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
@@ -341,7 +342,7 @@ gimp_scanner_parse_identifier (<em class="parameter"><code><a href="../glib/glib
 </tr>
 <tr>
 <td class="parameter_name"><p>identifier</p></td>
-<td class="parameter_description"><p>Return location for the parsed identifier</p></td>
+<td class="parameter_description"><p>the expected identifier.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -349,7 +350,9 @@ gimp_scanner_parse_identifier (<em class="parameter"><code><a href="../glib/glib
 </div>
 <div class="refsect3">
 <a name="gimp-scanner-parse-identifier.returns"></a><h4>Returns</h4>
-<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the next token is an identifier and if its
+value matches <em class="parameter"><code>identifier</code></em>
+.</p>
 </div>
 <p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>

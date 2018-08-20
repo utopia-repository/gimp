@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -130,16 +130,7 @@ gimp_paint_info_set_standard (Gimp          *gimp,
   g_return_if_fail (GIMP_IS_GIMP (gimp));
   g_return_if_fail (! paint_info || GIMP_IS_PAINT_INFO (paint_info));
 
-  if (paint_info != gimp->standard_paint_info)
-    {
-      if (gimp->standard_paint_info)
-        g_object_unref (gimp->standard_paint_info);
-
-      gimp->standard_paint_info = paint_info;
-
-      if (gimp->standard_paint_info)
-        g_object_ref (gimp->standard_paint_info);
-    }
+  g_set_object (&gimp->standard_paint_info, paint_info);
 }
 
 GimpPaintInfo *

@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_CONTAINER_EDITOR_H__
@@ -60,6 +60,10 @@ GType            gimp_container_editor_get_type           (void) G_GNUC_CONST;
 GtkSelectionMode gimp_container_editor_get_selection_mode (GimpContainerEditor *editor);
 void             gimp_container_editor_set_selection_mode (GimpContainerEditor *editor,
                                                            GtkSelectionMode     mode);
+
+void             gimp_container_editor_bind_to_async_set  (GimpContainerEditor *editor,
+                                                           GimpAsyncSet        *async_set,
+                                                           const gchar         *message);
 
 
 #endif  /*  __GIMP_CONTAINER_EDITOR_H__  */

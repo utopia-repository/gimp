@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see
- * <http://www.gnu.org/licenses/>.
+ * <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_WIDGETS_H__
@@ -27,6 +27,7 @@
 #include <libgimpwidgets/gimpwidgetstypes.h>
 
 #include <libgimpwidgets/gimpbrowser.h>
+#include <libgimpwidgets/gimpbusybox.h>
 #include <libgimpwidgets/gimpbutton.h>
 #include <libgimpwidgets/gimpcairo-utils.h>
 #include <libgimpwidgets/gimpcellrenderercolor.h>

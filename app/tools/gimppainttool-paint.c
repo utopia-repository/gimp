@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -158,12 +158,16 @@ gimp_paint_tool_paint_thread (gpointer data)
 static gboolean
 gimp_paint_tool_paint_timeout (GimpPaintTool *paint_tool)
 {
-  GimpDrawable *drawable = paint_tool->drawable;
-  gboolean      update;
+  GimpPaintCore *core     = paint_tool->core;
+  GimpDrawable  *drawable = paint_tool->drawable;
+  gboolean       update;
 
   paint_timeout_pending = TRUE;
 
   g_mutex_lock (&paint_mutex);
+
+  paint_tool->paint_x = core->cur_coords.x;
+  paint_tool->paint_y = core->cur_coords.y;
 
   update = gimp_drawable_flush_paint (drawable);
 
@@ -248,6 +252,9 @@ gimp_paint_tool_paint_start (GimpPaintTool     *paint_tool,
   curr_coords.x -= off_x;
   curr_coords.y -= off_y;
 
+  paint_tool->paint_x = curr_coords.x;
+  paint_tool->paint_y = curr_coords.y;
+
   /*  If we use a separate paint thread, enter paint mode before starting the
    *  paint core
    */
@@ -282,13 +289,18 @@ gimp_paint_tool_paint_start (GimpPaintTool     *paint_tool,
     }
   else if (paint_tool->draw_line)
     {
+      gdouble offset_angle;
+      gdouble xres, yres;
+
+      gimp_display_shell_get_constrained_line_params (shell,
+                                                      &offset_angle,
+                                                      &xres, &yres);
+
       /*  If shift is down and this is not the first paint
        *  stroke, then draw a line from the last coords to the pointer
        */
-      gimp_paint_core_round_line (
-        core, paint_options,
-        constrain,
-        gimp_display_shell_get_constrained_line_offset_angle (shell));
+      gimp_paint_core_round_line (core, paint_options,
+                                  constrain, offset_angle, xres, yres);
     }
 
   /*  Notify subclasses  */

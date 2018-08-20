@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -486,9 +486,9 @@ gimp_image_class_init (GimpImageClass *klass)
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpImageClass, sample_point_added),
                   NULL, NULL,
-                  gimp_marshal_VOID__POINTER,
+                  gimp_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
-                  G_TYPE_POINTER);
+                  GIMP_TYPE_SAMPLE_POINT);
 
   gimp_image_signals[SAMPLE_POINT_REMOVED] =
     g_signal_new ("sample-point-removed",
@@ -496,9 +496,9 @@ gimp_image_class_init (GimpImageClass *klass)
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpImageClass, sample_point_removed),
                   NULL, NULL,
-                  gimp_marshal_VOID__POINTER,
+                  gimp_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
-                  G_TYPE_POINTER);
+                  GIMP_TYPE_SAMPLE_POINT);
 
   gimp_image_signals[SAMPLE_POINT_MOVED] =
     g_signal_new ("sample-point-moved",
@@ -506,9 +506,9 @@ gimp_image_class_init (GimpImageClass *klass)
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpImageClass, sample_point_moved),
                   NULL, NULL,
-                  gimp_marshal_VOID__POINTER,
+                  gimp_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
-                  G_TYPE_POINTER);
+                  GIMP_TYPE_SAMPLE_POINT);
 
   gimp_image_signals[PARASITE_ATTACHED] =
     g_signal_new ("parasite-attached",
@@ -856,6 +856,9 @@ gimp_image_constructed (GObject *object)
   g_signal_connect_object (config, "notify::layer-previews",
                            G_CALLBACK (gimp_viewable_size_changed),
                            image, G_CONNECT_SWAPPED);
+  g_signal_connect_object (config, "notify::group-layer-previews",
+                           G_CALLBACK (gimp_viewable_size_changed),
+                           image, G_CONNECT_SWAPPED);
 
   gimp_container_add (image->gimp->images, GIMP_OBJECT (image));
 }
@@ -1081,7 +1084,7 @@ gimp_image_finalize (GObject *object)
   if (private->sample_points)
     {
       g_list_free_full (private->sample_points,
-                        (GDestroyNotify) gimp_sample_point_unref);
+                        (GDestroyNotify) g_object_unref);
       private->sample_points = NULL;
     }
 
@@ -1700,8 +1703,7 @@ gimp_image_new (Gimp              *gimp,
                 GimpPrecision      precision)
 {
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
-  g_return_val_if_fail (base_type != GIMP_INDEXED ||
-                        precision == GIMP_PRECISION_U8_GAMMA, NULL);
+  g_return_val_if_fail (gimp_babl_is_valid (base_type, precision), NULL);
 
   return g_object_new (GIMP_TYPE_IMAGE,
                        "gimp",      gimp,
@@ -2118,16 +2120,8 @@ gimp_image_set_imported_file (GimpImage *image,
 
   private = GIMP_IMAGE_GET_PRIVATE (image);
 
-  if (private->imported_file != file)
+  if (g_set_object (&private->imported_file, file))
     {
-      if (private->imported_file)
-        g_object_unref (private->imported_file);
-
-      private->imported_file = file;
-
-      if (private->imported_file)
-        g_object_ref (private->imported_file);
-
       gimp_object_name_changed (GIMP_OBJECT (image));
     }
 }
@@ -2151,16 +2145,8 @@ gimp_image_set_exported_file (GimpImage *image,
 
   private = GIMP_IMAGE_GET_PRIVATE (image);
 
-  if (private->exported_file != file)
+  if (g_set_object (&private->exported_file, file))
     {
-      if (private->exported_file)
-        g_object_unref (private->exported_file);
-
-      private->exported_file = file;
-
-      if (private->exported_file)
-        g_object_ref (private->exported_file);
-
       gimp_object_name_changed (GIMP_OBJECT (image));
     }
 }
@@ -2184,16 +2170,7 @@ gimp_image_set_save_a_copy_file (GimpImage *image,
 
   private = GIMP_IMAGE_GET_PRIVATE (image);
 
-  if (private->save_a_copy_file != file)
-    {
-      if (private->save_a_copy_file)
-        g_object_unref (private->save_a_copy_file);
-
-      private->save_a_copy_file = file;
-
-      if (private->save_a_copy_file)
-        g_object_ref (private->save_a_copy_file);
-    }
+  g_set_object (&private->save_a_copy_file, file);
 }
 
 static gchar *
@@ -2365,11 +2342,22 @@ gint
 gimp_image_get_xcf_version (GimpImage    *image,
                             gboolean      zlib_compression,
                             gint         *gimp_version,
-                            const gchar **version_string)
+                            const gchar **version_string,
+                            gchar       **version_reason)
 {
-  GList *layers;
-  GList *list;
-  gint   version = 0;  /* default to oldest */
+  GList       *layers;
+  GList       *list;
+  GList       *reasons = NULL;
+  gint         version = 0;  /* default to oldest */
+  const gchar *enum_desc;
+
+#define ADD_REASON(_reason)                                       \
+  if (version_reason) {                                           \
+    gchar *tmp = _reason;                                         \
+    if (g_list_find_custom (reasons, tmp, (GCompareFunc) strcmp)) \
+      g_free (tmp);                                               \
+    else                                                          \
+      reasons = g_list_prepend (reasons, tmp); }
 
   /* need version 1 for colormaps */
   if (gimp_image_get_colormap (image))
@@ -2405,11 +2393,16 @@ gimp_image_get_xcf_version (GimpImage    *image,
         case GIMP_LAYER_MODE_HARDLIGHT_LEGACY:
           break;
 
-          /*  Since 2.8  */
+          /*  Since 2.6  */
         case GIMP_LAYER_MODE_SOFTLIGHT_LEGACY:
         case GIMP_LAYER_MODE_GRAIN_EXTRACT_LEGACY:
         case GIMP_LAYER_MODE_GRAIN_MERGE_LEGACY:
         case GIMP_LAYER_MODE_COLOR_ERASE_LEGACY:
+          gimp_enum_get_value (GIMP_TYPE_LAYER_MODE,
+                               gimp_layer_get_mode (layer),
+                               NULL, NULL, &enum_desc, NULL);
+          ADD_REASON (g_strdup_printf (_("Layer mode '%s' was added in %s"),
+                                       enum_desc, "GIMP 2.6"));
           version = MAX (2, version);
           break;
 
@@ -2419,6 +2412,11 @@ gimp_image_get_xcf_version (GimpImage    *image,
         case GIMP_LAYER_MODE_LCH_CHROMA:
         case GIMP_LAYER_MODE_LCH_COLOR:
         case GIMP_LAYER_MODE_LCH_LIGHTNESS:
+          gimp_enum_get_value (GIMP_TYPE_LAYER_MODE,
+                               gimp_layer_get_mode (layer),
+                               NULL, NULL, &enum_desc, NULL);
+          ADD_REASON (g_strdup_printf (_("Layer mode '%s' was added in %s"),
+                                       enum_desc, "GIMP 2.10"));
           version = MAX (9, version);
           break;
 
@@ -2457,6 +2455,11 @@ gimp_image_get_xcf_version (GimpImage    *image,
         case GIMP_LAYER_MODE_MERGE:
         case GIMP_LAYER_MODE_SPLIT:
         case GIMP_LAYER_MODE_PASS_THROUGH:
+          gimp_enum_get_value (GIMP_TYPE_LAYER_MODE,
+                               gimp_layer_get_mode (layer),
+                               NULL, NULL, &enum_desc, NULL);
+          ADD_REASON (g_strdup_printf (_("Layer mode '%s' was added in %s"),
+                                       enum_desc, "GIMP 2.10"));
           version = MAX (10, version);
           break;
 
@@ -2470,11 +2473,17 @@ gimp_image_get_xcf_version (GimpImage    *image,
       /* need version 3 for layer trees */
       if (gimp_viewable_get_children (GIMP_VIEWABLE (layer)))
         {
+          ADD_REASON (g_strdup_printf (_("Layer groups were added in %s"),
+                                       "GIMP 2.8"));
           version = MAX (3, version);
 
           /* need version 13 for group layers with masks */
           if (gimp_layer_get_mask (layer))
-            version = MAX (13, version);
+            {
+              ADD_REASON (g_strdup_printf (_("Masks on layer groups were "
+                                             "added in %s"), "GIMP 2.10"));
+              version = MAX (13, version);
+            }
         }
     }
 
@@ -2486,7 +2495,11 @@ gimp_image_get_xcf_version (GimpImage    *image,
 
   /* need version 7 for != 8-bit gamma images */
   if (gimp_image_get_precision (image) != GIMP_PRECISION_U8_GAMMA)
-    version = MAX (7, version);
+    {
+      ADD_REASON (g_strdup_printf (_("High bit-depth images were added "
+                                     "in %s"), "GIMP 2.10"));
+      version = MAX (7, version);
+    }
 
   /* need version 12 for > 8-bit images for proper endian swapping */
   if (gimp_image_get_precision (image) > GIMP_PRECISION_U8_GAMMA)
@@ -2507,7 +2520,13 @@ gimp_image_get_xcf_version (GimpImage    *image,
    * conservative estimate and should never fail
    */
   if (gimp_object_get_memsize (GIMP_OBJECT (image), NULL) >= ((gint64) 1 << 32))
-    version = MAX (11, version);
+    {
+      ADD_REASON (g_strdup_printf (_("Support for image files larger than "
+                                     "4GB was added in %s"), "GIMP 2.10"));
+      version = MAX (11, version);
+    }
+
+#undef ADD_REASON
 
   switch (version)
     {
@@ -2537,6 +2556,24 @@ gimp_image_get_xcf_version (GimpImage    *image,
       if (version_string) *version_string = "GIMP 2.10";
       break;
     }
+
+  if (version_reason && reasons)
+    {
+      GString *reason = g_string_new (NULL);
+
+      reasons = g_list_sort (reasons, (GCompareFunc) strcmp);
+
+      for (list = reasons; list; list = g_list_next (list))
+        {
+          g_string_append (reason, list->data);
+          if (g_list_next (list))
+            g_string_append_c (reason, '\n');
+        }
+
+      *version_reason = g_string_free (reason, FALSE);
+    }
+  if (reasons)
+    g_list_free_full (reasons, g_free);
 
   return version;
 }
@@ -3109,7 +3146,7 @@ gimp_image_sample_point_added (GimpImage       *image,
                                GimpSamplePoint *sample_point)
 {
   g_return_if_fail (GIMP_IS_IMAGE (image));
-  g_return_if_fail (sample_point != NULL);
+  g_return_if_fail (GIMP_IS_SAMPLE_POINT (sample_point));
 
   g_signal_emit (image, gimp_image_signals[SAMPLE_POINT_ADDED], 0,
                  sample_point);
@@ -3120,7 +3157,7 @@ gimp_image_sample_point_removed (GimpImage       *image,
                                  GimpSamplePoint *sample_point)
 {
   g_return_if_fail (GIMP_IS_IMAGE (image));
-  g_return_if_fail (sample_point != NULL);
+  g_return_if_fail (GIMP_IS_SAMPLE_POINT (sample_point));
 
   g_signal_emit (image, gimp_image_signals[SAMPLE_POINT_REMOVED], 0,
                  sample_point);
@@ -3131,7 +3168,7 @@ gimp_image_sample_point_moved (GimpImage       *image,
                                GimpSamplePoint *sample_point)
 {
   g_return_if_fail (GIMP_IS_IMAGE (image));
-  g_return_if_fail (sample_point != NULL);
+  g_return_if_fail (GIMP_IS_SAMPLE_POINT (sample_point));
 
   g_signal_emit (image, gimp_image_signals[SAMPLE_POINT_MOVED], 0,
                  sample_point);
@@ -3504,12 +3541,15 @@ gimp_image_parasite_validate (GimpImage           *image,
     {
       const gchar *data   = gimp_parasite_data (parasite);
       gssize       length = gimp_parasite_data_size (parasite);
-      gboolean     valid;
+      gboolean     valid  = FALSE;
 
-      if (data[length - 1] == '\0')
-        valid = g_utf8_validate (data, -1, NULL);
-      else
-        valid = g_utf8_validate (data, length, NULL);
+      if (length > 0)
+        {
+          if (data[length - 1] == '\0')
+            valid = g_utf8_validate (data, -1, NULL);
+          else
+            valid = g_utf8_validate (data, length, NULL);
+        }
 
       if (! valid)
         {

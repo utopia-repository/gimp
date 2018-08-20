@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -235,8 +235,14 @@ gimp_display_shell_canvas_size_allocate (GtkWidget        *widget,
       gimp_display_shell_scroll_clamp_and_update (shell);
       gimp_display_shell_scaled (shell);
 
-      /* Reset */
       shell->size_allocate_from_configure_event = FALSE;
+    }
+
+  if (shell->size_allocate_center_image)
+    {
+      gimp_display_shell_scroll_center_image (shell, TRUE, TRUE);
+
+      shell->size_allocate_center_image = FALSE;
     }
 }
 
@@ -247,6 +253,12 @@ gimp_display_shell_canvas_expose (GtkWidget        *widget,
 {
   /*  are we in destruction?  */
   if (! shell->display || ! gimp_display_get_shell (shell->display))
+    return TRUE;
+
+  /*  we will scroll around in the next tick anyway, so we just can as
+   *  well skip the drawing of this frame and wait for the next
+   */
+  if (shell->size_allocate_center_image)
     return TRUE;
 
   /*  ignore events on overlays  */
@@ -452,31 +464,11 @@ gimp_display_shell_canvas_draw_image (GimpDisplayShell *shell,
                                            &image_rect.height);
 
 
-  /*  first, clear the exposed part of the region that is outside the
-   *  image, which is the exposed region minus the image rectangle
+  /*  the background has already been cleared by GdkWindow
    */
 
-  cairo_save (cr);
 
-  if (shell->rotate_transform)
-    cairo_transform (cr, shell->rotate_transform);
-
-  cairo_rectangle (cr,
-                   image_rect.x,
-                   image_rect.y,
-                   image_rect.width,
-                   image_rect.height);
-
-  cairo_set_fill_rule (cr, CAIRO_FILL_RULE_EVEN_ODD);
-  cairo_clip (cr);
-
-  if (gdk_cairo_get_clip_rectangle (cr, NULL))
-    gimp_display_shell_draw_background (shell, cr);
-
-  cairo_restore (cr);
-
-
-  /*  then, draw the exposed part of the region that is inside the
+  /*  on top, draw the exposed part of the region that is inside the
    *  image
    */
 
@@ -544,8 +536,6 @@ gimp_display_shell_canvas_draw_drop_zone (GimpDisplayShell *shell,
                                           cairo_t          *cr)
 {
   cairo_save (cr);
-
-  gimp_display_shell_draw_background (shell, cr);
 
   gimp_cairo_draw_drop_wilber (shell->canvas, cr, shell->blink);
 

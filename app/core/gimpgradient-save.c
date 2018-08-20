@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -142,7 +142,7 @@ gimp_gradient_save_pov (GimpGradient  *gradient,
     return FALSE;
 
   string = g_string_new ("/* color_map file created by GIMP */\n"
-                         "/* http://www.gimp.org/           */\n"
+                         "/* https://www.gimp.org/          */\n"
                          "color_map {\n");
 
   for (seg = gradient->segments; seg; seg = seg->next)

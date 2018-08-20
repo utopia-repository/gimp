@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -161,7 +161,8 @@ gimp_tile_backend_plugin_command (GeglTileSource  *tile_store,
       break;
 
     default:
-      g_assert (command < GEGL_TILE_LAST_COMMAND && command >= 0);
+      /* g_assert (command < GEGL_TILE_LAST_COMMAND && command >= 0); */
+      break;
     }
 
   return result;

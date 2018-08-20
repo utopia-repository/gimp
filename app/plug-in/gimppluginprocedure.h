@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_PLUG_IN_PROCEDURE_H__
@@ -51,6 +51,7 @@ struct _GimpPlugInProcedure
   guint8              *icon_data;
   gchar               *image_types;
   GimpPlugInImageType  image_types_val;
+  gchar               *image_types_tooltip;
   gint64               mtime;
   gboolean             installed_during_init;
 
@@ -59,6 +60,7 @@ struct _GimpPlugInProcedure
   gchar               *extensions;
   gchar               *prefixes;
   gchar               *magics;
+  gint                 priority;
   gchar               *mime_types;
   gboolean             handles_uri;
   gboolean             handles_raw;
@@ -119,6 +121,8 @@ void          gimp_plug_in_procedure_set_file_proc     (GimpPlugInProcedure *pro
                                                         const gchar         *extensions,
                                                         const gchar         *prefixes,
                                                         const gchar         *magics);
+void          gimp_plug_in_procedure_set_priority      (GimpPlugInProcedure *proc,
+                                                        gint                 priority);
 void          gimp_plug_in_procedure_set_mime_types    (GimpPlugInProcedure *proc,
                                                         const gchar         *mime_ypes);
 void          gimp_plug_in_procedure_set_handles_uri   (GimpPlugInProcedure *proc);

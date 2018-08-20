@@ -86,6 +86,7 @@ scalable_images = \
 	scalable/gimp-color-pick-from-screen.svg		\
 	scalable/gimp-color-cmyk.svg				\
 	scalable/gimp-color-space-linear.svg			\
+	scalable/gimp-color-space-non-linear.svg		\
 	scalable/gimp-color-space-perceptual.svg		\
 	scalable/gimp-color-triangle.svg			\
 	scalable/gimp-color-water.svg				\
@@ -254,6 +255,10 @@ scalable_images = \
 	scalable/gimp-template.svg				\
 	scalable/gimp-text-dir-ltr.svg				\
 	scalable/gimp-text-dir-rtl.svg				\
+	scalable/gimp-text-dir-ttb-rtl.svg			\
+	scalable/gimp-text-dir-ttb-rtl-upright.svg		\
+	scalable/gimp-text-dir-ttb-ltr.svg			\
+	scalable/gimp-text-dir-ttb-ltr-upright.svg		\
 	scalable/gimp-text-layer.svg				\
 	scalable/gimp-toilet-paper.svg				\
 	scalable/gimp-tool-airbrush.svg				\
@@ -348,6 +353,7 @@ vector24_images = \
 	24/gimp-char-picker.svg					\
 	24/gimp-colormap.svg					\
 	24/gimp-color-space-linear.svg				\
+	24/gimp-color-space-non-linear.svg			\
 	24/gimp-color-space-perceptual.svg			\
 	24/gimp-controller.svg					\
 	24/gimp-controller-keyboard.svg				\
@@ -589,6 +595,7 @@ icons16_images = \
 	16/gimp-color-water.png					\
 	16/gimp-colormap.png					\
 	16/gimp-color-space-linear.png				\
+	16/gimp-color-space-non-linear.png			\
 	16/gimp-color-space-perceptual.png			\
 	16/gimp-controller-keyboard.png				\
 	16/gimp-controller-linux-input.png			\
@@ -869,6 +876,7 @@ icons24_images = \
 	24/gimp-channels.png					\
 	24/gimp-colormap.png					\
 	24/gimp-color-space-linear.png				\
+	24/gimp-color-space-non-linear.png			\
 	24/gimp-color-space-perceptual.png			\
 	24/gimp-tool-color-temperature.png			\
 	24/gimp-controller-keyboard.png				\
@@ -922,6 +930,10 @@ icons24_images = \
 	24/gimp-template.png					\
 	24/gimp-text-dir-ltr.png				\
 	24/gimp-text-dir-rtl.png				\
+	24/gimp-text-dir-ttb-rtl.png				\
+	24/gimp-text-dir-ttb-rtl-upright.png			\
+	24/gimp-text-dir-ttb-ltr.png				\
+	24/gimp-text-dir-ttb-ltr-upright.png			\
 	24/gimp-text-layer.png					\
 	24/gimp-toilet-paper.png				\
 	24/gimp-tool-airbrush.png				\

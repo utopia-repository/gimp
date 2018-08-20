@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_PALETTE_EDITOR_H__
@@ -62,6 +62,7 @@ GType       gimp_palette_editor_get_type   (void) G_GNUC_CONST;
 GtkWidget * gimp_palette_editor_new        (GimpContext        *context,
                                             GimpMenuFactory    *menu_factory);
 
+void        gimp_palette_editor_edit_color (GimpPaletteEditor  *editor);
 void        gimp_palette_editor_pick_color (GimpPaletteEditor  *editor,
                                             const GimpRGB      *color,
                                             GimpColorPickState  pick_state);

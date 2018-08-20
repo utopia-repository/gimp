@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see
- * <http://www.gnu.org/licenses/>.
+ * <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_WIDGETS_TYPES_H__
@@ -31,6 +31,7 @@ G_BEGIN_DECLS
 
 
 typedef struct _GimpBrowser                   GimpBrowser;
+typedef struct _GimpBusyBox                   GimpBusyBox;
 typedef struct _GimpButton                    GimpButton;
 typedef struct _GimpCellRendererColor         GimpCellRendererColor;
 typedef struct _GimpCellRendererToggle        GimpCellRendererToggle;

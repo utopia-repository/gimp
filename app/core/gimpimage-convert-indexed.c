@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 /*
@@ -143,6 +143,7 @@
 
 #include "core-types.h"
 
+#include "gegl/gimp-babl.h"
 #include "gegl/gimp-gegl-utils.h"
 
 #include "gimp.h"
@@ -767,6 +768,9 @@ gimp_image_convert_indexed (GimpImage               *image,
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
   g_return_val_if_fail (gimp_image_get_base_type (image) != GIMP_INDEXED, FALSE);
+  g_return_val_if_fail (gimp_babl_is_valid (GIMP_INDEXED,
+                                            gimp_image_get_precision (image)),
+                        FALSE);
   g_return_val_if_fail (custom_palette == NULL ||
                         GIMP_IS_PALETTE (custom_palette), FALSE);
   g_return_val_if_fail (custom_palette == NULL ||
@@ -1014,7 +1018,9 @@ gimp_image_convert_indexed (GimpImage               *image,
     }
 
   /*  Set the final palette on the image  */
-  if (remove_duplicates && (palette_type != GIMP_CONVERT_PALETTE_GENERATE))
+  if (remove_duplicates &&
+      (palette_type != GIMP_CONVERT_PALETTE_GENERATE) &&
+      (palette_type != GIMP_CONVERT_PALETTE_MONO))
     {
       guchar colormap[GIMP_IMAGE_COLORMAP_SIZE];
       gint   i, j;

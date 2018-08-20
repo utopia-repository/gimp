@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -558,7 +558,7 @@ font_box_new (GimpContainer *container,
               GimpViewSize   view_size)
 {
   if (! container)
-    container = context->gimp->fonts;
+    container = gimp_data_factory_get_container (context->gimp->font_factory);
 
   return gimp_viewable_box_new (container, context, label, spacing,
                                 view_type, GIMP_VIEW_SIZE_SMALL, view_size,

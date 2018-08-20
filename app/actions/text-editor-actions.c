@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -65,7 +65,31 @@ static const GimpRadioActionEntry text_editor_direction_actions[] =
     NC_("text-editor-action", "RTL"), NULL,
     NC_("text-editor-action", "From right to left"),
     GIMP_TEXT_DIRECTION_RTL,
-    NULL }
+    NULL },
+
+  { "text-editor-direction-ttb-rtl", GIMP_ICON_FORMAT_TEXT_DIRECTION_TTB_RTL,
+    NC_("text-editor-action", "TTB-RTL"), NULL,
+    NC_("text-editor-action", "Vertical, right to left (mixed orientation)"),
+    GIMP_TEXT_DIRECTION_TTB_RTL,
+    NULL },
+
+  { "text-editor-direction-ttb-rtl-upright", GIMP_ICON_FORMAT_TEXT_DIRECTION_TTB_RTL_UPRIGHT,
+    NC_("text-editor-action", "TTB-RTL-UPRIGHT"), NULL,
+    NC_("text-editor-action", "Vertical, right to left (upright orientation)"),
+    GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT,
+    NULL },
+
+  { "text-editor-direction-ttb-ltr", GIMP_ICON_FORMAT_TEXT_DIRECTION_TTB_LTR,
+    NC_("text-editor-action", "TTB-LTR"), NULL,
+    NC_("text-editor-action", "Vertical, left to right (mixed orientation)"),
+    GIMP_TEXT_DIRECTION_TTB_LTR,
+    NULL },
+
+  { "text-editor-direction-ttb-ltr-upright", GIMP_ICON_FORMAT_TEXT_DIRECTION_TTB_LTR_UPRIGHT,
+    NC_("text-editor-action", "TTB-LTR-UPRIGHT"), NULL,
+    NC_("text-editor-action", "Vertical, left to right (upright orientation)"),
+    GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT,
+    NULL },
 };
 
 
@@ -101,6 +125,22 @@ text_editor_actions_update (GimpActionGroup *group,
 
     case GIMP_TEXT_DIRECTION_RTL:
       SET_ACTIVE ("text-editor-direction-rtl", TRUE);
+      break;
+
+    case GIMP_TEXT_DIRECTION_TTB_RTL:
+      SET_ACTIVE ("text-editor-direction-ttb-rtl", TRUE);
+      break;
+
+    case GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT:
+      SET_ACTIVE ("text-editor-direction-ttb-rtl-upright", TRUE);
+      break;
+
+    case GIMP_TEXT_DIRECTION_TTB_LTR:
+      SET_ACTIVE ("text-editor-direction-ttb-ltr", TRUE);
+      break;
+
+    case GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT:
+      SET_ACTIVE ("text-editor-direction-ttb-ltr-upright", TRUE);
       break;
     }
 

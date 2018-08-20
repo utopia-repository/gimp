@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -29,6 +29,7 @@
 #include "core-types.h"
 
 #include "gegl/gimp-babl.h"
+#include "gegl/gimp-gegl-loops.h"
 
 #include "gimpchannel.h"
 #include "gimpdrawable.h"
@@ -66,8 +67,8 @@ gimp_image_convert_precision (GimpImage        *image,
 
   g_return_if_fail (GIMP_IS_IMAGE (image));
   g_return_if_fail (precision != gimp_image_get_precision (image));
-  g_return_if_fail (precision == GIMP_PRECISION_U8_GAMMA ||
-                    gimp_image_get_base_type (image) != GIMP_INDEXED);
+  g_return_if_fail (gimp_babl_is_valid (gimp_image_get_base_type (image),
+                                        precision));
   g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
 
   switch (precision)
@@ -189,9 +190,9 @@ gimp_image_convert_precision (GimpImage        *image,
                                                     gimp_image_get_height (image)),
                                     gimp_image_get_mask_format (image));
 
-          gegl_buffer_copy (gimp_drawable_get_buffer (drawable), NULL,
-                            GEGL_ABYSS_NONE,
-                            buffer, NULL);
+          gimp_gegl_buffer_copy (gimp_drawable_get_buffer (drawable), NULL,
+                                 GEGL_ABYSS_NONE,
+                                 buffer, NULL);
 
           gimp_drawable_set_buffer (drawable, FALSE, NULL, buffer);
           g_object_unref (buffer);

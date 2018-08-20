@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -530,7 +530,7 @@ gimp_edit_selection_tool_update_motion (GimpEditSelectionTool *edit_select,
     {
       gimp_constrain_line (edit_select->start_x, edit_select->start_y,
                            &new_x, &new_y,
-                           GIMP_CONSTRAIN_LINE_45_DEGREES, 0.0);
+                           GIMP_CONSTRAIN_LINE_45_DEGREES, 0.0, 1.0, 1.0);
     }
 
   gimp_edit_selection_tool_calc_coords (edit_select, image,

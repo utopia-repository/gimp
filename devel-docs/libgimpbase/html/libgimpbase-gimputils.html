@@ -1012,6 +1012,10 @@ gimp_stack_trace_available (<em class="parameter"><code><a href="../glib/glib-Ba
 are able to generate optimal traces (i.e. with GDB or LLDB);
 otherwise we return <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> even if only <code class="function">backtrace()</code> API is available.</p>
 <p>On Win32, we return TRUE if Dr. Mingw is built-in, FALSE otherwise.</p>
+<p>Note: this function is not crash-safe, i.e. you should not try to use
+it in a callback when the program is already crashing. In such a
+case, call <a class="link" href="libgimpbase-gimputils.html#gimp-stack-trace-print" title="gimp_stack_trace_print ()"><code class="function">gimp_stack_trace_print()</code></a> or <a class="link" href="libgimpbase-gimputils.html#gimp-stack-trace-query" title="gimp_stack_trace_query ()"><code class="function">gimp_stack_trace_query()</code></a>
+directly.</p>
 <div class="refsect3">
 <a name="gimp-stack-trace-available.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">

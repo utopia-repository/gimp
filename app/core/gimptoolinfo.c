@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -250,6 +250,8 @@ gimp_tool_info_new (Gimp                *gimp,
                 "tool",      tool_info,
                 "tool-info", tool_info, NULL);
 
+  gimp_tool_options_set_gui_mode (tool_info->tool_options, TRUE);
+
   if (tool_info->tool_options_type != GIMP_TYPE_TOOL_OPTIONS)
     {
       GimpContainer *presets;
@@ -272,16 +274,7 @@ gimp_tool_info_set_standard (Gimp         *gimp,
   g_return_if_fail (GIMP_IS_GIMP (gimp));
   g_return_if_fail (! tool_info || GIMP_IS_TOOL_INFO (tool_info));
 
-  if (tool_info != gimp->standard_tool_info)
-    {
-      if (gimp->standard_tool_info)
-        g_object_unref (gimp->standard_tool_info);
-
-      gimp->standard_tool_info = tool_info;
-
-      if (gimp->standard_tool_info)
-        g_object_ref (gimp->standard_tool_info);
-    }
+  g_set_object (&gimp->standard_tool_info, tool_info);
 }
 
 GimpToolInfo *

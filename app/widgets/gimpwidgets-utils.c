@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -31,6 +31,10 @@
 
 #ifdef GDK_WINDOWING_X11
 #include <gdk/gdkx.h>
+#endif
+
+#ifdef PLATFORM_OSX
+#include <CoreGraphics/CoreGraphics.h>
 #endif
 
 #include "libgimpbase/gimpbase.h"
@@ -366,11 +370,29 @@ gimp_enum_radio_frame_add (GtkFrame  *frame,
   gimp_enum_radio_box_add (GTK_BOX (box), widget, enum_value, below);
 }
 
+/**
+ * gimp_widget_load_icon:
+ * @widget:                  parent widget (to determine icon theme and
+ *                           style)
+ * @icon_name:               icon name
+ * @size:                    requested pixel size
+ *
+ * Loads an icon into a pixbuf with size as close as possible to @size.
+ * If icon does not exist or fail to load, the function will fallback to
+ * "gimp-wilber-eek" instead to prevent NULL pixbuf. As a last resort,
+ * if even the fallback failed to load, a magenta @size square will be
+ * returned, so this function is guaranteed to always return a
+ * #GdkPixbuf.
+ *
+ * Return value: a newly allocated #GdkPixbuf containing @icon_name at
+ * size @size or a fallback icon/size.
+ **/
 GdkPixbuf *
 gimp_widget_load_icon (GtkWidget   *widget,
                        const gchar *icon_name,
                        gint         size)
 {
+  GdkPixbuf    *pixbuf;
   GtkIconTheme *icon_theme;
   gint         *icon_sizes;
   gint          closest_size = -1;
@@ -384,7 +406,7 @@ gimp_widget_load_icon (GtkWidget   *widget,
 
   if (! gtk_icon_theme_has_icon (icon_theme, icon_name))
     {
-      g_printerr ("gimp_widget_load_icon(): icon theme has no icon '%s'.\n",
+      g_printerr ("WARNING: icon theme has no icon '%s'.\n",
                   icon_name);
 
       return gtk_icon_theme_load_icon (icon_theme, GIMP_ICON_WILBER_EEK,
@@ -411,8 +433,51 @@ gimp_widget_load_icon (GtkWidget   *widget,
   if (closest_size != -1)
     size = closest_size;
 
-  return gtk_icon_theme_load_icon (icon_theme, icon_name, size,
-                                   GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
+  pixbuf = gtk_icon_theme_load_icon (icon_theme, icon_name, size,
+                                     GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
+
+  if (! pixbuf)
+    {
+      /* The icon was seemingly present in the current icon theme, yet
+       * it failed to load. Maybe the file is broken?
+       * As last resort, try to load "gimp-wilber-eek" as fallback.
+       * Note that we are not making more checks, so if the fallback
+       * icon fails to load as well, the function may still return NULL.
+       */
+      g_printerr ("WARNING: icon '%s' failed to load. Check the files "
+                  "in your icon theme.\n", icon_name);
+
+      pixbuf = gtk_icon_theme_load_icon (icon_theme,
+                                         GIMP_ICON_WILBER_EEK,
+                                         size, 0, NULL);
+      if (! pixbuf)
+        {
+          /* As last resort, just draw an ugly magenta square. */
+          guchar *data;
+          gint    rowstride = 3 * size;
+          gint    i, j;
+
+          g_printerr ("WARNING: icon '%s' failed to load. Check the files "
+                      "in your icon theme.\n", GIMP_ICON_WILBER_EEK);
+
+          data = g_new (guchar, rowstride * size);
+          for (i = 0; i < size; i++)
+            {
+              for (j = 0; j < size; j++)
+                {
+                  data[i * rowstride + j * 3] = 255;
+                  data[i * rowstride + j * 3 + 1] = 0;
+                  data[i * rowstride + j * 3 + 2] = 255;
+                }
+            }
+          pixbuf = gdk_pixbuf_new_from_data (data, GDK_COLORSPACE_RGB, FALSE,
+                                             8, size, size, rowstride,
+                                             (GdkPixbufDestroyNotify) g_free,
+                                             NULL);
+        }
+    }
+
+  return pixbuf;
 }
 
 GtkIconSize
@@ -794,16 +859,31 @@ gimp_get_monitor_resolution (GdkScreen *screen,
   gint         width_mm, height_mm;
   gdouble      x = 0.0;
   gdouble      y = 0.0;
+#ifdef PLATFORM_OSX
+  CGSize       size;
+#endif
 
   g_return_if_fail (GDK_IS_SCREEN (screen));
   g_return_if_fail (xres != NULL);
   g_return_if_fail (yres != NULL);
 
+#ifndef PLATFORM_OSX
   gdk_screen_get_monitor_geometry (screen, monitor, &size_pixels);
 
   width_mm  = gdk_screen_get_monitor_width_mm  (screen, monitor);
   height_mm = gdk_screen_get_monitor_height_mm (screen, monitor);
-
+#else
+  width_mm  = 0;
+  height_mm = 0;
+  size = CGDisplayScreenSize (kCGDirectMainDisplay);
+  if (!CGSizeEqualToSize (size, CGSizeZero))
+    {
+      width_mm  = size.width;
+      height_mm = size.height;
+    }
+  size_pixels.width  = CGDisplayPixelsWide (kCGDirectMainDisplay);
+  size_pixels.height = CGDisplayPixelsHigh (kCGDirectMainDisplay);
+#endif
   /*
    * From xdpyinfo.c:
    *

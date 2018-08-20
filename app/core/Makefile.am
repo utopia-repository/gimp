@@ -87,6 +87,12 @@ libappcore_a_sources = \
 	gimp-utils.h				\
 	gimpasync.c				\
 	gimpasync.h				\
+	gimpasyncset.c				\
+	gimpasyncset.h				\
+	gimpauxitem.c				\
+	gimpauxitem.h				\
+	gimpauxitemundo.c			\
+	gimpauxitemundo.h			\
 	gimpbezierdesc.h			\
 	gimpbezierdesc.c			\
 	gimpboundary.c				\
@@ -117,6 +123,8 @@ libappcore_a_sources = \
 	gimpbrushpipe-load.h			\
 	gimpbuffer.c				\
 	gimpbuffer.h				\
+	gimpcancelable.c			\
+	gimpcancelable.h			\
 	gimpchannel.c				\
 	gimpchannel.h				\
 	gimpchannel-combine.c			\
@@ -151,6 +159,8 @@ libappcore_a_sources = \
 	gimpdata.h				\
 	gimpdatafactory.c			\
 	gimpdatafactory.h			\
+	gimpdataloaderfactory.c			\
+	gimpdataloaderfactory.h			\
 	gimpdocumentlist.c			\
 	gimpdocumentlist.h			\
 	gimpdrawable.c				\
@@ -439,6 +449,10 @@ libappcore_a_sources = \
 	gimptoolpreset-save.h			\
 	gimptreehandler.c			\
 	gimptreehandler.h			\
+	gimptriviallycancelablewaitable.c	\
+	gimptriviallycancelablewaitable.h	\
+	gimpuncancelablewaitable.c		\
+	gimpuncancelablewaitable.h		\
 	gimpunit.c				\
 	gimpunit.h				\
 	gimpundo.c				\
@@ -446,7 +460,9 @@ libappcore_a_sources = \
 	gimpundostack.c				\
 	gimpundostack.h				\
 	gimpviewable.c				\
-	gimpviewable.h
+	gimpviewable.h				\
+	gimpwaitable.c				\
+	gimpwaitable.h
 
 libappcore_a_built_sources = \
 	core-enums.c	\
@@ -457,6 +473,9 @@ libappcore_a_extra_sources = \
 	gimpmarshal.list
 
 libappcore_a_SOURCES = $(libappcore_a_built_sources) $(libappcore_a_sources)
+
+BUILT_SOURCES = \
+	$(libappcore_a_built_sources)
 
 EXTRA_DIST = \
 	$(libappcore_a_extra_sources)

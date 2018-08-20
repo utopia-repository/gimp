@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -494,7 +494,8 @@ gimp_drawable_scale (GimpItem              *item,
 
   gimp_drawable_set_buffer_full (drawable, gimp_item_is_attached (item), NULL,
                                  new_buffer,
-                                 new_offset_x, new_offset_y);
+                                 new_offset_x, new_offset_y,
+                                 TRUE);
   g_object_unref (new_buffer);
 }
 
@@ -559,19 +560,21 @@ gimp_drawable_resize (GimpItem     *item,
   if (intersect && copy_width && copy_height)
     {
       /*  Copy the pixels in the intersection  */
-      gegl_buffer_copy (gimp_drawable_get_buffer (drawable),
-                        GEGL_RECTANGLE (copy_x - gimp_item_get_offset_x (item),
-                                        copy_y - gimp_item_get_offset_y (item),
-                                        copy_width,
-                                        copy_height), GEGL_ABYSS_NONE,
-                        new_buffer,
-                        GEGL_RECTANGLE (copy_x - new_offset_x,
-                                        copy_y - new_offset_y, 0, 0));
+      gimp_gegl_buffer_copy (
+        gimp_drawable_get_buffer (drawable),
+        GEGL_RECTANGLE (copy_x - gimp_item_get_offset_x (item),
+                        copy_y - gimp_item_get_offset_y (item),
+                        copy_width,
+                        copy_height), GEGL_ABYSS_NONE,
+        new_buffer,
+        GEGL_RECTANGLE (copy_x - new_offset_x,
+                        copy_y - new_offset_y, 0, 0));
     }
 
   gimp_drawable_set_buffer_full (drawable, gimp_item_is_attached (item), NULL,
                                  new_buffer,
-                                 new_offset_x, new_offset_y);
+                                 new_offset_x, new_offset_y,
+                                 TRUE);
   g_object_unref (new_buffer);
 }
 
@@ -779,8 +782,9 @@ gimp_drawable_real_convert_type (GimpDrawable      *drawable,
                                      gimp_item_get_height (GIMP_ITEM (drawable))),
                      new_format);
 
-  gegl_buffer_copy (gimp_drawable_get_buffer (drawable), NULL, GEGL_ABYSS_NONE,
-                    dest_buffer, NULL);
+  gimp_gegl_buffer_copy (
+    gimp_drawable_get_buffer (drawable), NULL, GEGL_ABYSS_NONE,
+    dest_buffer, NULL);
 
   gimp_drawable_set_buffer (drawable, push_undo, NULL, dest_buffer);
   g_object_unref (dest_buffer);
@@ -811,17 +815,10 @@ gimp_drawable_real_set_buffer (GimpDrawable *drawable,
     gimp_image_undo_push_drawable_mod (gimp_item_get_image (item), undo_desc,
                                        drawable, FALSE);
 
-  /*  ref new before unrefing old, they might be the same  */
-  g_object_ref (buffer);
-
   if (drawable->private->buffer)
-    {
-      old_has_alpha = gimp_drawable_has_alpha (drawable);
+    old_has_alpha = gimp_drawable_has_alpha (drawable);
 
-      g_object_unref (drawable->private->buffer);
-    }
-
-  drawable->private->buffer = buffer;
+  g_set_object (&drawable->private->buffer, buffer);
 
   if (drawable->private->buffer_source_node)
     gegl_node_set (drawable->private->buffer_source_node,
@@ -870,10 +867,11 @@ gimp_drawable_real_push_undo (GimpDrawable *drawable,
       buffer = gegl_buffer_new (GEGL_RECTANGLE (0, 0, width, height),
                                 gimp_drawable_get_format (drawable));
 
-      gegl_buffer_copy (gimp_drawable_get_buffer (drawable),
-                        GEGL_RECTANGLE (x, y, width, height), GEGL_ABYSS_NONE,
-                        buffer,
-                        GEGL_RECTANGLE (0, 0, 0, 0));
+      gimp_gegl_buffer_copy (
+        gimp_drawable_get_buffer (drawable),
+        GEGL_RECTANGLE (x, y, width, height), GEGL_ABYSS_NONE,
+        buffer,
+        GEGL_RECTANGLE (0, 0, 0, 0));
     }
   else
     {
@@ -899,14 +897,14 @@ gimp_drawable_real_swap_pixels (GimpDrawable *drawable,
 
   tmp = gegl_buffer_dup (buffer);
 
-  gegl_buffer_copy (gimp_drawable_get_buffer (drawable),
-                    GEGL_RECTANGLE (x, y, width, height), GEGL_ABYSS_NONE,
-                    buffer,
-                    GEGL_RECTANGLE (0, 0, 0, 0));
-  gegl_buffer_copy (tmp,
-                    GEGL_RECTANGLE (0, 0, width, height), GEGL_ABYSS_NONE,
-                    gimp_drawable_get_buffer (drawable),
-                    GEGL_RECTANGLE (x, y, 0, 0));
+  gimp_gegl_buffer_copy (gimp_drawable_get_buffer (drawable),
+                         GEGL_RECTANGLE (x, y, width, height), GEGL_ABYSS_NONE,
+                         buffer,
+                         GEGL_RECTANGLE (0, 0, 0, 0));
+  gimp_gegl_buffer_copy (tmp,
+                         GEGL_RECTANGLE (0, 0, width, height), GEGL_ABYSS_NONE,
+                         gimp_drawable_get_buffer (drawable),
+                         GEGL_RECTANGLE (x, y, 0, 0));
 
   g_object_unref (tmp);
 
@@ -1242,7 +1240,7 @@ gimp_drawable_set_buffer (GimpDrawable *drawable,
   gimp_item_get_offset (GIMP_ITEM (drawable), &offset_x, &offset_y);
 
   gimp_drawable_set_buffer_full (drawable, push_undo, undo_desc, buffer,
-                                 offset_x, offset_y);
+                                 offset_x, offset_y, TRUE);
 }
 
 void
@@ -1251,7 +1249,8 @@ gimp_drawable_set_buffer_full (GimpDrawable *drawable,
                                const gchar  *undo_desc,
                                GeglBuffer   *buffer,
                                gint          offset_x,
-                               gint          offset_y)
+                               gint          offset_y,
+                               gboolean      update)
 {
   GimpItem *item;
 
@@ -1263,10 +1262,11 @@ gimp_drawable_set_buffer_full (GimpDrawable *drawable,
   if (! gimp_item_is_attached (GIMP_ITEM (drawable)))
     push_undo = FALSE;
 
-  if (gimp_item_get_width  (item)   != gegl_buffer_get_width (buffer)  ||
-      gimp_item_get_height (item)   != gegl_buffer_get_height (buffer) ||
-      gimp_item_get_offset_x (item) != offset_x                        ||
-      gimp_item_get_offset_y (item) != offset_y)
+  if (update                                                            &&
+      (gimp_item_get_width  (item)   != gegl_buffer_get_width (buffer)  ||
+       gimp_item_get_height (item)   != gegl_buffer_get_height (buffer) ||
+       gimp_item_get_offset_x (item) != offset_x                        ||
+       gimp_item_get_offset_y (item) != offset_y))
     {
       gimp_drawable_update (drawable, 0, 0, -1, -1);
     }
@@ -1280,7 +1280,8 @@ gimp_drawable_set_buffer_full (GimpDrawable *drawable,
 
   g_object_thaw_notify (G_OBJECT (drawable));
 
-  gimp_drawable_update (drawable, 0, 0, -1, -1);
+  if (update)
+    gimp_drawable_update (drawable, 0, 0, -1, -1);
 }
 
 void
@@ -1691,7 +1692,7 @@ gimp_drawable_flush_paint (GimpDrawable *drawable)
           cairo_region_get_rectangle (drawable->private->paint_copy_region,
                                       i, (cairo_rectangle_int_t *) &rect);
 
-          gegl_buffer_copy (
+          gimp_gegl_buffer_copy (
             drawable->private->paint_buffer, &rect, GEGL_ABYSS_NONE,
             buffer, NULL);
         }

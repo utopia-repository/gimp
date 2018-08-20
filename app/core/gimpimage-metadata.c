@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -61,16 +61,11 @@ gimp_image_set_metadata (GimpImage    *image,
       if (push_undo)
         gimp_image_undo_push_image_metadata (image, NULL);
 
-      if (private->metadata)
-        g_object_unref (private->metadata);
-
-      private->metadata = metadata;
+      g_set_object (&private->metadata, metadata);
 
       if (private->metadata)
         {
           gdouble xres, yres;
-
-          g_object_ref (private->metadata);
 
           gimp_metadata_set_pixel_size (metadata,
                                         gimp_image_get_width  (image),

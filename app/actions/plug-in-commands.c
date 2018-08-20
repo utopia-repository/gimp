@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -42,7 +42,6 @@
 #include "widgets/gimpbufferview.h"
 #include "widgets/gimpcontainerview.h"
 #include "widgets/gimpdatafactoryview.h"
-#include "widgets/gimpfontview.h"
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpimageeditor.h"
 #include "widgets/gimpitemtreeview.h"
@@ -86,7 +85,6 @@ plug_in_run_cmd_callback (GtkAction     *action,
     case GIMP_PLUGIN:
     case GIMP_TEMPORARY:
       if (GIMP_IS_DATA_FACTORY_VIEW (data) ||
-          GIMP_IS_FONT_VIEW (data)         ||
           GIMP_IS_BUFFER_VIEW (data))
         {
           GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);

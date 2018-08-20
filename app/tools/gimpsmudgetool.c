@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -74,7 +74,7 @@ gimp_smudge_tool_init (GimpSmudgeTool *smudge)
   gimp_tool_control_set_tool_cursor (tool->control, GIMP_TOOL_CURSOR_SMUDGE);
 
   gimp_paint_tool_enable_color_picker (GIMP_PAINT_TOOL (smudge),
-                                       GIMP_COLOR_PICK_MODE_FOREGROUND);
+                                       GIMP_COLOR_PICK_TARGET_FOREGROUND);
 
   paint_tool->status      = _("Click to smudge");
   paint_tool->status_line = _("Click to smudge the line");

@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_IMAGE_RESIZE_H__
@@ -40,6 +40,10 @@ void   gimp_image_resize_with_layers  (GimpImage    *image,
 
 void   gimp_image_resize_to_layers    (GimpImage    *image,
                                        GimpContext  *context,
+                                       gint         *offset_x,
+                                       gint         *offset_y,
+                                       gint         *new_width,
+                                       gint         *new_height,
                                        GimpProgress *progress);
 void   gimp_image_resize_to_selection (GimpImage    *image,
                                        GimpContext  *context,

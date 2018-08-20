@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -652,7 +652,7 @@ gimp_container_remove (GimpContainer *container,
   if (n_children == container->priv->n_children)
     {
       g_warning ("%s: GimpContainer::remove() implementation did not "
-                 "chain up. Please report this at http://www.gimp.org/bugs/",
+                 "chain up. Please report this at https://www.gimp.org/bugs/",
                  G_STRFUNC);
 
       container->priv->n_children--;

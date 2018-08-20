@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -348,17 +348,20 @@ gimp_action_history_is_excluded_action (const gchar *action_name)
           g_strcmp0 (action_name, "filters-reshow") == 0);
 }
 
-/* Callback run on the `activate` signal of an action.
- * It allows us to log all used action.
+/* Called whenever a GimpAction is activated.
+ * It allows us to log all used actions.
  */
 void
-gimp_action_history_activate_callback (GtkAction *action,
-                                       gpointer   user_data)
+gimp_action_history_action_activated (GtkAction *action)
 {
-  GimpGuiConfig         *config = GIMP_GUI_CONFIG (history.gimp->config);
+  GimpGuiConfig         *config;
   const gchar           *action_name;
   GList                 *link;
   GimpActionHistoryItem *item;
+
+  g_return_if_fail (history.gimp != NULL);
+
+  config = GIMP_GUI_CONFIG (history.gimp->config);
 
   if (config->action_history_size == 0)
     return;

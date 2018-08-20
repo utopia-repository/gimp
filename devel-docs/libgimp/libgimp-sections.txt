@@ -45,6 +45,7 @@ gimp_wm_class
 gimp_display_name
 gimp_monitor_number
 gimp_user_time
+gimp_icon_theme_dir
 gimp_get_progname
 gimp_extension_enable
 gimp_extension_ack
@@ -506,6 +507,7 @@ gimp_file_save_thumbnail
 gimp_register_magic_load_handler
 gimp_register_load_handler
 gimp_register_save_handler
+gimp_register_file_handler_priority
 gimp_register_file_handler_mime
 gimp_register_file_handler_uri
 gimp_register_file_handler_raw

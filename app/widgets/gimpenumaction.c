@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -169,6 +169,8 @@ static void
 gimp_enum_action_activate (GtkAction *action)
 {
   GimpEnumAction *enum_action = GIMP_ENUM_ACTION (action);
+
+  GTK_ACTION_CLASS (parent_class)->activate (action);
 
   gimp_enum_action_selected (enum_action, enum_action->value);
 }

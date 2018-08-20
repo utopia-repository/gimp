@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -211,6 +211,9 @@ gimp_prop_widget_new_from_pspec (GObject                  *config,
           gtk_widget_show (widget);
 
           dial = gimp_prop_angle_dial_new (config, pspec->name);
+          g_object_set (dial,
+                        "clockwise-angles", HAS_KEY (pspec, "direction", "cw"),
+                        NULL);
           gtk_box_pack_start (GTK_BOX (hbox), dial, FALSE, FALSE, 0);
           gtk_widget_show (dial);
 

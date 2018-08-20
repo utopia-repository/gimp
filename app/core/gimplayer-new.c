@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -226,7 +226,8 @@ gimp_layer_new_convert_buffer (GimpLayer         *layer,
 
   if (! gimp_image_get_is_color_managed (image))
     {
-      gegl_buffer_copy (src_buffer, NULL, GEGL_ABYSS_NONE, dest_buffer, NULL);
+      gimp_gegl_buffer_copy (src_buffer, NULL, GEGL_ABYSS_NONE,
+                             dest_buffer, NULL);
       return;
     }
 

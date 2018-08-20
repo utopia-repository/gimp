@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see
- * <http://www.gnu.org/licenses/>.
+ * <https://www.gnu.org/licenses/>.
  */
 
 #if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
@@ -132,6 +132,7 @@ G_BEGIN_DECLS
 #define GIMP_ICON_COLOR_SELECTOR_WATER      "gimp-color-water"
 
 #define GIMP_ICON_COLOR_SPACE_LINEAR        "gimp-color-space-linear"
+#define GIMP_ICON_COLOR_SPACE_NON_LINEAR    "gimp-color-space-non-linear"
 #define GIMP_ICON_COLOR_SPACE_PERCEPTUAL    "gimp-color-space-perceptual"
 
 #define GIMP_ICON_COLORS_DEFAULT            "gimp-default-colors"
@@ -216,6 +217,10 @@ G_BEGIN_DECLS
 #define GIMP_ICON_FORMAT_TEXT_UNDERLINE      "format-text-underline"
 #define GIMP_ICON_FORMAT_TEXT_DIRECTION_LTR  "gimp-text-dir-ltr" /* use FDO */
 #define GIMP_ICON_FORMAT_TEXT_DIRECTION_RTL  "gimp-text-dir-rtl" /* use FDO */
+#define GIMP_ICON_FORMAT_TEXT_DIRECTION_TTB_RTL           "gimp-text-dir-ttb-rtl" /* use FDO */
+#define GIMP_ICON_FORMAT_TEXT_DIRECTION_TTB_RTL_UPRIGHT   "gimp-text-dir-ttb-rtl-upright" /* use FDO */
+#define GIMP_ICON_FORMAT_TEXT_DIRECTION_TTB_LTR           "gimp-text-dir-ttb-ltr" /* use FDO */
+#define GIMP_ICON_FORMAT_TEXT_DIRECTION_TTB_LTR_UPRIGHT   "gimp-text-dir-ttb-ltr-upright" /* use FDO */
 #define GIMP_ICON_FORMAT_TEXT_SPACING_LETTER "gimp-letter-spacing"
 #define GIMP_ICON_FORMAT_TEXT_SPACING_LINE   "gimp-line-spacing"
 

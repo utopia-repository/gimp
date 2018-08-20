@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -26,6 +26,7 @@
 #include "core-types.h"
 
 #include "gegl/gimp-gegl-apply-operation.h"
+#include "gegl/gimp-gegl-loops.h"
 #include "gegl/gimp-gegl-utils.h"
 
 #include "operations/layer-modes/gimp-layer-modes.h"
@@ -121,7 +122,7 @@ gimp_drawable_gradient (GimpDrawable                *drawable,
                                 "dither",                     dither,
                                 NULL);
 
-  gimp_gegl_apply_operation (shapeburst, progress, NULL,
+  gimp_gegl_apply_operation (shapeburst, progress, C_("undo-type", "Gradient"),
                              render,
                              buffer, GEGL_RECTANGLE (x, y, width, height),
                              FALSE);
@@ -183,9 +184,10 @@ gimp_drawable_gradient_shapeburst_distmap (GimpDrawable        *drawable,
       gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
 
       /*  copy the mask to the temp mask  */
-      gegl_buffer_copy (gimp_drawable_get_buffer (GIMP_DRAWABLE (mask)),
-                        GEGL_RECTANGLE (x + off_x, y + off_y, width, height),
-                        GEGL_ABYSS_NONE, temp_buffer, region);
+      gimp_gegl_buffer_copy (
+        gimp_drawable_get_buffer (GIMP_DRAWABLE (mask)),
+        GEGL_RECTANGLE (x + off_x, y + off_y, width, height),
+        GEGL_ABYSS_NONE, temp_buffer, region);
     }
   else
     {
@@ -198,9 +200,9 @@ gimp_drawable_gradient_shapeburst_distmap (GimpDrawable        *drawable,
 
           /*  extract the aplha into the temp mask  */
           gegl_buffer_set_format (temp_buffer, component_format);
-          gegl_buffer_copy (gimp_drawable_get_buffer (drawable), region,
-                            GEGL_ABYSS_NONE,
-                            temp_buffer, region);
+          gimp_gegl_buffer_copy (gimp_drawable_get_buffer (drawable), region,
+                                 GEGL_ABYSS_NONE,
+                                 temp_buffer, region);
           gegl_buffer_set_format (temp_buffer, NULL);
         }
       else

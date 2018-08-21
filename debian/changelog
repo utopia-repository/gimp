@@ -1,3 +1,10 @@
+gimp (2.10.6-2) unstable; urgency=medium
+
+  * debian/gimp.install: Remove extra line which caused file conflict
+    (Closes: #906892)
+
+ -- Jeremy Bicha <jbicha@debian.org>  Tue, 21 Aug 2018 17:47:28 -0400
+
 gimp (2.10.6-1) unstable; urgency=medium
 
   * New upstream release (Closes: #900819)

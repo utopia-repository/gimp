@@ -7,7 +7,6 @@ usr/lib/gimp/gimp-debug-tool-?.?
 usr/lib/gimp/2.0/environ/
 usr/lib/gimp/2.0/modules/
 usr/lib/gimp/2.0/interpreters/
-usr/lib/gimp/2.0/plug-ins/
 usr/share/applications
 usr/share/man/man1/gimp.1
 usr/share/man/man1/gimp-?.??.1

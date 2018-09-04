@@ -1,3 +1,11 @@
+gimp (2.10.6-3) unstable; urgency=medium
+
+  * Add X-Ubuntu-Use-Langpack to opt in to Ubuntu language pack handling
+    (LP: #1779574)
+  * Bump Standards-Version to 4.2.1
+
+ -- Jeremy Bicha <jbicha@debian.org>  Tue, 04 Sep 2018 15:08:42 -0400
+
 gimp (2.10.6-2) unstable; urgency=medium
 
   * debian/gimp.install: Remove extra line which caused file conflict

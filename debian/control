@@ -6,7 +6,7 @@ Source: gimp
 Priority: optional
 Section: graphics
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
-Uploaders: Hideki Yamane <henrich@debian.org>, Jeremy Bicha <jbicha@debian.org>, Ari Pollak <ari@debian.org>
+Uploaders: Jeremy Bicha <jbicha@debian.org>, Ari Pollak <ari@debian.org>
 Build-Depends: debhelper (>= 11),
                desktop-file-utils <!nocheck>,
                dh-python,
@@ -41,7 +41,7 @@ Build-Depends: debhelper (>= 11),
                libheif-dev (>= 1.1.0),
                libice-dev,
                libjpeg-dev,
-               liblcms2-dev (>= 2.8),
+               liblcms2-dev (>= 2.9),
                libmng-dev,
                libmypaint-dev (>= 1.3.0),
                libopenexr-dev (>= 1.6.1),

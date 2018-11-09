@@ -33,13 +33,16 @@
 #define GIMP_IMAGE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_IMAGE, GimpImageClass))
 
 
-typedef struct _GimpImageClass GimpImageClass;
+typedef struct _GimpImageClass   GimpImageClass;
+typedef struct _GimpImagePrivate GimpImagePrivate;
 
 struct _GimpImage
 {
-  GimpViewable  parent_instance;
+  GimpViewable      parent_instance;
 
-  Gimp         *gimp;  /*  the GIMP the image belongs to  */
+  Gimp             *gimp;  /*  the GIMP the image belongs to  */
+
+  GimpImagePrivate *priv;
 };
 
 struct _GimpImageClass
@@ -73,6 +76,7 @@ struct _GimpImageClass
                                          GimpDirtyMask         dirty_mask);
   void (* dirty)                        (GimpImage            *image,
                                          GimpDirtyMask         dirty_mask);
+  void (* saving)                       (GimpImage            *image);
   void (* saved)                        (GimpImage            *image,
                                          GFile                *file);
   void (* exported)                     (GimpImage            *image,
@@ -163,6 +167,7 @@ GimpPlugInProcedure * gimp_image_get_load_proc   (GimpImage          *image);
 void            gimp_image_set_save_proc         (GimpImage          *image,
                                                   GimpPlugInProcedure *proc);
 GimpPlugInProcedure * gimp_image_get_save_proc   (GimpImage          *image);
+void            gimp_image_saving                (GimpImage          *image);
 void            gimp_image_saved                 (GimpImage          *image,
                                                   GFile              *file);
 void            gimp_image_set_export_proc       (GimpImage          *image,

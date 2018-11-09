@@ -398,6 +398,7 @@
     <keyword type="constant" name="GIMP_GRADIENT_SEGMENT_SINE" link="libgimpbase-gimpbaseenums.html#GIMP-GRADIENT-SEGMENT-SINE:CAPS"/>
     <keyword type="constant" name="GIMP_GRADIENT_SEGMENT_SPHERE_INCREASING" link="libgimpbase-gimpbaseenums.html#GIMP-GRADIENT-SEGMENT-SPHERE-INCREASING:CAPS"/>
     <keyword type="constant" name="GIMP_GRADIENT_SEGMENT_SPHERE_DECREASING" link="libgimpbase-gimpbaseenums.html#GIMP-GRADIENT-SEGMENT-SPHERE-DECREASING:CAPS"/>
+    <keyword type="constant" name="GIMP_GRADIENT_SEGMENT_STEP" link="libgimpbase-gimpbaseenums.html#GIMP-GRADIENT-SEGMENT-STEP:CAPS"/>
     <keyword type="constant" name="GIMP_GRADIENT_LINEAR" link="libgimpbase-gimpbaseenums.html#GIMP-GRADIENT-LINEAR:CAPS"/>
     <keyword type="constant" name="GIMP_GRADIENT_BILINEAR" link="libgimpbase-gimpbaseenums.html#GIMP-GRADIENT-BILINEAR:CAPS"/>
     <keyword type="constant" name="GIMP_GRADIENT_RADIAL" link="libgimpbase-gimpbaseenums.html#GIMP-GRADIENT-RADIAL:CAPS"/>

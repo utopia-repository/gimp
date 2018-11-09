@@ -94,6 +94,10 @@
 /* Whether the window's maximized or not */
 #define GIMP_IMAGE_WINDOW_MAXIMIZED        "maximized"
 
+#if MAC_OS_X_VERSION_MAX_ALLOWED < 1070
+#define NSWindowCollectionBehaviorFullScreenAuxiliary (1 << 8)
+#endif
+
 
 enum
 {
@@ -147,9 +151,7 @@ typedef struct
 
 
 #define GIMP_IMAGE_WINDOW_GET_PRIVATE(window) \
-        G_TYPE_INSTANCE_GET_PRIVATE (window, \
-                                     GIMP_TYPE_IMAGE_WINDOW, \
-                                     GimpImageWindowPrivate)
+        ((GimpImageWindowPrivate *) gimp_image_window_get_instance_private ((GimpImageWindow *) (window)))
 
 
 /*  local function prototypes  */
@@ -269,6 +271,7 @@ static void      gimp_image_window_update_tab_labels   (GimpImageWindow     *win
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpImageWindow, gimp_image_window, GIMP_TYPE_WINDOW,
+                         G_ADD_PRIVATE (GimpImageWindow)
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_DOCK_CONTAINER,
                                                 gimp_image_window_dock_container_iface_init)
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_SESSION_MANAGED,
@@ -332,8 +335,6 @@ gimp_image_window_class_init (GimpImageWindowClass *klass)
                                                      0, 16, 0,
                                                      GIMP_PARAM_READWRITE |
                                                      G_PARAM_CONSTRUCT_ONLY));
-
-  g_type_class_add_private (klass, sizeof (GimpImageWindowPrivate));
 
   gtk_rc_parse_string (image_window_rc_style);
 }
@@ -502,6 +503,9 @@ gimp_image_window_constructed (GObject *object)
   g_signal_connect_object (config, "notify::single-window-mode",
                            G_CALLBACK (gimp_image_window_config_notify),
                            window, G_CONNECT_SWAPPED);
+  g_signal_connect_object (config, "notify::show-tabs",
+                           G_CALLBACK (gimp_image_window_config_notify),
+                           window, G_CONNECT_SWAPPED);
   g_signal_connect_object (config, "notify::hide-docks",
                            G_CALLBACK (gimp_image_window_config_notify),
                            window, G_CONNECT_SWAPPED);
@@ -633,12 +637,7 @@ gimp_image_window_map (GtkWidget *widget)
    * as soon as GTK+ has proper support for this, we will migrate to the
    * new-style full screen mode.
    */
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_7
   ns_window.collectionBehavior |= NSWindowCollectionBehaviorFullScreenAuxiliary;
-#else
-  /* Hard code the define ... */
-  ns_window.collectionBehavior |= 1 << 8;
-#endif
 #endif /* !GDK_WINDOWING_QUARTZ */
 }
 
@@ -1774,6 +1773,7 @@ gimp_image_window_update_tabs (GimpImageWindow *window)
   /* Tab visibility. */
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (private->notebook),
                               config->single_window_mode &&
+                              config->show_tabs          &&
                               ! config->hide_docks       &&
                               ((private->active_shell          &&
                                 private->active_shell->display &&
@@ -1834,6 +1834,7 @@ gimp_image_window_config_notify (GimpImageWindow *window,
   /* Dock column visibility */
   if (strcmp (pspec->name, "single-window-mode") == 0 ||
       strcmp (pspec->name, "hide-docks")         == 0 ||
+      strcmp (pspec->name, "show-tabs")          == 0 ||
       strcmp (pspec->name, "tabs-position")      == 0)
     {
       if (strcmp (pspec->name, "single-window-mode") == 0 ||

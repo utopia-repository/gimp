@@ -480,7 +480,7 @@ sanity_check_babl (void)
 
 #define BABL_REQUIRED_MAJOR 0
 #define BABL_REQUIRED_MINOR 1
-#define BABL_REQUIRED_MICRO 56
+#define BABL_REQUIRED_MICRO 58
 
   babl_get_version (&babl_major_version,
                     &babl_minor_version,
@@ -518,7 +518,7 @@ sanity_check_gegl (void)
 
 #define GEGL_REQUIRED_MAJOR 0
 #define GEGL_REQUIRED_MINOR 4
-#define GEGL_REQUIRED_MICRO 8
+#define GEGL_REQUIRED_MICRO 12
 
   gegl_get_version (&gegl_major_version,
                     &gegl_minor_version,
@@ -657,7 +657,6 @@ sanity_check_gegl_ops (void)
     "gegl:map-absolute",
     "gegl:map-relative",
     "gegl:matting-global",
-/*  "gegl:matting-levin",*/ /* XXX: do we want to require this? */
     "gegl:maze",
     "gegl:median-blur",
     "gegl:mirrors",

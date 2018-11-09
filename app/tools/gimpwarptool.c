@@ -193,6 +193,8 @@ gimp_warp_tool_init (GimpWarpTool *self)
                                          GIMP_DIRTY_DRAWABLE        |
                                          GIMP_DIRTY_SELECTION       |
                                          GIMP_DIRTY_ACTIVE_DRAWABLE);
+  gimp_tool_control_set_dirty_action    (tool->control,
+                                         GIMP_TOOL_ACTION_COMMIT);
   gimp_tool_control_set_wants_click     (tool->control, TRUE);
   gimp_tool_control_set_tool_cursor     (tool->control,
                                          GIMP_TOOL_CURSOR_WARP);
@@ -751,7 +753,8 @@ gimp_warp_tool_commit (GimpWarpTool *wt)
 {
   GimpTool *tool = GIMP_TOOL (wt);
 
-  if (wt->filter)
+  /* don't commit a nop */
+  if (tool->display && gimp_tool_can_undo (tool, tool->display))
     {
       gimp_tool_control_push_preserve (tool->control, TRUE);
 

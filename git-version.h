@@ -1,6 +1,6 @@
 #ifndef __GIT_VERSION_H__
 #define __GIT_VERSION_H__
-#define GIMP_GIT_VERSION "GIMP_2_10_4-278-g0a8173ffde"
-#define GIMP_GIT_VERSION_ABBREV "0a8173ffde"
+#define GIMP_GIT_VERSION "GIMP_2_10_6-294-ga967e8d2c2"
+#define GIMP_GIT_VERSION_ABBREV "a967e8d2c2"
 #define GIMP_GIT_LAST_COMMIT_YEAR "2018"
 #endif /* __GIT_VERSION_H__ */

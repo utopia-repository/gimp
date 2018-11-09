@@ -616,7 +616,8 @@ typedef enum
   GIMP_GRADIENT_SEGMENT_CURVED,             /*< desc="Curved"                                           >*/
   GIMP_GRADIENT_SEGMENT_SINE,               /*< desc="Sinusoidal"                                       >*/
   GIMP_GRADIENT_SEGMENT_SPHERE_INCREASING,  /*< desc="Spherical (increasing)", abbrev="Spherical (inc)" >*/
-  GIMP_GRADIENT_SEGMENT_SPHERE_DECREASING   /*< desc="Spherical (decreasing)", abbrev="Spherical (dec)" >*/
+  GIMP_GRADIENT_SEGMENT_SPHERE_DECREASING,  /*< desc="Spherical (decreasing)", abbrev="Spherical (dec)" >*/
+  GIMP_GRADIENT_SEGMENT_STEP                /*< desc="Step"                                             >*/
 } GimpGradientSegmentType;
 
 
@@ -1256,7 +1257,7 @@ typedef enum
  * @GIMP_SELECT_CRITERION_A:         Alpha
  * @GIMP_SELECT_CRITERION_LCH_L:     LCh Lightness
  * @GIMP_SELECT_CRITERION_LCH_C:     LCh Chroma
- * @GIMP_SELECT_CRITERION_LCH_H:     LCh Hue)
+ * @GIMP_SELECT_CRITERION_LCH_H:     LCh Hue
  *
  * Criterions for color similarity.
  **/

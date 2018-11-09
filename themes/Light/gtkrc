@@ -315,6 +315,7 @@ style "tlsog-default-style"
 }
 
 class "GtkWidget" style "tlsog-default-style"
+class "GtkMenuItem" style "tlsog-default-style"
 
 ###########################################################
 
@@ -332,7 +333,7 @@ style "tlsog-grid-view-style" = "tlsog-default-style"
   bg[NORMAL] = { 1.0, 1.0, 1.0 }
 }
 
-widget "*GimpContainerGridView*GtkViewport*" style "tlsog-grid-view-style"
+widget_class "*GimpContainerGridView*GtkViewport*" style "tlsog-grid-view-style"
 
 ###########################################################
 
@@ -343,7 +344,7 @@ style "tlsog-dockable-style" = "tlsog-default-style"
   GtkButton::focus-padding = 0
 }
 
-widget "*GimpDockable.*" style "tlsog-dockable-style"
+widget_class "*GimpDockable.*" style "tlsog-dockable-style"
 
 ###########################################################
 
@@ -358,7 +359,7 @@ style "tlsog-display-style" = "tlsog-default-style"
   GtkButton::focus-padding = 0
 }
 
-widget "*GimpDisplayShell.*" style "tlsog-display-style"
+widget_class "*GimpDisplayShell.*" style "tlsog-display-style"
 
 ###########################################################
 
@@ -1008,6 +1009,7 @@ style "tlsog-entry" = "tlsog-default-style"
 
 class "GtkEntry" style "tlsog-entry"
 class "GtkOldEditable" style "tlsog-entry"
+widget_class "*GtkTree*GtkEntry" style "tlsog-entry"
 
 ###########################################################
 
@@ -1412,6 +1414,7 @@ style "tlsog-radio-button" = "tlsog-default-style"
 
 class "GtkRadioButton"   style "tlsog-radio-button"
 class "GtkRadioMenuItem"  style "tlsog-radio-button"
+class "GtkTreeView"  style "tlsog-radio-button"
 
 ###########################################################
 
@@ -1453,6 +1456,7 @@ style "tlsog-check-button" = "tlsog-default-style"
 
 class "GtkCheckButton"   style "tlsog-check-button"
 class "GtkCheckMenuItem"   style "tlsog-check-button"
+class "GtkTreeView"   style "tlsog-check-button"
 
 ###########################################################
 
@@ -1933,7 +1937,7 @@ style "tlsog-spin-scale-style"
 }
 
 class "GimpSpinScale" style "tlsog-spin-scale-style"
-widget "*GimpSpinScale*" style "tlsog-spin-scale-style"
+widget_class "*GimpSpinScale*" style "tlsog-spin-scale-style"
 
 ###########################################################
 
@@ -2246,7 +2250,7 @@ style "kde_hack_2"
   bg[NORMAL] = "#DDDDDD" #Sets canvas BG
 }
 
-widget "*GimpDisplayShell.*" style "kde_hack_2"
+widget_class "*GimpDisplayShell.*" style "kde_hack_2"
 
 ###########################################################
 
@@ -2508,7 +2512,7 @@ style "ubuntu-fix-menu-item"
     }
 }
 
-widget "GtkMenuItem" style "ubuntu-fix-menu-item"
+class "GtkMenuItem" style "ubuntu-fix-menu-item"
 
 ###########################################################
 

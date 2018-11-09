@@ -11,11 +11,11 @@ AC_PREREQ(2.54)
 
 m4_define([gimp_major_version], [2])
 m4_define([gimp_minor_version], [10])
-m4_define([gimp_micro_version], [6])
+m4_define([gimp_micro_version], [8])
 m4_define([gimp_real_version],
           [gimp_major_version.gimp_minor_version.gimp_micro_version])
 m4_define([gimp_version], [gimp_real_version])
-m4_define([gimp_interface_age], [6])
+m4_define([gimp_interface_age], [8])
 m4_define([gimp_binary_age],
           [m4_eval(100 * gimp_minor_version + gimp_micro_version)])
 
@@ -43,45 +43,46 @@ m4_define([gimp_stable],
 m4_define([gimp_full_name], [GNU Image Manipulation Program])
 
 # required versions of other packages
-m4_define([babl_required_version], [0.1.56])
-m4_define([gegl_major_minor_version], [0.4])
-m4_define([gegl_micro_version], [8])
-m4_define([gegl_required_version],
-          [gegl_major_minor_version.gegl_micro_version])
-m4_define([glib_required_version], [2.54.2])
+m4_define([alsa_required_version], [1.0.0])
 m4_define([atk_required_version], [2.2.0])
-m4_define([gtk_required_version], [2.24.10])
-m4_define([gtk_win32_recommended_version], [2.24.32])
-m4_define([gdk_pixbuf_required_version], [2.30.8])
-m4_define([cairo_required_version], [1.12.2])
+m4_define([babl_required_version], [0.1.58])
 m4_define([cairo_pdf_required_version], [1.12.2])
-m4_define([pangocairo_required_version], [1.29.4])
+m4_define([cairo_required_version], [1.12.2])
 m4_define([fontconfig_required_version], [2.12.4])
 m4_define([freetype2_required_version], [2.1.7])
-m4_define([harfbuzz_required_version], [0.9.19])
-m4_define([gtkdoc_required_version], [1.0])
-m4_define([webkit_required_version], [1.6.1])
-m4_define([alsa_required_version], [1.0.0])
-m4_define([rsvg_required_version], [2.40.6])
-m4_define([wmf_required_version], [0.2.8])
-m4_define([pygtk_required_version], [2.10.4])
-m4_define([pycairo_required_version], [1.0.2])
-m4_define([poppler_required_version], [0.44.0])
-m4_define([poppler_data_required_version], [0.4.7])
-m4_define([libgudev_required_version], [167])
+m4_define([gdk_pixbuf_required_version], [2.30.8])
+m4_define([gegl_major_minor_version], [0.4])
+m4_define([gegl_micro_version], [12])
+m4_define([gegl_required_version],
+          [gegl_major_minor_version.gegl_micro_version])
 m4_define([gexiv2_required_version], [0.10.6])
-m4_define([libmypaint_required_version], [1.3.0])
+m4_define([glib_required_version], [2.54.2])
+m4_define([gtk_mac_integration_required_version], [2.0.0])
+m4_define([gtk_required_version], [2.24.10])
+m4_define([gtk_win32_recommended_version], [2.24.32])
+m4_define([gtkdoc_required_version], [1.0])
+m4_define([harfbuzz_required_version], [0.9.19])
+m4_define([intltool_required_version], [0.40.1])
 m4_define([lcms_required_version], [2.8])
-m4_define([libpng_required_version], [1.6.25])
+m4_define([libgudev_required_version], [167])
+m4_define([libheif_required_version], [1.1.0])
 m4_define([liblzma_required_version], [5.0.0])
+m4_define([libmypaint_required_version], [1.3.0])
+m4_define([libpng_required_version], [1.6.25])
+m4_define([libunwind_required_version], [1.1.0])
 m4_define([openexr_required_version], [1.6.1])
 m4_define([openjpeg_required_version], [2.1.0])
-m4_define([gtk_mac_integration_required_version], [2.0.0])
-m4_define([intltool_required_version], [0.40.1])
+m4_define([pangocairo_required_version], [1.29.4])
 m4_define([perl_required_version], [5.10.0])
+m4_define([poppler_data_required_version], [0.4.7])
+m4_define([poppler_required_version], [0.44.0])
+m4_define([pycairo_required_version], [1.0.2])
+m4_define([pygtk_required_version], [2.10.4])
 m4_define([python2_required_version], [2.5.0])
+m4_define([rsvg_required_version], [2.40.6])
+m4_define([webkit_required_version], [1.6.1])
 m4_define([webp_required_version], [0.6.0])
-m4_define([libheif_required_version], [1.1.0])
+m4_define([wmf_required_version], [0.2.8])
 
 # Current test considers only 2 version numbers. If we update the recommended
 # version of gettext with more version numbers, please update the tests.
@@ -176,6 +177,7 @@ PERL_REQUIRED_VERSION=perl_required_version
 PYTHON2_REQUIRED_VERSION=python2_required_version
 WEBP_REQUIRED_VERSION=webp_required_version
 LIBHEIF_REQUIRED_VERSION=libheif_required_version
+LIBUNWIND_REQUIRED_VERSION=libunwind_required_version
 XGETTEXT_REQUIRED_VERSION=xgettext_required_version
 AC_SUBST(GLIB_REQUIRED_VERSION)
 AC_SUBST(GDK_PIXBUF_REQUIRED_VERSION)
@@ -208,6 +210,7 @@ AC_SUBST(PERL_REQUIRED_VERSION)
 AC_SUBST(PYTHON2_REQUIRED_VERSION)
 AC_SUBST(WEBP_REQUIRED_VERSION)
 AC_SUBST(LIBHEIF_REQUIRED_VERSION)
+AC_SUBST(LIBUNWIND_REQUIRED_VERSION)
 AC_SUBST(XGETTEXT_REQUIRED_VERSION)
 
 # The symbol GIMP_UNSTABLE is defined above for substitution in
@@ -305,6 +308,23 @@ case "$host_cpu" in
     AC_MSG_RESULT([unknown])
     ;;
 esac
+
+
+#################
+# Check for Linux
+#################
+
+AC_MSG_CHECKING([if compiling for Linux])
+case "$host_os" in
+  linux*)
+    platform_linux=yes
+    ;;
+  *)
+    platform_linux=no
+    ;;
+esac
+AC_MSG_RESULT([$platform_linux])
+AM_CONDITIONAL(PLATFORM_LINUX, test "$platform_linux" = "yes")
 
 
 #################
@@ -986,6 +1006,18 @@ AM_CONDITIONAL(HAVE_EXCHNDL, test "x$ac_cv_lib_exchndl_ExcHndlSetLogFileNameA" =
 ###########################
 
 AC_CHECK_HEADERS([execinfo.h])
+
+#########################
+# Check for Matting Levin
+#########################
+
+AC_MSG_CHECKING([for matting engine Levin])
+if $GEGL --exists "gegl:matting-levin"; then
+  have_matting_levin=yes
+else
+  have_matting_levin='no (missing GEGL operation "gegl:matting-levin")'
+fi
+AC_MSG_RESULT($have_matting_levin)
 
 ##########################################
 # Check for some special functions we need
@@ -1799,6 +1831,81 @@ AC_SUBST(FILE_HEIF)
 AM_CONDITIONAL(HAVE_LIBHEIF, test "x$have_libheif" = xyes)
 
 
+########################
+# Check for libbacktrace
+########################
+
+AC_ARG_WITH(libbacktrace, [  --without-libbacktrace       build without libbacktrace support])
+
+have_libbacktrace=no
+if test "x$with_libbacktrace" != xno; then
+  have_libbacktrace=yes
+
+  gimp_save_LIBS=$LIBS
+  LIBS="$LIBS -lbacktrace"
+
+  AC_MSG_CHECKING([for LIBBACKTRACE])
+  AC_LINK_IFELSE(
+    [AC_LANG_PROGRAM(
+      [[#include <stddef.h>
+        #include <backtrace.h>
+        #include <backtrace-supported.h>
+
+        #if ! BACKTRACE_SUPPORTED
+        #error ! BACKTRACE_SUPPORTED
+        #endif
+      ]],
+      [[(void) backtrace_create_state (NULL, 0, NULL, NULL);]])],
+    [AC_MSG_RESULT([yes]); LIBBACKTRACE_LIBS='-lbacktrace'],
+    [AC_MSG_RESULT([no]); have_libbacktrace='no (libbacktrace is not found or not supported)'])
+
+  LIBS=$gimp_save_LIBS
+
+  AC_SUBST(LIBBACKTRACE_LIBS)
+fi
+
+if test "x$have_libbacktrace" = xyes; then
+  AC_DEFINE(HAVE_LIBBACKTRACE, 1,
+            [Define to 1 if libbacktrace is available])
+fi
+
+
+#####################
+# Check for libunwind
+#####################
+
+AC_ARG_WITH(libunwind, [  --without-libunwind       build without libunwind support])
+
+have_libunwind=no
+if test "x$with_libunwind" != xno; then
+  have_libunwind=yes
+  PKG_CHECK_MODULES(LIBUNWIND, libunwind >= libunwind_required_version,
+    [],
+    [have_libunwind="no (libunwind not found)"])
+fi
+
+if test "x$have_libunwind" = xyes; then
+  AC_DEFINE(HAVE_LIBUNWIND, 1,
+            [Define to 1 if libunwind is available])
+fi
+
+
+#######################################
+# Check for detailed backtraces support
+#######################################
+
+detailed_backtraces=no
+if test "x$platform_linux" = xyes; then
+  if test "x$have_libbacktrace" = xyes -o "x$have_libunwind" = xyes; then
+    detailed_backtraces=yes
+  else
+    detailed_backtraces='no (libbacktrace and libunwind are not found or not supported)'
+  fi
+elif test "x$platform_win32" = xyes; then
+  detailed_backtraces=$enable_drmingw
+fi
+
+
 ######################
 # Check for libmypaint
 ######################
@@ -1918,7 +2025,10 @@ if test "x$with_wmf" != xno; then
       WMF_LIBS=`$WMF_CONFIG --libs`
       WMF_CFLAGS=`$WMF_CONFIG --cflags`
     else
-      have_libwmf="no (libwmf is too old)"
+      have_libwmf=yes
+      PKG_CHECK_MODULES(WMF, libwmf >= wmf_required_version,
+                        FILE_WMF='file-wmf$(EXEEXT)',
+                        have_libwmf="no (libwmf not found)")
    fi
   else
     have_libwmf="no (libwmf not found)"
@@ -2810,6 +2920,7 @@ devel-docs/libgimpthumb/Makefile
 devel-docs/libgimpthumb/version
 devel-docs/libgimpwidgets/Makefile
 devel-docs/libgimpwidgets/version
+devel-docs/performance-logs/Makefile
 devel-docs/tools/Makefile
 docs/Makefile
 menus/Makefile
@@ -2926,6 +3037,7 @@ Extra Binaries:
   gimp-console:              $enable_gimp_console
 
 Optional Features:
+  Levin matting engine:      $have_matting_levin
   Language selection:        $have_iso_codes
   Vector icons:              $enable_vector_icons
   Dr. Mingw (Win32):         $enable_drmingw
@@ -2933,6 +3045,7 @@ Optional Features:
   Default ICC directory:     $with_icc_directory
   Debug console (Win32):     $enable_win32_debug_console
   32-bit DLL folder (Win32): $with_win32_32bit_dll_folder
+  Detailed backtraces:       $detailed_backtraces
 
 Optional Plug-Ins:
   Ascii Art:                 $have_libaa

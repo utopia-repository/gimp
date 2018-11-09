@@ -38,8 +38,8 @@ header files installed.
      You also need gettext version 0.19 or over. Earlier gettext had
      issues with script-fu localization, ending up in incomplete GIMP localization.
 
-  3. You need to have GEGL version 0.4.8 or newer and babl version
-     0.1.56 or newer. You can get them from https://gegl.org/ or clone
+  3. You need to have GEGL version 0.4.12 or newer and babl version
+     0.1.58 or newer. You can get them from https://gegl.org/ or clone
      them from the GNOME git repository:
 
        https://gitlab.gnome.org/GNOME/babl.git
@@ -86,10 +86,9 @@ header files installed.
      Checkout the tag "v1.3.0" instead, or simply install from a tarball
      or from your favorite package manager.
 
- 11. We also need the mypaint-brushes data package with is currently
-     hosted by Jehan, until the MyPaint project takes care of it:
+ 11. We also need the mypaint-brushes data package:
 
-        https://github.com/Jehan/mypaint-brushes
+        https://github.com/mypaint/mypaint-brushes
 
      If installing from repository, install from branch "v1.3.x" or the
      particular tag "v1.3.0". In particular do not install from master
@@ -142,12 +141,12 @@ header files installed.
      Package Name         Version
 
      ATK                  2.2.0
-     babl                 0.1.56
+     babl                 0.1.58
      cairo                1.12.2
      Fontconfig           2.12.4
      freetype2            2.1.7
      GDK-PixBuf           2.30.8
-     GEGL                 0.4.8
+     GEGL                 0.4.12
      GIO
      GLib                 2.54.2
      glib-networking
@@ -193,6 +192,7 @@ header files installed.
      xdg-email for sending emails
      sendmail for sending emails if --with-sendmail enabled
      gdb or lldb for our new bug-reporting dialog
+     "gegl:matting-levin" GEGL operation for alternative matting engine
 
 Please make sure you don't have any old GTK+-2.x, jpeg, etc. libraries
 lying around on your system, otherwise configure may fail to find the
@@ -204,8 +204,8 @@ packages are included below. Here is an illustration of commands that
 might be used to build and install GIMP. The actual configuration,
 compilation and installation output is not shown.
 
-  % tar xvfz gimp-2.10.6.tar.gz   # unpack the sources
-  % cd gimp-2.10.6                # change to the toplevel directory
+  % tar xvfz gimp-2.10.8.tar.gz   # unpack the sources
+  % cd gimp-2.10.8                # change to the toplevel directory
   % ./configure                   # run the `configure' script
   % make                          # build GIMP
   % make install                  # install GIMP

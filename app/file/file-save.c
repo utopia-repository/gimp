@@ -89,10 +89,16 @@ file_save (Gimp                *gimp,
   g_object_ref (image);
   g_object_ref (file);
 
+  gimp_image_saving (image);
+
   drawable = gimp_image_get_active_drawable (image);
 
   if (! drawable)
-    goto out;
+    {
+      g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                           _("There is no active layer to save"));
+      goto out;
+    }
 
   /* FIXME enable these tests for remote files again, needs testing */
   if (g_file_is_native (file) &&
@@ -106,7 +112,13 @@ file_save (Gimp                *gimp,
                                 G_FILE_QUERY_INFO_NONE,
                                 NULL, error);
       if (! info)
-        goto out;
+        {
+          /* extra paranoia */
+          if (error && ! *error)
+            g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                                 _("Failed to get file information"));
+          goto out;
+        }
 
       if (g_file_info_get_file_type (info) != G_FILE_TYPE_REGULAR)
         {

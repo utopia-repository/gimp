@@ -105,8 +105,14 @@ host_triplet = @host@
 EXTRA_PROGRAMS = test-preview-area$(EXEEXT) test-eevl$(EXEEXT)
 subdir = libgimpwidgets
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/m4macros/alsa.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/m4macros/gtk-doc.m4 \
+	$(top_srcdir)/m4macros/intltool.m4 \
+	$(top_srcdir)/m4macros/libtool.m4 \
+	$(top_srcdir)/m4macros/ltoptions.m4 \
+	$(top_srcdir)/m4macros/ltsugar.m4 \
+	$(top_srcdir)/m4macros/ltversion.m4 \
+	$(top_srcdir)/m4macros/lt~obsolete.m4 \
+	$(top_srcdir)/acinclude.m4 $(top_srcdir)/m4macros/alsa.m4 \
 	$(top_srcdir)/m4macros/ax_compare_version.m4 \
 	$(top_srcdir)/m4macros/ax_cxx_compile_stdcxx.m4 \
 	$(top_srcdir)/m4macros/ax_gcc_func_attribute.m4 \
@@ -738,6 +744,7 @@ LCMS_REQUIRED_VERSION = @LCMS_REQUIRED_VERSION@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LDFLAGS_FOR_BUILD = @LDFLAGS_FOR_BUILD@
+LIBBACKTRACE_LIBS = @LIBBACKTRACE_LIBS@
 LIBHEIF_CFLAGS = @LIBHEIF_CFLAGS@
 LIBHEIF_LIBS = @LIBHEIF_LIBS@
 LIBHEIF_REQUIRED_VERSION = @LIBHEIF_REQUIRED_VERSION@
@@ -749,6 +756,9 @@ LIBOBJS = @LIBOBJS@
 LIBPNG_REQUIRED_VERSION = @LIBPNG_REQUIRED_VERSION@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
+LIBUNWIND_CFLAGS = @LIBUNWIND_CFLAGS@
+LIBUNWIND_LIBS = @LIBUNWIND_LIBS@
+LIBUNWIND_REQUIRED_VERSION = @LIBUNWIND_REQUIRED_VERSION@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@

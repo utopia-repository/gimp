@@ -120,7 +120,7 @@ static void       gimp_text_layer_render_layout  (GimpTextLayer     *layer,
                                                   GimpTextLayout    *layout);
 
 
-G_DEFINE_TYPE (GimpTextLayer, gimp_text_layer, GIMP_TYPE_LAYER)
+G_DEFINE_TYPE_WITH_PRIVATE (GimpTextLayer, gimp_text_layer, GIMP_TYPE_LAYER)
 
 #define parent_class gimp_text_layer_parent_class
 
@@ -184,8 +184,6 @@ gimp_text_layer_class_init (GimpTextLayerClass *klass)
                             NULL, NULL,
                             FALSE,
                             GIMP_PARAM_STATIC_STRINGS);
-
- g_type_class_add_private (klass, sizeof (GimpTextLayerPrivate));
 }
 
 static void
@@ -193,9 +191,7 @@ gimp_text_layer_init (GimpTextLayer *layer)
 {
   layer->text          = NULL;
   layer->text_parasite = NULL;
-  layer->private       = G_TYPE_INSTANCE_GET_PRIVATE (layer,
-                                                      GIMP_TYPE_TEXT_LAYER,
-                                                      GimpTextLayerPrivate);
+  layer->private       = gimp_text_layer_get_instance_private (layer);
 }
 
 static void
@@ -460,8 +456,6 @@ gimp_text_layer_new (GimpImage *image,
 
   gimp_text_layer_set_text (layer, text);
 
-  layer->private->base_dir = text->base_dir;
-
   if (! gimp_text_layer_render (layer))
     {
       g_object_unref (layer);
@@ -493,6 +487,7 @@ gimp_text_layer_set_text (GimpTextLayer *layer,
   if (text)
     {
       layer->text = g_object_ref (text);
+      layer->private->base_dir = layer->text->base_dir;
 
       g_signal_connect_object (text, "changed",
                                G_CALLBACK (gimp_text_layer_text_changed),
@@ -639,8 +634,8 @@ gimp_text_layer_text_changed (GimpTextLayer *layer)
         {
           switch (old_base_dir)
             {
-            case GIMP_TEXT_DIRECTION_RTL:
             case GIMP_TEXT_DIRECTION_LTR:
+            case GIMP_TEXT_DIRECTION_RTL:
             case GIMP_TEXT_DIRECTION_TTB_LTR:
             case GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT:
               switch (new_base_dir)
@@ -649,6 +644,12 @@ gimp_text_layer_text_changed (GimpTextLayer *layer)
                 case GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT:
                   gimp_item_translate (item, -new_width, 0, FALSE);
                   break;
+
+                case GIMP_TEXT_DIRECTION_LTR:
+                case GIMP_TEXT_DIRECTION_RTL:
+                case GIMP_TEXT_DIRECTION_TTB_LTR:
+                case GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT:
+                  break;
                 }
               break;
 
@@ -656,11 +657,15 @@ gimp_text_layer_text_changed (GimpTextLayer *layer)
             case GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT:
               switch (new_base_dir)
                 {
-                case GIMP_TEXT_DIRECTION_RTL:
                 case GIMP_TEXT_DIRECTION_LTR:
+                case GIMP_TEXT_DIRECTION_RTL:
                 case GIMP_TEXT_DIRECTION_TTB_LTR:
                 case GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT:
                   gimp_item_translate (item, old_width, 0, FALSE);
+                  break;
+
+                case GIMP_TEXT_DIRECTION_TTB_RTL:
+                case GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT:
                   break;
                 }
               break;

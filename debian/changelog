@@ -1,8 +1,9 @@
-gimp (2.10.8-1) UNRELEASED; urgency=medium
+gimp (2.10.8-1) unstable; urgency=medium
 
   * New upstream release
+  * Bump minimum babl to 0.1.58 and gegl to 0.4.12
 
- -- Jeremy Bicha <jbicha@debian.org>  Thu, 08 Nov 2018 20:13:00 -0500
+ -- Jeremy Bicha <jbicha@debian.org>  Fri, 09 Nov 2018 06:45:45 -0500
 
 gimp (2.10.6-3) unstable; urgency=medium
 
@@ -2727,5 +2728,3 @@ gimp (0.54.1-4) unstable; urgency=low
   * Fixed dependencies (bug #6691)
 
  -- Rob Browning <osiris@cs.utexas.edu>  Mon, 27 Jan 1997 01:04:31 -0600
-
-

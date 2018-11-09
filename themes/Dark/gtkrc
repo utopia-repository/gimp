@@ -314,8 +314,8 @@ style "gimp-dark-default-style"
     }
 }
 
-# class "GtkWidget" style "gimp-dark-default-style"
-class "*" style "gimp-dark-default-style"
+class "GtkWidget" style "gimp-dark-default-style"
+class "GtkMenuItem" style "gimp-dark-default-style"
 
 ###########################################################
 
@@ -333,7 +333,7 @@ style "gimp-dark-grid-view-style" = "gimp-dark-default-style"
   bg[NORMAL] = { 1.0, 1.0, 1.0 }
 }
 
-widget "*GimpContainerGridView*GtkViewport*" style "gimp-dark-grid-view-style"
+widget_class "*GimpContainerGridView*GtkViewport*" style "gimp-dark-grid-view-style"
 
 ###########################################################
 
@@ -344,7 +344,7 @@ style "gimp-dark-dockable-style" = "gimp-dark-default-style"
   GtkButton::focus-padding = 0
 }
 
-widget "*GimpDockable.*" style "gimp-dark-dockable-style"
+widget_class "*GimpDockable.*" style "gimp-dark-dockable-style"
 
 ###########################################################
 
@@ -359,7 +359,7 @@ style "gimp-dark-display-style" = "gimp-dark-default-style"
   GtkButton::focus-padding = 0
 }
 
-widget "*GimpDisplayShell.*" style "gimp-dark-display-style"
+widget_class "*GimpDisplayShell.*" style "gimp-dark-display-style"
 
 ###########################################################
 
@@ -936,6 +936,7 @@ style "gimp-dark-entry" = "gimp-dark-default-style"
 
 class "GtkEntry" style "gimp-dark-entry"
 class "GtkOldEditable" style "gimp-dark-entry"
+widget_class "*GtkTree*GtkEntry" style "gimp-dark-entry"
 
 ###########################################################
 
@@ -1340,6 +1341,7 @@ style "gimp-dark-radio-button" = "gimp-dark-default-style"
 
 class "GtkRadioButton"   style "gimp-dark-radio-button"
 class "GtkRadioMenuItem"  style "gimp-dark-radio-button"
+class "GtkTreeView"  style "gimp-dark-radio-button"
 
 ###########################################################
 
@@ -1381,6 +1383,7 @@ style "gimp-dark-check-button" = "gimp-dark-default-style"
 
 class "GtkCheckButton"   style "gimp-dark-check-button"
 class "GtkCheckMenuItem"   style "gimp-dark-check-button"
+class "GtkTreeView"   style "gimp-dark-check-button"
 
 ###########################################################
 
@@ -2207,7 +2210,7 @@ style "ubuntu-fix-menu-item"
     }
 }
 
-widget "GtkMenuItem" style "ubuntu-fix-menu-item"
+class "GtkMenuItem" style "ubuntu-fix-menu-item"
 
 ###########################################################
 

@@ -42,6 +42,7 @@ extern "C"
 #include "gimp.h"
 #include "gimp-parallel.h"
 #include "gimpasync.h"
+#include "gimpcancelable.h"
 
 
 #define GIMP_PARALLEL_MAX_THREADS            64
@@ -60,9 +61,11 @@ typedef struct
 
 typedef struct
 {
-  GThread  *thread;
+  GThread   *thread;
 
-  gboolean  quit;
+  gboolean   quit;
+
+  GimpAsync *current_async;
 } GimpParallelRunAsyncThread;
 
 typedef struct
@@ -87,17 +90,22 @@ typedef struct
 
 /*  local function prototypes  */
 
-static void       gimp_parallel_notify_num_processors    (GimpGeglConfig               *config);
+static void                       gimp_parallel_notify_num_processors    (GimpGeglConfig               *config);
 
-static void       gimp_parallel_set_n_threads            (gint                          n_threads);
+static void                       gimp_parallel_set_n_threads            (gint                          n_threads,
+                                                                          gboolean                      finish_tasks);
 
-static void       gimp_parallel_run_async_set_n_threads  (gint                          n_threads);
-static gpointer   gimp_parallel_run_async_thread_func    (GimpParallelRunAsyncThread   *thread);
-static void       gimp_parallel_run_async_execute_task   (GimpParallelRunAsyncTask     *task);
-static void       gimp_parallel_run_async_cancel         (GimpAsync                    *async);
+static void                       gimp_parallel_run_async_set_n_threads  (gint                          n_threads,
+                                                                          gboolean                      finish_tasks);
+static gpointer                   gimp_parallel_run_async_thread_func    (GimpParallelRunAsyncThread   *thread);
+static void                       gimp_parallel_run_async_enqueue_task   (GimpParallelRunAsyncTask     *task);
+static GimpParallelRunAsyncTask * gimp_parallel_run_async_dequeue_task   (void);
+static gboolean                   gimp_parallel_run_async_execute_task   (GimpParallelRunAsyncTask     *task);
+static void                       gimp_parallel_run_async_abort_task     (GimpParallelRunAsyncTask     *task);
+static void                       gimp_parallel_run_async_cancel         (GimpAsync                    *async);
 
-static void       gimp_parallel_distribute_set_n_threads (gint                          n_threads);
-static gpointer   gimp_parallel_distribute_thread_func   (GimpParallelDistributeThread *thread);
+static void                       gimp_parallel_distribute_set_n_threads (gint                          n_threads);
+static gpointer                   gimp_parallel_distribute_thread_func   (GimpParallelDistributeThread *thread);
 
 
 /*  local variables  */
@@ -147,7 +155,7 @@ gimp_parallel_exit (Gimp *gimp)
                                         NULL);
 
   /* stop all threads */
-  gimp_parallel_set_n_threads (0);
+  gimp_parallel_set_n_threads (0, /* finish_tasks = */ FALSE);
 }
 
 GimpAsync *
@@ -180,50 +188,13 @@ gimp_parallel_run_async_full (gint                     priority,
 
   if (gimp_parallel_run_async_n_threads > 0)
     {
-      GList *link;
-      GList *iter;
-
-      link       = g_list_alloc ();
-      link->data = task;
-
-      g_object_set_data (G_OBJECT (async),
-                         "gimp-parallel-run-async-link", link);
-
       g_signal_connect_after (async, "cancel",
                               G_CALLBACK (gimp_parallel_run_async_cancel),
                               NULL);
 
       g_mutex_lock (&gimp_parallel_run_async_mutex);
 
-      for (iter = g_queue_peek_tail_link (&gimp_parallel_run_async_queue);
-           iter;
-           iter = g_list_previous (iter))
-        {
-          GimpParallelRunAsyncTask *other_task =
-            (GimpParallelRunAsyncTask *) iter->data;
-
-          if (other_task->priority <= task->priority)
-            break;
-        }
-
-      if (iter)
-        {
-          link->prev = iter;
-          link->next = iter->next;
-
-          iter->next = link;
-
-          if (link->next)
-            link->next->prev = link;
-          else
-            gimp_parallel_run_async_queue.tail = link;
-
-          gimp_parallel_run_async_queue.length++;
-        }
-      else
-        {
-          g_queue_push_head_link (&gimp_parallel_run_async_queue, link);
-        }
+      gimp_parallel_run_async_enqueue_task (task);
 
       g_cond_signal (&gimp_parallel_run_async_cond);
 
@@ -231,7 +202,7 @@ gimp_parallel_run_async_full (gint                     priority,
     }
   else
     {
-      gimp_parallel_run_async_execute_task (task);
+      while (gimp_parallel_run_async_execute_task (task));
     }
 
   return async;
@@ -269,7 +240,7 @@ gimp_parallel_run_async_independent (GimpParallelRunAsyncFunc func,
               /* ^-- avoid "unused result" warning */
 #endif
 
-      gimp_parallel_run_async_execute_task (task);
+      while (gimp_parallel_run_async_execute_task (task));
 
       return NULL;
     },
@@ -441,30 +412,23 @@ gimp_parallel_distribute_area (const GeglRectangle            *area,
 static void
 gimp_parallel_notify_num_processors (GimpGeglConfig *config)
 {
-  gimp_parallel_set_n_threads (config->num_processors);
+  gimp_parallel_set_n_threads (config->num_processors,
+                               /* finish_tasks = */ TRUE);
 }
 
 static void
-gimp_parallel_set_n_threads (gint n_threads)
+gimp_parallel_set_n_threads (gint     n_threads,
+                             gboolean finish_tasks)
 {
-  gimp_parallel_run_async_set_n_threads (n_threads);
+  gimp_parallel_run_async_set_n_threads (n_threads, finish_tasks);
   gimp_parallel_distribute_set_n_threads (n_threads);
 }
 
 static void
-gimp_parallel_run_async_set_n_threads (gint n_threads)
+gimp_parallel_run_async_set_n_threads (gint     n_threads,
+                                       gboolean finish_tasks)
 {
   gint i;
-
-  /* FIXME:  when the number of GEGL threads is 1, GEGL disables some thread-
-   * safety mechanisms, such that, in particular, concurrent access to the same
-   * buffer is not safe.  ultimately, it should be possible to configure GEGL
-   * to remain thread-safe independently of the number of threads it uses, but
-   * for now, we simply disable parallel asynchronous operations when the
-   * number of threads is 1.
-   */
-  if (n_threads == 1)
-    n_threads = 0;
 
   n_threads = CLAMP (n_threads, 0, GIMP_PARALLEL_RUN_ASYNC_MAX_THREADS);
 
@@ -493,6 +457,9 @@ gimp_parallel_run_async_set_n_threads (gint n_threads)
             &gimp_parallel_run_async_threads[i];
 
           thread->quit = TRUE;
+
+          if (thread->current_async && ! finish_tasks)
+            gimp_cancelable_cancel (GIMP_CANCELABLE (thread->current_async));
         }
 
       g_cond_broadcast (&gimp_parallel_run_async_cond);
@@ -515,13 +482,12 @@ gimp_parallel_run_async_set_n_threads (gint n_threads)
       GimpParallelRunAsyncTask *task;
 
       /* finish remaining tasks */
-      while ((task = (GimpParallelRunAsyncTask *)
-                       g_queue_pop_head (&gimp_parallel_run_async_queue)))
+      while ((task = gimp_parallel_run_async_dequeue_task ()))
         {
-          g_object_set_data (G_OBJECT (task->async),
-                             "gimp-parallel-run-async-link", NULL);
-
-          gimp_parallel_run_async_execute_task (task);
+          if (finish_tasks)
+            while (gimp_parallel_run_async_execute_task (task));
+          else
+            gimp_parallel_run_async_abort_task (task);
         }
     }
 }
@@ -536,18 +502,31 @@ gimp_parallel_run_async_thread_func (GimpParallelRunAsyncThread *thread)
       GimpParallelRunAsyncTask *task;
 
       while (! thread->quit &&
-             (task =
-                (GimpParallelRunAsyncTask *) g_queue_pop_head (
-                                               &gimp_parallel_run_async_queue)))
+             (task = gimp_parallel_run_async_dequeue_task ()))
         {
-          g_object_set_data (G_OBJECT (task->async),
-                             "gimp-parallel-run-async-link", NULL);
+          gboolean resume;
 
-          g_mutex_unlock (&gimp_parallel_run_async_mutex);
+          thread->current_async = GIMP_ASYNC (g_object_ref (task->async));
 
-          gimp_parallel_run_async_execute_task (task);
+          do
+            {
+              g_mutex_unlock (&gimp_parallel_run_async_mutex);
 
-          g_mutex_lock (&gimp_parallel_run_async_mutex);
+              resume = gimp_parallel_run_async_execute_task (task);
+
+              g_mutex_lock (&gimp_parallel_run_async_mutex);
+            }
+          while (resume &&
+                 (g_queue_is_empty (&gimp_parallel_run_async_queue) ||
+                  task->priority <
+                  ((GimpParallelRunAsyncTask *)
+                     g_queue_peek_head (
+                       &gimp_parallel_run_async_queue))->priority));
+
+          g_clear_object (&thread->current_async);
+
+          if (resume)
+            gimp_parallel_run_async_enqueue_task (task);
         }
 
       if (thread->quit)
@@ -563,12 +542,103 @@ gimp_parallel_run_async_thread_func (GimpParallelRunAsyncThread *thread)
 }
 
 static void
+gimp_parallel_run_async_enqueue_task (GimpParallelRunAsyncTask *task)
+{
+  GList *link;
+  GList *iter;
+
+  if (gimp_async_is_canceled (task->async))
+    {
+      gimp_parallel_run_async_abort_task (task);
+
+      return;
+    }
+
+  link       = g_list_alloc ();
+  link->data = task;
+
+  g_object_set_data (G_OBJECT (task->async),
+                     "gimp-parallel-run-async-link", link);
+
+  for (iter = g_queue_peek_tail_link (&gimp_parallel_run_async_queue);
+       iter;
+       iter = g_list_previous (iter))
+    {
+      GimpParallelRunAsyncTask *other_task =
+        (GimpParallelRunAsyncTask *) iter->data;
+
+      if (other_task->priority <= task->priority)
+        break;
+    }
+
+  if (iter)
+    {
+      link->prev = iter;
+      link->next = iter->next;
+
+      iter->next = link;
+
+      if (link->next)
+        link->next->prev = link;
+      else
+        gimp_parallel_run_async_queue.tail = link;
+
+      gimp_parallel_run_async_queue.length++;
+    }
+  else
+    {
+      g_queue_push_head_link (&gimp_parallel_run_async_queue, link);
+    }
+}
+
+static GimpParallelRunAsyncTask *
+gimp_parallel_run_async_dequeue_task (void)
+{
+  GimpParallelRunAsyncTask *task;
+
+  task = (GimpParallelRunAsyncTask *) g_queue_pop_head (
+                                        &gimp_parallel_run_async_queue);
+
+  if (task)
+    {
+      g_object_set_data (G_OBJECT (task->async),
+                         "gimp-parallel-run-async-link", NULL);
+    }
+
+  return task;
+}
+
+static gboolean
 gimp_parallel_run_async_execute_task (GimpParallelRunAsyncTask *task)
 {
+  if (gimp_async_is_canceled (task->async))
+    {
+      gimp_parallel_run_async_abort_task (task);
+
+      return FALSE;
+    }
+
   task->func (task->async, task->user_data);
 
-  if (! gimp_async_is_stopped (task->async))
-    gimp_async_abort (task->async);
+  if (gimp_async_is_stopped (task->async))
+    {
+      g_object_unref (task->async);
+
+      g_slice_free (GimpParallelRunAsyncTask, task);
+
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static void
+gimp_parallel_run_async_abort_task (GimpParallelRunAsyncTask *task)
+{
+  if (task->user_data && task->user_data_destroy_func)
+    task->user_data_destroy_func (task->user_data);
+
+  gimp_async_abort (task->async);
 
   g_object_unref (task->async);
 
@@ -580,6 +650,12 @@ gimp_parallel_run_async_cancel (GimpAsync *async)
 {
   GList                    *link;
   GimpParallelRunAsyncTask *task = NULL;
+
+  link = (GList *) g_object_get_data (G_OBJECT (async),
+                                      "gimp-parallel-run-async-link");
+
+  if (! link)
+    return;
 
   g_mutex_lock (&gimp_parallel_run_async_mutex);
 
@@ -599,16 +675,7 @@ gimp_parallel_run_async_cancel (GimpAsync *async)
   g_mutex_unlock (&gimp_parallel_run_async_mutex);
 
   if (task)
-    {
-      if (task->user_data && task->user_data_destroy_func)
-        task->user_data_destroy_func (task->user_data);
-
-      g_slice_free (GimpParallelRunAsyncTask, task);
-
-      gimp_async_abort (async);
-
-      g_object_unref (async);
-    }
+    gimp_parallel_run_async_abort_task (task);
 }
 
 static void

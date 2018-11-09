@@ -120,6 +120,18 @@ query (void)
   gimp_register_load_handler (LOAD_PROC, "heic,heif", "");
   gimp_register_file_handler_mime (LOAD_PROC, "image/heif");
   gimp_register_file_handler_uri (LOAD_PROC);
+  /* HEIF is an ISOBMFF format whose "brand" (the value after "ftyp")
+   * can be of various values.
+   * See also: https://gitlab.gnome.org/GNOME/gimp/issues/2209
+   */
+  gimp_register_magic_load_handler (LOAD_PROC,
+                                    "heif,heic",
+                                    "",
+                                    "4,string,ftypheic,4,string,ftypheix,"
+                                    "4,string,ftyphevc,4,string,ftypheim,"
+                                    "4,string,ftypheis,4,string,ftyphevm,"
+                                    "4,string,ftyphevs,4,string,ftypmif1,"
+                                    "4,string,ftypmsf1");
 
   gimp_install_procedure (SAVE_PROC,
                           _("Exports HEIF images"),

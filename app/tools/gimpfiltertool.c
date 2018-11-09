@@ -149,8 +149,6 @@ static void      gimp_filter_tool_halt           (GimpFilterTool      *filter_to
 static void      gimp_filter_tool_commit         (GimpFilterTool      *filter_tool);
 
 static void      gimp_filter_tool_dialog         (GimpFilterTool      *filter_tool);
-static void      gimp_filter_tool_dialog_unmap   (GtkWidget           *dialog,
-                                                  GimpFilterTool      *filter_tool);
 static void      gimp_filter_tool_reset          (GimpFilterTool      *filter_tool);
 
 static void      gimp_filter_tool_create_filter  (GimpFilterTool      *filter_tool);
@@ -938,9 +936,25 @@ gimp_filter_tool_halt (GimpFilterTool *filter_tool)
 {
   GimpTool *tool = GIMP_TOOL (filter_tool);
 
-  g_clear_object (&filter_tool->gui);
-  filter_tool->settings_box = NULL;
-  filter_tool->region_combo = NULL;
+  gimp_filter_tool_disable_color_picking (filter_tool);
+
+  if (filter_tool->gui)
+    {
+      /* explicitly clear the dialog contents first, since we might be called
+       * during the dialog's delete event, in which case the dialog will be
+       * externally reffed, and will only die *after* gimp_filter_tool_halt()
+       * returns, and, in particular, after filter_tool->config has been
+       * cleared.  we want to make sure the gui is destroyed while
+       * filter_tool->config is still alive, since the gui's destruction may
+       * fire signals whose handlers rely on it.
+       */
+      gimp_gtk_container_clear (
+        GTK_CONTAINER (gimp_filter_tool_dialog_get_vbox (filter_tool)));
+
+      g_clear_object (&filter_tool->gui);
+      filter_tool->settings_box = NULL;
+      filter_tool->region_combo = NULL;
+    }
 
   if (filter_tool->filter)
     {
@@ -1013,17 +1027,6 @@ static void
 gimp_filter_tool_dialog (GimpFilterTool *filter_tool)
 {
   GIMP_FILTER_TOOL_GET_CLASS (filter_tool)->dialog (filter_tool);
-
-  g_signal_connect (gimp_tool_gui_get_dialog (filter_tool->gui), "unmap",
-                    G_CALLBACK (gimp_filter_tool_dialog_unmap),
-                    filter_tool);
-}
-
-static void
-gimp_filter_tool_dialog_unmap (GtkWidget      *dialog,
-                               GimpFilterTool *filter_tool)
-{
-  gimp_filter_tool_disable_color_picking (filter_tool);
 }
 
 static void

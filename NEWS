@@ -8,6 +8,100 @@ we do allow some new features here, if they are not too invasive.
 Otherwise, this branch is only for bug-fixes.
 
 
+Overview of Changes from GIMP 2.10.6 to GIMP 2.10.8
+===================================================
+
+Core:
+
+  - Use adaptive chunk size in GimpProjection when rendering the
+    projection asynchronously, rather than using a fixed chunk size.
+    This provides a better trade-off between throughput and
+    responsiveness dynamically, based on how fast the processing is.
+
+Tools:
+
+  - In all selection tools, show error on attempt to
+    subtract-from/intersect-with empty selection.
+  - Fix text along path not working with vertical text.
+  - Fix Text tool's frame position when undoing a move operation.
+  - Streamline Text tool's drawing blocking/unblocking logic.
+  - When moving a text layer using the text tool (through alt+drag),
+    don't change the layer's box mode to "fixed", which is unnecessary,
+    since the layer's size isn't affected.
+  - Transform and deformation operations now maintain color for fully
+    transparent pixels, making unerase and curves manipulation of alpha
+    channel more reliable.
+  - All transform tools now apply changes when you save or export/overwrite
+    an image without pressing Enter first to confirm changes.
+  - Heal, Dodge/Burn, Smudge, and Convolve tools now adjust the processed
+    buffer and mask_buffer regions according to the changes made to the
+    application region, as calculated by intersecting it with the
+    drawable and mask extents. This fixes wrong application position
+    when painting on a drawable whose origin is above/to the left of the
+    image's origin, and there's a selection active.
+
+Plug-ins:
+
+  - Port all plug-ins to the new iterator API in GEGL.
+  - Improve automatic detection of HEIC/HEIF files.
+  - Improve RawTherapee discovery by looking up registry key (should
+    become useful with RawTherapee 5.5 and more).
+
+Usability:
+
+  - Compatibility information in the Save dialog is now more understandable.
+    The minimum GIMP version for the XCF file is always written down when it
+    is GIMP 2.8 or over. The list of features warranting the minimum version
+    is now listed in an expander container rather than as tooltip, which
+    makes it more discoverable. The warning on compression is now displayed
+    as its own text under the checkbox and not as additional text to the
+    minimum GIMP version label.
+
+CLI:
+
+  - New self-explanatory --enable-win32-debug-console CLI option
+
+Debugging:
+
+  - New GimpBacktrace API provides an interface for creating and
+    traversing multi-threaded backtraces, as well as querying symbol
+    information. Backends are available for Linux and Windows.
+  - Performance log recording now available in the Dashboard dock.
+    The log contains a series of samples of the dashboard variables,
+    as well as the full program backtrace, when available. As such,
+    it essentially acts as a built-in profiler, which allows us to
+    correlate program execution with the information available
+    through the Dashboard.
+  - New performance-log-expand.py tool decodes a delta-encoded
+    performance log by expanding the deltas, producing a log where
+    each sample (and other relevant elements) contain complete
+    information. The structure of expanded logs is identical to that
+    of delta-encoded logs, the expanded log simply has no deltas.
+  - New performance-log-resolve.py tool resolves symbol information
+    in backtraces. The logs produced by GIMP only specify the program
+    counter at each stack frame, providing an address-map to map
+    program-counter addresses to actual symbols separately. This tool
+    looks up each program-counter address in the address map,
+    incorporating the relevant symbol information directly into the
+    backtrace.
+  - New performance-log-deduce.py tool that statistically deduces the
+    correct thread states based on backtrace address frequency, fixing
+    local inaccuracies.
+  - New performance-log-viewer.py tool that is a viewer for GIMP
+    performance logs, with a sample-selection area at the top and an
+    information area at the bottom. The sample-selection area visualizes
+    the sampled variables and markers using a simultaneous set of plots,
+    and displays the currently selected samples. The information area
+    shows global information stored in the log, as well as information
+    specific to the currently selected samples, including variable listing
+    and statistics, full backtrace, and profile/call-graph information.
+
+Translations:
+
+  - Updated translations: Danish, Dutch, Finnish, German, Hungarian,
+    Italian, Polish, Portuguese (Brazil), Spanish, Swedish, Ukrainian.
+
+
 Overview of Changes from GIMP 2.10.4 to GIMP 2.10.6
 ===================================================
 

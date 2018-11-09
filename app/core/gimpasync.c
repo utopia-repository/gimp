@@ -43,15 +43,17 @@
  *
  * Similarly, upon creation, a GimpAsync object is said to be "unsynced".  It
  * becomes synced once the execution of any of the completion callbacks added
- * through 'gimp_async_add_callback()' had started, after a successful call to
- * one of the 'gimp_waitable_wait()' family of functions.
+ * through 'gimp_async_add_callback()' had started, or after a successful call
+ * to one of the 'gimp_waitable_wait()' family of functions.
  *
  * Note that certain GimpAsync functions may only be called during a certain
- * state, on a certain thread, or depending on whether or nor the object is
+ * state, on a certain thread, or depending on whether or not the object is
  * synced, as detailed for each function.  When referring to threads, the "main
- * thread" is the thread running the main loop, and the "async thread" is the
- * thread calling 'gimp_async_finish()' or 'gimp_async_abort()' (which may also
- * be the main thread).
+ * thread" is the thread running the main loop, or any thread whose execution
+ * is synchronized with the main thread, and the "async thread" is the thread
+ * calling 'gimp_async_finish()' or 'gimp_async_abort()' (which may also be the
+ * main thread), or any thread whose execution is synchronized with the async
+ * thread.
  */
 
 
@@ -112,6 +114,7 @@ static void       gimp_async_run_callbacks         (GimpAsync             *async
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpAsync, gimp_async, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (GimpAsync)
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_WAITABLE,
                                                 gimp_async_waitable_iface_init)
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_CANCELABLE,
@@ -134,8 +137,6 @@ gimp_async_class_init (GimpAsyncClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->finalize = gimp_async_finalize;
-
-  g_type_class_add_private (klass, sizeof (GimpAsyncPrivate));
 }
 
 static void
@@ -155,9 +156,7 @@ gimp_async_cancelable_iface_init (GimpCancelableInterface *iface)
 static void
 gimp_async_init (GimpAsync *async)
 {
-  async->priv = G_TYPE_INSTANCE_GET_PRIVATE (async,
-                                             GIMP_TYPE_ASYNC,
-                                             GimpAsyncPrivate);
+  async->priv = gimp_async_get_instance_private (async);
 
   g_mutex_init (&async->priv->mutex);
   g_cond_init  (&async->priv->cond);

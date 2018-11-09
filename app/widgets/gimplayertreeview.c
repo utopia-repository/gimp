@@ -64,11 +64,7 @@
 #include "gimp-intl.h"
 
 
-#define HIGHLIGHT_COLOR_GREEN {0.20, 0.70, 0.20, 0.65}
-#define HIGHLIGHT_COLOR_RED   {0.80, 0.20, 0.20, 0.65}
-
-
-struct _GimpLayerTreeViewPriv
+struct _GimpLayerTreeViewPrivate
 {
   GtkWidget       *layer_mode_box;
   GtkAdjustment   *opacity_adjustment;
@@ -180,6 +176,7 @@ static void       gimp_layer_tree_view_alpha_changed              (GimpLayer    
 
 G_DEFINE_TYPE_WITH_CODE (GimpLayerTreeView, gimp_layer_tree_view,
                          GIMP_TYPE_DRAWABLE_TREE_VIEW,
+                         G_ADD_PRIVATE (GimpLayerTreeView)
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONTAINER_VIEW,
                                                 gimp_layer_tree_view_view_iface_init))
 
@@ -230,8 +227,6 @@ gimp_layer_tree_view_class_init (GimpLayerTreeViewClass *klass)
   item_view_class->delete_action         = "layers-delete";
   item_view_class->lock_content_help_id  = GIMP_HELP_LAYER_LOCK_PIXELS;
   item_view_class->lock_position_help_id = GIMP_HELP_LAYER_LOCK_POSITION;
-
-  g_type_class_add_private (klass, sizeof (GimpLayerTreeViewPriv));
 }
 
 static void
@@ -258,9 +253,7 @@ gimp_layer_tree_view_init (GimpLayerTreeView *view)
   GtkIconSize            icon_size;
   PangoAttribute        *attr;
 
-  view->priv = G_TYPE_INSTANCE_GET_PRIVATE (view,
-                                            GIMP_TYPE_LAYER_TREE_VIEW,
-                                            GimpLayerTreeViewPriv);
+  view->priv = gimp_layer_tree_view_get_instance_private (view);
 
   view->priv->model_column_mask =
     gimp_container_tree_store_columns_add (tree_view->model_columns,
@@ -352,10 +345,10 @@ gimp_layer_tree_view_constructed (GObject *object)
 
   gimp_highlightable_button_set_highlight_color (
     GIMP_HIGHLIGHTABLE_BUTTON (gimp_item_tree_view_get_new_button (item_view)),
-    &(GimpRGB) HIGHLIGHT_COLOR_GREEN);
+    GIMP_HIGHLIGHTABLE_BUTTON_COLOR_AFFIRMATIVE);
   gimp_highlightable_button_set_highlight_color (
     GIMP_HIGHLIGHTABLE_BUTTON (gimp_item_tree_view_get_delete_button (item_view)),
-    &(GimpRGB) HIGHLIGHT_COLOR_RED);
+    GIMP_HIGHLIGHTABLE_BUTTON_COLOR_NEGATIVE);
 
   layer_view->priv->mask_cell = gimp_cell_renderer_viewable_new ();
   gtk_tree_view_column_pack_start (tree_view->main_column,
@@ -400,7 +393,7 @@ gimp_layer_tree_view_constructed (GObject *object)
   layer_view->priv->anchor_button = button;
   gimp_highlightable_button_set_highlight_color (
     GIMP_HIGHLIGHTABLE_BUTTON (button),
-    &(GimpRGB) HIGHLIGHT_COLOR_GREEN);
+    GIMP_HIGHLIGHTABLE_BUTTON_COLOR_AFFIRMATIVE);
   gimp_container_view_enable_dnd (GIMP_CONTAINER_VIEW (layer_view),
                                   GTK_BUTTON (button),
                                   GIMP_TYPE_LAYER);

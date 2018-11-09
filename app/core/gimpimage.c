@@ -111,6 +111,7 @@ enum
   SELECTION_INVALIDATE,
   CLEAN,
   DIRTY,
+  SAVING,
   SAVED,
   EXPORTED,
   GUIDE_ADDED,
@@ -250,6 +251,7 @@ static void     gimp_image_active_vectors_notify (GimpItemTree      *tree,
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpImage, gimp_image, GIMP_TYPE_VIEWABLE,
+                         G_ADD_PRIVATE (GimpImage)
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_COLOR_MANAGED,
                                                 gimp_color_managed_iface_init)
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_PROJECTABLE,
@@ -430,6 +432,15 @@ gimp_image_class_init (GimpImageClass *klass)
                   G_TYPE_NONE, 1,
                   GIMP_TYPE_DIRTY_MASK);
 
+  gimp_image_signals[SAVING] =
+    g_signal_new ("saving",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpImageClass, saving),
+                  NULL, NULL,
+                  gimp_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
   gimp_image_signals[SAVED] =
     g_signal_new ("saved",
                   G_TYPE_FROM_CLASS (klass),
@@ -587,6 +598,7 @@ gimp_image_class_init (GimpImageClass *klass)
 
   klass->clean                        = NULL;
   klass->dirty                        = NULL;
+  klass->saving                       = NULL;
   klass->saved                        = NULL;
   klass->exported                     = NULL;
   klass->guide_added                  = NULL;
@@ -650,8 +662,6 @@ gimp_image_class_init (GimpImageClass *klass)
                                                        GIMP_TYPE_SYMMETRY,
                                                        GIMP_PARAM_READWRITE |
                                                        G_PARAM_CONSTRUCT));
-
-  g_type_class_add_private (klass, sizeof (GimpImagePrivate));
 }
 
 static void
@@ -691,8 +701,10 @@ gimp_pickable_iface_init (GimpPickableInterface *iface)
 static void
 gimp_image_init (GimpImage *image)
 {
-  GimpImagePrivate *private = GIMP_IMAGE_GET_PRIVATE (image);
+  GimpImagePrivate *private = gimp_image_get_instance_private (image);
   gint              i;
+
+  image->priv = private;
 
   private->ID                  = 0;
 
@@ -1551,14 +1563,6 @@ gimp_image_get_graph (GimpProjectable *projectable)
 
   gegl_node_add_child (private->graph, layers_node);
 
-  channels_node =
-    gimp_filter_stack_get_graph (GIMP_FILTER_STACK (private->channels->container));
-
-  gegl_node_add_child (private->graph, channels_node);
-
-  gegl_node_connect_to (layers_node,   "output",
-                        channels_node, "input");
-
   mask = ~gimp_image_get_visible_mask (image) & GIMP_COMPONENT_MASK_ALL;
 
   private->visible_mask =
@@ -1567,13 +1571,21 @@ gimp_image_get_graph (GimpProjectable *projectable)
                          "mask",      mask,
                          NULL);
 
-  gegl_node_connect_to (channels_node,         "output",
+  gegl_node_connect_to (layers_node,           "output",
                         private->visible_mask, "input");
+
+  channels_node =
+    gimp_filter_stack_get_graph (GIMP_FILTER_STACK (private->channels->container));
+
+  gegl_node_add_child (private->graph, channels_node);
+
+  gegl_node_connect_to (private->visible_mask, "output",
+                        channels_node,         "input");
 
   output = gegl_node_get_output_proxy (private->graph, "output");
 
-  gegl_node_connect_to (private->visible_mask, "output",
-                        output,                "input");
+  gegl_node_connect_to (channels_node, "output",
+                        output,        "input");
 
   return private->graph;
 }
@@ -2507,7 +2519,11 @@ gimp_image_get_xcf_version (GimpImage    *image,
 
   /* need version 8 for zlib compression */
   if (zlib_compression)
-    version = MAX (8, version);
+    {
+      ADD_REASON (g_strdup_printf (_("Internal zlib compression was "
+                                     "added in %s"), "GIMP 2.10"));
+      version = MAX (8, version);
+    }
 
   /* if version is 10 (lots of new layer modes), go to version 11 with
    * 64 bit offsets right away
@@ -3386,6 +3402,21 @@ gimp_image_get_dirty_time (GimpImage *image)
   g_return_val_if_fail (GIMP_IS_IMAGE (image), 0);
 
   return GIMP_IMAGE_GET_PRIVATE (image)->dirty_time;
+}
+
+/**
+ * gimp_image_saving:
+ * @image:
+ *
+ * Emits the "saving" signal, indicating that @image is about to be saved,
+ * or exported.
+ */
+void
+gimp_image_saving (GimpImage *image)
+{
+  g_return_if_fail (GIMP_IS_IMAGE (image));
+
+  g_signal_emit (image, gimp_image_signals[SAVING], 0);
 }
 
 /**

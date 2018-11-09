@@ -74,6 +74,10 @@ libapp_a_SOURCES = $(libapp_sources)
 gimp_@GIMP_APP_VERSION@_SOURCES = $(libapp_sources) main.c
 
 
+if PLATFORM_LINUX
+libdl = -ldl
+endif
+
 if PLATFORM_OSX
 framework_cocoa = -framework Cocoa
 endif
@@ -81,9 +85,12 @@ endif
 if OS_WIN32
 win32_ldflags = -mwindows -Wl,--tsaware $(WIN32_LARGE_ADDRESS_AWARE)
 
-# for GetProcessMemoryInfo() in the dashboard
+# for GimpDashboard and GimpBacktrace
 psapi_cflags = -DPSAPI_VERSION=1
 libpsapi = -lpsapi
+
+# for GimpBacktrace
+libdbghelp = -ldbghelp
 
 if HAVE_EXCHNDL
 exchndl = -lexchndl
@@ -173,9 +180,14 @@ gimpconsoleldadd = \
 	$(Z_LIBS)						\
 	$(JSON_C_LIBS)						\
 	$(LIBMYPAINT_LIBS)					\
+	$(LIBBACKTRACE_LIBS)					\
+	$(LIBUNWIND_LIBS)					\
 	$(INTLLIBS)						\
 	$(RT_LIBS)						\
-	$(libm)
+	$(libm)							\
+	$(libdl)						\
+	$(libpsapi)						\
+	$(libdbghelp)
 
 gimp_@GIMP_APP_VERSION@_LDFLAGS = \
 	$(AM_LDFLAGS)		\
@@ -197,7 +209,6 @@ gimp_@GIMP_APP_VERSION@_LDADD = \
 	$(GTK_MAC_INTEGRATION_LIBS)	\
 	$(DBUS_GLIB_LIBS)		\
 	$(gimpconsoleldadd)		\
-	$(libpsapi)			\
 	$(exchndl)			\
 	$(GIMPRC)
 

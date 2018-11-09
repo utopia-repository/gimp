@@ -17,6 +17,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#define GEGL_ITERATOR2_API
+
 #include "config.h"
 
 #include <string.h>
@@ -113,7 +115,7 @@ static void      gimp_histogram_calculate_async_callback (GimpAsync           *a
                                                           CalculateContext    *context);
 
 
-G_DEFINE_TYPE (GimpHistogram, gimp_histogram, GIMP_TYPE_OBJECT)
+G_DEFINE_TYPE_WITH_PRIVATE (GimpHistogram, gimp_histogram, GIMP_TYPE_OBJECT)
 
 #define parent_class gimp_histogram_parent_class
 
@@ -145,16 +147,12 @@ gimp_histogram_class_init (GimpHistogramClass *klass)
                                    g_param_spec_boolean ("values", NULL, NULL,
                                                          FALSE,
                                                          G_PARAM_READABLE));
-
-  g_type_class_add_private (klass, sizeof (GimpHistogramPrivate));
 }
 
 static void
 gimp_histogram_init (GimpHistogram *histogram)
 {
-  histogram->priv = G_TYPE_INSTANCE_GET_PRIVATE (histogram,
-                                                 GIMP_TYPE_HISTOGRAM,
-                                                 GimpHistogramPrivate);
+  histogram->priv = gimp_histogram_get_instance_private (histogram);
 
   histogram->priv->n_bins = 256;
 }
@@ -1018,7 +1016,7 @@ gimp_histogram_calculate_area (const GeglRectangle *area,
 
   iter = gegl_buffer_iterator_new (context->buffer, area, 0,
                                    data->format,
-                                   GEGL_ACCESS_READ, GEGL_ABYSS_NONE);
+                                   GEGL_ACCESS_READ, GEGL_ABYSS_NONE, 2);
 
   if (context->mask)
     {
@@ -1054,7 +1052,7 @@ gimp_histogram_calculate_area (const GeglRectangle *area,
 
   while (gegl_buffer_iterator_next (iter))
     {
-      const gfloat *data   = iter->data[0];
+      const gfloat *data   = iter->items[0].data;
       gint          length = iter->length;
       gfloat        max;
       gfloat        luminance;
@@ -1063,7 +1061,7 @@ gimp_histogram_calculate_area (const GeglRectangle *area,
 
       if (context->mask)
         {
-          const gfloat *mask_data = iter->data[1];
+          const gfloat *mask_data = iter->items[1].data;
 
           switch (n_components)
             {

@@ -1879,8 +1879,6 @@ gimp_display_shell_initialize_tool (GimpDisplayShell *shell,
       (! gimp_image_is_empty (image) ||
        gimp_tool_control_get_handle_empty_image (active_tool->control)))
     {
-      initialized = TRUE;
-
       /*  initialize the current tool if it has no drawable  */
       if (! active_tool->drawable)
         {
@@ -1898,14 +1896,20 @@ gimp_display_shell_initialize_tool (GimpDisplayShell *shell,
           if (image == gimp_item_get_image (GIMP_ITEM (active_tool->drawable)))
             {
               /*  When changing between drawables if the *same* image,
-               *  halt the tool so it doesn't get committed on tool
-               *  change. This is a pure "probably better this way"
+               *  stop the tool using its dirty action, so it doesn't
+               *  get committed on tool change, in case its dirty action
+               *  is HALT. This is a pure "probably better this way"
                *  decision because the user is likely changing their
-               *  mind or was simply on the wrong layer. See bug
-               *  #776370.
+               *  mind or was simply on the wrong layer. See bug #776370.
+               *
+               *  See also issues #1180 and #1202 for cases where we
+               *  actually *don't* want to halt the tool here, but rather
+               *  commit it, hence the use of the tool's dirty action.
                */
-              tool_manager_control_active (gimp, GIMP_TOOL_ACTION_HALT,
-                                           active_tool->display);
+              tool_manager_control_active (
+                gimp,
+                gimp_tool_control_get_dirty_action (active_tool->control),
+                active_tool->display);
             }
 
           if (procedure)
@@ -1925,6 +1929,11 @@ gimp_display_shell_initialize_tool (GimpDisplayShell *shell,
               gimp_filter_history_add (gimp, procedure);
               gimp_ui_manager_activate_action (manager, "filters",
                                                "filters-reshow");
+
+              /*  the procedure already initialized the tool; don't
+               *  reinitialize it below, since this can lead to errors.
+               */
+              initialized = TRUE;
             }
           else
             {
@@ -1935,7 +1944,12 @@ gimp_display_shell_initialize_tool (GimpDisplayShell *shell,
           /*  make sure the newly created tool has the right state  */
           gimp_display_shell_update_focus (shell, TRUE, image_coords, state);
 
-          initialized = tool_manager_initialize_active (gimp, display);
+          if (! initialized)
+            initialized = tool_manager_initialize_active (gimp, display);
+        }
+      else
+        {
+          initialized = TRUE;
         }
     }
 

@@ -1153,10 +1153,57 @@ gimp_marshal_VOID__INT_INT_BOOLEAN_BOOLEAN (GClosure     *closure,
             data2);
 }
 
-/* VOID: OBJECT (./gimpmarshal.list:55) */
+/* VOID: INT, OBJECT (./gimpmarshal.list:55) */
+/* Prototype for -Wmissing-prototypes */
+G_BEGIN_DECLS
+extern
+void gimp_marshal_VOID__INT_OBJECT (GClosure     *closure,
+                                    GValue       *return_value,
+                                    guint         n_param_values,
+                                    const GValue *param_values,
+                                    gpointer      invocation_hint,
+                                    gpointer      marshal_data);
+G_END_DECLS
+void
+gimp_marshal_VOID__INT_OBJECT (GClosure     *closure,
+                               GValue       *return_value G_GNUC_UNUSED,
+                               guint         n_param_values,
+                               const GValue *param_values,
+                               gpointer      invocation_hint G_GNUC_UNUSED,
+                               gpointer      marshal_data)
+{
+  typedef void (*GMarshalFunc_VOID__INT_OBJECT) (gpointer data1,
+                                                 gint arg1,
+                                                 gpointer arg2,
+                                                 gpointer data2);
+  GCClosure *cc = (GCClosure *) closure;
+  gpointer data1, data2;
+  GMarshalFunc_VOID__INT_OBJECT callback;
+
+  g_return_if_fail (n_param_values == 3);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values + 0);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values + 0);
+      data2 = closure->data;
+    }
+  callback = (GMarshalFunc_VOID__INT_OBJECT) (marshal_data ? marshal_data : cc->callback);
+
+  callback (data1,
+            g_marshal_value_peek_int (param_values + 1),
+            g_marshal_value_peek_object (param_values + 2),
+            data2);
+}
+
+/* VOID: OBJECT (./gimpmarshal.list:56) */
 #define gimp_marshal_VOID__OBJECT	g_cclosure_marshal_VOID__OBJECT
 
-/* VOID: OBJECT, BOOLEAN (./gimpmarshal.list:56) */
+/* VOID: OBJECT, BOOLEAN (./gimpmarshal.list:57) */
 /* Prototype for -Wmissing-prototypes */
 G_BEGIN_DECLS
 extern
@@ -1203,7 +1250,7 @@ gimp_marshal_VOID__OBJECT_BOOLEAN (GClosure     *closure,
             data2);
 }
 
-/* VOID: OBJECT, INT (./gimpmarshal.list:57) */
+/* VOID: OBJECT, INT (./gimpmarshal.list:58) */
 /* Prototype for -Wmissing-prototypes */
 G_BEGIN_DECLS
 extern
@@ -1250,7 +1297,7 @@ gimp_marshal_VOID__OBJECT_INT (GClosure     *closure,
             data2);
 }
 
-/* VOID: OBJECT, OBJECT (./gimpmarshal.list:58) */
+/* VOID: OBJECT, OBJECT (./gimpmarshal.list:59) */
 /* Prototype for -Wmissing-prototypes */
 G_BEGIN_DECLS
 extern
@@ -1297,7 +1344,7 @@ gimp_marshal_VOID__OBJECT_OBJECT (GClosure     *closure,
             data2);
 }
 
-/* VOID: OBJECT, POINTER (./gimpmarshal.list:59) */
+/* VOID: OBJECT, POINTER (./gimpmarshal.list:60) */
 /* Prototype for -Wmissing-prototypes */
 G_BEGIN_DECLS
 extern
@@ -1344,7 +1391,7 @@ gimp_marshal_VOID__OBJECT_POINTER (GClosure     *closure,
             data2);
 }
 
-/* VOID: OBJECT, STRING, STRING (./gimpmarshal.list:60) */
+/* VOID: OBJECT, STRING, STRING (./gimpmarshal.list:61) */
 /* Prototype for -Wmissing-prototypes */
 G_BEGIN_DECLS
 extern
@@ -1393,10 +1440,10 @@ gimp_marshal_VOID__OBJECT_STRING_STRING (GClosure     *closure,
             data2);
 }
 
-/* VOID: POINTER (./gimpmarshal.list:61) */
+/* VOID: POINTER (./gimpmarshal.list:62) */
 #define gimp_marshal_VOID__POINTER	g_cclosure_marshal_VOID__POINTER
 
-/* VOID: POINTER, BOXED (./gimpmarshal.list:62) */
+/* VOID: POINTER, BOXED (./gimpmarshal.list:63) */
 /* Prototype for -Wmissing-prototypes */
 G_BEGIN_DECLS
 extern
@@ -1443,7 +1490,7 @@ gimp_marshal_VOID__POINTER_BOXED (GClosure     *closure,
             data2);
 }
 
-/* VOID: POINTER, ENUM (./gimpmarshal.list:63) */
+/* VOID: POINTER, ENUM (./gimpmarshal.list:64) */
 /* Prototype for -Wmissing-prototypes */
 G_BEGIN_DECLS
 extern
@@ -1490,7 +1537,7 @@ gimp_marshal_VOID__POINTER_ENUM (GClosure     *closure,
             data2);
 }
 
-/* VOID: POINTER, FLAGS, BOOLEAN (./gimpmarshal.list:64) */
+/* VOID: POINTER, FLAGS, BOOLEAN (./gimpmarshal.list:65) */
 /* Prototype for -Wmissing-prototypes */
 G_BEGIN_DECLS
 extern
@@ -1539,7 +1586,7 @@ gimp_marshal_VOID__POINTER_FLAGS_BOOLEAN (GClosure     *closure,
             data2);
 }
 
-/* VOID: POINTER, OBJECT, ENUM, POINTER, POINTER, BOXED (./gimpmarshal.list:65) */
+/* VOID: POINTER, OBJECT, ENUM, POINTER, POINTER, BOXED (./gimpmarshal.list:66) */
 /* Prototype for -Wmissing-prototypes */
 G_BEGIN_DECLS
 extern
@@ -1594,7 +1641,7 @@ gimp_marshal_VOID__POINTER_OBJECT_ENUM_POINTER_POINTER_BOXED (GClosure     *clos
             data2);
 }
 
-/* VOID: POINTER, UINT, FLAGS (./gimpmarshal.list:66) */
+/* VOID: POINTER, UINT, FLAGS (./gimpmarshal.list:67) */
 /* Prototype for -Wmissing-prototypes */
 G_BEGIN_DECLS
 extern
@@ -1643,10 +1690,10 @@ gimp_marshal_VOID__POINTER_UINT_FLAGS (GClosure     *closure,
             data2);
 }
 
-/* VOID: STRING (./gimpmarshal.list:67) */
+/* VOID: STRING (./gimpmarshal.list:68) */
 #define gimp_marshal_VOID__STRING	g_cclosure_marshal_VOID__STRING
 
-/* VOID: STRING, BOOLEAN, UINT, FLAGS (./gimpmarshal.list:68) */
+/* VOID: STRING, BOOLEAN, UINT, FLAGS (./gimpmarshal.list:69) */
 /* Prototype for -Wmissing-prototypes */
 G_BEGIN_DECLS
 extern
@@ -1697,7 +1744,7 @@ gimp_marshal_VOID__STRING_BOOLEAN_UINT_FLAGS (GClosure     *closure,
             data2);
 }
 
-/* VOID: STRING, DOUBLE, STRING, DOUBLE, STRING (./gimpmarshal.list:69) */
+/* VOID: STRING, DOUBLE, STRING, DOUBLE, STRING (./gimpmarshal.list:70) */
 /* Prototype for -Wmissing-prototypes */
 G_BEGIN_DECLS
 extern
@@ -1750,7 +1797,7 @@ gimp_marshal_VOID__STRING_DOUBLE_STRING_DOUBLE_STRING (GClosure     *closure,
             data2);
 }
 
-/* VOID: STRING, FLAGS (./gimpmarshal.list:70) */
+/* VOID: STRING, FLAGS (./gimpmarshal.list:71) */
 /* Prototype for -Wmissing-prototypes */
 G_BEGIN_DECLS
 extern
@@ -1797,7 +1844,7 @@ gimp_marshal_VOID__STRING_FLAGS (GClosure     *closure,
             data2);
 }
 
-/* VOID: STRING, STRING, STRING (./gimpmarshal.list:71) */
+/* VOID: STRING, STRING, STRING (./gimpmarshal.list:72) */
 /* Prototype for -Wmissing-prototypes */
 G_BEGIN_DECLS
 extern
@@ -1846,6 +1893,6 @@ gimp_marshal_VOID__STRING_STRING_STRING (GClosure     *closure,
             data2);
 }
 
-/* VOID: VOID (./gimpmarshal.list:72) */
+/* VOID: VOID (./gimpmarshal.list:73) */
 #define gimp_marshal_VOID__VOID	g_cclosure_marshal_VOID__VOID
 

@@ -674,6 +674,9 @@
 #define GIMP_HELP_DASHBOARD_GROUPS                "gimp-dashboard-groups"
 #define GIMP_HELP_DASHBOARD_UPDATE_INTERVAL       "gimp-dashboard-update-interval"
 #define GIMP_HELP_DASHBOARD_HISTORY_DURATION      "gimp-dashboard-history-duration"
+#define GIMP_HELP_DASHBOARD_LOG_RECORD            "gimp-dashboard-log-record"
+#define GIMP_HELP_DASHBOARD_LOG_ADD_MARKER        "gimp-dashboard-log-add-marker"
+#define GIMP_HELP_DASHBOARD_LOG_ADD_EMPTY_MARKER  "gimp-dashboard-log-add-empty-marker"
 #define GIMP_HELP_DASHBOARD_RESET                 "gimp-dashboard-reset"
 #define GIMP_HELP_DASHBOARD_LOW_SWAP_SPACE_WARNING "gimp-dashboard-low-swap-space-warning"
 
@@ -715,6 +718,7 @@
 
 #define GIMP_HELP_WINDOWS_SHOW_DOCK               "gimp-windows-show-dock"
 #define GIMP_HELP_WINDOWS_HIDE_DOCKS              "gimp-windows-hide-docks"
+#define GIMP_HELP_WINDOWS_SHOW_TABS               "gimp-windows-show-tabs"
 #define GIMP_HELP_WINDOWS_TABS_POSITION           "gimp-windows-tabs-position"
 #define GIMP_HELP_WINDOWS_USE_SINGLE_WINDOW_MODE  "gimp-windows-use-single-window-mode"
 #define GIMP_HELP_WINDOWS_OPEN_RECENT_DOCK        "gimp-windows-open-recent-dock"

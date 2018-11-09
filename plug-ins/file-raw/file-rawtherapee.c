@@ -33,6 +33,7 @@
 
 
 #define LOAD_THUMB_PROC "file-rawtherapee-load-thumb"
+#define REGISTRY_KEY_BASE "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\rawtherapee"
 
 
 static void     init                 (void);
@@ -94,7 +95,7 @@ init (void)
   gchar    *exec_path        = file_raw_get_executable_path ("rawtherapee", NULL,
                                                              "RAWTHERAPEE_EXECUTABLE",
                                                              "com.rawtherapee.rawtherapee",
-                                                             NULL,
+                                                             REGISTRY_KEY_BASE,
                                                              &search_path);
   gchar    *argv[]             = { exec_path, "-v", NULL };
   gchar    *rawtherapee_stdout = NULL;
@@ -297,7 +298,7 @@ load_image (const gchar  *filename,
   gchar    *exec_path          = file_raw_get_executable_path ("rawtherapee", NULL,
                                                                "RAWTHERAPEE_EXECUTABLE",
                                                                "com.rawtherapee.rawtherapee",
-                                                               NULL,
+                                                               REGISTRY_KEY_BASE,
                                                                &search_path);
 
   /* linear sRGB for now as GIMP uses that internally in many places anyway */
@@ -403,7 +404,7 @@ load_thumbnail_image (const gchar   *filename,
   gchar    *exec_path   = file_raw_get_executable_path ("rawtherapee", "-cli",
                                                         "RAWTHERAPEE_EXECUTABLE",
                                                         "com.rawtherapee.rawtherapee",
-                                                        NULL,
+                                                        REGISTRY_KEY_BASE,
                                                         &search_path);
   gchar *argv[] =
     {

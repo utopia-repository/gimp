@@ -222,10 +222,19 @@ void gimp_marshal_VOID__INT_INT_BOOLEAN_BOOLEAN (GClosure     *closure,
                                                  gpointer      invocation_hint,
                                                  gpointer      marshal_data);
 
-/* VOID: OBJECT (./gimpmarshal.list:55) */
+/* VOID: INT, OBJECT (./gimpmarshal.list:55) */
+extern
+void gimp_marshal_VOID__INT_OBJECT (GClosure     *closure,
+                                    GValue       *return_value,
+                                    guint         n_param_values,
+                                    const GValue *param_values,
+                                    gpointer      invocation_hint,
+                                    gpointer      marshal_data);
+
+/* VOID: OBJECT (./gimpmarshal.list:56) */
 #define gimp_marshal_VOID__OBJECT	g_cclosure_marshal_VOID__OBJECT
 
-/* VOID: OBJECT, BOOLEAN (./gimpmarshal.list:56) */
+/* VOID: OBJECT, BOOLEAN (./gimpmarshal.list:57) */
 extern
 void gimp_marshal_VOID__OBJECT_BOOLEAN (GClosure     *closure,
                                         GValue       *return_value,
@@ -234,7 +243,7 @@ void gimp_marshal_VOID__OBJECT_BOOLEAN (GClosure     *closure,
                                         gpointer      invocation_hint,
                                         gpointer      marshal_data);
 
-/* VOID: OBJECT, INT (./gimpmarshal.list:57) */
+/* VOID: OBJECT, INT (./gimpmarshal.list:58) */
 extern
 void gimp_marshal_VOID__OBJECT_INT (GClosure     *closure,
                                     GValue       *return_value,
@@ -243,7 +252,7 @@ void gimp_marshal_VOID__OBJECT_INT (GClosure     *closure,
                                     gpointer      invocation_hint,
                                     gpointer      marshal_data);
 
-/* VOID: OBJECT, OBJECT (./gimpmarshal.list:58) */
+/* VOID: OBJECT, OBJECT (./gimpmarshal.list:59) */
 extern
 void gimp_marshal_VOID__OBJECT_OBJECT (GClosure     *closure,
                                        GValue       *return_value,
@@ -252,7 +261,7 @@ void gimp_marshal_VOID__OBJECT_OBJECT (GClosure     *closure,
                                        gpointer      invocation_hint,
                                        gpointer      marshal_data);
 
-/* VOID: OBJECT, POINTER (./gimpmarshal.list:59) */
+/* VOID: OBJECT, POINTER (./gimpmarshal.list:60) */
 extern
 void gimp_marshal_VOID__OBJECT_POINTER (GClosure     *closure,
                                         GValue       *return_value,
@@ -261,7 +270,7 @@ void gimp_marshal_VOID__OBJECT_POINTER (GClosure     *closure,
                                         gpointer      invocation_hint,
                                         gpointer      marshal_data);
 
-/* VOID: OBJECT, STRING, STRING (./gimpmarshal.list:60) */
+/* VOID: OBJECT, STRING, STRING (./gimpmarshal.list:61) */
 extern
 void gimp_marshal_VOID__OBJECT_STRING_STRING (GClosure     *closure,
                                               GValue       *return_value,
@@ -270,10 +279,10 @@ void gimp_marshal_VOID__OBJECT_STRING_STRING (GClosure     *closure,
                                               gpointer      invocation_hint,
                                               gpointer      marshal_data);
 
-/* VOID: POINTER (./gimpmarshal.list:61) */
+/* VOID: POINTER (./gimpmarshal.list:62) */
 #define gimp_marshal_VOID__POINTER	g_cclosure_marshal_VOID__POINTER
 
-/* VOID: POINTER, BOXED (./gimpmarshal.list:62) */
+/* VOID: POINTER, BOXED (./gimpmarshal.list:63) */
 extern
 void gimp_marshal_VOID__POINTER_BOXED (GClosure     *closure,
                                        GValue       *return_value,
@@ -282,7 +291,7 @@ void gimp_marshal_VOID__POINTER_BOXED (GClosure     *closure,
                                        gpointer      invocation_hint,
                                        gpointer      marshal_data);
 
-/* VOID: POINTER, ENUM (./gimpmarshal.list:63) */
+/* VOID: POINTER, ENUM (./gimpmarshal.list:64) */
 extern
 void gimp_marshal_VOID__POINTER_ENUM (GClosure     *closure,
                                       GValue       *return_value,
@@ -291,7 +300,7 @@ void gimp_marshal_VOID__POINTER_ENUM (GClosure     *closure,
                                       gpointer      invocation_hint,
                                       gpointer      marshal_data);
 
-/* VOID: POINTER, FLAGS, BOOLEAN (./gimpmarshal.list:64) */
+/* VOID: POINTER, FLAGS, BOOLEAN (./gimpmarshal.list:65) */
 extern
 void gimp_marshal_VOID__POINTER_FLAGS_BOOLEAN (GClosure     *closure,
                                                GValue       *return_value,
@@ -300,7 +309,7 @@ void gimp_marshal_VOID__POINTER_FLAGS_BOOLEAN (GClosure     *closure,
                                                gpointer      invocation_hint,
                                                gpointer      marshal_data);
 
-/* VOID: POINTER, OBJECT, ENUM, POINTER, POINTER, BOXED (./gimpmarshal.list:65) */
+/* VOID: POINTER, OBJECT, ENUM, POINTER, POINTER, BOXED (./gimpmarshal.list:66) */
 extern
 void gimp_marshal_VOID__POINTER_OBJECT_ENUM_POINTER_POINTER_BOXED (GClosure     *closure,
                                                                    GValue       *return_value,
@@ -309,7 +318,7 @@ void gimp_marshal_VOID__POINTER_OBJECT_ENUM_POINTER_POINTER_BOXED (GClosure     
                                                                    gpointer      invocation_hint,
                                                                    gpointer      marshal_data);
 
-/* VOID: POINTER, UINT, FLAGS (./gimpmarshal.list:66) */
+/* VOID: POINTER, UINT, FLAGS (./gimpmarshal.list:67) */
 extern
 void gimp_marshal_VOID__POINTER_UINT_FLAGS (GClosure     *closure,
                                             GValue       *return_value,
@@ -318,10 +327,10 @@ void gimp_marshal_VOID__POINTER_UINT_FLAGS (GClosure     *closure,
                                             gpointer      invocation_hint,
                                             gpointer      marshal_data);
 
-/* VOID: STRING (./gimpmarshal.list:67) */
+/* VOID: STRING (./gimpmarshal.list:68) */
 #define gimp_marshal_VOID__STRING	g_cclosure_marshal_VOID__STRING
 
-/* VOID: STRING, BOOLEAN, UINT, FLAGS (./gimpmarshal.list:68) */
+/* VOID: STRING, BOOLEAN, UINT, FLAGS (./gimpmarshal.list:69) */
 extern
 void gimp_marshal_VOID__STRING_BOOLEAN_UINT_FLAGS (GClosure     *closure,
                                                    GValue       *return_value,
@@ -330,7 +339,7 @@ void gimp_marshal_VOID__STRING_BOOLEAN_UINT_FLAGS (GClosure     *closure,
                                                    gpointer      invocation_hint,
                                                    gpointer      marshal_data);
 
-/* VOID: STRING, DOUBLE, STRING, DOUBLE, STRING (./gimpmarshal.list:69) */
+/* VOID: STRING, DOUBLE, STRING, DOUBLE, STRING (./gimpmarshal.list:70) */
 extern
 void gimp_marshal_VOID__STRING_DOUBLE_STRING_DOUBLE_STRING (GClosure     *closure,
                                                             GValue       *return_value,
@@ -339,7 +348,7 @@ void gimp_marshal_VOID__STRING_DOUBLE_STRING_DOUBLE_STRING (GClosure     *closur
                                                             gpointer      invocation_hint,
                                                             gpointer      marshal_data);
 
-/* VOID: STRING, FLAGS (./gimpmarshal.list:70) */
+/* VOID: STRING, FLAGS (./gimpmarshal.list:71) */
 extern
 void gimp_marshal_VOID__STRING_FLAGS (GClosure     *closure,
                                       GValue       *return_value,
@@ -348,7 +357,7 @@ void gimp_marshal_VOID__STRING_FLAGS (GClosure     *closure,
                                       gpointer      invocation_hint,
                                       gpointer      marshal_data);
 
-/* VOID: STRING, STRING, STRING (./gimpmarshal.list:71) */
+/* VOID: STRING, STRING, STRING (./gimpmarshal.list:72) */
 extern
 void gimp_marshal_VOID__STRING_STRING_STRING (GClosure     *closure,
                                               GValue       *return_value,
@@ -357,7 +366,7 @@ void gimp_marshal_VOID__STRING_STRING_STRING (GClosure     *closure,
                                               gpointer      invocation_hint,
                                               gpointer      marshal_data);
 
-/* VOID: VOID (./gimpmarshal.list:72) */
+/* VOID: VOID (./gimpmarshal.list:73) */
 #define gimp_marshal_VOID__VOID	g_cclosure_marshal_VOID__VOID
 
 

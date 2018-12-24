@@ -66,7 +66,7 @@ Build-Depends: debhelper (>= 11),
                python-dev (>= 2.6.6-3),
                python-gtk2-dev (>= 2.10.4),
                xsltproc
-Standards-Version: 4.2.1
+Standards-Version: 4.3.0
 X-Ubuntu-Use-Langpack: yes
 Vcs-Git: https://salsa.debian.org/gnome-team/gimp.git
 Vcs-Browser: https://salsa.debian.org/gnome-team/gimp

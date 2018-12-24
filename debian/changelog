@@ -1,3 +1,10 @@
+gimp (2.10.8-2) unstable; urgency=medium
+
+  * Restore -Wl,-O1 to our LDFLAGS
+  * Bump Standards-Version to 4.3.0
+
+ -- Jeremy Bicha <jbicha@debian.org>  Mon, 24 Dec 2018 09:17:02 -0500
+
 gimp (2.10.8-1) unstable; urgency=medium
 
   * New upstream release

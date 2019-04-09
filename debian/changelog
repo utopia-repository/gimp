@@ -6,6 +6,7 @@ gimp (2.10.10-0utopia1) UNRELEASED; urgency=medium
       exiting the config window (upstream issue #2470)
   * debian/gimp(-python).install: add new plugins file-dds, spyro_plus
   * debian/libgimp2.0.symbols: add new symbols
+  * Bump minimum babl to 0.1.62 and gegl to 0.4.14
 
  -- James Lu <james@overdrivenetworks.com>  Tue, 09 Apr 2019 01:08:56 -0700
 

@@ -45,6 +45,7 @@ usr/lib/gimp/2.0/plug-ins/file-cel
 usr/lib/gimp/2.0/plug-ins/file-compressor
 usr/lib/gimp/2.0/plug-ins/file-csource
 usr/lib/gimp/2.0/plug-ins/file-darktable
+usr/lib/gimp/2.0/plug-ins/file-dds
 usr/lib/gimp/2.0/plug-ins/file-desktop-link
 usr/lib/gimp/2.0/plug-ins/file-dicom
 usr/lib/gimp/2.0/plug-ins/file-exr

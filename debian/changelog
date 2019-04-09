@@ -1,4 +1,4 @@
-gimp (2.10.10-0utopia1) UNRELEASED; urgency=medium
+gimp (2.10.10-0utopia1) experimental; urgency=medium
 
   * Utopia Repository upload.
   * New upstream release
@@ -8,7 +8,7 @@ gimp (2.10.10-0utopia1) UNRELEASED; urgency=medium
   * debian/libgimp2.0.symbols: add new symbols
   * Bump minimum babl to 0.1.62 and gegl to 0.4.14
 
- -- James Lu <james@overdrivenetworks.com>  Tue, 09 Apr 2019 01:08:56 -0700
+ -- James Lu <james@overdrivenetworks.com>  Tue, 09 Apr 2019 13:20:15 -0700
 
 gimp (2.10.8-2) unstable; urgency=medium
 

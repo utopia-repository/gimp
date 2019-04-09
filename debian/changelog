@@ -1,6 +1,9 @@
-gimp (2.10.10-1) UNRELEASED; urgency=medium
+gimp (2.10.10-0utopia1) UNRELEASED; urgency=medium
 
+  * Utopia Repository upload.
   * New upstream release
+    - Fix grid spacing being truncated from 1px to 0.90px when losing focus /
+      exiting the config window (upstream issue #2470)
 
  -- James Lu <james@overdrivenetworks.com>  Tue, 09 Apr 2019 01:08:56 -0700
 

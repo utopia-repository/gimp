@@ -5,7 +5,8 @@
 Source: gimp
 Priority: optional
 Section: graphics
-Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
+Maintainer: James Lu <james@overdrivenetworks.com>
+XSBC-Original-Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
 Uploaders: Jeremy Bicha <jbicha@debian.org>, Ari Pollak <ari@debian.org>
 Build-Depends: debhelper (>= 11),
                desktop-file-utils <!nocheck>,

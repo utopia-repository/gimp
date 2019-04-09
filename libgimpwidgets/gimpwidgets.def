@@ -24,9 +24,11 @@ EXPORTS
 	gimp_cell_renderer_toggle_get_type
 	gimp_cell_renderer_toggle_new
 	gimp_chain_button_get_active
+	gimp_chain_button_get_icon_size
 	gimp_chain_button_get_type
 	gimp_chain_button_new
 	gimp_chain_button_set_active
+	gimp_chain_button_set_icon_size
 	gimp_chain_position_get_type
 	gimp_color_area_get_color
 	gimp_color_area_get_type
@@ -402,7 +404,10 @@ EXPORTS
 	gimp_size_entry_set_value_boundaries
 	gimp_size_entry_show_unit_menu
 	gimp_size_entry_update_policy_get_type
+        gimp_spin_button_get_type
 	gimp_spin_button_new
+        gimp_spin_button_new_
+        gimp_spin_button_new_with_range
 	gimp_standard_help_func
 	gimp_stock_init
 	gimp_string_combo_box_get_active

@@ -111,6 +111,8 @@ libappcore_a_sources = \
 	gimpbrush-load.c			\
 	gimpbrush-load.h			\
 	gimpbrush-private.h			\
+	gimpbrush-save.c			\
+	gimpbrush-save.h			\
 	gimpbrush-transform.cc			\
 	gimpbrush-transform.h			\
 	gimpbrushcache.c			\
@@ -127,6 +129,8 @@ libappcore_a_sources = \
 	gimpbrushpipe.h				\
 	gimpbrushpipe-load.c			\
 	gimpbrushpipe-load.h			\
+	gimpbrushpipe-save.c			\
+	gimpbrushpipe-save.h			\
 	gimpbuffer.c				\
 	gimpbuffer.h				\
 	gimpcancelable.c			\
@@ -141,6 +145,8 @@ libappcore_a_sources = \
 	gimpchannelpropundo.h			\
 	gimpchannelundo.c			\
 	gimpchannelundo.h			\
+	gimpchunkiterator.c			\
+	gimpchunkiterator.h			\
 	gimpcontainer.c				\
 	gimpcontainer.h				\
 	gimpcontainer-filter.c			\
@@ -274,8 +280,6 @@ libappcore_a_sources = \
 	gimpimage-crop.h			\
 	gimpimage-duplicate.c			\
 	gimpimage-duplicate.h			\
-	gimpimage-fade.c			\
-	gimpimage-fade.h			\
 	gimpimage-flip.c			\
 	gimpimage-flip.h			\
 	gimpimage-grid.h                	\
@@ -353,6 +357,8 @@ libappcore_a_sources = \
 	gimplayerstack.h			\
 	gimplayerundo.c				\
 	gimplayerundo.h				\
+	gimplineart.c				\
+	gimplineart.h				\
 	gimplist.c				\
 	gimplist.h				\
 	gimpmaskundo.c				\
@@ -373,6 +379,8 @@ libappcore_a_sources = \
 	gimppattern-header.h			\
 	gimppattern-load.c			\
 	gimppattern-load.h			\
+	gimppattern-save.c			\
+	gimppattern-save.h			\
 	gimppatternclipboard.c			\
 	gimppatternclipboard.h			\
 	gimppalette.c				\
@@ -399,7 +407,7 @@ libappcore_a_sources = \
 	gimppickable.h				\
 	gimppickable-auto-shrink.c		\
 	gimppickable-auto-shrink.h		\
-	gimppickable-contiguous-region.c	\
+	gimppickable-contiguous-region.cc	\
 	gimppickable-contiguous-region.h	\
 	gimpprogress.c				\
 	gimpprogress.h				\

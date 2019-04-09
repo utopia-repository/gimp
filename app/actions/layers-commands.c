@@ -57,6 +57,8 @@
 #include "text/gimptext-vectors.h"
 #include "text/gimptextlayer.h"
 
+#include "vectors/gimpstroke.h"
+#include "vectors/gimpvectors.h"
 #include "vectors/gimpvectors-warp.h"
 
 #include "widgets/gimpaction.h"
@@ -575,12 +577,15 @@ void
 layers_merge_down_cmd_callback (GtkAction *action,
                                 gpointer   data)
 {
-  GimpImage *image;
-  GimpLayer *layer;
+  GimpImage   *image;
+  GimpLayer   *layer;
+  GimpDisplay *display;
   return_if_no_layer (image, layer, data);
+  return_if_no_display (display, data);
 
   gimp_image_merge_down (image, layer, action_data_get_context (data),
-                         GIMP_EXPAND_AS_NECESSARY, NULL);
+                         GIMP_EXPAND_AS_NECESSARY,
+                         GIMP_PROGRESS (display), NULL);
   gimp_image_flush (image);
 }
 
@@ -656,12 +661,42 @@ layers_text_along_vectors_cmd_callback (GtkAction *action,
 
   if (GIMP_IS_TEXT_LAYER (layer))
     {
+      gdouble      box_width;
+      gdouble      box_height;
       GimpVectors *new_vectors;
+      gdouble      offset;
+
+      box_width  = gimp_item_get_width  (GIMP_ITEM (layer));
+      box_height = gimp_item_get_height (GIMP_ITEM (layer));
 
       new_vectors = gimp_text_vectors_new (image, GIMP_TEXT_LAYER (layer)->text);
 
-      gimp_vectors_warp_vectors (vectors, new_vectors,
-                                 0.5 * gimp_item_get_height (GIMP_ITEM (layer)));
+      offset = 0;
+      switch (GIMP_TEXT_LAYER (layer)->text->base_dir)
+        {
+        case GIMP_TEXT_DIRECTION_LTR:
+        case GIMP_TEXT_DIRECTION_RTL:
+          offset = 0.5 * box_height;
+          break;
+        case GIMP_TEXT_DIRECTION_TTB_RTL:
+        case GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT:
+        case GIMP_TEXT_DIRECTION_TTB_LTR:
+        case GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT:
+          {
+            GimpStroke *stroke = NULL;
+
+            while ((stroke = gimp_vectors_stroke_get_next (new_vectors, stroke)))
+              {
+                gimp_stroke_rotate (stroke, 0, 0, 270);
+                gimp_stroke_translate (stroke, 0, box_width);
+              }
+          }
+          offset = 0.5 * box_width;
+          break;
+        }
+
+
+      gimp_vectors_warp_vectors (vectors, new_vectors, offset);
 
       gimp_item_set_visible (GIMP_ITEM (new_vectors), TRUE, FALSE);
 

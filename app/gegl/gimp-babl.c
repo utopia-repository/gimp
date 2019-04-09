@@ -780,6 +780,25 @@ gimp_babl_is_valid (GimpImageBaseType base_type,
   g_return_val_if_reached (FALSE);
 }
 
+GimpComponentType
+gimp_babl_is_bounded (GimpPrecision precision)
+{
+  switch (gimp_babl_component_type (precision))
+    {
+    case GIMP_COMPONENT_TYPE_U8:
+    case GIMP_COMPONENT_TYPE_U16:
+    case GIMP_COMPONENT_TYPE_U32:
+      return TRUE;
+
+    case GIMP_COMPONENT_TYPE_HALF:
+    case GIMP_COMPONENT_TYPE_FLOAT:
+    case GIMP_COMPONENT_TYPE_DOUBLE:
+      return FALSE;
+    }
+
+  g_return_val_if_reached (FALSE);
+}
+
 const Babl *
 gimp_babl_format (GimpImageBaseType  base_type,
                   GimpPrecision      precision,
@@ -1264,6 +1283,32 @@ gimp_babl_component_format (GimpImageBaseType base_type,
     }
 
   g_return_val_if_reached (NULL);
+}
+
+const Babl *
+gimp_babl_format_change_component_type (const Babl        *format,
+                                        GimpComponentType  component)
+{
+  g_return_val_if_fail (format != NULL, NULL);
+
+  return gimp_babl_format (gimp_babl_format_get_base_type (format),
+                           gimp_babl_precision (
+                             component,
+                             gimp_babl_format_get_linear (format)),
+                           babl_format_has_alpha (format));
+}
+
+const Babl *
+gimp_babl_format_change_linear (const Babl *format,
+                                gboolean    linear)
+{
+  g_return_val_if_fail (format != NULL, NULL);
+
+  return gimp_babl_format (gimp_babl_format_get_base_type (format),
+                           gimp_babl_precision (
+                             gimp_babl_format_get_component_type (format),
+                             linear),
+                           babl_format_has_alpha (format));
 }
 
 gchar **

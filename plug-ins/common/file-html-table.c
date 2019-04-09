@@ -221,6 +221,7 @@ save_image (GFile       *file,
 {
   const Babl    *format = babl_format ("R'G'B'A u8");
   GeglSampler   *sampler;
+  GCancellable  *cancellable;
   GOutputStream *output;
   gint           row, col;
   gint           cols, rows;
@@ -438,6 +439,11 @@ save_image (GFile       *file,
 
  fail:
 
+  cancellable = g_cancellable_new ();
+  g_cancellable_cancel (cancellable);
+  g_output_stream_close (output, cancellable, NULL);
+  g_object_unref (cancellable);
+
   g_object_unref (output);
   g_object_unref (sampler);
   g_free (width);
@@ -620,7 +626,7 @@ save_dialog (gint32 image_ID)
 
   adj = (GtkAdjustment *) gtk_adjustment_new (gtmvals.border,
                                               0, 1000, 1, 10, 0);
-  spinbutton = gtk_spin_button_new (adj, 1.0, 0);
+  spinbutton = gimp_spin_button_new (adj, 1.0, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
                              _("_Border:"), 0.0, 0.5,
@@ -668,7 +674,7 @@ save_dialog (gint32 image_ID)
 
   adj = (GtkAdjustment *) gtk_adjustment_new (gtmvals.cellpadding,
                                               0, 1000, 1, 10, 0);
-  spinbutton = gtk_spin_button_new (adj, 1.0, 0);
+  spinbutton = gimp_spin_button_new (adj, 1.0, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 3,
                              _("Cell-_padding:"), 0.0, 0.5,
@@ -683,7 +689,7 @@ save_dialog (gint32 image_ID)
 
   adj = (GtkAdjustment *) gtk_adjustment_new (gtmvals.cellspacing,
                                               0, 1000, 1, 10, 0);
-  spinbutton = gtk_spin_button_new (adj, 1.0, 0);
+  spinbutton = gimp_spin_button_new (adj, 1.0, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 4,
                              _("Cell-_spacing:"), 0.0, 0.5,

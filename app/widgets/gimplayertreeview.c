@@ -591,6 +591,16 @@ gimp_layer_tree_view_select_item (GimpContainerView *view,
         }
     }
 
+  if (! success)
+    {
+      GimpEditor *editor = GIMP_EDITOR (view);
+
+      /* currently, select_item() only ever fails when there is a floating
+       * selection, which can be committed/canceled through the editor buttons.
+       */
+      gimp_widget_blink (GTK_WIDGET (gimp_editor_get_button_box (editor)));
+    }
+
   return success;
 }
 
@@ -725,6 +735,8 @@ gimp_layer_tree_view_drop_uri_list (GimpContainerTreeView   *view,
                                               drop_pos,
                                               (GimpViewable **) &parent);
 
+  g_object_ref (image);
+
   for (list = uri_list; list; list = g_list_next (list))
     {
       const gchar       *uri   = list->data;
@@ -764,6 +776,8 @@ gimp_layer_tree_view_drop_uri_list (GimpContainerTreeView   *view,
     }
 
   gimp_image_flush (image);
+
+  g_object_unref (image);
 }
 
 static void

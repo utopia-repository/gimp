@@ -49,9 +49,11 @@
 #include "display/gimpdisplayshell-utils.h"
 
 #include "gimpcoloroptions.h"
+#include "gimppaintoptions-gui.h"
 #include "gimppainttool.h"
 #include "gimppainttool-paint.h"
 #include "gimptoolcontrol.h"
+#include "gimptools-utils.h"
 
 #include "gimp-intl.h"
 
@@ -104,11 +106,12 @@ static GimpCanvasItem *
 
 static gboolean  gimp_paint_tool_check_alpha (GimpPaintTool         *paint_tool,
                                               GimpDrawable          *drawable,
+                                              GimpDisplay           *display,
                                               GError               **error);
 
 static void   gimp_paint_tool_hard_notify    (GimpPaintOptions      *options,
                                               const GParamSpec      *pspec,
-                                              GimpTool              *tool);
+                                              GimpPaintTool         *paint_tool);
 static void   gimp_paint_tool_cursor_notify  (GimpDisplayConfig     *config,
                                               GParamSpec            *pspec,
                                               GimpPaintTool         *paint_tool);
@@ -150,6 +153,7 @@ gimp_paint_tool_init (GimpPaintTool *paint_tool)
   gimp_tool_control_set_action_opacity (tool->control,
                                         "context/context-opacity-set");
 
+  paint_tool->active        = TRUE;
   paint_tool->pick_colors   = FALSE;
   paint_tool->draw_line     = FALSE;
 
@@ -193,9 +197,9 @@ gimp_paint_tool_constructed (GObject *object)
 
   g_signal_connect_object (options, "notify::hard",
                            G_CALLBACK (gimp_paint_tool_hard_notify),
-                           tool, 0);
+                           paint_tool, 0);
 
-  gimp_paint_tool_hard_notify (options, NULL, tool);
+  gimp_paint_tool_hard_notify (options, NULL, paint_tool);
 
   paint_tool->show_cursor = display_config->show_paint_tool_cursor;
   paint_tool->draw_brush  = display_config->show_brush_outline;
@@ -256,6 +260,7 @@ gimp_paint_tool_button_press (GimpTool            *tool,
 {
   GimpDrawTool     *draw_tool  = GIMP_DRAW_TOOL (tool);
   GimpPaintTool    *paint_tool = GIMP_PAINT_TOOL (tool);
+  GimpPaintOptions *options    = GIMP_PAINT_TOOL_GET_OPTIONS (tool);
   GimpDisplayShell *shell      = gimp_display_get_shell (display);
   GimpImage        *image      = gimp_display_get_image (display);
   GimpDrawable     *drawable   = gimp_image_get_active_drawable (image);
@@ -280,13 +285,26 @@ gimp_paint_tool_button_press (GimpTool            *tool,
     {
       gimp_tool_message_literal (tool, display,
                                  _("The active layer's pixels are locked."));
+      gimp_tools_blink_lock_box (display->gimp, GIMP_ITEM (drawable));
       return;
     }
 
-  if (! gimp_paint_tool_check_alpha (paint_tool, drawable, &error))
+  if (! gimp_paint_tool_check_alpha (paint_tool, drawable, display, &error))
     {
+      GtkWidget *options_gui;
+      GtkWidget *mode_box;
+
       gimp_tool_message_literal (tool, display, error->message);
+
+      options_gui = gimp_tools_get_tool_options_gui (
+                      GIMP_TOOL_OPTIONS (options));
+      mode_box    = gimp_paint_options_gui_get_paint_mode_box (options_gui);
+
+      if (gtk_widget_is_sensitive (mode_box))
+        gimp_widget_blink (mode_box);
+
       g_clear_error (&error);
+
       return;
     }
 
@@ -471,9 +489,9 @@ gimp_paint_tool_cursor_update (GimpTool         *tool,
       GimpImage    *image    = gimp_display_get_image (display);
       GimpDrawable *drawable = gimp_image_get_active_drawable (image);
 
-      if (gimp_viewable_get_children (GIMP_VIEWABLE (drawable))      ||
-          gimp_item_is_content_locked (GIMP_ITEM (drawable))         ||
-          ! gimp_paint_tool_check_alpha (paint_tool, drawable, NULL) ||
+      if (gimp_viewable_get_children (GIMP_VIEWABLE (drawable))               ||
+          gimp_item_is_content_locked (GIMP_ITEM (drawable))                  ||
+          ! gimp_paint_tool_check_alpha (paint_tool, drawable, display, NULL) ||
           ! gimp_item_is_visible (GIMP_ITEM (drawable)))
         {
           modifier        = GIMP_CURSOR_MODIFIER_BAD;
@@ -640,9 +658,12 @@ gimp_paint_tool_oper_update (GimpTool         *tool,
 static void
 gimp_paint_tool_draw (GimpDrawTool *draw_tool)
 {
-  if (! gimp_color_tool_is_enabled (GIMP_COLOR_TOOL (draw_tool)))
+  GimpPaintTool *paint_tool = GIMP_PAINT_TOOL (draw_tool);
+
+
+  if (paint_tool->active &&
+      ! gimp_color_tool_is_enabled (GIMP_COLOR_TOOL (draw_tool)))
     {
-      GimpPaintTool  *paint_tool = GIMP_PAINT_TOOL (draw_tool);
       GimpPaintCore  *core       = paint_tool->core;
       GimpImage      *image      = gimp_display_get_image (draw_tool->display);
       GimpDrawable   *drawable   = gimp_image_get_active_drawable (image);
@@ -807,6 +828,7 @@ gimp_paint_tool_get_outline (GimpPaintTool *paint_tool,
 static gboolean
 gimp_paint_tool_check_alpha (GimpPaintTool  *paint_tool,
                              GimpDrawable   *drawable,
+                             GimpDisplay    *display,
                              GError        **error)
 {
   GimpPaintToolClass *klass = GIMP_PAINT_TOOL_GET_CLASS (paint_tool);
@@ -829,6 +851,9 @@ gimp_paint_tool_check_alpha (GimpPaintTool  *paint_tool,
             error, GIMP_ERROR, GIMP_FAILED,
             _("The active layer's alpha channel is locked."));
 
+          if (error)
+            gimp_tools_blink_lock_box (display->gimp, GIMP_ITEM (drawable));
+
           return FALSE;
         }
     }
@@ -839,12 +864,17 @@ gimp_paint_tool_check_alpha (GimpPaintTool  *paint_tool,
 static void
 gimp_paint_tool_hard_notify (GimpPaintOptions *options,
                              const GParamSpec *pspec,
-                             GimpTool         *tool)
+                             GimpPaintTool    *paint_tool)
 {
-  gimp_tool_control_set_precision (tool->control,
-                                   options->hard ?
-                                   GIMP_CURSOR_PRECISION_PIXEL_CENTER :
-                                   GIMP_CURSOR_PRECISION_SUBPIXEL);
+  if (paint_tool->active)
+    {
+      GimpTool *tool = GIMP_TOOL (paint_tool);
+
+      gimp_tool_control_set_precision (tool->control,
+                                       options->hard ?
+                                       GIMP_CURSOR_PRECISION_PIXEL_CENTER :
+                                       GIMP_CURSOR_PRECISION_SUBPIXEL);
+    }
 }
 
 static void
@@ -858,6 +888,27 @@ gimp_paint_tool_cursor_notify (GimpDisplayConfig *config,
   paint_tool->draw_brush  = config->show_brush_outline;
 
   gimp_draw_tool_resume (GIMP_DRAW_TOOL (paint_tool));
+}
+
+void
+gimp_paint_tool_set_active (GimpPaintTool *tool,
+                            gboolean       active)
+{
+  g_return_if_fail (GIMP_IS_PAINT_TOOL (tool));
+
+  if (active != tool->active)
+    {
+      GimpPaintOptions *options = GIMP_PAINT_TOOL_GET_OPTIONS (tool);
+
+      gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
+
+      tool->active = active;
+
+      if (active)
+        gimp_paint_tool_hard_notify (options, NULL, tool);
+
+      gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
+    }
 }
 
 /**

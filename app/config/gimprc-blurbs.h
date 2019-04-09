@@ -97,16 +97,16 @@ _("This is the distance in pixels where Guide and Grid snapping " \
   "activates.")
 
 #define SNAP_TO_GUIDES_BLURB \
-"Snap to guides by default in new image windows."
+_("Snap to guides by default in new image windows.")
 
 #define SNAP_TO_GRID_BLURB \
-"Snap to the grid by default in new image windows."
+_("Snap to the grid by default in new image windows.")
 
 #define SNAP_TO_CANVAS_BLURB \
-"Snap to the canvas edges by default in new image windows."
+_("Snap to the canvas edges by default in new image windows.")
 
 #define SNAP_TO_PATH_BLURB \
-"Snap to the active path by default in new image windows."
+_("Snap to the active path by default in new image windows.")
 
 #define DEFAULT_THRESHOLD_BLURB \
 _("Tools such as fuzzy-select and bucket fill find regions based on a " \
@@ -203,6 +203,9 @@ _("Add an alpha channel to all layers of imported images.")
 
 #define IMPORT_RAW_PLUG_IN_BLURB \
 _("Which plug-in to use for importing raw digital camera files.")
+
+#define EXPORT_FILE_TYPE_BLURB \
+_("Export file type used by default.")
 
 #define EXPORT_COLOR_PROFILE_BLURB \
 _("Export the image's color profile by default.")
@@ -686,10 +689,10 @@ _("When enabled, uses OpenCL for some operations.")
 "offset problems turning it off helps."
 
 #define SEARCH_SHOW_UNAVAILABLE_BLURB \
-"When enabled, a search of actions will also return inactive actions."
+_("When enabled, a search of actions will also return inactive actions.")
 
 #define ACTION_HISTORY_SIZE_BLURB \
-"The maximum number of actions saved in history."
+_("The maximum number of actions saved in history.")
 
 
 #endif  /* __GIMP_RC_BLURBS_H__ */

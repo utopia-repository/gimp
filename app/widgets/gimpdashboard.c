@@ -59,6 +59,7 @@
 #include "core/gimp-parallel.h"
 #include "core/gimpasync.h"
 #include "core/gimpbacktrace.h"
+#include "core/gimptempbuf.h"
 #include "core/gimpwaitable.h"
 
 #include "gimpactiongroup.h"
@@ -138,6 +139,8 @@ typedef enum
   /* misc */
   VARIABLE_MIPMAPED,
   VARIABLE_ASYNC_RUNNING,
+  VARIABLE_SCRATCH_TOTAL,
+  VARIABLE_TEMP_BUF_TOTAL,
 
 
   N_VARIABLES,
@@ -482,7 +485,7 @@ static const VariableInfo variables[] =
     .type             = VARIABLE_TYPE_SIZE_RATIO,
     .sample_func      = gimp_dashboard_sample_gegl_stats,
     .data             = "tile-cache-total\0"
-                        "tile-cache-total-uncloned"
+                        "tile-cache-total-uncompressed"
   },
 
   [VARIABLE_CACHE_HIT_MISS] =
@@ -608,7 +611,7 @@ static const VariableInfo variables[] =
     .type             = VARIABLE_TYPE_SIZE_RATIO,
     .sample_func      = gimp_dashboard_sample_gegl_stats,
     .data             = "swap-total\0"
-                        "swap-total-uncloned"
+                        "swap-total-uncompressed"
   },
 
 
@@ -693,6 +696,27 @@ static const VariableInfo variables[] =
     .type             = VARIABLE_TYPE_INTEGER,
     .sample_func      = gimp_dashboard_sample_function,
     .data             = gimp_async_get_n_running
+  },
+
+  [VARIABLE_SCRATCH_TOTAL] =
+  { .name             = "scratch-total",
+    .title            = NC_("dashboard-variable", "Scratch"),
+    .description      = N_("Total size of scratch memory"),
+    .type             = VARIABLE_TYPE_SIZE,
+    .sample_func      = gimp_dashboard_sample_gegl_stats,
+    .data             = "scratch-total"
+  },
+
+  [VARIABLE_TEMP_BUF_TOTAL] =
+  { .name             = "temp-buf-total",
+    /* Translators:  "TempBuf" is a technical term referring to an internal
+     * GIMP data structure.  It's probably OK to leave it untranslated.
+     */
+    .title            = NC_("dashboard-variable", "TempBuf"),
+    .description      = N_("Total size of temporary buffers"),
+    .type             = VARIABLE_TYPE_SIZE,
+    .sample_func      = gimp_dashboard_sample_function,
+    .data             = gimp_temp_buf_get_total_memsize
   }
 };
 
@@ -889,6 +913,12 @@ static const GroupInfo groups[] =
                             .default_active = TRUE
                           },
                           { .variable       = VARIABLE_ASYNC_RUNNING,
+                            .default_active = TRUE
+                          },
+                          { .variable       = VARIABLE_SCRATCH_TOTAL,
+                            .default_active = TRUE
+                          },
+                          { .variable       = VARIABLE_TEMP_BUF_TOTAL,
                             .default_active = TRUE
                           },
 
@@ -3479,6 +3509,16 @@ gimp_dashboard_log_sample (GimpDashboard *dashboard,
                                            __VA_ARGS__,             \
                                            variable_info->name)
 
+              #define LOG_VAR_FLOAT(value)                                  \
+                G_STMT_START                                                \
+                  {                                                         \
+                    gchar buffer[G_ASCII_DTOSTR_BUF_SIZE];                  \
+                                                                            \
+                    LOG_VAR ("%s", g_ascii_dtostr (buffer, sizeof (buffer), \
+                                                   value));                 \
+                  }                                                         \
+                G_STMT_END
+
               switch (variable_info->type)
                 {
                 case VARIABLE_TYPE_BOOLEAN:
@@ -3514,25 +3554,23 @@ gimp_dashboard_log_sample (GimpDashboard *dashboard,
                   break;
 
                 case VARIABLE_TYPE_PERCENTAGE:
-                  LOG_VAR (
-                    "%.16g",
+                  LOG_VAR_FLOAT (
                     variable_data->value.percentage);
                   break;
 
                 case VARIABLE_TYPE_DURATION:
-                  LOG_VAR (
-                    "%.16g",
+                  LOG_VAR_FLOAT (
                     variable_data->value.duration);
                   break;
 
                 case VARIABLE_TYPE_RATE_OF_CHANGE:
-                  LOG_VAR (
-                    "%.16g",
+                  LOG_VAR_FLOAT (
                     variable_data->value.rate_of_change);
                   break;
                 }
 
               #undef LOG_VAR
+              #undef LOG_VAR_FLOAT
             }
           else
             {
@@ -4357,7 +4395,7 @@ gimp_dashboard_log_start_recording (GimpDashboard  *dashboard,
                                         /* intentionally untranslated */
                                         variable_info->description);
       gimp_dashboard_log_printf (dashboard,
-                                 "\" />");
+                                 "\" />\n");
     }
 
   gimp_dashboard_log_printf (dashboard,
@@ -4369,7 +4407,14 @@ gimp_dashboard_log_start_recording (GimpDashboard  *dashboard,
 
   if (priv->log_error)
     {
+      GCancellable *cancellable = g_cancellable_new ();
+
       gimp_backtrace_stop ();
+
+      /* Cancel the overwrite initiated by g_file_replace(). */
+      g_cancellable_cancel (cancellable);
+      g_output_stream_close (priv->log_output, cancellable, NULL);
+      g_object_unref (cancellable);
 
       g_clear_object (&priv->log_output);
 
@@ -4428,10 +4473,9 @@ gimp_dashboard_log_stop_recording (GimpDashboard  *dashboard,
     {
       GimpAsync *async;
 
-      async = gimp_parallel_run_async_full (
-        -1,
+      async = gimp_parallel_run_async_independent (
         (GimpParallelRunAsyncFunc) gimp_dashboard_log_write_address_map,
-        dashboard, NULL);
+        dashboard);
 
       gimp_wait (priv->gimp, GIMP_WAITABLE (async),
                  _("Resolving symbol information..."));
@@ -4447,7 +4491,18 @@ gimp_dashboard_log_stop_recording (GimpDashboard  *dashboard,
     gimp_backtrace_stop ();
 
   if (! priv->log_error)
-    g_output_stream_close (priv->log_output, NULL, &priv->log_error);
+    {
+      g_output_stream_close (priv->log_output, NULL, &priv->log_error);
+    }
+  else
+    {
+      GCancellable *cancellable = g_cancellable_new ();
+
+      /* Cancel the overwrite initiated by g_file_replace(). */
+      g_cancellable_cancel (cancellable);
+      g_output_stream_close (priv->log_output, cancellable, NULL);
+      g_object_unref (cancellable);
+    }
 
   g_clear_object (&priv->log_output);
 

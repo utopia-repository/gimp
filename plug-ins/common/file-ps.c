@@ -1207,6 +1207,7 @@ save_image (GFile   *file,
             GError **error)
 {
   GOutputStream *output;
+  GCancellable  *cancellable;
   GimpImageType  drawable_type;
 
   drawable_type = gimp_drawable_type (drawable_ID);
@@ -1289,7 +1290,12 @@ save_image (GFile   *file,
 
  fail:
 
+  cancellable = g_cancellable_new ();
+  g_cancellable_cancel (cancellable);
+  g_output_stream_close (output, cancellable, NULL);
+
   g_object_unref (output);
+  g_object_unref (cancellable);
 
   return FALSE;
 }
@@ -3445,7 +3451,7 @@ load_dialog (const gchar *filename)
   adj = (GtkAdjustment *) gtk_adjustment_new (plvals.resolution,
                                               MIN_RESOLUTION, MAX_RESOLUTION,
                                               1, 10, 0);
-  spinbutton = gtk_spin_button_new (adj, 1.0, 0);
+  spinbutton = gimp_spin_button_new (adj, 1.0, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
                              _("Resolution:"), 0.0, 0.5,
@@ -3461,7 +3467,7 @@ load_dialog (const gchar *filename)
   adj = (GtkAdjustment *) gtk_adjustment_new (plvals.width,
                                               1, GIMP_MAX_IMAGE_SIZE,
                                               1, 10, 0);
-  ps_width_spinbutton = gtk_spin_button_new (adj, 1.0, 0);
+  ps_width_spinbutton = gimp_spin_button_new (adj, 1.0, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 1,
                              _("_Width:"), 0.0, 0.5,
@@ -3474,7 +3480,7 @@ load_dialog (const gchar *filename)
   adj = (GtkAdjustment *) gtk_adjustment_new (plvals.height,
                                               1, GIMP_MAX_IMAGE_SIZE,
                                               1, 10, 0);
-  ps_height_spinbutton = gtk_spin_button_new (adj, 1.0, 0);
+  ps_height_spinbutton = gimp_spin_button_new (adj, 1.0, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 2,
                              _("_Height:"), 0.0, 0.5,
@@ -3666,7 +3672,7 @@ save_dialog (void)
   vals->adjustment[0] = (GtkAdjustment *)
     gtk_adjustment_new (psvals.width,
                         1e-5, GIMP_MAX_IMAGE_SIZE, 1, 10, 0);
-  spinbutton = gtk_spin_button_new (vals->adjustment[0], 1.0, 2);
+  spinbutton = gimp_spin_button_new (vals->adjustment[0], 1.0, 2);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
                              _("_Width:"), 0.0, 0.5,
@@ -3678,7 +3684,7 @@ save_dialog (void)
   vals->adjustment[1] = (GtkAdjustment *)
     gtk_adjustment_new (psvals.height,
                         1e-5, GIMP_MAX_IMAGE_SIZE, 1, 10, 0);
-  spinbutton = gtk_spin_button_new (vals->adjustment[1], 1.0, 2);
+  spinbutton = gimp_spin_button_new (vals->adjustment[1], 1.0, 2);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 1,
                              _("_Height:"), 0.0, 0.5,
@@ -3690,7 +3696,7 @@ save_dialog (void)
   vals->adjustment[2] = (GtkAdjustment *)
     gtk_adjustment_new (psvals.x_offset,
                         0.0, GIMP_MAX_IMAGE_SIZE, 1, 10, 0);
-  spinbutton = gtk_spin_button_new (vals->adjustment[2], 1.0, 2);
+  spinbutton = gimp_spin_button_new (vals->adjustment[2], 1.0, 2);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 2,
                              _("_X offset:"), 0.0, 0.5,
@@ -3702,7 +3708,7 @@ save_dialog (void)
   vals->adjustment[3] = (GtkAdjustment *)
     gtk_adjustment_new (psvals.y_offset,
                         0.0, GIMP_MAX_IMAGE_SIZE, 1, 10, 0);
-  spinbutton = gtk_spin_button_new (vals->adjustment[3], 1.0, 2);
+  spinbutton = gimp_spin_button_new (vals->adjustment[3], 1.0, 2);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 3,
                              _("_Y offset:"), 0.0, 0.5,
@@ -3803,7 +3809,7 @@ save_dialog (void)
 
   adj = (GtkAdjustment *) gtk_adjustment_new (psvals.preview_size,
                                               0, 1024, 1, 10, 0);
-  spinbutton = gtk_spin_button_new (adj, 1.0, 0);
+  spinbutton = gimp_spin_button_new (adj, 1.0, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
                              _("Preview _size:"), 1.0, 0.5,

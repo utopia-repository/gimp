@@ -24,7 +24,6 @@
 
 #include <cairo.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#define GEGL_ITERATOR2_API
 #include <gegl.h>
 
 extern "C"
@@ -41,13 +40,12 @@ extern "C"
 #include "gimp-gegl-loops-sse2.h"
 
 #include "core/gimp-atomic.h"
-#include "core/gimp-parallel.h"
 #include "core/gimp-utils.h"
 #include "core/gimpprogress.h"
 
 
-#define MIN_PARALLEL_SUB_SIZE 64
-#define MIN_PARALLEL_SUB_AREA (MIN_PARALLEL_SUB_SIZE * MIN_PARALLEL_SUB_SIZE)
+#define PIXELS_PER_THREAD \
+  (/* each thread costs as much as */ 64.0 * 64.0 /* pixels */)
 
 #define SHIFTED_AREA(dest, src)                                                \
   const GeglRectangle dest##_area_ = {                                         \
@@ -82,8 +80,9 @@ gimp_gegl_buffer_copy (GeglBuffer          *src_buffer,
       if (! dest_rect)
         dest_rect = src_rect;
 
-      gimp_parallel_distribute_area (src_rect, MIN_PARALLEL_SUB_AREA,
-                                     [=] (const GeglRectangle *src_area)
+      gegl_parallel_distribute_area (
+        src_rect, PIXELS_PER_THREAD,
+        [=] (const GeglRectangle *src_area)
         {
           SHIFTED_AREA (dest, src);
 
@@ -91,6 +90,58 @@ gimp_gegl_buffer_copy (GeglBuffer          *src_buffer,
                             dest_buffer, dest_area);
         });
     }
+}
+
+void
+gimp_gegl_clear (GeglBuffer          *buffer,
+                 const GeglRectangle *rect)
+{
+  const Babl *format;
+  gint        bpp;
+  gint        n_components;
+  gint        bpc;
+  gint        alpha_offset;
+
+  g_return_if_fail (GEGL_IS_BUFFER (buffer));
+
+  if (! rect)
+    rect = gegl_buffer_get_extent (buffer);
+
+  format = gegl_buffer_get_format (buffer);
+
+  if (! babl_format_has_alpha (format))
+    return;
+
+  bpp          = babl_format_get_bytes_per_pixel (format);
+  n_components = babl_format_get_n_components (format);
+  bpc          = bpp / n_components;
+  alpha_offset = (n_components - 1) * bpc;
+
+  gegl_parallel_distribute_area (
+    rect, PIXELS_PER_THREAD,
+    [=] (const GeglRectangle *area)
+    {
+      GeglBufferIterator *iter;
+
+      iter = gegl_buffer_iterator_new (buffer, area, 0, format,
+                                       GEGL_ACCESS_READWRITE, GEGL_ABYSS_NONE,
+                                       1);
+
+      while (gegl_buffer_iterator_next (iter))
+        {
+          guint8 *data = (guint8 *) iter->items[0].data;
+          gint    i;
+
+          data += alpha_offset;
+
+          for (i = 0; i < iter->length; i++)
+            {
+              memset (data, 0, bpc);
+
+              data += bpp;
+            }
+        }
+    });
 }
 
 void
@@ -161,8 +212,9 @@ gimp_gegl_convolve (GeglBuffer          *src_buffer,
       offset = 0.0;
     }
 
-  gimp_parallel_distribute_area (dest_rect, MIN_PARALLEL_SUB_AREA,
-                                 [=] (const GeglRectangle *dest_area)
+  gegl_parallel_distribute_area (
+    dest_rect, PIXELS_PER_THREAD,
+    [=] (const GeglRectangle *dest_area)
     {
       const gint          components  = src_components;
       const gint          a_component = components - 1;
@@ -313,8 +365,9 @@ gimp_gegl_dodgeburn (GeglBuffer          *src_buffer,
   if (! dest_rect)
     dest_rect = gegl_buffer_get_extent (dest_buffer);
 
-  gimp_parallel_distribute_area (src_rect, MIN_PARALLEL_SUB_AREA,
-                                 [=] (const GeglRectangle *src_area)
+  gegl_parallel_distribute_area (
+    src_rect, PIXELS_PER_THREAD,
+    [=] (const GeglRectangle *src_area)
     {
       GeglBufferIterator *iter;
 
@@ -548,8 +601,9 @@ gimp_gegl_smudge_with_paint (GeglBuffer          *accum_buffer,
       brush_a *= brush_color_ptr[3];
     }
 
-  gimp_parallel_distribute_area (accum_rect, MIN_PARALLEL_SUB_AREA,
-                                 [=] (const GeglRectangle *accum_area)
+  gegl_parallel_distribute_area (
+    accum_rect, PIXELS_PER_THREAD,
+    [=] (const GeglRectangle *accum_area)
     {
       GeglBufferIterator *iter;
 
@@ -616,8 +670,9 @@ gimp_gegl_apply_mask (GeglBuffer          *mask_buffer,
   if (! dest_rect)
     dest_rect = gegl_buffer_get_extent (dest_buffer);
 
-  gimp_parallel_distribute_area (mask_rect, MIN_PARALLEL_SUB_AREA,
-                                 [=] (const GeglRectangle *mask_area)
+  gegl_parallel_distribute_area (
+    mask_rect, PIXELS_PER_THREAD,
+    [=] (const GeglRectangle *mask_area)
     {
       GeglBufferIterator *iter;
 
@@ -661,8 +716,9 @@ gimp_gegl_combine_mask (GeglBuffer          *mask_buffer,
   if (! dest_rect)
     dest_rect = gegl_buffer_get_extent (dest_buffer);
 
-  gimp_parallel_distribute_area (mask_rect, MIN_PARALLEL_SUB_AREA,
-                                 [=] (const GeglRectangle *mask_area)
+  gegl_parallel_distribute_area (
+    mask_rect, PIXELS_PER_THREAD,
+    [=] (const GeglRectangle *mask_area)
     {
       GeglBufferIterator *iter;
 
@@ -707,8 +763,9 @@ gimp_gegl_combine_mask_weird (GeglBuffer          *mask_buffer,
   if (! dest_rect)
     dest_rect = gegl_buffer_get_extent (dest_buffer);
 
-  gimp_parallel_distribute_area (mask_rect, MIN_PARALLEL_SUB_AREA,
-                                 [=] (const GeglRectangle *mask_area)
+  gegl_parallel_distribute_area (
+    mask_rect, PIXELS_PER_THREAD,
+    [=] (const GeglRectangle *mask_area)
     {
       GeglBufferIterator *iter;
 
@@ -754,132 +811,6 @@ gimp_gegl_combine_mask_weird (GeglBuffer          *mask_buffer,
 }
 
 void
-gimp_gegl_replace (GeglBuffer          *top_buffer,
-                   const GeglRectangle *top_rect,
-                   GeglBuffer          *bottom_buffer,
-                   const GeglRectangle *bottom_rect,
-                   GeglBuffer          *mask_buffer,
-                   const GeglRectangle *mask_rect,
-                   GeglBuffer          *dest_buffer,
-                   const GeglRectangle *dest_rect,
-                   gdouble              opacity,
-                   const gboolean      *affect)
-{
-  if (! top_rect)
-    top_rect = gegl_buffer_get_extent (top_buffer);
-
-  if (! bottom_rect)
-    bottom_rect = gegl_buffer_get_extent (bottom_buffer);
-
-  if (! mask_rect)
-    mask_rect = gegl_buffer_get_extent (mask_buffer);
-
-  if (! dest_rect)
-    dest_rect = gegl_buffer_get_extent (dest_buffer);
-
-  gimp_parallel_distribute_area (top_rect, MIN_PARALLEL_SUB_AREA,
-                                 [=] (const GeglRectangle *top_area)
-    {
-      GeglBufferIterator *iter;
-
-      SHIFTED_AREA (bottom, top);
-      SHIFTED_AREA (mask, top);
-      SHIFTED_AREA (dest, top);
-
-      iter = gegl_buffer_iterator_new (top_buffer, top_area, 0,
-                                       babl_format ("RGBA float"),
-                                       GEGL_ACCESS_READ, GEGL_ABYSS_NONE, 4);
-
-      gegl_buffer_iterator_add (iter, bottom_buffer, bottom_area, 0,
-                                babl_format ("RGBA float"),
-                                GEGL_ACCESS_READ, GEGL_ABYSS_NONE);
-
-      gegl_buffer_iterator_add (iter, mask_buffer, mask_area, 0,
-                                babl_format ("Y float"),
-                                GEGL_ACCESS_READ, GEGL_ABYSS_NONE);
-
-      gegl_buffer_iterator_add (iter, dest_buffer, dest_area, 0,
-                                babl_format ("RGBA float"),
-                                GEGL_ACCESS_WRITE, GEGL_ABYSS_NONE);
-
-      while (gegl_buffer_iterator_next (iter))
-        {
-          const gfloat *top    = (const gfloat *) iter->items[0].data;
-          const gfloat *bottom = (const gfloat *) iter->items[1].data;
-          const gfloat *mask   = (const gfloat *) iter->items[2].data;
-          gfloat       *dest   = (gfloat *)       iter->items[3].data;
-          gint          count  = iter->length;
-
-          while (count--)
-            {
-              gint    b;
-              gdouble mask_val = *mask * opacity;
-
-              /* calculate new alpha first. */
-              gfloat   s1_a  = bottom[3];
-              gfloat   s2_a  = top[3];
-              gdouble  a_val = s1_a + mask_val * (s2_a - s1_a);
-
-              if (a_val == 0.0)
-                {
-                  /* In any case, write out versions of the blending
-                   * function that result when combinations of s1_a, s2_a,
-                   * and mask_val --> 0 (or mask_val -->1)
-                   */
-
-                  /* 1: s1_a, s2_a, AND mask_val all approach 0+: */
-                  /* 2: s1_a AND s2_a both approach 0+, regardless of mask_val: */
-                  if (s1_a + s2_a == 0.0)
-                    {
-                      for (b = 0; b < 3; b++)
-                        {
-                          gfloat new_val;
-
-                          new_val = bottom[b] + mask_val * (top[b] - bottom[b]);
-
-                          dest[b] = affect[b] ? new_val : bottom[b];
-                        }
-                    }
-
-                  /* 3: mask_val AND s1_a both approach 0+, regardless of s2_a  */
-                  else if (s1_a + mask_val == 0.0)
-                    {
-                      for (b = 0; b < 3; b++)
-                        dest[b] = bottom[b];
-                    }
-
-                  /* 4: mask_val -->1 AND s2_a -->0, regardless of s1_a */
-                  else if (1.0 - mask_val + s2_a == 0.0)
-                    {
-                      for (b = 0; b < 3; b++)
-                        dest[b] = affect[b] ? top[b] : bottom[b];
-                    }
-                }
-              else
-                {
-                  gdouble a_recip = 1.0 / a_val;
-
-                  /* possible optimization: fold a_recip into s1_a and s2_a */
-                  for (b = 0; b < 3; b++)
-                    {
-                      gfloat new_val = a_recip * (bottom[b] * s1_a + mask_val *
-                                                  (top[b] * s2_a - bottom[b] * s1_a));
-                      dest[b] = affect[b] ? new_val : bottom[b];
-                    }
-                }
-
-              dest[3] = affect[3] ? a_val : s1_a;
-
-              top    += 4;
-              bottom += 4;
-              mask   += 1;
-              dest   += 4;
-            }
-        }
-    });
-}
-
-void
 gimp_gegl_index_to_mask (GeglBuffer          *indexed_buffer,
                          const GeglRectangle *indexed_rect,
                          const Babl          *indexed_format,
@@ -893,8 +824,9 @@ gimp_gegl_index_to_mask (GeglBuffer          *indexed_buffer,
   if (! mask_rect)
     mask_rect = gegl_buffer_get_extent (mask_buffer);
 
-  gimp_parallel_distribute_area (indexed_rect, MIN_PARALLEL_SUB_AREA,
-                                 [=] (const GeglRectangle *indexed_area)
+  gegl_parallel_distribute_area (
+    indexed_rect, PIXELS_PER_THREAD,
+    [=] (const GeglRectangle *indexed_area)
     {
       GeglBufferIterator *iter;
 
@@ -983,8 +915,9 @@ gimp_gegl_convert_color_profile (GeglBuffer               *src_buffer,
 
       GIMP_TIMER_START ();
 
-      gimp_parallel_distribute_area (src_rect, MIN_PARALLEL_SUB_AREA,
-                                     [=] (const GeglRectangle *src_area)
+      gegl_parallel_distribute_area (
+        src_rect, PIXELS_PER_THREAD,
+        [=] (const GeglRectangle *src_area)
         {
           SHIFTED_AREA (dest, src);
 
@@ -1042,8 +975,9 @@ gimp_gegl_average_color (GeglBuffer          *buffer,
   else
     roi = *rect;
 
-  gimp_parallel_distribute_area (&roi, MIN_PARALLEL_SUB_AREA,
-                                 [&] (const GeglRectangle *area)
+  gegl_parallel_distribute_area (
+    &roi, PIXELS_PER_THREAD,
+    [&] (const GeglRectangle *area)
     {
       Sum                *sum;
       GeglBufferIterator *iter;

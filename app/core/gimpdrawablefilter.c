@@ -44,6 +44,7 @@
 #include "gimpdrawable-filters.h"
 #include "gimpdrawablefilter.h"
 #include "gimpimage.h"
+#include "gimplayer.h"
 #include "gimpmarshal.h"
 #include "gimpprogress.h"
 
@@ -65,6 +66,8 @@ struct _GimpDrawableFilter
   gboolean                has_input;
 
   GimpFilterRegion        region;
+  gboolean                crop_enabled;
+  GeglRectangle           crop_rect;
   gboolean                preview_enabled;
   GimpAlignmentType       preview_alignment;
   gdouble                 preview_position;
@@ -89,37 +92,45 @@ struct _GimpDrawableFilter
 };
 
 
-static void       gimp_drawable_filter_dispose          (GObject             *object);
-static void       gimp_drawable_filter_finalize         (GObject             *object);
+static void       gimp_drawable_filter_dispose            (GObject             *object);
+static void       gimp_drawable_filter_finalize           (GObject             *object);
 
-static void       gimp_drawable_filter_sync_region      (GimpDrawableFilter  *filter);
-static void       gimp_drawable_filter_sync_preview     (GimpDrawableFilter  *filter,
-                                                         gboolean             old_enabled,
-                                                         GimpAlignmentType    old_alignment,
-                                                         gdouble              old_position);
-static void       gimp_drawable_filter_sync_opacity     (GimpDrawableFilter  *filter);
-static void       gimp_drawable_filter_sync_mode        (GimpDrawableFilter  *filter);
-static void       gimp_drawable_filter_sync_affect      (GimpDrawableFilter  *filter);
-static void       gimp_drawable_filter_sync_mask        (GimpDrawableFilter  *filter);
-static void       gimp_drawable_filter_sync_transform   (GimpDrawableFilter  *filter);
-static void       gimp_drawable_filter_sync_gamma_hack  (GimpDrawableFilter  *filter);
+static void       gimp_drawable_filter_sync_region        (GimpDrawableFilter  *filter);
+static void       gimp_drawable_filter_sync_crop          (GimpDrawableFilter  *filter,
+                                                           gboolean             old_crop_enabled,
+                                                           const GeglRectangle *old_crop_rect,
+                                                           gboolean             old_preview_enabled,
+                                                           GimpAlignmentType    old_preview_alignment,
+                                                           gdouble              old_preview_position,
+                                                           gboolean             update);
+static void       gimp_drawable_filter_sync_opacity       (GimpDrawableFilter  *filter);
+static void       gimp_drawable_filter_sync_mode          (GimpDrawableFilter  *filter);
+static void       gimp_drawable_filter_sync_affect        (GimpDrawableFilter  *filter);
+static void       gimp_drawable_filter_sync_format        (GimpDrawableFilter  *filter);
+static void       gimp_drawable_filter_sync_mask          (GimpDrawableFilter  *filter);
+static void       gimp_drawable_filter_sync_transform     (GimpDrawableFilter  *filter);
+static void       gimp_drawable_filter_sync_gamma_hack    (GimpDrawableFilter  *filter);
 
-static gboolean   gimp_drawable_filter_is_filtering     (GimpDrawableFilter  *filter);
-static gboolean   gimp_drawable_filter_add_filter       (GimpDrawableFilter  *filter);
-static gboolean   gimp_drawable_filter_remove_filter    (GimpDrawableFilter  *filter);
+static gboolean   gimp_drawable_filter_is_filtering       (GimpDrawableFilter  *filter);
+static gboolean   gimp_drawable_filter_add_filter         (GimpDrawableFilter  *filter);
+static gboolean   gimp_drawable_filter_remove_filter      (GimpDrawableFilter  *filter);
 
-static void       gimp_drawable_filter_update_drawable  (GimpDrawableFilter  *filter,
-                                                         const GeglRectangle *area);
+static void       gimp_drawable_filter_update_drawable    (GimpDrawableFilter  *filter,
+                                                           const GeglRectangle *area);
 
-static void       gimp_drawable_filter_affect_changed   (GimpImage           *image,
-                                                         GimpChannelType      channel,
-                                                         GimpDrawableFilter  *filter);
-static void       gimp_drawable_filter_mask_changed     (GimpImage           *image,
-                                                         GimpDrawableFilter  *filter);
-static void       gimp_drawable_filter_profile_changed  (GimpColorManaged    *managed,
-                                                         GimpDrawableFilter  *filter);
-static void       gimp_drawable_filter_drawable_removed (GimpDrawable        *drawable,
-                                                         GimpDrawableFilter  *filter);
+static void       gimp_drawable_filter_affect_changed     (GimpImage           *image,
+                                                           GimpChannelType      channel,
+                                                           GimpDrawableFilter  *filter);
+static void       gimp_drawable_filter_mask_changed       (GimpImage           *image,
+                                                           GimpDrawableFilter  *filter);
+static void       gimp_drawable_filter_profile_changed    (GimpColorManaged    *managed,
+                                                           GimpDrawableFilter  *filter);
+static void       gimp_drawable_filter_format_changed     (GimpDrawable        *drawable,
+                                                           GimpDrawableFilter  *filter);
+static void       gimp_drawable_filter_drawable_removed   (GimpDrawable        *drawable,
+                                                           GimpDrawableFilter  *filter);
+static void       gimp_drawable_filter_lock_alpha_changed (GimpLayer           *layer,
+                                                           GimpDrawableFilter  *filter);
 
 
 G_DEFINE_TYPE (GimpDrawableFilter, gimp_drawable_filter, GIMP_TYPE_FILTER)
@@ -208,10 +219,13 @@ gimp_drawable_filter_new (GimpDrawable *drawable,
   node = gimp_filter_get_node (GIMP_FILTER (filter));
 
   gegl_node_add_child (node, operation);
+  gimp_gegl_node_set_underlying_operation (node, operation);
 
-  filter->applicator = gimp_applicator_new (node, TRUE, TRUE);
+  filter->applicator = gimp_applicator_new (node);
 
   gimp_filter_set_applicator (GIMP_FILTER (filter), filter->applicator);
+
+  gimp_applicator_set_cache (filter->applicator, TRUE);
 
   filter->has_input = gegl_node_has_pad (filter->operation, "input");
 
@@ -288,6 +302,39 @@ gimp_drawable_filter_set_region (GimpDrawableFilter *filter,
 }
 
 void
+gimp_drawable_filter_set_crop (GimpDrawableFilter  *filter,
+                               const GeglRectangle *rect,
+                               gboolean             update)
+{
+  g_return_if_fail (GIMP_IS_DRAWABLE_FILTER (filter));
+
+  if ((rect != NULL) != filter->crop_enabled ||
+      (rect && ! gegl_rectangle_equal (rect, &filter->crop_rect)))
+    {
+      gboolean      old_enabled = filter->crop_enabled;
+      GeglRectangle old_rect    = filter->crop_rect;
+
+      if (rect)
+        {
+          filter->crop_enabled = TRUE;
+          filter->crop_rect    = *rect;
+        }
+      else
+        {
+          filter->crop_enabled = FALSE;
+        }
+
+      gimp_drawable_filter_sync_crop (filter,
+                                      old_enabled,
+                                      &old_rect,
+                                      filter->preview_enabled,
+                                      filter->preview_alignment,
+                                      filter->preview_position,
+                                      update);
+    }
+}
+
+void
 gimp_drawable_filter_set_preview (GimpDrawableFilter  *filter,
                                   gboolean             enabled,
                                   GimpAlignmentType    alignment,
@@ -313,9 +360,13 @@ gimp_drawable_filter_set_preview (GimpDrawableFilter  *filter,
       filter->preview_alignment = alignment;
       filter->preview_position  = position;
 
-      gimp_drawable_filter_sync_preview (filter,
-                                         old_enabled,
-                                         old_alignment, old_position);
+      gimp_drawable_filter_sync_crop (filter,
+                                      filter->crop_enabled,
+                                      &filter->crop_rect,
+                                      old_enabled,
+                                      old_alignment,
+                                      old_position,
+                                      TRUE);
     }
 }
 
@@ -422,6 +473,10 @@ gimp_drawable_filter_commit (GimpDrawableFilter *filter,
 
   if (gimp_drawable_filter_is_filtering (filter))
     {
+      gimp_drawable_filter_set_preview (filter, FALSE,
+                                        filter->preview_alignment,
+                                        filter->preview_position);
+
       success = gimp_drawable_merge_filter (filter->drawable,
                                             GIMP_FILTER (filter),
                                             progress,
@@ -505,12 +560,14 @@ gimp_drawable_filter_sync_region (GimpDrawableFilter *filter)
     }
 }
 
-static void
-gimp_drawable_filter_get_preview_rect (GimpDrawableFilter *filter,
-                                       gboolean            enabled,
-                                       GimpAlignmentType   alignment,
-                                       gdouble             position,
-                                       GeglRectangle      *rect)
+static gboolean
+gimp_drawable_filter_get_crop_rect (GimpDrawableFilter  *filter,
+                                    gboolean             crop_enabled,
+                                    const GeglRectangle *crop_rect,
+                                    gboolean             preview_enabled,
+                                    GimpAlignmentType    preview_alignment,
+                                    gdouble              preview_position,
+                                    GeglRectangle       *rect)
 {
   gint width;
   gint height;
@@ -523,63 +580,71 @@ gimp_drawable_filter_get_preview_rect (GimpDrawableFilter *filter,
   width  = rect->width;
   height = rect->height;
 
-  if (enabled)
+  if (preview_enabled)
     {
-      switch (alignment)
+      switch (preview_alignment)
         {
         case GIMP_ALIGN_LEFT:
-          rect->width *= position;
+          rect->width *= preview_position;
           break;
 
         case GIMP_ALIGN_RIGHT:
-          rect->width *= (1.0 - position);
+          rect->width *= (1.0 - preview_position);
           rect->x = width - rect->width;
           break;
 
         case GIMP_ALIGN_TOP:
-          rect->height *= position;
+          rect->height *= preview_position;
           break;
 
         case GIMP_ALIGN_BOTTOM:
-          rect->height *= (1.0 - position);
+          rect->height *= (1.0 - preview_position);
           rect->y = height - rect->height;
           break;
 
         default:
-          g_return_if_reached ();
+          g_return_val_if_reached (FALSE);
         }
     }
+
+  if (crop_enabled)
+    gegl_rectangle_intersect (rect, rect, crop_rect);
+
+  return ! gegl_rectangle_equal_coords (rect, 0, 0, width, height);
 }
 
 static void
-gimp_drawable_filter_sync_preview (GimpDrawableFilter *filter,
-                                   gboolean            old_enabled,
-                                   GimpAlignmentType   old_alignment,
-                                   gdouble             old_position)
+gimp_drawable_filter_sync_crop (GimpDrawableFilter  *filter,
+                                gboolean             old_crop_enabled,
+                                const GeglRectangle *old_crop_rect,
+                                gboolean             old_preview_enabled,
+                                GimpAlignmentType    old_preview_alignment,
+                                gdouble              old_preview_position,
+                                gboolean             update)
 {
   GeglRectangle old_rect;
   GeglRectangle new_rect;
+  gboolean      enabled;
 
-  gimp_drawable_filter_get_preview_rect (filter,
-                                         old_enabled,
-                                         old_alignment,
-                                         old_position,
-                                         &old_rect);
+  gimp_drawable_filter_get_crop_rect (filter,
+                                      old_crop_enabled,
+                                      old_crop_rect,
+                                      old_preview_enabled,
+                                      old_preview_alignment,
+                                      old_preview_position,
+                                      &old_rect);
 
-  gimp_drawable_filter_get_preview_rect (filter,
-                                         filter->preview_enabled,
-                                         filter->preview_alignment,
-                                         filter->preview_position,
-                                         &new_rect);
+  enabled = gimp_drawable_filter_get_crop_rect (filter,
+                                                filter->crop_enabled,
+                                                &filter->crop_rect,
+                                                filter->preview_enabled,
+                                                filter->preview_alignment,
+                                                filter->preview_position,
+                                                &new_rect);
 
-  gimp_applicator_set_preview (filter->applicator,
-                               filter->preview_enabled,
-                               &new_rect);
+  gimp_applicator_set_crop (filter->applicator, enabled ? &new_rect : NULL);
 
-  if (old_rect.x      != new_rect.x     ||
-      old_rect.y      != new_rect.y     ||
-      old_rect.width  != new_rect.width ||
-      old_rect.height != new_rect.height)
+  if (update && ! gegl_rectangle_equal (&old_rect, &new_rect))
     {
       cairo_region_t *region;
       gint            n_rects;
@@ -637,18 +702,17 @@ gimp_drawable_filter_sync_mode (GimpDrawableFilter *filter)
 static void
 gimp_drawable_filter_sync_affect (GimpDrawableFilter *filter)
 {
-  GimpComponentMask active_mask;
+  gimp_applicator_set_affect (
+    filter->applicator,
+    gimp_drawable_get_active_mask (filter->drawable));
+}
 
-  active_mask = gimp_drawable_get_active_mask (filter->drawable);
-
-  /*  don't let the filter affect the drawable projection's alpha,
-   *  because it can't affect the drawable buffer's alpha either when
-   *  finally merged (see bug #699279)
-   */
-  if (! gimp_drawable_has_alpha (filter->drawable))
-    active_mask &= ~GIMP_COMPONENT_MASK_ALPHA;
-
-  gimp_applicator_set_affect (filter->applicator, active_mask);
+static void
+gimp_drawable_filter_sync_format (GimpDrawableFilter *filter)
+{
+  gimp_applicator_set_output_format (
+    filter->applicator,
+    gimp_drawable_get_format (filter->drawable));
 }
 
 static void
@@ -847,13 +911,17 @@ gimp_drawable_filter_add_filter (GimpDrawableFilter *filter)
 
       gimp_drawable_filter_sync_mask (filter);
       gimp_drawable_filter_sync_region (filter);
-      gimp_drawable_filter_sync_preview (filter,
-                                         filter->preview_enabled,
-                                         filter->preview_alignment,
-                                         filter->preview_position);
+      gimp_drawable_filter_sync_crop (filter,
+                                      filter->crop_enabled,
+                                      &filter->crop_rect,
+                                      filter->preview_enabled,
+                                      filter->preview_alignment,
+                                      filter->preview_position,
+                                      TRUE);
       gimp_drawable_filter_sync_opacity (filter);
       gimp_drawable_filter_sync_mode (filter);
       gimp_drawable_filter_sync_affect (filter);
+      gimp_drawable_filter_sync_format (filter);
       gimp_drawable_filter_sync_transform (filter);
       gimp_drawable_filter_sync_gamma_hack (filter);
 
@@ -869,9 +937,19 @@ gimp_drawable_filter_add_filter (GimpDrawableFilter *filter)
       g_signal_connect (image, "profile-changed",
                         G_CALLBACK (gimp_drawable_filter_profile_changed),
                         filter);
+      g_signal_connect (filter->drawable, "format-changed",
+                        G_CALLBACK (gimp_drawable_filter_format_changed),
+                        filter);
       g_signal_connect (filter->drawable, "removed",
                         G_CALLBACK (gimp_drawable_filter_drawable_removed),
                         filter);
+
+      if (GIMP_IS_LAYER (filter->drawable))
+        {
+          g_signal_connect (filter->drawable, "lock-alpha-changed",
+                            G_CALLBACK (gimp_drawable_filter_lock_alpha_changed),
+                            filter);
+        }
 
       return TRUE;
     }
@@ -886,8 +964,18 @@ gimp_drawable_filter_remove_filter (GimpDrawableFilter *filter)
     {
       GimpImage *image = gimp_item_get_image (GIMP_ITEM (filter->drawable));
 
+      if (GIMP_IS_LAYER (filter->drawable))
+        {
+          g_signal_handlers_disconnect_by_func (filter->drawable,
+                                                gimp_drawable_filter_lock_alpha_changed,
+                                                filter);
+        }
+
       g_signal_handlers_disconnect_by_func (filter->drawable,
                                             gimp_drawable_filter_drawable_removed,
+                                            filter);
+      g_signal_handlers_disconnect_by_func (filter->drawable,
+                                            gimp_drawable_filter_format_changed,
                                             filter);
       g_signal_handlers_disconnect_by_func (image,
                                             gimp_drawable_filter_profile_changed,
@@ -918,25 +1006,27 @@ gimp_drawable_filter_update_drawable (GimpDrawableFilter  *filter,
 
   if (area)
     {
-      if (! gimp_rectangle_intersect (area->x,
-                                      area->y,
-                                      area->width,
-                                      area->height,
-                                      filter->filter_area.x,
-                                      filter->filter_area.y,
-                                      filter->filter_area.width,
-                                      filter->filter_area.height,
-                                      &update_area.x,
-                                      &update_area.y,
-                                      &update_area.width,
-                                      &update_area.height))
+      if (! gegl_rectangle_intersect (&update_area,
+                                      area, &filter->filter_area))
         {
           return;
         }
     }
   else
     {
-      update_area = filter->filter_area;
+      gimp_drawable_filter_get_crop_rect (filter,
+                                          filter->crop_enabled,
+                                          &filter->crop_rect,
+                                          filter->preview_enabled,
+                                          filter->preview_alignment,
+                                          filter->preview_position,
+                                          &update_area);
+
+      if (! gegl_rectangle_intersect (&update_area,
+                                      &update_area, &filter->filter_area))
+        {
+          return;
+        }
     }
 
   if (update_area.width  > 0 &&
@@ -982,8 +1072,24 @@ gimp_drawable_filter_profile_changed (GimpColorManaged   *managed,
 }
 
 static void
+gimp_drawable_filter_format_changed (GimpDrawable       *drawable,
+                                     GimpDrawableFilter *filter)
+{
+  gimp_drawable_filter_sync_format (filter);
+  gimp_drawable_filter_update_drawable (filter, NULL);
+}
+
+static void
 gimp_drawable_filter_drawable_removed (GimpDrawable       *drawable,
                                        GimpDrawableFilter *filter)
 {
   gimp_drawable_filter_remove_filter (filter);
+}
+
+static void
+gimp_drawable_filter_lock_alpha_changed (GimpLayer          *layer,
+                                         GimpDrawableFilter *filter)
+{
+  gimp_drawable_filter_sync_affect (filter);
+  gimp_drawable_filter_update_drawable (filter, NULL);
 }

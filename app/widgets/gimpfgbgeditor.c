@@ -35,12 +35,16 @@
 
 #include "core/gimp.h"
 #include "core/gimpcontext.h"
+#include "core/gimpimage.h"
+#include "core/gimpimage-colormap.h"
 #include "core/gimpmarshal.h"
+#include "core/gimppalette.h"
 
 #include "gimpdnd.h"
 #include "gimpfgbgeditor.h"
 #include "gimpwidgets-utils.h"
 
+#define CHANNEL_EPSILON 1e-3
 
 enum
 {
@@ -98,6 +102,8 @@ static void     gimp_fg_bg_editor_drop_color        (GtkWidget        *widget,
 static void     gimp_fg_bg_editor_create_transform  (GimpFgBgEditor   *editor);
 static void     gimp_fg_bg_editor_destroy_transform (GimpFgBgEditor   *editor);
 
+static void     gimp_fg_bg_editor_image_changed     (GimpFgBgEditor   *editor,
+                                                     GimpImage        *image);
 
 G_DEFINE_TYPE (GimpFgBgEditor, gimp_fg_bg_editor, GTK_TYPE_EVENT_BOX)
 
@@ -253,17 +259,19 @@ static gboolean
 gimp_fg_bg_editor_expose (GtkWidget      *widget,
                           GdkEventExpose *eevent)
 {
-  GimpFgBgEditor *editor = GIMP_FG_BG_EDITOR (widget);
-  GtkStyle       *style  = gtk_widget_get_style (widget);
-  GdkWindow      *window = gtk_widget_get_window (widget);
-  cairo_t        *cr;
-  GtkAllocation   allocation;
-  gint            width, height;
-  gint            default_w, default_h;
-  gint            swap_w, swap_h;
-  gint            rect_w, rect_h;
-  GimpRGB         color;
-  GimpRGB         transformed_color;
+  GimpFgBgEditor    *editor = GIMP_FG_BG_EDITOR (widget);
+  GtkStyle          *style  = gtk_widget_get_style (widget);
+  GdkWindow         *window = gtk_widget_get_window (widget);
+  cairo_t           *cr;
+  GimpPalette       *colormap_palette = NULL;
+  GtkAllocation      allocation;
+  gint               width, height;
+  gint               default_w, default_h;
+  gint               swap_w, swap_h;
+  gint               rect_w, rect_h;
+  GimpRGB            color;
+  GimpRGB            transformed_color;
+  GimpImageBaseType  base_type = GIMP_RGB;
 
   if (! gtk_widget_is_drawable (widget))
     return FALSE;
@@ -331,6 +339,14 @@ gimp_fg_bg_editor_expose (GtkWidget      *widget,
   if (! editor->transform)
     gimp_fg_bg_editor_create_transform (editor);
 
+  if (editor->active_image)
+    {
+      base_type = gimp_image_get_base_type (editor->active_image);
+
+      if (base_type == GIMP_INDEXED)
+        colormap_palette = gimp_image_get_colormap_palette (editor->active_image);
+    }
+
   /*  draw the background area  */
 
   if (editor->context)
@@ -356,10 +372,19 @@ gimp_fg_bg_editor_expose (GtkWidget      *widget,
                        rect_h);
       cairo_fill (cr);
 
+
       if (editor->color_config &&
-          (color.r < 0.0 || color.r > 1.0 ||
-           color.g < 0.0 || color.g > 1.0 ||
-           color.b < 0.0 || color.b > 1.0))
+          /* Common out-of-gamut case */
+          ((color.r < 0.0 || color.r > 1.0 ||
+            color.g < 0.0 || color.g > 1.0 ||
+            color.b < 0.0 || color.b > 1.0) ||
+           /* Indexed images */
+           (colormap_palette && ! gimp_palette_find_entry (colormap_palette, &color, NULL)) ||
+           /* Grayscale images */
+           (base_type == GIMP_GRAY &&
+            (ABS (color.r - color.g) > CHANNEL_EPSILON ||
+             ABS (color.r - color.b) > CHANNEL_EPSILON ||
+             ABS (color.g - color.b) > CHANNEL_EPSILON))))
         {
           gint side = MIN (rect_w, rect_h) * 2 / 3;
 
@@ -407,9 +432,17 @@ gimp_fg_bg_editor_expose (GtkWidget      *widget,
       cairo_fill (cr);
 
       if (editor->color_config &&
-          (color.r < 0.0 || color.r > 1.0 ||
-           color.g < 0.0 || color.g > 1.0 ||
-           color.b < 0.0 || color.b > 1.0))
+          /* Common out-of-gamut case */
+          ((color.r < 0.0 || color.r > 1.0 ||
+            color.g < 0.0 || color.g > 1.0 ||
+            color.b < 0.0 || color.b > 1.0) ||
+           /* Indexed images */
+           (colormap_palette && ! gimp_palette_find_entry (colormap_palette, &color, NULL)) ||
+           /* Grayscale images */
+           (base_type == GIMP_GRAY &&
+            (ABS (color.r - color.g) > CHANNEL_EPSILON ||
+             ABS (color.r - color.b) > CHANNEL_EPSILON ||
+             ABS (color.g - color.b) > CHANNEL_EPSILON))))
         {
           gint side = MIN (rect_w, rect_h) * 2 / 3;
 
@@ -633,6 +666,9 @@ gimp_fg_bg_editor_set_context (GimpFgBgEditor *editor,
           g_signal_handlers_disconnect_by_func (editor->context,
                                                 gtk_widget_queue_draw,
                                                 editor);
+          g_signal_handlers_disconnect_by_func (editor->context,
+                                                G_CALLBACK (gimp_fg_bg_editor_image_changed),
+                                                editor);
           g_object_unref (editor->context);
 
           g_signal_handlers_disconnect_by_func (editor->color_config,
@@ -652,6 +688,9 @@ gimp_fg_bg_editor_set_context (GimpFgBgEditor *editor,
                                     editor);
           g_signal_connect_swapped (context, "background-changed",
                                     G_CALLBACK (gtk_widget_queue_draw),
+                                    editor);
+          g_signal_connect_swapped (context, "image-changed",
+                                    G_CALLBACK (gimp_fg_bg_editor_image_changed),
                                     editor);
 
           editor->color_config = g_object_ref (context->gimp->config->color_management);
@@ -755,4 +794,47 @@ gimp_fg_bg_editor_destroy_transform (GimpFgBgEditor *editor)
   g_clear_object (&editor->transform);
 
   gtk_widget_queue_draw (GTK_WIDGET (editor));
+}
+
+static void
+gimp_fg_bg_editor_image_changed (GimpFgBgEditor *editor,
+                                 GimpImage      *image)
+{
+  gtk_widget_queue_draw (GTK_WIDGET (editor));
+
+  if (editor->active_image)
+    {
+      g_signal_handlers_disconnect_by_func (editor->active_image,
+                                            G_CALLBACK (gtk_widget_queue_draw),
+                                            editor);
+      if (gimp_image_get_base_type (editor->active_image) == GIMP_INDEXED)
+        {
+          GimpPalette *palette;
+
+          palette = gimp_image_get_colormap_palette (editor->active_image);
+          g_signal_handlers_disconnect_by_func (palette,
+                                                G_CALLBACK (gtk_widget_queue_draw),
+                                                editor);
+        }
+    }
+  editor->active_image = image;
+  if (image)
+    {
+      g_signal_connect_swapped (image, "notify::base-type",
+                                G_CALLBACK (gtk_widget_queue_draw),
+                                editor);
+      g_signal_connect_swapped (image, "colormap-changed",
+                                G_CALLBACK (gtk_widget_queue_draw),
+                                editor);
+
+      if (gimp_image_get_base_type (image) == GIMP_INDEXED)
+        {
+          GimpPalette *palette;
+
+          palette = gimp_image_get_colormap_palette (editor->active_image);
+          g_signal_connect_swapped (palette, "dirty",
+                                    G_CALLBACK (gtk_widget_queue_draw),
+                                    editor);
+        }
+    }
 }

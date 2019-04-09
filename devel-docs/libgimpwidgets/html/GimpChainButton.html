@@ -78,11 +78,23 @@
 <col width="300px" class="properties_name">
 <col width="200px" class="properties_flags">
 </colgroup>
-<tbody><tr>
+<tbody>
+<tr>
+<td class="property_type"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
+<td class="property_name"><a class="link" href="GimpChainButton.html#GimpChainButton--active" title="The “active” property">active</a></td>
+<td class="property_flags">Read / Write / Construct</td>
+</tr>
+<tr>
+<td class="property_type"><a href="../gtk2/gtk2-Themeable-Stock-Images.html#GtkIconSize"><span class="type">GtkIconSize</span></a></td>
+<td class="property_name"><a class="link" href="GimpChainButton.html#GimpChainButton--icon-size" title="The “icon-size” property">icon-size</a></td>
+<td class="property_flags">Read / Write / Construct</td>
+</tr>
+<tr>
 <td class="property_type"><a class="link" href="GimpChainButton.html#GimpChainPosition" title="enum GimpChainPosition"><span class="type">GimpChainPosition</span></a></td>
 <td class="property_name"><a class="link" href="GimpChainButton.html#GimpChainButton--position" title="The “position” property">position</a></td>
 <td class="property_flags">Read / Write / Construct Only</td>
-</tr></tbody>
+</tr>
+</tbody>
 </table></div>
 </div>
 <div class="refsect1">
@@ -134,7 +146,7 @@
 <a name="GimpChainButton.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpChainButton implements
- AtkImplementor and  <a href="../gtk2/GtkBuildable.html#GtkBuildable-struct">GtkBuildable</a>.</p>
+ AtkImplementorIface and  <a href="../gtk2/GtkBuildable.html#GtkBuildable-struct">GtkBuildable</a>.</p>
 </div>
 <div class="refsect1">
 <a name="GimpChainButton.description"></a><h2>Description</h2>
@@ -297,6 +309,24 @@ gimp_chain_button_get_active (<em class="parameter"><code><a class="link" href="
 </div>
 <div class="refsect1">
 <a name="GimpChainButton.property-details"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="GimpChainButton--active"></a><h3>The <code class="literal">“active”</code> property</h3>
+<pre class="programlisting">  “active”                   <a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
+<p>The toggled state of the chain button.</p>
+<p>Flags: Read / Write / Construct</p>
+<p>Default value: FALSE</p>
+<p class="since">Since: <a class="link" href="api-index-2-10-10.html#api-index-2.10.10">2.10.10</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GimpChainButton--icon-size"></a><h3>The <code class="literal">“icon-size”</code> property</h3>
+<pre class="programlisting">  “icon-size”                <a href="../gtk2/gtk2-Themeable-Stock-Images.html#GtkIconSize"><span class="type">GtkIconSize</span></a></pre>
+<p>The chain button icon size.</p>
+<p>Flags: Read / Write / Construct</p>
+<p>Default value: GTK_ICON_SIZE_BUTTON</p>
+<p class="since">Since: <a class="link" href="api-index-2-10-10.html#api-index-2.10.10">2.10.10</a></p>
+</div>
+<hr>
 <div class="refsect2">
 <a name="GimpChainButton--position"></a><h3>The <code class="literal">“position”</code> property</h3>
 <pre class="programlisting">  “position”                 <a class="link" href="GimpChainButton.html#GimpChainPosition" title="enum GimpChainPosition"><span class="type">GimpChainPosition</span></a></pre>

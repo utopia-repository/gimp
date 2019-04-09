@@ -19,7 +19,7 @@
 #define  __GIMP_BUCKET_FILL_TOOL_H__
 
 
-#include "gimptool.h"
+#include "gimpcolortool.h"
 
 
 #define GIMP_TYPE_BUCKET_FILL_TOOL            (gimp_bucket_fill_tool_get_type ())
@@ -34,15 +34,18 @@
 
 typedef struct _GimpBucketFillTool      GimpBucketFillTool;
 typedef struct _GimpBucketFillToolClass GimpBucketFillToolClass;
+typedef struct _GimpBucketFillToolPrivate GimpBucketFillToolPrivate;
 
 struct _GimpBucketFillTool
 {
-  GimpTool  parent_instance;
+  GimpColorTool              parent_instance;
+
+  GimpBucketFillToolPrivate *priv;
 };
 
 struct _GimpBucketFillToolClass
 {
-  GimpToolClass  parent_class;
+  GimpColorToolClass  parent_class;
 };
 
 

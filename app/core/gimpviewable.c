@@ -68,6 +68,7 @@ struct _GimpViewablePrivate
   gchar        *icon_name;
   GdkPixbuf    *icon_pixbuf;
   gint          freeze_count;
+  gboolean      invalidate_pending;
   GimpViewable *parent;
   gint          depth;
 
@@ -206,6 +207,8 @@ gimp_viewable_class_init (GimpViewableClass *klass)
   klass->get_new_pixbuf          = gimp_viewable_real_get_new_pixbuf;
   klass->get_description         = gimp_viewable_real_get_description;
   klass->is_name_editable        = gimp_viewable_real_is_name_editable;
+  klass->preview_freeze          = NULL;
+  klass->preview_thaw            = NULL;
   klass->get_children            = gimp_viewable_real_get_children;
   klass->set_expanded            = NULL;
   klass->get_expanded            = NULL;
@@ -586,6 +589,8 @@ gimp_viewable_invalidate_preview (GimpViewable *viewable)
 
   if (private->freeze_count == 0)
     g_signal_emit (viewable, viewable_signals[INVALIDATE_PREVIEW], 0);
+  else
+    private->invalidate_pending = TRUE;
 }
 
 /**
@@ -1280,7 +1285,12 @@ gimp_viewable_preview_freeze (GimpViewable *viewable)
   private->freeze_count++;
 
   if (private->freeze_count == 1)
-    g_object_notify (G_OBJECT (viewable), "frozen");
+    {
+      if (GIMP_VIEWABLE_GET_CLASS (viewable)->preview_freeze)
+        GIMP_VIEWABLE_GET_CLASS (viewable)->preview_freeze (viewable);
+
+      g_object_notify (G_OBJECT (viewable), "frozen");
+    }
 }
 
 void
@@ -1298,8 +1308,17 @@ gimp_viewable_preview_thaw (GimpViewable *viewable)
 
   if (private->freeze_count == 0)
     {
-      gimp_viewable_invalidate_preview (viewable);
+      if (private->invalidate_pending)
+        {
+          private->invalidate_pending = FALSE;
+
+          gimp_viewable_invalidate_preview (viewable);
+        }
+
       g_object_notify (G_OBJECT (viewable), "frozen");
+
+      if (GIMP_VIEWABLE_GET_CLASS (viewable)->preview_thaw)
+        GIMP_VIEWABLE_GET_CLASS (viewable)->preview_thaw (viewable);
     }
 }
 

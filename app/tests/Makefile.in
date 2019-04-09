@@ -100,20 +100,13 @@ TESTS = test-core$(EXEEXT) test-gimpidtable$(EXEEXT) \
 EXTRA_PROGRAMS = $(am__EXEEXT_1)
 subdir = app/tests
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4macros/gtk-doc.m4 \
-	$(top_srcdir)/m4macros/intltool.m4 \
-	$(top_srcdir)/m4macros/libtool.m4 \
-	$(top_srcdir)/m4macros/ltoptions.m4 \
-	$(top_srcdir)/m4macros/ltsugar.m4 \
-	$(top_srcdir)/m4macros/ltversion.m4 \
-	$(top_srcdir)/m4macros/lt~obsolete.m4 \
-	$(top_srcdir)/acinclude.m4 $(top_srcdir)/m4macros/alsa.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
+	$(top_srcdir)/m4macros/alsa.m4 \
 	$(top_srcdir)/m4macros/ax_compare_version.m4 \
 	$(top_srcdir)/m4macros/ax_cxx_compile_stdcxx.m4 \
 	$(top_srcdir)/m4macros/ax_gcc_func_attribute.m4 \
 	$(top_srcdir)/m4macros/ax_prog_cc_for_build.m4 \
 	$(top_srcdir)/m4macros/ax_prog_perl_version.m4 \
-	$(top_srcdir)/m4macros/binreloc.m4 \
 	$(top_srcdir)/m4macros/detectcflags.m4 \
 	$(top_srcdir)/m4macros/pythondev.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -151,7 +144,8 @@ test_core_DEPENDENCIES = ../gui/libappgui.a ../tools/libapptools.a \
 	../widgets/libappwidgets.a ../xcf/libappxcf.a \
 	../pdb/libappinternal-procs.a ../pdb/libapppdb.a \
 	../plug-in/libappplug-in.a ../vectors/libappvectors.a \
-	../core/libappcore.a ../file/libappfile.a ../text/libapptext.a \
+	../core/libappcore.a ../file/libappfile.a \
+	../file-data/libappfile-data.a ../text/libapptext.a \
 	../paint/libapppaint.a ../config/libappconfig.a ../libapp.a \
 	../gegl/libappgegl.a ../operations/libappoperations.a \
 	../operations/layer-modes/libapplayermodes.a \
@@ -167,7 +161,7 @@ test_core_DEPENDENCIES = ../gui/libappgui.a ../tools/libapptools.a \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -183,9 +177,10 @@ test_gimpidtable_DEPENDENCIES = ../gui/libappgui.a \
 	../xcf/libappxcf.a ../pdb/libappinternal-procs.a \
 	../pdb/libapppdb.a ../plug-in/libappplug-in.a \
 	../vectors/libappvectors.a ../core/libappcore.a \
-	../file/libappfile.a ../text/libapptext.a \
-	../paint/libapppaint.a ../config/libappconfig.a ../libapp.a \
-	../gegl/libappgegl.a ../operations/libappoperations.a \
+	../file/libappfile.a ../file-data/libappfile-data.a \
+	../text/libapptext.a ../paint/libapppaint.a \
+	../config/libappconfig.a ../libapp.a ../gegl/libappgegl.a \
+	../operations/libappoperations.a \
 	../operations/layer-modes/libapplayermodes.a \
 	../operations/layer-modes-legacy/libapplayermodeslegacy.a \
 	libgimpapptestutils.a $(libgimpwidgets) $(libgimpconfig) \
@@ -199,7 +194,7 @@ test_gimpidtable_DEPENDENCIES = ../gui/libappgui.a \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 test_save_and_export_SOURCES = test-save-and-export.c
 test_save_and_export_OBJECTS = test-save-and-export.$(OBJEXT)
 test_save_and_export_LDADD = $(LDADD)
@@ -211,9 +206,10 @@ test_save_and_export_DEPENDENCIES = ../gui/libappgui.a \
 	../xcf/libappxcf.a ../pdb/libappinternal-procs.a \
 	../pdb/libapppdb.a ../plug-in/libappplug-in.a \
 	../vectors/libappvectors.a ../core/libappcore.a \
-	../file/libappfile.a ../text/libapptext.a \
-	../paint/libapppaint.a ../config/libappconfig.a ../libapp.a \
-	../gegl/libappgegl.a ../operations/libappoperations.a \
+	../file/libappfile.a ../file-data/libappfile-data.a \
+	../text/libapptext.a ../paint/libapppaint.a \
+	../config/libappconfig.a ../libapp.a ../gegl/libappgegl.a \
+	../operations/libappoperations.a \
 	../operations/layer-modes/libapplayermodes.a \
 	../operations/layer-modes-legacy/libapplayermodeslegacy.a \
 	libgimpapptestutils.a $(libgimpwidgets) $(libgimpconfig) \
@@ -227,7 +223,7 @@ test_save_and_export_DEPENDENCIES = ../gui/libappgui.a \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 test_session_2_8_compatibility_multi_window_SOURCES =  \
 	test-session-2-8-compatibility-multi-window.c
 test_session_2_8_compatibility_multi_window_OBJECTS =  \
@@ -241,7 +237,8 @@ test_session_2_8_compatibility_multi_window_DEPENDENCIES =  \
 	../widgets/libappwidgets.a ../xcf/libappxcf.a \
 	../pdb/libappinternal-procs.a ../pdb/libapppdb.a \
 	../plug-in/libappplug-in.a ../vectors/libappvectors.a \
-	../core/libappcore.a ../file/libappfile.a ../text/libapptext.a \
+	../core/libappcore.a ../file/libappfile.a \
+	../file-data/libappfile-data.a ../text/libapptext.a \
 	../paint/libapppaint.a ../config/libappconfig.a ../libapp.a \
 	../gegl/libappgegl.a ../operations/libappoperations.a \
 	../operations/layer-modes/libapplayermodes.a \
@@ -257,7 +254,7 @@ test_session_2_8_compatibility_multi_window_DEPENDENCIES =  \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 test_session_2_8_compatibility_single_window_SOURCES =  \
 	test-session-2-8-compatibility-single-window.c
 test_session_2_8_compatibility_single_window_OBJECTS =  \
@@ -271,7 +268,8 @@ test_session_2_8_compatibility_single_window_DEPENDENCIES =  \
 	../widgets/libappwidgets.a ../xcf/libappxcf.a \
 	../pdb/libappinternal-procs.a ../pdb/libapppdb.a \
 	../plug-in/libappplug-in.a ../vectors/libappvectors.a \
-	../core/libappcore.a ../file/libappfile.a ../text/libapptext.a \
+	../core/libappcore.a ../file/libappfile.a \
+	../file-data/libappfile-data.a ../text/libapptext.a \
 	../paint/libapppaint.a ../config/libappconfig.a ../libapp.a \
 	../gegl/libappgegl.a ../operations/libappoperations.a \
 	../operations/layer-modes/libapplayermodes.a \
@@ -287,7 +285,7 @@ test_session_2_8_compatibility_single_window_DEPENDENCIES =  \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 test_single_window_mode_SOURCES = test-single-window-mode.c
 test_single_window_mode_OBJECTS = test-single-window-mode.$(OBJEXT)
 test_single_window_mode_LDADD = $(LDADD)
@@ -299,9 +297,10 @@ test_single_window_mode_DEPENDENCIES = ../gui/libappgui.a \
 	../xcf/libappxcf.a ../pdb/libappinternal-procs.a \
 	../pdb/libapppdb.a ../plug-in/libappplug-in.a \
 	../vectors/libappvectors.a ../core/libappcore.a \
-	../file/libappfile.a ../text/libapptext.a \
-	../paint/libapppaint.a ../config/libappconfig.a ../libapp.a \
-	../gegl/libappgegl.a ../operations/libappoperations.a \
+	../file/libappfile.a ../file-data/libappfile-data.a \
+	../text/libapptext.a ../paint/libapppaint.a \
+	../config/libappconfig.a ../libapp.a ../gegl/libappgegl.a \
+	../operations/libappoperations.a \
 	../operations/layer-modes/libapplayermodes.a \
 	../operations/layer-modes-legacy/libapplayermodeslegacy.a \
 	libgimpapptestutils.a $(libgimpwidgets) $(libgimpconfig) \
@@ -315,7 +314,7 @@ test_single_window_mode_DEPENDENCIES = ../gui/libappgui.a \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 test_tools_SOURCES = test-tools.c
 test_tools_OBJECTS = test-tools.$(OBJEXT)
 test_tools_LDADD = $(LDADD)
@@ -326,7 +325,8 @@ test_tools_DEPENDENCIES = ../gui/libappgui.a ../tools/libapptools.a \
 	../widgets/libappwidgets.a ../xcf/libappxcf.a \
 	../pdb/libappinternal-procs.a ../pdb/libapppdb.a \
 	../plug-in/libappplug-in.a ../vectors/libappvectors.a \
-	../core/libappcore.a ../file/libappfile.a ../text/libapptext.a \
+	../core/libappcore.a ../file/libappfile.a \
+	../file-data/libappfile-data.a ../text/libapptext.a \
 	../paint/libapppaint.a ../config/libappconfig.a ../libapp.a \
 	../gegl/libappgegl.a ../operations/libappoperations.a \
 	../operations/layer-modes/libapplayermodes.a \
@@ -342,7 +342,7 @@ test_tools_DEPENDENCIES = ../gui/libappgui.a ../tools/libapptools.a \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 test_ui_SOURCES = test-ui.c
 test_ui_OBJECTS = test-ui.$(OBJEXT)
 test_ui_LDADD = $(LDADD)
@@ -353,7 +353,8 @@ test_ui_DEPENDENCIES = ../gui/libappgui.a ../tools/libapptools.a \
 	../widgets/libappwidgets.a ../xcf/libappxcf.a \
 	../pdb/libappinternal-procs.a ../pdb/libapppdb.a \
 	../plug-in/libappplug-in.a ../vectors/libappvectors.a \
-	../core/libappcore.a ../file/libappfile.a ../text/libapptext.a \
+	../core/libappcore.a ../file/libappfile.a \
+	../file-data/libappfile-data.a ../text/libapptext.a \
 	../paint/libapppaint.a ../config/libappconfig.a ../libapp.a \
 	../gegl/libappgegl.a ../operations/libappoperations.a \
 	../operations/layer-modes/libapplayermodes.a \
@@ -369,7 +370,7 @@ test_ui_DEPENDENCIES = ../gui/libappgui.a ../tools/libapptools.a \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 test_xcf_SOURCES = test-xcf.c
 test_xcf_OBJECTS = test-xcf.$(OBJEXT)
 test_xcf_LDADD = $(LDADD)
@@ -380,7 +381,8 @@ test_xcf_DEPENDENCIES = ../gui/libappgui.a ../tools/libapptools.a \
 	../widgets/libappwidgets.a ../xcf/libappxcf.a \
 	../pdb/libappinternal-procs.a ../pdb/libapppdb.a \
 	../plug-in/libappplug-in.a ../vectors/libappvectors.a \
-	../core/libappcore.a ../file/libappfile.a ../text/libapptext.a \
+	../core/libappcore.a ../file/libappfile.a \
+	../file-data/libappfile-data.a ../text/libapptext.a \
 	../paint/libapppaint.a ../config/libappconfig.a ../libapp.a \
 	../gegl/libappgegl.a ../operations/libappoperations.a \
 	../operations/layer-modes/libapplayermodes.a \
@@ -396,7 +398,7 @@ test_xcf_DEPENDENCIES = ../gui/libappgui.a ../tools/libapptools.a \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -744,8 +746,6 @@ AWK = @AWK@
 BABL_CFLAGS = @BABL_CFLAGS@
 BABL_LIBS = @BABL_LIBS@
 BABL_REQUIRED_VERSION = @BABL_REQUIRED_VERSION@
-BINRELOC_CFLAGS = @BINRELOC_CFLAGS@
-BINRELOC_LIBS = @BINRELOC_LIBS@
 BUG_REPORT_URL = @BUG_REPORT_URL@
 BUILD_EXEEXT = @BUILD_EXEEXT@
 BUILD_OBJEXT = @BUILD_OBJEXT@
@@ -875,7 +875,6 @@ GTK_MAC_INTEGRATION_CFLAGS = @GTK_MAC_INTEGRATION_CFLAGS@
 GTK_MAC_INTEGRATION_LIBS = @GTK_MAC_INTEGRATION_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
 GTK_UPDATE_ICON_CACHE = @GTK_UPDATE_ICON_CACHE@
-GTK_WIN32_RECOMMENDED_VERSION = @GTK_WIN32_RECOMMENDED_VERSION@
 GUDEV_CFLAGS = @GUDEV_CFLAGS@
 GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
@@ -1014,8 +1013,6 @@ PYTHON_PLATFORM = @PYTHON_PLATFORM@
 PYTHON_PREFIX = @PYTHON_PREFIX@
 PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
-RECOMMENDED_WIN32_GTK_CFLAGS = @RECOMMENDED_WIN32_GTK_CFLAGS@
-RECOMMENDED_WIN32_GTK_LIBS = @RECOMMENDED_WIN32_GTK_LIBS@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
 SCREENSHOT_LIBS = @SCREENSHOT_LIBS@
@@ -1138,6 +1135,9 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+@PLATFORM_OSX_TRUE@xobjective_c = "-xobjective-c"
+@PLATFORM_OSX_TRUE@xobjective_cxx = "-xobjective-c++"
+@PLATFORM_OSX_TRUE@xnone = "-xnone"
 SUBDIRS = \
 	files		\
 	gimpdir		\
@@ -1176,6 +1176,7 @@ AM_CPPFLAGS = \
 	$(GTK_CFLAGS)		\
 	$(DBUS_GLIB_CFLAGS)	\
 	$(GEGL_CFLAGS)		\
+	$(xobjective_c)		\
 	-I$(includedir)
 
 
@@ -1214,6 +1215,7 @@ LDADD = \
 	../vectors/libappvectors.a					\
 	../core/libappcore.a						\
 	../file/libappfile.a						\
+	../file-data/libappfile-data.a					\
 	../text/libapptext.a						\
 	../paint/libapppaint.a						\
 	../config/libappconfig.a					\
@@ -1232,6 +1234,7 @@ LDADD = \
 	$(libgimpbase)							\
 	$(GIMPICONRC)							\
 	$(GTK_LIBS)							\
+	$(GTK_MAC_INTEGRATION_LIBS)					\
 	$(DBUS_GLIB_LIBS)						\
 	$(GDK_PIXBUF_LIBS)						\
 	$(FREETYPE_LIBS)						\

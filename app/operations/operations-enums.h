@@ -153,12 +153,10 @@ typedef enum  /*< pdb-skip >*/
   GIMP_LAYER_MODE_CONTEXT_LAYER = 1 << 0,
   GIMP_LAYER_MODE_CONTEXT_GROUP = 1 << 1,
   GIMP_LAYER_MODE_CONTEXT_PAINT = 1 << 2,
-  GIMP_LAYER_MODE_CONTEXT_FADE  = 1 << 3,
 
   GIMP_LAYER_MODE_CONTEXT_ALL = (GIMP_LAYER_MODE_CONTEXT_LAYER |
                                  GIMP_LAYER_MODE_CONTEXT_GROUP |
-                                 GIMP_LAYER_MODE_CONTEXT_PAINT |
-                                 GIMP_LAYER_MODE_CONTEXT_FADE)
+                                 GIMP_LAYER_MODE_CONTEXT_PAINT)
 } GimpLayerModeContext;
 
 
@@ -182,7 +180,8 @@ typedef enum  /*< pdb-skip, skip >*/
   GIMP_LAYER_MODE_FLAG_COMPOSITE_SPACE_IMMUTABLE =  1 << 2,
   GIMP_LAYER_MODE_FLAG_COMPOSITE_MODE_IMMUTABLE  =  1 << 3,
   GIMP_LAYER_MODE_FLAG_SUBTRACTIVE               =  1 << 4,
-  GIMP_LAYER_MODE_FLAG_ALPHA_ONLY                =  1 << 5
+  GIMP_LAYER_MODE_FLAG_ALPHA_ONLY                =  1 << 5,
+  GIMP_LAYER_MODE_FLAG_TRIVIAL                   =  1 << 6
 } GimpLayerModeFlags;
 
 

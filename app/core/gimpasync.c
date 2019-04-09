@@ -27,6 +27,7 @@
 
 #include "gimpasync.h"
 #include "gimpcancelable.h"
+#include "gimpmarshal.h"
 #include "gimpwaitable.h"
 
 
@@ -60,13 +61,22 @@
 /* #define TIME_ASYNC_OPS */
 
 
+enum
+{
+  WAITING,
+  LAST_SIGNAL
+};
+
+
 typedef struct _GimpAsyncCallbackInfo GimpAsyncCallbackInfo;
 
 
 struct _GimpAsyncCallbackInfo
 {
-  GimpAsyncCallback callback;
-  gpointer          data;
+  GimpAsync         *async;
+  GimpAsyncCallback  callback;
+  gpointer           data;
+  gpointer           gobject;
 };
 
 struct _GimpAsyncPrivate
@@ -94,23 +104,26 @@ struct _GimpAsyncPrivate
 
 /*  local function prototypes  */
 
-static void       gimp_async_waitable_iface_init   (GimpWaitableInterface *iface);
+static void       gimp_async_waitable_iface_init   (GimpWaitableInterface   *iface);
 
 static void       gimp_async_cancelable_iface_init (GimpCancelableInterface *iface);
 
-static void       gimp_async_finalize              (GObject               *object);
+static void       gimp_async_finalize              (GObject                 *object);
 
-static void       gimp_async_wait                  (GimpWaitable          *waitable);
-static gboolean   gimp_async_try_wait              (GimpWaitable          *waitable);
-static gboolean   gimp_async_wait_until            (GimpWaitable          *waitable,
-                                                    gint64                 end_time);
+static void       gimp_async_wait                  (GimpWaitable            *waitable);
+static gboolean   gimp_async_try_wait              (GimpWaitable            *waitable);
+static gboolean   gimp_async_wait_until            (GimpWaitable            *waitable,
+                                                    gint64                   end_time);
 
-static void       gimp_async_cancel                (GimpCancelable        *cancelable);
+static void       gimp_async_cancel                (GimpCancelable          *cancelable);
 
-static gboolean   gimp_async_idle                  (GimpAsync             *async);
+static gboolean   gimp_async_idle                  (GimpAsync               *async);
 
-static void       gimp_async_stop                  (GimpAsync             *async);
-static void       gimp_async_run_callbacks         (GimpAsync             *async);
+static void       gimp_async_callback_weak_notify  (GimpAsyncCallbackInfo   *callback_info,
+                                                    GObject                 *gobject);
+
+static void       gimp_async_stop                  (GimpAsync               *async);
+static void       gimp_async_run_callbacks         (GimpAsync               *async);
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpAsync, gimp_async, G_TYPE_OBJECT,
@@ -121,6 +134,8 @@ G_DEFINE_TYPE_WITH_CODE (GimpAsync, gimp_async, G_TYPE_OBJECT,
                                                 gimp_async_cancelable_iface_init))
 
 #define parent_class gimp_async_parent_class
+
+static guint async_signals[LAST_SIGNAL] = { 0 };
 
 
 /*  local variables  */
@@ -135,6 +150,15 @@ static void
 gimp_async_class_init (GimpAsyncClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  async_signals[WAITING] =
+    g_signal_new ("waiting",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpAsyncClass, waiting),
+                  NULL, NULL,
+                  gimp_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 
   object_class->finalize = gimp_async_finalize;
 }
@@ -209,8 +233,13 @@ gimp_async_wait (GimpWaitable *waitable)
 
   g_mutex_lock (&async->priv->mutex);
 
-  while (! async->priv->stopped)
-    g_cond_wait (&async->priv->cond, &async->priv->mutex);
+  if (! async->priv->stopped)
+    {
+      g_signal_emit (async, async_signals[WAITING], 0);
+
+      while (! async->priv->stopped)
+        g_cond_wait (&async->priv->cond, &async->priv->mutex);
+    }
 
   g_mutex_unlock (&async->priv->mutex);
 
@@ -259,14 +288,19 @@ gimp_async_wait_until (GimpWaitable *waitable,
 
   g_mutex_lock (&async->priv->mutex);
 
-  while (! async->priv->stopped)
+  if (! async->priv->stopped)
     {
-      if (! g_cond_wait_until (&async->priv->cond, &async->priv->mutex,
-                               end_time))
-        {
-          g_mutex_unlock (&async->priv->mutex);
+      g_signal_emit (async, async_signals[WAITING], 0);
 
-          return FALSE;
+      while (! async->priv->stopped)
+        {
+          if (! g_cond_wait_until (&async->priv->cond, &async->priv->mutex,
+                                   end_time))
+            {
+              g_mutex_unlock (&async->priv->mutex);
+
+              return FALSE;
+            }
         }
     }
 
@@ -299,6 +333,33 @@ gimp_async_idle (GimpAsync *async)
   gimp_waitable_wait (GIMP_WAITABLE (async));
 
   return G_SOURCE_REMOVE;
+}
+
+static void
+gimp_async_callback_weak_notify (GimpAsyncCallbackInfo *callback_info,
+                                 GObject               *gobject)
+{
+  GimpAsync *async       = callback_info->async;
+  gboolean   unref_async = FALSE;
+
+  g_mutex_lock (&async->priv->mutex);
+
+  g_queue_remove (&async->priv->callbacks, callback_info);
+
+  g_slice_free (GimpAsyncCallbackInfo, callback_info);
+
+  if (g_queue_is_empty (&async->priv->callbacks) && async->priv->idle_id)
+    {
+      g_source_remove (async->priv->idle_id);
+      async->priv->idle_id = 0;
+
+      unref_async = TRUE;
+    }
+
+  g_mutex_unlock (&async->priv->mutex);
+
+  if (unref_async)
+    g_object_unref (async);
 }
 
 static void
@@ -348,7 +409,19 @@ gimp_async_run_callbacks (GimpAsync *async)
 
   while ((callback_info = g_queue_pop_head (&async->priv->callbacks)))
     {
+      if (callback_info->gobject)
+        {
+          g_object_ref (callback_info->gobject);
+
+          g_object_weak_unref (callback_info->gobject,
+                               (GWeakNotify) gimp_async_callback_weak_notify,
+                               callback_info);
+        }
+
       callback_info->callback (async, callback_info->data);
+
+      if (callback_info->gobject)
+        g_object_unref (callback_info->gobject);
 
       g_slice_free (GimpAsyncCallbackInfo, callback_info);
     }
@@ -418,11 +491,63 @@ gimp_async_add_callback (GimpAsync         *async,
       return;
     }
 
-  callback_info           = g_slice_new (GimpAsyncCallbackInfo);
+  callback_info           = g_slice_new0 (GimpAsyncCallbackInfo);
+  callback_info->async    = async;
   callback_info->callback = callback;
   callback_info->data     = data;
 
   g_queue_push_tail (&async->priv->callbacks, callback_info);
+
+  g_mutex_unlock (&async->priv->mutex);
+}
+
+/* same as 'gimp_async_add_callback()', however, takes an additional 'gobject'
+ * argument, which should be a GObject.
+ *
+ * 'gobject' is guaranteed to remain alive for the duration of the callback.
+ *
+ * When 'gobject' is destroyed, the callback is automatically removed.
+ */
+void
+gimp_async_add_callback_for_object (GimpAsync         *async,
+                                    GimpAsyncCallback  callback,
+                                    gpointer           data,
+                                    gpointer           gobject)
+{
+  GimpAsyncCallbackInfo *callback_info;
+
+  g_return_if_fail (GIMP_IS_ASYNC (async));
+  g_return_if_fail (callback != NULL);
+  g_return_if_fail (G_IS_OBJECT (gobject));
+
+  g_mutex_lock (&async->priv->mutex);
+
+  if (async->priv->stopped && g_queue_is_empty (&async->priv->callbacks))
+    {
+      async->priv->synced = TRUE;
+
+      g_mutex_unlock (&async->priv->mutex);
+
+      g_object_ref (gobject);
+
+      callback (async, data);
+
+      g_object_unref (gobject);
+
+      return;
+    }
+
+  callback_info           = g_slice_new0 (GimpAsyncCallbackInfo);
+  callback_info->async    = async;
+  callback_info->callback = callback;
+  callback_info->data     = data;
+  callback_info->gobject  = gobject;
+
+  g_queue_push_tail (&async->priv->callbacks, callback_info);
+
+  g_object_weak_ref (gobject,
+                     (GWeakNotify) gimp_async_callback_weak_notify,
+                     callback_info);
 
   g_mutex_unlock (&async->priv->mutex);
 }
@@ -438,7 +563,8 @@ gimp_async_remove_callback (GimpAsync         *async,
                             GimpAsyncCallback  callback,
                             gpointer           data)
 {
-  GList *iter;
+  GList    *iter;
+  gboolean  unref_async = FALSE;
 
   g_return_if_fail (GIMP_IS_ASYNC (async));
   g_return_if_fail (callback != NULL);
@@ -455,6 +581,14 @@ gimp_async_remove_callback (GimpAsync         *async,
       if (callback_info->callback == callback &&
           callback_info->data     == data)
         {
+          if (callback_info->gobject)
+            {
+              g_object_weak_unref (
+                callback_info->gobject,
+                (GWeakNotify) gimp_async_callback_weak_notify,
+                callback_info);
+            }
+
           g_queue_delete_link (&async->priv->callbacks, iter);
 
           g_slice_free (GimpAsyncCallbackInfo, callback_info);
@@ -463,7 +597,18 @@ gimp_async_remove_callback (GimpAsync         *async,
       iter = next;
     }
 
+  if (g_queue_is_empty (&async->priv->callbacks) && async->priv->idle_id)
+    {
+      g_source_remove (async->priv->idle_id);
+      async->priv->idle_id = 0;
+
+      unref_async = TRUE;
+    }
+
   g_mutex_unlock (&async->priv->mutex);
+
+  if (unref_async)
+    g_object_unref (async);
 }
 
 /* checks if 'async' is in the "stopped" state.

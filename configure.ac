@@ -11,11 +11,11 @@ AC_PREREQ(2.54)
 
 m4_define([gimp_major_version], [2])
 m4_define([gimp_minor_version], [10])
-m4_define([gimp_micro_version], [8])
+m4_define([gimp_micro_version], [10])
 m4_define([gimp_real_version],
           [gimp_major_version.gimp_minor_version.gimp_micro_version])
 m4_define([gimp_version], [gimp_real_version])
-m4_define([gimp_interface_age], [8])
+m4_define([gimp_interface_age], [10])
 m4_define([gimp_binary_age],
           [m4_eval(100 * gimp_minor_version + gimp_micro_version)])
 
@@ -45,21 +45,20 @@ m4_define([gimp_full_name], [GNU Image Manipulation Program])
 # required versions of other packages
 m4_define([alsa_required_version], [1.0.0])
 m4_define([atk_required_version], [2.2.0])
-m4_define([babl_required_version], [0.1.58])
+m4_define([babl_required_version], [0.1.62])
 m4_define([cairo_pdf_required_version], [1.12.2])
 m4_define([cairo_required_version], [1.12.2])
 m4_define([fontconfig_required_version], [2.12.4])
 m4_define([freetype2_required_version], [2.1.7])
 m4_define([gdk_pixbuf_required_version], [2.30.8])
 m4_define([gegl_major_minor_version], [0.4])
-m4_define([gegl_micro_version], [12])
+m4_define([gegl_micro_version], [14])
 m4_define([gegl_required_version],
           [gegl_major_minor_version.gegl_micro_version])
 m4_define([gexiv2_required_version], [0.10.6])
 m4_define([glib_required_version], [2.54.2])
 m4_define([gtk_mac_integration_required_version], [2.0.0])
-m4_define([gtk_required_version], [2.24.10])
-m4_define([gtk_win32_recommended_version], [2.24.32])
+m4_define([gtk_required_version], [2.24.32])
 m4_define([gtkdoc_required_version], [1.0])
 m4_define([harfbuzz_required_version], [0.9.19])
 m4_define([intltool_required_version], [0.40.1])
@@ -75,7 +74,7 @@ m4_define([openjpeg_required_version], [2.1.0])
 m4_define([pangocairo_required_version], [1.29.4])
 m4_define([perl_required_version], [5.10.0])
 m4_define([poppler_data_required_version], [0.4.7])
-m4_define([poppler_required_version], [0.44.0])
+m4_define([poppler_required_version], [0.50.0])
 m4_define([pycairo_required_version], [1.0.2])
 m4_define([pygtk_required_version], [2.10.4])
 m4_define([python2_required_version], [2.5.0])
@@ -149,7 +148,6 @@ AC_DEFINE(GIMP_TOOL_VERSION, "gimp_tool_version",
 GLIB_REQUIRED_VERSION=glib_required_version
 GDK_PIXBUF_REQUIRED_VERSION=gdk_pixbuf_required_version
 GTK_REQUIRED_VERSION=gtk_required_version
-GTK_WIN32_RECOMMENDED_VERSION=gtk_win32_recommended_version
 CAIRO_REQUIRED_VERSION=cairo_required_version
 CAIRO_PDF_REQUIRED_VERSION=cairo_pdf_required_version
 GEGL_MAJOR_MINOR_VERSION=gegl_major_minor_version
@@ -182,7 +180,6 @@ XGETTEXT_REQUIRED_VERSION=xgettext_required_version
 AC_SUBST(GLIB_REQUIRED_VERSION)
 AC_SUBST(GDK_PIXBUF_REQUIRED_VERSION)
 AC_SUBST(GTK_REQUIRED_VERSION)
-AC_SUBST(GTK_WIN32_RECOMMENDED_VERSION)
 AC_SUBST(CAIRO_REQUIRED_VERSION)
 AC_SUBST(CAIRO_PDF_REQUIRED_VERSION)
 AC_SUBST(GEGL_MAJOR_MINOR_VERSION)
@@ -578,21 +575,23 @@ WARNING: GCC 7.2.0 has a serious bug affecting GEGL/GIMP. We advise
          See https://bugzilla.gnome.org/show_bug.cgi?id=787222"
   fi
   # For GCC, use -v which has more information than --version.
-  CC_VERSION="\\\\t`$CC -v 2>&1 | sed -e 's/$/\\\\n\\\\t/g' | tr -d '\n'`"
+  CC_VERSION="`$CC -v 2>&1`"
 else
   # This is the list of common options used by autotools to check
   # versions for various compilers.
-  CC_VERSION="\\\\t`$CC --version 2>&1 | sed -e 's/$/\\\\n\\\\t/g' | tr -d '\n'`"
+  CC_VERSION="`$CC --version 2>&1`"
   if test $? != 0; then
-    CC_VERSION="\\\\t`$CC -v 2>&1` | sed -e 's/$/\\\\n\\\\t/g' | tr -d '\n'"
+    CC_VERSION="`$CC -v 2>&1`"
     if test $? != 0; then
-      CC_VERSION="\\\\t`$CC -V 2>&1` | sed -e 's/$/\\\\n\\\\t/g' | tr -d '\n'"
+      CC_VERSION="`$CC -V 2>&1`"
       if test $? != 0; then
-        CC_VERSION="\\\\t`$CC -qversion 2>&1` | sed -e 's/$/\\\\n\\\\t/g' | tr -d '\n'"
+        CC_VERSION="`$CC -qversion 2>&1`"
       fi
     fi
   fi
 fi
+# Format and escape CC_VERSION
+CC_VERSION="\\t`echo "$CC_VERSION" | sed -e 's/\\\\/\\\\\\\\/g;s/$/\\\\n\\\\t/g' | tr -d '\n'`"
 AC_SUBST(CC_VERSION)
 
 AC_HEADER_STDC
@@ -611,9 +610,6 @@ AC_FUNC_ALLOCA
 AC_CHECK_FUNCS(fsync)
 AC_CHECK_FUNCS(difftime mmap)
 AC_CHECK_FUNCS(thr_self)
-
-
-AM_BINRELOC
 
 
 # _NL_MEASUREMENT_MEASUREMENT is an enum and not a define
@@ -834,27 +830,6 @@ else
   have_gtk_2_26=no
 fi
 AC_MSG_RESULT($have_gtk_2_26)
-
-# Windows platform have a few bugs with GTK+ < 2.24.32.
-# In particular: broken shortcuts on non-latin locales.
-# Also SVG icons will be broken, hence --enable-vector-icons cannot be used.
-# Display a warning when necessary.
-# See bugs 769550 and 781020.
-have_recommended_gtk=""
-if test "x$platform_win32" = "xyes"; then
-    PKG_CHECK_MODULES(RECOMMENDED_WIN32_GTK, gtk+-2.0 >= gtk_win32_recommended_version,
-                      have_recommended_gtk="yes", have_recommended_gtk="no")
-
-    if test "x$have_recommended_gtk" = xno; then
-        have_recommended_gtk="
-WARNING: Your GTK+ version is `$PKG_CONFIG --modversion gtk+-2.0`.
-         The recommended GTK+ version under Windows is $GTK_WIN32_RECOMMENDED_VERSION or over.
-         If you continue without updating GTK+, shortcuts won't work with
-         non-latin locales, and vector icons will be disabled."
-    else
-        have_recommended_gtk=""
-    fi
-fi
 
 PKG_CHECK_MODULES(GDK_PIXBUF, gdk-pixbuf-2.0 >= gdk_pixbuf_required_version,,
                   [add_deps_error([gdk-pixbuf-2.0 >= gdk_pixbuf_required_version])])
@@ -1522,6 +1497,7 @@ if test "x$enable_relocatable_bundle" = xyes; then
   AC_DEFINE(ENABLE_RELOCATABLE_RESOURCES, 1,
             [Define to 1 if resources are considered bundled under the same prefix])
 fi
+AM_CONDITIONAL(ENABLE_RELOCATABLE_RESOURCES, test x$enable_relocatable_bundle = xyes)
 
 AC_MSG_RESULT([$enable_relocatable_bundle])
 
@@ -2398,48 +2374,44 @@ AC_ARG_ENABLE(vector-icons, [  --disable-vector-icons  use raster icons rather t
               enable_vector_icons=auto)
 
 if test "x$enable_vector_icons" != "xno"; then
-  if test "x$have_recommended_gtk" != "x"; then
-      enable_vector_icons="no (gtk+-2-0 < gtk_win32_recommended_version)"
-  else
-    have_shared_mime_info=""
-    # shared-mime-info is needed to correctly detect SVG files (except on
-    # Windows, apparently).
-    PKG_CHECK_MODULES(MIME_INFO, [shared-mime-info],
-                      have_shared_mime_info="yes", have_shared_mime_info="no")
-    if test "x$have_shared_mime_info" = "xyes" ||
-       test "x$platform_win32" = "xyes"; then
-      # Check if librsvg was built with --disable-pixbuf-loader.
-      gdk_pixbuf_moduledir=`$PKG_CONFIG --variable=gdk_pixbuf_moduledir gdk-pixbuf-2.0`
-      # AC_CHECK_FILE macro does not work when cross-compiling and exits with:
-      # error: cannot check for file existence when cross compiling
-      # So let's test files the shell way.
-      if (test "x$platform_win32" = "xyes" &&
-          test -f "$gdk_pixbuf_moduledir/libpixbufloader-svg.dll") ||
-         test -f "$gdk_pixbuf_moduledir/libpixbufloader-svg.so"; then
-        # We must not use $PKG_CONFIG nor PKG_CHECK_* macros because we need
-        # to make sure we use the native pkg-config (in case we cross-compile).
-        if pkg-config --atleast-version=glib_required_version glib-2.0 &&
-           pkg-config gio-2.0; then
-          NATIVE_GLIB_LIBS=`pkg-config --libs gio-2.0 glib-2.0`
-          NATIVE_GLIB_CFLAGS=`pkg-config --cflags gio-2.0 glib-2.0`
-          enable_vector_icons="yes"
+  have_shared_mime_info=""
+  # shared-mime-info is needed to correctly detect SVG files (except on
+  # Windows, apparently).
+  PKG_CHECK_MODULES(MIME_INFO, [shared-mime-info],
+                    have_shared_mime_info="yes", have_shared_mime_info="no")
+  if test "x$have_shared_mime_info" = "xyes" ||
+     test "x$platform_win32" = "xyes"; then
+    # Check if librsvg was built with --disable-pixbuf-loader.
+    gdk_pixbuf_moduledir=`$PKG_CONFIG --variable=gdk_pixbuf_moduledir gdk-pixbuf-2.0`
+    # AC_CHECK_FILE macro does not work when cross-compiling and exits with:
+    # error: cannot check for file existence when cross compiling
+    # So let's test files the shell way.
+    if (test "x$platform_win32" = "xyes" &&
+        test -f "$gdk_pixbuf_moduledir/libpixbufloader-svg.dll") ||
+       test -f "$gdk_pixbuf_moduledir/libpixbufloader-svg.so"; then
+      # We must not use $PKG_CONFIG nor PKG_CHECK_* macros because we need
+      # to make sure we use the native pkg-config (in case we cross-compile).
+      if pkg-config --atleast-version=glib_required_version glib-2.0 &&
+         pkg-config gio-2.0; then
+        NATIVE_GLIB_LIBS=`pkg-config --libs gio-2.0 glib-2.0`
+        NATIVE_GLIB_CFLAGS=`pkg-config --cflags gio-2.0 glib-2.0`
+        enable_vector_icons="yes"
 
-          if test "x$platform_win32" = "xyes"; then
-            warning_vector_icons_windows="
+        if test "x$platform_win32" = "xyes"; then
+          warning_vector_icons_windows="
 WARNING: You enabled vector icons on Win32. Make sure to run:
            $ gdk-pixbuf-query-loaders.exe --update-cache
          on the target machine (this command generates loaders.cache)
          so that GdkPixbuf knows where to find the SVG loader."
-          fi
-        else
-          enable_vector_icons="no (missing native glib-2.0 > glib_required_version or gio-2.0)"
         fi
       else
-        enable_vector_icons="no (librsvg GdkPixbuf loader missing)"
+        enable_vector_icons="no (missing native glib-2.0 > glib_required_version or gio-2.0)"
       fi
     else
-      enable_vector_icons="no (missing shared-mime-info)"
+      enable_vector_icons="no (librsvg GdkPixbuf loader missing)"
     fi
+  else
+    enable_vector_icons="no (missing shared-mime-info)"
   fi
 fi
 
@@ -2824,6 +2796,7 @@ app/gegl/Makefile
 app/dialogs/Makefile
 app/display/Makefile
 app/file/Makefile
+app/file-data/Makefile
 app/gui/Makefile
 app/menus/Makefile
 app/paint/Makefile
@@ -2854,6 +2827,7 @@ build/windows/installer/Makefile
 build/windows/installer/lang/Makefile
 plug-ins/Makefile
 plug-ins/file-bmp/Makefile
+plug-ins/file-dds/Makefile
 plug-ins/file-exr/Makefile
 plug-ins/file-faxg3/Makefile
 plug-ins/file-fits/Makefile
@@ -2976,6 +2950,7 @@ desktop/Makefile
 desktop/gimp-data-extras.metainfo.xml.in
 desktop/gimp.desktop.in
 desktop/org.gimp.GIMP.appdata.xml.in
+desktop/test-appdata.sh
 etc/Makefile
 etc/gimprc
 m4macros/Makefile
@@ -3077,7 +3052,7 @@ Tests:
   Test desktop file          $have_desktop_file_validate
 
 Bug report URL: $with_bug_report_url
-$override_bug_report_url$have_recommended_gtk$warning_vector_icons_windows$warning_glib_networking$warning_gcc"
+$override_bug_report_url$warning_vector_icons_windows$warning_glib_networking$warning_gcc"
 
 if test "x$required_deps" = "x"; then
   AC_OUTPUT

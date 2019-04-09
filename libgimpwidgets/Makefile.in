@@ -105,20 +105,13 @@ host_triplet = @host@
 EXTRA_PROGRAMS = test-preview-area$(EXEEXT) test-eevl$(EXEEXT)
 subdir = libgimpwidgets
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4macros/gtk-doc.m4 \
-	$(top_srcdir)/m4macros/intltool.m4 \
-	$(top_srcdir)/m4macros/libtool.m4 \
-	$(top_srcdir)/m4macros/ltoptions.m4 \
-	$(top_srcdir)/m4macros/ltsugar.m4 \
-	$(top_srcdir)/m4macros/ltversion.m4 \
-	$(top_srcdir)/m4macros/lt~obsolete.m4 \
-	$(top_srcdir)/acinclude.m4 $(top_srcdir)/m4macros/alsa.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
+	$(top_srcdir)/m4macros/alsa.m4 \
 	$(top_srcdir)/m4macros/ax_compare_version.m4 \
 	$(top_srcdir)/m4macros/ax_cxx_compile_stdcxx.m4 \
 	$(top_srcdir)/m4macros/ax_gcc_func_attribute.m4 \
 	$(top_srcdir)/m4macros/ax_prog_cc_for_build.m4 \
 	$(top_srcdir)/m4macros/ax_prog_perl_version.m4 \
-	$(top_srcdir)/m4macros/binreloc.m4 \
 	$(top_srcdir)/m4macros/detectcflags.m4 \
 	$(top_srcdir)/m4macros/pythondev.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -200,9 +193,10 @@ am__libgimpwidgets_@GIMP_API_VERSION@_la_SOURCES_DIST =  \
 	gimppropwidgets.c gimppropwidgets.h gimpquerybox.c \
 	gimpquerybox.h gimpruler.c gimpruler.h gimpscaleentry.c \
 	gimpscaleentry.h gimpscrolledpreview.c gimpscrolledpreview.h \
-	gimpsizeentry.c gimpsizeentry.h gimpstringcombobox.c \
-	gimpstringcombobox.h gimpunitcombobox.c gimpunitcombobox.h \
-	gimpunitmenu.c gimpunitmenu.h gimpunitstore.c gimpunitstore.h \
+	gimpsizeentry.c gimpsizeentry.h gimpspinbutton.c \
+	gimpspinbutton.h gimpstringcombobox.c gimpstringcombobox.h \
+	gimpunitcombobox.c gimpunitcombobox.h gimpunitmenu.c \
+	gimpunitmenu.h gimpunitstore.c gimpunitstore.h \
 	gimpwidgets-error.c gimpwidgets-error.h gimpwidgets-private.c \
 	gimpwidgets-private.h gimpwidgets.c gimpwidgets.h \
 	gimpwidgetsenums.h gimpwidgetstypes.h gimpwidgetsutils.c \
@@ -233,11 +227,11 @@ am__objects_4 = gimpbrowser.lo gimpbusybox.lo gimpbutton.lo \
 	gimppickbutton.lo gimppixmap.lo gimppreview.lo \
 	gimppreviewarea.lo gimppropwidgets.lo gimpquerybox.lo \
 	gimpruler.lo gimpscaleentry.lo gimpscrolledpreview.lo \
-	gimpsizeentry.lo gimpstringcombobox.lo gimpunitcombobox.lo \
-	gimpunitmenu.lo gimpunitstore.lo gimpwidgets-error.lo \
-	gimpwidgets-private.lo gimpwidgets.lo gimpwidgetsutils.lo \
-	gimpzoommodel.lo gimp3migration.lo $(am__objects_2) \
-	$(am__objects_3)
+	gimpsizeentry.lo gimpspinbutton.lo gimpstringcombobox.lo \
+	gimpunitcombobox.lo gimpunitmenu.lo gimpunitstore.lo \
+	gimpwidgets-error.lo gimpwidgets-private.lo gimpwidgets.lo \
+	gimpwidgetsutils.lo gimpzoommodel.lo gimp3migration.lo \
+	$(am__objects_2) $(am__objects_3)
 am_libgimpwidgets_@GIMP_API_VERSION@_la_OBJECTS = $(am__objects_1) \
 	$(am__objects_4)
 libgimpwidgets_@GIMP_API_VERSION@_la_OBJECTS =  \
@@ -313,7 +307,7 @@ am__depfiles_remade = ./$(DEPDIR)/gimp3migration.Plo \
 	./$(DEPDIR)/gimppropwidgets.Plo ./$(DEPDIR)/gimpquerybox.Plo \
 	./$(DEPDIR)/gimpruler.Plo ./$(DEPDIR)/gimpscaleentry.Plo \
 	./$(DEPDIR)/gimpscrolledpreview.Plo \
-	./$(DEPDIR)/gimpsizeentry.Plo \
+	./$(DEPDIR)/gimpsizeentry.Plo ./$(DEPDIR)/gimpspinbutton.Plo \
 	./$(DEPDIR)/gimpstringcombobox.Plo \
 	./$(DEPDIR)/gimpunitcombobox.Plo ./$(DEPDIR)/gimpunitmenu.Plo \
 	./$(DEPDIR)/gimpunitstore.Plo \
@@ -575,8 +569,6 @@ AWK = @AWK@
 BABL_CFLAGS = @BABL_CFLAGS@
 BABL_LIBS = @BABL_LIBS@
 BABL_REQUIRED_VERSION = @BABL_REQUIRED_VERSION@
-BINRELOC_CFLAGS = @BINRELOC_CFLAGS@
-BINRELOC_LIBS = @BINRELOC_LIBS@
 BUG_REPORT_URL = @BUG_REPORT_URL@
 BUILD_EXEEXT = @BUILD_EXEEXT@
 BUILD_OBJEXT = @BUILD_OBJEXT@
@@ -706,7 +698,6 @@ GTK_MAC_INTEGRATION_CFLAGS = @GTK_MAC_INTEGRATION_CFLAGS@
 GTK_MAC_INTEGRATION_LIBS = @GTK_MAC_INTEGRATION_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
 GTK_UPDATE_ICON_CACHE = @GTK_UPDATE_ICON_CACHE@
-GTK_WIN32_RECOMMENDED_VERSION = @GTK_WIN32_RECOMMENDED_VERSION@
 GUDEV_CFLAGS = @GUDEV_CFLAGS@
 GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
@@ -845,8 +836,6 @@ PYTHON_PLATFORM = @PYTHON_PLATFORM@
 PYTHON_PREFIX = @PYTHON_PREFIX@
 PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
-RECOMMENDED_WIN32_GTK_CFLAGS = @RECOMMENDED_WIN32_GTK_CFLAGS@
-RECOMMENDED_WIN32_GTK_LIBS = @RECOMMENDED_WIN32_GTK_LIBS@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
 SCREENSHOT_LIBS = @SCREENSHOT_LIBS@
@@ -1030,9 +1019,10 @@ libgimpwidgets_sources = gimpbrowser.c gimpbrowser.h gimpbusybox.c \
 	gimppropwidgets.c gimppropwidgets.h gimpquerybox.c \
 	gimpquerybox.h gimpruler.c gimpruler.h gimpscaleentry.c \
 	gimpscaleentry.h gimpscrolledpreview.c gimpscrolledpreview.h \
-	gimpsizeentry.c gimpsizeentry.h gimpstringcombobox.c \
-	gimpstringcombobox.h gimpunitcombobox.c gimpunitcombobox.h \
-	gimpunitmenu.c gimpunitmenu.h gimpunitstore.c gimpunitstore.h \
+	gimpsizeentry.c gimpsizeentry.h gimpspinbutton.c \
+	gimpspinbutton.h gimpstringcombobox.c gimpstringcombobox.h \
+	gimpunitcombobox.c gimpunitcombobox.h gimpunitmenu.c \
+	gimpunitmenu.h gimpunitstore.c gimpunitstore.h \
 	gimpwidgets-error.c gimpwidgets-error.h gimpwidgets-private.c \
 	gimpwidgets-private.h gimpwidgets.c gimpwidgets.h \
 	gimpwidgetsenums.h gimpwidgetstypes.h gimpwidgetsutils.c \
@@ -1101,6 +1091,7 @@ libgimpwidgetsinclude_HEADERS = \
 	gimpscaleentry.h		\
 	gimpscrolledpreview.h		\
 	gimpsizeentry.h			\
+	gimpspinbutton.h		\
 	gimpstringcombobox.h		\
 	gimpunitcombobox.h		\
 	gimpunitmenu.h			\
@@ -1307,6 +1298,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpscaleentry.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpscrolledpreview.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsizeentry.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpspinbutton.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpstringcombobox.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpunitcombobox.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpunitmenu.Plo@am__quote@ # am--include-marker
@@ -1730,6 +1722,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/gimpscaleentry.Plo
 	-rm -f ./$(DEPDIR)/gimpscrolledpreview.Plo
 	-rm -f ./$(DEPDIR)/gimpsizeentry.Plo
+	-rm -f ./$(DEPDIR)/gimpspinbutton.Plo
 	-rm -f ./$(DEPDIR)/gimpstringcombobox.Plo
 	-rm -f ./$(DEPDIR)/gimpunitcombobox.Plo
 	-rm -f ./$(DEPDIR)/gimpunitmenu.Plo
@@ -1845,6 +1838,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/gimpscaleentry.Plo
 	-rm -f ./$(DEPDIR)/gimpscrolledpreview.Plo
 	-rm -f ./$(DEPDIR)/gimpsizeentry.Plo
+	-rm -f ./$(DEPDIR)/gimpspinbutton.Plo
 	-rm -f ./$(DEPDIR)/gimpstringcombobox.Plo
 	-rm -f ./$(DEPDIR)/gimpunitcombobox.Plo
 	-rm -f ./$(DEPDIR)/gimpunitmenu.Plo

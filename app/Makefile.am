@@ -1,5 +1,11 @@
 ## Process this file with automake to produce Makefile.in
 
+if PLATFORM_OSX
+xobjective_c = "-xobjective-c"
+xobjective_cxx = "-xobjective-c++"
+xnone = "-xnone"
+endif
+
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
@@ -22,6 +28,7 @@ SUBDIRS = \
 	plug-in		\
 	xcf		\
 	file		\
+	file-data	\
 	pdb		\
 	widgets		\
 	propgui		\
@@ -100,7 +107,7 @@ else
 libm = -lm
 endif
 
-if USE_BINRELOC
+if ENABLE_RELOCATABLE_RESOURCES
 munix = -Wl,-rpath '-Wl,$$ORIGIN/../lib'
 endif
 
@@ -125,6 +132,7 @@ AM_CPPFLAGS = \
 	$(LCMS_CFLAGS)					\
 	$(GEXIV2_CFLAGS)				\
 	$(psapi_cflags)					\
+	$(xobjective_c)					\
 	-I$(includedir)					\
 	-I$(builddir)/gui
 
@@ -152,6 +160,7 @@ gimpconsoleldadd = \
 	vectors/libappvectors.a					\
 	core/libappcore.a					\
 	file/libappfile.a					\
+	file-data/libappfile-data.a				\
 	text/libapptext.a					\
 	paint/libapppaint.a					\
 	operations/libappoperations.a				\

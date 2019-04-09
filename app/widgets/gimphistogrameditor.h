@@ -45,6 +45,10 @@ struct _GimpHistogramEditor
   guint                 idle_id;
   gboolean              recompute;
 
+  GimpAsync            *calculate_async;
+  gboolean              bg_pending;
+  gboolean              update_pending;
+
   GtkWidget            *menu;
   GtkWidget            *box;
   GtkWidget            *labels[6];

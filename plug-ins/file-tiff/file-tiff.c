@@ -89,7 +89,8 @@ static TiffSaveVals tsvals =
   FALSE,               /*  save exif           */
   FALSE,               /*  save xmp            */
   FALSE,               /*  save iptc           */
-  TRUE                 /*  save thumbnail      */
+  TRUE,                /*  save thumbnail      */
+  TRUE                 /*  save profile        */
 };
 
 static gchar *image_comment = NULL;
@@ -128,7 +129,7 @@ query (void)
   static const GimpParamDef save_args[] =
   {
     COMMON_SAVE_ARGS,
-    { GIMP_PDB_INT32, "save-transp-pixels", "Keep the color data masked by an alpha channel intact" }
+    { GIMP_PDB_INT32, "save-transp-pixels", "Keep the color data masked by an alpha channel intact (do not store premultiplied components)" }
   };
 
   gimp_install_procedure (LOAD_PROC,
@@ -160,7 +161,7 @@ query (void)
                           "Spencer Kimball & Peter Mattis",
                           "1995-1996,2000-2003",
                           N_("TIFF image"),
-                          "RGB*, GRAY*, INDEXED",
+                          "RGB*, GRAY*, INDEXED*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (save_args_old), 0,
                           save_args_old, NULL);
@@ -178,7 +179,7 @@ query (void)
                           "Spencer Kimball & Peter Mattis",
                           "1995-1996,2000-2003",
                           N_("TIFF image"),
-                          "RGB*, GRAY*, INDEXED",
+                          "RGB*, GRAY*, INDEXED*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (save_args), 0,
                           save_args, NULL);
@@ -366,6 +367,7 @@ run (const gchar      *name,
       tsvals.save_xmp       = (metadata_flags & GIMP_METADATA_SAVE_XMP) != 0;
       tsvals.save_iptc      = (metadata_flags & GIMP_METADATA_SAVE_IPTC) != 0;
       tsvals.save_thumbnail = (metadata_flags & GIMP_METADATA_SAVE_THUMBNAIL) != 0;
+      tsvals.save_profile   = (metadata_flags & GIMP_METADATA_SAVE_COLOR_PROFILE) != 0;
 
       parasite = gimp_image_get_parasite (orig_image, "gimp-comment");
       if (parasite)
@@ -497,6 +499,11 @@ run (const gchar      *name,
 
                   /* never save metadata thumbnails for TIFF, see bug #729952 */
                   metadata_flags &= ~GIMP_METADATA_SAVE_THUMBNAIL;
+
+                  if (tsvals.save_profile)
+                    metadata_flags |= GIMP_METADATA_SAVE_COLOR_PROFILE;
+                  else
+                    metadata_flags &= ~GIMP_METADATA_SAVE_COLOR_PROFILE;
 
                   gimp_image_metadata_save_finish (image,
                                                    "image/tiff",

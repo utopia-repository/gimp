@@ -318,7 +318,8 @@ save_image (GFile        *file,
                              gimp_file_get_utf8_name (file));
 
 #ifdef TIFFTAG_ICCPROFILE
-  profile = gimp_image_get_color_profile (orig_image);
+  if (tsvals->save_profile)
+    profile = gimp_image_get_effective_color_profile (orig_image);
 #endif
 
   drawable_type = gimp_drawable_type (layer);
@@ -559,6 +560,7 @@ save_image (GFile        *file,
       break;
 
     case GIMP_INDEXED_IMAGE:
+    case GIMP_INDEXEDA_IMAGE:
       cmap = gimp_image_get_colormap (image, &num_colors);
 
       if (num_colors == 2 || num_colors == 1)
@@ -592,18 +594,14 @@ save_image (GFile        *file,
             }
        }
 
-      samplesperpixel = 1;
+      samplesperpixel = (drawable_type == GIMP_INDEXEDA_IMAGE) ? 2 : 1;
       bytesperrow     = cols;
-      alpha           = FALSE;
+      alpha           = (drawable_type == GIMP_INDEXEDA_IMAGE);
       format          = gimp_drawable_get_format (layer);
 
       g_free (cmap);
       break;
 
-    case GIMP_INDEXEDA_IMAGE:
-      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-                   _("TIFF export cannot handle indexed images with "
-                     "an alpha channel."));
     default:
       goto out;
     }
@@ -666,7 +664,14 @@ save_image (GFile        *file,
 
   if (alpha)
     {
-      if (tsvals->save_transp_pixels)
+      if (tsvals->save_transp_pixels ||
+          /* Associated alpha, hence premultiplied components is
+           * meaningless for palette images with transparency in TIFF
+           * format, since alpha is set per pixel, not per color (so a
+           * given color could be set to different alpha on different
+           * pixels, hence it cannot be premultiplied).
+           */
+          drawable_type == GIMP_INDEXEDA_IMAGE)
         extra_samples [0] = EXTRASAMPLE_UNASSALPHA;
       else
         extra_samples [0] = EXTRASAMPLE_ASSOCALPHA;
@@ -770,7 +775,8 @@ save_image (GFile        *file,
   /* save path data */
   save_paths (tif, orig_image);
 
-  if (!is_bw && drawable_type == GIMP_INDEXED_IMAGE)
+  if (! is_bw &&
+      (drawable_type == GIMP_INDEXED_IMAGE || drawable_type == GIMP_INDEXEDA_IMAGE))
     TIFFSetField (tif, TIFFTAG_COLORMAP, red, grn, blu);
 
   /* array to rearrange data */
@@ -795,6 +801,7 @@ save_image (GFile        *file,
           switch (drawable_type)
             {
             case GIMP_INDEXED_IMAGE:
+            case GIMP_INDEXEDA_IMAGE:
               if (is_bw)
                 {
                   byte2bit (t, bytesperrow, data, invert);
@@ -1008,10 +1015,10 @@ save_dialog (TiffSaveVals  *tsvals,
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  toggle = GTK_WIDGET (gtk_builder_get_object (builder, "sv_alpha"));
+  toggle = GTK_WIDGET (gtk_builder_get_object (builder, "save-alpha"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
-                                has_alpha && tsvals->save_transp_pixels);
-  gtk_widget_set_sensitive (toggle, has_alpha);
+                                has_alpha && (tsvals->save_transp_pixels || is_indexed));
+  gtk_widget_set_sensitive (toggle, has_alpha && ! is_indexed);
   g_signal_connect (toggle, "toggled",
                     G_CALLBACK (gimp_toggle_button_update),
                     &tsvals->save_transp_pixels);
@@ -1023,33 +1030,44 @@ save_dialog (TiffSaveVals  *tsvals,
                     G_CALLBACK (comment_entry_callback),
                     image_comment);
 
-  toggle = GTK_WIDGET (gtk_builder_get_object (builder, "sv_exif"));
+  toggle = GTK_WIDGET (gtk_builder_get_object (builder, "save-exif"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
                                 tsvals->save_exif);
   g_signal_connect (toggle, "toggled",
                     G_CALLBACK (gimp_toggle_button_update),
                     &tsvals->save_exif);
 
-  toggle = GTK_WIDGET (gtk_builder_get_object (builder, "sv_xmp"));
+  toggle = GTK_WIDGET (gtk_builder_get_object (builder, "save-xmp"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
                                 tsvals->save_xmp);
   g_signal_connect (toggle, "toggled",
                     G_CALLBACK (gimp_toggle_button_update),
                     &tsvals->save_xmp);
 
-  toggle = GTK_WIDGET (gtk_builder_get_object (builder, "sv_iptc"));
+  toggle = GTK_WIDGET (gtk_builder_get_object (builder, "save-iptc"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
                                 tsvals->save_iptc);
   g_signal_connect (toggle, "toggled",
                     G_CALLBACK (gimp_toggle_button_update),
                     &tsvals->save_iptc);
 
-  toggle = GTK_WIDGET (gtk_builder_get_object (builder, "sv_thumbnail"));
+  toggle = GTK_WIDGET (gtk_builder_get_object (builder, "save-thumbnail"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
                                 tsvals->save_thumbnail);
   g_signal_connect (toggle, "toggled",
                     G_CALLBACK (gimp_toggle_button_update),
                     &tsvals->save_thumbnail);
+
+  toggle = GTK_WIDGET (gtk_builder_get_object (builder, "save-color-profile"));
+#ifdef TIFFTAG_ICCPROFILE
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
+                                tsvals->save_profile);
+  g_signal_connect (toggle, "toggled",
+                    G_CALLBACK (gimp_toggle_button_update),
+                    &tsvals->save_profile);
+#else
+  gtk_widget_hide (toggle);
+#endif
 
   gtk_widget_show (dialog);
 

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GIMP\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gimp/issues\n"
-"POT-Creation-Date: 2018-09-26 18:42+0000\n"
-"PO-Revision-Date: 2018-07-07 14:57+0000\n"
+"POT-Creation-Date: 2019-01-24 10:00+0000\n"
+"PO-Revision-Date: 2018-12-31 14:57+0000\n"
 "Last-Translator: Snehalata B Shirude <snehalata.shirude@gmail.com>\n"
 "Language-Team: Marathi\n"
 "Language: mr\n"
@@ -96,8 +96,8 @@ msgid ""
 "You can not use \"Refresh Scripts\" while a Script-Fu dialog box is open.  "
 "Please close all Script-Fu windows and try again."
 msgstr ""
-"स्क्रिप्ट-फू संवाद पटल उघडलेला असताना आपण \"पूर्ववत [रिफ्रेश] लिपी\" वापरू शकत नाही. "
-"कृपया सर्व स्क्रिप्ट-फू पटल बंद करा आणि प्रयत्न करा."
+"स्क्रिप्ट-फू संवादपटल उघडलेले असताना आपण \"पूर्ववत [रिफ्रेश] लिपी\" वापरू शकत नाही. कृपया "
+"सर्व स्क्रिप्ट-फू पटल बंद करा आणि प्रयत्न करा."
 
 #: ../plug-ins/script-fu/script-fu-console.c:127
 #: ../plug-ins/script-fu/script-fu-console.c:194
@@ -107,7 +107,7 @@ msgstr "स्क्रिप्ट-फू आज्ञापटल"
 #: ../plug-ins/script-fu/script-fu-console.c:132
 #: ../plug-ins/script-fu/script-fu-console.c:293
 msgid "_Save"
-msgstr "_जतन"
+msgstr "_साठवा"
 
 #: ../plug-ins/script-fu/script-fu-console.c:133
 msgid "C_lear"
@@ -132,7 +132,7 @@ msgstr "_दर्शक [पहा]..."
 
 #: ../plug-ins/script-fu/script-fu-console.c:288
 msgid "Save Script-Fu Console Output"
-msgstr "स्क्रिप्ट-फू आज्ञापटल आउटपुट जतन करा"
+msgstr "स्क्रिप्ट-फू आज्ञापटल आउटपुट साठवा"
 
 #: ../plug-ins/script-fu/script-fu-console.c:292
 #: ../plug-ins/script-fu/script-fu-interface.c:236
@@ -399,7 +399,7 @@ msgstr "जीआयएफ साठी तयार करा"
 
 #: ../plug-ins/script-fu/scripts/burn-in-anim.scm:239
 msgid "Speed (pixels/frame)"
-msgstr "गती (दृश्यबिंदू/चौकट)"
+msgstr "गती (चित्रकणे [पिक्सेल्स]/चौकट)"
 
 #: ../plug-ins/script-fu/scripts/carve-it.scm:168
 msgid "Carved Surface"
@@ -429,7 +429,7 @@ msgstr "स्टेन्सिल को_रून काढा..."
 msgid ""
 "Use the specified drawable as a stencil to carve from the specified image."
 msgstr ""
-"निर्दिष्ट केलेल्या प्रतिमेवरून कोरून काढण्यासाठी हे विशिष्ट रेखाचित्र स्टेन्सिल म्हणून वापरा."
+"निर्दिष्ट केलेल्या प्रतिमेवरून कोरून काढण्यासाठी विशिष्ट रेखांकनायोग्य स्टेन्सिल म्हणून वापरा."
 
 #: ../plug-ins/script-fu/scripts/carve-it.scm:190
 msgid "Image to carve"
@@ -477,7 +477,8 @@ msgid ""
 "Add a chrome effect to the selected region (or alpha) using a specified "
 "(grayscale) stencil"
 msgstr ""
-"निर्दिष्ट केलेल्या क्षेत्र (किंवा अल्फा) वर विशिष्ट (ग्रेस्केल) स्टेन्सिल वापरून क्रोम प्रभाव जोडा"
+"निर्दिष्ट केलेल्या क्षेत्र (किंवा अल्फा) वर विशिष्ट (कृष्ण-धवल छटा [ग्रेस्केल]) स्टेन्सिल वापरून "
+"क्रोम प्रभाव जोडा"
 
 #: ../plug-ins/script-fu/scripts/chrome-it.scm:238
 msgid "Chrome saturation"
@@ -567,7 +568,7 @@ msgstr "अझिमथ"
 
 #: ../plug-ins/script-fu/scripts/clothify.scm:63
 msgid "Elevation"
-msgstr "क्षितिजाशी असलेला कोन"
+msgstr "उन्नत दर्शन [इलेव्हेशन]"
 
 #: ../plug-ins/script-fu/scripts/clothify.scm:64
 msgid "Depth"
@@ -611,7 +612,7 @@ msgstr "निवडीस त्रास [डिस्ट्रेस] दे�
 
 #: ../plug-ins/script-fu/scripts/distress-selection.scm:113
 msgid "Threshold (bigger 1<-->254 smaller)"
-msgstr "रंग मर्यादा (मोठी १<-->२५४ लहान)"
+msgstr "रंग मर्यादा [थ्रेशोल्ड] (मोठी १<-->२५४ लहान)"
 
 #: ../plug-ins/script-fu/scripts/distress-selection.scm:114
 msgid "Spread"
@@ -743,11 +744,11 @@ msgstr "_गाळणी (regexp)"
 
 #: ../plug-ins/script-fu/scripts/font-map.scm:162
 msgid "Font _size (pixels)"
-msgstr "टंक _आकार (दृश्यबिंदू)"
+msgstr "टंक _आकार (चित्रकणे [पिक्सेल्स])"
 
 #: ../plug-ins/script-fu/scripts/font-map.scm:163
 msgid "_Border (pixels)"
-msgstr "_सीमा (दृश्यबिंदू)"
+msgstr "_सीमा (चित्रकणे [पिक्सेल्स])"
 
 #: ../plug-ins/script-fu/scripts/font-map.scm:164
 msgid "_Color scheme"
@@ -819,7 +820,7 @@ msgstr "डिजिटल कॅमेरा छायाचित्रां�
 
 #: ../plug-ins/script-fu/scripts/gimp-online.scm:98
 msgid "Create, Open and Save _Files"
-msgstr "_धारिका तयार करा, उघडा आणि जतन करा"
+msgstr "_धारिका तयार करा, उघडा आणि साठवा"
 
 #: ../plug-ins/script-fu/scripts/gimp-online.scm:111
 msgid "_Basic Concepts"
@@ -827,7 +828,7 @@ msgstr "_मूलभूत संकल्पना"
 
 #: ../plug-ins/script-fu/scripts/gimp-online.scm:124
 msgid "How to Use _Dialogs"
-msgstr "_सुचना फलक कसे वापरावे"
+msgstr "_संवादपटल कसे वापरावे"
 
 #: ../plug-ins/script-fu/scripts/gimp-online.scm:137
 msgid "Drawing _Simple Objects"
@@ -837,28 +838,47 @@ msgstr "_साध्या सोप्या घटकांचे चित�
 msgid "Create and Use _Selections"
 msgstr "_निवड तयार करा आणि वापरा"
 
-#: ../plug-ins/script-fu/scripts/gimp-online.scm:178
+#: ../plug-ins/script-fu/scripts/gimp-online.scm:190
 msgid "_Main Web Site"
 msgstr "_मुख्य वेब साइट"
 
-#: ../plug-ins/script-fu/scripts/gimp-online.scm:179
-#: ../plug-ins/script-fu/scripts/gimp-online.scm:192
-#: ../plug-ins/script-fu/scripts/gimp-online.scm:205
-#: ../plug-ins/script-fu/scripts/gimp-online.scm:218
+#: ../plug-ins/script-fu/scripts/gimp-online.scm:191
+#: ../plug-ins/script-fu/scripts/gimp-online.scm:204
+#: ../plug-ins/script-fu/scripts/gimp-online.scm:256
 msgid "Bookmark to the GIMP web site"
 msgstr "गिम्प वेबसाईटमध्ये खुण करा"
 
-#: ../plug-ins/script-fu/scripts/gimp-online.scm:191
+#: ../plug-ins/script-fu/scripts/gimp-online.scm:203
 msgid "_Developer Web Site"
 msgstr "_विकासक [डेव्हलपर] वेब साइट"
 
-#: ../plug-ins/script-fu/scripts/gimp-online.scm:204
-msgid "_User Manual Web Site"
-msgstr "_वापरकर्ता हस्तलिखित वेब साइट"
+#: ../plug-ins/script-fu/scripts/gimp-online.scm:216
+msgid "_Roadmap"
+msgstr "_नकाशा"
 
 #: ../plug-ins/script-fu/scripts/gimp-online.scm:217
-msgid "Plug-in _Registry"
-msgstr "जोडणी _रजिस्ट्री"
+msgid "Bookmark to the roadmap of GIMP"
+msgstr "गिम्पच्या नकाशावर खुण ठेवा"
+
+#: ../plug-ins/script-fu/scripts/gimp-online.scm:229
+msgid "_Wiki"
+msgstr "_विकी "
+
+#: ../plug-ins/script-fu/scripts/gimp-online.scm:230
+msgid "Bookmark to the wiki of GIMP"
+msgstr "गिम्पच्या विकीवर खुण ठेवा"
+
+#: ../plug-ins/script-fu/scripts/gimp-online.scm:242
+msgid "_Bug Reports and Feature Requests"
+msgstr "_दोष अहवाल आणि वैशिष्ट्य विनंत्या [बग रिपोर्ट्स  आणि  फिचर रिक्वेस्ट्स]"
+
+#: ../plug-ins/script-fu/scripts/gimp-online.scm:243
+msgid "Bookmark to the bug tracker of GIMP"
+msgstr "गिम्पच्या बग ट्रॅकरवर खुण ठेवा"
+
+#: ../plug-ins/script-fu/scripts/gimp-online.scm:255
+msgid "_User Manual Web Site"
+msgstr "_वापरकर्ता हस्तलिखित वेब साइट"
 
 #: ../plug-ins/script-fu/scripts/gradient-example.scm:69
 msgid "Custom _Gradient..."
@@ -947,7 +967,7 @@ msgstr "नवीन _गाईड..."
 
 #: ../plug-ins/script-fu/scripts/guides-new.scm:28
 msgid "Add a guide at the orientation and position specified (in pixels)"
-msgstr "निर्दिष्ट केलेल्या विभाजक आणि स्थितीवर (दृश्यबिंदूमध्ये) एक गाईड जोडा"
+msgstr "निर्दिष्ट केलेल्या विभाजक आणि स्थितीवर (चित्रकणांमध्ये [पिक्सेल्स]) एक गाईड जोडा"
 
 #: ../plug-ins/script-fu/scripts/guides-new.scm:36
 msgid "Position"
@@ -1140,7 +1160,7 @@ msgstr ""
 
 #: ../plug-ins/script-fu/scripts/palette-export.scm:399
 msgid "Export the active palette as a java.util.Hashtable<String, Color>"
-msgstr "सक्रिय रंगफळी java.util.Hashtable <String, Color> म्हणून निर्यात करा"
+msgstr "सक्रिय रंगफळी java.util.Hashtable <String, Color> यास्वरुपात निर्यात करा"
 
 #: ../plug-ins/script-fu/scripts/paste-as-brush.scm:56
 #: ../plug-ins/script-fu/scripts/paste-as-pattern.scm:44
@@ -1218,11 +1238,11 @@ msgstr "कडेचे प्रमाण [अमाऊंट]"
 
 #: ../plug-ins/script-fu/scripts/predator.scm:130
 msgid "Pixelize"
-msgstr "दृश्यबिंदू"
+msgstr "चित्रकणत्व [पिक्सलाइज]"
 
 #: ../plug-ins/script-fu/scripts/predator.scm:131
 msgid "Pixel amount"
-msgstr "दृश्यबिंदू प्रमाण"
+msgstr "चित्रकण [पिक्सेल] प्रमाण"
 
 #: ../plug-ins/script-fu/scripts/reverse-layers.scm:42
 msgid "Reverse Layer Order"
@@ -1401,13 +1421,12 @@ msgid "Rendering Spyro"
 msgstr "स्पायरो प्रस्तुत करणे"
 
 #: ../plug-ins/script-fu/scripts/spyrogimp.scm:314
-msgid "_Spyrogimp..."
-msgstr "_स्पायरोगिम्प..."
+msgid "_Spyrogimp (older script-fu version)..."
+msgstr "_स्पायरोगिम्प (जुनी स्क्रिप्ट-फ्यू आवृत्ती)..."
 
 #: ../plug-ins/script-fu/scripts/spyrogimp.scm:315
-msgid ""
-"Add Spirographs, Epitrochoids, and Lissajous Curves to the current layer"
-msgstr "सध्याच्या स्तरावर स्पायरोगिम्प, Epitrochoids आणि Lissajous वक्र [कर्व्हज] जोडा"
+msgid "This procedure is deprecated! Use 'plug-in-spyrogimp' instead."
+msgstr "ही प्रक्रिया नापसंत आहे! त्याऐवजी 'प्लग-इन-स्पायरोगिम्प' वापरा."
 
 #: ../plug-ins/script-fu/scripts/spyrogimp.scm:323
 msgid "Type"
@@ -1475,7 +1494,7 @@ msgstr "आतील दाते"
 
 #: ../plug-ins/script-fu/scripts/spyrogimp.scm:338
 msgid "Margin (pixels)"
-msgstr "समास (दृश्यबिंदू)"
+msgstr "समास (चित्रकणे [पिक्सेल्स])"
 
 #: ../plug-ins/script-fu/scripts/spyrogimp.scm:339
 msgid "Hole ratio"
@@ -1672,3 +1691,14 @@ msgstr "सावलीचा X ऑफसेट सोडा"
 #: ../plug-ins/script-fu/scripts/xach-effect.scm:137
 msgid "Drop shadow Y offset"
 msgstr "सावलीचा Y ऑफसेट सोडा"
+
+#~ msgid "_Spyrogimp..."
+#~ msgstr "_स्पायरोगिम्प..."
+
+#~ msgid ""
+#~ "Add Spirographs, Epitrochoids, and Lissajous Curves to the current layer"
+#~ msgstr ""
+#~ "सध्याच्या स्तरावर स्पायरोगिम्प, Epitrochoids आणि Lissajous वक्र [कर्व्हज] जोडा"
+
+#~ msgid "Plug-in _Registry"
+#~ msgstr "जोडणी _रजिस्ट्री"

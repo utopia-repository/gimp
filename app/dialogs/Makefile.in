@@ -90,20 +90,13 @@ build_triplet = @build@
 host_triplet = @host@
 subdir = app/dialogs
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4macros/gtk-doc.m4 \
-	$(top_srcdir)/m4macros/intltool.m4 \
-	$(top_srcdir)/m4macros/libtool.m4 \
-	$(top_srcdir)/m4macros/ltoptions.m4 \
-	$(top_srcdir)/m4macros/ltsugar.m4 \
-	$(top_srcdir)/m4macros/ltversion.m4 \
-	$(top_srcdir)/m4macros/lt~obsolete.m4 \
-	$(top_srcdir)/acinclude.m4 $(top_srcdir)/m4macros/alsa.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
+	$(top_srcdir)/m4macros/alsa.m4 \
 	$(top_srcdir)/m4macros/ax_compare_version.m4 \
 	$(top_srcdir)/m4macros/ax_cxx_compile_stdcxx.m4 \
 	$(top_srcdir)/m4macros/ax_gcc_func_attribute.m4 \
 	$(top_srcdir)/m4macros/ax_prog_cc_for_build.m4 \
 	$(top_srcdir)/m4macros/ax_prog_perl_version.m4 \
-	$(top_srcdir)/m4macros/binreloc.m4 \
 	$(top_srcdir)/m4macros/detectcflags.m4 \
 	$(top_srcdir)/m4macros/pythondev.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -129,13 +122,12 @@ am__objects_2 = dialogs.$(OBJEXT) dialogs-constructors.$(OBJEXT) \
 	color-profile-import-dialog.$(OBJEXT) \
 	convert-indexed-dialog.$(OBJEXT) \
 	convert-precision-dialog.$(OBJEXT) \
-	data-delete-dialog.$(OBJEXT) fade-dialog.$(OBJEXT) \
-	file-open-dialog.$(OBJEXT) file-open-location-dialog.$(OBJEXT) \
-	file-save-dialog.$(OBJEXT) fill-dialog.$(OBJEXT) \
-	grid-dialog.$(OBJEXT) image-merge-layers-dialog.$(OBJEXT) \
-	image-new-dialog.$(OBJEXT) image-properties-dialog.$(OBJEXT) \
-	image-scale-dialog.$(OBJEXT) input-devices-dialog.$(OBJEXT) \
-	item-options-dialog.$(OBJEXT) \
+	data-delete-dialog.$(OBJEXT) file-open-dialog.$(OBJEXT) \
+	file-open-location-dialog.$(OBJEXT) file-save-dialog.$(OBJEXT) \
+	fill-dialog.$(OBJEXT) grid-dialog.$(OBJEXT) \
+	image-merge-layers-dialog.$(OBJEXT) image-new-dialog.$(OBJEXT) \
+	image-properties-dialog.$(OBJEXT) image-scale-dialog.$(OBJEXT) \
+	input-devices-dialog.$(OBJEXT) item-options-dialog.$(OBJEXT) \
 	keyboard-shortcuts-dialog.$(OBJEXT) \
 	layer-add-mask-dialog.$(OBJEXT) layer-options-dialog.$(OBJEXT) \
 	lebl-dialog.$(OBJEXT) module-dialog.$(OBJEXT) \
@@ -175,7 +167,7 @@ am__depfiles_remade = ./$(DEPDIR)/about-dialog.Po \
 	./$(DEPDIR)/convert-precision-dialog.Po \
 	./$(DEPDIR)/data-delete-dialog.Po \
 	./$(DEPDIR)/dialogs-constructors.Po ./$(DEPDIR)/dialogs.Po \
-	./$(DEPDIR)/fade-dialog.Po ./$(DEPDIR)/file-open-dialog.Po \
+	./$(DEPDIR)/file-open-dialog.Po \
 	./$(DEPDIR)/file-open-location-dialog.Po \
 	./$(DEPDIR)/file-save-dialog.Po ./$(DEPDIR)/fill-dialog.Po \
 	./$(DEPDIR)/grid-dialog.Po \
@@ -275,8 +267,6 @@ AWK = @AWK@
 BABL_CFLAGS = @BABL_CFLAGS@
 BABL_LIBS = @BABL_LIBS@
 BABL_REQUIRED_VERSION = @BABL_REQUIRED_VERSION@
-BINRELOC_CFLAGS = @BINRELOC_CFLAGS@
-BINRELOC_LIBS = @BINRELOC_LIBS@
 BUG_REPORT_URL = @BUG_REPORT_URL@
 BUILD_EXEEXT = @BUILD_EXEEXT@
 BUILD_OBJEXT = @BUILD_OBJEXT@
@@ -406,7 +396,6 @@ GTK_MAC_INTEGRATION_CFLAGS = @GTK_MAC_INTEGRATION_CFLAGS@
 GTK_MAC_INTEGRATION_LIBS = @GTK_MAC_INTEGRATION_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
 GTK_UPDATE_ICON_CACHE = @GTK_UPDATE_ICON_CACHE@
-GTK_WIN32_RECOMMENDED_VERSION = @GTK_WIN32_RECOMMENDED_VERSION@
 GUDEV_CFLAGS = @GUDEV_CFLAGS@
 GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
@@ -545,8 +534,6 @@ PYTHON_PLATFORM = @PYTHON_PLATFORM@
 PYTHON_PREFIX = @PYTHON_PREFIX@
 PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
-RECOMMENDED_WIN32_GTK_CFLAGS = @RECOMMENDED_WIN32_GTK_CFLAGS@
-RECOMMENDED_WIN32_GTK_LIBS = @RECOMMENDED_WIN32_GTK_LIBS@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
 SCREENSHOT_LIBS = @SCREENSHOT_LIBS@
@@ -703,8 +690,6 @@ libappdialogs_a_sources = \
 	convert-precision-dialog.h	\
 	data-delete-dialog.c		\
 	data-delete-dialog.h		\
-	fade-dialog.c			\
-	fade-dialog.h			\
 	file-open-dialog.c		\
 	file-open-dialog.h		\
 	file-open-location-dialog.c	\
@@ -839,7 +824,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/data-delete-dialog.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dialogs-constructors.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dialogs.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fade-dialog.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file-open-dialog.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file-open-location-dialog.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file-save-dialog.Po@am__quote@ # am--include-marker
@@ -1042,7 +1026,6 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/data-delete-dialog.Po
 	-rm -f ./$(DEPDIR)/dialogs-constructors.Po
 	-rm -f ./$(DEPDIR)/dialogs.Po
-	-rm -f ./$(DEPDIR)/fade-dialog.Po
 	-rm -f ./$(DEPDIR)/file-open-dialog.Po
 	-rm -f ./$(DEPDIR)/file-open-location-dialog.Po
 	-rm -f ./$(DEPDIR)/file-save-dialog.Po
@@ -1131,7 +1114,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/data-delete-dialog.Po
 	-rm -f ./$(DEPDIR)/dialogs-constructors.Po
 	-rm -f ./$(DEPDIR)/dialogs.Po
-	-rm -f ./$(DEPDIR)/fade-dialog.Po
 	-rm -f ./$(DEPDIR)/file-open-dialog.Po
 	-rm -f ./$(DEPDIR)/file-open-location-dialog.Po
 	-rm -f ./$(DEPDIR)/file-save-dialog.Po

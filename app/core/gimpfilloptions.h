@@ -60,6 +60,12 @@ gboolean          gimp_fill_options_get_antialias    (GimpFillOptions     *optio
 void              gimp_fill_options_set_antialias    (GimpFillOptions     *options,
                                                       gboolean             antialias);
 
+gboolean          gimp_fill_options_get_feather      (GimpFillOptions     *options,
+                                                      gdouble             *radius);
+void              gimp_fill_options_set_feather      (GimpFillOptions     *options,
+                                                      gboolean             feather,
+                                                      gdouble              radius);
+
 gboolean          gimp_fill_options_set_by_fill_type (GimpFillOptions     *options,
                                                       GimpContext         *context,
                                                       GimpFillType         fill_type,
@@ -71,9 +77,17 @@ gboolean          gimp_fill_options_set_by_fill_mode (GimpFillOptions     *optio
 
 const gchar     * gimp_fill_options_get_undo_desc    (GimpFillOptions     *options);
 
+const Babl      * gimp_fill_options_get_format       (GimpFillOptions     *options,
+                                                      GimpDrawable        *drawable);
+
 GeglBuffer      * gimp_fill_options_create_buffer    (GimpFillOptions     *options,
                                                       GimpDrawable        *drawable,
                                                       const GeglRectangle *rect,
+                                                      gint                 pattern_offset_x,
+                                                      gint                 pattern_offset_y);
+void              gimp_fill_options_fill_buffer      (GimpFillOptions     *options,
+                                                      GimpDrawable        *drawable,
+                                                      GeglBuffer          *buffer,
                                                       gint                 pattern_offset_x,
                                                       gint                 pattern_offset_y);
 

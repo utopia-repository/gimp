@@ -334,8 +334,8 @@
     <keyword type="function" name="gimp_get_default_unit ()" link="libgimp-gimpgimprc.html#gimp-get-default-unit" since="2.4"/>
     <keyword type="function" name="gimp_get_module_load_inhibit ()" link="libgimp-gimpgimprc.html#gimp-get-module-load-inhibit"/>
     <keyword type="function" name="gimp_get_monitor_resolution ()" link="libgimp-gimpgimprc.html#gimp-get-monitor-resolution"/>
-    <keyword type="function" name="gimp_get_theme_dir ()" link="libgimp-gimpgimprc.html#gimp-get-theme-dir"/>
-    <keyword type="function" name="gimp_get_icon_theme_dir ()" link="libgimp-gimpgimprc.html#gimp-get-icon-theme-dir" since="2.10"/>
+    <keyword type="function" name="gimp_get_theme_dir ()" link="libgimp-gimpgimprc.html#gimp-get-theme-dir" deprecated="There is no replacement for this procedure."/>
+    <keyword type="function" name="gimp_get_icon_theme_dir ()" link="libgimp-gimpgimprc.html#gimp-get-icon-theme-dir" deprecated="There is no replacement for this procedure." since="2.10"/>
     <keyword type="function" name="gimp_help ()" link="libgimp-gimphelp.html#gimp-help"/>
     <keyword type="function" name="gimp_message ()" link="libgimp-gimpmessage.html#gimp-message"/>
     <keyword type="function" name="gimp_message_get_handler ()" link="libgimp-gimpmessage.html#gimp-message-get-handler"/>

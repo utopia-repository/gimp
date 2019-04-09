@@ -92,20 +92,13 @@ host_triplet = @host@
 @GIMP_UNSTABLE_TRUE@am__append_1 = $(test_scripts)
 subdir = plug-ins/pygimp/plug-ins
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4macros/gtk-doc.m4 \
-	$(top_srcdir)/m4macros/intltool.m4 \
-	$(top_srcdir)/m4macros/libtool.m4 \
-	$(top_srcdir)/m4macros/ltoptions.m4 \
-	$(top_srcdir)/m4macros/ltsugar.m4 \
-	$(top_srcdir)/m4macros/ltversion.m4 \
-	$(top_srcdir)/m4macros/lt~obsolete.m4 \
-	$(top_srcdir)/acinclude.m4 $(top_srcdir)/m4macros/alsa.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
+	$(top_srcdir)/m4macros/alsa.m4 \
 	$(top_srcdir)/m4macros/ax_compare_version.m4 \
 	$(top_srcdir)/m4macros/ax_cxx_compile_stdcxx.m4 \
 	$(top_srcdir)/m4macros/ax_gcc_func_attribute.m4 \
 	$(top_srcdir)/m4macros/ax_prog_cc_for_build.m4 \
 	$(top_srcdir)/m4macros/ax_prog_perl_version.m4 \
-	$(top_srcdir)/m4macros/binreloc.m4 \
 	$(top_srcdir)/m4macros/detectcflags.m4 \
 	$(top_srcdir)/m4macros/pythondev.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -191,8 +184,6 @@ AWK = @AWK@
 BABL_CFLAGS = @BABL_CFLAGS@
 BABL_LIBS = @BABL_LIBS@
 BABL_REQUIRED_VERSION = @BABL_REQUIRED_VERSION@
-BINRELOC_CFLAGS = @BINRELOC_CFLAGS@
-BINRELOC_LIBS = @BINRELOC_LIBS@
 BUG_REPORT_URL = @BUG_REPORT_URL@
 BUILD_EXEEXT = @BUILD_EXEEXT@
 BUILD_OBJEXT = @BUILD_OBJEXT@
@@ -322,7 +313,6 @@ GTK_MAC_INTEGRATION_CFLAGS = @GTK_MAC_INTEGRATION_CFLAGS@
 GTK_MAC_INTEGRATION_LIBS = @GTK_MAC_INTEGRATION_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
 GTK_UPDATE_ICON_CACHE = @GTK_UPDATE_ICON_CACHE@
-GTK_WIN32_RECOMMENDED_VERSION = @GTK_WIN32_RECOMMENDED_VERSION@
 GUDEV_CFLAGS = @GUDEV_CFLAGS@
 GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
@@ -461,8 +451,6 @@ PYTHON_PLATFORM = @PYTHON_PLATFORM@
 PYTHON_PREFIX = @PYTHON_PREFIX@
 PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
-RECOMMENDED_WIN32_GTK_CFLAGS = @RECOMMENDED_WIN32_GTK_CFLAGS@
-RECOMMENDED_WIN32_GTK_LIBS = @RECOMMENDED_WIN32_GTK_LIBS@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
 SCREENSHOT_LIBS = @SCREENSHOT_LIBS@
@@ -587,40 +575,42 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 pluginexecdir = $(gimpplugindir)/plug-ins
 source_scripts = \
-	colorxhtml.py					\
-	file-openraster.py				\
-	foggify.py						\
-	gradients-save-as-css.py		\
-	histogram-export.py     		\
-	palette-offset.py				\
-	palette-sort.py					\
-	palette-to-gradient.py			\
-	py-slice.py						\
-	python-eval.py					\
-									\
+	colorxhtml.py			\
+	file-openraster.py		\
+	foggify.py			\
+	gradients-save-as-css.py	\
+	histogram-export.py     	\
+	palette-offset.py		\
+	palette-sort.py			\
+	palette-to-gradient.py		\
+	py-slice.py			\
+	python-eval.py			\
+	spyro_plus.py			\
+					\
 	benchmark-foreground-extract.py	\
-	clothify.py						\
-	shadow_bevel.py					\
-	sphere.py						\
+	clothify.py			\
+	shadow_bevel.py			\
+	sphere.py			\
 	whirlpinch.py
 
 scripts = \
-	colorxhtml/colorxhtml.py						\
-	file-openraster/file-openraster.py				\
-	foggify/foggify.py								\
+	colorxhtml/colorxhtml.py			\
+	file-openraster/file-openraster.py		\
+	foggify/foggify.py				\
 	gradients-save-as-css/gradients-save-as-css.py	\
-	histogram-export/histogram-export.py     		\
-	palette-offset/palette-offset.py				\
-	palette-sort/palette-sort.py					\
-	palette-to-gradient/palette-to-gradient.py		\
-	py-slice/py-slice.py							\
-	python-eval/python-eval.py
+	histogram-export/histogram-export.py     	\
+	palette-offset/palette-offset.py		\
+	palette-sort/palette-sort.py			\
+	palette-to-gradient/palette-to-gradient.py	\
+	py-slice/py-slice.py				\
+	python-eval/python-eval.py			\
+	spyro_plus/spyro_plus.py
 
 test_scripts = \
 	benchmark-foreground-extract/benchmark-foreground-extract.py	\
-	clothify/clothify.py											\
-	shadow_bevel/shadow_bevel.py									\
-	sphere/sphere.py												\
+	clothify/clothify.py						\
+	shadow_bevel/shadow_bevel.py					\
+	sphere/sphere.py						\
 	whirlpinch/whirlpinch.py
 
 nobase_pluginexec_SCRIPTS = $(scripts) $(am__append_1)
@@ -632,7 +622,7 @@ console_scripts = python-console.py
 consoleexec_SCRIPTS = $(console_scripts)
 dist_consoleexec_DATA = pyconsole.py
 EXTRA_DIST = \
-	$(source_scripts) 	\
+	$(source_scripts)	\
 	$(console_scripts)
 
 CLEANFILES = $(scripts) $(test_scripts)
@@ -940,8 +930,8 @@ uninstall-am: uninstall-consoleexecSCRIPTS \
 .PRECIOUS: Makefile
 
 
-%.py:
-	mkdir -p $(@D) && cp -f $(srcdir)/$(@F) $@
+$(scripts) $(test_scripts): $(source_scripts)
+	$(AM_V_GEN) mkdir -p $(@D) && cp -f "$(srcdir)/$(@F)" $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

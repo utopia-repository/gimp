@@ -61,6 +61,8 @@ struct _GimpBrushPipe
                                  * ranks in some odd special case */
   GimpBrush       **brushes;
   GimpBrush        *current;    /* Currently selected brush */
+
+  gchar            *params;     /* For pipe <-> image conversion */
 };
 
 struct _GimpBrushPipeClass
@@ -69,7 +71,10 @@ struct _GimpBrushPipeClass
 };
 
 
-GType   gimp_brush_pipe_get_type (void) G_GNUC_CONST;
+GType      gimp_brush_pipe_get_type   (void) G_GNUC_CONST;
+
+gboolean   gimp_brush_pipe_set_params (GimpBrushPipe *pipe,
+                                       const gchar   *paramstring);
 
 
 #endif  /* __GIMP_BRUSH_PIPE_H__ */

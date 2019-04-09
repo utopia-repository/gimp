@@ -51,10 +51,10 @@ libgimpbaseincludedir = $(includedir)/gimp-$(GIMP_API_VERSION)/libgimpbase
 AM_CPPFLAGS = \
 	-DPREFIX=\""$(prefix)"\"				\
 	-DGIMPDIR=\""$(gimpdir)"\"				\
-	-DDATADIR=\""$(gimpdatadir)"\"				\
+	-DGIMPDATADIR=\""$(gimpdatadir)"\"				\
 	-DLOCALEDIR=\""$(gimplocaledir)"\"			\
 	-DPLUGINDIR=\""$(gimpplugindir)"\"			\
-	-DSYSCONFDIR=\""$(gimpsysconfdir)"\"			\
+	-DGIMPSYSCONFDIR=\""$(gimpsysconfdir)"\"			\
 	-DGIMP_PACKAGE=\""@PACKAGE@"\"				\
 	-DGIMP_DATA_VERSION=\"$(GIMP_DATA_VERSION)\"		\
 	-DGIMP_USER_VERSION=\"$(GIMP_USER_VERSION)\"		\
@@ -65,7 +65,6 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)						\
 	$(GIO_CFLAGS)						\
 	$(GEXIV2_CFLAGS)					\
-	$(BINRELOC_CFLAGS)					\
 	-I$(includedir)
 
 AM_CFLAGS = \

@@ -609,6 +609,7 @@
     <keyword type="constant" name="GIMP_METADATA_SAVE_XMP" link="libgimpbase-gimpmetadata.html#GIMP-METADATA-SAVE-XMP:CAPS"/>
     <keyword type="constant" name="GIMP_METADATA_SAVE_IPTC" link="libgimpbase-gimpmetadata.html#GIMP-METADATA-SAVE-IPTC:CAPS"/>
     <keyword type="constant" name="GIMP_METADATA_SAVE_THUMBNAIL" link="libgimpbase-gimpmetadata.html#GIMP-METADATA-SAVE-THUMBNAIL:CAPS"/>
+    <keyword type="constant" name="GIMP_METADATA_SAVE_COLOR_PROFILE" link="libgimpbase-gimpmetadata.html#GIMP-METADATA-SAVE-COLOR-PROFILE:CAPS"/>
     <keyword type="constant" name="GIMP_METADATA_SAVE_ALL" link="libgimpbase-gimpmetadata.html#GIMP-METADATA-SAVE-ALL:CAPS"/>
     <keyword type="constant" name="GIMP_METADATA_COLORSPACE_UNSPECIFIED" link="libgimpbase-gimpmetadata.html#GIMP-METADATA-COLORSPACE-UNSPECIFIED:CAPS"/>
     <keyword type="constant" name="GIMP_METADATA_COLORSPACE_UNCALIBRATED" link="libgimpbase-gimpmetadata.html#GIMP-METADATA-COLORSPACE-UNCALIBRATED:CAPS"/>

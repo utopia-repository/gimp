@@ -38,6 +38,7 @@
 #include "gimpselectiontool.h"
 #include "gimpselectionoptions.h"
 #include "gimptoolcontrol.h"
+#include "gimptools-utils.h"
 
 #include "gimp-intl.h"
 
@@ -179,7 +180,7 @@ gimp_selection_tool_oper_update (GimpTool         *tool,
   image        = gimp_display_get_image (display);
   selection    = gimp_image_get_mask (image);
   drawable     = gimp_image_get_active_drawable (image);
-  layer        = gimp_image_pick_layer (image, coords->x, coords->y);
+  layer        = gimp_image_pick_layer (image, coords->x, coords->y, NULL);
   floating_sel = gimp_image_get_floating_selection (image);
 
   extend_mask = gimp_get_extend_selection_mask ();
@@ -451,6 +452,9 @@ gimp_selection_tool_check (GimpSelectionTool  *sel_tool,
           g_set_error (error, GIMP_ERROR, GIMP_FAILED,
                        _("The active layer's pixels are locked."));
 
+          if (error)
+            gimp_tools_blink_lock_box (display->gimp, GIMP_ITEM (drawable));
+
           return FALSE;
         }
       break;
@@ -470,14 +474,16 @@ gimp_selection_tool_start_edit (GimpSelectionTool *sel_tool,
                                 GimpDisplay       *display,
                                 const GimpCoords  *coords)
 {
-  GimpTool *tool;
-  GError   *error = NULL;
+  GimpTool             *tool;
+  GimpSelectionOptions *options;
+  GError               *error = NULL;
 
   g_return_val_if_fail (GIMP_IS_SELECTION_TOOL (sel_tool), FALSE);
   g_return_val_if_fail (GIMP_IS_DISPLAY (display), FALSE);
   g_return_val_if_fail (coords != NULL, FALSE);
 
-  tool = GIMP_TOOL (sel_tool);
+  tool    = GIMP_TOOL (sel_tool);
+  options = GIMP_SELECTION_TOOL_GET_OPTIONS (sel_tool);
 
   g_return_val_if_fail (gimp_tool_control_is_active (tool->control) == FALSE,
                         FALSE);
@@ -485,6 +491,8 @@ gimp_selection_tool_start_edit (GimpSelectionTool *sel_tool,
   if (! gimp_selection_tool_check (sel_tool, display, &error))
     {
       gimp_tool_message_literal (tool, display, error->message);
+
+      gimp_widget_blink (options->mode_box);
 
       g_clear_error (&error);
 

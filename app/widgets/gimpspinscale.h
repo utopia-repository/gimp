@@ -35,12 +35,12 @@ typedef struct _GimpSpinScaleClass GimpSpinScaleClass;
 
 struct _GimpSpinScale
 {
-  GtkSpinButton  parent_instance;
+  GimpSpinButton  parent_instance;
 };
 
 struct _GimpSpinScaleClass
 {
-  GtkSpinButtonClass  parent_class;
+  GimpSpinButtonClass  parent_class;
 };
 
 
@@ -66,5 +66,8 @@ void          gimp_spin_scale_set_gamma          (GimpSpinScale *scale,
                                                   gdouble        gamma);
 gdouble       gimp_spin_scale_get_gamma          (GimpSpinScale *scale);
 
+void          gimp_spin_scale_set_constrain_drag (GimpSpinScale *scale,
+                                                  gboolean       constrain);
+gboolean      gimp_spin_scale_get_constrain_drag (GimpSpinScale *scale);
 
 #endif  /*  __GIMP_SPIN_SCALE_H__  */

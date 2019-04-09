@@ -85,6 +85,9 @@ header files installed.
      If installing from repository, do not install the master branch!
      Checkout the tag "v1.3.0" instead, or simply install from a tarball
      or from your favorite package manager.
+     You may also checkout the "libmypaint-v1" branch, which is the
+     development branch for libmypaint v1.x and has some more recent
+     fixes.
 
  11. We also need the mypaint-brushes data package:
 
@@ -251,11 +254,6 @@ These are:
      ~/.config/GIMP/@GIMP_APP_VERSION@ (the directory .config/GIMP/@GIMP_APP_VERSION@
      in the user's home directory) to ~/.config/DIR/@GIMP_APP_VERSION@.
      If DIR is an absolute path, the directory will be changed to DIR.
-
-  --enable-binreloc.  When compiled for Linux with this option enabled,
-     GIMP will be binary relocatable.  Plug-ins and data files will
-     be searched relative to the gimp binary instead of in the paths
-     defined at compile time.
 
   --with-shm=[none|sysv|posix|auto].  This option allows you to specify
      how image data is transported between the core and plug-ins. Usually

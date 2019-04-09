@@ -242,6 +242,8 @@ the temporary directory {tmp} and the {user_name} are determined
 according to platform rules.</p>
 <p>In any case, we always return some non-empty string, whether it
 corresponds to an existing directory or not.</p>
+<p>In config files such as gimprc, the string ${gimp_dir} expands to
+this directory.</p>
 <p>The returned string is owned by GIMP and must not be modified or
 freed. The returned string is in the encoding used for filenames by
 GLib, which isn't necessarily UTF-8 (on Windows it is always
@@ -261,6 +263,8 @@ compile-time defined installation prefix is used. On Windows, the
 installation directory as deduced from the executable's full
 filename is used. On OSX we ask [NSBundle mainBundle] for the
 resource path to check if GIMP is part of a relocatable bundle.</p>
+<p>In config files such as gimprc, the string ${gimp_installation_dir}
+expands to this directory.</p>
 <p>The returned string is owned by GIMP and must not be modified or
 freed. The returned string is in the encoding used for filenames by
 GLib, which isn't necessarily UTF-8. (On Windows it always is
@@ -276,11 +280,15 @@ UTF-8.)</p>
 <a name="gimp-data-directory"></a><h3>gimp_data_directory ()</h3>
 <pre class="programlisting">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 gimp_data_directory (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>Returns the top directory for GIMP data. If the environment
+<p>Returns the default top directory for GIMP data. If the environment
 variable GIMP2_DATADIR exists, that is used.  It should be an
 absolute pathname.  Otherwise, on Unix the compile-time defined
-directory is used. On Windows, the installation directory as deduced
-from the executable's full filename is used.</p>
+directory is used. On Windows, the installation directory as
+deduced from the executable's full filename is used.</p>
+<p>Note that the actual directories used for GIMP data files can be
+overridden by the user in the preferences dialog.</p>
+<p>In config files such as gimprc, the string ${gimp_data_dir} expands
+to this directory.</p>
 <p>The returned string is owned by GIMP and must not be modified or
 freed. The returned string is in the encoding used for filenames by
 GLib, which isn't necessarily UTF-8. (On Windows it always is
@@ -317,11 +325,15 @@ does not handle UTF-8.)</p>
 <a name="gimp-plug-in-directory"></a><h3>gimp_plug_in_directory ()</h3>
 <pre class="programlisting">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 gimp_plug_in_directory (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>Returns the top directory for GIMP plug_ins and modules. If the
-environment variable GIMP2_PLUGINDIR exists, that is used.  It
+<p>Returns the default top directory for GIMP plug-ins and modules. If
+the environment variable GIMP2_PLUGINDIR exists, that is used.  It
 should be an absolute pathname. Otherwise, on Unix the compile-time
-defined directory is used. On Windows, the installation directory as
-deduced from the executable's full filename is used.</p>
+defined directory is used. On Windows, the installation directory
+as deduced from the executable's full filename is used.</p>
+<p>Note that the actual directories used for GIMP plug-ins and modules
+can be overridden by the user in the preferences dialog.</p>
+<p>In config files such as gimprc, the string ${gimp_plug_in_dir}
+expands to this directory.</p>
 <p>The returned string is owned by GIMP and must not be modified or
 freed. The returned string is in the encoding used for filenames by
 GLib, which isn't necessarily UTF-8. (On Windows it always is
@@ -341,6 +353,8 @@ variable GIMP2_SYSCONFDIR exists, that is used.  It should be an
 absolute pathname.  Otherwise, on Unix the compile-time defined
 directory is used. On Windows, the installation directory as deduced
 from the executable's full filename is used.</p>
+<p>In config files such as gimprc, the string ${gimp_sysconf_dir}
+expands to this directory.</p>
 <p>The returned string is owned by GIMP and must not be modified or
 freed. The returned string is in the encoding used for filenames by
 GLib, which isn't necessarily UTF-8. (On Windows it always is

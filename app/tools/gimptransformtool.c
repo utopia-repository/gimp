@@ -43,8 +43,10 @@
 
 #include "widgets/gimpmessagedialog.h"
 #include "widgets/gimpmessagebox.h"
+#include "widgets/gimpwidgets-utils.h"
 
 #include "gimptoolcontrol.h"
+#include "gimptools-utils.h"
 #include "gimptransformoptions.h"
 #include "gimptransformtool.h"
 
@@ -59,14 +61,16 @@
 
 /*  local function prototypes  */
 
-static GeglBuffer * gimp_transform_tool_real_transform (GimpTransformTool  *tr_tool,
-                                                        GimpItem           *item,
-                                                        GeglBuffer         *orig_buffer,
-                                                        gint                orig_offset_x,
-                                                        gint                orig_offset_y,
-                                                        GimpColorProfile  **buffer_profile,
-                                                        gint               *new_offset_x,
-                                                        gint               *new_offset_y);
+static gchar                  * gimp_transform_tool_real_get_undo_desc (GimpTransformTool  *tr_tool);
+static GimpTransformDirection   gimp_transform_tool_real_get_direction (GimpTransformTool  *tr_tool);
+static GeglBuffer             * gimp_transform_tool_real_transform     (GimpTransformTool  *tr_tool,
+                                                                        GimpItem           *item,
+                                                                        GeglBuffer         *orig_buffer,
+                                                                        gint                orig_offset_x,
+                                                                        gint                orig_offset_y,
+                                                                        GimpColorProfile  **buffer_profile,
+                                                                        gint               *new_offset_x,
+                                                                        gint               *new_offset_y);
 
 static gboolean     gimp_transform_tool_confirm        (GimpTransformTool  *tr_tool,
                                                         GimpDisplay        *display);
@@ -84,9 +88,11 @@ static void
 gimp_transform_tool_class_init (GimpTransformToolClass *klass)
 {
   klass->recalc_matrix = NULL;
-  klass->get_undo_desc = NULL;
+  klass->get_undo_desc = gimp_transform_tool_real_get_undo_desc;
+  klass->get_direction = gimp_transform_tool_real_get_direction;
   klass->transform     = gimp_transform_tool_real_transform;
 
+  klass->undo_desc     = _("Transform");
   klass->progress_text = _("Transforming");
 }
 
@@ -95,6 +101,20 @@ gimp_transform_tool_init (GimpTransformTool *tr_tool)
 {
   gimp_matrix3_identity (&tr_tool->transform);
   tr_tool->transform_valid = TRUE;
+}
+
+static gchar *
+gimp_transform_tool_real_get_undo_desc (GimpTransformTool *tr_tool)
+{
+  return g_strdup (GIMP_TRANSFORM_TOOL_GET_CLASS (tr_tool)->undo_desc);
+}
+
+static GimpTransformDirection
+gimp_transform_tool_real_get_direction (GimpTransformTool *tr_tool)
+{
+  GimpTransformOptions *options = GIMP_TRANSFORM_TOOL_GET_OPTIONS (tr_tool);
+
+  return options->direction;
 }
 
 static GeglBuffer *
@@ -113,7 +133,10 @@ gimp_transform_tool_real_transform (GimpTransformTool *tr_tool,
   GimpContext            *context = GIMP_CONTEXT (options);
   GeglBuffer             *ret     = NULL;
   GimpTransformResize     clip    = options->clip;
+  GimpTransformDirection  direction;
   GimpProgress           *progress;
+
+  direction = GIMP_TRANSFORM_TOOL_GET_CLASS (tr_tool)->get_direction (tr_tool);
 
   progress = gimp_progress_start (GIMP_PROGRESS (tool), FALSE,
                                   "%s", klass->progress_text);
@@ -137,7 +160,7 @@ gimp_transform_tool_real_transform (GimpTransformTool *tr_tool,
                                                    orig_offset_x,
                                                    orig_offset_y,
                                                    &tr_tool->transform,
-                                                   options->direction,
+                                                   direction,
                                                    options->interpolation,
                                                    clip,
                                                    buffer_profile,
@@ -153,7 +176,7 @@ gimp_transform_tool_real_transform (GimpTransformTool *tr_tool,
         {
           gimp_item_linked_transform (active_item, context,
                                       &tr_tool->transform,
-                                      options->direction,
+                                      direction,
                                       options->interpolation,
                                       clip,
                                       progress);
@@ -167,7 +190,7 @@ gimp_transform_tool_real_transform (GimpTransformTool *tr_tool,
 
           gimp_item_transform (active_item, context,
                                &tr_tool->transform,
-                               options->direction,
+                               direction,
                                options->interpolation,
                                clip,
                                progress);
@@ -194,15 +217,18 @@ gimp_transform_tool_confirm (GimpTransformTool *tr_tool,
 
   if (GIMP_TRANSFORM_TOOL_GET_CLASS (tr_tool)->recalc_matrix)
     {
-      GimpMatrix3    transform;
-      GeglRectangle  selection_bounds;
-      gboolean       selection_empty = TRUE;
-      GList         *items;
-      GList         *iter;
+      GimpMatrix3             transform;
+      GimpTransformDirection  direction;
+      GeglRectangle           selection_bounds;
+      gboolean                selection_empty = TRUE;
+      GList                  *items;
+      GList                  *iter;
 
       transform = tr_tool->transform;
+      direction = GIMP_TRANSFORM_TOOL_GET_CLASS (tr_tool)->get_direction (
+        tr_tool);
 
-      if (options->direction == GIMP_TRANSFORM_BACKWARD)
+      if (direction == GIMP_TRANSFORM_BACKWARD)
         gimp_matrix3_invert (&transform);
 
       if (options->type == GIMP_TRANSFORM_TYPE_LAYER &&
@@ -560,12 +586,16 @@ gimp_transform_tool_check_active_item (GimpTransformTool  *tr_tool,
   if (! item)
     {
       g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED, null_message);
+      if (error)
+        gimp_widget_blink (options->type_box);
       return NULL;
     }
 
   if (locked_message)
     {
       g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED, locked_message);
+      if (error)
+        gimp_tools_blink_lock_box (display->gimp, item);
       return NULL;
     }
 

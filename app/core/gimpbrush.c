@@ -31,6 +31,7 @@
 #include "gimpbrush-boundary.h"
 #include "gimpbrush-load.h"
 #include "gimpbrush-private.h"
+#include "gimpbrush-save.h"
 #include "gimpbrush-transform.h"
 #include "gimpbrushcache.h"
 #include "gimpbrushgenerated.h"
@@ -82,6 +83,8 @@ static gchar       * gimp_brush_get_description       (GimpViewable         *vie
 
 static void          gimp_brush_dirty                 (GimpData             *data);
 static const gchar * gimp_brush_get_extension         (GimpData             *data);
+static void          gimp_brush_copy                  (GimpData             *data,
+                                                       GimpData             *src_data);
 
 static void          gimp_brush_real_begin_use        (GimpBrush            *brush);
 static void          gimp_brush_real_end_use          (GimpBrush            *brush);
@@ -134,7 +137,9 @@ gimp_brush_class_init (GimpBrushClass *klass)
   viewable_class->get_description   = gimp_brush_get_description;
 
   data_class->dirty                 = gimp_brush_dirty;
+  data_class->save                  = gimp_brush_save;
   data_class->get_extension         = gimp_brush_get_extension;
+  data_class->copy                  = gimp_brush_copy;
 
   klass->begin_use                  = gimp_brush_real_begin_use;
   klass->end_use                    = gimp_brush_real_end_use;
@@ -270,6 +275,7 @@ gimp_brush_get_new_preview (GimpViewable *viewable,
   GimpTempBuf       *return_buf  = NULL;
   gint               mask_width;
   gint               mask_height;
+  guchar            *mask_data;
   guchar            *mask;
   guchar            *buf;
   gint               x, y;
@@ -325,14 +331,19 @@ gimp_brush_get_new_preview (GimpViewable *viewable,
 
   return_buf = gimp_temp_buf_new (mask_width, mask_height,
                                   babl_format ("R'G'B'A u8"));
-  gimp_temp_buf_data_clear (return_buf);
 
-  mask = gimp_temp_buf_get_data (mask_buf);
+  mask = mask_data = gimp_temp_buf_lock (mask_buf, babl_format ("Y u8"),
+                                         GEGL_ACCESS_READ);
   buf  = gimp_temp_buf_get_data (return_buf);
 
   if (pixmap_buf)
     {
-      guchar *pixmap = gimp_temp_buf_get_data (pixmap_buf);
+      guchar *pixmap_data;
+      guchar *pixmap;
+
+      pixmap = pixmap_data = gimp_temp_buf_lock (pixmap_buf,
+                                                 babl_format ("R'G'B' u8"),
+                                                 GEGL_ACCESS_READ);
 
       for (y = 0; y < mask_height; y++)
         {
@@ -344,6 +355,8 @@ gimp_brush_get_new_preview (GimpViewable *viewable,
               *buf++ = *mask++;
             }
         }
+
+      gimp_temp_buf_unlock (pixmap_buf, pixmap_data);
     }
   else
     {
@@ -358,6 +371,8 @@ gimp_brush_get_new_preview (GimpViewable *viewable,
             }
         }
     }
+
+  gimp_temp_buf_unlock (mask_buf, mask_data);
 
   if (scaled)
     {
@@ -405,6 +420,28 @@ static const gchar *
 gimp_brush_get_extension (GimpData *data)
 {
   return GIMP_BRUSH_FILE_EXTENSION;
+}
+
+static void
+gimp_brush_copy (GimpData *data,
+                 GimpData *src_data)
+{
+  GimpBrush *brush     = GIMP_BRUSH (data);
+  GimpBrush *src_brush = GIMP_BRUSH (src_data);
+
+  g_clear_pointer (&brush->priv->mask, gimp_temp_buf_unref);
+  if (src_brush->priv->mask)
+    brush->priv->mask = gimp_temp_buf_copy (src_brush->priv->mask);
+
+  g_clear_pointer (&brush->priv->pixmap, gimp_temp_buf_unref);
+  if (src_brush->priv->pixmap)
+    brush->priv->pixmap = gimp_temp_buf_copy (src_brush->priv->pixmap);
+
+  brush->priv->spacing = src_brush->priv->spacing;
+  brush->priv->x_axis  = src_brush->priv->x_axis;
+  brush->priv->y_axis  = src_brush->priv->y_axis;
+
+  gimp_data_dirty (data);
 }
 
 static void

@@ -90,20 +90,13 @@ build_triplet = @build@
 host_triplet = @host@
 subdir = app/core
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4macros/gtk-doc.m4 \
-	$(top_srcdir)/m4macros/intltool.m4 \
-	$(top_srcdir)/m4macros/libtool.m4 \
-	$(top_srcdir)/m4macros/ltoptions.m4 \
-	$(top_srcdir)/m4macros/ltsugar.m4 \
-	$(top_srcdir)/m4macros/ltversion.m4 \
-	$(top_srcdir)/m4macros/lt~obsolete.m4 \
-	$(top_srcdir)/acinclude.m4 $(top_srcdir)/m4macros/alsa.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
+	$(top_srcdir)/m4macros/alsa.m4 \
 	$(top_srcdir)/m4macros/ax_compare_version.m4 \
 	$(top_srcdir)/m4macros/ax_cxx_compile_stdcxx.m4 \
 	$(top_srcdir)/m4macros/ax_gcc_func_attribute.m4 \
 	$(top_srcdir)/m4macros/ax_prog_cc_for_build.m4 \
 	$(top_srcdir)/m4macros/ax_prog_perl_version.m4 \
-	$(top_srcdir)/m4macros/binreloc.m4 \
 	$(top_srcdir)/m4macros/detectcflags.m4 \
 	$(top_srcdir)/m4macros/pythondev.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -140,14 +133,15 @@ am__objects_2 = gimp.$(OBJEXT) gimp-atomic.$(OBJEXT) \
 	gimpbacktrace-windows.$(OBJEXT) gimpbezierdesc.$(OBJEXT) \
 	gimpboundary.$(OBJEXT) gimpbrush.$(OBJEXT) \
 	gimpbrush-boundary.$(OBJEXT) gimpbrush-load.$(OBJEXT) \
-	gimpbrush-transform.$(OBJEXT) gimpbrushcache.$(OBJEXT) \
-	gimpbrushclipboard.$(OBJEXT) gimpbrushgenerated.$(OBJEXT) \
-	gimpbrushgenerated-load.$(OBJEXT) \
+	gimpbrush-save.$(OBJEXT) gimpbrush-transform.$(OBJEXT) \
+	gimpbrushcache.$(OBJEXT) gimpbrushclipboard.$(OBJEXT) \
+	gimpbrushgenerated.$(OBJEXT) gimpbrushgenerated-load.$(OBJEXT) \
 	gimpbrushgenerated-save.$(OBJEXT) gimpbrushpipe.$(OBJEXT) \
-	gimpbrushpipe-load.$(OBJEXT) gimpbuffer.$(OBJEXT) \
-	gimpcancelable.$(OBJEXT) gimpchannel.$(OBJEXT) \
-	gimpchannel-combine.$(OBJEXT) gimpchannel-select.$(OBJEXT) \
-	gimpchannelpropundo.$(OBJEXT) gimpchannelundo.$(OBJEXT) \
+	gimpbrushpipe-load.$(OBJEXT) gimpbrushpipe-save.$(OBJEXT) \
+	gimpbuffer.$(OBJEXT) gimpcancelable.$(OBJEXT) \
+	gimpchannel.$(OBJEXT) gimpchannel-combine.$(OBJEXT) \
+	gimpchannel-select.$(OBJEXT) gimpchannelpropundo.$(OBJEXT) \
+	gimpchannelundo.$(OBJEXT) gimpchunkiterator.$(OBJEXT) \
 	gimpcontainer.$(OBJEXT) gimpcontainer-filter.$(OBJEXT) \
 	gimpcontext.$(OBJEXT) gimpcoords.$(OBJEXT) \
 	gimpcoords-interpolate.$(OBJEXT) gimpcurve.$(OBJEXT) \
@@ -183,35 +177,35 @@ am__objects_2 = gimp.$(OBJEXT) gimp-atomic.$(OBJEXT) \
 	gimpimage-convert-indexed.$(OBJEXT) \
 	gimpimage-convert-precision.$(OBJEXT) \
 	gimpimage-convert-type.$(OBJEXT) gimpimage-crop.$(OBJEXT) \
-	gimpimage-duplicate.$(OBJEXT) gimpimage-fade.$(OBJEXT) \
-	gimpimage-flip.$(OBJEXT) gimpimage-grid.$(OBJEXT) \
-	gimpimage-guides.$(OBJEXT) gimpimage-item-list.$(OBJEXT) \
-	gimpimage-merge.$(OBJEXT) gimpimage-metadata.$(OBJEXT) \
-	gimpimage-new.$(OBJEXT) gimpimage-pick-color.$(OBJEXT) \
-	gimpimage-pick-item.$(OBJEXT) gimpimage-preview.$(OBJEXT) \
-	gimpimage-quick-mask.$(OBJEXT) gimpimage-resize.$(OBJEXT) \
-	gimpimage-rotate.$(OBJEXT) gimpimage-sample-points.$(OBJEXT) \
-	gimpimage-scale.$(OBJEXT) gimpimage-snap.$(OBJEXT) \
-	gimpimage-symmetry.$(OBJEXT) gimpimage-undo.$(OBJEXT) \
-	gimpimage-undo-push.$(OBJEXT) gimpimageundo.$(OBJEXT) \
-	gimpimagefile.$(OBJEXT) gimpitem.$(OBJEXT) \
-	gimpitem-exclusive.$(OBJEXT) gimpitem-linked.$(OBJEXT) \
-	gimpitem-preview.$(OBJEXT) gimpitempropundo.$(OBJEXT) \
-	gimpitemstack.$(OBJEXT) gimpitemtree.$(OBJEXT) \
-	gimpitemundo.$(OBJEXT) gimplayer.$(OBJEXT) \
-	gimplayer-floating-selection.$(OBJEXT) gimplayer-new.$(OBJEXT) \
-	gimplayermask.$(OBJEXT) gimplayermaskpropundo.$(OBJEXT) \
-	gimplayermaskundo.$(OBJEXT) gimplayerpropundo.$(OBJEXT) \
-	gimplayerstack.$(OBJEXT) gimplayerundo.$(OBJEXT) \
+	gimpimage-duplicate.$(OBJEXT) gimpimage-flip.$(OBJEXT) \
+	gimpimage-grid.$(OBJEXT) gimpimage-guides.$(OBJEXT) \
+	gimpimage-item-list.$(OBJEXT) gimpimage-merge.$(OBJEXT) \
+	gimpimage-metadata.$(OBJEXT) gimpimage-new.$(OBJEXT) \
+	gimpimage-pick-color.$(OBJEXT) gimpimage-pick-item.$(OBJEXT) \
+	gimpimage-preview.$(OBJEXT) gimpimage-quick-mask.$(OBJEXT) \
+	gimpimage-resize.$(OBJEXT) gimpimage-rotate.$(OBJEXT) \
+	gimpimage-sample-points.$(OBJEXT) gimpimage-scale.$(OBJEXT) \
+	gimpimage-snap.$(OBJEXT) gimpimage-symmetry.$(OBJEXT) \
+	gimpimage-undo.$(OBJEXT) gimpimage-undo-push.$(OBJEXT) \
+	gimpimageundo.$(OBJEXT) gimpimagefile.$(OBJEXT) \
+	gimpitem.$(OBJEXT) gimpitem-exclusive.$(OBJEXT) \
+	gimpitem-linked.$(OBJEXT) gimpitem-preview.$(OBJEXT) \
+	gimpitempropundo.$(OBJEXT) gimpitemstack.$(OBJEXT) \
+	gimpitemtree.$(OBJEXT) gimpitemundo.$(OBJEXT) \
+	gimplayer.$(OBJEXT) gimplayer-floating-selection.$(OBJEXT) \
+	gimplayer-new.$(OBJEXT) gimplayermask.$(OBJEXT) \
+	gimplayermaskpropundo.$(OBJEXT) gimplayermaskundo.$(OBJEXT) \
+	gimplayerpropundo.$(OBJEXT) gimplayerstack.$(OBJEXT) \
+	gimplayerundo.$(OBJEXT) gimplineart.$(OBJEXT) \
 	gimplist.$(OBJEXT) gimpmaskundo.$(OBJEXT) \
 	gimpmybrush.$(OBJEXT) gimpmybrush-load.$(OBJEXT) \
 	gimpobject.$(OBJEXT) gimpobjectqueue.$(OBJEXT) \
 	gimppaintinfo.$(OBJEXT) gimppattern.$(OBJEXT) \
-	gimppattern-load.$(OBJEXT) gimppatternclipboard.$(OBJEXT) \
-	gimppalette.$(OBJEXT) gimppalette-import.$(OBJEXT) \
-	gimppalette-load.$(OBJEXT) gimppalette-save.$(OBJEXT) \
-	gimppalettemru.$(OBJEXT) gimpparamspecs.$(OBJEXT) \
-	gimpparamspecs-desc.$(OBJEXT) \
+	gimppattern-load.$(OBJEXT) gimppattern-save.$(OBJEXT) \
+	gimppatternclipboard.$(OBJEXT) gimppalette.$(OBJEXT) \
+	gimppalette-import.$(OBJEXT) gimppalette-load.$(OBJEXT) \
+	gimppalette-save.$(OBJEXT) gimppalettemru.$(OBJEXT) \
+	gimpparamspecs.$(OBJEXT) gimpparamspecs-desc.$(OBJEXT) \
 	gimpparamspecs-duplicate.$(OBJEXT) gimpparasitelist.$(OBJEXT) \
 	gimppdbprogress.$(OBJEXT) gimppickable.$(OBJEXT) \
 	gimppickable-auto-shrink.$(OBJEXT) \
@@ -272,19 +266,21 @@ am__depfiles_remade = ./$(DEPDIR)/core-enums.Po \
 	./$(DEPDIR)/gimpbacktrace-windows.Po \
 	./$(DEPDIR)/gimpbezierdesc.Po ./$(DEPDIR)/gimpboundary.Po \
 	./$(DEPDIR)/gimpbrush-boundary.Po \
-	./$(DEPDIR)/gimpbrush-load.Po \
+	./$(DEPDIR)/gimpbrush-load.Po ./$(DEPDIR)/gimpbrush-save.Po \
 	./$(DEPDIR)/gimpbrush-transform.Po ./$(DEPDIR)/gimpbrush.Po \
 	./$(DEPDIR)/gimpbrushcache.Po \
 	./$(DEPDIR)/gimpbrushclipboard.Po \
 	./$(DEPDIR)/gimpbrushgenerated-load.Po \
 	./$(DEPDIR)/gimpbrushgenerated-save.Po \
 	./$(DEPDIR)/gimpbrushgenerated.Po \
-	./$(DEPDIR)/gimpbrushpipe-load.Po ./$(DEPDIR)/gimpbrushpipe.Po \
+	./$(DEPDIR)/gimpbrushpipe-load.Po \
+	./$(DEPDIR)/gimpbrushpipe-save.Po ./$(DEPDIR)/gimpbrushpipe.Po \
 	./$(DEPDIR)/gimpbuffer.Po ./$(DEPDIR)/gimpcancelable.Po \
 	./$(DEPDIR)/gimpchannel-combine.Po \
 	./$(DEPDIR)/gimpchannel-select.Po ./$(DEPDIR)/gimpchannel.Po \
 	./$(DEPDIR)/gimpchannelpropundo.Po \
 	./$(DEPDIR)/gimpchannelundo.Po \
+	./$(DEPDIR)/gimpchunkiterator.Po \
 	./$(DEPDIR)/gimpcontainer-filter.Po \
 	./$(DEPDIR)/gimpcontainer.Po ./$(DEPDIR)/gimpcontext.Po \
 	./$(DEPDIR)/gimpcoords-interpolate.Po \
@@ -335,8 +331,8 @@ am__depfiles_remade = ./$(DEPDIR)/core-enums.Po \
 	./$(DEPDIR)/gimpimage-convert-type.Po \
 	./$(DEPDIR)/gimpimage-crop.Po \
 	./$(DEPDIR)/gimpimage-duplicate.Po \
-	./$(DEPDIR)/gimpimage-fade.Po ./$(DEPDIR)/gimpimage-flip.Po \
-	./$(DEPDIR)/gimpimage-grid.Po ./$(DEPDIR)/gimpimage-guides.Po \
+	./$(DEPDIR)/gimpimage-flip.Po ./$(DEPDIR)/gimpimage-grid.Po \
+	./$(DEPDIR)/gimpimage-guides.Po \
 	./$(DEPDIR)/gimpimage-item-list.Po \
 	./$(DEPDIR)/gimpimage-merge.Po \
 	./$(DEPDIR)/gimpimage-metadata.Po ./$(DEPDIR)/gimpimage-new.Po \
@@ -363,18 +359,20 @@ am__depfiles_remade = ./$(DEPDIR)/core-enums.Po \
 	./$(DEPDIR)/gimplayermaskpropundo.Po \
 	./$(DEPDIR)/gimplayermaskundo.Po \
 	./$(DEPDIR)/gimplayerpropundo.Po ./$(DEPDIR)/gimplayerstack.Po \
-	./$(DEPDIR)/gimplayerundo.Po ./$(DEPDIR)/gimplist.Po \
-	./$(DEPDIR)/gimpmarshal.Po ./$(DEPDIR)/gimpmaskundo.Po \
-	./$(DEPDIR)/gimpmybrush-load.Po ./$(DEPDIR)/gimpmybrush.Po \
-	./$(DEPDIR)/gimpobject.Po ./$(DEPDIR)/gimpobjectqueue.Po \
-	./$(DEPDIR)/gimppaintinfo.Po ./$(DEPDIR)/gimppalette-import.Po \
+	./$(DEPDIR)/gimplayerundo.Po ./$(DEPDIR)/gimplineart.Po \
+	./$(DEPDIR)/gimplist.Po ./$(DEPDIR)/gimpmarshal.Po \
+	./$(DEPDIR)/gimpmaskundo.Po ./$(DEPDIR)/gimpmybrush-load.Po \
+	./$(DEPDIR)/gimpmybrush.Po ./$(DEPDIR)/gimpobject.Po \
+	./$(DEPDIR)/gimpobjectqueue.Po ./$(DEPDIR)/gimppaintinfo.Po \
+	./$(DEPDIR)/gimppalette-import.Po \
 	./$(DEPDIR)/gimppalette-load.Po \
 	./$(DEPDIR)/gimppalette-save.Po ./$(DEPDIR)/gimppalette.Po \
 	./$(DEPDIR)/gimppalettemru.Po \
 	./$(DEPDIR)/gimpparamspecs-desc.Po \
 	./$(DEPDIR)/gimpparamspecs-duplicate.Po \
 	./$(DEPDIR)/gimpparamspecs.Po ./$(DEPDIR)/gimpparasitelist.Po \
-	./$(DEPDIR)/gimppattern-load.Po ./$(DEPDIR)/gimppattern.Po \
+	./$(DEPDIR)/gimppattern-load.Po \
+	./$(DEPDIR)/gimppattern-save.Po ./$(DEPDIR)/gimppattern.Po \
 	./$(DEPDIR)/gimppatternclipboard.Po \
 	./$(DEPDIR)/gimppdbprogress.Po \
 	./$(DEPDIR)/gimppickable-auto-shrink.Po \
@@ -493,8 +491,6 @@ AWK = @AWK@
 BABL_CFLAGS = @BABL_CFLAGS@
 BABL_LIBS = @BABL_LIBS@
 BABL_REQUIRED_VERSION = @BABL_REQUIRED_VERSION@
-BINRELOC_CFLAGS = @BINRELOC_CFLAGS@
-BINRELOC_LIBS = @BINRELOC_LIBS@
 BUG_REPORT_URL = @BUG_REPORT_URL@
 BUILD_EXEEXT = @BUILD_EXEEXT@
 BUILD_OBJEXT = @BUILD_OBJEXT@
@@ -624,7 +620,6 @@ GTK_MAC_INTEGRATION_CFLAGS = @GTK_MAC_INTEGRATION_CFLAGS@
 GTK_MAC_INTEGRATION_LIBS = @GTK_MAC_INTEGRATION_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
 GTK_UPDATE_ICON_CACHE = @GTK_UPDATE_ICON_CACHE@
-GTK_WIN32_RECOMMENDED_VERSION = @GTK_WIN32_RECOMMENDED_VERSION@
 GUDEV_CFLAGS = @GUDEV_CFLAGS@
 GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
@@ -763,8 +758,6 @@ PYTHON_PLATFORM = @PYTHON_PLATFORM@
 PYTHON_PREFIX = @PYTHON_PREFIX@
 PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
-RECOMMENDED_WIN32_GTK_CFLAGS = @RECOMMENDED_WIN32_GTK_CFLAGS@
-RECOMMENDED_WIN32_GTK_LIBS = @RECOMMENDED_WIN32_GTK_LIBS@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
 SCREENSHOT_LIBS = @SCREENSHOT_LIBS@
@@ -994,6 +987,8 @@ libappcore_a_sources = \
 	gimpbrush-load.c			\
 	gimpbrush-load.h			\
 	gimpbrush-private.h			\
+	gimpbrush-save.c			\
+	gimpbrush-save.h			\
 	gimpbrush-transform.cc			\
 	gimpbrush-transform.h			\
 	gimpbrushcache.c			\
@@ -1010,6 +1005,8 @@ libappcore_a_sources = \
 	gimpbrushpipe.h				\
 	gimpbrushpipe-load.c			\
 	gimpbrushpipe-load.h			\
+	gimpbrushpipe-save.c			\
+	gimpbrushpipe-save.h			\
 	gimpbuffer.c				\
 	gimpbuffer.h				\
 	gimpcancelable.c			\
@@ -1024,6 +1021,8 @@ libappcore_a_sources = \
 	gimpchannelpropundo.h			\
 	gimpchannelundo.c			\
 	gimpchannelundo.h			\
+	gimpchunkiterator.c			\
+	gimpchunkiterator.h			\
 	gimpcontainer.c				\
 	gimpcontainer.h				\
 	gimpcontainer-filter.c			\
@@ -1157,8 +1156,6 @@ libappcore_a_sources = \
 	gimpimage-crop.h			\
 	gimpimage-duplicate.c			\
 	gimpimage-duplicate.h			\
-	gimpimage-fade.c			\
-	gimpimage-fade.h			\
 	gimpimage-flip.c			\
 	gimpimage-flip.h			\
 	gimpimage-grid.h                	\
@@ -1236,6 +1233,8 @@ libappcore_a_sources = \
 	gimplayerstack.h			\
 	gimplayerundo.c				\
 	gimplayerundo.h				\
+	gimplineart.c				\
+	gimplineart.h				\
 	gimplist.c				\
 	gimplist.h				\
 	gimpmaskundo.c				\
@@ -1256,6 +1255,8 @@ libappcore_a_sources = \
 	gimppattern-header.h			\
 	gimppattern-load.c			\
 	gimppattern-load.h			\
+	gimppattern-save.c			\
+	gimppattern-save.h			\
 	gimppatternclipboard.c			\
 	gimppatternclipboard.h			\
 	gimppalette.c				\
@@ -1282,7 +1283,7 @@ libappcore_a_sources = \
 	gimppickable.h				\
 	gimppickable-auto-shrink.c		\
 	gimppickable-auto-shrink.h		\
-	gimppickable-contiguous-region.c	\
+	gimppickable-contiguous-region.cc	\
 	gimppickable-contiguous-region.h	\
 	gimpprogress.c				\
 	gimpprogress.h				\
@@ -1460,6 +1461,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpboundary.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrush-boundary.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrush-load.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrush-save.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrush-transform.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrush.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushcache.Po@am__quote@ # am--include-marker
@@ -1468,6 +1470,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushgenerated-save.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushgenerated.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushpipe-load.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushpipe-save.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushpipe.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbuffer.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcancelable.Po@am__quote@ # am--include-marker
@@ -1476,6 +1479,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpchannel.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpchannelpropundo.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpchannelundo.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpchunkiterator.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcontainer-filter.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcontainer.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcontext.Po@am__quote@ # am--include-marker
@@ -1540,7 +1544,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-convert-type.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-crop.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-duplicate.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-fade.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-flip.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-grid.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-guides.Po@am__quote@ # am--include-marker
@@ -1580,6 +1583,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimplayerpropundo.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimplayerstack.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimplayerundo.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimplineart.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimplist.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmarshal.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmaskundo.Po@am__quote@ # am--include-marker
@@ -1598,6 +1602,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpparamspecs.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpparasitelist.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppattern-load.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppattern-save.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppattern.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppatternclipboard.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppdbprogress.Po@am__quote@ # am--include-marker
@@ -1858,6 +1863,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/gimpboundary.Po
 	-rm -f ./$(DEPDIR)/gimpbrush-boundary.Po
 	-rm -f ./$(DEPDIR)/gimpbrush-load.Po
+	-rm -f ./$(DEPDIR)/gimpbrush-save.Po
 	-rm -f ./$(DEPDIR)/gimpbrush-transform.Po
 	-rm -f ./$(DEPDIR)/gimpbrush.Po
 	-rm -f ./$(DEPDIR)/gimpbrushcache.Po
@@ -1866,6 +1872,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/gimpbrushgenerated-save.Po
 	-rm -f ./$(DEPDIR)/gimpbrushgenerated.Po
 	-rm -f ./$(DEPDIR)/gimpbrushpipe-load.Po
+	-rm -f ./$(DEPDIR)/gimpbrushpipe-save.Po
 	-rm -f ./$(DEPDIR)/gimpbrushpipe.Po
 	-rm -f ./$(DEPDIR)/gimpbuffer.Po
 	-rm -f ./$(DEPDIR)/gimpcancelable.Po
@@ -1874,6 +1881,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/gimpchannel.Po
 	-rm -f ./$(DEPDIR)/gimpchannelpropundo.Po
 	-rm -f ./$(DEPDIR)/gimpchannelundo.Po
+	-rm -f ./$(DEPDIR)/gimpchunkiterator.Po
 	-rm -f ./$(DEPDIR)/gimpcontainer-filter.Po
 	-rm -f ./$(DEPDIR)/gimpcontainer.Po
 	-rm -f ./$(DEPDIR)/gimpcontext.Po
@@ -1938,7 +1946,6 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/gimpimage-convert-type.Po
 	-rm -f ./$(DEPDIR)/gimpimage-crop.Po
 	-rm -f ./$(DEPDIR)/gimpimage-duplicate.Po
-	-rm -f ./$(DEPDIR)/gimpimage-fade.Po
 	-rm -f ./$(DEPDIR)/gimpimage-flip.Po
 	-rm -f ./$(DEPDIR)/gimpimage-grid.Po
 	-rm -f ./$(DEPDIR)/gimpimage-guides.Po
@@ -1978,6 +1985,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/gimplayerpropundo.Po
 	-rm -f ./$(DEPDIR)/gimplayerstack.Po
 	-rm -f ./$(DEPDIR)/gimplayerundo.Po
+	-rm -f ./$(DEPDIR)/gimplineart.Po
 	-rm -f ./$(DEPDIR)/gimplist.Po
 	-rm -f ./$(DEPDIR)/gimpmarshal.Po
 	-rm -f ./$(DEPDIR)/gimpmaskundo.Po
@@ -1996,6 +2004,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/gimpparamspecs.Po
 	-rm -f ./$(DEPDIR)/gimpparasitelist.Po
 	-rm -f ./$(DEPDIR)/gimppattern-load.Po
+	-rm -f ./$(DEPDIR)/gimppattern-save.Po
 	-rm -f ./$(DEPDIR)/gimppattern.Po
 	-rm -f ./$(DEPDIR)/gimppatternclipboard.Po
 	-rm -f ./$(DEPDIR)/gimppdbprogress.Po
@@ -2117,6 +2126,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/gimpboundary.Po
 	-rm -f ./$(DEPDIR)/gimpbrush-boundary.Po
 	-rm -f ./$(DEPDIR)/gimpbrush-load.Po
+	-rm -f ./$(DEPDIR)/gimpbrush-save.Po
 	-rm -f ./$(DEPDIR)/gimpbrush-transform.Po
 	-rm -f ./$(DEPDIR)/gimpbrush.Po
 	-rm -f ./$(DEPDIR)/gimpbrushcache.Po
@@ -2125,6 +2135,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/gimpbrushgenerated-save.Po
 	-rm -f ./$(DEPDIR)/gimpbrushgenerated.Po
 	-rm -f ./$(DEPDIR)/gimpbrushpipe-load.Po
+	-rm -f ./$(DEPDIR)/gimpbrushpipe-save.Po
 	-rm -f ./$(DEPDIR)/gimpbrushpipe.Po
 	-rm -f ./$(DEPDIR)/gimpbuffer.Po
 	-rm -f ./$(DEPDIR)/gimpcancelable.Po
@@ -2133,6 +2144,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/gimpchannel.Po
 	-rm -f ./$(DEPDIR)/gimpchannelpropundo.Po
 	-rm -f ./$(DEPDIR)/gimpchannelundo.Po
+	-rm -f ./$(DEPDIR)/gimpchunkiterator.Po
 	-rm -f ./$(DEPDIR)/gimpcontainer-filter.Po
 	-rm -f ./$(DEPDIR)/gimpcontainer.Po
 	-rm -f ./$(DEPDIR)/gimpcontext.Po
@@ -2197,7 +2209,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/gimpimage-convert-type.Po
 	-rm -f ./$(DEPDIR)/gimpimage-crop.Po
 	-rm -f ./$(DEPDIR)/gimpimage-duplicate.Po
-	-rm -f ./$(DEPDIR)/gimpimage-fade.Po
 	-rm -f ./$(DEPDIR)/gimpimage-flip.Po
 	-rm -f ./$(DEPDIR)/gimpimage-grid.Po
 	-rm -f ./$(DEPDIR)/gimpimage-guides.Po
@@ -2237,6 +2248,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/gimplayerpropundo.Po
 	-rm -f ./$(DEPDIR)/gimplayerstack.Po
 	-rm -f ./$(DEPDIR)/gimplayerundo.Po
+	-rm -f ./$(DEPDIR)/gimplineart.Po
 	-rm -f ./$(DEPDIR)/gimplist.Po
 	-rm -f ./$(DEPDIR)/gimpmarshal.Po
 	-rm -f ./$(DEPDIR)/gimpmaskundo.Po
@@ -2255,6 +2267,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/gimpparamspecs.Po
 	-rm -f ./$(DEPDIR)/gimpparasitelist.Po
 	-rm -f ./$(DEPDIR)/gimppattern-load.Po
+	-rm -f ./$(DEPDIR)/gimppattern-save.Po
 	-rm -f ./$(DEPDIR)/gimppattern.Po
 	-rm -f ./$(DEPDIR)/gimppatternclipboard.Po
 	-rm -f ./$(DEPDIR)/gimppdbprogress.Po

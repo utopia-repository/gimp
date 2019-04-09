@@ -29,6 +29,8 @@
 
 #include "core-types.h"
 
+#include "operations/layer-modes/gimp-layer-modes.h"
+
 #include "gimp.h"
 #include "gimp-palettes.h"
 #include "gimpdrawable.h"
@@ -45,6 +47,8 @@ enum
   PROP_0,
   PROP_STYLE,
   PROP_ANTIALIAS,
+  PROP_FEATHER,
+  PROP_FEATHER_RADIUS,
   PROP_PATTERN_VIEW_TYPE,
   PROP_PATTERN_VIEW_SIZE
 };
@@ -56,6 +60,8 @@ struct _GimpFillOptionsPrivate
 {
   GimpFillStyle style;
   gboolean      antialias;
+  gboolean      feather;
+  gdouble       feather_radius;
 
   GimpViewType  pattern_view_type;
   GimpViewSize  pattern_view_size;
@@ -112,6 +118,20 @@ gimp_fill_options_class_init (GimpFillOptionsClass *klass)
                             TRUE,
                             GIMP_PARAM_STATIC_STRINGS);
 
+  GIMP_CONFIG_PROP_BOOLEAN (object_class, PROP_FEATHER,
+                            "feather",
+                            _("Feather edges"),
+                            _("Enable feathering of fill edges"),
+                            FALSE,
+                            GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_PROP_DOUBLE (object_class, PROP_FEATHER_RADIUS,
+                           "feather-radius",
+                           _("Radius"),
+                           _("Radius of feathering"),
+                           0.0, 100.0, 10.0,
+                           GIMP_PARAM_STATIC_STRINGS);
+
   g_object_class_install_property (object_class, PROP_PATTERN_VIEW_TYPE,
                                    g_param_spec_enum ("pattern-view-type",
                                                       NULL, NULL,
@@ -158,6 +178,12 @@ gimp_fill_options_set_property (GObject      *object,
     case PROP_ANTIALIAS:
       private->antialias = g_value_get_boolean (value);
       break;
+    case PROP_FEATHER:
+      private->feather = g_value_get_boolean (value);
+      break;
+    case PROP_FEATHER_RADIUS:
+      private->feather_radius = g_value_get_double (value);
+      break;
 
     case PROP_PATTERN_VIEW_TYPE:
       private->pattern_view_type = g_value_get_enum (value);
@@ -187,6 +213,12 @@ gimp_fill_options_get_property (GObject    *object,
       break;
     case PROP_ANTIALIAS:
       g_value_set_boolean (value, private->antialias);
+      break;
+    case PROP_FEATHER:
+      g_value_set_boolean (value, private->feather);
+      break;
+    case PROP_FEATHER_RADIUS:
+      g_value_set_double (value, private->feather_radius);
       break;
 
     case PROP_PATTERN_VIEW_TYPE:
@@ -273,6 +305,29 @@ gimp_fill_options_set_antialias (GimpFillOptions *options,
   g_return_if_fail (GIMP_IS_FILL_OPTIONS (options));
 
   g_object_set (options, "antialias", antialias, NULL);
+}
+
+gboolean
+gimp_fill_options_get_feather (GimpFillOptions *options,
+                               gdouble         *radius)
+{
+  g_return_val_if_fail (GIMP_IS_FILL_OPTIONS (options), FALSE);
+
+  if (radius)
+    *radius = GET_PRIVATE (options)->feather_radius;
+
+  return GET_PRIVATE (options)->feather;
+}
+
+void
+gimp_fill_options_set_feather (GimpFillOptions *options,
+                               gboolean         feather,
+                               gdouble          radius)
+{
+  g_return_if_fail (GIMP_IS_FILL_OPTIONS (options));
+
+  g_object_set (options, "feather", feather, NULL);
+  g_object_set (options, "feather-radius", radius, NULL);
 }
 
 gboolean
@@ -404,6 +459,23 @@ gimp_fill_options_get_undo_desc (GimpFillOptions *options)
   g_return_val_if_reached (NULL);
 }
 
+const Babl *
+gimp_fill_options_get_format (GimpFillOptions *options,
+                              GimpDrawable    *drawable)
+{
+  GimpContext *context;
+
+  g_return_val_if_fail (GIMP_IS_FILL_OPTIONS (options), NULL);
+  g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
+
+  context = GIMP_CONTEXT (options);
+
+  return gimp_layer_mode_get_format (gimp_context_get_paint_mode (context),
+                                     GIMP_LAYER_COLOR_SPACE_AUTO,
+                                     GIMP_LAYER_COLOR_SPACE_AUTO,
+                                     gimp_drawable_get_format (drawable));
+}
+
 GeglBuffer *
 gimp_fill_options_create_buffer (GimpFillOptions     *options,
                                  GimpDrawable        *drawable,
@@ -411,7 +483,7 @@ gimp_fill_options_create_buffer (GimpFillOptions     *options,
                                  gint                 pattern_offset_x,
                                  gint                 pattern_offset_y)
 {
-  GeglBuffer  *buffer;
+  GeglBuffer *buffer;
 
   g_return_val_if_fail (GIMP_IS_FILL_OPTIONS (options), NULL);
   g_return_val_if_fail (gimp_fill_options_get_style (options) !=
@@ -422,7 +494,27 @@ gimp_fill_options_create_buffer (GimpFillOptions     *options,
   g_return_val_if_fail (rect != NULL, NULL);
 
   buffer = gegl_buffer_new (rect,
-                            gimp_drawable_get_format_with_alpha (drawable));
+                            gimp_fill_options_get_format (options, drawable));
+
+  gimp_fill_options_fill_buffer (options, drawable, buffer,
+                                 pattern_offset_x, pattern_offset_y);
+
+  return buffer;
+}
+
+void
+gimp_fill_options_fill_buffer (GimpFillOptions *options,
+                               GimpDrawable    *drawable,
+                               GeglBuffer      *buffer,
+                               gint             pattern_offset_x,
+                               gint             pattern_offset_y)
+{
+  g_return_if_fail (GIMP_IS_FILL_OPTIONS (options));
+  g_return_if_fail (gimp_fill_options_get_style (options) !=
+                    GIMP_FILL_STYLE_PATTERN ||
+                    gimp_context_get_pattern (GIMP_CONTEXT (options)) != NULL);
+  g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
+  g_return_if_fail (GEGL_IS_BUFFER (buffer));
 
   switch (gimp_fill_options_get_style (options))
     {
@@ -451,6 +543,4 @@ gimp_fill_options_create_buffer (GimpFillOptions     *options,
       }
       break;
     }
-
-  return buffer;
 }

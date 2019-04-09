@@ -90,20 +90,13 @@ build_triplet = @build@
 host_triplet = @host@
 subdir = app/propgui
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4macros/gtk-doc.m4 \
-	$(top_srcdir)/m4macros/intltool.m4 \
-	$(top_srcdir)/m4macros/libtool.m4 \
-	$(top_srcdir)/m4macros/ltoptions.m4 \
-	$(top_srcdir)/m4macros/ltsugar.m4 \
-	$(top_srcdir)/m4macros/ltversion.m4 \
-	$(top_srcdir)/m4macros/lt~obsolete.m4 \
-	$(top_srcdir)/acinclude.m4 $(top_srcdir)/m4macros/alsa.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
+	$(top_srcdir)/m4macros/alsa.m4 \
 	$(top_srcdir)/m4macros/ax_compare_version.m4 \
 	$(top_srcdir)/m4macros/ax_cxx_compile_stdcxx.m4 \
 	$(top_srcdir)/m4macros/ax_gcc_func_attribute.m4 \
 	$(top_srcdir)/m4macros/ax_prog_cc_for_build.m4 \
 	$(top_srcdir)/m4macros/ax_prog_perl_version.m4 \
-	$(top_srcdir)/m4macros/binreloc.m4 \
 	$(top_srcdir)/m4macros/detectcflags.m4 \
 	$(top_srcdir)/m4macros/pythondev.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -130,6 +123,9 @@ am_libapppropgui_a_OBJECTS = gimppropgui.$(OBJEXT) \
 	gimppropgui-diffraction-patterns.$(OBJEXT) \
 	gimppropgui-eval.$(OBJEXT) gimppropgui-generic.$(OBJEXT) \
 	gimppropgui-hue-saturation.$(OBJEXT) \
+	gimppropgui-motion-blur-circular.$(OBJEXT) \
+	gimppropgui-motion-blur-linear.$(OBJEXT) \
+	gimppropgui-motion-blur-zoom.$(OBJEXT) \
 	gimppropgui-panorama-projection.$(OBJEXT) \
 	gimppropgui-recursive-transform.$(OBJEXT) \
 	gimppropgui-shadows-highlights.$(OBJEXT) \
@@ -160,6 +156,9 @@ am__depfiles_remade = ./$(DEPDIR)/gimppropgui-channel-mixer.Po \
 	./$(DEPDIR)/gimppropgui-eval.Po \
 	./$(DEPDIR)/gimppropgui-generic.Po \
 	./$(DEPDIR)/gimppropgui-hue-saturation.Po \
+	./$(DEPDIR)/gimppropgui-motion-blur-circular.Po \
+	./$(DEPDIR)/gimppropgui-motion-blur-linear.Po \
+	./$(DEPDIR)/gimppropgui-motion-blur-zoom.Po \
 	./$(DEPDIR)/gimppropgui-panorama-projection.Po \
 	./$(DEPDIR)/gimppropgui-recursive-transform.Po \
 	./$(DEPDIR)/gimppropgui-shadows-highlights.Po \
@@ -239,8 +238,6 @@ AWK = @AWK@
 BABL_CFLAGS = @BABL_CFLAGS@
 BABL_LIBS = @BABL_LIBS@
 BABL_REQUIRED_VERSION = @BABL_REQUIRED_VERSION@
-BINRELOC_CFLAGS = @BINRELOC_CFLAGS@
-BINRELOC_LIBS = @BINRELOC_LIBS@
 BUG_REPORT_URL = @BUG_REPORT_URL@
 BUILD_EXEEXT = @BUILD_EXEEXT@
 BUILD_OBJEXT = @BUILD_OBJEXT@
@@ -370,7 +367,6 @@ GTK_MAC_INTEGRATION_CFLAGS = @GTK_MAC_INTEGRATION_CFLAGS@
 GTK_MAC_INTEGRATION_LIBS = @GTK_MAC_INTEGRATION_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
 GTK_UPDATE_ICON_CACHE = @GTK_UPDATE_ICON_CACHE@
-GTK_WIN32_RECOMMENDED_VERSION = @GTK_WIN32_RECOMMENDED_VERSION@
 GUDEV_CFLAGS = @GUDEV_CFLAGS@
 GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
@@ -509,8 +505,6 @@ PYTHON_PLATFORM = @PYTHON_PLATFORM@
 PYTHON_PREFIX = @PYTHON_PREFIX@
 PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
-RECOMMENDED_WIN32_GTK_CFLAGS = @RECOMMENDED_WIN32_GTK_CFLAGS@
-RECOMMENDED_WIN32_GTK_LIBS = @RECOMMENDED_WIN32_GTK_LIBS@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
 SCREENSHOT_LIBS = @SCREENSHOT_LIBS@
@@ -669,6 +663,12 @@ libapppropgui_a_SOURCES = \
 	gimppropgui-generic.h			\
 	gimppropgui-hue-saturation.c		\
 	gimppropgui-hue-saturation.h		\
+	gimppropgui-motion-blur-circular.c	\
+	gimppropgui-motion-blur-circular.h	\
+	gimppropgui-motion-blur-linear.c	\
+	gimppropgui-motion-blur-linear.h	\
+	gimppropgui-motion-blur-zoom.c		\
+	gimppropgui-motion-blur-zoom.h		\
 	gimppropgui-panorama-projection.c	\
 	gimppropgui-panorama-projection.h	\
 	gimppropgui-recursive-transform.c	\
@@ -739,6 +739,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropgui-eval.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropgui-generic.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropgui-hue-saturation.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropgui-motion-blur-circular.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropgui-motion-blur-linear.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropgui-motion-blur-zoom.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropgui-panorama-projection.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropgui-recursive-transform.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropgui-shadows-highlights.Po@am__quote@ # am--include-marker
@@ -914,6 +917,9 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/gimppropgui-eval.Po
 	-rm -f ./$(DEPDIR)/gimppropgui-generic.Po
 	-rm -f ./$(DEPDIR)/gimppropgui-hue-saturation.Po
+	-rm -f ./$(DEPDIR)/gimppropgui-motion-blur-circular.Po
+	-rm -f ./$(DEPDIR)/gimppropgui-motion-blur-linear.Po
+	-rm -f ./$(DEPDIR)/gimppropgui-motion-blur-zoom.Po
 	-rm -f ./$(DEPDIR)/gimppropgui-panorama-projection.Po
 	-rm -f ./$(DEPDIR)/gimppropgui-recursive-transform.Po
 	-rm -f ./$(DEPDIR)/gimppropgui-shadows-highlights.Po
@@ -975,6 +981,9 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/gimppropgui-eval.Po
 	-rm -f ./$(DEPDIR)/gimppropgui-generic.Po
 	-rm -f ./$(DEPDIR)/gimppropgui-hue-saturation.Po
+	-rm -f ./$(DEPDIR)/gimppropgui-motion-blur-circular.Po
+	-rm -f ./$(DEPDIR)/gimppropgui-motion-blur-linear.Po
+	-rm -f ./$(DEPDIR)/gimppropgui-motion-blur-zoom.Po
 	-rm -f ./$(DEPDIR)/gimppropgui-panorama-projection.Po
 	-rm -f ./$(DEPDIR)/gimppropgui-recursive-transform.Po
 	-rm -f ./$(DEPDIR)/gimppropgui-shadows-highlights.Po

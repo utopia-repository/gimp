@@ -668,24 +668,11 @@ open_document (const gchar  *filename,
                GError      **load_error)
 {
   PopplerDocument *doc;
-  GMappedFile     *mapped_file;
+  GFile           *file;
   GError          *error = NULL;
 
-  mapped_file = g_mapped_file_new (filename, FALSE, &error);
-
-  if (! mapped_file)
-    {
-      g_set_error (load_error, GIMP_PLUGIN_PDF_LOAD_ERROR, 0,
-                   _("Could not load '%s': %s"),
-                   gimp_filename_to_utf8 (filename), error->message);
-      g_error_free (error);
-      return NULL;
-    }
-
-  doc = poppler_document_new_from_data (g_mapped_file_get_contents (mapped_file),
-                                        g_mapped_file_get_length (mapped_file),
-                                        PDF_password,
-                                        &error);
+  file = g_file_new_for_path (filename);
+  doc = poppler_document_new_from_gfile (file, PDF_password, NULL, &error);
 
   if (run_mode == GIMP_RUN_INTERACTIVE)
     {
@@ -724,10 +711,9 @@ open_document (const gchar  *filename,
           if (run == GTK_RESPONSE_OK)
             {
               g_clear_error (&error);
-              doc = poppler_document_new_from_data (g_mapped_file_get_contents (mapped_file),
-                                                    g_mapped_file_get_length (mapped_file),
-                                                    gtk_entry_get_text (GTK_ENTRY (entry)),
-                                                    &error);
+              doc = poppler_document_new_from_gfile (file,
+                                                     gtk_entry_get_text (GTK_ENTRY (entry)),
+                                                     NULL, &error);
             }
           label = gtk_label_new (_("Wrong password! Please input the right one:"));
           gtk_widget_destroy (dialog);
@@ -738,6 +724,7 @@ open_document (const gchar  *filename,
         }
       gtk_widget_destroy (label);
     }
+  g_object_unref (file);
 
   /* We can't g_mapped_file_unref(mapped_file) as apparently doc has
    * references to data in there. No big deal, this is just a
@@ -1565,8 +1552,8 @@ gimp_resolution_entry_field_init (GimpResolutionEntry      *gre,
                         gref->min_value,
                         gref->max_value,
                         1.0, 10.0, 0.0);
-  gref->spinbutton = gtk_spin_button_new (gref->adjustment,
-                                          1.0, digits);
+  gref->spinbutton = gimp_spin_button_new (gref->adjustment,
+                                           1.0, digits);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (gref->spinbutton), TRUE);
 
   if (spinbutton_width > 0)

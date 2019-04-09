@@ -23,6 +23,48 @@
  * these enums are registered with the type system
  */
 
+/**
+ * GimpBucketFillArea:
+ * @GIMP_BUCKET_FILL_SELECTION:      Fill whole selection
+ * @GIMP_BUCKET_FILL_SIMILAR_COLORS: Fill similar colors
+ * @GIMP_BUCKET_FILL_LINE_ART:       Fill by line art detection
+ *
+ * Bucket fill area.
+ */
+#define GIMP_TYPE_BUCKET_FILL_AREA (gimp_bucket_fill_area_get_type ())
+
+GType gimp_bucket_fill_area_get_type (void) G_GNUC_CONST;
+
+typedef enum
+{
+  GIMP_BUCKET_FILL_SELECTION,       /*< desc="Fill whole selection" >*/
+  GIMP_BUCKET_FILL_SIMILAR_COLORS,  /*< desc="Fill similar colors" >*/
+  GIMP_BUCKET_FILL_LINE_ART         /*< desc="Fill by line art detection" >*/
+} GimpBucketFillArea;
+
+
+/**
+ * GimpLineArtSource:
+ * @GIMP_LINE_ART_SOURCE_SAMPLE_MERGED: All visible layers
+ * @GIMP_LINE_ART_SOURCE_ACTIVE_LAYER:  Active layer
+ * @GIMP_LINE_ART_SOURCE_LOWER_LAYER:   Layer below the active one
+ * @GIMP_LINE_ART_SOURCE_UPPER_LAYER:   Layer above the active one
+ *
+ * Bucket fill area.
+ */
+#define GIMP_TYPE_LINE_ART_SOURCE (gimp_line_art_source_get_type ())
+
+GType gimp_line_art_source_get_type (void) G_GNUC_CONST;
+
+typedef enum
+{
+  GIMP_LINE_ART_SOURCE_SAMPLE_MERGED, /*< desc="All visible layers" >*/
+  GIMP_LINE_ART_SOURCE_ACTIVE_LAYER,  /*< desc="Active layer" >*/
+  GIMP_LINE_ART_SOURCE_LOWER_LAYER,   /*< desc="Layer below the active one" >*/
+  GIMP_LINE_ART_SOURCE_UPPER_LAYER    /*< desc="Layer above the active one" >*/
+} GimpLineArtSource;
+
+
 #define GIMP_TYPE_RECT_SELECT_MODE (gimp_rect_select_mode_get_type ())
 
 GType gimp_rect_select_mode_get_type (void) G_GNUC_CONST;
@@ -91,12 +133,12 @@ GType gimp_warp_behavior_get_type (void) G_GNUC_CONST;
 typedef enum
 {
   GIMP_WARP_BEHAVIOR_MOVE,      /*< desc="Move pixels" >*/
-  GEGL_WARP_BEHAVIOR_GROW,      /*< desc="Grow area" >*/
-  GEGL_WARP_BEHAVIOR_SHRINK,    /*< desc="Shrink area" >*/
-  GEGL_WARP_BEHAVIOR_SWIRL_CW,  /*< desc="Swirl clockwise" >*/
-  GEGL_WARP_BEHAVIOR_SWIRL_CCW, /*< desc="Swirl counter-clockwise" >*/
-  GEGL_WARP_BEHAVIOR_ERASE,     /*< desc="Erase warping" >*/
-  GEGL_WARP_BEHAVIOR_SMOOTH     /*< desc="Smooth warping" >*/
+  GIMP_WARP_BEHAVIOR_GROW,      /*< desc="Grow area" >*/
+  GIMP_WARP_BEHAVIOR_SHRINK,    /*< desc="Shrink area" >*/
+  GIMP_WARP_BEHAVIOR_SWIRL_CW,  /*< desc="Swirl clockwise" >*/
+  GIMP_WARP_BEHAVIOR_SWIRL_CCW, /*< desc="Swirl counter-clockwise" >*/
+  GIMP_WARP_BEHAVIOR_ERASE,     /*< desc="Erase warping" >*/
+  GIMP_WARP_BEHAVIOR_SMOOTH     /*< desc="Smooth warping" >*/
 } GimpWarpBehavior;
 
 

@@ -69,6 +69,8 @@ struct _GimpToolWidgetClass
                                 const gchar           *separator,
                                 gdouble                y,
                                 const gchar           *help);
+  void     (* message)         (GimpToolWidget        *widget,
+                                const gchar           *message);
   void     (* focus_changed)   (GimpToolWidget        *widget);
 
   /*  virtual functions  */
@@ -125,6 +127,10 @@ GType              gimp_tool_widget_get_type          (void) G_GNUC_CONST;
 GimpDisplayShell * gimp_tool_widget_get_shell         (GimpToolWidget  *widget);
 GimpCanvasItem   * gimp_tool_widget_get_item          (GimpToolWidget  *widget);
 
+void               gimp_tool_widget_set_visible       (GimpToolWidget  *widget,
+                                                       gboolean         visible);
+gboolean           gimp_tool_widget_get_visible       (GimpToolWidget  *widget);
+
 void               gimp_tool_widget_set_focus         (GimpToolWidget  *widget,
                                                        gboolean         focus);
 gboolean           gimp_tool_widget_get_focus         (GimpToolWidget  *widget);
@@ -155,6 +161,12 @@ void               gimp_tool_widget_set_status_coords (GimpToolWidget  *widget,
                                                        const gchar     *separator,
                                                        gdouble          y,
                                                        const gchar     *help);
+
+void               gimp_tool_widget_message           (GimpToolWidget  *widget,
+                                                       const gchar     *format,
+                                                       ...) G_GNUC_PRINTF (2, 3);
+void               gimp_tool_widget_message_literal   (GimpToolWidget  *widget,
+                                                       const gchar     *message);
 
 /*  for subclasses, to add and manage their items
  */

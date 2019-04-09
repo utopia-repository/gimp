@@ -34,6 +34,7 @@
 #undef GIMP_DISABLE_DEPRECATED
 #include "gimpoldwidgets.h"
 #include "gimppropwidgets.h"
+#include "gimpspinbutton.h"
 #include "gimpunitmenu.h"
 
 #define GIMP_DISABLE_DEPRECATED
@@ -553,7 +554,7 @@ gimp_prop_enum_combo_box_new (GObject     *config,
     {
       /* ditto */
       store = gimp_enum_store_new_with_values (param_spec->value_type,
-                                               11,
+                                               12,
                                                GIMP_SELECT_CRITERION_COMPOSITE,
                                                GIMP_SELECT_CRITERION_R,
                                                GIMP_SELECT_CRITERION_G,
@@ -1281,7 +1282,7 @@ gimp_prop_spin_button_new (GObject     *config,
     gtk_adjustment_new (value, lower, upper,
                         step_increment, page_increment, 0);
 
-  spinbutton = gtk_spin_button_new (adjustment, step_increment, digits);
+  spinbutton = gimp_spin_button_new (adjustment, step_increment, digits);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
 
   set_param_spec (G_OBJECT (adjustment), spinbutton, param_spec);

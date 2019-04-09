@@ -25,6 +25,7 @@
 #include "config.h"
 
 #include <gegl.h>
+#include <gegl-plugin.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
@@ -42,6 +43,7 @@
 #include "gegl/gimp-gegl-utils.h"
 
 #include "core/gimp.h"
+#include "core/gimpchannel.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpdrawablefilter.h"
 #include "core/gimperror.h"
@@ -72,6 +74,7 @@
 #include "gimpfiltertool-widgets.h"
 #include "gimpguidetool.h"
 #include "gimptoolcontrol.h"
+#include "gimptools-utils.h"
 #include "tool_manager.h"
 
 #include "gimp-intl.h"
@@ -158,6 +161,8 @@ static void      gimp_filter_tool_flush          (GimpDrawableFilter  *filter,
 static void      gimp_filter_tool_config_notify  (GObject             *object,
                                                   const GParamSpec    *pspec,
                                                   GimpFilterTool      *filter_tool);
+static void      gimp_filter_tool_mask_changed   (GimpImage           *image,
+                                                  GimpFilterTool      *filter_tool);
 
 static void      gimp_filter_tool_add_guide      (GimpFilterTool      *filter_tool);
 static void      gimp_filter_tool_remove_guide   (GimpFilterTool      *filter_tool);
@@ -240,8 +245,9 @@ gimp_filter_tool_finalize (GObject *object)
   g_clear_object (&filter_tool->settings);
   g_clear_pointer (&filter_tool->description, g_free);
   g_clear_object (&filter_tool->gui);
-  filter_tool->settings_box = NULL;
-  filter_tool->region_combo = NULL;
+  filter_tool->settings_box      = NULL;
+  filter_tool->controller_toggle = NULL;
+  filter_tool->region_combo      = NULL;
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -273,6 +279,8 @@ gimp_filter_tool_initialize (GimpTool     *tool,
     {
       g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
                            _("The active layer's pixels are locked."));
+      if (error)
+        gimp_tools_blink_lock_box (display->gimp, GIMP_ITEM (drawable));
       return FALSE;
     }
 
@@ -367,6 +375,15 @@ gimp_filter_tool_initialize (GimpTool     *tool,
                               toggle,                             "sensitive",
                               G_BINDING_SYNC_CREATE);
 
+      /*  The show-controller toggle  */
+      filter_tool->controller_toggle =
+        gimp_prop_check_button_new (G_OBJECT (tool_info->tool_options),
+                                    "controller", NULL);
+      gtk_box_pack_end (GTK_BOX (vbox), filter_tool->controller_toggle,
+                        FALSE, FALSE, 0);
+      if (filter_tool->widget)
+        gtk_widget_show (filter_tool->controller_toggle);
+
       /*  The Color Options expander  */
       expander = gtk_expander_new (_("Advanced Color Options"));
       gtk_box_pack_end (GTK_BOX (vbox), expander, FALSE, FALSE, 0);
@@ -411,8 +428,9 @@ gimp_filter_tool_initialize (GimpTool     *tool,
       gtk_box_pack_end (GTK_BOX (vbox), filter_tool->region_combo,
                         FALSE, FALSE, 0);
 
-      if (operation_name &&
-          gegl_operation_get_key (operation_name, "position-dependent"))
+      if (! gimp_gegl_node_is_point_operation (filter_tool->operation) ||
+          (operation_name                                              &&
+           gegl_operation_get_key (operation_name, "position-dependent")))
         {
           gtk_widget_show (filter_tool->region_combo);
         }
@@ -439,6 +457,12 @@ gimp_filter_tool_initialize (GimpTool     *tool,
   gimp_tool_gui_show (filter_tool->gui);
 
   gimp_filter_tool_create_filter (filter_tool);
+
+  g_signal_connect_object (image, "mask-changed",
+                           G_CALLBACK (gimp_filter_tool_mask_changed),
+                           filter_tool, 0);
+
+  gimp_filter_tool_mask_changed (image, filter_tool);
 
   return TRUE;
 }
@@ -771,6 +795,12 @@ gimp_filter_tool_options_notify (GimpTool         *tool,
       if (filter_options->preview_split)
         gimp_filter_tool_move_guide (filter_tool);
     }
+  else if (! strcmp (pspec->name, "controller") &&
+           filter_tool->widget)
+    {
+      gimp_tool_widget_set_visible (filter_tool->widget,
+                                    filter_options->controller);
+    }
   else if (! strcmp (pspec->name, "region") &&
            filter_tool->filter)
     {
@@ -938,6 +968,15 @@ gimp_filter_tool_halt (GimpFilterTool *filter_tool)
 
   gimp_filter_tool_disable_color_picking (filter_tool);
 
+  if (tool->display)
+    {
+      GimpImage *image = gimp_display_get_image (tool->display);
+
+      g_signal_handlers_disconnect_by_func (image,
+                                            gimp_filter_tool_mask_changed,
+                                            filter_tool);
+    }
+
   if (filter_tool->gui)
     {
       /* explicitly clear the dialog contents first, since we might be called
@@ -952,8 +991,9 @@ gimp_filter_tool_halt (GimpFilterTool *filter_tool)
         GTK_CONTAINER (gimp_filter_tool_dialog_get_vbox (filter_tool)));
 
       g_clear_object (&filter_tool->gui);
-      filter_tool->settings_box = NULL;
-      filter_tool->region_combo = NULL;
+      filter_tool->settings_box      = NULL;
+      filter_tool->controller_toggle = NULL;
+      filter_tool->region_combo      = NULL;
     }
 
   if (filter_tool->filter)
@@ -1100,6 +1140,19 @@ gimp_filter_tool_config_notify (GObject          *object,
   GIMP_FILTER_TOOL_GET_CLASS (filter_tool)->config_notify (filter_tool,
                                                            GIMP_CONFIG (object),
                                                            pspec);
+}
+
+static void
+gimp_filter_tool_mask_changed (GimpImage      *image,
+                               GimpFilterTool *filter_tool)
+{
+  if (filter_tool->gui)
+    {
+      GimpChannel *mask = gimp_image_get_mask (image);
+
+      gtk_widget_set_sensitive (filter_tool->region_combo,
+                                ! gimp_channel_is_empty (mask));
+    }
 }
 
 static void
@@ -1706,11 +1759,22 @@ gimp_filter_tool_set_widget (GimpFilterTool *filter_tool,
 
   if (filter_tool->widget)
     {
+      GimpFilterOptions *options = GIMP_FILTER_TOOL_GET_OPTIONS (filter_tool);
+
       g_object_ref (filter_tool->widget);
+
+      gimp_tool_widget_set_visible (filter_tool->widget,
+                                    options->controller);
 
       if (GIMP_TOOL (filter_tool)->display)
         gimp_draw_tool_start (GIMP_DRAW_TOOL (filter_tool),
                               GIMP_TOOL (filter_tool)->display);
+    }
+
+  if (filter_tool->controller_toggle)
+    {
+      gtk_widget_set_visible (filter_tool->controller_toggle,
+                              filter_tool->widget != NULL);
     }
 }
 

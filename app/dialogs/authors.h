@@ -105,7 +105,6 @@ static const gchar * const authors[] =
   "Nathan Osman",
   "Benjamin Otte",
   "Petr Ovtchenkov",
-  "Jehan Pagès",
   "Juan Palacios",
   "Ville Pätsi",
   "Akkana Peck",

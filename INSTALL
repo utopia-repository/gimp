@@ -38,8 +38,8 @@ header files installed.
      You also need gettext version 0.19 or over. Earlier gettext had
      issues with script-fu localization, ending up in incomplete GIMP localization.
 
-  3. You need to have GEGL version 0.4.12 or newer and babl version
-     0.1.58 or newer. You can get them from https://gegl.org/ or clone
+  3. You need to have GEGL version 0.4.14 or newer and babl version
+     0.1.62 or newer. You can get them from https://gegl.org/ or clone
      them from the GNOME git repository:
 
        https://gitlab.gnome.org/GNOME/babl.git
@@ -49,7 +49,7 @@ header files installed.
      engine "gegl:matting-levin" and OpenEXR library for OpenEXR format
      support.
 
-  4. You need to have installed GTK+ version 2.24.10 or newer.
+  4. You need to have installed GTK+ version 2.24.32 or newer.
      GIMP also needs a recent version of GLib (>= 2.54.2), GDK-Pixbuf
      (>= 2.30.8), and Pango (>= 1.29.4). Sources for these can be grabbed
      from ftp://ftp.gtk.org/.
@@ -85,6 +85,9 @@ header files installed.
      If installing from repository, do not install the master branch!
      Checkout the tag "v1.3.0" instead, or simply install from a tarball
      or from your favorite package manager.
+     You may also checkout the "libmypaint-v1" branch, which is the
+     development branch for libmypaint v1.x and has some more recent
+     fixes.
 
  11. We also need the mypaint-brushes data package:
 
@@ -141,23 +144,23 @@ header files installed.
      Package Name         Version
 
      ATK                  2.2.0
-     babl                 0.1.58
+     babl                 0.1.62
      cairo                1.12.2
      Fontconfig           2.12.4
      freetype2            2.1.7
      GDK-PixBuf           2.30.8
-     GEGL                 0.4.12
+     GEGL                 0.4.14
      GIO
      GLib                 2.54.2
      glib-networking
-     GTK+                 2.24.10
+     GTK+                 2.24.32
      HarfBuzz             0.9.19
      libbzip2
      libjpeg
      liblzma              5.0.0
      libmypaint           1.3.0
      libpng               1.6.25
-     libpoppler-glib      0.44.0
+     libpoppler-glib      0.50.0
      librsvg              2.40.6
      libtiff
      Little CMS           2.8
@@ -204,8 +207,8 @@ packages are included below. Here is an illustration of commands that
 might be used to build and install GIMP. The actual configuration,
 compilation and installation output is not shown.
 
-  % tar xvfz gimp-2.10.8.tar.gz   # unpack the sources
-  % cd gimp-2.10.8                # change to the toplevel directory
+  % tar xvfz gimp-2.10.10.tar.gz   # unpack the sources
+  % cd gimp-2.10.10                # change to the toplevel directory
   % ./configure                   # run the `configure' script
   % make                          # build GIMP
   % make install                  # install GIMP
@@ -251,11 +254,6 @@ These are:
      ~/.config/GIMP/2.10 (the directory .config/GIMP/2.10
      in the user's home directory) to ~/.config/DIR/2.10.
      If DIR is an absolute path, the directory will be changed to DIR.
-
-  --enable-binreloc.  When compiled for Linux with this option enabled,
-     GIMP will be binary relocatable.  Plug-ins and data files will
-     be searched relative to the gimp binary instead of in the paths
-     defined at compile time.
 
   --with-shm=[none|sysv|posix|auto].  This option allows you to specify
      how image data is transported between the core and plug-ins. Usually

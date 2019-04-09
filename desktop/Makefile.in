@@ -92,20 +92,13 @@ host_triplet = @host@
 @HAVE_DESKTOP_FILE_VALIDATE_TRUE@am__append_2 = test-desktop.sh
 subdir = desktop
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4macros/gtk-doc.m4 \
-	$(top_srcdir)/m4macros/intltool.m4 \
-	$(top_srcdir)/m4macros/libtool.m4 \
-	$(top_srcdir)/m4macros/ltoptions.m4 \
-	$(top_srcdir)/m4macros/ltsugar.m4 \
-	$(top_srcdir)/m4macros/ltversion.m4 \
-	$(top_srcdir)/m4macros/lt~obsolete.m4 \
-	$(top_srcdir)/acinclude.m4 $(top_srcdir)/m4macros/alsa.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
+	$(top_srcdir)/m4macros/alsa.m4 \
 	$(top_srcdir)/m4macros/ax_compare_version.m4 \
 	$(top_srcdir)/m4macros/ax_cxx_compile_stdcxx.m4 \
 	$(top_srcdir)/m4macros/ax_gcc_func_attribute.m4 \
 	$(top_srcdir)/m4macros/ax_prog_cc_for_build.m4 \
 	$(top_srcdir)/m4macros/ax_prog_perl_version.m4 \
-	$(top_srcdir)/m4macros/binreloc.m4 \
 	$(top_srcdir)/m4macros/detectcflags.m4 \
 	$(top_srcdir)/m4macros/pythondev.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -114,7 +107,7 @@ DIST_COMMON = $(srcdir)/Makefile.am $(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES = gimp-data-extras.metainfo.xml.in gimp.desktop.in \
-	org.gimp.GIMP.appdata.xml.in
+	org.gimp.GIMP.appdata.xml.in test-appdata.sh
 CONFIG_CLEAN_VPATH_FILES =
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -352,7 +345,7 @@ am__DIST_COMMON = $(srcdir)/Makefile.in \
 	$(srcdir)/gimp-data-extras.metainfo.xml.in.in \
 	$(srcdir)/gimp.desktop.in.in \
 	$(srcdir)/org.gimp.GIMP.appdata.xml.in.in \
-	$(top_srcdir)/test-driver
+	$(srcdir)/test-appdata.sh.in $(top_srcdir)/test-driver
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 AA_LIBS = @AA_LIBS@
 ACLOCAL = @ACLOCAL@
@@ -376,8 +369,6 @@ AWK = @AWK@
 BABL_CFLAGS = @BABL_CFLAGS@
 BABL_LIBS = @BABL_LIBS@
 BABL_REQUIRED_VERSION = @BABL_REQUIRED_VERSION@
-BINRELOC_CFLAGS = @BINRELOC_CFLAGS@
-BINRELOC_LIBS = @BINRELOC_LIBS@
 BUG_REPORT_URL = @BUG_REPORT_URL@
 BUILD_EXEEXT = @BUILD_EXEEXT@
 BUILD_OBJEXT = @BUILD_OBJEXT@
@@ -507,7 +498,6 @@ GTK_MAC_INTEGRATION_CFLAGS = @GTK_MAC_INTEGRATION_CFLAGS@
 GTK_MAC_INTEGRATION_LIBS = @GTK_MAC_INTEGRATION_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
 GTK_UPDATE_ICON_CACHE = @GTK_UPDATE_ICON_CACHE@
-GTK_WIN32_RECOMMENDED_VERSION = @GTK_WIN32_RECOMMENDED_VERSION@
 GUDEV_CFLAGS = @GUDEV_CFLAGS@
 GUDEV_LIBS = @GUDEV_LIBS@
 HARFBUZZ_CFLAGS = @HARFBUZZ_CFLAGS@
@@ -646,8 +636,6 @@ PYTHON_PLATFORM = @PYTHON_PLATFORM@
 PYTHON_PREFIX = @PYTHON_PREFIX@
 PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
-RECOMMENDED_WIN32_GTK_CFLAGS = @RECOMMENDED_WIN32_GTK_CFLAGS@
-RECOMMENDED_WIN32_GTK_LIBS = @RECOMMENDED_WIN32_GTK_LIBS@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
 SCREENSHOT_LIBS = @SCREENSHOT_LIBS@
@@ -797,7 +785,7 @@ appstream_files = $(appstream_in_files:.xml.in=.xml)
 @DESKTOP_DATADIR_TRUE@icons256_DATA = 256x256/gimp.png
 EXTRA_DIST = \
 	$(appstream_in_files) \
-	test-appdata.sh       \
+	test-appdata.sh.in    \
 	test-desktop.sh       \
 	gimp.desktop.in.in    \
 	16x16/gimp.png        \
@@ -809,7 +797,10 @@ EXTRA_DIST = \
 	256x256/gimp.png
 
 DISTCLEANFILES = $(desktop_files) $(appstream_files)
-TESTS_ENVIRONMENT = GIMP_TESTING_ABS_TOP_BUILDDIR=@abs_top_builddir@
+TESTS_ENVIRONMENT = \
+	chmod +x test-appdata.sh; \
+	GIMP_TESTING_ABS_TOP_BUILDDIR=@abs_top_builddir@
+
 TESTS = $(am__append_1) $(am__append_2)
 all: all-am
 
@@ -849,6 +840,8 @@ gimp-data-extras.metainfo.xml.in: $(top_builddir)/config.status $(srcdir)/gimp-d
 gimp.desktop.in: $(top_builddir)/config.status $(srcdir)/gimp.desktop.in.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 org.gimp.GIMP.appdata.xml.in: $(top_builddir)/config.status $(srcdir)/org.gimp.GIMP.appdata.xml.in.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+test-appdata.sh: $(top_builddir)/config.status $(srcdir)/test-appdata.sh.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 
 mostlyclean-libtool:

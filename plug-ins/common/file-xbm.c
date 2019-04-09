@@ -979,6 +979,7 @@ save_image (GFile        *file,
 {
   GOutputStream *output;
   GeglBuffer    *buffer;
+  GCancellable  *cancellable;
   gint           width, height, colors, dark;
   gint           intbits, lineints, need_comma, nints, rowoffset, tileheight;
   gint           c, i, j, k, thisbit;
@@ -1221,6 +1222,11 @@ save_image (GFile        *file,
 
  fail:
 
+  cancellable = g_cancellable_new ();
+  g_cancellable_cancel (cancellable);
+  g_output_stream_close (output, cancellable, NULL);
+  g_object_unref (cancellable);
+
   g_free (data);
   g_object_unref (buffer);
   g_object_unref (output);
@@ -1319,7 +1325,7 @@ save_dialog (gint32 drawable_ID)
     gtk_adjustment_new (xsvals.x_hot, 0,
                         gimp_drawable_width (drawable_ID) - 1,
                         1, 10, 0);
-  spinbutton = gtk_spin_button_new (adj, 1.0, 0);
+  spinbutton = gimp_spin_button_new (adj, 1.0, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
                              _("Hot spot _X:"), 0.0, 0.5,
@@ -1333,7 +1339,7 @@ save_dialog (gint32 drawable_ID)
     gtk_adjustment_new (xsvals.y_hot, 0,
                         gimp_drawable_height (drawable_ID) - 1,
                         1, 10, 0);
-  spinbutton = gtk_spin_button_new (adj, 1.0, 0);
+  spinbutton = gimp_spin_button_new (adj, 1.0, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinbutton), TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 1,
                              _("Hot spot _Y:"), 0.0, 0.5,

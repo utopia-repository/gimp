@@ -173,6 +173,7 @@ app/core/gimpitem-linked.c
 app/core/gimplayer-floating-selection.c
 app/core/gimplayer.c
 app/core/gimplayermask.c
+app/core/gimplineart.c
 app/core/gimpmybrush-load.c
 app/core/gimppalette.c
 app/core/gimppalette-import.c
@@ -209,7 +210,6 @@ app/dialogs/convert-precision-dialog.c
 app/dialogs/data-delete-dialog.c
 app/dialogs/dialogs-constructors.c
 app/dialogs/dialogs.c
-app/dialogs/fade-dialog.c
 app/dialogs/file-open-dialog.c
 app/dialogs/file-open-location-dialog.c
 app/dialogs/file-save-dialog.c
@@ -257,6 +257,7 @@ app/display/gimpdisplayshell-layer-select.c
 app/display/gimpdisplayshell-rotate-dialog.c
 app/display/gimpdisplayshell-scale-dialog.c
 app/display/gimpdisplayshell-title.c
+app/display/gimpdisplayshell-tool-events.c
 app/display/gimpdisplayshell-utils.c
 app/display/gimpnavigationeditor.c
 app/display/gimpstatusbar.c
@@ -273,6 +274,11 @@ app/file/file-open.c
 app/file/file-remote.c
 app/file/file-save.c
 app/file/file-utils.c
+
+app/file-data/file-data-gbr.c
+app/file-data/file-data-gih.c
+app/file-data/file-data-pat.c
+app/file-data/file-data.c
 
 app/gegl/gimp-babl.c
 app/gegl/gimp-gegl-enums.c
@@ -387,6 +393,9 @@ app/propgui/gimppropgui-convolution-matrix.c
 app/propgui/gimppropgui-diffraction-patterns.c
 app/propgui/gimppropgui-generic.c
 app/propgui/gimppropgui-hue-saturation.c
+app/propgui/gimppropgui-motion-blur-circular.c
+app/propgui/gimppropgui-motion-blur-linear.c
+app/propgui/gimppropgui-motion-blur-zoom.c
 app/propgui/gimppropgui-panorama-projection.c
 app/propgui/gimppropgui-recursive-transform.c
 app/propgui/gimppropgui-shadows-highlights.c

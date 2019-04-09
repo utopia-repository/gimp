@@ -66,6 +66,7 @@ struct _GimpItemTreePrivate
 /*  local function prototypes  */
 
 static void     gimp_item_tree_constructed   (GObject      *object);
+static void     gimp_item_tree_dispose       (GObject      *object);
 static void     gimp_item_tree_finalize      (GObject      *object);
 static void     gimp_item_tree_set_property  (GObject      *object,
                                               guint         property_id,
@@ -96,6 +97,7 @@ gimp_item_tree_class_init (GimpItemTreeClass *klass)
   GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS (klass);
 
   object_class->constructed      = gimp_item_tree_constructed;
+  object_class->dispose          = gimp_item_tree_dispose;
   object_class->finalize         = gimp_item_tree_finalize;
   object_class->set_property     = gimp_item_tree_set_property;
   object_class->get_property     = gimp_item_tree_get_property;
@@ -156,6 +158,23 @@ gimp_item_tree_constructed (GObject *object)
                                   "children-type", private->item_type,
                                   "policy",        GIMP_CONTAINER_POLICY_STRONG,
                                   NULL);
+}
+
+static void
+gimp_item_tree_dispose (GObject *object)
+{
+  GimpItemTree        *tree    = GIMP_ITEM_TREE (object);
+  GimpItemTreePrivate *private = GIMP_ITEM_TREE_GET_PRIVATE (tree);
+
+  gimp_item_tree_set_active_item (tree, NULL);
+
+  gimp_container_foreach (tree->container,
+                          (GFunc) gimp_item_removed, NULL);
+
+  gimp_container_clear (tree->container);
+  g_hash_table_remove_all (private->name_hash);
+
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void

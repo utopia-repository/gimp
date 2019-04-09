@@ -33,6 +33,7 @@
 #include "core/gimpimage-colormap.h"
 #include "core/gimpmarshal.h"
 #include "core/gimppalette.h"
+#include "core/gimpprojection.h"
 
 #include "gimpcolordialog.h"
 #include "gimpcolormapeditor.h"
@@ -48,8 +49,8 @@
 #include "gimp-intl.h"
 
 
-#define BORDER  6
-#define EPSILON 1e-10
+#define BORDER      6
+#define RGB_EPSILON 1e-6
 
 #define HAVE_COLORMAP(image) \
         (image != NULL && \
@@ -202,8 +203,8 @@ gimp_colormap_editor_init (GimpColormapEditor *editor)
 
   editor->index_adjustment = (GtkAdjustment *)
     gtk_adjustment_new (0, 0, 0, 1, 10, 0);
-  editor->index_spinbutton = gtk_spin_button_new (editor->index_adjustment,
-                                                  1.0, 0);
+  editor->index_spinbutton = gimp_spin_button_new (editor->index_adjustment,
+                                                   1.0, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (editor->index_spinbutton),
                                TRUE);
 
@@ -411,7 +412,7 @@ gimp_colormap_editor_edit_color (GimpColormapEditor *editor)
                                gimp_dialog_factory_get_singleton (),
                                "gimp-colormap-editor-color-dialog",
                                (const GimpRGB *) &color,
-                               FALSE, FALSE);
+                               TRUE, FALSE);
 
       g_signal_connect (editor->color_dialog, "destroy",
                         G_CALLBACK (gtk_widget_destroyed),
@@ -458,7 +459,7 @@ gimp_colormap_editor_get_index (GimpColormapEditor *editor,
 
       gimp_image_get_colormap_entry (image, index, &temp);
 
-      if (gimp_rgb_distance (&temp, search) > EPSILON)
+      if (gimp_rgb_distance (&temp, search) > RGB_EPSILON)
         {
           gint n_colors = gimp_image_get_colormap_size (image);
           gint i;
@@ -467,7 +468,7 @@ gimp_colormap_editor_get_index (GimpColormapEditor *editor,
             {
               gimp_image_get_colormap_entry (image, i, &temp);
 
-              if (gimp_rgb_distance (&temp, search) < EPSILON)
+              if (gimp_rgb_distance (&temp, search) < RGB_EPSILON)
                 {
                   index = i;
                   break;
@@ -770,20 +771,49 @@ gimp_colormap_editor_edit_color_update (GimpColorDialog      *dialog,
                                         GimpColorDialogState  state,
                                         GimpColormapEditor   *editor)
 {
-  GimpImage *image = GIMP_IMAGE_EDITOR (editor)->image;
+  GimpImageEditor *image_editor = GIMP_IMAGE_EDITOR (editor);
+  GimpImage       *image        = image_editor->image;
+  gboolean         push_undo    = FALSE;
 
   switch (state)
     {
-    case GIMP_COLOR_DIALOG_UPDATE:
-      break;
-
     case GIMP_COLOR_DIALOG_OK:
-      gimp_image_set_colormap_entry (image, editor->col_index, color, TRUE);
-      gimp_image_flush (image);
+      push_undo = TRUE;
+
+      if (state & gimp_get_toggle_behavior_mask ())
+        gimp_context_set_background (image_editor->context, color);
+      else
+        gimp_context_set_foreground (image_editor->context, color);
       /* Fall through */
 
     case GIMP_COLOR_DIALOG_CANCEL:
       gtk_widget_hide (editor->color_dialog);
       break;
+
+    case GIMP_COLOR_DIALOG_UPDATE:
+      break;
+    }
+
+  if (image)
+    {
+      if (push_undo)
+        {
+          GimpRGB old_color;
+
+          gimp_color_selection_get_old_color (
+            GIMP_COLOR_SELECTION (dialog->selection), &old_color);
+
+          /* Restore old color for undo */
+          gimp_image_set_colormap_entry (image, editor->col_index, &old_color,
+                                         FALSE);
+        }
+
+      gimp_image_set_colormap_entry (image, editor->col_index, color,
+                                     push_undo);
+
+      if (push_undo)
+        gimp_image_flush (image);
+      else
+        gimp_projection_flush (gimp_image_get_projection (image));
     }
 }

@@ -39,7 +39,8 @@ typedef struct
 {
   GDBusPropertyInfo parent_struct;
   const gchar *hyphen_name;
-  gboolean use_gvariant;
+  guint use_gvariant : 1;
+  guint emits_changed_signal : 1;
 } _ExtendedGDBusPropertyInfo;
 
 typedef struct
@@ -608,7 +609,7 @@ gimp_dbus_service_ui_call_open (
 /**
  * gimp_dbus_service_ui_call_open_finish:
  * @proxy: A #GimpDBusServiceUIProxy.
- * @out_success: (out): Return location for return parameter or %NULL to ignore.
+ * @out_success: (out) (optional): Return location for return parameter or %NULL to ignore.
  * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to gimp_dbus_service_ui_call_open().
  * @error: Return location for error or %NULL.
  *
@@ -639,7 +640,7 @@ _out:
  * gimp_dbus_service_ui_call_open_sync:
  * @proxy: A #GimpDBusServiceUIProxy.
  * @arg_uri: Argument to pass with the method invocation.
- * @out_success: (out): Return location for return parameter or %NULL to ignore.
+ * @out_success: (out) (optional): Return location for return parameter or %NULL to ignore.
  * @cancellable: (nullable): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
@@ -712,7 +713,7 @@ gimp_dbus_service_ui_call_open_as_new (
 /**
  * gimp_dbus_service_ui_call_open_as_new_finish:
  * @proxy: A #GimpDBusServiceUIProxy.
- * @out_success: (out): Return location for return parameter or %NULL to ignore.
+ * @out_success: (out) (optional): Return location for return parameter or %NULL to ignore.
  * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to gimp_dbus_service_ui_call_open_as_new().
  * @error: Return location for error or %NULL.
  *
@@ -743,7 +744,7 @@ _out:
  * gimp_dbus_service_ui_call_open_as_new_sync:
  * @proxy: A #GimpDBusServiceUIProxy.
  * @arg_uri: Argument to pass with the method invocation.
- * @out_success: (out): Return location for return parameter or %NULL to ignore.
+ * @out_success: (out) (optional): Return location for return parameter or %NULL to ignore.
  * @cancellable: (nullable): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
@@ -819,7 +820,7 @@ gimp_dbus_service_ui_call_batch_run (
 /**
  * gimp_dbus_service_ui_call_batch_run_finish:
  * @proxy: A #GimpDBusServiceUIProxy.
- * @out_success: (out): Return location for return parameter or %NULL to ignore.
+ * @out_success: (out) (optional): Return location for return parameter or %NULL to ignore.
  * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to gimp_dbus_service_ui_call_batch_run().
  * @error: Return location for error or %NULL.
  *
@@ -851,7 +852,7 @@ _out:
  * @proxy: A #GimpDBusServiceUIProxy.
  * @arg_interpreter: Argument to pass with the method invocation.
  * @arg_command: Argument to pass with the method invocation.
- * @out_success: (out): Return location for return parameter or %NULL to ignore.
+ * @out_success: (out) (optional): Return location for return parameter or %NULL to ignore.
  * @cancellable: (nullable): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *

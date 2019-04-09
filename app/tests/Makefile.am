@@ -2,6 +2,12 @@
 # The tests must not be run in parallel or in a different order as specified
 .NOTPARALLEL: check
 
+if PLATFORM_OSX
+xobjective_c = "-xobjective-c"
+xobjective_cxx = "-xobjective-c++"
+xnone = "-xnone"
+endif
+
 SUBDIRS = \
 	files		\
 	gimpdir		\
@@ -69,6 +75,7 @@ AM_CPPFLAGS = \
 	$(GTK_CFLAGS)		\
 	$(DBUS_GLIB_CFLAGS)	\
 	$(GEGL_CFLAGS)		\
+	$(xobjective_c)		\
 	-I$(includedir)
 
 # We need this due to circular dependencies
@@ -105,6 +112,7 @@ LDADD = \
 	../vectors/libappvectors.a					\
 	../core/libappcore.a						\
 	../file/libappfile.a						\
+	../file-data/libappfile-data.a					\
 	../text/libapptext.a						\
 	../paint/libapppaint.a						\
 	../config/libappconfig.a					\
@@ -123,6 +131,7 @@ LDADD = \
 	$(libgimpbase)							\
 	$(GIMPICONRC)							\
 	$(GTK_LIBS)							\
+	$(GTK_MAC_INTEGRATION_LIBS)					\
 	$(DBUS_GLIB_LIBS)						\
 	$(GDK_PIXBUF_LIBS)						\
 	$(FREETYPE_LIBS)						\

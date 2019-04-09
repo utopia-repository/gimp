@@ -181,7 +181,6 @@
       <placeholder name="Undo">
         <menuitem action="edit-undo"/>
         <menuitem action="edit-redo"/>
-        <menuitem action="edit-fade"/>
         <menuitem action="dialogs-undo-history"/>
       </placeholder>
       <separator/>
@@ -1074,7 +1073,6 @@
       <placeholder name="Undo">
         <menuitem action="edit-undo"/>
         <menuitem action="edit-redo"/>
-        <menuitem action="edit-fade"/>
         <menuitem action="dialogs-undo-history"/>
       </placeholder>
       <separator/>

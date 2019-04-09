@@ -63,7 +63,6 @@
  * BUGS:
  */
 
-#define GEGL_ITERATOR2_API
 #include "config.h"
 
 #include <errno.h>
@@ -800,7 +799,7 @@ save_resources (FILE   *fd,
   {
     GimpColorProfile *profile;
 
-    profile = gimp_image_get_color_profile (image_id);
+    profile = gimp_image_get_effective_color_profile (image_id);
 
     if (profile)
       {

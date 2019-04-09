@@ -150,6 +150,7 @@ gimp_measure_tool_class_init (GimpMeasureToolClass *klass)
   tr_class->recalc_matrix    = gimp_measure_tool_recalc_matrix;
   tr_class->get_undo_desc    = gimp_measure_tool_get_undo_desc;
 
+  tr_class->undo_desc        = C_("undo-type", "Straighten");
   tr_class->progress_text    = _("Straightening");
 }
 
@@ -346,7 +347,36 @@ gimp_measure_tool_recalc_matrix (GimpTransformTool *tr_tool)
 static gchar *
 gimp_measure_tool_get_undo_desc (GimpTransformTool *tr_tool)
 {
-  return g_strdup (_("Straighten"));
+  GimpMeasureTool        *measure = GIMP_MEASURE_TOOL (tr_tool);
+  GimpCompassOrientation  orientation;
+  gdouble                 angle;
+
+  g_object_get (measure->widget,
+                "effective-orientation", &orientation,
+                "pixel-angle",           &angle,
+                NULL);
+
+  angle = gimp_rad_to_deg (fabs (angle));
+
+  switch (orientation)
+    {
+    case GIMP_COMPASS_ORIENTATION_AUTO:
+      return g_strdup_printf (C_("undo-type",
+                                 "Straighten by %-3.3g°"),
+                              angle);
+
+    case GIMP_COMPASS_ORIENTATION_HORIZONTAL:
+      return g_strdup_printf (C_("undo-type",
+                                 "Straighten Horizontally by %-3.3g°"),
+                              angle);
+
+    case GIMP_COMPASS_ORIENTATION_VERTICAL:
+      return g_strdup_printf (C_("undo-type",
+                                 "Straighten Vertically by %-3.3g°"),
+                              angle);
+    }
+
+  g_return_val_if_reached (NULL);
 }
 
 static void
@@ -494,18 +524,21 @@ gimp_measure_tool_halt (GimpMeasureTool *measure)
   GimpMeasureOptions *options = GIMP_MEASURE_TOOL_GET_OPTIONS (measure);
   GimpTool           *tool    = GIMP_TOOL (measure);
 
-  gtk_widget_set_sensitive (options->straighten_button, FALSE);
+  if (options->straighten_button)
+    {
+      gtk_widget_set_sensitive (options->straighten_button, FALSE);
+
+      g_signal_handlers_disconnect_by_func (
+        options->straighten_button,
+        G_CALLBACK (gimp_measure_tool_straighten_button_clicked),
+        measure);
+    }
 
   if (tool->display)
     gimp_tool_pop_status (tool, tool->display);
 
   if (gimp_draw_tool_is_active (GIMP_DRAW_TOOL (measure)))
     gimp_draw_tool_stop (GIMP_DRAW_TOOL (measure));
-
-  g_signal_handlers_disconnect_by_func (
-    options->straighten_button,
-    G_CALLBACK (gimp_measure_tool_straighten_button_clicked),
-    measure);
 
   gimp_draw_tool_set_widget (GIMP_DRAW_TOOL (tool), NULL);
   g_clear_object (&measure->widget);

@@ -4453,7 +4453,7 @@ msgid "_Dilate"
 msgstr "擴大(_D)"
 
 #: ../app/actions/filters-actions.c:138
-msgctxt "drawable-action"
+msgctxt "filters-action"
 msgid "Grow lighter areas of the image"
 msgstr "增大圖像較亮區域"
 
@@ -4463,7 +4463,7 @@ msgid "_Erode"
 msgstr "侵蝕(_E)"
 
 #: ../app/actions/filters-actions.c:154
-msgctxt "drawable-action"
+msgctxt "filters-action"
 msgid "Grow darker areas of the image"
 msgstr "增大圖像較暗區域"
 
@@ -9560,17 +9560,17 @@ msgid "Toggle fullscreen view"
 msgstr "切換全螢幕檢視"
 
 #: ../app/actions/view-actions.c:315
-msgctxt "view-action"
+msgctxt "view-zoom-action"
 msgid "Set zoom factor"
 msgstr "設置縮放倍率"
 
 #: ../app/actions/view-actions.c:320
-msgctxt "view-action"
+msgctxt "view-zoom-action"
 msgid "Zoom out as far as possible"
 msgstr "盡可能縮小"
 
 #: ../app/actions/view-actions.c:325
-msgctxt "view-action"
+msgctxt "view-zoom-action"
 msgid "Zoom in as far as possible"
 msgstr "盡可能放大"
 
@@ -9605,12 +9605,12 @@ msgid "Zoom In"
 msgstr "拉近"
 
 #: ../app/actions/view-actions.c:354
-msgctxt "view-action"
+msgctxt "view-zoom-action"
 msgid "Zoom out a lot"
 msgstr "縮小很多"
 
 #: ../app/actions/view-actions.c:359
-msgctxt "view-action"
+msgctxt "view-zoom-action"
 msgid "Zoom in a lot"
 msgstr "放大很多"
 

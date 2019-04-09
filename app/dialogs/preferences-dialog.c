@@ -98,6 +98,10 @@ static void   prefs_color_management_reset         (GtkWidget    *widget,
                                                     GObject      *config);
 static void   prefs_dialog_defaults_reset          (GtkWidget    *widget,
                                                     GObject      *config);
+static void   prefs_folders_reset                  (GtkWidget    *widget,
+                                                    GObject      *config);
+static void   prefs_path_reset                     (GtkWidget    *widget,
+                                                    GObject      *config);
 
 static void   prefs_import_raw_procedure_callback  (GtkWidget    *widget,
                                                     GObject      *config);
@@ -483,6 +487,30 @@ prefs_dialog_defaults_reset (GtkWidget *widget,
   g_object_thaw_notify (config);
 
   g_free (pspecs);
+}
+
+static void
+prefs_folders_reset (GtkWidget *widget,
+                     GObject   *config)
+{
+  gimp_config_reset_property (config, "temp-path");
+  gimp_config_reset_property (config, "swap-path");
+}
+
+static void
+prefs_path_reset (GtkWidget *widget,
+                  GObject   *config)
+{
+  const gchar *path_property;
+  const gchar *writable_property;
+
+  path_property     = g_object_get_data (G_OBJECT (widget), "path");
+  writable_property = g_object_get_data (G_OBJECT (widget), "path-writable");
+
+  gimp_config_reset_property (config, path_property);
+
+  if (writable_property)
+    gimp_config_reset_property (config, writable_property);
 }
 
 static void
@@ -1166,6 +1194,12 @@ prefs_dialog_new (Gimp       *gimp,
                           _("Use OpenCL"),
                           GTK_BOX (vbox2));
 
+  hbox = prefs_hint_box_new (GIMP_ICON_DIALOG_WARNING,
+                             _("OpenCL drivers and support are experimental, "
+                               "expect slowdowns and possible crashes "
+                               "(please report)."));
+  gtk_box_pack_start (GTK_BOX (vbox2), hbox, FALSE, FALSE, 0);
+
   /*  Image Thumbnails  */
   vbox2 = prefs_frame_new (_("Image Thumbnails"), GTK_CONTAINER (vbox), FALSE);
 
@@ -1179,15 +1213,14 @@ prefs_dialog_new (Gimp       *gimp,
                            _("Maximum _filesize for thumbnailing:"),
                            GTK_TABLE (table), 1, size_group);
 
-  g_object_unref (size_group);
-  size_group = NULL;
-
   /*  Document History  */
   vbox2 = prefs_frame_new (_("Document History"), GTK_CONTAINER (vbox), FALSE);
 
   prefs_check_button_add (object, "save-document-history",
                           _("Keep record of used files in the Recent Documents list"),
                           GTK_BOX (vbox2));
+
+  g_clear_object (&size_group);
 
 
   /***************/
@@ -1221,12 +1254,11 @@ prefs_dialog_new (Gimp       *gimp,
   vbox2 = prefs_frame_new (_("Bug Reporting"),
                            GTK_CONTAINER (vbox), FALSE);
 
-  size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
   table = prefs_table_new (1, GTK_CONTAINER (vbox2));
 
   button = prefs_enum_combo_box_add (object, "debug-policy", 0, 0,
                                      _("Debug _policy:"),
-                                     GTK_TABLE (table), 0, size_group);
+                                     GTK_TABLE (table), 0, NULL);
 
   /* Check existence of gdb or lldb to activate the preference, as a
    * good hint of its prerequisite, unless backtrace() API exists, in
@@ -1439,7 +1471,7 @@ prefs_dialog_new (Gimp       *gimp,
                                      _("Show advanced color options"),
                                      GTK_BOX (vbox2));
 
-    g_object_unref (size_group);
+    g_clear_object (&size_group);
 
     g_object_unref (store);
   }
@@ -1455,6 +1487,10 @@ prefs_dialog_new (Gimp       *gimp,
                                   GIMP_HELP_PREFS_IMPORT_EXPORT,
                                   NULL,
                                   &top_iter);
+
+  gimp_prefs_box_set_page_scrollable (GIMP_PREFS_BOX (prefs_box), vbox, TRUE);
+
+  size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
   /*  Import Policies  */
   vbox2 = prefs_frame_new (_("Import Policies"),
@@ -1481,7 +1517,7 @@ prefs_dialog_new (Gimp       *gimp,
   table = prefs_table_new (1, GTK_CONTAINER (vbox2));
   button = prefs_enum_combo_box_add (object, "color-profile-policy", 0, 0,
                                      _("Color profile policy:"),
-                                     GTK_TABLE (table), 0, NULL);
+                                     GTK_TABLE (table), 0, size_group);
 
   /*  Export Policies  */
   vbox2 = prefs_frame_new (_("Export Policies"),
@@ -1491,20 +1527,26 @@ prefs_dialog_new (Gimp       *gimp,
                                    _("Export the image's color profile by default"),
                                    GTK_BOX (vbox2));
   button = prefs_check_button_add (object, "export-metadata-exif",
-                                   /* Translators: label for configuration option (checkbox).
-                                    * It determines how file export plug-ins handle Exif by default.
+                                   /* Translators: label for
+                                    * configuration option (checkbox).
+                                    * It determines how file export
+                                    * plug-ins handle Exif by default.
                                     */
                                    _("Export Exif metadata by default when available"),
                                    GTK_BOX (vbox2));
   button = prefs_check_button_add (object, "export-metadata-xmp",
-                                   /* Translators: label for configuration option (checkbox).
-                                    * It determines how file export plug-ins handle XMP by default.
+                                   /* Translators: label for
+                                    * configuration option (checkbox).
+                                    * It determines how file export
+                                    * plug-ins handle XMP by default.
                                     */
                                    _("Export XMP metadata by default when available"),
                                    GTK_BOX (vbox2));
   button = prefs_check_button_add (object, "export-metadata-iptc",
-                                   /* Translators: label for configuration option (checkbox).
-                                    * It determines how file export plug-ins handle IPTC by default.
+                                   /* Translators: label for
+                                    * configuration option (checkbox).
+                                    * It determines how file export
+                                    * plug-ins handle IPTC by default.
                                     */
                                    _("Export IPTC metadata by default when available"),
                                    GTK_BOX (vbox2));
@@ -1512,6 +1554,13 @@ prefs_dialog_new (Gimp       *gimp,
                              _("Metadata can contain sensitive information."));
   gtk_box_pack_start (GTK_BOX (vbox2), hbox, FALSE, FALSE, 0);
 
+  /*  Export File Type  */
+  vbox2 = prefs_frame_new (_("Export File Type"), GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+  prefs_enum_combo_box_add (object, "export-file-type", 0, 0,
+                            _("Default export file type:"),
+                            GTK_TABLE (table), 0, size_group);
 
   /*  Raw Image Importer  */
   vbox2 = prefs_frame_new (_("Raw Image Importer"),
@@ -1539,6 +1588,9 @@ prefs_dialog_new (Gimp       *gimp,
                       G_CALLBACK (prefs_import_raw_procedure_callback),
                       config);
   }
+
+  g_clear_object (&size_group);
+
 
   /****************/
   /*  Playground  */
@@ -1622,6 +1674,7 @@ prefs_dialog_new (Gimp       *gimp,
                             GTK_TABLE (table), 0, size_group);
 
   g_object_unref (size_group);
+
   size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
   /*  Global Brush, Pattern, ...  */
@@ -1650,8 +1703,7 @@ prefs_dialog_new (Gimp       *gimp,
                                     GIMP_ICON_TOOL_MOVE,
                                     GTK_BOX (vbox2), size_group);
 
-  g_object_unref (size_group);
-  size_group = NULL;
+  g_clear_object (&size_group);
 
 
   /*******************/
@@ -1761,13 +1813,13 @@ prefs_dialog_new (Gimp       *gimp,
 
   prefs_enum_combo_box_add (object, "layer-preview-size", 0, 0,
                             _("_Default layer & channel preview size:"),
-                            GTK_TABLE (table), 0, size_group);
+                            GTK_TABLE (table), 0, NULL);
   prefs_enum_combo_box_add (object, "undo-preview-size", 0, 0,
                             _("_Undo preview size:"),
-                            GTK_TABLE (table), 1, size_group);
+                            GTK_TABLE (table), 1, NULL);
   prefs_enum_combo_box_add (object, "navigation-preview-size", 0, 0,
                             _("Na_vigation preview size:"),
-                            GTK_TABLE (table), 2, size_group);
+                            GTK_TABLE (table), 2, NULL);
 
   /* Keyboard Shortcuts */
   vbox2 = prefs_frame_new (_("Keyboard Shortcuts"),
@@ -2033,6 +2085,7 @@ prefs_dialog_new (Gimp       *gimp,
     gtk_widget_show (icon_size_scale);
   }
 
+
   /*************************/
   /*  Interface / Toolbox  */
   /*************************/
@@ -2067,8 +2120,7 @@ prefs_dialog_new (Gimp       *gimp,
                                     GIMP_ICON_IMAGE,
                                     GTK_BOX (vbox2), size_group);
 
-  g_object_unref (size_group);
-  size_group = NULL;
+  g_clear_object (&size_group);
 
   /* Tool Editor */
   vbox2 = prefs_frame_new (_("Tools Configuration"),
@@ -2399,7 +2451,7 @@ prefs_dialog_new (Gimp       *gimp,
   gtk_box_pack_start (GTK_BOX (vbox2), table, FALSE, FALSE, 0);
   gtk_widget_show (table);
 
-  g_object_unref (size_group);
+  g_clear_object (&size_group);
 
 
   /*****************************/
@@ -2546,8 +2598,7 @@ prefs_dialog_new (Gimp       *gimp,
                     G_CALLBACK (prefs_search_clear_callback),
                     gimp);
 
-  g_object_unref (size_group);
-  size_group = NULL;
+  g_clear_object (&size_group);
 
 
   /*************************/
@@ -2671,8 +2722,7 @@ prefs_dialog_new (Gimp       *gimp,
                     G_CALLBACK (prefs_resolution_calibrate_callback),
                     entry);
 
-  g_object_unref (size_group);
-  size_group = NULL;
+  g_clear_object (&size_group);
 
 
   /***********************************/
@@ -2693,7 +2743,7 @@ prefs_dialog_new (Gimp       *gimp,
 
   prefs_enum_combo_box_add (object, "dock-window-hint", 0, 0,
                             _("Hint for _docks and toolbox:"),
-                            GTK_TABLE (table), 1, size_group);
+                            GTK_TABLE (table), 1, NULL);
 
   vbox2 = prefs_frame_new (_("Focus"),
                            GTK_CONTAINER (vbox), FALSE);
@@ -2805,8 +2855,7 @@ prefs_dialog_new (Gimp       *gimp,
                             _("Pointer _handedness:"),
                             GTK_TABLE (table), 1, NULL);
 
-  g_object_unref (size_group);
-  size_group = NULL;
+  g_clear_object (&size_group);
 
 
   /********************************/
@@ -2954,6 +3003,7 @@ prefs_dialog_new (Gimp       *gimp,
       }
   }
 
+
   /******************************/
   /*  Image Windows / Snapping  */
   /******************************/
@@ -2981,7 +3031,7 @@ prefs_dialog_new (Gimp       *gimp,
 
   prefs_spin_button_add (object, "snap-distance", 1.0, 5.0, 0,
                          _("_Snapping distance:"),
-                         GTK_TABLE (table), 0, size_group);
+                         GTK_TABLE (table), 0, NULL);
 
 
   /*******************/
@@ -3059,6 +3109,13 @@ prefs_dialog_new (Gimp       *gimp,
                                   NULL,
                                   &top_iter);
 
+  button = gimp_prefs_box_set_page_resettable (GIMP_PREFS_BOX (prefs_box),
+                                               vbox,
+                                               _("Reset Folders"));
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (prefs_folders_reset),
+                    config);
+
   {
     static const struct
     {
@@ -3102,70 +3159,101 @@ prefs_dialog_new (Gimp       *gimp,
       const gchar *label;
       const gchar *icon;
       const gchar *help_data;
+      const gchar *reset_label;
       const gchar *fs_label;
       const gchar *path_property_name;
       const gchar *writable_property_name;
     }
     paths[] =
     {
-      { N_("Brushes"), N_("Brush Folders"), "folders-brushes",
+      { N_("Brushes"), N_("Brush Folders"),
+        "folders-brushes",
         GIMP_HELP_PREFS_FOLDERS_BRUSHES,
+        N_("Reset Brush Folders"),
         N_("Select Brush Folders"),
         "brush-path", "brush-path-writable" },
-      { N_("Dynamics"), N_("Dynamics Folders"), "folders-dynamics",
+      { N_("Dynamics"), N_("Dynamics Folders"),
+        "folders-dynamics",
         GIMP_HELP_PREFS_FOLDERS_DYNAMICS,
+        N_("Reset Dynamics Folders"),
         N_("Select Dynamics Folders"),
         "dynamics-path", "dynamics-path-writable" },
-      { N_("Patterns"), N_("Pattern Folders"), "folders-patterns",
+      { N_("Patterns"), N_("Pattern Folders"),
+        "folders-patterns",
         GIMP_HELP_PREFS_FOLDERS_PATTERNS,
+        N_("Reset Pattern Folders"),
         N_("Select Pattern Folders"),
         "pattern-path", "pattern-path-writable" },
-      { N_("Palettes"), N_("Palette Folders"), "folders-palettes",
+      { N_("Palettes"), N_("Palette Folders"),
+        "folders-palettes",
         GIMP_HELP_PREFS_FOLDERS_PALETTES,
+        N_("Reset Palette Folders"),
         N_("Select Palette Folders"),
         "palette-path", "palette-path-writable" },
-      { N_("Gradients"), N_("Gradient Folders"), "folders-gradients",
+      { N_("Gradients"), N_("Gradient Folders"),
+        "folders-gradients",
         GIMP_HELP_PREFS_FOLDERS_GRADIENTS,
+        N_("Reset Gradient Folders"),
         N_("Select Gradient Folders"),
         "gradient-path", "gradient-path-writable" },
-      { N_("Fonts"), N_("Font Folders"), "folders-fonts",
+      { N_("Fonts"), N_("Font Folders"),
+        "folders-fonts",
         GIMP_HELP_PREFS_FOLDERS_FONTS,
+        N_("Reset Font Folders"),
         N_("Select Font Folders"),
         "font-path", NULL },
-      { N_("Tool Presets"), N_("Tool Preset Folders"), "folders-tool-presets",
+      { N_("Tool Presets"), N_("Tool Preset Folders"),
+        "folders-tool-presets",
         GIMP_HELP_PREFS_FOLDERS_TOOL_PRESETS,
+        N_("Reset Tool Preset Folders"),
         N_("Select Tool Preset Folders"),
         "tool-preset-path", "tool-preset-path-writable" },
-      { N_("MyPaint Brushes"), N_("MyPaint Brush Folders"), "folders-mypaint-brushes",
+      { N_("MyPaint Brushes"), N_("MyPaint Brush Folders"),
+        "folders-mypaint-brushes",
         GIMP_HELP_PREFS_FOLDERS_MYPAINT_BRUSHES,
+        N_("Reset MyPaint Brush Folders"),
         N_("Select MyPaint Brush Folders"),
         "mypaint-brush-path", "mypaint-brush-path-writable" },
-      { N_("Plug-ins"), N_("Plug-in Folders"), "folders-plug-ins",
+      { N_("Plug-ins"), N_("Plug-in Folders"),
+        "folders-plug-ins",
         GIMP_HELP_PREFS_FOLDERS_PLUG_INS,
+        N_("Reset plug-in Folders"),
         N_("Select plug-in Folders"),
         "plug-in-path", NULL },
-      { N_("Scripts"), N_("Script-Fu Folders"), "folders-scripts",
+      { N_("Scripts"), N_("Script-Fu Folders"),
+        "folders-scripts",
         GIMP_HELP_PREFS_FOLDERS_SCRIPTS,
+        N_("Reset Script-Fu Folders"),
         N_("Select Script-Fu Folders"),
         "script-fu-path", NULL },
-      { N_("Modules"), N_("Module Folders"), "folders-modules",
+      { N_("Modules"), N_("Module Folders"),
+        "folders-modules",
         GIMP_HELP_PREFS_FOLDERS_MODULES,
+        N_("Reset Module Folders"),
         N_("Select Module Folders"),
         "module-path", NULL },
-      { N_("Interpreters"), N_("Interpreter Folders"), "folders-interp",
+      { N_("Interpreters"), N_("Interpreter Folders"),
+        "folders-interp",
         GIMP_HELP_PREFS_FOLDERS_INTERPRETERS,
+        N_("Reset Interpreter Folders"),
         N_("Select Interpreter Folders"),
         "interpreter-path", NULL },
-      { N_("Environment"), N_("Environment Folders"), "folders-environ",
+      { N_("Environment"), N_("Environment Folders"),
+        "folders-environ",
         GIMP_HELP_PREFS_FOLDERS_ENVIRONMENT,
+        N_("Reset Environment Folders"),
         N_("Select Environment Folders"),
         "environ-path", NULL },
-      { N_("Themes"), N_("Theme Folders"), "folders-themes",
+      { N_("Themes"), N_("Theme Folders"),
+        "folders-themes",
         GIMP_HELP_PREFS_FOLDERS_THEMES,
+        N_("Reset Theme Folders"),
         N_("Select Theme Folders"),
         "theme-path", NULL },
-      { N_("Icon Themes"), N_("Icon Theme Folders"), "folders-icon-themes",
+      { N_("Icon Themes"), N_("Icon Theme Folders"),
+        "folders-icon-themes",
         GIMP_HELP_PREFS_FOLDERS_ICON_THEMES,
+        N_("Reset Icon Theme Folders"),
         N_("Select Icon Theme Folders"),
         "icon-theme-path", NULL }
     };
@@ -3184,6 +3272,17 @@ prefs_dialog_new (Gimp       *gimp,
                                         &top_iter,
                                         &child_iter);
         g_free (icon_name);
+
+        button = gimp_prefs_box_set_page_resettable (GIMP_PREFS_BOX (prefs_box),
+                                                     vbox,
+                                                     gettext (paths[i].reset_label));
+        g_object_set_data (G_OBJECT (button), "path",
+                           (gpointer) paths[i].path_property_name);
+        g_object_set_data (G_OBJECT (button), "path-writable",
+                           (gpointer) paths[i].writable_property_name);
+        g_signal_connect (button, "clicked",
+                          G_CALLBACK (prefs_path_reset),
+                          config);
 
         editor = gimp_prop_path_editor_new (object,
                                             paths[i].path_property_name,

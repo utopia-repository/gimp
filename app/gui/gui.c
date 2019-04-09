@@ -45,6 +45,8 @@
 #include "display/gimpstatusbar.h"
 
 #include "tools/gimp-tools.h"
+#include "tools/gimptool.h"
+#include "tools/tool_manager.h"
 
 #include "widgets/gimpaction-history.h"
 #include "widgets/gimpclipboard.h"
@@ -640,7 +642,10 @@ gui_restore_after_callback (Gimp               *gimp,
     if (GTK_IS_MENU_ITEM (menu))
       menu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (menu));
 
-    gtkosx_application_set_menu_bar (osx_app, GTK_MENU_SHELL (menu));
+    /* do not activate OSX menu if tests are running */
+    if (!getenv("GIMP_TESTING_ABS_TOP_SRCDIR"))
+      gtkosx_application_set_menu_bar (osx_app, GTK_MENU_SHELL (menu));
+
     gtkosx_application_set_use_quartz_accelerators (osx_app, FALSE);
 
     gui_add_to_app_menu (image_ui_manager, osx_app,
@@ -732,7 +737,8 @@ static gboolean
 gui_exit_callback (Gimp     *gimp,
                    gboolean  force)
 {
-  GimpGuiConfig  *gui_config = GIMP_GUI_CONFIG (gimp->config);
+  GimpGuiConfig *gui_config = GIMP_GUI_CONFIG (gimp->config);
+  GimpTool      *active_tool;
 
   if (gimp->be_verbose)
     g_print ("EXIT: %s\n", G_STRFUNC);
@@ -754,6 +760,15 @@ gui_exit_callback (Gimp     *gimp,
   gimp->message_handler = GIMP_CONSOLE;
 
   gui_unique_exit ();
+
+  /* If any modifier is set when quitting (typically when exiting with
+   * Ctrl-q for instance!), when serializing the tool options, it will
+   * save any alternate value instead of the main one. Make sure that
+   * any modifier is reset before saving options.
+   */
+  active_tool = tool_manager_get_active (gimp);
+  if  (active_tool && active_tool->focus_display)
+    gimp_tool_set_modifier_state  (active_tool, 0, active_tool->focus_display);
 
   if (gui_config->save_session_info)
     session_save (gimp, FALSE);

@@ -731,6 +731,9 @@ gimp_quit (void)
  * "&lt;Domain&gt;/Path/To/My/Menu"
  * (e.g. "&lt;Image&gt;/Filters/Render/Useless").
  *
+ * Note that registering a full (pre-2.2-style) menu path is
+ * deprecated and will cause a failure in GIMP 3.0 and newer.
+ *
  * It is possible to register a procedure only for keyboard-shortcut
  * activation by passing a @menu_label to gimp_install_procedure() but
  * not registering any menu path with gimp_plugin_menu_register(). In
@@ -2294,6 +2297,9 @@ gimp_loop (void)
 static void
 gimp_config (GPConfig *config)
 {
+  GFile *file;
+  gchar *path;
+
   if (config->version < GIMP_PROTOCOL_VERSION)
     {
       g_message ("Could not execute plug-in \"%s\"\n(%s)\n"
@@ -2337,10 +2343,19 @@ gimp_config (GPConfig *config)
 
   gimp_cpu_accel_set_use (config->use_cpu_accel);
 
+  file = gimp_file_new_for_config_path (config->swap_path, NULL);
+  path = g_file_get_path (file);
+
   g_object_set (gegl_config (),
+                "tile-cache-size",     config->tile_cache_size,
+                "swap",                path,
+                "threads",             (gint) config->num_processors,
                 "use-opencl",          config->use_opencl,
                 "application-license", "GPL3",
                 NULL);
+
+  g_free (path);
+  g_object_unref (file);
 
   if (_shm_ID != -1)
     {

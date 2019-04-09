@@ -36,6 +36,7 @@
 #include "gegl/gimp-gegl-loops.h"
 #include "gegl/gimp-gegl-mask.h"
 #include "gegl/gimp-gegl-nodes.h"
+#include "gegl/gimp-gegl-utils.h"
 
 #include "gimp.h"
 #include "gimp-utils.h"
@@ -58,6 +59,8 @@
 
 #include "gimp-intl.h"
 
+
+#define RGBA_EPSILON 1e-6
 
 enum
 {
@@ -156,8 +159,6 @@ static void       gimp_channel_convert_type  (GimpDrawable      *drawable,
 static void gimp_channel_invalidate_boundary   (GimpDrawable       *drawable);
 static void gimp_channel_get_active_components (GimpDrawable       *drawable,
                                                 gboolean           *active);
-static GimpComponentMask
-                  gimp_channel_get_active_mask (GimpDrawable      *drawable);
 
 static void      gimp_channel_set_buffer     (GimpDrawable        *drawable,
                                               gboolean             push_undo,
@@ -290,7 +291,6 @@ gimp_channel_class_init (GimpChannelClass *klass)
   drawable_class->convert_type          = gimp_channel_convert_type;
   drawable_class->invalidate_boundary   = gimp_channel_invalidate_boundary;
   drawable_class->get_active_components = gimp_channel_get_active_components;
-  drawable_class->get_active_mask       = gimp_channel_get_active_mask;
   drawable_class->set_buffer            = gimp_channel_set_buffer;
 
   klass->boundary       = gimp_channel_real_boundary;
@@ -1006,13 +1006,6 @@ gimp_channel_get_active_components (GimpDrawable *drawable,
   active[ALPHA_G] = FALSE;
 }
 
-static GimpComponentMask
-gimp_channel_get_active_mask (GimpDrawable *drawable)
-{
-  /*  Return all, because that skips the component mask op when painting  */
-  return GIMP_COMPONENT_MASK_ALL;
-}
-
 static void
 gimp_channel_set_buffer (GimpDrawable *drawable,
                          gboolean      push_undo,
@@ -1253,6 +1246,13 @@ gimp_channel_real_clear (GimpChannel *channel,
                          const gchar *undo_desc,
                          gboolean     push_undo)
 {
+  GeglBuffer    *buffer;
+  GeglRectangle  rect;
+  GeglRectangle  aligned_rect;
+
+  if (channel->bounds_known && channel->empty)
+    return;
+
   if (push_undo)
     {
       if (! undo_desc)
@@ -1261,18 +1261,26 @@ gimp_channel_real_clear (GimpChannel *channel,
       gimp_channel_push_undo (channel, undo_desc);
     }
 
-  if (channel->bounds_known && ! channel->empty)
+  buffer = gimp_drawable_get_buffer (GIMP_DRAWABLE (channel));
+
+  if (channel->bounds_known)
     {
-      gegl_buffer_clear (gimp_drawable_get_buffer (GIMP_DRAWABLE (channel)),
-                         GEGL_RECTANGLE (channel->x1, channel->y1,
-                                         channel->x2 - channel->x1,
-                                         channel->y2 - channel->y1));
+      rect.x      = channel->x1;
+      rect.y      = channel->y1;
+      rect.width  = channel->x2 - channel->x1;
+      rect.height = channel->y2 - channel->y1;
     }
   else
     {
-      gegl_buffer_clear (gimp_drawable_get_buffer (GIMP_DRAWABLE (channel)),
-                         NULL);
+      rect.x      = 0;
+      rect.y      = 0;
+      rect.width  = gimp_item_get_width  (GIMP_ITEM (channel));
+      rect.height = gimp_item_get_height (GIMP_ITEM (channel));
     }
+
+  gimp_gegl_rectangle_align_to_tile_grid (&aligned_rect, &rect, buffer);
+
+  gegl_buffer_clear (buffer, &aligned_rect);
 
   /*  we know the bounds  */
   channel->bounds_known = TRUE;
@@ -1282,7 +1290,8 @@ gimp_channel_real_clear (GimpChannel *channel,
   channel->x2           = gimp_item_get_width  (GIMP_ITEM (channel));
   channel->y2           = gimp_item_get_height (GIMP_ITEM (channel));
 
-  gimp_drawable_update (GIMP_DRAWABLE (channel), 0, 0, -1, -1);
+  gimp_drawable_update (GIMP_DRAWABLE (channel),
+                        rect.x, rect.y, rect.width, rect.height);
 }
 
 static void
@@ -1695,7 +1704,7 @@ gimp_channel_set_color (GimpChannel   *channel,
   g_return_if_fail (GIMP_IS_CHANNEL (channel));
   g_return_if_fail (color != NULL);
 
-  if (gimp_rgba_distance (&channel->color, color) > 0.0001)
+  if (gimp_rgba_distance (&channel->color, color) > RGBA_EPSILON)
     {
       if (push_undo && gimp_item_is_attached (GIMP_ITEM (channel)))
         {

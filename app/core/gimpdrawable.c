@@ -66,6 +66,7 @@
 enum
 {
   UPDATE,
+  FORMAT_CHANGED,
   ALPHA_CHANGED,
   LAST_SIGNAL
 };
@@ -99,6 +100,8 @@ static gint64     gimp_drawable_get_memsize        (GimpObject        *object,
 static gboolean   gimp_drawable_get_size           (GimpViewable      *viewable,
                                                     gint              *width,
                                                     gint              *height);
+static void       gimp_drawable_preview_freeze     (GimpViewable      *viewable);
+static void       gimp_drawable_preview_thaw       (GimpViewable      *viewable);
 
 static GeglNode * gimp_drawable_get_node           (GimpFilter        *filter);
 
@@ -166,6 +169,9 @@ static gint64  gimp_drawable_real_estimate_memsize (GimpDrawable      *drawable,
                                                     gint               width,
                                                     gint               height);
 
+static GimpComponentMask
+                gimp_drawable_real_get_active_mask (GimpDrawable      *drawable);
+
 static void       gimp_drawable_real_convert_type  (GimpDrawable      *drawable,
                                                     GimpImage         *dest_image,
                                                     const Babl        *new_format,
@@ -195,6 +201,9 @@ static void       gimp_drawable_real_swap_pixels   (GimpDrawable      *drawable,
                                                     gint               x,
                                                     gint               y);
 static GeglNode * gimp_drawable_real_get_source_node (GimpDrawable    *drawable);
+
+static void       gimp_drawable_format_changed     (GimpDrawable      *drawable);
+static void       gimp_drawable_alpha_changed      (GimpDrawable      *drawable);
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpDrawable, gimp_drawable, GIMP_TYPE_ITEM,
@@ -231,6 +240,15 @@ gimp_drawable_class_init (GimpDrawableClass *klass)
                   G_TYPE_INT,
                   G_TYPE_INT);
 
+  gimp_drawable_signals[FORMAT_CHANGED] =
+    g_signal_new ("format-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpDrawableClass, format_changed),
+                  NULL, NULL,
+                  gimp_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
   gimp_drawable_signals[ALPHA_CHANGED] =
     g_signal_new ("alpha-changed",
                   G_TYPE_FROM_CLASS (klass),
@@ -250,6 +268,8 @@ gimp_drawable_class_init (GimpDrawableClass *klass)
   viewable_class->get_size        = gimp_drawable_get_size;
   viewable_class->get_new_preview = gimp_drawable_get_new_preview;
   viewable_class->get_new_pixbuf  = gimp_drawable_get_new_pixbuf;
+  viewable_class->preview_freeze  = gimp_drawable_preview_freeze;
+  viewable_class->preview_thaw    = gimp_drawable_preview_thaw;
 
   filter_class->get_node          = gimp_drawable_get_node;
 
@@ -262,14 +282,14 @@ gimp_drawable_class_init (GimpDrawableClass *klass)
   item_class->transform           = gimp_drawable_transform;
 
   klass->update                   = gimp_drawable_real_update;
+  klass->format_changed           = NULL;
   klass->alpha_changed            = NULL;
   klass->estimate_memsize         = gimp_drawable_real_estimate_memsize;
   klass->invalidate_boundary      = NULL;
   klass->get_active_components    = NULL;
-  klass->get_active_mask          = NULL;
+  klass->get_active_mask          = gimp_drawable_real_get_active_mask;
   klass->convert_type             = gimp_drawable_real_convert_type;
   klass->apply_buffer             = gimp_drawable_real_apply_buffer;
-  klass->replace_buffer           = gimp_drawable_real_replace_buffer;
   klass->get_buffer               = gimp_drawable_real_get_buffer;
   klass->set_buffer               = gimp_drawable_real_set_buffer;
   klass->push_undo                = gimp_drawable_real_push_undo;
@@ -398,6 +418,30 @@ gimp_drawable_get_size (GimpViewable *viewable,
   *height = gimp_item_get_height (item);
 
   return TRUE;
+}
+
+static void
+gimp_drawable_preview_freeze (GimpViewable *viewable)
+{
+  GimpViewable *parent = gimp_viewable_get_parent (viewable);
+
+  if (! parent && gimp_item_is_attached (GIMP_ITEM (viewable)))
+    parent = GIMP_VIEWABLE (gimp_item_get_image (GIMP_ITEM (viewable)));
+
+  if (parent)
+    gimp_viewable_preview_freeze (parent);
+}
+
+static void
+gimp_drawable_preview_thaw (GimpViewable *viewable)
+{
+  GimpViewable *parent = gimp_viewable_get_parent (viewable);
+
+  if (! parent && gimp_item_is_attached (GIMP_ITEM (viewable)))
+    parent = GIMP_VIEWABLE (gimp_item_get_image (GIMP_ITEM (viewable)));
+
+  if (parent)
+    gimp_viewable_preview_thaw (parent);
 }
 
 static GeglNode *
@@ -757,6 +801,13 @@ gimp_drawable_real_estimate_memsize (GimpDrawable      *drawable,
   return (gint64) babl_format_get_bytes_per_pixel (format) * width * height;
 }
 
+static GimpComponentMask
+gimp_drawable_real_get_active_mask (GimpDrawable *drawable)
+{
+  /*  Return all, because that skips the component mask op when painting  */
+  return GIMP_COMPONENT_MASK_ALL;
+}
+
 /* FIXME: this default impl is currently unused because no subclass
  * chains up. the goal is to handle the almost identical subclass code
  * here again.
@@ -801,8 +852,9 @@ gimp_drawable_real_set_buffer (GimpDrawable *drawable,
                                gint          offset_x,
                                gint          offset_y)
 {
-  GimpItem *item          = GIMP_ITEM (drawable);
-  gint      old_has_alpha = -1;
+  GimpItem   *item          = GIMP_ITEM (drawable);
+  const Babl *old_format    = NULL;
+  gint        old_has_alpha = -1;
 
   g_object_freeze_notify (G_OBJECT (drawable));
 
@@ -813,7 +865,10 @@ gimp_drawable_real_set_buffer (GimpDrawable *drawable,
                                        drawable, FALSE);
 
   if (drawable->private->buffer)
-    old_has_alpha = gimp_drawable_has_alpha (drawable);
+    {
+      old_format    = gimp_drawable_get_format (drawable);
+      old_has_alpha = gimp_drawable_has_alpha (drawable);
+    }
 
   g_set_object (&drawable->private->buffer, buffer);
 
@@ -822,25 +877,13 @@ gimp_drawable_real_set_buffer (GimpDrawable *drawable,
                    "buffer", gimp_drawable_get_buffer (drawable),
                    NULL);
 
-  if (drawable->private->convert_format)
-    {
-      const Babl *format = gimp_drawable_get_format (drawable);
-
-      if (babl_format_is_palette (format))
-        gegl_node_set (drawable->private->convert_format,
-                       "operation", "gegl:convert-format",
-                       "format",    gimp_drawable_get_format (drawable),
-                       NULL);
-      else
-        gegl_node_set (drawable->private->convert_format,
-                       "operation", "gegl:nop",
-                       NULL);
-    }
-
   gimp_item_set_offset (item, offset_x, offset_y);
   gimp_item_set_size (item,
                       gegl_buffer_get_width  (buffer),
                       gegl_buffer_get_height (buffer));
+
+  if (gimp_drawable_get_format (drawable) != old_format)
+    gimp_drawable_format_changed (drawable);
 
   if (gimp_drawable_has_alpha (drawable) != old_has_alpha)
     gimp_drawable_alpha_changed (drawable);
@@ -859,14 +902,29 @@ gimp_drawable_real_push_undo (GimpDrawable *drawable,
                               gint          width,
                               gint          height)
 {
+  GimpImage *image;
+
   if (! buffer)
     {
+      GeglBuffer    *drawable_buffer = gimp_drawable_get_buffer (drawable);
+      GeglRectangle  drawable_rect;
+
+      gimp_gegl_rectangle_align_to_tile_grid (
+        &drawable_rect,
+        GEGL_RECTANGLE (x, y, width, height),
+        drawable_buffer);
+
+      x      = drawable_rect.x;
+      y      = drawable_rect.y;
+      width  = drawable_rect.width;
+      height = drawable_rect.height;
+
       buffer = gegl_buffer_new (GEGL_RECTANGLE (0, 0, width, height),
                                 gimp_drawable_get_format (drawable));
 
       gimp_gegl_buffer_copy (
-        gimp_drawable_get_buffer (drawable),
-        GEGL_RECTANGLE (x, y, width, height), GEGL_ABYSS_NONE,
+        drawable_buffer,
+        &drawable_rect, GEGL_ABYSS_NONE,
         buffer,
         GEGL_RECTANGLE (0, 0, 0, 0));
     }
@@ -875,7 +933,9 @@ gimp_drawable_real_push_undo (GimpDrawable *drawable,
       g_object_ref (buffer);
     }
 
-  gimp_image_undo_push_drawable (gimp_item_get_image (GIMP_ITEM (drawable)),
+  image = gimp_item_get_image (GIMP_ITEM (drawable));
+
+  gimp_image_undo_push_drawable (image,
                                  undo_desc, drawable,
                                  buffer, x, y);
 
@@ -920,6 +980,18 @@ gimp_drawable_real_get_source_node (GimpDrawable *drawable)
                          NULL);
 
   return g_object_ref (drawable->private->buffer_source_node);
+}
+
+static void
+gimp_drawable_format_changed (GimpDrawable *drawable)
+{
+  g_signal_emit (drawable, gimp_drawable_signals[FORMAT_CHANGED], 0);
+}
+
+static void
+gimp_drawable_alpha_changed (GimpDrawable *drawable)
+{
+  g_signal_emit (drawable, gimp_drawable_signals[ALPHA_CHANGED], 0);
 }
 
 
@@ -1040,14 +1112,6 @@ gimp_drawable_update (GimpDrawable *drawable,
 }
 
 void
-gimp_drawable_alpha_changed (GimpDrawable *drawable)
-{
-  g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
-
-  g_signal_emit (drawable, gimp_drawable_signals[ALPHA_CHANGED], 0);
-}
-
-void
 gimp_drawable_invalidate_boundary (GimpDrawable *drawable)
 {
   GimpDrawableClass *drawable_class;
@@ -1078,16 +1142,28 @@ gimp_drawable_get_active_components (GimpDrawable *drawable,
 GimpComponentMask
 gimp_drawable_get_active_mask (GimpDrawable *drawable)
 {
-  GimpDrawableClass *drawable_class;
+  GimpComponentMask mask;
 
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), 0);
 
-  drawable_class = GIMP_DRAWABLE_GET_CLASS (drawable);
+  mask = GIMP_DRAWABLE_GET_CLASS (drawable)->get_active_mask (drawable);
 
-  if (drawable_class->get_active_mask)
-    return drawable_class->get_active_mask (drawable);
+  /* if the drawable doesn't have an alpha channel, the value of the mask's
+   * alpha-bit doesn't matter, however, we'd like to have a fully-clear or
+   * fully-set mask whenever possible, since it allows us to skip component
+   * masking altogether.  we therefore set or clear the alpha bit, depending on
+   * the state of the other bits, so that it never gets in the way of a uniform
+   * mask.
+   */
+  if (! gimp_drawable_has_alpha (drawable))
+    {
+      if (mask & ~GIMP_COMPONENT_MASK_ALPHA)
+        mask |= GIMP_COMPONENT_MASK_ALPHA;
+      else
+        mask &= ~GIMP_COMPONENT_MASK_ALPHA;
+    }
 
-  return 0;
+  return mask;
 }
 
 void
@@ -1182,31 +1258,6 @@ gimp_drawable_apply_buffer (GimpDrawable           *drawable,
                                                     composite_mode,
                                                     base_buffer,
                                                     base_x, base_y);
-}
-
-void
-gimp_drawable_replace_buffer (GimpDrawable        *drawable,
-                              GeglBuffer          *buffer,
-                              const GeglRectangle *buffer_region,
-                              gboolean             push_undo,
-                              const gchar         *undo_desc,
-                              gdouble              opacity,
-                              GeglBuffer          *mask,
-                              const GeglRectangle *mask_region,
-                              gint                 x,
-                              gint                 y)
-{
-  g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
-  g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
-  g_return_if_fail (GEGL_IS_BUFFER (buffer));
-  g_return_if_fail (GEGL_IS_BUFFER (mask));
-
-  GIMP_DRAWABLE_GET_CLASS (drawable)->replace_buffer (drawable, buffer,
-                                                      buffer_region,
-                                                      push_undo, undo_desc,
-                                                      opacity,
-                                                      mask, mask_region,
-                                                      x, y);
 }
 
 GeglBuffer *
@@ -1310,11 +1361,10 @@ gimp_drawable_steal_buffer (GimpDrawable *drawable,
 GeglNode *
 gimp_drawable_get_source_node (GimpDrawable *drawable)
 {
-  const Babl *format;
-  GeglNode   *input;
-  GeglNode   *source;
-  GeglNode   *filter;
-  GeglNode   *output;
+  GeglNode *input;
+  GeglNode *source;
+  GeglNode *filter;
+  GeglNode *output;
 
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
 
@@ -1344,27 +1394,10 @@ gimp_drawable_get_source_node (GimpDrawable *drawable)
   gegl_node_connect_to (source, "output",
                         filter, "input");
 
-  format = gimp_drawable_get_format (drawable);
-
-  if (babl_format_is_palette (format))
-    drawable->private->convert_format =
-      gegl_node_new_child (drawable->private->source_node,
-                           "operation", "gegl:convert-format",
-                           "format",    gimp_drawable_get_format (drawable),
-                           NULL);
-  else
-    drawable->private->convert_format =
-      gegl_node_new_child (drawable->private->source_node,
-                           "operation", "gegl:nop",
-                           NULL);
-
-  gegl_node_connect_to (filter,                            "output",
-                        drawable->private->convert_format, "input");
-
   output = gegl_node_get_output_proxy (drawable->private->source_node, "output");
 
-  gegl_node_connect_to (drawable->private->convert_format, "output",
-                        output,                            "input");
+  gegl_node_connect_to (filter, "output",
+                        output, "input");
 
   if (gimp_drawable_get_floating_sel (drawable))
     _gimp_drawable_add_floating_sel_filter (drawable);

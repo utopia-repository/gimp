@@ -949,6 +949,7 @@ libgimpbase-2.0.so.0 libgimp2.0 #MINVER#
  gimp_brush_generated_shape_get_type@Base 2.10.0
  gimp_bucket_fill_mode_compat_get_type@Base 2.10.0
  gimp_bucket_fill_mode_get_type@Base 2.4.0
+ gimp_cache_directory@Base 2.10.10
  gimp_canonicalize_identifier@Base 2.4.0
  gimp_cap_style_get_type@Base 2.10.0
  gimp_channel_ops_get_type@Base 2.4.0
@@ -1015,6 +1016,7 @@ libgimpbase-2.0.so.0 libgimp2.0 #MINVER#
  gimp_image_type_get_type@Base 2.4.0
  gimp_ink_blob_type_get_type@Base 2.10.0
  gimp_installation_directory@Base 2.8.2
+ gimp_installation_directory_file@Base 2.10.10
  gimp_interpolation_type_compat_get_type@Base 2.10.0
  gimp_interpolation_type_get_type@Base 2.4.0
  gimp_join_style_get_type@Base 2.10.0
@@ -1108,6 +1110,7 @@ libgimpbase-2.0.so.0 libgimp2.0 #MINVER#
  gimp_stroke_method_get_type@Base 2.10.0
  gimp_sysconf_directory@Base 2.4.0
  gimp_sysconf_directory_file@Base 2.10.0
+ gimp_temp_directory@Base 2.10.10
  gimp_text_direction_get_type@Base 2.6.0
  gimp_text_hint_style_get_type@Base 2.8.0
  gimp_text_justification_get_type@Base 2.6.0
@@ -1666,9 +1669,11 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_cell_renderer_toggle_get_type@Base 2.4.0
  gimp_cell_renderer_toggle_new@Base 2.4.0
  gimp_chain_button_get_active@Base 2.4.0
+ gimp_chain_button_get_icon_size@Base 2.10.10
  gimp_chain_button_get_type@Base 2.4.0
  gimp_chain_button_new@Base 2.4.0
  gimp_chain_button_set_active@Base 2.4.0
+ gimp_chain_button_set_icon_size@Base 2.10.10
  gimp_chain_position_get_type@Base 2.4.0
  gimp_color_area_get_color@Base 2.4.0
  gimp_color_area_get_type@Base 2.4.0
@@ -2044,7 +2049,10 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_size_entry_set_value_boundaries@Base 2.4.0
  gimp_size_entry_show_unit_menu@Base 2.4.0
  gimp_size_entry_update_policy_get_type@Base 2.4.0
+ gimp_spin_button_get_type@Base 2.10.10
  gimp_spin_button_new@Base 2.4.0
+ gimp_spin_button_new_@Base 2.10.10
+ gimp_spin_button_new_with_range@Base 2.10.10
  gimp_standard_help_func@Base 2.4.0
  gimp_stock_init@Base 2.4.0
  gimp_string_combo_box_get_active@Base 2.4.0
